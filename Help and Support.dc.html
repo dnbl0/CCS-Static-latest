@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><style>
+:root{
+  --col-bg-primary:#000f46;
+  --col-bg-primary-dark:#000b34;
+  --col-bg-primary-hover:#213e5d;
+  --col-bg-surface:#fff;
+  --col-bg-accent:#abc1a7;
+  --col-bg-accent-soft:#dde5d6;
+  --col-bg-selected:#e8edf6;
+  --col-btn-primary-bg:#000f46;
+  --col-btn-primary-bg-hover:#213e5d;
+  --col-btn-primary-text:#fff;
+  --col-btn-outline:#000f46;
+  --col-text-primary:#1b1f2a;
+  --col-text-onbrand:#fff;
+  --col-text-muted:#5b6070;
+  --col-border-brand:#000f46;
+  --col-border-neutral:#cfcac0;
+  --col-border-neutral-soft:#ece9e3;
+  --col-border-neutral-mid:#d9d6cf;
+  --col-border-header:#b5bac9;
+  --col-advisory-bg:#fdf6d8;
+  --col-advisory-border:#efdc8e;
+  --col-advisory-text:#8a6200;
+}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="components/fig-tokens.css">
+<link rel="stylesheet" href="components/fig-assets.css">
+<style>
+body{margin:0;background:#faf9f6;color:var(--col-text-primary);font-family:'Source Sans 3',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#0b2a6b;text-decoration:underline;text-underline-offset:2px}a:hover{color:var(--col-bg-primary)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+</style>
+</helmet>
+<div style="min-height:100vh;display:flex;flex-direction:column">
+<section aria-label="Site header" data-component="Header" style="display:flex;align-items:stretch;width:100%;border-bottom:1px solid var(--col-border-header);background:var(--col-bg-primary)">
+  <a href="CCS Home page.dc.html" style="flex:none;width:110px;display:flex;align-items:center;justify-content:center;border-right:1px solid var(--col-border-header);padding:8px;background:var(--col-bg-primary)">
+    <img src="images/uom-logo-vertical.svg" alt="The University of Melbourne" style="width:100%;height:100%;object-fit:contain">
+  </a>
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+    <search style="display:flex;width:100%;justify-content:flex-end;border-bottom:1px solid var(--col-border-header);background:var(--col-bg-primary-dark);padding:8px">
+      <form role="search" onSubmit="{{ headerSubmit }}" style="width:100%;max-width:288px;display:flex;height:48px;border:1px solid var(--col-bg-primary);background:#fff">
+        <label style="flex:1;min-width:0;display:flex;align-items:center"><span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Search Cross Collections</span>
+          <input value="{{ headerQ }}" onChange="{{ onHeaderQ }}" placeholder="Search Cross Collections…" style="width:100%;min-width:0;border:0;background:none;padding:0 12px;font-size:17px;color:var(--col-text-muted);outline:none">
+        </label>
+        <button type="submit" aria-label="Submit search" style="flex:none;display:flex;align-items:center;justify-content:center;border-left:1px solid var(--col-bg-primary);background:var(--col-bg-accent);color:var(--col-bg-primary);padding:0 12px;cursor:pointer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.5" y1="15.5" x2="21" y2="21"></line></svg></button>
+      </form>
+    </search>
+    <div style="display:flex;min-height:65px;width:100%;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:12px 24px;background:var(--col-bg-primary)">
+      <a href="CCS Home page.dc.html" style="color:#fff;font-size:17px;font-weight:600;white-space:nowrap">Cultural Collections Search</a>
+      <nav aria-label="Primary navigation" style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
+        <a href="Collection Search v3.dc.html" style="color:#fff;font-size:16px;font-weight:600;padding:10px 14px">Search all records</a>
+        <a href="Browse Collections.dc.html" style="color:#fff;font-size:16px;font-weight:600;padding:10px 14px">Browse collections</a>
+        <a href="Help and Support.dc.html" style="color:#fff;font-size:16px;font-weight:600;padding:10px 14px">Help</a>
+      </nav>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--col-bg-primary);color:#fff">
+  <div style="max-width:1200px;margin:0 auto;padding:20px 32px 40px;display:flex;flex-direction:column;gap:22px">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap">
+      <nav aria-label="Breadcrumb" style="display:flex;gap:8px;align-items:center;font-size:14px;color:rgba(255,255,255,.85);flex-wrap:wrap">
+        <a href="CCS Home page.dc.html" style="color:#fff">Cultural Collections</a><span aria-hidden="true" style="opacity:.6">›</span>
+        <sc-if value="{{ topic }}" hint-placeholder-val="{{ false }}"><a href="Help and Support.dc.html" style="color:#fff">Help and support</a><span aria-hidden="true" style="opacity:.6">›</span><span aria-current="page">{{ topic.title }}</span></sc-if>
+        <sc-if value="{{ notTopic }}" hint-placeholder-val="{{ true }}"><span aria-current="page">Help and support</span></sc-if>
+      </nav>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;max-width:760px">
+      <sc-if value="{{ topic }}" hint-placeholder-val="{{ false }}">
+        <h1 style="margin:0;font-family:'Fraunces',serif;font-weight:500;font-size:40px;line-height:1.1">{{ topic.title }}</h1>
+        <p style="margin:0;font-size:17px;line-height:1.5;color:rgba(255,255,255,.85)">{{ topic.blurb }}</p>
+      </sc-if>
+      <sc-if value="{{ notTopic }}" hint-placeholder-val="{{ true }}">
+        <h1 style="margin:0;font-family:'Fraunces',serif;font-weight:500;font-size:40px;line-height:1.1">Help and support</h1>
+        <p style="margin:0;font-size:17px;line-height:1.5;color:rgba(255,255,255,.85)">Guidance on searching, using and requesting items from the University's cultural collections.</p>
+      </sc-if>
+    </div>
+  </div>
+</section>
+
+<sc-if value="{{ notTopic }}" hint-placeholder-val="{{ true }}">
+<section aria-label="Help topics" style="background:#fff;border-bottom:1px solid #e3e0d9">
+  <div style="max-width:1200px;margin:0 auto;padding:40px 32px 48px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px">
+    <sc-for list="{{ topics }}" as="t" hint-placeholder-count="6">
+      <a href="{{ t.href }}" style="display:flex;flex-direction:column;gap:16px;padding:26px 24px;border:1px solid #e3e0d9;border-top:3px solid transparent;background:#fff;text-decoration:none;color:var(--col-text-primary);transition:border-color .15s,box-shadow .15s,transform .15s" style-hover="border-color:var(--col-bg-primary);box-shadow:0 10px 26px rgba(10,26,63,.12);transform:translateY(-2px)">
+        <span style="width:44px;height:44px;border-radius:50%;background:var(--col-bg-selected);color:var(--col-bg-primary);display:flex;align-items:center;justify-content:center;flex:none">{{ t.icon }}</span>
+        <div style="display:flex;flex-direction:column;gap:8px;flex:1">
+          <strong style="font-family:'Fraunces',serif;font-weight:600;font-size:20px;line-height:1.25;color:var(--col-bg-primary)">{{ t.title }}</strong>
+          <span style="font-size:15px;line-height:1.5;color:#4a5577">{{ t.blurb }}</span>
+        </div>
+        <span style="display:flex;align-items:center;gap:6px;font-size:14px;font-weight:600;color:var(--col-bg-primary)">Read more<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="13 6 19 12 13 18"></polyline></svg></span>
+      </a>
+    </sc-for>
+  </div>
+</section>
+</sc-if>
+
+<main style="flex:1;max-width:1200px;width:100%;margin:0 auto;padding:40px 32px 80px;display:flex;flex-direction:column;gap:28px">
+
+<sc-if value="{{ topic }}" hint-placeholder-val="{{ false }}"><a href="Help and Support.dc.html" style="align-self:flex-start;font-size:15px;font-weight:600">‹ All help topics</a></sc-if>
+
+<sc-if value="{{ showFaq }}" hint-placeholder-val="{{ true }}">
+  <div id="faq" style="scroll-margin-top:20px;display:flex;flex-direction:column;gap:14px">
+  <h2 style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:28px;color:var(--col-bg-primary)">Frequently Asked Questions</h2>
+  <p style="margin:0 0 6px;font-size:16px;line-height:1.6;color:#3b4050;max-width:760px">Having problems when searching for items across the cultural collections? Here are some frequently asked questions to help.</p>
+  <sc-for list="{{ faqs }}" as="q" hint-placeholder-count="6">
+    <div style="border-top:1px solid var(--col-border-neutral-soft)">
+      <h3 style="margin:0;font-size:inherit;font-weight:inherit"><button onClick="{{ q.toggle }}" aria-expanded="{{ q.open }}" aria-controls="{{ q.panelId }}" id="{{ q.btnId }}" style="width:100%;border:0;background:none;padding:16px 0;display:flex;justify-content:space-between;align-items:center;gap:12px;text-align:left;font-family:inherit;font-size:17px;font-weight:600;color:var(--col-text-primary);cursor:pointer">{{ q.q }}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" style="flex:none;transform:{{ q.chev }};transition:transform .2s"><polyline points="6 9 12 15 18 9"></polyline></svg></button></h3>
+      <sc-if value="{{ q.open }}"><p id="{{ q.panelId }}" role="region" aria-labelledby="{{ q.btnId }}" style="margin:0 0 18px;font-size:16px;line-height:1.6;color:#3b4050;max-width:760px;text-wrap:pretty">{{ q.a }}</p></sc-if>
+    </div>
+  </sc-for>
+  </div>
+</sc-if>
+
+<sc-if value="{{ showSearchTips }}" hint-placeholder-val="{{ true }}">
+<section id="search-tips" aria-labelledby="h-search-tips" style="background:#fff;border:1px solid #e3e0d9;padding:28px 32px;display:flex;flex-direction:column;gap:14px;scroll-margin-top:20px;font-size:16px;line-height:1.6;color:#3b4050">
+  <h2 id="h-search-tips" style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:28px;color:var(--col-bg-primary)">Search tips</h2>
+  <h3 style="margin:8px 0 0;font-size:18px;color:var(--col-text-primary)">Basic search</h3>
+  <p style="margin:0;max-width:760px">The search box searches everything, so it's the best place to start. Use two or three keywords – searches often fail because they are too specific. All your keywords must appear in a record (an AND search). Suggestions appear as you type; they come from terms in the catalogue, so picking one always returns results.</p>
+  <h3 style="margin:8px 0 0;font-size:18px;color:var(--col-text-primary)">Search in a single field</h3>
+  <p style="margin:0;max-width:760px">Use the dropdown beside the search box when a common word pulls in results you don't want.</p>
+  <div style="display:grid;grid-template-columns:minmax(120px,200px) 1fr;border:1px solid #e3e0d9;max-width:560px;font-size:15px">
+    <strong style="padding:10px 14px;background:#f4f5f8;color:var(--col-text-primary)">All fields</strong><span style="padding:10px 14px;background:#f4f5f8">The whole record</span>
+    <strong style="padding:10px 14px;color:var(--col-text-primary)">Title</strong><span style="padding:10px 14px">Title only</span>
+    <strong style="padding:10px 14px;background:#f4f5f8;color:var(--col-text-primary)">Creator</strong><span style="padding:10px 14px;background:#f4f5f8">Creator names only</span>
+    <strong style="padding:10px 14px;color:var(--col-text-primary)">Subject</strong><span style="padding:10px 14px">Subject headings only</span>
+  </div>
+  <h3 style="margin:8px 0 0;font-size:18px;color:var(--col-text-primary)">Ranking</h3>
+  <p style="margin:0;max-width:760px">Results are ranked by relevance: words in the title or creator rank highest, followed by how often the term appears in the record. The best matches will be in the first two pages of your results.</p>
+  <h3 style="margin:8px 0 0;font-size:18px;color:var(--col-text-primary)">Faceted search</h3>
+  <p style="margin:0;max-width:760px">Filters let you refine your results by structured data – format type, collection, date ranges and subject – and show the number of results per option. If your result set is large, review the filters to see what format, creators or subjects are represented, and select the ones most relevant to your query. Because filters depend on item metadata, they may not represent every collection item; they're under continuous review to become more complete. Once you select a filter, it stays in effect until removed, including if you start a new search.</p>
+  <h3 style="margin:8px 0 0;font-size:18px;color:var(--col-text-primary)">Refining results</h3>
+  <p style="margin:0;max-width:760px">Active filters appear as chips above the results – remove a chip to drop it, or choose Clear all to start again. Sort by relevance, date or title, and switch between grid and list views.</p>
+  <div style="display:flex;flex-direction:column;gap:10px;max-width:760px">
+    <p style="margin:0"><strong style="color:var(--col-text-primary)">Collection.</strong> Limit results to the holdings of a specific collection. New collections and items are increasingly being made available.</p>
+    <p style="margin:0"><strong style="color:var(--col-text-primary)">Production date.</strong> A histogram shows the distribution of results by year, decade or century depending on the range. Use the slider, or enter a start and end year and click Apply.</p>
+    <p style="margin:0"><strong style="color:var(--col-text-primary)">Creator.</strong> Artists, authors, collectors, designers, manufacturers and other contributors. Disambiguate a creator's name from among many results by selecting from the list – full name or birth/death dates – to see only the one(s) you want.</p>
+    <p style="margin:0"><strong style="color:var(--col-text-primary)">Accession number.</strong> Shows how results are distributed across major disciplines. Most commonly a prefix acronym for the collection followed by the year of acquisition.</p>
+    <p style="margin:0"><strong style="color:var(--col-text-primary)">Object type.</strong> The category or physical format of the item – for example book, photograph, musical instrument, scientific equipment or specimen.</p>
+    <p style="margin:0"><strong style="color:var(--col-text-primary)">Language.</strong> Results created in or translated to a specific language.</p>
+    <p style="margin:0"><strong style="color:var(--col-text-primary)">Digital asset format type.</strong> The digital format of works in your results – for example image, PDF, audio or video.</p>
+    <p style="margin:0"><strong style="color:var(--col-text-primary)">Access.</strong> Limit to works available online with a digital asset, or physically 'By appointment' or 'On display'.</p>
+  </div>
+  <h3 style="margin:8px 0 0;font-size:18px;color:var(--col-text-primary)">Automatic stemming</h3>
+  <p style="margin:0;max-width:760px">Your search automatically includes plural and singular forms of your terms, as well as common suffix and tense variations. For example, 'broad' will match 'broader' or 'broadest', but not 'broadly'. Stemming applies within phrase searches as well as keyword searches.</p>
+  <h3 style="margin:8px 0 0;font-size:18px;color:var(--col-text-primary)">Truncation and wildcards</h3>
+  <p style="margin:0;max-width:760px">Use an asterisk to truncate terms that aren't handled by stemming – for example, non-English variations: créat* finds création(s), créateur(s), créatrice(s), etc. You can also truncate from the beginning: *science finds science, conscience, geoscience, omniscience. Use a question mark (?) to find variations of a single letter – kvet?h finds kvetch or kvetsh.</p>
+  <h3 style="margin:8px 0 0;font-size:18px;color:var(--col-text-primary)">Exact phrase</h3>
+  <p style="margin:0;max-width:760px">Use double quotation marks around your terms to match words in the exact order you typed them – for example, "architectural plan".</p>
+  <h3 style="margin:8px 0 0;font-size:18px;color:var(--col-text-primary)">Advanced search</h3>
+  <p style="margin:0;max-width:760px">Want to search a single field – title, creator, subject or date range? Or combine several fields using Contains all (AND), Contains any (OR) or Does not contain (NOT)? Use advanced search when you need to combine two or more specific fields, combine two or more values of a filter, or search items across two selected collections. Results will not include the term if it appears only in a field you haven't selected – basic search returns results across all fields, but the item you're looking for may not be ranked highly.</p>
+  <h3 style="margin:8px 0 0;font-size:18px;color:var(--col-text-primary)">Boolean</h3>
+  <p style="margin:0;max-width:760px">Create complex logic using AND, OR and NOT (all in upper case) and parentheses for nesting.</p>
+</section>
+</sc-if>
+<sc-if value="{{ showIndigenous }}" hint-placeholder-val="{{ true }}">
+<section id="indigenous" aria-labelledby="h-indigenous" style="background:#fff;border:1px solid #e3e0d9;padding:28px 32px;display:flex;flex-direction:column;gap:14px;scroll-margin-top:20px;font-size:16px;line-height:1.6;color:#3b4050">
+  <h2 id="h-indigenous" style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:28px;color:var(--col-bg-primary)">Indigenous Cultural Data and Access</h2>
+  <p style="margin:0;max-width:760px">The University of Melbourne acknowledge Aboriginal and Torres Strait Islander people as the Traditional Owners of the unceded lands on which we work, learn and live. We pay respect to Elders past, present and future, and acknowledge the importance of Indigenous knowledge in the Academy.</p>
+  <p style="margin:0;display:flex;gap:20px;flex-wrap:wrap"><a href="Help and Support.dc.html?topic=access">Read about our Indigenous priorities</a><a href="https://www.unimelb.edu.au/indigenous/acknowledgement-of-country">Read our full Acknowledgement of Country</a></p>
+  <h3 style="margin:8px 0 0;font-size:18px;color:var(--col-text-primary)">Note on images and voices</h3>
+  <p style="margin:0;max-width:760px">Aboriginal and Torres Strait Islander people should be aware that the University of Melbourne website and collections contain the names, images and voices of people who have died.</p>
+  <h3 style="margin:8px 0 0;font-size:18px;color:var(--col-text-primary)">Note on language</h3>
+  <p style="margin:0;max-width:760px">Please be advised that people may be disturbed by the content of some collection items, which may include distressing images and descriptions, and derogatory terms used in their historical context, including for Aboriginal and Torres Strait Islander people. They reflect the period in which they were created and are not the views of the University of Melbourne.</p>
+  <h3 style="margin:8px 0 0;font-size:18px;color:var(--col-text-primary)">Note on terminology</h3>
+  <p style="margin:0;max-width:760px">The following terms are used interchangeably throughout collection items: Aboriginal and Torres Strait Islander, First Nations, First Peoples, Indigenous Australians (inclusive of Aboriginal and Torres Strait Islander peoples), Aboriginal peoples and Indigenous peoples (commonly used for First Nations peoples internationally).</p>
+  <h3 style="margin:8px 0 0;font-size:18px;color:var(--col-text-primary)">Contact</h3>
+  <p style="margin:0;max-width:760px">If you have questions about Indigenous cultural materials, cultural protocols or access conditions, or wish to provide feedback about a record, please contact the relevant <a href="Help and Support.dc.html?topic=access">collection team</a>.</p>
+</section>
+</sc-if>
+
+<sc-if value="{{ showCopyright }}" hint-placeholder-val="{{ true }}">
+<section id="copyright" aria-labelledby="h-copyright" style="background:#fff;border:1px solid #e3e0d9;padding:28px 32px;display:flex;flex-direction:column;gap:14px;scroll-margin-top:20px;font-size:16px;line-height:1.6;color:#3b4050">
+  <h2 id="h-copyright" style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:28px;color:var(--col-bg-primary)">Copyright and terms of use</h2>
+  <p style="margin:0;max-width:760px">How a collection item can be used depends on its copyright licence, intellectual property or cultural advice. Check the licence type and terms of use on each record.</p>
+  <ol style="margin:0;padding-left:22px;display:flex;flex-direction:column;gap:10px;max-width:760px">
+    <li><strong style="color:var(--col-text-primary)">Free access.</strong> Items available to download may be reused for personal, research, educational or non-commercial purposes. Please attribute the creator and acknowledge the University of Melbourne.</li>
+    <li><strong style="color:var(--col-text-primary)">Licensed.</strong> Some items are available under Creative Commons or other licences. Follow the licence terms shown on the record.</li>
+    <li><strong style="color:var(--col-text-primary)">Cultural conditions.</strong> Where items carry a cultural or advisory notice, engage respectfully with the content. See <a href="Help and Support.dc.html?topic=indigenous">Indigenous Cultural Data and Access</a>.</li>
+    <li><strong style="color:var(--col-text-primary)">Contact the collection</strong> when copyright terms are unclear, or to seek permission for publication, online or commercial use. Include the record's persistent link and a description of your intended use.</li>
+    <li><strong style="color:var(--col-text-primary)">University Copyright Office.</strong> Learn about basic principles of copyright, publishing agreements, licences and contracts, protecting your work, and using copyright material in research.</li>
+  </ol>
+</section>
+</sc-if>
+
+<sc-if value="{{ showAccess }}" hint-placeholder-val="{{ true }}">
+<section id="access" aria-labelledby="h-access" style="background:#fff;border:1px solid #e3e0d9;padding:28px 32px;display:flex;flex-direction:column;gap:14px;scroll-margin-top:20px;font-size:16px;line-height:1.6;color:#3b4050">
+  <h2 id="h-access" style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:28px;color:var(--col-bg-primary)">Access and information</h2>
+  <p style="margin:0;max-width:760px">To request access or further information about an item, or to use an image, audio or video, contact the relevant collection and include the record's persistent link. We aim to respond within 5 business days; complex requests may take longer. We also welcome feedback on how to improve the site.</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px">
+    <div style="border:1px solid #e3e0d9;padding:18px 20px;display:flex;flex-direction:column;gap:6px">
+      <strong style="color:var(--col-text-primary)">Medical, Dental and Health Sciences Museums</strong>
+      <span style="font-size:15px">Harry Brookes Allen Museum of Anatomy and Pathology · Henry Forman Atkinson Dental Museum · Medical History Museum</span>
+      <a href="mailto:MDHS-museum@unimelb.edu.au" style="font-size:15px">MDHS-museum@unimelb.edu.au</a>
+    </div>
+    <div style="border:1px solid #e3e0d9;padding:18px 20px;display:flex;flex-direction:column;gap:6px">
+      <strong style="color:var(--col-text-primary)">Museums and Collections</strong>
+      <span style="font-size:15px">Grainger Museum Collection · University Art Collection</span>
+      <a href="#" style="font-size:15px">Open request form</a>
+    </div>
+  </div>
+</section>
+</sc-if>
+
+<sc-if value="{{ showPrivacy }}" hint-placeholder-val="{{ true }}">
+<section id="privacy" aria-labelledby="h-privacy" style="background:#fff;border:1px solid #e3e0d9;padding:28px 32px;display:flex;flex-direction:column;gap:14px;scroll-margin-top:20px;font-size:16px;line-height:1.6;color:#3b4050">
+  <h2 id="h-privacy" style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:28px;color:var(--col-bg-primary)">Privacy</h2>
+  <p style="margin:0;max-width:760px">The University respects the privacy of anyone who interacts with us and is committed to protecting and managing personal and health information fairly and lawfully. The University is governed by the Privacy and Data Protection Act 2014 (Vic) and the Health Records Act 2000 (Vic), and is a data controller under the EU General Data Protection Regulation for personal information collected from individuals in the EU.</p>
+  <p style="margin:0;display:flex;gap:20px;flex-wrap:wrap"><a href="https://policy.unimelb.edu.au/MPF1104/">Privacy Policy</a><a href="https://about.unimelb.edu.au/strategy/governance/compliance-obligations/privacy">Privacy at the University</a></p>
+</section>
+</sc-if>
+</main>
+<footer data-component="Footer" style="display:flex;width:100%;flex-direction:column;background:var(--col-bg-primary)">
+  <section aria-labelledby="aoc-heading" style="display:flex;width:100%;justify-content:center;background:#212e5d;padding:40px 32px">
+    <div style="display:flex;width:100%;max-width:1224px;gap:24px;flex-wrap:wrap">
+      <div style="display:flex;flex-direction:column;gap:16px;flex:1 1 260px">
+        <h2 id="aoc-heading" style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:24px;color:#fff">Acknowledgement of Country</h2>
+        <div style="display:flex;align-items:center;gap:16px">
+          <img src="images/flag-aboriginal.svg" alt="Aboriginal flag" style="height:32px;width:64px">
+          <img src="images/flag-torres-strait.svg" alt="Torres Strait Islander flag" style="height:32px;width:64px">
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;flex:3 1 420px">
+        <p style="margin:0;font-size:16px;line-height:1.6;color:#fff;text-wrap:pretty">The University of Melbourne acknowledge Aboriginal and Torres Strait Islander people as the Traditional Owners of the unceded lands on which we work, learn and live. We pay respect to Elders past, present and future, and acknowledge the importance of Indigenous knowledge in the Academy.</p>
+        <a href="Help and Support.dc.html?topic=access" style="display:flex;align-items:center;gap:8px;color:var(--col-bg-accent);font-size:15px;font-weight:600">Read about our Indigenous priorities</a>
+      </div>
+    </div>
+  </section>
+
+  <div style="display:flex;width:100%;justify-content:center;padding:40px 32px">
+    <div style="display:flex;width:100%;max-width:1224px;gap:40px;flex-wrap:wrap">
+      <nav aria-label="Explore the collections" style="display:flex;flex-direction:column;gap:14px;flex:1 1 180px">
+        <p style="margin:0;font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--col-border-header)">Explore</p>
+        <a href="Browse Collections.dc.html" style="color:#fff;font-size:15px;font-weight:600">Browse all collections</a>
+        <a href="Collection Search v3.dc.html" style="color:#fff;font-size:15px;font-weight:600">Search the collections</a>
+        <a href="Help and Support.dc.html" style="color:#fff;font-size:15px;font-weight:600">Help</a>
+        <a href="Contact Us.dc.html" style="color:#fff;font-size:15px;font-weight:600">Contact us</a>
+      </nav>
+      <nav aria-label="University of Melbourne" style="display:flex;flex-direction:column;gap:14px;flex:1 1 180px">
+        <p style="margin:0;font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--col-border-header)">University of Melbourne</p>
+        <a href="#" style="color:#fff;font-size:15px;font-weight:600">About us</a>
+        <a href="#" style="color:#fff;font-size:15px;font-weight:600">Careers at Melbourne</a>
+        <a href="#" style="color:#fff;font-size:15px;font-weight:600">Safety and respect</a>
+        <a href="#" style="color:#fff;font-size:15px;font-weight:600">Newsroom</a>
+        <a href="#" style="color:#fff;font-size:15px;font-weight:600">Contact</a>
+        <a href="#" style="color:#fff;font-size:15px;font-weight:600">Campus locations</a>
+      </nav>
+      <section aria-labelledby="contact-details-heading" style="display:flex;flex-direction:column;gap:14px;flex:1 1 220px">
+        <p id="contact-details-heading" style="margin:0;font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--col-border-header)">Contact details</p>
+        <p style="margin:0;font-size:15px;line-height:1.6;color:#fff">Phone <a href="tel:136352" style="color:#fff;font-weight:700;text-decoration:underline">13 MELB (13 6352)</a><br>International <a href="tel:+61390355511" style="color:#fff;font-weight:700;text-decoration:underline">+61 3 9035 5511</a></p>
+        <p style="margin:0;font-size:15px;line-height:1.6;color:#fff"><span style="font-weight:700">Address</span><br>The University of Melbourne<br>Grattan Street, Parkville<br>Victoria 3010<br>Australia</p>
+      </section>
+      <div style="display:flex;min-width:144px;flex:1 1 144px;align-items:center;justify-content:center">
+        <img src="images/uom-logo-vertical.svg" alt="The University of Melbourne" style="width:144px;height:144px;object-fit:contain">
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;width:100%;justify-content:center;background:var(--col-bg-primary-dark);padding:32px">
+    <div style="display:flex;width:100%;max-width:1224px;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px">
+      <nav aria-label="Legal links"><ul style="display:flex;flex-wrap:wrap;gap:12px;list-style:none;margin:0;padding:0;font-size:14px;font-weight:600;color:#fff">
+        <li><a href="#" style="color:#fff;text-decoration:underline">Emergency</a></li>
+        <li><a href="#" style="color:#fff;text-decoration:underline">Terms and privacy</a></li>
+        <li><a href="#" style="color:#fff;text-decoration:underline">Accessibility</a></li>
+        <li><a href="Help and Support.dc.html?topic=privacy" style="color:#fff;text-decoration:underline">Privacy</a></li>
+      </ul></nav>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:rgba(255,255,255,.85)">
+        <p style="margin:0">The University of Melbourne (Australian University): <span style="font-weight:700">PRV12150</span></p>
+        <p style="margin:0">CRICOS: <span style="font-weight:700">00116K</span></p>
+        <p style="margin:0">ABN: <span style="font-weight:700">84 002 705 224</span></p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const FAQS = [
+ ['How do I search across multiple collections at once?', 'By default, searches run across every collection in Cultural Collections Search. Use the filters on the results page to narrow to a single collection, or to refine your results by object type, access condition or date.'],
+ ['What collections are currently included?', "The platform is continuously being improved to include items from across the University's museums, archives, art and scientific collections. Use Browse collections to see the contributing collections, and revisit often to discover newly added items."],
+ ['Can I download images from my search results?', "It depends on the item's copyright and terms of use. If a download icon appears beside the preview window, the image, audio or video can be used non-commercially. Always attribute the creator and the University of Melbourne."],
+ ['How do I request digital access to a collection item?', "Contact the collection team. Include the item's persistent link and a description of your intended use to make the process easier."],
+ ['How do I report incorrect or incomplete metadata?', "We welcome community knowledge to help improve the accuracy of our records. Contact the collection team and include the item's persistent link."],
+ ['What can I do if I have problems accessing the search?', 'Try clearing the cache in your browser. Browsers often save outdated information, which is the most common cause of access errors.'],
+ ['What can I do when there is a broken link on the website?', 'If you come across a link that is not working or has taken you somewhere unexpected, retrace your steps from the homepage.'],
+ ['When all else fails…', 'Contact us. To help us fix your problem as quickly as possible, describe the exact steps you took to get the error, and remember, screenshots are worth a thousand words.']
+];
+const TOPICS = [
+ ['faq', 'Frequently Asked Questions', "Answers to common questions about searching and using items from the university's cultural collections.", 'M9 9a3 3 0 1 1 4 2.83c-.6.24-1 .85-1 1.5V14 M12 17.5h.01'],
+ ['search-tips', 'Search Tips', "These tips help you to easily find information, images, audio, and video held in the university's cultural collections.", 'M10.5 3a7.5 7.5 0 1 0 0 15 7.5 7.5 0 0 0 0-15z M16 16l5 5'],
+ ['indigenous', 'Indigenous Cultural Data and Access', 'Information on respectful discovery of Aboriginal and Torres Strait Islander cultural heritage and knowledge.', 'M12 3l9 16H3z M12 10v4 M12 16.5h.01'],
+ ['copyright', 'Copyright and Terms of Use', 'How a collection item can be used varies depending on the conditions of its copyright license, intellectual property or cultural advice.', 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z M15 9.5c-.5-1-1.5-1.5-3-1.5-2 0-3.5 1.5-3.5 4s1.5 4 3.5 4c1.5 0 2.5-.5 3-1.5'],
+ ['access', 'Access and Information', 'How to submit a request to access an item or for further information from the Collections team.', 'M4 6h16v13H4z M4 6l8 7 8-7'],
+ ['privacy', 'Privacy', 'How the University respects the privacy of protecting and managing personal information.', 'M12 2 4 5v6c0 5 3.4 9 8 11 4.6-2 8-6 8-11V5z']
+];
+const iconEl = d => React.createElement('svg', { width: 22, height: 22, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round', strokeLinejoin: 'round' }, React.createElement('path', { d }));
+class Component extends DCLogic {
+  state = { open: 0 };
+  renderVals() {
+    const key = new URLSearchParams(location.search).get('topic');
+    const found = TOPICS.find(([k]) => k === key);
+    const topic = found ? { key: found[0], title: found[1], blurb: found[2] } : null;
+    return {
+      topic, notTopic: !topic,
+      showFaq: !!topic && topic.key === 'faq', showSearchTips: !!topic && topic.key === 'search-tips',
+      showIndigenous: !!topic && topic.key === 'indigenous', showCopyright: !!topic && topic.key === 'copyright',
+      showAccess: !!topic && topic.key === 'access', showPrivacy: !!topic && topic.key === 'privacy',
+      topics: TOPICS.map(([key, title, blurb, d]) => ({ href: 'Help and Support.dc.html?topic=' + key, title, blurb, icon: iconEl(d) })),
+      faqs: FAQS.map(([q, a], i) => ({ q, a, open: this.state.open === i, chev: this.state.open === i ? 'rotate(180deg)' : 'none', toggle: () => this.setState(s => ({ open: s.open === i ? -1 : i })), btnId: 'faq-btn-' + i, panelId: 'faq-panel-' + i }))
+    };
+  }
+}
+</script>
+</body>
+</html>
