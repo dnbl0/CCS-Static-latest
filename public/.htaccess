@@ -1,0 +1,12 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  RewriteRule ^Contact\ Us\.dc\.html$ pages/contact.html [R=301,L]
+  RewriteRule ^Collection\ Record\.dc\.html$ pages/record.html [R=301,L]
+  RewriteRule ^Collection\ Search\ v3\.dc\.html$ pages/search.html [R=301,L]
+  RewriteRule ^Browse\ Collections\.dc\.html$ pages/browse.html [R=301,L]
+  RewriteRule ^Collection\ Landing\.dc\.html$ pages/collection.html [R=301,L]
+  RewriteRule ^Help\ and\ Support\.dc\.html$ pages/help.html [R=301,L]
+  RewriteRule ^CCS\ Home\ page\.dc\.html$ pages/home-legacy.html [R=301,L]
+</IfModule>
