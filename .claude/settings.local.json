@@ -8,7 +8,11 @@
       "Read(//tmp/**)",
       "Bash(chmod +x execute-reorganization.sh)",
       "Bash(bash execute-reorganization.sh)",
-      "Bash(git commit *)"
+      "Bash(git commit *)",
+      "Bash(awk '{print $NF}')",
+      "WebFetch(domain:www.unimelb.edu.au)",
+      "Bash(chmod *)",
+      "Bash(python3 *)"
     ]
   }
 }
