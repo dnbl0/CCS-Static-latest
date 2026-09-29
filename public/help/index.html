@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script src="../../support.js"></script>
+<script src="../support.js"></script>
 </head>
 <body>
 <x-dc>
@@ -34,8 +34,8 @@
 }</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../components/fig-tokens.css">
-<link rel="stylesheet" href="../../components/fig-assets.css">
+<link rel="stylesheet" href="../components/fig-tokens.css">
+<link rel="stylesheet" href="../components/fig-assets.css">
 <style>
 body{margin:0;background:#faf9f6;color:var(--col-text-primary);font-family:'Source Sans 3',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 a{color:#0b2a6b;text-decoration:underline;text-underline-offset:2px}a:hover{color:var(--col-bg-primary)}
@@ -45,8 +45,8 @@ html{scroll-behavior:smooth}
 </helmet>
 <div style="min-height:100vh;display:flex;flex-direction:column">
 <section aria-label="Site header" data-component="Header" style="display:flex;align-items:stretch;width:100%;border-bottom:1px solid var(--col-border-header);background:var(--col-bg-primary)">
-  <a href="CCS Home page.dc.html" style="flex:none;width:110px;display:flex;align-items:center;justify-content:center;border-right:1px solid var(--col-border-header);padding:8px;background:var(--col-bg-primary)">
-    <img src="images/uom-logo-vertical.svg" alt="The University of Melbourne" style="width:100%;height:100%;object-fit:contain">
+  <a href="/" style="flex:none;width:110px;display:flex;align-items:center;justify-content:center;border-right:1px solid var(--col-border-header);padding:8px;background:var(--col-bg-primary)">
+    <img src="../images/uom-logo-vertical.svg" alt="The University of Melbourne" style="width:100%;height:100%;object-fit:contain">
   </a>
   <div style="flex:1;min-width:0;display:flex;flex-direction:column">
     <search style="display:flex;width:100%;justify-content:flex-end;border-bottom:1px solid var(--col-border-header);background:var(--col-bg-primary-dark);padding:8px">
@@ -58,11 +58,11 @@ html{scroll-behavior:smooth}
       </form>
     </search>
     <div style="display:flex;min-height:65px;width:100%;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:12px 24px;background:var(--col-bg-primary)">
-      <a href="CCS Home page.dc.html" style="color:#fff;font-size:17px;font-weight:600;white-space:nowrap">Cultural Collections Search</a>
+      <a href="/" style="color:#fff;font-size:17px;font-weight:600;white-space:nowrap">Cultural Collections Search</a>
       <nav aria-label="Primary navigation" style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
-        <a href="Collection Search v3.dc.html" style="color:#fff;font-size:16px;font-weight:600;padding:10px 14px">Search all records</a>
-        <a href="Browse Collections.dc.html" style="color:#fff;font-size:16px;font-weight:600;padding:10px 14px">Browse collections</a>
-        <a href="Help and Support.dc.html" style="color:#fff;font-size:16px;font-weight:600;padding:10px 14px">Help</a>
+        <a href="/search/advanced" style="color:#fff;font-size:16px;font-weight:600;padding:10px 14px">Search all records</a>
+        <a href="/collections" style="color:#fff;font-size:16px;font-weight:600;padding:10px 14px">Browse collections</a>
+        <a href="/help" style="color:#fff;font-size:16px;font-weight:600;padding:10px 14px">Help</a>
       </nav>
     </div>
   </div>
@@ -72,8 +72,8 @@ html{scroll-behavior:smooth}
   <div style="max-width:1200px;margin:0 auto;padding:20px 32px 40px;display:flex;flex-direction:column;gap:22px">
     <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap">
       <nav aria-label="Breadcrumb" style="display:flex;gap:8px;align-items:center;font-size:14px;color:rgba(255,255,255,.85);flex-wrap:wrap">
-        <a href="CCS Home page.dc.html" style="color:#fff">Cultural Collections</a><span aria-hidden="true" style="opacity:.6">›</span>
-        <sc-if value="{{ topic }}" hint-placeholder-val="{{ false }}"><a href="Help and Support.dc.html" style="color:#fff">Help and support</a><span aria-hidden="true" style="opacity:.6">›</span><span aria-current="page">{{ topic.title }}</span></sc-if>
+        <a href="/" style="color:#fff">Cultural Collections</a><span aria-hidden="true" style="opacity:.6">›</span>
+        <sc-if value="{{ topic }}" hint-placeholder-val="{{ false }}"><a href="/help" style="color:#fff">Help and support</a><span aria-hidden="true" style="opacity:.6">›</span><span aria-current="page">{{ topic.title }}</span></sc-if>
         <sc-if value="{{ notTopic }}" hint-placeholder-val="{{ true }}"><span aria-current="page">Help and support</span></sc-if>
       </nav>
     </div>
@@ -109,7 +109,7 @@ html{scroll-behavior:smooth}
 
 <main style="flex:1;max-width:1200px;width:100%;margin:0 auto;padding:40px 32px 80px;display:flex;flex-direction:column;gap:28px">
 
-<sc-if value="{{ topic }}" hint-placeholder-val="{{ false }}"><a href="Help and Support.dc.html" style="align-self:flex-start;font-size:15px;font-weight:600">‹ All help topics</a></sc-if>
+<sc-if value="{{ topic }}" hint-placeholder-val="{{ false }}"><a href="/help" style="align-self:flex-start;font-size:15px;font-weight:600">‹ All help topics</a></sc-if>
 
 <sc-if value="{{ showFaq }}" hint-placeholder-val="{{ true }}">
   <div id="faq" style="scroll-margin-top:20px;display:flex;flex-direction:column;gap:14px">
@@ -169,7 +169,7 @@ html{scroll-behavior:smooth}
 <section id="indigenous" aria-labelledby="h-indigenous" style="background:#fff;border:1px solid #e3e0d9;padding:28px 32px;display:flex;flex-direction:column;gap:14px;scroll-margin-top:20px;font-size:16px;line-height:1.6;color:#3b4050">
   <h2 id="h-indigenous" style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:28px;color:var(--col-bg-primary)">Indigenous Cultural Data and Access</h2>
   <p style="margin:0;max-width:760px">The University of Melbourne acknowledge Aboriginal and Torres Strait Islander people as the Traditional Owners of the unceded lands on which we work, learn and live. We pay respect to Elders past, present and future, and acknowledge the importance of Indigenous knowledge in the Academy.</p>
-  <p style="margin:0;display:flex;gap:20px;flex-wrap:wrap"><a href="Help and Support.dc.html?topic=access">Read about our Indigenous priorities</a><a href="https://www.unimelb.edu.au/indigenous/acknowledgement-of-country">Read our full Acknowledgement of Country</a></p>
+  <p style="margin:0;display:flex;gap:20px;flex-wrap:wrap"><a href="/help?topic=access">Read about our Indigenous priorities</a><a href="https://www.unimelb.edu.au/indigenous/acknowledgement-of-country">Read our full Acknowledgement of Country</a></p>
   <h3 style="margin:8px 0 0;font-size:18px;color:var(--col-text-primary)">Note on images and voices</h3>
   <p style="margin:0;max-width:760px">Aboriginal and Torres Strait Islander people should be aware that the University of Melbourne website and collections contain the names, images and voices of people who have died.</p>
   <h3 style="margin:8px 0 0;font-size:18px;color:var(--col-text-primary)">Note on language</h3>
@@ -177,7 +177,7 @@ html{scroll-behavior:smooth}
   <h3 style="margin:8px 0 0;font-size:18px;color:var(--col-text-primary)">Note on terminology</h3>
   <p style="margin:0;max-width:760px">The following terms are used interchangeably throughout collection items: Aboriginal and Torres Strait Islander, First Nations, First Peoples, Indigenous Australians (inclusive of Aboriginal and Torres Strait Islander peoples), Aboriginal peoples and Indigenous peoples (commonly used for First Nations peoples internationally).</p>
   <h3 style="margin:8px 0 0;font-size:18px;color:var(--col-text-primary)">Contact</h3>
-  <p style="margin:0;max-width:760px">If you have questions about Indigenous cultural materials, cultural protocols or access conditions, or wish to provide feedback about a record, please contact the relevant <a href="Help and Support.dc.html?topic=access">collection team</a>.</p>
+  <p style="margin:0;max-width:760px">If you have questions about Indigenous cultural materials, cultural protocols or access conditions, or wish to provide feedback about a record, please contact the relevant <a href="/help?topic=access">collection team</a>.</p>
 </section>
 </sc-if>
 
@@ -188,7 +188,7 @@ html{scroll-behavior:smooth}
   <ol style="margin:0;padding-left:22px;display:flex;flex-direction:column;gap:10px;max-width:760px">
     <li><strong style="color:var(--col-text-primary)">Free access.</strong> Items available to download may be reused for personal, research, educational or non-commercial purposes. Please attribute the creator and acknowledge the University of Melbourne.</li>
     <li><strong style="color:var(--col-text-primary)">Licensed.</strong> Some items are available under Creative Commons or other licences. Follow the licence terms shown on the record.</li>
-    <li><strong style="color:var(--col-text-primary)">Cultural conditions.</strong> Where items carry a cultural or advisory notice, engage respectfully with the content. See <a href="Help and Support.dc.html?topic=indigenous">Indigenous Cultural Data and Access</a>.</li>
+    <li><strong style="color:var(--col-text-primary)">Cultural conditions.</strong> Where items carry a cultural or advisory notice, engage respectfully with the content. See <a href="/help?topic=indigenous">Indigenous Cultural Data and Access</a>.</li>
     <li><strong style="color:var(--col-text-primary)">Contact the collection</strong> when copyright terms are unclear, or to seek permission for publication, online or commercial use. Include the record's persistent link and a description of your intended use.</li>
     <li><strong style="color:var(--col-text-primary)">University Copyright Office.</strong> Learn about basic principles of copyright, publishing agreements, licences and contracts, protecting your work, and using copyright material in research.</li>
   </ol>
@@ -222,68 +222,7 @@ html{scroll-behavior:smooth}
 </section>
 </sc-if>
 </main>
-<footer data-component="Footer" style="display:flex;width:100%;flex-direction:column;background:var(--col-bg-primary)">
-  <section aria-labelledby="aoc-heading" style="display:flex;width:100%;justify-content:center;background:#212e5d;padding:40px 32px">
-    <div style="display:flex;width:100%;max-width:1224px;gap:24px;flex-wrap:wrap">
-      <div style="display:flex;flex-direction:column;gap:16px;flex:1 1 260px">
-        <h2 id="aoc-heading" style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:24px;color:#fff">Acknowledgement of Country</h2>
-        <div style="display:flex;align-items:center;gap:16px">
-          <img src="images/flag-aboriginal.svg" alt="Aboriginal flag" style="height:32px;width:64px">
-          <img src="images/flag-torres-strait.svg" alt="Torres Strait Islander flag" style="height:32px;width:64px">
-        </div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:16px;flex:3 1 420px">
-        <p style="margin:0;font-size:16px;line-height:1.6;color:#fff;text-wrap:pretty">The University of Melbourne acknowledge Aboriginal and Torres Strait Islander people as the Traditional Owners of the unceded lands on which we work, learn and live. We pay respect to Elders past, present and future, and acknowledge the importance of Indigenous knowledge in the Academy.</p>
-        <a href="Help and Support.dc.html?topic=access" style="display:flex;align-items:center;gap:8px;color:var(--col-bg-accent);font-size:15px;font-weight:600">Read about our Indigenous priorities</a>
-      </div>
-    </div>
-  </section>
 
-  <div style="display:flex;width:100%;justify-content:center;padding:40px 32px">
-    <div style="display:flex;width:100%;max-width:1224px;gap:40px;flex-wrap:wrap">
-      <nav aria-label="Explore the collections" style="display:flex;flex-direction:column;gap:14px;flex:1 1 180px">
-        <p style="margin:0;font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--col-border-header)">Explore</p>
-        <a href="Browse Collections.dc.html" style="color:#fff;font-size:15px;font-weight:600">Browse all collections</a>
-        <a href="Collection Search v3.dc.html" style="color:#fff;font-size:15px;font-weight:600">Search the collections</a>
-        <a href="Help and Support.dc.html" style="color:#fff;font-size:15px;font-weight:600">Help</a>
-        <a href="Contact Us.dc.html" style="color:#fff;font-size:15px;font-weight:600">Contact us</a>
-      </nav>
-      <nav aria-label="University of Melbourne" style="display:flex;flex-direction:column;gap:14px;flex:1 1 180px">
-        <p style="margin:0;font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--col-border-header)">University of Melbourne</p>
-        <a href="#" style="color:#fff;font-size:15px;font-weight:600">About us</a>
-        <a href="#" style="color:#fff;font-size:15px;font-weight:600">Careers at Melbourne</a>
-        <a href="#" style="color:#fff;font-size:15px;font-weight:600">Safety and respect</a>
-        <a href="#" style="color:#fff;font-size:15px;font-weight:600">Newsroom</a>
-        <a href="#" style="color:#fff;font-size:15px;font-weight:600">Contact</a>
-        <a href="#" style="color:#fff;font-size:15px;font-weight:600">Campus locations</a>
-      </nav>
-      <section aria-labelledby="contact-details-heading" style="display:flex;flex-direction:column;gap:14px;flex:1 1 220px">
-        <p id="contact-details-heading" style="margin:0;font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--col-border-header)">Contact details</p>
-        <p style="margin:0;font-size:15px;line-height:1.6;color:#fff">Phone <a href="tel:136352" style="color:#fff;font-weight:700;text-decoration:underline">13 MELB (13 6352)</a><br>International <a href="tel:+61390355511" style="color:#fff;font-weight:700;text-decoration:underline">+61 3 9035 5511</a></p>
-        <p style="margin:0;font-size:15px;line-height:1.6;color:#fff"><span style="font-weight:700">Address</span><br>The University of Melbourne<br>Grattan Street, Parkville<br>Victoria 3010<br>Australia</p>
-      </section>
-      <div style="display:flex;min-width:144px;flex:1 1 144px;align-items:center;justify-content:center">
-        <img src="images/uom-logo-vertical.svg" alt="The University of Melbourne" style="width:144px;height:144px;object-fit:contain">
-      </div>
-    </div>
-  </div>
-
-  <div style="display:flex;width:100%;justify-content:center;background:var(--col-bg-primary-dark);padding:32px">
-    <div style="display:flex;width:100%;max-width:1224px;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px">
-      <nav aria-label="Legal links"><ul style="display:flex;flex-wrap:wrap;gap:12px;list-style:none;margin:0;padding:0;font-size:14px;font-weight:600;color:#fff">
-        <li><a href="#" style="color:#fff;text-decoration:underline">Emergency</a></li>
-        <li><a href="#" style="color:#fff;text-decoration:underline">Terms and privacy</a></li>
-        <li><a href="#" style="color:#fff;text-decoration:underline">Accessibility</a></li>
-        <li><a href="Help and Support.dc.html?topic=privacy" style="color:#fff;text-decoration:underline">Privacy</a></li>
-      </ul></nav>
-      <div style="display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:rgba(255,255,255,.85)">
-        <p style="margin:0">The University of Melbourne (Australian University): <span style="font-weight:700">PRV12150</span></p>
-        <p style="margin:0">CRICOS: <span style="font-weight:700">00116K</span></p>
-        <p style="margin:0">ABN: <span style="font-weight:700">84 002 705 224</span></p>
-      </div>
-    </div>
-  </div>
-</footer>
 
 
 </div>
@@ -319,7 +258,7 @@ class Component extends DCLogic {
       showFaq: !!topic && topic.key === 'faq', showSearchTips: !!topic && topic.key === 'search-tips',
       showIndigenous: !!topic && topic.key === 'indigenous', showCopyright: !!topic && topic.key === 'copyright',
       showAccess: !!topic && topic.key === 'access', showPrivacy: !!topic && topic.key === 'privacy',
-      topics: TOPICS.map(([key, title, blurb, d]) => ({ href: 'Help and Support.dc.html?topic=' + key, title, blurb, icon: iconEl(d) })),
+      topics: TOPICS.map(([key, title, blurb, d]) => ({ href: '/help?topic=' + key, title, blurb, icon: iconEl(d) })),
       faqs: FAQS.map(([q, a], i) => ({ q, a, open: this.state.open === i, chev: this.state.open === i ? 'rotate(180deg)' : 'none', toggle: () => this.setState(s => ({ open: s.open === i ? -1 : i })), btnId: 'faq-btn-' + i, panelId: 'faq-panel-' + i }))
     };
   }

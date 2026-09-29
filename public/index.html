@@ -10,7 +10,7 @@
   <title>Cultural Collections Search - University of Melbourne</title>
 
   <!-- Bootstrap 5.3.3 CSS (Official - https://github.com/twbs/bootstrap) -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmABheP7Gy5fF0dIvGhdtUL+260JjY0L" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,7 +19,7 @@
   <!-- Additional Components -->
   <link rel="stylesheet" href="components/fig-tokens.css">
   <link rel="stylesheet" href="components/fig-assets.css">
-  <script src="./image-slot.js"></script>
+  <script src="image-slot.js"></script>
 
   <style>
     :root {
@@ -396,7 +396,7 @@
         <img src="images/uom-logo-vertical.svg" alt="The University of Melbourne" class="img-fluid">
       </a>
       <div class="ms-auto me-3 d-flex" style="order: 3;">
-        <form class="search-form" role="search" action="Collection Search v3.dc.html" method="get">
+        <form class="search-form" role="search" action="/search/advanced" method="get">
           <label for="header-search" class="visually-hidden">Search the collection</label>
           <input
             id="header-search"
@@ -421,16 +421,16 @@
         <span class="navbar-text ms-3 me-auto">Cultural Collections Search</span>
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <a class="nav-link" href="Collection Search v3.dc.html">Search all records</a>
+            <a class="nav-link" href="/search/advanced">Search all records</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="Browse Collections.dc.html">Browse collections</a>
+            <a class="nav-link" href="/collections">Browse collections</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="Help and Support.dc.html">Help</a>
+            <a class="nav-link" href="/help">Help</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="Contact Us.dc.html">Contact</a>
+            <a class="nav-link" href="/contact">Contact</a>
           </li>
         </ul>
       </div>
@@ -444,7 +444,7 @@
         <div class="col-lg-8">
           <h1>Cultural Collections</h1>
           <p>The University of Melbourne's cultural collections are unrivalled among Australian universities, spanning historical and contemporary collections across visual arts, cartography, medical history, zoology, archives and more, including significant collections of Aboriginal and Torres Strait Islander cultural heritage.</p>
-          <form role="search" action="Collection Search v3.dc.html" method="get" class="search-form">
+          <form role="search" action="/search/advanced" method="get" class="search-form">
             <label for="hero-search" style="flex: 1; min-width: 0; display: flex; align-items: center;">
               <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0);">Search the collection</span>
               <input
@@ -474,11 +474,11 @@
       <section class="mb-5">
         <div class="d-flex justify-content-between align-items-baseline mb-4 flex-wrap gap-3">
           <h2 class="section-title mb-0">Featured Collections</h2>
-          <a href="Browse Collections.dc.html" class="text-decoration-none fw-semibold">View all collections →</a>
+          <a href="/collections" class="text-decoration-none fw-semibold">View all collections →</a>
         </div>
         <div class="row g-4">
           <div class="col-md-6 col-lg-4">
-            <a href="Collection Landing.dc.html" class="gallery-card text-decoration-none">
+            <a href="/collections" class="gallery-card text-decoration-none">
               <img src="images/filmposter.jpg" alt="Film Collection">
               <div class="gallery-card-overlay"></div>
               <div class="gallery-card-content">
@@ -488,7 +488,7 @@
             </a>
           </div>
           <div class="col-md-6 col-lg-4">
-            <a href="Collection Landing.dc.html" class="gallery-card text-decoration-none">
+            <a href="/collections/medical-history-museum" class="gallery-card text-decoration-none">
               <img src="images/dimalan.jpg" alt="Medical History">
               <div class="gallery-card-overlay"></div>
               <div class="gallery-card-content">
@@ -498,7 +498,7 @@
             </a>
           </div>
           <div class="col-md-6 col-lg-4">
-            <a href="Collection Landing.dc.html" class="gallery-card text-decoration-none">
+            <a href="/collections/university-art-collection" class="gallery-card text-decoration-none">
               <img src="images/cabinet.jpg" alt="Art Collection">
               <div class="gallery-card-overlay"></div>
               <div class="gallery-card-content">
@@ -540,19 +540,19 @@
         <h2 class="section-title mb-4">Explore & Learn</h2>
         <div class="row g-4">
           <div class="col-md-6 col-lg-4">
-            <a href="Collection Search v3.dc.html" class="quick-link-card">
+            <a href="/search/advanced" class="quick-link-card">
               <h3 class="h5">Advanced Search</h3>
               <p>Find items using filters, keywords, and advanced search options</p>
             </a>
           </div>
           <div class="col-md-6 col-lg-4">
-            <a href="Browse Collections.dc.html" class="quick-link-card">
+            <a href="/collections" class="quick-link-card">
               <h3 class="h5">Browse Collections</h3>
               <p>Discover collections organized by subject and type</p>
             </a>
           </div>
           <div class="col-md-6 col-lg-4">
-            <a href="Help and Support.dc.html" class="quick-link-card">
+            <a href="/help" class="quick-link-card">
               <h3 class="h5">Help & Support</h3>
               <p>Get answers to common questions and learn how to use the system</p>
             </a>
@@ -610,72 +610,12 @@
   </main>
 
   <!-- Footer -->
-  <footer class="mt-auto">
-    <div class="container py-5">
-      <div class="row mb-4">
-        <div class="col-md-3 mb-4 mb-md-0">
-          <div class="footer-section">
-            <h3>Browse</h3>
-            <ul>
-              <li><a href="Collection Search v3.dc.html">Search Collections</a></li>
-              <li><a href="Browse Collections.dc.html">Browse All</a></li>
-              <li><a href="Collection Landing.dc.html">Featured Items</a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-md-3 mb-4 mb-md-0">
-          <div class="footer-section">
-            <h3>Help & Info</h3>
-            <ul>
-              <li><a href="Help and Support.dc.html">Help & Support</a></li>
-              <li><a href="Contact Us.dc.html">Contact Us</a></li>
-              <li><a href="#">Privacy Policy</a></li>
-              <li><a href="#">Accessibility</a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-md-3 mb-4 mb-md-0">
-          <div class="footer-section">
-            <h3>About</h3>
-            <ul>
-              <li><a href="#">About the Collections</a></li>
-              <li><a href="#">Copyright & Permissions</a></li>
-              <li><a href="#">Indigenous Acknowledgement</a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="footer-section">
-            <h3>Connect</h3>
-            <ul>
-              <li><a href="#">Facebook</a></li>
-              <li><a href="#">Twitter</a></li>
-              <li><a href="#">Instagram</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="footer-bottom border-top border-secondary">
-      <div class="container py-4">
-        <div class="row">
-          <div class="col-md-6">
-            <p class="mb-0">© 2026 The University of Melbourne. All rights reserved.</p>
-          </div>
-          <div class="col-md-6 text-md-end">
-            <a href="#" class="text-decoration-none me-3">Accessibility</a>
-            <a href="#" class="text-decoration-none me-3">Privacy</a>
-            <a href="#" class="text-decoration-none">Contact</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </footer>
+  
 
   <!-- Bootstrap 5 JS -->
   <!-- Bootstrap 5.3.3 JS Bundle (Official - https://github.com/twbs/bootstrap) -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NSTB7NHFALcdlIKJ1FfVsnxQ3zcB" crossorigin="anonymous"></script>
-  <script src="./support.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  <script src="support.js"></script>
 
 <!-- UoM Footer -->
 <footer class="site-footer" style="background-color: var(--col-bg-primary); color: #fff; padding: 60px 32px 32px; margin-top: 80px; border-top: 1px solid var(--col-border-neutral-soft);">
