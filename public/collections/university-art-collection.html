@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>University Art Collection — Cultural Collections Search</title>
+<meta name="description" content="Explore the University Art Collection at the University of Melbourne.">
 <script src="../support.js"></script>
 </head>
 <body>
@@ -42,12 +44,23 @@
 body{margin:0;background:#faf9f6;color:var(--col-text-primary);font-family:'Source Sans 3',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-decoration:underline}
 *{box-sizing:border-box}
+.breadcrumb-link{color:#fff;text-decoration:none}
+.breadcrumb-link:hover,.breadcrumb-link:focus-visible{text-decoration:underline}
+@media (max-width:640px){
+  .site-header-brand{width:80px!important}
+  .site-nav{gap:0!important}
+  .site-nav a{padding:8px 10px!important;font-size:14px!important}
+  .hero-inner{padding:16px 20px 28px!important}
+  .hero-cta a{flex:1 1 100%!important;justify-content:center!important}
+  .collections-grid{grid-template-columns:1fr!important}
+  .footer-cols{flex-direction:column!important}
+}
 </style>
 </helmet>
 <div style="min-height:100vh;display:flex;flex-direction:column">
 
 <section aria-label="Site header" data-component="Header" style="display:flex;align-items:stretch;width:100%;border-bottom:1px solid var(--col-border-header);background:var(--col-bg-primary)">
-  <a href="/" style="flex:none;width:110px;display:flex;align-items:center;justify-content:center;border-right:1px solid var(--col-border-header);padding:8px;background:var(--col-bg-primary)">
+  <a href="/" class="site-header-brand" style="flex:none;width:110px;display:flex;align-items:center;justify-content:center;border-right:1px solid var(--col-border-header);padding:8px;background:var(--col-bg-primary)">
     <img src="../images/uom-logo-vertical.svg" alt="The University of Melbourne" style="width:100%;height:100%;object-fit:contain">
   </a>
   <div style="flex:1;min-width:0;display:flex;flex-direction:column">
@@ -61,7 +74,7 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
     </search>
     <div style="display:flex;min-height:65px;width:100%;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:12px 24px;background:var(--col-bg-primary)">
       <a href="/" style="color:#fff;font-size:17px;font-weight:600;white-space:nowrap">Cultural Collections Search</a>
-      <nav aria-label="Primary navigation" style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
+      <nav aria-label="Primary navigation" class="site-nav" style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
         <a href="/search/advanced" style="color:#fff;font-size:16px;font-weight:600;padding:10px 14px">Search all records</a>
         <a href="/collections" style="color:#fff;font-size:16px;font-weight:600;padding:10px 14px">Browse collections</a>
         <a href="/help" style="color:#fff;font-size:16px;font-weight:600;padding:10px 14px">Help</a>
@@ -72,16 +85,29 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
 
 <section aria-label="Page navigation" style="background:var(--col-bg-primary);color:#fff">
   <div style="max-width:1440px;margin:0 auto;padding:16px 32px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap">
-    <nav aria-label="Breadcrumb" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:14px;color:rgba(255,255,255,.85)">
-      <a href="/" style="color:#fff;text-decoration:underline;text-underline-offset:3px">Cultural Collections</a><span aria-hidden="true" style="opacity:.6">›</span>
-      <a href="/collections" style="color:#fff;text-decoration:underline;text-underline-offset:3px">Browse collections</a><span aria-hidden="true" style="opacity:.6">›</span>
-      <span aria-current="page">{{ coll.name }}</span>
+    <nav aria-label="Breadcrumb" style="display:flex;align-items:center">
+      <ol itemscope itemtype="https://schema.org/BreadcrumbList" style="display:flex;align-items:center;flex-wrap:wrap;gap:8px;list-style:none;margin:0;padding:0;font-size:18px;color:#fff">
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" style="display:flex;align-items:center;gap:8px">
+          <a href="/" itemprop="item" class="breadcrumb-link" style="display:flex;align-items:center;gap:6px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 11l9-8 9 8"></path><path d="M5 10v10h14V10"></path></svg><span itemprop="name">Cultural Collections</span></a>
+          <meta itemprop="position" content="1">
+          <span aria-hidden="true">&gt;</span>
+        </li>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" style="display:flex;align-items:center;gap:8px">
+          <a href="/collections" itemprop="item" class="breadcrumb-link"><span itemprop="name">Browse collections</span></a>
+          <meta itemprop="position" content="2">
+          <span aria-hidden="true">&gt;</span>
+        </li>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" aria-current="page">
+          <span itemprop="name">{{ coll.name }}</span>
+          <meta itemprop="position" content="3">
+        </li>
+      </ol>
     </nav>
   </div>
 </section>
 
 <header style="background:var(--col-bg-primary);color:#fff">
-  <div style="max-width:1440px;margin:0 auto;padding:12px 32px 0">
+  <div class="hero-inner" style="max-width:1440px;margin:0 auto;padding:12px 32px 0">
     <div style="display:flex;flex-direction:column;gap:16px;padding-bottom:36px;max-width:760px">
       <div style="display:flex;flex-direction:column;gap:10px;max-width:640px">
         <h1 style="margin:0;font-family:'Fraunces',serif;font-weight:500;font-size:clamp(30px,4vw,40px);line-height:1.1">{{ coll.name }}</h1>
@@ -91,9 +117,9 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
         <div style="display:flex;flex-direction:column;gap:2px"><strong style="font-family:'Fraunces',serif;font-size:26px">{{ stats.count }}</strong><span style="font-size:13px;color:rgba(255,255,255,.75)">Records</span></div>
         <div style="display:flex;flex-direction:column;gap:2px"><strong style="font-family:'Fraunces',serif;font-size:26px">{{ stats.types }}</strong><span style="font-size:13px;color:rgba(255,255,255,.75)">Object types</span></div>
       </div>
-      <div style="display:flex;gap:12px;flex-wrap:wrap;padding-top:8px">
-        <a href="{{ coll.searchHref }}" style="height:44px;display:flex;align-items:center;gap:8px;border:1px solid #fff;background:#fff;color:var(--col-bg-primary);padding:0 18px;font-size:15px;font-weight:600" style-hover="background:var(--col-bg-selected)">Search this collection</a>
-        <a href="/collections" style="height:44px;display:flex;align-items:center;gap:8px;border:1px solid #fff;background:none;color:#fff;padding:0 18px;font-size:15px;font-weight:600" style-hover="background:rgba(255,255,255,.1)">Browse all collections</a>
+      <div class="hero-cta" style="display:flex;gap:12px;flex-wrap:wrap;padding-top:8px">
+        <a href="{{ coll.searchHref }}" style="height:44px;display:flex;align-items:center;gap:8px;border:1px solid #fff;background:#fff;color:var(--col-bg-primary);padding:0 18px;font-size:15px;font-weight:600;justify-content:center" style-hover="background:var(--col-bg-selected)">Search this collection</a>
+        <a href="/collections" style="height:44px;display:flex;align-items:center;gap:8px;border:1px solid #fff;background:none;color:#fff;padding:0 18px;font-size:15px;font-weight:600;justify-content:center" style-hover="background:rgba(255,255,255,.1)">Browse all collections</a>
       </div>
     </div>
   </div>
@@ -213,6 +239,12 @@ class Component extends DCLogic {
     const CCS = window.CCS;
     const qKey = (new URLSearchParams(location.search).get('collection') || '').toUpperCase();
     const key = COLL_KEYS[qKey] ? qKey : 'UAC';
+    try {
+      document.title = (COLL_KEYS[key] || 'University Art Collection') + ' — Cultural Collections Search';
+      let m = document.querySelector('meta[name="description"]');
+      if (!m) { m = document.createElement('meta'); m.setAttribute('name', 'description'); document.head.appendChild(m); }
+      m.setAttribute('content', (BLURBS[key] || '').slice(0, 160));
+    } catch (e) {}
     const name = COLL_KEYS[key] || COLL_KEYS.MHM;
     if (!CCS) return { coll: { name, blurb: BLURBS[key] || '', count: '', searchHref: '#', externalUrl: '', hasExternal: false }, items: [], stats: { count: '', types: '' }, topTypes: [], hasVisit: false, visit: {} };
     const all = CCS.records ? Object.values(CCS.records).filter(r => r.collection === name) : [];
