@@ -353,12 +353,13 @@ button,input,select{font-family:inherit}
                   </div>
                   <div ref="{{ trackRef }}" style="position:relative;margin:26px 16px 0;height:4px;border-radius:0;background:#e3e0d9">
                     <span style="position:absolute;top:0;height:4px;border-radius:0;left:{{ rangeLeft }};width:{{ rangeWidth }};background:var(--col-bg-primary)"></span>
-                    <button onPointerDown="{{ downFrom }}" aria-label="Earliest year" style="position:absolute;top:-14px;left:{{ rangeLeft }};margin-left:-16px;width:32px;height:32px;border-radius:0;border:2px solid var(--col-bg-primary);background:#fff;box-shadow:none;cursor:grab;touch-action:none"></button>
+                    <button onPointerDown="{{ downFrom }}" onKeyDown="{{ fromKey }}" role="slider" aria-orientation="horizontal" aria-valuenow="{{ fromYear }}" aria-valuemin="{{ domLo }}" aria-valuemax="{{ fromMax }}" aria-describedby="date-range-hint" tabindex="0" aria-label="Earliest year" style="position:absolute;top:-14px;left:{{ rangeLeft }};margin-left:-16px;width:32px;height:32px;border-radius:0;border:2px solid var(--col-bg-primary);background:#fff;box-shadow:none;cursor:grab;touch-action:none"></button>
                     <span style="position:absolute;top:-38px;left:{{ rangeLeft }};transform:translateX(-50%);font-size:12px;font-weight:700;color:var(--col-bg-primary);background:#fff;padding:1px 5px;border-radius:0;white-space:nowrap">{{ fromYear }}</span>
-                    <button onPointerDown="{{ downTo }}" aria-label="Latest year" style="position:absolute;top:-14px;left:{{ rangeRight }};margin-left:-16px;width:32px;height:32px;border-radius:0;border:2px solid var(--col-bg-primary);background:#fff;box-shadow:none;cursor:grab;touch-action:none"></button>
+                    <button onPointerDown="{{ downTo }}" onKeyDown="{{ toKey }}" role="slider" aria-orientation="horizontal" aria-valuenow="{{ toYear }}" aria-valuemin="{{ toMin }}" aria-valuemax="{{ domHi }}" aria-describedby="date-range-hint" tabindex="0" aria-label="Latest year" style="position:absolute;top:-14px;left:{{ rangeRight }};margin-left:-16px;width:32px;height:32px;border-radius:0;border:2px solid var(--col-bg-primary);background:#fff;box-shadow:none;cursor:grab;touch-action:none"></button>
                     <span style="position:absolute;top:-38px;left:{{ rangeRight }};transform:translateX(-50%);font-size:12px;font-weight:700;color:var(--col-bg-primary);background:#fff;padding:1px 5px;border-radius:0;white-space:nowrap">{{ toYear }}</span>
                   </div>
                   <div style="display:flex;justify-content:space-between;margin:10px 12px 0;font-size:13px;color:var(--col-text-muted)"><span>{{ domLo }}</span><span>{{ domHi }}</span></div>
+                  <span id="date-range-hint" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Arrow keys adjust this handle by one year, Home and End jump to the minimum and maximum. The Start year and End year fields below are also a valid way to set this range.</span>
                   <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-top:16px">
                     <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--col-text-muted)">Start year<input inputmode="numeric" value="{{ yInFrom }}" onChange="{{ onYFrom }}" onKeyDown="{{ yKey }}" placeholder="{{ domLo }}" aria-label="Start year" style="width:120px;border:1px solid var(--col-border-neutral);border-radius:0;padding:11px 14px;font-size:16px;color:var(--col-text-primary)"></label>
                     <span style="padding-bottom:12px;color:var(--col-text-muted)">to</span>
@@ -397,8 +398,11 @@ button,input,select{font-family:inherit}
 </sc-if>
 
 <sc-if value="{{ ackOpen }}">
-  <div style="position:fixed;inset:0;z-index:120;background:rgba(10,14,25,.6);display:flex;align-items:center;justify-content:center;padding:24px 16px">
-    <div role="dialog" aria-modal="true" aria-labelledby="ack-title" style="width:100%;max-width:620px;max-height:100%;overflow-y:auto;background:#fff;border-radius:0;box-shadow:none;border:1px solid var(--col-bg-primary);display:flex;flex-direction:column">
+  <div onClick="{{ closeAck }}" style="position:fixed;inset:0;z-index:120;background:rgba(10,14,25,.6);display:flex;align-items:center;justify-content:center;padding:24px 16px">
+    <div ref="{{ ackRef }}" role="dialog" aria-modal="true" aria-labelledby="ack-title" onClick="{{ stop }}" onKeyDown="{{ ackTrapKey }}" style="position:relative;width:100%;max-width:620px;max-height:100%;overflow-y:auto;background:#fff;border-radius:0;box-shadow:none;border:1px solid var(--col-bg-primary);display:flex;flex-direction:column">
+      <button onClick="{{ closeAck }}" aria-label="Close notification" style="position:absolute;right:16px;top:16px;width:36px;height:36px;border:0;border-radius:0;background:none;color:var(--col-text-primary);cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="background:#f2f1ed">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><line x1="5" y1="5" x2="19" y2="19"></line><line x1="19" y1="5" x2="5" y2="19"></line></svg>
+      </button>
       <div style="padding:28px 32px 8px;display:flex;flex-direction:column;gap:14px">
         <span style="font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--col-advisory-text)">Indigenous Cultural Notification</span>
         <h2 id="ack-title" style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:26px;line-height:1.2;color:var(--col-bg-primary)">Before you explore the collections</h2>
@@ -751,7 +755,7 @@ const SORTS = [['rel','Relevance'],['new','Date (newest)'],['old','Date (oldest)
 const RATIO = {kangaroo:[676,762],cary:[676,816],goodenia:[680,426],grandfather:[680,547],heavy:[680,497],bottle:[676,944],vase:[676,948],compound:[676,944],inro1:[680,830],bottle2:[676,952],eucalypt:[590,157],dimalan:[676,429],inro2:[680,826],cabinet:[680,490],dimalan2:[676,436],piano:[680,347],inro3:[680,830],eucryphia:[676,719],'macintosh-web':[1600,1068],'calculator-web':[1600,1200],tsukioka:[600,338],'potentiometer-web':[1600,1034],'blower-web':[1600,1200],electrometer:[789,592],carbsoda:[1333,2000],toiletjar:[1333,2000],filmposter:[1522,2000],crookes:[250,376],pipes:[768,513],necklace:[2000,1328]};
 const SKEL = [300,200,340,240,280,190,320,230,260];
 const uniq = k => [...new Set(ITEMS.flatMap(i => vals(i, k)))];
-const EMPTYF = () => { const f = {digital:true,downloadable:false,sort:'',q:'',scope:'all',collection:[],yFrom:null,yTo:null,accession:'',birthFrom:null,birthTo:null}; KEYS.forEach(k => f[k] = []); return f; };
+const EMPTYF = () => { const f = {digital:false,downloadable:false,sort:'',q:'',scope:'all',collection:[],yFrom:null,yTo:null,accession:'',birthFrom:null,birthTo:null}; KEYS.forEach(k => f[k] = []); return f; };
 const clone = f => JSON.parse(JSON.stringify(f));
 const FOCUSABLE = 'button:not([disabled]),input,a[href],[tabindex]:not([tabindex="-1"])';
 
@@ -865,19 +869,19 @@ function spellingSuggestion(q) {
 class Component extends DCLogic {
   state = { f:EMPTYF(), loading:false, view:null, notice:true, sideQ:'', modal:false, draft:null, mOpen:{coll:true,type:true,date:true}, fq:{}, more:{}, sortOpen:false, perPage:20, ppOpen:false, page:1, scopeOpen:false, sugOpen:false, sugIdx:-1, yIn:null, yErr:'', counting:false, ackOpen:false, vw: typeof window !== 'undefined' ? window.innerWidth : 1200 };
   trackRef = React.createRef(); bodyRef = React.createRef(); sortRef = React.createRef(); ppRef = React.createRef(); mainRef = React.createRef();
-  scopeRef = React.createRef(); dialogRef = React.createRef(); filterBtnRef = React.createRef();
+  scopeRef = React.createRef(); dialogRef = React.createRef(); filterBtnRef = React.createRef(); ackRef = React.createRef();
   dom = { lo: 1700, hi: 2030 };
 
   componentDidMount() {
     this.onMove = e => this.move(e);
     this.onUp = () => { this.drag = null; };
-    this.onKey = e => { if (e.key === 'Escape') { if (this.state.modal) this.closeModal(); this.setState({ sugOpen: false, scopeOpen: false }); } };
+    this.onKey = e => { if (e.key === 'Escape') { if (this.state.ackOpen) this.closeAck(); else if (this.state.modal) this.closeModal(); this.setState({ sugOpen: false, scopeOpen: false }); } };
     this.onDown = e => { const s = this.state, out = r => r.current && !r.current.contains(e.target);
       const u = {}; if (s.sortOpen && out(this.sortRef)) u.sortOpen = false; if (s.ppOpen && out(this.ppRef)) u.ppOpen = false; if (s.scopeOpen && out(this.scopeRef)) u.scopeOpen = false; if (Object.keys(u).length) this.setState(u); };
     this.onResize = () => this.setState({ vw: window.innerWidth });
     window.addEventListener('pointerdown', this.onDown); window.addEventListener('pointermove', this.onMove);
     window.addEventListener('pointerup', this.onUp); window.addEventListener('keydown', this.onKey); window.addEventListener('resize', this.onResize);
-    try { if (!localStorage.getItem('ccs-cultural-ack')) this.setState({ ackOpen: true }); } catch (e) {}
+    try { if (!localStorage.getItem('ccs-cultural-ack')) { this.setState({ ackOpen: true }); setTimeout(() => { const el = this.ackRef.current && this.ackRef.current.querySelector(FOCUSABLE); el && el.focus(); }, 30); } } catch (e) {}
     const qs = new URLSearchParams(location.search), pc = qs.get('collection'), pt = qs.get('type');
     if (pc || pt) this.setState(s => { const f = clone(s.f); if (pc) f.collection = [pc]; if (pt) f.type = [pt]; return { f }; });
   }
@@ -925,14 +929,40 @@ class Component extends DCLogic {
   openModal() { document.body.style.overflow = 'hidden'; this.setState(s => ({ modal: true, draft: clone(s.f), yIn: null, yErr: '' }));
     setTimeout(() => { const el = this.dialogRef.current && this.dialogRef.current.querySelector(FOCUSABLE); el && el.focus(); }, 30); }
   closeModal() { document.body.style.overflow = ''; this.setState({ modal: false }); setTimeout(() => this.filterBtnRef.current && this.filterBtnRef.current.focus(), 30); }
+  closeAck() { try { localStorage.setItem('ccs-cultural-ack', '1'); } catch (e) {} this.setState({ ackOpen: false }); }
+  makeTrapKey(ref) {
+    return e => { if (e.key !== 'Tab' || !ref.current) return; const els = [...ref.current.querySelectorAll(FOCUSABLE)]; if (!els.length) return;
+      const first = els[0], last = els[els.length - 1]; if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); } else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); } };
+  }
+  // Shared state-update path for the production-date range: used by both pointer drag (move())
+  // and keyboard control (sliderKey()) so the two input methods stay in sync.
+  applyDragValue(which, y) {
+    const { lo, hi } = this.dom;
+    this.setState(s => { const d = { ...s.draft }; const from = d.yFrom ?? lo, to = d.yTo ?? hi;
+      if (which === 'from') { y = Math.min(Math.max(y, lo), to); d.yFrom = y <= lo ? null : y; } else { y = Math.max(Math.min(y, hi), from); d.yTo = y >= hi ? null : y; }
+      return { draft: d, yIn: null, yErr: '' }; });
+  }
   move(e) {
     if (!this.drag || !this.trackRef.current) return;
     const r = this.trackRef.current.getBoundingClientRect(), { lo, hi } = this.dom;
-    let y = Math.round(lo + Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)) * (hi - lo));
-    const which = this.drag;
-    this.setState(s => { const d = { ...s.draft }; const from = d.yFrom ?? lo, to = d.yTo ?? hi;
-      if (which === 'from') { y = Math.min(y, to); d.yFrom = y <= lo ? null : y; } else { y = Math.max(y, from); d.yTo = y >= hi ? null : y; }
-      return { draft: d, yIn: null, yErr: '' }; });
+    const y = Math.round(lo + Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)) * (hi - lo));
+    this.applyDragValue(this.drag, y);
+  }
+  sliderKey(which) {
+    return e => {
+      const { lo, hi } = this.dom, d = this.state.draft || this.state.f;
+      const cur = which === 'from' ? (d.yFrom ?? lo) : (d.yTo ?? hi);
+      let step = 0;
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') step = -1;
+      else if (e.key === 'ArrowRight' || e.key === 'ArrowUp') step = 1;
+      else if (e.key === 'PageDown') step = -10;
+      else if (e.key === 'PageUp') step = 10;
+      else if (e.key === 'Home') { e.preventDefault(); this.applyDragValue(which, lo); return; }
+      else if (e.key === 'End') { e.preventDefault(); this.applyDragValue(which, hi); return; }
+      else return;
+      e.preventDefault();
+      this.applyDragValue(which, cur + step);
+    };
   }
   modalVals(s) {
     const d = s.draft || s.f;
@@ -995,7 +1025,9 @@ class Component extends DCLogic {
       dateNote: 'Grouped by ' + unit + '. ' + (undated ? undated + ' undated record' + (undated === 1 ? ' is' : 's are') + ' excluded when a range is set.' : 'Undated records are excluded when a range is set.'),
       bins: bins.map(x => ({ h: (x.c ? Math.max(10, (x.c / maxBin) * 100) : 0) + '%', bg: (x.b + size > from && x.b <= to) ? 'var(--col-bg-primary)' : '#d5d8e0', title: (size === 1 ? x.b : x.b + '–' + (x.b + size - 1)) + ': ' + x.c })),
       rangeLeft: pct(from), rangeRight: pct(to), rangeWidth: ((to - from) / span) * 100 + '%', domLo: String(lo), domHi: String(this.dom.hi), fromYear: String(from), toYear: String(to),
-      downFrom: e => { e.preventDefault(); this.drag = 'from'; }, downTo: e => { e.preventDefault(); this.drag = 'to'; },
+      fromMax: String(to), toMin: String(from),
+      downFrom: e => { e.preventDefault(); this.drag = 'from'; e.currentTarget.focus(); }, downTo: e => { e.preventDefault(); this.drag = 'to'; e.currentTarget.focus(); },
+      fromKey: this.sliderKey('from'), toKey: this.sliderKey('to'),
       yInFrom: s.yIn && s.yIn.from != null ? s.yIn.from : (d.yFrom ?? ''), yInTo: s.yIn && s.yIn.to != null ? s.yIn.to : (d.yTo ?? ''),
       onYFrom: e => { const v = e.target.value; this.setState(st => ({ yIn: { ...(st.yIn || {}), from: v } })); }, onYTo: e => { const v = e.target.value; this.setState(st => ({ yIn: { ...(st.yIn || {}), to: v } })); },
       yKey: e => { if (e.key === 'Enter') { e.preventDefault(); setY(); } }, applyYears: setY, yErr: s.yErr,
@@ -1003,8 +1035,7 @@ class Component extends DCLogic {
       overlayPad: sheet ? '0' : '32px 16px', dlgRadius: '0', dlgMaxH: sheet ? 'none' : '860px', bodyPad: sheet ? '20px' : '32px',
       allSectionsLabel: allOpen ? 'Collapse all' : 'Expand all',
       toggleAllSections: () => this.setState({ mOpen: Object.fromEntries(FACETS.map(F => [F.key, !allOpen])) }),
-      trapKey: e => { if (e.key !== 'Tab' || !this.dialogRef.current) return; const els = [...this.dialogRef.current.querySelectorAll(FOCUSABLE)]; if (!els.length) return;
-        const first = els[0], last = els[els.length - 1]; if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); } else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); } },
+      trapKey: this.makeTrapKey(this.dialogRef),
       clearColor: draftActive ? 'var(--col-text-primary)' : '#a3a7b0', counting: s.counting, zeroDraft: !s.counting && dN === 0,
       clearDraft: () => this.setDraft(dd => ({ ...EMPTYF(), sort: dd.sort, q: dd.q, scope: dd.scope })),
       showLabel: s.counting ? 'Updating…' : dN ? 'Show ' + dN + ' ' + (dN === 1 ? 'record' : 'records') : 'No records match',
@@ -1098,7 +1129,7 @@ class Component extends DCLogic {
       showDidYouMean: !!didYouMeanText, didYouMeanText, applyDidYouMean: () => runQ(didYouMeanText),
       modal: s.modal, closeModal: () => this.closeModal(), stop: e => e.stopPropagation(),
       bodyRef: this.bodyRef, trackRef: this.trackRef, dialogRef: this.dialogRef,
-      ackOpen: s.ackOpen, acceptAck: () => { try { localStorage.setItem('ccs-cultural-ack', '1'); } catch (e) {} this.setState({ ackOpen: false }); }
+      ackOpen: s.ackOpen, ackRef: this.ackRef, acceptAck: () => this.closeAck(), closeAck: () => this.closeAck(), ackTrapKey: this.makeTrapKey(this.ackRef)
     };
   }
 }
