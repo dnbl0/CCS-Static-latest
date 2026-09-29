@@ -211,7 +211,6 @@ button,input,select{font-family:inherit}
 
       <sc-if value="{{ isEmpty }}">
         <div style="background:#fff;border:1px solid #e3e0d9;padding:48px 24px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center">
-          <sc-if value="{{ hasDym }}"><p style="margin:0 0 6px;font-size:18px;color:var(--col-text-primary)">Did you mean <button onClick="{{ pickDym }}" style="border:0;background:none;padding:0;font-size:18px;font-weight:700;font-style:italic;color:#0b2a6b;text-decoration:underline;cursor:pointer">{{ didYouMean }}</button>?</p></sc-if>
           <h3 style="margin:0;font-family:'Fraunces',serif;font-weight:500;font-size:24px">No records match your search</h3>
           <p style="margin:0;color:var(--col-text-muted);font-size:15px">Try removing a filter or broadening your search terms.</p>
           <button onClick="{{ clearAll }}" style="margin-top:8px;border:0;background:var(--col-bg-primary);color:#fff;padding:10px 18px;font-size:15px;font-weight:600;cursor:pointer">Clear all filters</button>
@@ -681,7 +680,7 @@ const SORTS = [['rel','Relevance'],['new','Date (newest)'],['old','Date (oldest)
 const RATIO = {kangaroo:[676,762],cary:[676,816],goodenia:[680,426],grandfather:[680,547],heavy:[680,497],bottle:[676,944],vase:[676,948],compound:[676,944],inro1:[680,830],bottle2:[676,952],eucalypt:[590,157],dimalan:[676,429],inro2:[680,826],cabinet:[680,490],dimalan2:[676,436],piano:[680,347],inro3:[680,830],eucryphia:[676,719],'macintosh-web':[1600,1068],'calculator-web':[1600,1200],tsukioka:[600,338],'potentiometer-web':[1600,1034],'blower-web':[1600,1200],electrometer:[789,592],carbsoda:[1333,2000],toiletjar:[1333,2000],filmposter:[1522,2000],crookes:[250,376],pipes:[768,513],necklace:[2000,1328]};
 const SKEL = [300,200,340,240,280,190,320,230,260];
 const uniq = k => [...new Set(ITEMS.flatMap(i => vals(i, k)))];
-const EMPTYF = () => { const f = {digital:true,indigenous:false,downloadable:false,sort:'',q:'',scope:'all',collection:[],yFrom:null,yTo:null,accession:'',birthFrom:null,birthTo:null}; KEYS.forEach(k => f[k] = []); return f; };
+const EMPTYF = () => { const f = {digital:true,downloadable:false,sort:'',q:'',scope:'all',collection:[],yFrom:null,yTo:null,accession:'',birthFrom:null,birthTo:null}; KEYS.forEach(k => f[k] = []); return f; };
 const clone = f => JSON.parse(JSON.stringify(f));
 const FOCUSABLE = 'button:not([disabled]),input,a[href],[tabindex]:not([tabindex="-1"])';
 class Component extends DCLogic {
@@ -710,7 +709,6 @@ class Component extends DCLogic {
   }
   matchF(it, f, except) {
     if (f.digital && !it.img) return false;
-    if (f.indigenous && !it.indigenous) return false;
     if (f.downloadable && it.licence === 'Rights Reserved') return false;
     if (f.accession && !(it.accession || '').toLowerCase().includes(f.accession.toLowerCase())) return false;
     if (except !== 'life' && (f.birthFrom != null || f.birthTo != null)) {
@@ -805,7 +803,7 @@ class Component extends DCLogic {
     const bins = []; for (let b = lo; b < this.dom.hi; b += size) bins.push({ b, c: ys.filter(y => y >= b && y < b + size).length });
     const maxBin = Math.max(1, ...bins.map(x => x.c));
     const undated = ITEMS.filter(it => !it.year && this.matchF(it, d, 'date')).length;
-    const draftActive = d.collection.length || KEYS.some(k => d[k].length) || d.yFrom != null || d.yTo != null || d.digital || d.indigenous || d.downloadable || d.accession || d.birthFrom != null || d.birthTo != null;
+    const draftActive = d.collection.length || KEYS.some(k => d[k].length) || d.yFrom != null || d.yTo != null || d.digital || d.downloadable || d.accession || d.birthFrom != null || d.birthTo != null;
     const sw = (label, key) => { const on = d[key]; return { label, on, toggle: () => this.setDraft(dd => ({ ...dd, [key]: !dd[key] })),
       trackBg: on ? 'var(--col-bg-primary)' : '#c3c6cd', knobLeft: on ? '18px' : '2px' }; };
     const setY = () => { const yi = s.yIn || {}; const pf = yi.from != null ? yi.from : (d.yFrom ?? ''), pt = yi.to != null ? yi.to : (d.yTo ?? '');
@@ -859,12 +857,6 @@ class Component extends DCLogic {
     const goPage = pg => { if (pg < 1 || pg > pageCount || pg === page) return; this.setState({ page: pg, loading: true }); clearTimeout(this.t); this.t = setTimeout(() => this.setState({ loading: false }), 420); const m = this.mainRef.current; if (m) window.scrollTo({ top: m.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' }); };
     const q2 = s.sideQ.trim().toLowerCase();
     const sugList = q2.length >= 2 ? TERMS.filter(t => (f.scope === 'all' || t.sc === f.scope) && t.text.toLowerCase().includes(q2)).slice(0, 6) : [];
-    let didYouMean = null;
-    if (f.q && n === 0) { const lev = (a, b) => { const d = Array.from({ length: a.length + 1 }, (_, i) => [i]); for (let j = 1; j <= b.length; j++) d[0][j] = j;
-        for (let i = 1; i <= a.length; i++) for (let j = 1; j <= b.length; j++) d[i][j] = Math.min(d[i-1][j] + 1, d[i][j-1] + 1, d[i-1][j-1] + (a[i-1] === b[j-1] ? 0 : 1)); return d[a.length][b.length]; };
-      const words = [...new Set(TERMS.flatMap(t => t.text.toLowerCase().split(/[^a-zà-ÿō]+/)).filter(w => w.length > 2))];
-      const fixed = f.q.replace(/"/g, '').toLowerCase().split(/\s+/).map(w => { let best = w, bd = Math.max(2, Math.floor(w.length / 3)) + 1; words.forEach(c => { const x = lev(w, c); if (x < bd) { bd = x; best = c; } }); return best; }).join(' ');
-      if (fixed !== f.q.replace(/"/g, '').toLowerCase()) didYouMean = fixed; }
     const runQ = q => { this.setState({ sideQ: '', sugOpen: false, sugIdx: -1 }); this.apply(ff => ({ ...ff, q })); };
     const mob = s.vw < 640, sm = s.vw < 420;
     return {
@@ -902,7 +894,6 @@ class Component extends DCLogic {
       prevPage: () => goPage(page - 1), nextPage: () => goPage(page + 1), prevColor: page > 1 ? 'var(--col-bg-primary)' : '#c3c6cd', nextColor: page < pageCount ? 'var(--col-bg-primary)' : '#c3c6cd',
       toTop: () => window.scrollTo({ top: 0, behavior: 'smooth' }),
       barPlaceholder: f.q ? 'Search for something else' : 'Search, or use "quotes" for an exact phrase',
-      didYouMean, hasDym: !!didYouMean, pickDym: () => runQ(didYouMean),
       barSubmit: e => { e.preventDefault(); if (s.sugOpen && s.sugIdx >= 0 && sugList[s.sugIdx]) return runQ(sugList[s.sugIdx].text); const q = s.sideQ.trim(); if (q) runQ(q); },
       barKey: e => {
         if (e.key === 'ArrowDown' && sugList.length) { e.preventDefault(); this.setState(st => ({ sugOpen: true, sugIdx: Math.min(sugList.length - 1, st.sugIdx + 1) })); }
