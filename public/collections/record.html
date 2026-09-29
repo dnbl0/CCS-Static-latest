@@ -40,6 +40,8 @@
 
     // Handle keyboard events
     handleKeydown(e) {
+      const active = document.activeElement;
+      if (active && (['INPUT', 'TEXTAREA', 'SELECT'].includes(active.tagName) || active.isContentEditable)) return;
       const viewer = document.querySelector('[role="region"][aria-label="Item media"]');
       const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement;
 
@@ -374,10 +376,12 @@ section[aria-label="Item media"]:not(:fullscreen){max-height:calc(85vh - var(--h
   </div>
 </section>
 
+<section style="width:100%;background:#00354c">
+  <nav aria-label="Breadcrumb"><ol style="display:flex;align-items:center;flex-wrap:wrap;gap:4px;list-style:none;margin:0;padding:12px 32px;font-size:16px;color:#fff;min-width:0"><li style="display:flex;align-items:center;gap:8px"><a href="/" aria-label="Cultural Collections" style="display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 3l9 8h-3v9h-4v-6h-4v6H6v-9H3l9-8z"/></svg><span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Cultural Collections</span></a><svg width="14" height="14" viewBox="0 0 24 24" fill="#fff" aria-hidden="true" style="flex:none"><path d="M9 6l6 6-6 6"/></svg></li><li style="display:flex;align-items:center;gap:8px"><a href="/search/advanced.html" style="color:#fff;text-decoration:none">Search results</a><svg width="14" height="14" viewBox="0 0 24 24" fill="#fff" aria-hidden="true" style="flex:none"><path d="M9 6l6 6-6 6"/></svg></li><li aria-current="page" style="font-weight:600;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ rec.title }}</li></ol></nav>
+</section>
+
 <section aria-label="Page navigation" style="background:var(--col-bg-primary);color:#fff">
-  <div style="max-width:1440px;margin:0 auto;padding:16px 32px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap">
-    <nav aria-label="Breadcrumb" style="background:#00354c"><ol style="display:flex;align-items:center;flex-wrap:wrap;gap:4px;list-style:none;margin:0;padding:12px 32px;font-size:16px;color:#fff;min-width:0"><li style="display:flex;align-items:center;gap:8px"><a href="/" aria-label="Cultural Collections" style="display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 3l9 8h-3v9h-4v-6h-4v6H6v-9H3l9-8z"/></svg><span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Cultural Collections</span></a><svg width="14" height="14" viewBox="0 0 24 24" fill="#fff" aria-hidden="true" style="flex:none"><path d="M9 6l6 6-6 6"/></svg></li><li style="display:flex;align-items:center;gap:8px"><a href="/search/advanced.html" style="color:#fff;text-decoration:none">Search results</a><svg width="14" height="14" viewBox="0 0 24 24" fill="#fff" aria-hidden="true" style="flex:none"><path d="M9 6l6 6-6 6"/></svg></li><li aria-current="page" style="font-weight:600;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ rec.title }}</li></ol></nav>
-    </nav>
+  <div style="max-width:1440px;margin:0 auto;padding:16px 32px;display:flex;justify-content:flex-end;align-items:center;gap:16px;flex-wrap:wrap">
     <div style="display:flex;align-items:center;gap:24px">
       <a href="/search/advanced.html" style="display:flex;align-items:center;gap:6px;color:#fff;font-size:15px;font-weight:600">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="15 6 9 12 15 18"></polyline></svg>Back to results</a>
@@ -653,6 +657,51 @@ section[aria-label="Item media"]:not(:fullscreen){max-height:calc(85vh - var(--h
 
 
 
+
+<!-- UoM Footer -->
+<footer class="site-footer" style="background-color: var(--col-bg-primary); color: #fff; padding: 60px 32px 32px; margin-top: 80px; border-top: 1px solid var(--col-border-neutral-soft);">
+  <!-- Acknowledgement of Country -->
+  <div class="footer-acknowledgement" style="max-width: 1400px; margin: 0 auto 48px; padding-bottom: 48px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+    <p style="margin: 0; font-size: 14px; line-height: 1.6; color: rgba(255,255,255,0.9);">
+      The University of Melbourne acknowledges the Wurundjeri people of the Kulin nation as the traditional owners and custodians of the lands on which our campuses stand.
+    </p>
+  </div>
+
+  <!-- Main Footer Navigation -->
+  <div class="footer-nav" style="max-width: 1400px; margin: 0 auto 48px;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 32px;">
+      <div>
+        <h3 style="margin: 0 0 16px 0; font-size: 15px; font-weight: 600; color: #fff;">About us</h3>
+        <ul style="list-style: none; padding: 0; margin: 0;">
+          <li style="margin-bottom: 12px;"><a href="https://www.unimelb.edu.au/about" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px;">About us</a></li>
+          <li style="margin-bottom: 12px;"><a href="https://www.unimelb.edu.au/careers" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px;">Careers at Melbourne</a></li>
+          <li style="margin-bottom: 12px;"><a href="https://www.unimelb.edu.au/safety" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px;">Safety and respect</a></li>
+          <li><a href="https://www.unimelb.edu.au/newsroom" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px;">Newsroom</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="margin: 0 0 16px 0; font-size: 15px; font-weight: 600; color: #fff;">Support</h3>
+        <ul style="list-style: none; padding: 0; margin: 0;">
+          <li style="margin-bottom: 12px;"><a href="https://www.unimelb.edu.au/contact" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px;">Contact</a></li>
+          <li style="margin-bottom: 12px;"><a href="https://www.unimelb.edu.au/campus-locations" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px;">Campus locations</a></li>
+          <li><a href="https://www.unimelb.edu.au/emergency" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px;">Emergency</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Secondary Footer Navigation -->
+  <div class="footer-secondary" style="max-width: 1400px; margin: 0 auto; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.1);">
+    <div style="display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between; align-items: center;">
+      <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 24px;">
+        <li><a href="https://www.unimelb.edu.au/terms-and-privacy" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 13px;">Terms and privacy</a></li>
+        <li><a href="https://www.unimelb.edu.au/privacy" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 13px;">Privacy</a></li>
+        <li><a href="https://www.unimelb.edu.au/accessibility" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 13px;">Accessibility</a></li>
+      </ul>
+      <p style="margin: 0; font-size: 13px; color: rgba(255,255,255,0.6);">&copy; 2026 The University of Melbourne. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;record&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;12&quot;,&quot;24&quot;,&quot;16&quot;,&quot;25&quot;,&quot;23&quot;,&quot;4&quot;,&quot;21&quot;],&quot;default&quot;:&quot;12&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;showRelated&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;showCitation&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
@@ -697,7 +746,10 @@ class Component extends DCLogic {
     try { history.replaceState(null, '', open ? location.pathname + location.search + '#metadata' : location.pathname + location.search); } catch (e) {}
   }
   flash(key, text) {
-    try { navigator.clipboard && navigator.clipboard.writeText(text); } catch (e) {}
+    try {
+      const p = navigator.clipboard && navigator.clipboard.writeText(text);
+      if (p && p.catch) p.catch(() => {});
+    } catch (e) {}
     this.setState({ copied: key }); clearTimeout(this.ct); this.ct = setTimeout(() => this.setState({ copied: null }), 1800);
   }
   exportMetadata(fmt, R) {
@@ -733,7 +785,7 @@ class Component extends DCLogic {
     const PAD = 24, BAR = 52, MAXH = 660, MINH = 420;
     const computedStageH = s.full ? '100vh' : (dim ? Math.min(MAXH, Math.max(MINH, dim.h + PAD * 2 + BAR)) + 'px' : MAXH + 'px');
     const media = R.media || [];
-    const mediaRows = !R.hasDA ? [] : [...media.slice(0, 2), ...(dim ? [{ label: 'File size', value: '~' + Math.round(dim.w * dim.h * 3 / 1024 / 1024 * 10) / 10 + ' MB (estimate)' }, { label: 'Resolution', value: dim.w + ' × ' + dim.h + ' px' }] : []), ...(dim ? [{ label: 'Dimensions', value: `${dim.w} × ${dim.h} pixels` }] : []), { label: 'File name', value: (imgs[idx] || '').split('/').pop() }, ...media.slice(2)];
+    const mediaRows = !R.hasDA ? [] : [...media.slice(0, 2), ...(dim ? [{ label: 'File size', value: '~' + Math.round(dim.w * dim.h * 3 / 1024 / 1024 * 10) / 10 + ' MB (estimate)' }, { label: 'Dimensions', value: `${dim.w} × ${dim.h} pixels` }] : []), { label: 'File name', value: (imgs[idx] || '').split('/').pop() }, ...media.slice(2)];
     const W = '#fff', DIM = 'rgba(255,255,255,.35)';
     const fields = R.fields.map(f => ({ ...f, lines: f.lines.map(l => ({ text: l.text, link: !!l.link, plain: !l.link, color: l.muted ? 'var(--col-text-muted)' : 'var(--col-text-primary)' })),
       copyText: s.copied === 'acc' ? 'Copied' : 'Copy', onCopy: () => this.flash('acc', f.value) }));
@@ -785,50 +837,7 @@ class Component extends DCLogic {
 }
 </script>
 
-<!-- UoM Footer -->
-<footer class="site-footer" style="background-color: var(--col-bg-primary); color: #fff; padding: 60px 32px 32px; margin-top: 80px; border-top: 1px solid var(--col-border-neutral-soft);">
-  <!-- Acknowledgement of Country -->
-  <div class="footer-acknowledgement" style="max-width: 1400px; margin: 0 auto 48px; padding-bottom: 48px; border-bottom: 1px solid rgba(255,255,255,0.1);">
-    <p style="margin: 0; font-size: 14px; line-height: 1.6; color: rgba(255,255,255,0.9);">
-      The University of Melbourne acknowledges the Wurundjeri people of the Kulin nation as the traditional owners and custodians of the lands on which our campuses stand.
-    </p>
-  </div>
 
-  <!-- Main Footer Navigation -->
-  <div class="footer-nav" style="max-width: 1400px; margin: 0 auto 48px;">
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 32px;">
-      <div>
-        <h3 style="margin: 0 0 16px 0; font-size: 15px; font-weight: 600; color: #fff;">About us</h3>
-        <ul style="list-style: none; padding: 0; margin: 0;">
-          <li style="margin-bottom: 12px;"><a href="https://www.unimelb.edu.au/about" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px;">About us</a></li>
-          <li style="margin-bottom: 12px;"><a href="https://www.unimelb.edu.au/careers" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px;">Careers at Melbourne</a></li>
-          <li style="margin-bottom: 12px;"><a href="https://www.unimelb.edu.au/safety" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px;">Safety and respect</a></li>
-          <li><a href="https://www.unimelb.edu.au/newsroom" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px;">Newsroom</a></li>
-        </ul>
-      </div>
-      <div>
-        <h3 style="margin: 0 0 16px 0; font-size: 15px; font-weight: 600; color: #fff;">Support</h3>
-        <ul style="list-style: none; padding: 0; margin: 0;">
-          <li style="margin-bottom: 12px;"><a href="https://www.unimelb.edu.au/contact" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px;">Contact</a></li>
-          <li style="margin-bottom: 12px;"><a href="https://www.unimelb.edu.au/campus-locations" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px;">Campus locations</a></li>
-          <li><a href="https://www.unimelb.edu.au/emergency" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px;">Emergency</a></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <!-- Secondary Footer Navigation -->
-  <div class="footer-secondary" style="max-width: 1400px; margin: 0 auto; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.1);">
-    <div style="display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between; align-items: center;">
-      <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 24px;">
-        <li><a href="https://www.unimelb.edu.au/terms-and-privacy" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 13px;">Terms and privacy</a></li>
-        <li><a href="https://www.unimelb.edu.au/privacy" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 13px;">Privacy</a></li>
-        <li><a href="https://www.unimelb.edu.au/accessibility" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 13px;">Accessibility</a></li>
-      </ul>
-      <p style="margin: 0; font-size: 13px; color: rgba(255,255,255,0.6);">&copy; 2026 The University of Melbourne. All rights reserved.</p>
-    </div>
-  </div>
-</footer>
 
 </body>
 </html>

@@ -107,11 +107,9 @@ html{scroll-behavior:smooth}
   </div>
 </section>
 
+<nav aria-label="Breadcrumb" style="background:#00354c"><ol style="display:flex;align-items:center;flex-wrap:wrap;gap:4px;list-style:none;margin:0;padding:12px 32px;font-size:16px;color:#fff;min-width:0"><li style="display:flex;align-items:center;gap:8px"><a href="/" aria-label="Cultural Collections" style="display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 3l9 8h-3v9h-4v-6h-4v6H6v-9H3l9-8z"/></svg><span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Cultural Collections</span></a><svg width="14" height="14" viewBox="0 0 24 24" fill="#fff" aria-hidden="true" style="flex:none"><path d="M9 6l6 6-6 6"/></svg></li><sc-if value="{{ topic }}" hint-placeholder-val="{{ false }}"><li style="display:flex;align-items:center;gap:8px"><a href="/help/index.html" style="color:#fff;text-decoration:none">Help and support</a><svg width="14" height="14" viewBox="0 0 24 24" fill="#fff" aria-hidden="true" style="flex:none"><path d="M9 6l6 6-6 6"/></svg></li><li style="font-weight:600">{{ topic.title }}</li></sc-if><sc-if value="{{ notTopic }}" hint-placeholder-val="{{ true }}"><li style="font-weight:600">Help and support</li></sc-if></ol></nav>
 <section style="background:var(--col-bg-primary);color:#fff">
   <div style="max-width:1200px;margin:0 auto;padding:20px 32px 40px;display:flex;flex-direction:column;gap:22px">
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap">
-      <nav aria-label="Breadcrumb" style="background:#00354c"><ol style="display:flex;align-items:center;flex-wrap:wrap;gap:4px;list-style:none;margin:0;padding:12px 32px;font-size:16px;color:#fff;min-width:0"><li style="display:flex;align-items:center;gap:8px"><a href="/" aria-label="Cultural Collections" style="display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 3l9 8h-3v9h-4v-6h-4v6H6v-9H3l9-8z"/></svg><span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Cultural Collections</span></a><svg width="14" height="14" viewBox="0 0 24 24" fill="#fff" aria-hidden="true" style="flex:none"><path d="M9 6l6 6-6 6"/></svg></li><sc-if value="{{ topic }}" hint-placeholder-val="{{ false }}"><li style="display:flex;align-items:center;gap:8px"><a href="/help/index.html" style="color:#fff;text-decoration:none">Help and support</a><svg width="14" height="14" viewBox="0 0 24 24" fill="#fff" aria-hidden="true" style="flex:none"><path d="M9 6l6 6-6 6"/></svg></li><li style="font-weight:600">{{ topic.title }}</li></sc-if><sc-if value="{{ notTopic }}" hint-placeholder-val="{{ true }}"><li style="font-weight:600">Help and support</li></sc-if></ol></nav>
-    </div>
     <div style="display:flex;flex-direction:column;gap:10px;max-width:760px">
       <h1 style="margin:0;font-family:'Fraunces',serif;font-weight:500;font-size:40px;line-height:1.1"><sc-if value="{{ topic }}">{{ topic.title }}</sc-if><sc-if value="{{ notTopic }}">Help and support</sc-if></h1>
       <p style="margin:0;font-size:17px;line-height:1.5;color:rgba(255,255,255,.85)"><sc-if value="{{ topic }}">{{ topic.blurb }}</sc-if><sc-if value="{{ notTopic }}">Guidance on searching, using and requesting items from the University's cultural collections.</sc-if></p>
@@ -246,45 +244,6 @@ html{scroll-behavior:smooth}
 
 
 
-</div>
-</x-dc>
-<script type="text/x-dc" data-dc-script>
-const FAQS = [
- ['How do I search across multiple collections at once?', 'By default, searches run across every collection in Cultural Collections Search. Use the filters on the results page to narrow to a single collection, or to refine your results by object type, access condition or date.'],
- ['What collections are currently included?', "The platform is continuously being improved to include items from across the University's museums, archives, art and scientific collections. Use Browse collections to see the contributing collections, and revisit often to discover newly added items."],
- ['Can I download images from my search results?', "It depends on the item's copyright and terms of use. If a download icon appears beside the preview window, the image, audio or video can be used non-commercially. Always attribute the creator and the University of Melbourne."],
- ['How do I request digital access to a collection item?', "Contact the collection team. Include the item's persistent link and a description of your intended use to make the process easier."],
- ['How do I report incorrect or incomplete metadata?', "We welcome community knowledge to help improve the accuracy of our records. Contact the collection team and include the item's persistent link."],
- ['What can I do if I have problems accessing the search?', 'Try clearing the cache in your browser. Browsers often save outdated information, which is the most common cause of access errors.'],
- ['What can I do when there is a broken link on the website?', 'If you come across a link that is not working or has taken you somewhere unexpected, retrace your steps from the homepage.'],
- ['When all else fails…', 'Contact us. To help us fix your problem as quickly as possible, describe the exact steps you took to get the error, and remember, screenshots are worth a thousand words.']
-];
-const TOPICS = [
- ['faq', 'Frequently Asked Questions', "Answers to common questions about searching and using items from the university's cultural collections.", 'M9 9a3 3 0 1 1 4 2.83c-.6.24-1 .85-1 1.5V14 M12 17.5h.01'],
- ['search-tips', 'Search Tips', "These tips help you to easily find information, images, audio, and video held in the university's cultural collections.", 'M10.5 3a7.5 7.5 0 1 0 0 15 7.5 7.5 0 0 0 0-15z M16 16l5 5'],
- ['indigenous', 'Indigenous Cultural Data and Access', 'Information on respectful discovery of Aboriginal and Torres Strait Islander cultural heritage and knowledge.', 'M12 3l9 16H3z M12 10v4 M12 16.5h.01'],
- ['copyright', 'Copyright and Terms of Use', 'How a collection item can be used varies depending on the conditions of its copyright license, intellectual property or cultural advice.', 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z M15 9.5c-.5-1-1.5-1.5-3-1.5-2 0-3.5 1.5-3.5 4s1.5 4 3.5 4c1.5 0 2.5-.5 3-1.5'],
- ['access', 'Access and Information', 'How to submit a request to access an item or for further information from the Collections team.', 'M4 6h16v13H4z M4 6l8 7 8-7'],
- ['privacy', 'Privacy', 'How the University respects the privacy of protecting and managing personal information.', 'M12 2 4 5v6c0 5 3.4 9 8 11 4.6-2 8-6 8-11V5z']
-];
-const iconEl = d => React.createElement('svg', { width: 22, height: 22, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round', strokeLinejoin: 'round' }, React.createElement('path', { d }));
-class Component extends DCLogic {
-  state = { open: 0 };
-  renderVals() {
-    const key = new URLSearchParams(location.search).get('topic');
-    const found = TOPICS.find(([k]) => k === key);
-    const topic = found ? { key: found[0], title: found[1], blurb: found[2] } : null;
-    return {
-      topic, notTopic: !topic,
-      showFaq: !!topic && topic.key === 'faq', showSearchTips: !!topic && topic.key === 'search-tips',
-      showIndigenous: !!topic && topic.key === 'indigenous', showCopyright: !!topic && topic.key === 'copyright',
-      showAccess: !!topic && topic.key === 'access', showPrivacy: !!topic && topic.key === 'privacy',
-      topics: TOPICS.map(([key, title, blurb, d]) => ({ href: '/help?topic=' + key, title, blurb, icon: iconEl(d) })),
-      faqs: FAQS.map(([q, a], i) => ({ q, a, open: this.state.open === i, chev: this.state.open === i ? 'rotate(180deg)' : 'none', toggle: () => this.setState(s => ({ open: s.open === i ? -1 : i })), btnId: 'faq-btn-' + i, panelId: 'faq-panel-' + i }))
-    };
-  }
-}
-</script>
 
 <!-- UoM Footer -->
 <footer class="site-footer" style="background-color: var(--col-bg-primary); color: #fff; padding: 60px 32px 32px; margin-top: 80px; border-top: 1px solid var(--col-border-neutral-soft);">
@@ -330,6 +289,47 @@ class Component extends DCLogic {
     </div>
   </div>
 </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const FAQS = [
+ ['How do I search across multiple collections at once?', 'By default, searches run across every collection in Cultural Collections Search. Use the filters on the results page to narrow to a single collection, or to refine your results by object type, access condition or date.'],
+ ['What collections are currently included?', "The platform is continuously being improved to include items from across the University's museums, archives, art and scientific collections. Use Browse collections to see the contributing collections, and revisit often to discover newly added items."],
+ ['Can I download images from my search results?', "It depends on the item's copyright and terms of use. If a download icon appears beside the preview window, the image, audio or video can be used non-commercially. Always attribute the creator and the University of Melbourne."],
+ ['How do I request digital access to a collection item?', "Contact the collection team. Include the item's persistent link and a description of your intended use to make the process easier."],
+ ['How do I report incorrect or incomplete metadata?', "We welcome community knowledge to help improve the accuracy of our records. Contact the collection team and include the item's persistent link."],
+ ['What can I do if I have problems accessing the search?', 'Try clearing the cache in your browser. Browsers often save outdated information, which is the most common cause of access errors.'],
+ ['What can I do when there is a broken link on the website?', 'If you come across a link that is not working or has taken you somewhere unexpected, retrace your steps from the homepage.'],
+ ['When all else fails…', 'Contact us. To help us fix your problem as quickly as possible, describe the exact steps you took to get the error, and remember, screenshots are worth a thousand words.']
+];
+const TOPICS = [
+ ['faq', 'Frequently Asked Questions', "Answers to common questions about searching and using items from the university's cultural collections.", 'M9 9a3 3 0 1 1 4 2.83c-.6.24-1 .85-1 1.5V14 M12 17.5h.01'],
+ ['search-tips', 'Search Tips', "These tips help you to easily find information, images, audio, and video held in the university's cultural collections.", 'M10.5 3a7.5 7.5 0 1 0 0 15 7.5 7.5 0 0 0 0-15z M16 16l5 5'],
+ ['indigenous', 'Indigenous Cultural Data and Access', 'Information on respectful discovery of Aboriginal and Torres Strait Islander cultural heritage and knowledge.', 'M12 3l9 16H3z M12 10v4 M12 16.5h.01'],
+ ['copyright', 'Copyright and Terms of Use', 'How a collection item can be used varies depending on the conditions of its copyright license, intellectual property or cultural advice.', 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z M15 9.5c-.5-1-1.5-1.5-3-1.5-2 0-3.5 1.5-3.5 4s1.5 4 3.5 4c1.5 0 2.5-.5 3-1.5'],
+ ['access', 'Access and Information', 'How to submit a request to access an item or for further information from the Collections team.', 'M4 6h16v13H4z M4 6l8 7 8-7'],
+ ['privacy', 'Privacy', 'How the University respects the privacy of protecting and managing personal information.', 'M12 2 4 5v6c0 5 3.4 9 8 11 4.6-2 8-6 8-11V5z']
+];
+const iconEl = d => React.createElement('svg', { width: 22, height: 22, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round', strokeLinejoin: 'round' }, React.createElement('path', { d }));
+class Component extends DCLogic {
+  state = { open: 0 };
+  renderVals() {
+    const key = new URLSearchParams(location.search).get('topic');
+    const found = TOPICS.find(([k]) => k === key);
+    const topic = found ? { key: found[0], title: found[1], blurb: found[2] } : null;
+    return {
+      topic, notTopic: !topic,
+      showFaq: !!topic && topic.key === 'faq', showSearchTips: !!topic && topic.key === 'search-tips',
+      showIndigenous: !!topic && topic.key === 'indigenous', showCopyright: !!topic && topic.key === 'copyright',
+      showAccess: !!topic && topic.key === 'access', showPrivacy: !!topic && topic.key === 'privacy',
+      topics: TOPICS.map(([key, title, blurb, d]) => ({ href: '/help?topic=' + key, title, blurb, icon: iconEl(d) })),
+      faqs: FAQS.map(([q, a], i) => ({ q, a, open: this.state.open === i, chev: this.state.open === i ? 'rotate(180deg)' : 'none', toggle: () => this.setState(s => ({ open: s.open === i ? -1 : i })), btnId: 'faq-btn-' + i, panelId: 'faq-panel-' + i }))
+    };
+  }
+}
+</script>
+
+
 
 </body>
 </html>
