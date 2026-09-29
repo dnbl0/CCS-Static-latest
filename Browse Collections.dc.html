@@ -104,7 +104,6 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
       <sc-for list="{{ collections }}" as="c" hint-placeholder-count="5">
         <a href="{{ c.href }}" style="display:flex;flex-direction:column;background:#fff;border:1px solid #e3e0d9;text-decoration:none;color:var(--col-text-primary);transition:box-shadow .2s,transform .2s" style-hover="transform:translateY(-2px);text-decoration:none">
           <sc-if value="{{ c.hasImg }}" hint-placeholder-val="{{ false }}"><div style="width:100%;aspect-ratio:4 / 3;background:#f4f3f0;overflow:hidden"><img src="{{ c.imgSrc }}" alt="" style="width:100%;height:100%;object-fit:cover;display:block"></div></sc-if>
-          <sc-if value="{{ c.noImg }}"><div style="width:100%;aspect-ratio:4 / 3;background:var(--col-bg-selected);display:flex;align-items:center;justify-content:center;color:#4a5577;font-size:13px;font-weight:600;text-align:center;padding:12px">Image to come</div></sc-if>
           <div style="display:flex;flex-direction:column;gap:6px;padding:18px 20px;flex:1">
             <strong style="font-family:'Fraunces',serif;font-weight:600;font-size:20px;line-height:1.3;color:var(--col-bg-primary);text-wrap:pretty">{{ c.name }}</strong>
             <span style="font-size:14px;color:var(--col-text-muted)">{{ c.count }}</span>

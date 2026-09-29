@@ -184,7 +184,7 @@
     .hero .search-form {
       background: #fff;
       border: 1px solid #fff;
-      box-shadow: 0 4px 12px rgba(0,0,0,.15);
+      
       max-width: 600px;
     }
 
@@ -246,13 +246,13 @@
       overflow: hidden;
       text-decoration: none;
       border: 1px solid var(--col-border-neutral-soft);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transition: transform 0.3s ease;
       height: 100%;
     }
 
     .gallery-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      
       text-decoration: none;
     }
 
@@ -386,16 +386,35 @@
       }
     }
   </style>
+<style>
+.skip-link {
+  position: absolute;
+  top: -120px;
+  left: 16px;
+  background: var(--col-btn-action-bg, #46c8f0);
+  color: var(--col-btn-action-text, #000f46);
+  padding: 12px 18px;
+  z-index: 99999;
+  font-weight: 700;
+  text-decoration: none;
+  border: 2px solid var(--col-bg-primary, #000f46);
+  transition: top 0.2s ease;
+}
+.skip-link:focus {
+  top: 16px;
+}
+</style>
 </head>
 <body class="d-flex flex-column" style="min-height: 100vh;">
+<a href="#main-content" class="skip-link">Skip to main content</a>
   <!-- Header & Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="border-bottom: 1px solid var(--col-border-header);">
     <div class="container-fluid ps-0">
-      <a class="navbar-brand" href="index.html" style="border-right: 1px solid var(--col-border-header);">
+      <a class="navbar-brand" href="index.html" aria-label="The University of Melbourne Homepage" style="border-right: 1px solid var(--col-border-header);">
         <img src="images/uom-logo-vertical.svg" alt="The University of Melbourne" class="img-fluid">
       </a>
       <div class="ms-auto me-3 d-flex" style="order: 3;">
-        <form class="search-form" role="search" action="/search/advanced" method="get">
+        <form class="search-form" role="search" action="/search/advanced.html" method="get">
           <label for="header-search" class="visually-hidden">Search the collection</label>
           <input
             id="header-search"
@@ -420,16 +439,19 @@
         <span class="navbar-text ms-3 me-auto">Cultural Collections Search</span>
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <a class="nav-link" href="/search/advanced">Search all records</a>
+            <a class="nav-link" href="/search/advanced.html">Search all records</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/collections">Browse collections</a>
+            <a class="nav-link" href="/collections/index.html">Browse collections</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/help">Help</a>
+            <a class="nav-link" href="/help/index.html">Help</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/contact">Contact</a>
+            <a class="nav-link" href="/contact.html">Contact</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/indigenous-data.html">Indigenous Cultural Data and Access</a>
           </li>
         </ul>
       </div>
@@ -443,7 +465,7 @@
         <div class="col-lg-8">
           <h1>Cultural Collections</h1>
           <p>The University of Melbourne's cultural collections are unrivalled among Australian universities, spanning historical and contemporary collections across visual arts, cartography, medical history, zoology, archives and more, including significant collections of Aboriginal and Torres Strait Islander cultural heritage.</p>
-          <form role="search" action="/search/advanced" method="get" class="search-form">
+          <form role="search" action="/search/advanced.html" method="get" class="search-form">
             <label for="hero-search" style="flex: 1; min-width: 0; display: flex; align-items: center;">
               <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0);">Search the collection</span>
               <input
@@ -467,17 +489,17 @@
   </section>
 
   <!-- Main Content -->
-  <main class="flex-grow-1">
+  <main id="main-content" class="flex-grow-1">
     <div class="container py-5">
       <!-- Featured Collections -->
       <section class="mb-5">
         <div class="d-flex justify-content-between align-items-baseline mb-4 flex-wrap gap-3">
           <h2 class="section-title mb-0">Featured Collections</h2>
-          <a href="/collections" class="text-decoration-none fw-semibold">View all collections →</a>
+          <a href="/collections/index.html" class="text-decoration-none fw-semibold">View all collections →</a>
         </div>
         <div class="row g-4">
           <div class="col-md-6 col-lg-4">
-            <a href="/collections" class="gallery-card text-decoration-none">
+            <a href="/collections/index.html" class="gallery-card text-decoration-none">
               <img src="images/filmposter.jpg" alt="Film Collection">
               <div class="gallery-card-overlay"></div>
               <div class="gallery-card-content">
@@ -487,7 +509,7 @@
             </a>
           </div>
           <div class="col-md-6 col-lg-4">
-            <a href="/collections/medical-history-museum" class="gallery-card text-decoration-none">
+            <a href="/collections/medical-history-museum.html" class="gallery-card text-decoration-none">
               <img src="images/dimalan.jpg" alt="Medical History">
               <div class="gallery-card-overlay"></div>
               <div class="gallery-card-content">
@@ -497,7 +519,7 @@
             </a>
           </div>
           <div class="col-md-6 col-lg-4">
-            <a href="/collections/university-art-collection" class="gallery-card text-decoration-none">
+            <a href="/collections/university-art-collection.html" class="gallery-card text-decoration-none">
               <img src="images/cabinet.jpg" alt="Art Collection">
               <div class="gallery-card-overlay"></div>
               <div class="gallery-card-content">
@@ -539,19 +561,19 @@
         <h2 class="section-title mb-4">Explore & Learn</h2>
         <div class="row g-4">
           <div class="col-md-6 col-lg-4">
-            <a href="/search/advanced" class="quick-link-card">
+            <a href="/search/advanced.html" class="quick-link-card">
               <h3 class="h5">Advanced Search</h3>
               <p>Find items using filters, keywords, and advanced search options</p>
             </a>
           </div>
           <div class="col-md-6 col-lg-4">
-            <a href="/collections" class="quick-link-card">
+            <a href="/collections/index.html" class="quick-link-card">
               <h3 class="h5">Browse Collections</h3>
               <p>Discover collections organized by subject and type</p>
             </a>
           </div>
           <div class="col-md-6 col-lg-4">
-            <a href="/help" class="quick-link-card">
+            <a href="/help/index.html" class="quick-link-card">
               <h3 class="h5">Help & Support</h3>
               <p>Get answers to common questions and learn how to use the system</p>
             </a>
@@ -629,7 +651,7 @@
   <div class="footer-nav" style="max-width: 1400px; margin: 0 auto 48px;">
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 32px;">
       <div>
-        <h4 style="margin: 0 0 16px 0; font-size: 15px; font-weight: 600; color: #fff;">About us</h4>
+        <h3 style="margin: 0 0 16px 0; font-size: 15px; font-weight: 600; color: #fff;">About us</h3>
         <ul style="list-style: none; padding: 0; margin: 0;">
           <li style="margin-bottom: 12px;"><a href="https://www.unimelb.edu.au/about" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px;">About us</a></li>
           <li style="margin-bottom: 12px;"><a href="https://www.unimelb.edu.au/careers" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px;">Careers at Melbourne</a></li>
@@ -638,7 +660,7 @@
         </ul>
       </div>
       <div>
-        <h4 style="margin: 0 0 16px 0; font-size: 15px; font-weight: 600; color: #fff;">Support</h4>
+        <h3 style="margin: 0 0 16px 0; font-size: 15px; font-weight: 600; color: #fff;">Support</h3>
         <ul style="list-style: none; padding: 0; margin: 0;">
           <li style="margin-bottom: 12px;"><a href="https://www.unimelb.edu.au/contact" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px;">Contact</a></li>
           <li style="margin-bottom: 12px;"><a href="https://www.unimelb.edu.au/campus-locations" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px;">Campus locations</a></li>

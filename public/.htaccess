@@ -10,6 +10,7 @@
   RewriteRule ^Collection\ Landing\.dc\.html$ /collections [R=301,L]
   RewriteRule ^Help\ and\ Support\.dc\.html$ /help [R=301,L,QSA]
   RewriteRule ^CCS\ Home\ page\.dc\.html$ / [R=301,L]
+  RewriteRule ^search\.html$ /search/advanced.html [R=301,L,QSA]
 
   # --- Clean URL rewriting (internal, URL bar stays clean) ---
   RewriteCond %{REQUEST_FILENAME} !-f

@@ -1,13 +1,32 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>University Art Collection — Cultural Collections Search</title>
 <meta name="description" content="Explore the University Art Collection at the University of Melbourne.">
 <script src="../support.js"></script>
+<style>
+.skip-link {
+  position: absolute;
+  top: -120px;
+  left: 16px;
+  background: var(--col-btn-action-bg, #46c8f0);
+  color: var(--col-btn-action-text, #000f46);
+  padding: 12px 18px;
+  z-index: 99999;
+  font-weight: 700;
+  text-decoration: none;
+  border: 2px solid var(--col-bg-primary, #000f46);
+  transition: top 0.2s ease;
+}
+.skip-link:focus {
+  top: 16px;
+}
+</style>
 </head>
 <body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
 <x-dc>
 
 <helmet><style>
@@ -63,14 +82,14 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
 <div style="min-height:100vh;display:flex;flex-direction:column">
 
 <section aria-label="Site header" data-component="Header" style="display:flex;align-items:stretch;width:100%;border-bottom:1px solid var(--col-border-header);background:var(--col-bg-primary)">
-  <a href="/" class="site-header-brand" style="flex:none;width:110px;display:flex;align-items:center;justify-content:center;border-right:1px solid var(--col-border-header);padding:8px;background:var(--col-bg-primary)">
+  <a href="/" class="site-header-brand" aria-label="The University of Melbourne Homepage" style="flex:none;width:110px;display:flex;align-items:center;justify-content:center;border-right:1px solid var(--col-border-header);padding:8px;background:var(--col-bg-primary)">
     <img src="../images/uom-logo-vertical.svg" alt="The University of Melbourne" style="width:100%;height:100%;object-fit:contain">
   </a>
   <div style="flex:1;min-width:0;display:flex;flex-direction:column">
     <search style="display:flex;width:100%;justify-content:flex-end;border-bottom:1px solid var(--col-border-header);background:var(--col-bg-primary-dark);padding:8px">
       <form role="search" onSubmit="{{ headerSubmit }}" style="width:100%;max-width:288px;display:flex;height:48px;border:1px solid var(--col-bg-primary);background:#fff">
         <label style="flex:1;min-width:0;display:flex;align-items:center"><span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Search Cross Collections</span>
-          <input value="{{ headerQ }}" onChange="{{ onHeaderQ }}" placeholder="Search Cross Collections…" style="width:100%;min-width:0;border:0;background:none;padding:0 12px;font-size:17px;color:var(--col-text-muted);outline:none">
+          <input value="{{ headerQ }}" onChange="{{ onHeaderQ }}" placeholder="Search Cross Collections…" aria-label="Search Cross Collections" style="width:100%;min-width:0;border:0;background:none;padding:0 12px;font-size:17px;color:var(--col-text-muted);outline:none">
         </label>
         <button type="submit" aria-label="Submit search" style="flex:none;display:flex;align-items:center;justify-content:center;border-left:1px solid var(--col-bg-primary);background:var(--col-btn-action-bg);color:var(--col-btn-action-text);padding:0 12px;cursor:pointer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.5" y1="15.5" x2="21" y2="21"></line></svg></button>
       </form>
@@ -78,9 +97,9 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
     <div style="display:flex;min-height:65px;width:100%;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:12px 24px;background:var(--col-bg-primary)">
       <a href="/" style="color:#fff;font-size:17px;font-weight:600;white-space:nowrap">Cultural Collections Search</a>
       <nav aria-label="Primary navigation" class="site-nav" style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
-        <a href="/search/advanced" style="color:#fff;font-size:16px;font-weight:600;padding:10px 14px">Search all records</a>
-        <a href="/collections" style="color:#fff;font-size:16px;font-weight:600;padding:10px 14px">Browse collections</a>
-        <a href="/help" style="color:#fff;font-size:16px;font-weight:600;padding:10px 14px">Help</a>
+        <a href="/search/advanced.html" style="color:#fff;font-size:16px;font-weight:600;padding:10px 14px">Search all records</a>
+        <a href="/collections/index.html" style="color:#fff;font-size:16px;font-weight:600;padding:10px 14px">Browse collections</a>
+        <a href="/help/index.html" style="color:#fff;font-size:16px;font-weight:600;padding:10px 14px">Help</a>
       </nav>
     </div>
   </div>
@@ -88,7 +107,7 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
 
 <section aria-label="Page navigation" style="background:var(--col-bg-primary);color:#fff">
   <div style="max-width:1440px;margin:0 auto;padding:16px 32px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap">
-    <nav aria-label="Breadcrumb" style="background:#00354c"><ol itemscope itemtype="https://schema.org/BreadcrumbList" style="display:flex;align-items:center;flex-wrap:wrap;gap:4px;list-style:none;margin:0;padding:12px 32px;max-width:1440px;margin-left:auto;margin-right:auto;font-size:16px;color:#fff"><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" style="display:flex;align-items:center;gap:8px"><a href="/" itemprop="item" aria-label="Cultural Collections" style="display:flex;align-items:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 3l9 8h-3v9h-4v-6h-4v6H6v-9H3l9-8z"/></svg><span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Cultural Collections</span></a><meta itemprop="position" content="1"><svg width="14" height="14" viewBox="0 0 24 24" fill="#fff" aria-hidden="true" style="flex:none"><path d="M9 6l6 6-6 6"/></svg></li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" style="display:flex;align-items:center;gap:8px"><a href="/collections" itemprop="item" style="color:#fff;text-decoration:none" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'"><span itemprop="name">Browse collections</span></a><meta itemprop="position" content="2"><svg width="14" height="14" viewBox="0 0 24 24" fill="#fff" aria-hidden="true" style="flex:none"><path d="M9 6l6 6-6 6"/></svg></li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" aria-current="page" style="font-weight:600"><span itemprop="name">{{ coll.name }}</span><meta itemprop="position" content="3"></li></ol></nav>
+    <nav aria-label="Breadcrumb" style="background:#00354c"><ol itemscope itemtype="https://schema.org/BreadcrumbList" style="display:flex;align-items:center;flex-wrap:wrap;gap:4px;list-style:none;margin:0;padding:12px 32px;max-width:1440px;margin-left:auto;margin-right:auto;font-size:16px;color:#fff"><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" style="display:flex;align-items:center;gap:8px"><a href="/" itemprop="item" aria-label="Cultural Collections" style="display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 3l9 8h-3v9h-4v-6h-4v6H6v-9H3l9-8z"/></svg><span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Cultural Collections</span></a><meta itemprop="position" content="1"><svg width="14" height="14" viewBox="0 0 24 24" fill="#fff" aria-hidden="true" style="flex:none"><path d="M9 6l6 6-6 6"/></svg></li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" style="display:flex;align-items:center;gap:8px"><a href="/collections/index.html" itemprop="item" style="color:#fff;text-decoration:none" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'"><span itemprop="name">Browse collections</span></a><meta itemprop="position" content="2"><svg width="14" height="14" viewBox="0 0 24 24" fill="#fff" aria-hidden="true" style="flex:none"><path d="M9 6l6 6-6 6"/></svg></li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" aria-current="page" style="font-weight:600"><span itemprop="name">{{ coll.name }}</span><meta itemprop="position" content="3"></li></ol></nav>
   </div>
 </section>
 
@@ -105,7 +124,7 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
       </div>
       <div class="hero-cta" style="display:flex;gap:12px;flex-wrap:wrap;padding-top:8px">
         <a href="{{ coll.searchHref }}" style="height:44px;display:flex;align-items:center;gap:8px;border:1px solid #fff;background:#fff;color:var(--col-bg-primary);padding:0 18px;font-size:15px;font-weight:600;justify-content:center" style-hover="background:var(--col-bg-selected)">Search this collection</a>
-        <a href="/collections" style="height:44px;display:flex;align-items:center;gap:8px;border:1px solid #fff;background:none;color:#fff;padding:0 18px;font-size:15px;font-weight:600;justify-content:center" style-hover="background:rgba(255,255,255,.1)">Browse all collections</a>
+        <a href="/collections/index.html" style="height:44px;display:flex;align-items:center;gap:8px;border:1px solid #fff;background:none;color:#fff;padding:0 18px;font-size:15px;font-weight:600;justify-content:center" style-hover="background:rgba(255,255,255,.1)">Browse all collections</a>
       </div>
     </div>
   </div>
@@ -119,7 +138,7 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
   </sc-if>
 </header>
 
-<main style="flex:1;max-width:1440px;width:100%;margin:0 auto;padding:40px 32px 64px;display:flex;flex-direction:column;gap:20px">
+<main id="main-content" style="flex:1;max-width:1440px;width:100%;margin:0 auto;padding:40px 32px 64px;display:flex;flex-direction:column;gap:20px">
   <sc-if value="{{ visit.warning }}" hint-placeholder-val="{{ false }}">
     <div role="note" style="display:flex;gap:12px;align-items:flex-start;background:var(--col-advisory-bg);border:1px solid var(--col-advisory-border);padding:14px 18px">
       <svg width="22" height="22" viewBox="0 0 24 24" style="flex:none;margin-top:1px"><path d="M12 3l10 18H2z" fill="var(--col-advisory-text)"></path><rect x="11" y="9" width="2" height="6" fill="#fff"></rect><rect x="11" y="16.5" width="2" height="2" fill="#fff"></rect></svg>
@@ -134,7 +153,7 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
       </div>
       <div style="column-width:260px;column-gap:20px">
         <sc-for list="{{ items }}" as="r" hint-placeholder-count="8">
-          <article style="break-inside:avoid;margin:0 0 20px;background:#fff;border:1px solid #e3e0d9;display:flex;flex-direction:column;transition:box-shadow .2s" style-hover="">
+          <article style="break-inside:avoid;margin:0 0 20px;background:#fff;border:1px solid #e3e0d9;display:flex;flex-direction:column;transition:transform .2s" style-hover="">
             <sc-if value="{{ r.hasImg }}" hint-placeholder-val="{{ false }}">
               <a href="{{ r.href }}" style="display:block;background:#f4f3f0;line-height:0;overflow:hidden"><img src="{{ r.img }}" alt="{{ r.title }}" style="display:block;width:100%;height:auto;object-fit:cover"></a>
             </sc-if>
@@ -196,7 +215,7 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
 </div>
 
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440},&quot;collection&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;MHM&quot;,&quot;UAC&quot;,&quot;GMC&quot;,&quot;DENT&quot;,&quot;PDC&quot;,&quot;FEIT&quot;,&quot;HBA&quot;],&quot;default&quot;:&quot;MHM&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440},&quot;collection&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;MHM&quot;,&quot;UAC&quot;,&quot;GMC&quot;,&quot;DENT&quot;,&quot;PDC&quot;,&quot;FEIT&quot;,&quot;HBA&quot;],&quot;default&quot;:&quot;UAC&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
 
 const COLL_KEYS = { MHM: 'Medical History Museum', UAC: 'University Art Collection', GMC: 'Grainger Museum Collection', DENT: 'Henry Forman Atkinson Dental Museum', PDC: 'Prints and Drawing Collection, Special Collections and Archives', FEIT: 'FEIT', HBA: 'Harry Brookes Allen Museum of Anatomy and Pathology' };
 const BLURBS = {
@@ -241,11 +260,11 @@ class Component extends DCLogic {
     const items = all.slice(0, 12).map(r => {
       const c = r.card || {};
       const img = c.img || '';
-      return { id: c.id, title: c.title || '', type: c.type || '', lic: c.lic || '', licIcons: c.licIcons || [], hasLicIcons: !!c.hasLicIcons, img, hasImg: img !== '', href: '/collections/record?id=' + r.id };
+      return { id: c.id, title: c.title || '', type: c.type || '', lic: c.lic || '', licIcons: c.licIcons || [], hasLicIcons: !!c.hasLicIcons, img, hasImg: img !== '', href: '/collections/record.html?id=' + r.id };
     });
     const visit = VISIT[key] || null;
     return {
-      coll: { name, blurb: BLURBS[key] || '', count, searchHref: '/search/advanced?collection=' + encodeURIComponent(name), externalUrl: EXTERNAL[key] || '', hasExternal: !!EXTERNAL[key] },
+      coll: { name, blurb: BLURBS[key] || '', count, searchHref: '/search/advanced.html?collection=' + encodeURIComponent(name), externalUrl: EXTERNAL[key] || '', hasExternal: !!EXTERNAL[key] },
       items, hasVisit: !!visit, hasSidebar: !!visit || !!EXTERNAL[key], visit: visit || {},
       stats: { count, types: Object.keys(typeCounts).length },
       topTypes
@@ -268,7 +287,7 @@ class Component extends DCLogic {
   <div class="footer-nav" style="max-width: 1400px; margin: 0 auto 48px;">
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 32px;">
       <div>
-        <h4 style="margin: 0 0 16px 0; font-size: 15px; font-weight: 600; color: #fff;">About us</h4>
+        <h3 style="margin: 0 0 16px 0; font-size: 15px; font-weight: 600; color: #fff;">About us</h3>
         <ul style="list-style: none; padding: 0; margin: 0;">
           <li style="margin-bottom: 12px;"><a href="https://www.unimelb.edu.au/about" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px;">About us</a></li>
           <li style="margin-bottom: 12px;"><a href="https://www.unimelb.edu.au/careers" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px;">Careers at Melbourne</a></li>
@@ -277,7 +296,7 @@ class Component extends DCLogic {
         </ul>
       </div>
       <div>
-        <h4 style="margin: 0 0 16px 0; font-size: 15px; font-weight: 600; color: #fff;">Support</h4>
+        <h3 style="margin: 0 0 16px 0; font-size: 15px; font-weight: 600; color: #fff;">Support</h3>
         <ul style="list-style: none; padding: 0; margin: 0;">
           <li style="margin-bottom: 12px;"><a href="https://www.unimelb.edu.au/contact" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px;">Contact</a></li>
           <li style="margin-bottom: 12px;"><a href="https://www.unimelb.edu.au/campus-locations" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px;">Campus locations</a></li>
