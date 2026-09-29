@@ -7,6 +7,21 @@ A comprehensive web platform for discovering and searching the University of Mel
 
 ---
 
+## Recent Changes (2026-09-29)
+
+- **Critical fix**: Bootstrap CDN `<link>`/`<script>` tags carried fabricated SRI hashes that silently blocked Bootstrap's CSS/JS from loading (browser shows 200 OK, but the resource is never applied). This was the root cause of the unstyled, stacked navbar across the site. Replaced with real hashes verified via `openssl dgst` against the live jsDelivr files.
+- Fixed broken relative asset paths introduced during the IA migration; made `public/` fully self-contained (images/components/scripts copied in, not reached via `../` above the doc root) so it works correctly once `public/` is the real production web root.
+- Removed duplicate footers (old page footer + new UoM footer both present) across all 12 restructured pages; fixed dead links still pointing at pre-migration `.dc.html` filenames.
+- Fixed all 5 collection landing pages silently showing "Medical History Museum" regardless of URL (template's `this.props.collection` fallback is always empty in these static exports).
+- Rebuilt the breadcrumb to match the [Gen 3 Page Header component](https://designsystem.web.unimelb.edu.au/components/page-header/) (home icon, 18px white text, `>` separator, no default underline). Added a 640px responsive breakpoint and redesigned "Browse collections" from a plain list into a card grid.
+- Sourced the Grainger Museum Collection tile image from `assets/Collections - image tiles.docx` (was a placeholder).
+- Audited the prototype against the [2026 MVP Jira filter](https://unimelb.atlassian.net/issues/?filter=26999) and removed two out-of-scope features (spelling-suggestion "Did you mean?" UI, dormant Indigenous-data search filter) per items explicitly marked post-2026.
+- Corrected mismatched museum contact emails against `assets/CCS Help - Access and Information.docx`.
+
+See `.reorganization/` for detailed write-ups of each pass.
+
+---
+
 ## Table of Contents
 
 1. [Project Overview](#project-overview)
@@ -606,5 +621,5 @@ For project-specific questions, contact the team via Contact Us.dc.html
 ---
 
 **Last Updated**: 2026-09-29  
-**Version**: 1.0 (MVP Release)  
-**Status**: ✅ Production Ready
+**Version**: 1.1 (MVP Release, post-audit fixes)  
+**Status**: ✅ Production Ready — see [Recent Changes](#recent-changes-2026-09-29)

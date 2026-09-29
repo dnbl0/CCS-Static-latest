@@ -992,10 +992,58 @@ All footer links point to official University of Melbourne URLs:
 
 ---
 
+## Breadcrumb Component (Gen 3 Aligned)
+
+Rebuilt to match the Gen 3 [Page Header](https://designsystem.web.unimelb.edu.au/components/page-header/) breadcrumb, replacing an earlier custom style (14px, dimmed `›`, underlined links, no icon).
+
+**Spec** (verified against the live Gen 3 site via computed styles):
+- 18px white text, weight 400, no default underline (underline on hover/focus only)
+- Home icon (house outline SVG) before the first crumb
+- `>` separator between items
+- Last crumb is plain text, not a link
+- Markup: `<ol>` + `schema.org/BreadcrumbList` structured data, mirroring Gen 3's `page-local-history` pattern
+
+```html
+<nav aria-label="Breadcrumb">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList" style="display:flex;align-items:center;gap:8px;list-style:none;margin:0;padding:0;font-size:18px;color:#fff">
+    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <a href="/" itemprop="item" class="breadcrumb-link"><svg><!-- home icon --></svg><span itemprop="name">Cultural Collections</span></a>
+      <meta itemprop="position" content="1">
+      <span aria-hidden="true">&gt;</span>
+    </li>
+    <!-- ... -->
+    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" aria-current="page">
+      <span itemprop="name">Current page</span>
+    </li>
+  </ol>
+</nav>
+```
+
+Live on: home, search, collections (browse + all 5 landing pages), record, help, contact.
+
+---
+
+## Responsive Breakpoint (640px)
+
+Browse Collections and Collection Landing previously had zero `@media` queries. Added one breakpoint via `!important`-scoped classes (required because the page uses inline styles throughout, per the Figma `.dc.html` export convention — a plain class rule can't win specificity against an inline `style=""` attribute):
+
+| Class | 640px behavior |
+|---|---|
+| `.site-header-brand` | Logo shrinks to 80px |
+| `.site-nav` | Nav link padding/font-size reduced |
+| `.hero-inner` | Hero padding tightens |
+| `.hero-cta a` | CTA buttons go full-width, centered, stacked |
+| `.collections-grid` | Card grid collapses to 1 column |
+| `.footer-cols` | Footer columns stack |
+
+---
+
 ## Version History
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 2.2 | 2026-09-29 | Gen 3 breadcrumb component, 640px responsive breakpoint, Collections card-grid redesign, Grainger tile image sourced from `/assets` |
+| 2.1 | 2026-09-29 | Fixed fabricated Bootstrap SRI hashes (root cause of site-wide unstyled nav), broken relative paths, duplicate footers, wrong per-collection data |
 | 2.0 | 2026-09-29 | Updated for reorganized codebase structure |
 | 1.0 | 2026-09-29 | Initial design system documentation |
 
