@@ -452,7 +452,7 @@ button,input{font-family:inherit}
         <h2 style="margin:0;padding:20px 24px;border-bottom:1px solid var(--col-border-neutral-soft);font-family:'Fraunces',serif;font-weight:600;font-size:22px;color:var(--col-bg-primary)">Cite this item</h2>
         <div style="padding:18px 24px 22px;display:flex;flex-direction:column;gap:14px">
           <div style="display:flex;gap:8px;flex-wrap:wrap">
-            <sc-for list="{{ citeStyles }}" as="cs"><button onClick="{{ cs.pick }}" style="border:1px solid {{ cs.border }};background:{{ cs.bg }};color:{{ cs.color }};border-radius:999px;padding:6px 13px;font-size:13px;font-weight:600;cursor:pointer">{{ cs.label }}</button></sc-for>
+            <sc-for list="{{ citeStyles }}" as="cs"><button onClick="{{ cs.pick }}" style="border:1px solid {{ cs.border }};background:{{ cs.bg }};color:{{ cs.color }};padding:6px 13px;font-size:13px;font-weight:600;cursor:pointer">{{ cs.label }}</button></sc-for>
           </div>
           <p style="margin:0;padding:14px 16px;background:#f7f6f2;border:1px solid var(--col-border-neutral-soft);font-size:14px;line-height:1.55;color:var(--col-text-primary);text-wrap:pretty">{{ citation }}</p>
           <button onClick="{{ copyCite }}" style="align-self:flex-start;height:40px;display:flex;align-items:center;gap:8px;border:1px solid var(--col-bg-primary);background:#fff;color:var(--col-bg-primary);padding:0 14px;font-size:15px;font-weight:600;cursor:pointer" style-hover="background:#f0f2f7"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="12"></rect><path d="M16 8V4H4v12h4"></path></svg>{{ citeText }}</button>
@@ -565,7 +565,7 @@ button,input{font-family:inherit}
       <sc-if value="{{ reqForm }}">
         <form onSubmit="{{ submitReq }}" style="padding:20px 28px 26px;display:flex;flex-direction:column;gap:16px">
           <div role="radiogroup" aria-label="Request type" style="display:flex;gap:8px;flex-wrap:wrap">
-            <sc-for list="{{ reqTypes }}" as="t"><button type="button" role="radio" aria-checked="{{ t.sel }}" onClick="{{ t.pick }}" style="border:1px solid {{ t.border }};background:{{ t.bg }};color:{{ t.color }};border-radius:999px;padding:8px 14px;font-size:14px;font-weight:600;cursor:pointer">{{ t.label }}</button></sc-for>
+            <sc-for list="{{ reqTypes }}" as="t"><button type="button" role="radio" aria-checked="{{ t.sel }}" onClick="{{ t.pick }}" style="border:1px solid {{ t.border }};background:{{ t.bg }};color:{{ t.color }};padding:8px 14px;font-size:14px;font-weight:600;cursor:pointer">{{ t.label }}</button></sc-for>
           </div>
           <p style="margin:0;font-size:14px;line-height:1.5;color:#3b4050">{{ reqHint }}</p>
           <label style="display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600;color:var(--col-text-primary)">Name<input required="" style="border:1px solid var(--col-border-neutral);border-radius:8px;padding:11px 14px;font-size:16px"></label>

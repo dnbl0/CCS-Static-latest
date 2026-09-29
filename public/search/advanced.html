@@ -173,7 +173,7 @@ button,input,select{font-family:inherit}
       <sc-if value="{{ hasActive }}">
           <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
             <sc-for list="{{ chips }}" as="c" hint-placeholder-count="2">
-              <button onClick="{{ c.remove }}" aria-label="Remove filter" style="display:flex;align-items:center;gap:8px;border:1px solid var(--col-bg-primary);background:var(--col-bg-selected);color:var(--col-bg-primary);border-radius:999px;padding:5px 10px 5px 14px;font-size:14px;cursor:pointer" style-hover="background:#d8e0ef">
+              <button onClick="{{ c.remove }}" aria-label="Remove filter" style="display:flex;align-items:center;gap:8px;border:1px solid var(--col-bg-primary);background:var(--col-bg-selected);color:var(--col-bg-primary);padding:5px 10px 5px 14px;font-size:14px;cursor:pointer" style-hover="background:#d8e0ef">
                 <span><span style="color:#4a5577">{{ c.group }}:</span> {{ c.label }}</span>
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg>
               </button>
@@ -308,11 +308,11 @@ button,input,select{font-family:inherit}
             <sc-if value="{{ sec.open }}">
               <div id="{{ sec.panelId }}" style="padding:0 0 26px;display:flex;flex-direction:column;gap:6px">
                 <sc-if value="{{ sec.search }}">
-                  <input value="{{ sec.q }}" onChange="{{ sec.onQ }}" aria-label="{{ sec.searchLabel }}" placeholder="{{ sec.searchLabel }}" style="border:1px solid var(--col-border-neutral);border-radius:8px;padding:12px 16px;font-size:16px;margin-bottom:6px">
+                  <input value="{{ sec.q }}" onChange="{{ sec.onQ }}" aria-label="{{ sec.searchLabel }}" placeholder="{{ sec.searchLabel }}" style="border:1px solid var(--col-border-neutral);border-radius:0;padding:12px 16px;font-size:16px;margin-bottom:6px">
                 </sc-if>
                 <sc-if value="{{ sec.isChips }}">
                   <div style="display:flex;gap:10px;flex-wrap:wrap">
-                    <sc-for list="{{ sec.options }}" as="o"><button onClick="{{ o.toggle }}" disabled="{{ o.disabled }}" aria-pressed="{{ o.checked }}" style="border:1px solid {{ o.pillBorder }};background:{{ o.pillBg }};color:{{ o.pillColor }};border-radius:999px;padding:9px 16px;font-size:15px;cursor:{{ o.cursor }};display:flex;gap:6px" style-hover="border-color:var(--col-bg-primary)">{{ o.label }}<span style="opacity:.7">{{ o.count }}</span></button></sc-for>
+                    <sc-for list="{{ sec.options }}" as="o"><button onClick="{{ o.toggle }}" disabled="{{ o.disabled }}" aria-pressed="{{ o.checked }}" style="border:1px solid {{ o.pillBorder }};background:{{ o.pillBg }};color:{{ o.pillColor }};padding:9px 16px;font-size:15px;cursor:{{ o.cursor }};display:flex;gap:6px" style-hover="border-color:var(--col-bg-primary)">{{ o.label }}<span style="opacity:.7">{{ o.count }}</span></button></sc-for>
                   </div>
                 </sc-if>
                 <sc-if value="{{ sec.isRows }}">
@@ -325,31 +325,31 @@ button,input,select{font-family:inherit}
                   <div style="position:relative;margin:22px 12px 0;height:80px;display:flex;align-items:flex-end;gap:2px">
                     <sc-for list="{{ bins }}" as="b" hint-placeholder-count="17"><span title="{{ b.title }}" style="flex:1;height:{{ b.h }};background:{{ b.bg }};border-radius:2px 2px 0 0"></span></sc-for>
                   </div>
-                  <div ref="{{ trackRef }}" style="position:relative;margin:26px 16px 0;height:4px;border-radius:2px;background:#e3e0d9">
-                    <span style="position:absolute;top:0;height:4px;border-radius:2px;left:{{ rangeLeft }};width:{{ rangeWidth }};background:var(--col-bg-primary)"></span>
+                  <div ref="{{ trackRef }}" style="position:relative;margin:26px 16px 0;height:4px;border-radius:0;background:#e3e0d9">
+                    <span style="position:absolute;top:0;height:4px;border-radius:0;left:{{ rangeLeft }};width:{{ rangeWidth }};background:var(--col-bg-primary)"></span>
                     <button onPointerDown="{{ downFrom }}" aria-label="Earliest year" style="position:absolute;top:-14px;left:{{ rangeLeft }};margin-left:-16px;width:32px;height:32px;border-radius:50%;border:1px solid var(--col-border-neutral);background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.18);cursor:grab;touch-action:none"></button>
-                    <span style="position:absolute;top:-38px;left:{{ rangeLeft }};transform:translateX(-50%);font-size:12px;font-weight:700;color:var(--col-bg-primary);background:#fff;padding:1px 5px;border-radius:4px;white-space:nowrap">{{ fromYear }}</span>
+                    <span style="position:absolute;top:-38px;left:{{ rangeLeft }};transform:translateX(-50%);font-size:12px;font-weight:700;color:var(--col-bg-primary);background:#fff;padding:1px 5px;border-radius:0;white-space:nowrap">{{ fromYear }}</span>
                     <button onPointerDown="{{ downTo }}" aria-label="Latest year" style="position:absolute;top:-14px;left:{{ rangeRight }};margin-left:-16px;width:32px;height:32px;border-radius:50%;border:1px solid var(--col-border-neutral);background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.18);cursor:grab;touch-action:none"></button>
-                    <span style="position:absolute;top:-38px;left:{{ rangeRight }};transform:translateX(-50%);font-size:12px;font-weight:700;color:var(--col-bg-primary);background:#fff;padding:1px 5px;border-radius:4px;white-space:nowrap">{{ toYear }}</span>
+                    <span style="position:absolute;top:-38px;left:{{ rangeRight }};transform:translateX(-50%);font-size:12px;font-weight:700;color:var(--col-bg-primary);background:#fff;padding:1px 5px;border-radius:0;white-space:nowrap">{{ toYear }}</span>
                   </div>
                   <div style="display:flex;justify-content:space-between;margin:10px 12px 0;font-size:13px;color:var(--col-text-muted)"><span>{{ domLo }}</span><span>{{ domHi }}</span></div>
                   <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-top:16px">
-                    <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--col-text-muted)">Start year<input inputmode="numeric" value="{{ yInFrom }}" onChange="{{ onYFrom }}" onKeyDown="{{ yKey }}" placeholder="{{ domLo }}" style="width:120px;border:1px solid var(--col-border-neutral);border-radius:8px;padding:11px 14px;font-size:16px;color:var(--col-text-primary)"></label>
+                    <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--col-text-muted)">Start year<input inputmode="numeric" value="{{ yInFrom }}" onChange="{{ onYFrom }}" onKeyDown="{{ yKey }}" placeholder="{{ domLo }}" style="width:120px;border:1px solid var(--col-border-neutral);border-radius:0;padding:11px 14px;font-size:16px;color:var(--col-text-primary)"></label>
                     <span style="padding-bottom:12px;color:var(--col-text-muted)">to</span>
-                    <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--col-text-muted)">End year<input inputmode="numeric" value="{{ yInTo }}" onChange="{{ onYTo }}" onKeyDown="{{ yKey }}" placeholder="{{ domHi }}" style="width:120px;border:1px solid var(--col-border-neutral);border-radius:8px;padding:11px 14px;font-size:16px;color:var(--col-text-primary)"></label>
-                    <button onClick="{{ applyYears }}" style="height:46px;border:1px solid var(--col-bg-primary);background:#fff;color:var(--col-bg-primary);border-radius:8px;padding:0 18px;font-size:15px;font-weight:600;cursor:pointer" style-hover="background:#f0f2f7">Apply</button>
+                    <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--col-text-muted)">End year<input inputmode="numeric" value="{{ yInTo }}" onChange="{{ onYTo }}" onKeyDown="{{ yKey }}" placeholder="{{ domHi }}" style="width:120px;border:1px solid var(--col-border-neutral);border-radius:0;padding:11px 14px;font-size:16px;color:var(--col-text-primary)"></label>
+                    <button onClick="{{ applyYears }}" style="height:46px;border:1px solid var(--col-bg-primary);background:#fff;color:var(--col-bg-primary);border-radius:0;padding:0 18px;font-size:15px;font-weight:600;cursor:pointer" style-hover="background:#f0f2f7">Apply</button>
                     <sc-if value="{{ hasDateRange }}"><button onClick="{{ clearYears }}" style="height:46px;border:0;background:none;padding:0 6px;font-size:15px;font-weight:600;text-decoration:underline;color:var(--col-text-primary);cursor:pointer">Reset</button></sc-if>
                   </div>
                   <sc-if value="{{ yErr }}"><span role="alert" style="font-size:14px;color:#b3261e">{{ yErr }}</span></sc-if>
                 </sc-if>
                 <sc-if value="{{ sec.isText }}">
-                  <input value="{{ sec.accessionVal }}" onChange="{{ sec.onAccession }}" aria-label="Accession number" placeholder="e.g. MHM2017.28" style="border:1px solid var(--col-border-neutral);border-radius:8px;padding:12px 16px;font-size:16px;max-width:320px">
+                  <input value="{{ sec.accessionVal }}" onChange="{{ sec.onAccession }}" aria-label="Accession number" placeholder="e.g. MHM2017.28" style="border:1px solid var(--col-border-neutral);border-radius:0;padding:12px 16px;font-size:16px;max-width:320px">
                 </sc-if>
                 <sc-if value="{{ sec.isLife }}">
                   <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap">
-                    <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--col-text-muted)">Born after<input inputmode="numeric" value="{{ sec.birthFromVal }}" onChange="{{ sec.onBirthFrom }}" placeholder="e.g. 1800" style="width:130px;border:1px solid var(--col-border-neutral);border-radius:8px;padding:11px 14px;font-size:16px;color:var(--col-text-primary)"></label>
+                    <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--col-text-muted)">Born after<input inputmode="numeric" value="{{ sec.birthFromVal }}" onChange="{{ sec.onBirthFrom }}" placeholder="e.g. 1800" style="width:130px;border:1px solid var(--col-border-neutral);border-radius:0;padding:11px 14px;font-size:16px;color:var(--col-text-primary)"></label>
                     <span style="padding-bottom:12px;color:var(--col-text-muted)">to</span>
-                    <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--col-text-muted)">Born before<input inputmode="numeric" value="{{ sec.birthToVal }}" onChange="{{ sec.onBirthTo }}" placeholder="e.g. 1950" style="width:130px;border:1px solid var(--col-border-neutral);border-radius:8px;padding:11px 14px;font-size:16px;color:var(--col-text-primary)"></label>
+                    <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--col-text-muted)">Born before<input inputmode="numeric" value="{{ sec.birthToVal }}" onChange="{{ sec.onBirthTo }}" placeholder="e.g. 1950" style="width:130px;border:1px solid var(--col-border-neutral);border-radius:0;padding:11px 14px;font-size:16px;color:var(--col-text-primary)"></label>
                   </div>
                   <span style="font-size:13px;color:var(--col-text-muted)">Based on birth years found in creator names.</span>
                 </sc-if>
@@ -362,7 +362,7 @@ button,input,select{font-family:inherit}
         <button onClick="{{ clearDraft }}" style="border:0;background:none;padding:10px 8px;font-size:16px;font-weight:600;text-decoration:underline;color:{{ clearColor }};cursor:pointer">Clear all</button>
         <div style="display:flex;align-items:center;gap:14px">
           <sc-if value="{{ zeroDraft }}"><span style="font-size:14px;color:var(--col-text-muted)">Remove a filter to see results</span></sc-if>
-          <button onClick="{{ applyModal }}" disabled="{{ applyDisabled }}" aria-live="polite" style="border:0;background:{{ applyBg }};color:#fff;border-radius:8px;padding:14px 24px;font-size:16px;font-weight:600;cursor:{{ applyCursor }};min-width:190px;display:flex;align-items:center;justify-content:center;gap:10px">
+          <button onClick="{{ applyModal }}" disabled="{{ applyDisabled }}" aria-live="polite" style="border:0;background:{{ applyBg }};color:#fff;border-radius:0;padding:14px 24px;font-size:16px;font-weight:600;cursor:{{ applyCursor }};min-width:190px;display:flex;align-items:center;justify-content:center;gap:10px">
             <sc-if value="{{ counting }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="animation:spin .8s linear infinite"><path d="M12 3a9 9 0 1 0 9 9"></path></svg></sc-if>{{ showLabel }}</button>
         </div>
       </div>
@@ -372,7 +372,7 @@ button,input,select{font-family:inherit}
 
 <sc-if value="{{ ackOpen }}">
   <div style="position:fixed;inset:0;z-index:120;background:rgba(10,14,25,.6);display:flex;align-items:center;justify-content:center;padding:24px 16px">
-    <div role="dialog" aria-modal="true" aria-labelledby="ack-title" style="width:100%;max-width:620px;max-height:100%;overflow-y:auto;background:#fff;border-radius:14px;box-shadow:0 24px 64px rgba(0,0,0,.3);display:flex;flex-direction:column">
+    <div role="dialog" aria-modal="true" aria-labelledby="ack-title" style="width:100%;max-width:620px;max-height:100%;overflow-y:auto;background:#fff;border-radius:0;box-shadow:0 24px 64px rgba(0,0,0,.3);display:flex;flex-direction:column">
       <div style="padding:28px 32px 8px;display:flex;flex-direction:column;gap:14px">
         <span style="font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--col-advisory-text)">Indigenous Cultural Notification</span>
         <h2 id="ack-title" style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:26px;line-height:1.2;color:var(--col-bg-primary)">Before you explore the collections</h2>
@@ -382,7 +382,7 @@ button,input,select{font-family:inherit}
       </div>
       <div style="padding:20px 32px 28px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
         <a href="/help?topic=indigenous" style="font-size:15px;font-weight:600;text-decoration:underline">Indigenous Cultural Data and Access</a>
-        <button onClick="{{ acceptAck }}" style="border:0;background:var(--col-bg-primary);color:#fff;border-radius:8px;padding:14px 26px;font-size:16px;font-weight:600;cursor:pointer" style-hover="background:var(--col-bg-primary-hover)">I understand, continue</button>
+        <button onClick="{{ acceptAck }}" style="border:0;background:var(--col-bg-primary);color:#fff;border-radius:0;padding:14px 26px;font-size:16px;font-weight:600;cursor:pointer" style-hover="background:var(--col-bg-primary-hover)">I understand, continue</button>
       </div>
     </div>
   </div>

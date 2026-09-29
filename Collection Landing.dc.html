@@ -127,7 +127,7 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
     <div style="max-width:1440px;margin:0 auto;padding:20px 32px 24px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;border-top:1px solid rgba(255,255,255,.15)">
       <span style="font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:rgba(255,255,255,.65)">Object types</span>
       <sc-for list="{{ topTypes }}" as="t" hint-placeholder-count="5">
-        <span style="display:flex;align-items:center;gap:6px;border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:6px 12px;font-size:14px;color:#fff">{{ t.type }} <span style="opacity:.65">{{ t.n }}</span></span>
+        <span style="display:flex;align-items:center;gap:6px;background:#eaefe9;color:var(--col-bg-primary);padding:6px 12px;font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:.03em">{{ t.type }} <span style="opacity:.65">{{ t.n }}</span></span>
       </sc-for>
     </div>
   </sc-if>
