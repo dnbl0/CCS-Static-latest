@@ -1000,3 +1000,14 @@
   outline: 2px solid var(--focus-focus);
   outline-offset: 3px;
 }
+
+/* WCAG 1.4.3 Contrast (Minimum): the header search input sets its typed-text
+   color to --col-text-muted (#5b6070, ~6.26:1 on white) but has no explicit
+   ::placeholder rule, so the placeholder falls back to each browser's UA
+   default (commonly a low-contrast grey that fails 4.5:1 against the white
+   search bar background). Pin the placeholder to the same muted token so it
+   inherits that already-passing contrast ratio instead of the browser default. */
+section[data-component="Header"] input::placeholder {
+  color: var(--col-text-muted);
+  opacity: 1;
+}

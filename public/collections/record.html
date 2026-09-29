@@ -396,7 +396,7 @@ section[aria-label="Item media"]:not(:fullscreen){max-height:calc(85vh - var(--h
     <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #e7e7e9">
       <div style="display:flex;align-items:center;gap:10px">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00354c" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-        <h2 style="margin:0;font-size:16px;font-weight:600;color:#1a1a1a">Media metadata</h2>
+        <h3 style="margin:0;font-size:16px;font-weight:600;color:#1a1a1a">Media metadata</h3>
       </div>
       <button onClick="{{ toggleSidebar }}" aria-label="Close media metadata" title="Close media metadata (Esc)" style="width:32px;height:32px;border:0;background:none;cursor:pointer;color:#555;padding:0;display:flex;align-items:center;justify-content:center;border-radius:0" style-hover="color:#000">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
@@ -453,9 +453,9 @@ section[aria-label="Item media"]:not(:fullscreen){max-height:calc(85vh - var(--h
     <div style="display:flex;flex-direction:column;gap:12px;max-width:920px">
       <h1 style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:clamp(30px,4vw,42px);line-height:1.12;color:var(--col-bg-primary);text-wrap:balance">{{ rec.title }}</h1>
       <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase">
-        <a href="/search/advanced.html" style="color:#0b4ea2;text-decoration:none" style-hover="text-decoration:underline">{{ rec.type }}</a>
+        <a href="{{ typeHref }}" style="color:#0b4ea2;text-decoration:none" style-hover="text-decoration:underline">{{ rec.type }}</a>
         <span aria-hidden="true" style="width:4px;height:4px;background:#9a9ea8"></span>
-        <a href="/search/advanced.html" style="color:#0b4ea2;text-decoration:none" style-hover="text-decoration:underline">{{ rec.collection }}</a>
+        <a href="{{ collectionHref }}" style="color:#0b4ea2;text-decoration:none" style-hover="text-decoration:underline">{{ rec.collection }}</a>
       </div>
       <sc-if value="{{ rec.altTitle }}"><p style="margin:0;font-size:18px;font-style:italic;color:#3b4050">{{ rec.altTitle }}</p></sc-if>
       <sc-if value="{{ rec.byline }}"><p style="margin:0;font-size:18px;color:#3b4050">{{ rec.byline }}</p></sc-if>
@@ -498,7 +498,7 @@ section[aria-label="Item media"]:not(:fullscreen){max-height:calc(85vh - var(--h
               <dd style="margin:0;font-size:15px;line-height:1.55;color:var(--col-text-primary);text-wrap:pretty;display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap">
                 <span style="display:flex;flex-direction:column;min-width:0">
                   <sc-for list="{{ r.lines }}" as="l">
-                    <sc-if value="{{ l.link }}"><a href="/search/advanced.html" style="align-self:flex-start;color:#0b2a6b;text-decoration:underline;text-underline-offset:2px">{{ l.text }}</a></sc-if>
+                    <sc-if value="{{ l.link }}"><a href="{{ r.href }}" style="align-self:flex-start;color:#0b2a6b;text-decoration:underline;text-underline-offset:2px">{{ l.text }}</a></sc-if>
                     <sc-if value="{{ l.plain }}"><span style="color:{{ l.color }}">{{ l.text }}</span></sc-if>
                   </sc-for>
                 </span>
@@ -637,9 +637,9 @@ section[aria-label="Item media"]:not(:fullscreen){max-height:calc(85vh - var(--h
             <sc-for list="{{ reqTypes }}" as="t"><button type="button" role="radio" aria-checked="{{ t.sel }}" onClick="{{ t.pick }}" style="border:1px solid {{ t.border }};background:{{ t.bg }};color:{{ t.color }};padding:8px 14px;font-size:14px;font-weight:600;cursor:pointer">{{ t.label }}</button></sc-for>
           </div>
           <p style="margin:0;font-size:14px;line-height:1.5;color:#3b4050">{{ reqHint }}</p>
-          <label style="display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600;color:var(--col-text-primary)">Name<input aria-label="Full name" required="" style="border:1px solid var(--col-border-neutral);border-radius:0;padding:11px 14px;font-size:16px"></label>
-          <label style="display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600;color:var(--col-text-primary)">Email<input aria-label="Email address" type="email" required="" style="border:1px solid var(--col-border-neutral);border-radius:0;padding:11px 14px;font-size:16px"></label>
-          <label style="display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600;color:var(--col-text-primary)">{{ msgLabel }}<textarea aria-label="Message" required="" rows="4" style="border:1px solid var(--col-border-neutral);border-radius:0;padding:11px 14px;font-size:16px;font-family:inherit;resize:vertical"></textarea></label>
+          <label style="display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600;color:var(--col-text-primary)">Name<input name="requesterName" autocomplete="name" aria-label="Full name" required="" style="border:1px solid var(--col-border-neutral);border-radius:0;padding:11px 14px;font-size:16px"></label>
+          <label style="display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600;color:var(--col-text-primary)">Email<input name="email" autocomplete="email" aria-label="Email address" type="email" required="" style="border:1px solid var(--col-border-neutral);border-radius:0;padding:11px 14px;font-size:16px"></label>
+          <label style="display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600;color:var(--col-text-primary)">{{ msgLabel }}<textarea name="message" aria-label="Message" required="" rows="4" style="border:1px solid var(--col-border-neutral);border-radius:0;padding:11px 14px;font-size:16px;font-family:inherit;resize:vertical"></textarea></label>
           <span style="font-size:13px;color:var(--col-text-muted)">Record link included automatically: {{ permalinkShort }}. We aim to respond within 5 business days.</span>
           <button type="submit" style="align-self:flex-end;border:0;background:var(--col-bg-primary);color:#fff;border-radius:0;padding:13px 22px;font-size:16px;font-weight:600;cursor:pointer" style-hover="background:var(--col-bg-primary-hover)">Send request</button>
         </form>
@@ -778,7 +778,7 @@ class Component extends DCLogic {
     if (!R) return { rec: { title: '', type: '', byline: '', citation: '', unit: '', assetId: '', hasDA: true, images: [], subjects: [], advisories: [], rights: [] },
       fields: [], related: [], mediaRows: [], thumbs: [], noDA: false, showRelated: false, viewerRef: this.viewerRef, stageH: '660px', curImg: '', hasCurImg: false,
       toggleW: 'auto', toggleBg: 'transparent', toggleBorder: 'transparent', toggleColor: '#fff', dividerColor: '#767676', sidebarClosed: true, stageRight: '0',
-      shareText: 'Share', citeText: 'Copy citation' };
+      shareText: 'Share', citeText: 'Copy citation', typeHref: '/search/advanced.html', collectionHref: '/search/advanced.html' };
     const imgs = R.images, idx = Math.min(s.idx, Math.max(0, imgs.length - 1));
     const go = i => { if (i >= 0 && i < imgs.length) this.setState({ idx: i }); };
     const dim = s.dims[imgs[idx]];
@@ -787,8 +787,13 @@ class Component extends DCLogic {
     const media = R.media || [];
     const mediaRows = !R.hasDA ? [] : [...media.slice(0, 2), ...(dim ? [{ label: 'File size', value: '~' + Math.round(dim.w * dim.h * 3 / 1024 / 1024 * 10) / 10 + ' MB (estimate)' }, { label: 'Dimensions', value: `${dim.w} × ${dim.h} pixels` }] : []), { label: 'File name', value: (imgs[idx] || '').split('/').pop() }, ...media.slice(2)];
     const W = '#fff', DIM = 'rgba(255,255,255,.35)';
+    // advanced.html only reads `collection` and `type` from the URL on load (see its componentDidMount);
+    // facet links for fields without a matching URL param fall back to the unfiltered search page.
+    const facetHref = label => label === 'Collection' ? `/search/advanced.html?collection=${encodeURIComponent(R.collection)}`
+      : label === 'Type' ? `/search/advanced.html?type=${encodeURIComponent(R.type)}`
+      : '/search/advanced.html';
     const fields = R.fields.map(f => ({ ...f, lines: f.lines.map(l => ({ text: l.text, link: !!l.link, plain: !l.link, color: l.muted ? 'var(--col-text-muted)' : 'var(--col-text-primary)' })),
-      copyText: s.copied === 'acc' ? 'Copied' : 'Copy', onCopy: () => this.flash('acc', f.value) }));
+      href: facetHref(f.label), copyText: s.copied === 'acc' ? 'Copied' : 'Copy', onCopy: () => this.flash('acc', f.value) }));
     const relCards = CCS.related(id);
     const related = relCards.map(r => {
       return { ...r, hasImg: !!r.img, href: `/collections/record?id=${r.id}` };
@@ -799,6 +804,7 @@ class Component extends DCLogic {
       showCitation: this.props.showCitation ?? false,
       showRelated: (this.props.showRelated ?? false) && related.length > 0, relIndigenous: relCards.some(r => r.indigenous),
       viewAll: `View all ${R.type.toLowerCase()} records`,
+      typeHref: `/search/advanced.html?type=${encodeURIComponent(R.type)}`, collectionHref: `/search/advanced.html?collection=${encodeURIComponent(R.collection)}`,
       hasAdvisory: R.advisories.length > 0, hasSubjects: R.subjects.length > 0,
       hasLicence: !!R.licence, licIcons: R.licence ? (R.licence.icons || []) : [], hasLicIcons: !!(R.licence && R.licence.icons && R.licence.icons.length), licLabel: R.licence ? R.licence.label : '',
       canDownload: !!(R.licence && R.licence.download),
