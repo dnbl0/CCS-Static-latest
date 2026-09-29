@@ -1,11 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta name="description" content="Guidance on searching, discovering and requesting items from the University of Melbourne cultural collections.">
+<title>Help and Support — Cultural Collections Search — University of Melbourne</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="../support.js"></script>
+<style>
+.skip-link {
+  position: absolute;
+  top: -120px;
+  left: 16px;
+  background: var(--col-btn-action-bg, #46c8f0);
+  color: var(--col-btn-action-text, #000f46);
+  padding: 12px 18px;
+  z-index: 99999;
+  font-weight: 700;
+  text-decoration: none;
+  border: 2px solid var(--col-bg-primary, #000f46);
+  transition: top 0.2s ease;
+}
+.skip-link:focus {
+  top: 16px;
+}
+@media (max-width:640px){
+  .site-header-brand{width:80px!important}
+  .site-nav{gap:0!important}
+  .site-nav a{padding:8px 10px!important;font-size:14px!important}
+}
+</style>
 </head>
 <body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
 <x-dc>
 <helmet><style>
 :root{
@@ -34,7 +60,12 @@
   --col-advisory-bg:#fdf6d8;
   --col-advisory-border:#efdc8e;
   --col-advisory-text:#8a6200;
-}</style>
+}@media (max-width:640px){
+  .site-header-brand{width:80px!important}
+  .site-nav{gap:0!important}
+  .site-nav a{padding:8px 10px!important;font-size:14px!important}
+}
+</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../components/fig-tokens.css">
@@ -44,18 +75,23 @@ body{margin:0;background:#faf9f6;color:var(--col-text-primary);font-family:'Sour
 a{color:#0b2a6b;text-decoration:underline;text-underline-offset:2px}a:hover{color:var(--col-bg-primary)}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
+@media (max-width:640px){
+  .site-header-brand{width:80px!important}
+  .site-nav{gap:0!important}
+  .site-nav a{padding:8px 10px!important;font-size:14px!important}
+}
 </style>
 </helmet>
 <div style="min-height:100vh;display:flex;flex-direction:column">
 <section aria-label="Site header" data-component="Header" style="display:flex;align-items:stretch;width:100%;border-bottom:1px solid var(--col-border-header);background:var(--col-bg-primary)">
-  <a href="/" style="flex:none;width:110px;display:flex;align-items:center;justify-content:center;border-right:1px solid var(--col-border-header);padding:8px;background:var(--col-bg-primary)">
+  <a href="/" aria-label="The University of Melbourne Homepage" style="flex:none;width:110px;display:flex;align-items:center;justify-content:center;border-right:1px solid var(--col-border-header);padding:8px;background:var(--col-bg-primary)">
     <img src="../images/uom-logo-vertical.svg" alt="The University of Melbourne" style="width:100%;height:100%;object-fit:contain">
   </a>
   <div style="flex:1;min-width:0;display:flex;flex-direction:column">
     <search style="display:flex;width:100%;justify-content:flex-end;border-bottom:1px solid var(--col-border-header);background:var(--col-bg-primary-dark);padding:8px">
       <form role="search" onSubmit="{{ headerSubmit }}" style="width:100%;max-width:288px;display:flex;height:48px;border:1px solid var(--col-bg-primary);background:#fff">
         <label style="flex:1;min-width:0;display:flex;align-items:center"><span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Search Cross Collections</span>
-          <input value="{{ headerQ }}" onChange="{{ onHeaderQ }}" placeholder="Search Cross Collections…" style="width:100%;min-width:0;border:0;background:none;padding:0 12px;font-size:17px;color:var(--col-text-muted);outline:none">
+          <input value="{{ headerQ }}" onChange="{{ onHeaderQ }}" placeholder="Search Cross Collections…" aria-label="Search Cross Collections" style="width:100%;min-width:0;border:0;background:none;padding:0 12px;font-size:17px;color:var(--col-text-muted);outline:none">
         </label>
         <button type="submit" aria-label="Submit search" style="flex:none;display:flex;align-items:center;justify-content:center;border-left:1px solid var(--col-bg-primary);background:var(--col-btn-action-bg);color:var(--col-btn-action-text);padding:0 12px;cursor:pointer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.5" y1="15.5" x2="21" y2="21"></line></svg></button>
       </form>
@@ -63,9 +99,9 @@ html{scroll-behavior:smooth}
     <div style="display:flex;min-height:65px;width:100%;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:12px 24px;background:var(--col-bg-primary)">
       <a href="/" style="color:#fff;font-size:17px;font-weight:600;white-space:nowrap">Cultural Collections Search</a>
       <nav aria-label="Primary navigation" style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
-        <a href="/search/advanced" style="color:#fff;font-size:16px;font-weight:600;padding:10px 14px">Search all records</a>
-        <a href="/collections" style="color:#fff;font-size:16px;font-weight:600;padding:10px 14px">Browse collections</a>
-        <a href="/help" style="color:#fff;font-size:16px;font-weight:600;padding:10px 14px">Help</a>
+        <a href="/search/advanced.html" style="color:#fff;font-size:16px;font-weight:600;padding:10px 14px">Search all records</a>
+        <a href="/collections/index.html" style="color:#fff;font-size:16px;font-weight:600;padding:10px 14px">Browse collections</a>
+        <a href="/help/index.html" style="color:#fff;font-size:16px;font-weight:600;padding:10px 14px">Help</a>
       </nav>
     </div>
   </div>
@@ -74,18 +110,11 @@ html{scroll-behavior:smooth}
 <section style="background:var(--col-bg-primary);color:#fff">
   <div style="max-width:1200px;margin:0 auto;padding:20px 32px 40px;display:flex;flex-direction:column;gap:22px">
     <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap">
-      <nav aria-label="Breadcrumb" style="background:#00354c"><ol style="display:flex;align-items:center;flex-wrap:wrap;gap:4px;list-style:none;margin:0;padding:12px 32px;font-size:16px;color:#fff;min-width:0"><li style="display:flex;align-items:center;gap:8px"><a href="/" aria-label="Cultural Collections" style="display:flex;align-items:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 3l9 8h-3v9h-4v-6h-4v6H6v-9H3l9-8z"/></svg><span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Cultural Collections</span></a><svg width="14" height="14" viewBox="0 0 24 24" fill="#fff" aria-hidden="true" style="flex:none"><path d="M9 6l6 6-6 6"/></svg></li><sc-if value="{{ topic }}" hint-placeholder-val="{{ false }}"><li style="display:flex;align-items:center;gap:8px"><a href="/help" style="color:#fff;text-decoration:none">Help and support</a><svg width="14" height="14" viewBox="0 0 24 24" fill="#fff" aria-hidden="true" style="flex:none"><path d="M9 6l6 6-6 6"/></svg></li><li style="font-weight:600">{{ topic.title }}</li></sc-if><sc-if value="{{ notTopic }}" hint-placeholder-val="{{ true }}"><li style="font-weight:600">Help and support</li></sc-if></ol></nav>
-      </nav>
+      <nav aria-label="Breadcrumb" style="background:#00354c"><ol style="display:flex;align-items:center;flex-wrap:wrap;gap:4px;list-style:none;margin:0;padding:12px 32px;font-size:16px;color:#fff;min-width:0"><li style="display:flex;align-items:center;gap:8px"><a href="/" aria-label="Cultural Collections" style="display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 3l9 8h-3v9h-4v-6h-4v6H6v-9H3l9-8z"/></svg><span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Cultural Collections</span></a><svg width="14" height="14" viewBox="0 0 24 24" fill="#fff" aria-hidden="true" style="flex:none"><path d="M9 6l6 6-6 6"/></svg></li><sc-if value="{{ topic }}" hint-placeholder-val="{{ false }}"><li style="display:flex;align-items:center;gap:8px"><a href="/help/index.html" style="color:#fff;text-decoration:none">Help and support</a><svg width="14" height="14" viewBox="0 0 24 24" fill="#fff" aria-hidden="true" style="flex:none"><path d="M9 6l6 6-6 6"/></svg></li><li style="font-weight:600">{{ topic.title }}</li></sc-if><sc-if value="{{ notTopic }}" hint-placeholder-val="{{ true }}"><li style="font-weight:600">Help and support</li></sc-if></ol></nav>
     </div>
     <div style="display:flex;flex-direction:column;gap:10px;max-width:760px">
-      <sc-if value="{{ topic }}" hint-placeholder-val="{{ false }}">
-        <h1 style="margin:0;font-family:'Fraunces',serif;font-weight:500;font-size:40px;line-height:1.1">{{ topic.title }}</h1>
-        <p style="margin:0;font-size:17px;line-height:1.5;color:rgba(255,255,255,.85)">{{ topic.blurb }}</p>
-      </sc-if>
-      <sc-if value="{{ notTopic }}" hint-placeholder-val="{{ true }}">
-        <h1 style="margin:0;font-family:'Fraunces',serif;font-weight:500;font-size:40px;line-height:1.1">Help and support</h1>
-        <p style="margin:0;font-size:17px;line-height:1.5;color:rgba(255,255,255,.85)">Guidance on searching, using and requesting items from the University's cultural collections.</p>
-      </sc-if>
+      <h1 style="margin:0;font-family:'Fraunces',serif;font-weight:500;font-size:40px;line-height:1.1"><sc-if value="{{ topic }}">{{ topic.title }}</sc-if><sc-if value="{{ notTopic }}">Help and support</sc-if></h1>
+      <p style="margin:0;font-size:17px;line-height:1.5;color:rgba(255,255,255,.85)"><sc-if value="{{ topic }}">{{ topic.blurb }}</sc-if><sc-if value="{{ notTopic }}">Guidance on searching, using and requesting items from the University's cultural collections.</sc-if></p>
     </div>
   </div>
 </section>
@@ -94,8 +123,8 @@ html{scroll-behavior:smooth}
 <section aria-label="Help topics" style="background:#fff;border-bottom:1px solid #e3e0d9">
   <div style="max-width:1200px;margin:0 auto;padding:40px 32px 48px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px">
     <sc-for list="{{ topics }}" as="t" hint-placeholder-count="6">
-      <a href="{{ t.href }}" style="display:flex;flex-direction:column;gap:16px;padding:26px 24px;border:1px solid #e3e0d9;border-top:3px solid transparent;background:#fff;text-decoration:none;color:var(--col-text-primary);transition:border-color .15s,box-shadow .15s,transform .15s" style-hover="border-color:var(--col-bg-primary);transform:translateY(-2px)">
-        <span style="width:44px;height:44px;border-radius:50%;background:var(--col-bg-selected);color:var(--col-bg-primary);display:flex;align-items:center;justify-content:center;flex:none">{{ t.icon }}</span>
+      <a href="{{ t.href }}" style="display:flex;flex-direction:column;gap:16px;padding:26px 24px;border:1px solid #e3e0d9;border-top:3px solid transparent;background:#fff;text-decoration:none;color:var(--col-text-primary);transition:border-color .15s,transform .15s" style-hover="border-color:var(--col-bg-primary);transform:translateY(-2px)">
+        <span style="width:44px;height:44px;border-radius:0;background:var(--col-bg-selected);color:var(--col-bg-primary);display:flex;align-items:center;justify-content:center;flex:none">{{ t.icon }}</span>
         <div style="display:flex;flex-direction:column;gap:8px;flex:1">
           <strong style="font-family:'Fraunces',serif;font-weight:600;font-size:20px;line-height:1.25;color:var(--col-bg-primary)">{{ t.title }}</strong>
           <span style="font-size:15px;line-height:1.5;color:#4a5577">{{ t.blurb }}</span>
@@ -107,9 +136,9 @@ html{scroll-behavior:smooth}
 </section>
 </sc-if>
 
-<main style="flex:1;max-width:1200px;width:100%;margin:0 auto;padding:40px 32px 80px;display:flex;flex-direction:column;gap:28px">
+<main id="main-content" style="flex:1;max-width:1200px;width:100%;margin:0 auto;padding:40px 32px 80px;display:flex;flex-direction:column;gap:28px">
 
-<sc-if value="{{ topic }}" hint-placeholder-val="{{ false }}"><a href="/help" style="align-self:flex-start;font-size:15px;font-weight:600">‹ All help topics</a></sc-if>
+<sc-if value="{{ topic }}" hint-placeholder-val="{{ false }}"><a href="/help/index.html" style="align-self:flex-start;font-size:15px;font-weight:600">‹ All help topics</a></sc-if>
 
 <sc-if value="{{ showFaq }}" hint-placeholder-val="{{ true }}">
   <div id="faq" style="scroll-margin-top:20px;display:flex;flex-direction:column;gap:14px">
@@ -168,16 +197,8 @@ html{scroll-behavior:smooth}
 <sc-if value="{{ showIndigenous }}" hint-placeholder-val="{{ true }}">
 <section id="indigenous" aria-labelledby="h-indigenous" style="background:#fff;border:1px solid #e3e0d9;padding:28px 32px;display:flex;flex-direction:column;gap:14px;scroll-margin-top:20px;font-size:16px;line-height:1.6;color:#3b4050">
   <h2 id="h-indigenous" style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:28px;color:var(--col-bg-primary)">Indigenous Cultural Data and Access</h2>
-  <p style="margin:0;max-width:760px">The University of Melbourne acknowledge Aboriginal and Torres Strait Islander people as the Traditional Owners of the unceded lands on which we work, learn and live. We pay respect to Elders past, present and future, and acknowledge the importance of Indigenous knowledge in the Academy.</p>
-  <p style="margin:0;display:flex;gap:20px;flex-wrap:wrap"><a href="/help?topic=access">Read about our Indigenous priorities</a><a href="https://www.unimelb.edu.au/indigenous/acknowledgement-of-country">Read our full Acknowledgement of Country</a></p>
-  <h3 style="margin:8px 0 0;font-size:18px;color:var(--col-text-primary)">Note on images and voices</h3>
-  <p style="margin:0;max-width:760px">Aboriginal and Torres Strait Islander people should be aware that the University of Melbourne website and collections contain the names, images and voices of people who have died.</p>
-  <h3 style="margin:8px 0 0;font-size:18px;color:var(--col-text-primary)">Note on language</h3>
-  <p style="margin:0;max-width:760px">Please be advised that people may be disturbed by the content of some collection items, which may include distressing images and descriptions, and derogatory terms used in their historical context, including for Aboriginal and Torres Strait Islander people. They reflect the period in which they were created and are not the views of the University of Melbourne.</p>
-  <h3 style="margin:8px 0 0;font-size:18px;color:var(--col-text-primary)">Note on terminology</h3>
-  <p style="margin:0;max-width:760px">The following terms are used interchangeably throughout collection items: Aboriginal and Torres Strait Islander, First Nations, First Peoples, Indigenous Australians (inclusive of Aboriginal and Torres Strait Islander peoples), Aboriginal peoples and Indigenous peoples (commonly used for First Nations peoples internationally).</p>
-  <h3 style="margin:8px 0 0;font-size:18px;color:var(--col-text-primary)">Contact</h3>
-  <p style="margin:0;max-width:760px">If you have questions about Indigenous cultural materials, cultural protocols or access conditions, or wish to provide feedback about a record, please contact the relevant <a href="/help?topic=access">collection team</a>.</p>
+  <p style="margin:0;max-width:760px">The University of Melbourne acknowledge Aboriginal and Torres Strait Islander people as the Traditional Owners of the unceded lands on which we work, learn and live. We pay respect to Elders past, present and future, and acknowledge the importance of Indigenous knowledge in the Academy. Read on for our notes on images and voices, language, terminology, and how to contact a collection team about cultural materials or access conditions.</p>
+  <p style="margin:0"><a href="/indigenous-data.html" style="font-weight:600">Read the full Indigenous Cultural Data and Access page ›</a></p>
 </section>
 </sc-if>
 
@@ -278,7 +299,7 @@ class Component extends DCLogic {
   <div class="footer-nav" style="max-width: 1400px; margin: 0 auto 48px;">
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 32px;">
       <div>
-        <h4 style="margin: 0 0 16px 0; font-size: 15px; font-weight: 600; color: #fff;">About us</h4>
+        <h3 style="margin: 0 0 16px 0; font-size: 15px; font-weight: 600; color: #fff;">About us</h3>
         <ul style="list-style: none; padding: 0; margin: 0;">
           <li style="margin-bottom: 12px;"><a href="https://www.unimelb.edu.au/about" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px;">About us</a></li>
           <li style="margin-bottom: 12px;"><a href="https://www.unimelb.edu.au/careers" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px;">Careers at Melbourne</a></li>
@@ -287,7 +308,7 @@ class Component extends DCLogic {
         </ul>
       </div>
       <div>
-        <h4 style="margin: 0 0 16px 0; font-size: 15px; font-weight: 600; color: #fff;">Support</h4>
+        <h3 style="margin: 0 0 16px 0; font-size: 15px; font-weight: 600; color: #fff;">Support</h3>
         <ul style="list-style: none; padding: 0; margin: 0;">
           <li style="margin-bottom: 12px;"><a href="https://www.unimelb.edu.au/contact" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px;">Contact</a></li>
           <li style="margin-bottom: 12px;"><a href="https://www.unimelb.edu.au/campus-locations" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px;">Campus locations</a></li>

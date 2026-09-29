@@ -380,7 +380,7 @@ Mobile (<768px):   1 column (stacked)
 
 | Property | Value | Notes |
 |----------|-------|-------|
-| Image Max Height | 85vh | Viewport constraint |
+| Image Max Height | calc(85vh - header) | Viewport constraint (header + media viewer <= 85vh) |
 | Image Background | #1a1a1a | Deep black |
 | Sidebar Width | 380px | Right panel |
 | Sidebar Hidden | width: 0 | Closed by default |

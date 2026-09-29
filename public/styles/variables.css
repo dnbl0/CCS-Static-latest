@@ -990,3 +990,13 @@
   --text-tertiary: var(--brand-600); /* @kind color */
   --text-warning: var(--brand-1000); /* @kind color */
 }
+
+/* WCAG 2.4.7 Focus Visible: centralized keyboard-focus indicator for all
+   focusable elements. Uses the design system's own focus token so the ring
+   tracks --focus-focus / --focus-focus-inverse across themes and Figma
+   variable updates. :focus-visible (not :focus) so the ring only shows for
+   keyboard/programmatic focus, not mouse clicks, per modern best practice. */
+:focus-visible {
+  outline: 2px solid var(--focus-focus);
+  outline-offset: 3px;
+}

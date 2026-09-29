@@ -1,11 +1,11 @@
 {
   "redirects": [
-    { "from": "/Contact Us.dc.html", "to": "/pages/contact.html", "permanent": true },
-    { "from": "/Collection Record.dc.html", "to": "/pages/record.html", "permanent": true },
-    { "from": "/Collection Search v3.dc.html", "to": "/pages/search.html", "permanent": true },
-    { "from": "/Browse Collections.dc.html", "to": "/pages/browse.html", "permanent": true },
-    { "from": "/Collection Landing.dc.html", "to": "/pages/collection.html", "permanent": true },
-    { "from": "/Help and Support.dc.html", "to": "/pages/help.html", "permanent": true },
-    { "from": "/CCS Home page.dc.html", "to": "/pages/home-legacy.html", "permanent": true }
+    { "from": "/Contact Us.dc.html", "to": "/contact", "permanent": true },
+    { "from": "/Collection Record.dc.html", "to": "/collections/record", "permanent": true },
+    { "from": "/Collection Search v3.dc.html", "to": "/search/advanced", "permanent": true },
+    { "from": "/Browse Collections.dc.html", "to": "/collections", "permanent": true },
+    { "from": "/Collection Landing.dc.html", "to": "/collections", "permanent": true },
+    { "from": "/Help and Support.dc.html", "to": "/help", "permanent": true },
+    { "from": "/CCS Home page.dc.html", "to": "/", "permanent": true }
   ]
 }

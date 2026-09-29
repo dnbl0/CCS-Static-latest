@@ -1,11 +1,32 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta name="description" content="Search across the University of Melbourne cultural collections with powerful filters, dates, and facets.">
+<title>Search All Records — Cultural Collections Search — University of Melbourne</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="../support.js"></script>
+<style>
+.skip-link {
+  position: absolute;
+  top: -120px;
+  left: 16px;
+  background: var(--col-btn-action-bg, #46c8f0);
+  color: var(--col-btn-action-text, #000f46);
+  padding: 12px 18px;
+  z-index: 99999;
+  font-weight: 700;
+  text-decoration: none;
+  border: 2px solid var(--col-bg-primary, #000f46);
+  transition: top 0.2s ease;
+}
+.skip-link:focus {
+  top: 16px;
+}
+</style>
 </head>
 <body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
 <x-dc>
 <helmet><style>
 :root{
@@ -53,14 +74,14 @@ button,input,select{font-family:inherit}
 <div style="min-height:100vh;display:flex;flex-direction:column">
 
 <section aria-label="Site header" data-component="Header" style="display:flex;align-items:stretch;width:100%;border-bottom:1px solid var(--col-border-header);background:var(--col-bg-primary)">
-  <a href="/" style="flex:none;width:110px;display:flex;align-items:center;justify-content:center;border-right:1px solid var(--col-border-header);padding:8px;background:var(--col-bg-primary)">
+  <a href="/" aria-label="The University of Melbourne Homepage" style="flex:none;width:110px;display:flex;align-items:center;justify-content:center;border-right:1px solid var(--col-border-header);padding:8px;background:var(--col-bg-primary)">
     <img src="../images/uom-logo-vertical.svg" alt="The University of Melbourne" style="width:100%;height:100%;object-fit:contain">
   </a>
   <div style="flex:1;min-width:0;display:flex;flex-direction:column">
     <search style="display:flex;width:100%;justify-content:flex-end;border-bottom:1px solid var(--col-border-header);background:var(--col-bg-primary-dark);padding:8px">
       <form role="search" onSubmit="{{ headerSubmit }}" style="width:100%;max-width:288px;display:flex;height:48px;border:1px solid var(--col-bg-primary);background:#fff">
         <label style="flex:1;min-width:0;display:flex;align-items:center"><span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Search Cross Collections</span>
-          <input value="{{ headerQ }}" onChange="{{ onHeaderQ }}" placeholder="Search Cross Collections…" style="width:100%;min-width:0;border:0;background:none;padding:0 12px;font-size:17px;color:var(--col-text-muted);outline:none">
+          <input value="{{ headerQ }}" onChange="{{ onHeaderQ }}" placeholder="Search Cross Collections…" aria-label="Search Cross Collections" style="width:100%;min-width:0;border:0;background:none;padding:0 12px;font-size:17px;color:var(--col-text-muted);outline:none">
         </label>
         <button type="submit" aria-label="Submit search" style="flex:none;display:flex;align-items:center;justify-content:center;border-left:1px solid var(--col-bg-primary);background:var(--col-btn-action-bg);color:var(--col-btn-action-text);padding:0 12px;cursor:pointer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.5" y1="15.5" x2="21" y2="21"></line></svg></button>
       </form>
@@ -68,9 +89,9 @@ button,input,select{font-family:inherit}
     <div style="display:flex;min-height:65px;width:100%;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:12px 24px;background:var(--col-bg-primary)">
       <a href="/" style="color:#fff;font-size:17px;font-weight:600;white-space:nowrap">Cultural Collections Search</a>
       <nav aria-label="Primary navigation" style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
-        <a href="/search/advanced" style="color:#fff;font-size:16px;font-weight:600;padding:10px 14px">Search all records</a>
-        <a href="/collections" style="color:#fff;font-size:16px;font-weight:600;padding:10px 14px">Browse collections</a>
-        <a href="/help" style="color:#fff;font-size:16px;font-weight:600;padding:10px 14px">Help</a>
+        <a href="/search/advanced.html" style="color:#fff;font-size:16px;font-weight:600;padding:10px 14px">Search all records</a>
+        <a href="/collections/index.html" style="color:#fff;font-size:16px;font-weight:600;padding:10px 14px">Browse collections</a>
+        <a href="/help/index.html" style="color:#fff;font-size:16px;font-weight:600;padding:10px 14px">Help</a>
       </nav>
     </div>
   </div>
@@ -79,7 +100,7 @@ button,input,select{font-family:inherit}
 <section aria-label="Page banner" style="background:var(--col-bg-primary);color:#fff">
   <div style="max-width:1440px;margin:0 auto;padding:{{ padHero }};display:flex;flex-direction:column;gap:22px">
     <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap">
-      <nav aria-label="Breadcrumb" style="background:#00354c"><ol style="display:flex;align-items:center;flex-wrap:wrap;gap:4px;list-style:none;margin:0;padding:12px 32px;font-size:16px;color:#fff"><li style="display:flex;align-items:center;gap:8px"><a href="/" aria-label="Cultural Collections" style="display:flex;align-items:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 3l9 8h-3v9h-4v-6h-4v6H6v-9H3l9-8z"/></svg><span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Cultural Collections</span></a><svg width="14" height="14" viewBox="0 0 24 24" fill="#fff" aria-hidden="true" style="flex:none"><path d="M9 6l6 6-6 6"/></svg></li><li style="font-weight:600">Search results</li></ol></nav>
+      <nav aria-label="Breadcrumb" style="background:#00354c"><ol style="display:flex;align-items:center;flex-wrap:wrap;gap:4px;list-style:none;margin:0;padding:12px 32px;font-size:16px;color:#fff"><li style="display:flex;align-items:center;gap:8px"><a href="/" aria-label="Cultural Collections" style="display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 3l9 8h-3v9h-4v-6h-4v6H6v-9H3l9-8z"/></svg><span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Cultural Collections</span></a><svg width="14" height="14" viewBox="0 0 24 24" fill="#fff" aria-hidden="true" style="flex:none"><path d="M9 6l6 6-6 6"/></svg></li><li style="font-weight:600">Search results</li></ol></nav>
     </div>
     <div style="display:flex;flex-direction:column;gap:10px;max-width:760px">
       <h1 style="margin:0;font-family:'Fraunces',serif;font-weight:500;font-size:{{ h1Size }};line-height:1.1">Search the Collection</h1>
@@ -100,7 +121,7 @@ button,input,select{font-family:inherit}
       <div ref="{{ ppRef }}" style="position:relative;align-self:flex-start;margin-top:2px">
           <button onClick="{{ togglePP }}" aria-haspopup="listbox" aria-expanded="{{ ppOpen }}" style="display:flex;align-items:center;gap:10px;border:0;background:none;padding:0;font-size:17px;color:var(--col-bg-primary);cursor:pointer">{{ rangeLabel }}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" style="transform:{{ ppChev }};transition:transform .15s"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
           <sc-if value="{{ ppOpen }}">
-            <div role="listbox" style="position:absolute;left:0;top:calc(100% + 6px);z-index:50;min-width:180px;background:#fff;border:1px solid var(--col-bg-primary);display:flex;flex-direction:column;box-shadow:0 6px 16px rgba(10,26,63,.12)">
+            <div role="listbox" style="position:absolute;left:0;top:calc(100% + 6px);z-index:50;min-width:180px;background:#fff;border:1px solid var(--col-bg-primary);display:flex;flex-direction:column;box-shadow:none">
               <sc-for list="{{ ppOpts }}" as="o"><button role="option" aria-selected="{{ o.sel }}" onClick="{{ o.pick }}" style="border:0;background:{{ o.bg }};padding:11px 14px;text-align:left;font-size:16px;color:var(--col-text-primary);cursor:pointer" style-hover="background:#e3f4fb">{{ o.label }}</button></sc-for>
             </div>
           </sc-if>
@@ -110,7 +131,7 @@ button,input,select{font-family:inherit}
       <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;min-width:0">
         <sc-for list="{{ switches }}" as="sw" hint-placeholder-count="2">
           <button onClick="{{ sw.toggle }}" role="switch" aria-checked="{{ sw.on }}" style="display:flex;align-items:center;gap:10px;border:0;background:none;padding:0;cursor:pointer;font-size:14px;font-weight:600;color:var(--col-bg-primary)">
-            <span style="width:38px;height:22px;border-radius:11px;background:{{ sw.trackBg }};flex:none;position:relative;transition:background .15s"><span style="position:absolute;top:2px;left:{{ sw.knobLeft }};width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:left .15s"></span></span>{{ sw.label }}
+            <span style="width:38px;height:22px;border-radius:0;border:1px solid var(--col-bg-primary);background:{{ sw.trackBg }};flex:none;position:relative;transition:background .15s"><span style="position:absolute;top:1px;left:{{ sw.knobLeft }};width:16px;height:16px;border-radius:0;background:#fff;transition:left .15s"></span></span>{{ sw.label }}
           </button>
         </sc-for>
       </div>
@@ -121,13 +142,13 @@ button,input,select{font-family:inherit}
     </div>
   </div>
 </section>
-<div style="position:sticky;top:0;z-index:30;background:#fff;border-bottom:1px solid var(--col-border-neutral-mid);box-shadow:0 4px 12px -8px rgba(10,26,63,.25)">
+<div style="position:sticky;top:0;z-index:30;background:#fff;border-bottom:1px solid var(--col-border-neutral-mid);box-shadow:none">
   <div style="max-width:1440px;margin:0 auto;padding:{{ padBar }};display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap">
     <form role="search" onSubmit="{{ barSubmit }}" style="position:relative;display:flex;flex:1 1 280px;min-width:0;max-width:600px;height:48px;border:1px solid var(--col-bg-primary);background:#fff">
       <div ref="{{ scopeRef }}" style="position:relative;flex:none;display:flex">
         <button type="button" onClick="{{ toggleScope }}" aria-haspopup="listbox" aria-expanded="{{ scopeOpen }}" aria-label="Search in" style="height:100%;display:flex;align-items:center;gap:8px;border:0;border-right:1px solid var(--col-border-neutral-mid);background:#f4f5f8;color:var(--col-bg-primary);padding:0 12px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap">{{ scopeLabel }}<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
         <sc-if value="{{ scopeOpen }}">
-          <div role="listbox" aria-label="Search in" style="position:absolute;left:-1px;top:calc(100% + 1px);z-index:40;min-width:170px;background:#fff;border:1px solid var(--col-bg-primary);display:flex;flex-direction:column;box-shadow:0 6px 16px rgba(10,26,63,.12)">
+          <div role="listbox" aria-label="Search in" style="position:absolute;left:-1px;top:calc(100% + 1px);z-index:40;min-width:170px;background:#fff;border:1px solid var(--col-bg-primary);display:flex;flex-direction:column;box-shadow:none">
             <sc-for list="{{ scopeOpts }}" as="o"><button type="button" role="option" aria-selected="{{ o.sel }}" onClick="{{ o.pick }}" style="border:0;background:{{ o.bg }};padding:11px 14px;text-align:left;font-size:15px;color:var(--col-text-primary);cursor:pointer" style-hover="background:#e3f4fb">{{ o.label }}</button></sc-for>
           </div>
         </sc-if>
@@ -140,7 +161,7 @@ button,input,select{font-family:inherit}
       </div>
       <button type="submit" aria-label="Search" style="width:46px;border:0;border-left:1px solid var(--col-border-neutral-mid);background:#fff;color:#6b7080;cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="color:var(--col-bg-primary)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.5" y1="15.5" x2="21" y2="21"></line></svg></button>
       <sc-if value="{{ sugOpen }}">
-        <div id="search-suggestions" role="listbox" style="position:absolute;left:-1px;right:-1px;top:calc(100% + 1px);z-index:40;background:#fff;border:1px solid var(--col-bg-primary);box-shadow:0 8px 20px rgba(10,26,63,.14);display:flex;flex-direction:column">
+        <div id="search-suggestions" role="listbox" style="position:absolute;left:-1px;right:-1px;top:calc(100% + 1px);z-index:40;background:#fff;border:1px solid var(--col-bg-primary);box-shadow:none;display:flex;flex-direction:column">
           <span style="padding:10px 14px 6px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--col-text-muted)">Suggestions</span>
           <sc-for list="{{ sugs }}" as="g"><button type="button" role="option" aria-selected="{{ g.sel }}" onMouseDown="{{ g.pick }}" style="border:0;background:{{ g.bg }};padding:10px 14px;display:flex;justify-content:space-between;gap:12px;text-align:left;font-size:15px;color:var(--col-text-primary);cursor:pointer" style-hover="background:#e3f4fb"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ g.text }}</span><span style="flex:none;font-size:13px;color:var(--col-text-muted)">{{ g.cat }}</span></button></sc-for>
         </div>
@@ -153,7 +174,7 @@ button,input,select{font-family:inherit}
             <span style="flex:0 0 44px;border-left:1px solid var(--col-bg-primary);display:flex;align-items:center;justify-content:center;color:var(--col-bg-primary)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" style="transform:{{ sortChev }};transition:transform .15s"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
           </button>
           <sc-if value="{{ sortOpen }}">
-            <div role="listbox" style="position:absolute;left:0;right:0;top:100%;z-index:5;background:#fff;border:1px solid var(--col-bg-primary);border-top:0;display:flex;flex-direction:column;box-shadow:0 6px 16px rgba(10,26,63,.12)">
+            <div role="listbox" style="position:absolute;left:0;right:0;top:100%;z-index:5;background:#fff;border:1px solid var(--col-bg-primary);border-top:0;display:flex;flex-direction:column;box-shadow:none">
               <sc-for list="{{ sortOpts }}" as="o">
                 <button role="option" aria-selected="{{ o.sel }}" onClick="{{ o.pick }}" style="border:0;background:{{ o.bg }};padding:12px 14px;text-align:left;font-size:16px;color:var(--col-text-primary);cursor:pointer" style-hover="background:#e3f4fb">{{ o.label }}</button>
               </sc-for>
@@ -162,7 +183,7 @@ button,input,select{font-family:inherit}
         </div>
       <button ref="{{ filterBtnRef }}" onClick="{{ openModal }}" aria-haspopup="dialog" style="height:48px;display:flex;align-items:center;gap:8px;border:1px solid var(--col-bg-primary);background:#fff;color:var(--col-bg-primary);padding:0 16px;font-size:17px;font-weight:600;cursor:pointer" style-hover="background:#f0f2f7">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="18" x2="20" y2="18"></line><line x1="15" y1="3.5" x2="15" y2="8.5"></line><line x1="9" y1="9.5" x2="9" y2="14.5"></line><line x1="13" y1="15.5" x2="13" y2="20.5"></line></svg>Filters
-        <sc-if value="{{ filterCount }}"><span style="min-width:22px;height:22px;padding:0 6px;border-radius:11px;background:var(--col-bg-primary);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">{{ filterCount }}</span></sc-if>
+        <sc-if value="{{ filterCount }}"><span style="min-width:22px;height:22px;padding:0 6px;border-radius:0;background:var(--col-bg-primary);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">{{ filterCount }}</span></sc-if>
       </button>
       <a href="#" style="height:48px;display:flex;align-items:center;gap:8px;white-space:nowrap;border:1px solid var(--col-bg-primary);background:#fff;color:var(--col-bg-primary);padding:0 16px;font-size:17px;font-weight:600;text-decoration:none" style-hover="background:#f0f2f7">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.5" y1="15.5" x2="21" y2="21"></line></svg>Advanced Search</a>
@@ -170,7 +191,7 @@ button,input,select{font-family:inherit}
   </div>
 </div>
 
-<main ref="{{ mainRef }}" style="flex:1;max-width:1440px;width:100%;margin:0 auto;padding:{{ padMain }};display:flex;flex-direction:column;gap:18px">
+<main id="main-content" ref="{{ mainRef }}" style="flex:1;max-width:1440px;width:100%;margin:0 auto;padding:{{ padMain }};display:flex;flex-direction:column;gap:18px">
       <sc-if value="{{ hasActive }}">
           <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
             <sc-for list="{{ chips }}" as="c" hint-placeholder-count="2">
@@ -214,6 +235,9 @@ button,input,select{font-family:inherit}
         <div style="background:#fff;border:1px solid #e3e0d9;padding:48px 24px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center">
           <h3 style="margin:0;font-family:'Fraunces',serif;font-weight:500;font-size:24px">No records match your search</h3>
           <p style="margin:0;color:var(--col-text-muted);font-size:15px">Try removing a filter or broadening your search terms.</p>
+          <sc-if value="{{ showDidYouMean }}">
+            <p style="margin:0;font-size:15px;color:var(--col-text-primary)">Did you mean: <button onClick="{{ applyDidYouMean }}" style="border:0;background:none;padding:0;font-size:15px;font-weight:600;text-decoration:underline;color:#0b2a6b;cursor:pointer">{{ didYouMeanText }}</button>?</p>
+          </sc-if>
           <button onClick="{{ clearAll }}" style="margin-top:8px;border:0;background:var(--col-btn-action-bg);color:var(--col-btn-action-text);padding:10px 18px;font-size:15px;font-weight:600;cursor:pointer">Clear all filters</button>
         </div>
       </sc-if>
@@ -228,7 +252,7 @@ button,input,select{font-family:inherit}
               
               <div style="padding:18px 20px 20px;display:flex;flex-direction:column;gap:8px">
                 <a href="{{ r.href }}" style="font-family:'Fraunces',serif;font-weight:600;font-size:19px;line-height:1.3;color:var(--col-text-primary);text-wrap:pretty">{{ r.title }}</a>
-                <a href="/collections" style="font-size:14px;color:#0b4ea2">{{ r.collection }}</a>
+                <a href="/collections/index.html" style="font-size:14px;color:#0b4ea2">{{ r.collection }}</a>
                 <span style="font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--col-bg-primary)">{{ r.type }}</span>
                 <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:4px;padding-top:12px;border-top:1px solid var(--col-border-neutral-soft)">
                   <span style="display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--col-bg-primary)">
@@ -245,10 +269,11 @@ button,input,select{font-family:inherit}
         <div style="display:flex;flex-direction:column;background:#fff;border:1px solid #e3e0d9">
           <sc-for list="{{ results }}" as="r" hint-placeholder-count="6">
             <article style="display:flex;gap:{{ listGap }};padding:16px;border-bottom:1px solid var(--col-border-neutral-soft);align-items:flex-start" style-hover="background:#fcfbf8">
-              <a href="{{ r.href }}" style="flex:0 0 {{ listImgSize }};height:{{ listImgSize }};position:relative;background:#f4f3f0;overflow:hidden">
-                <sc-if value="{{ r.hasImg }}" hint-placeholder-val="{{ false }}"><img src="{{ r.imgSrc }}" alt="{{ r.title }}" style="position:absolute;inset:6px;width:calc(100% - 12px);height:calc(100% - 12px);object-fit:contain;mix-blend-mode:multiply"></sc-if>
-                <sc-if value="{{ r.noImg }}"><span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#7a7f8c">No image</span></sc-if>
-              </a>
+              <sc-if value="{{ r.hasImg }}" hint-placeholder-val="{{ false }}">
+                <a href="{{ r.href }}" style="flex:0 0 {{ listImgSize }};height:{{ listImgSize }};position:relative;background:#f4f3f0;overflow:hidden">
+                  <img src="{{ r.imgSrc }}" alt="{{ r.title }}" style="position:absolute;inset:6px;width:calc(100% - 12px);height:calc(100% - 12px);object-fit:contain;mix-blend-mode:multiply">
+                </a>
+              </sc-if>
               <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px">
                 <a href="{{ r.href }}" style="font-family:'Fraunces',serif;font-weight:600;font-size:19px;line-height:1.3;color:var(--col-text-primary)">{{ r.title }}</a>
                 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:6px 20px;margin-top:6px;font-size:14px">
@@ -280,11 +305,11 @@ button,input,select{font-family:inherit}
 
 <sc-if value="{{ modal }}">
   <div onClick="{{ closeModal }}" style="position:fixed;inset:0;z-index:100;background:rgba(10,14,25,.55);display:flex;align-items:center;justify-content:center;padding:{{ overlayPad }}">
-    <div ref="{{ dialogRef }}" role="dialog" aria-modal="true" aria-labelledby="filters-title" onClick="{{ stop }}" onKeyDown="{{ trapKey }}" style="width:100%;max-width:800px;height:100%;max-height:{{ dlgMaxH }};background:#fff;border-radius:{{ dlgRadius }};box-shadow:0 24px 64px rgba(0,0,0,.3);display:flex;flex-direction:column;overflow:hidden">
+    <div ref="{{ dialogRef }}" role="dialog" aria-modal="true" aria-labelledby="filters-title" onClick="{{ stop }}" onKeyDown="{{ trapKey }}" style="width:100%;max-width:800px;height:100%;max-height:{{ dlgMaxH }};background:#fff;border-radius:0;box-shadow:none;border:1px solid var(--col-bg-primary);display:flex;flex-direction:column;overflow:hidden">
       <div style="position:relative;flex:none;height:64px;display:flex;align-items:center;justify-content:center;border-bottom:1px solid #ebe8e2">
         <button onClick="{{ toggleAllSections }}" style="position:absolute;left:20px;top:18px;border:0;background:none;padding:4px;font-size:14px;font-weight:600;color:#0b2a6b;text-decoration:underline;cursor:pointer">{{ allSectionsLabel }}</button>
         <h2 id="filters-title" style="margin:0;font-size:18px;font-weight:700;color:var(--col-bg-primary)">Filters</h2>
-        <button onClick="{{ closeModal }}" aria-label="Close filters" style="position:absolute;right:16px;top:14px;width:36px;height:36px;border:0;border-radius:50%;background:none;color:var(--col-text-primary);cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="background:#f2f1ed">
+        <button onClick="{{ closeModal }}" aria-label="Close filters" style="position:absolute;right:16px;top:14px;width:36px;height:36px;border:0;border-radius:0;background:none;color:var(--col-text-primary);cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="background:#f2f1ed">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><line x1="5" y1="5" x2="19" y2="19"></line><line x1="19" y1="5" x2="5" y2="19"></line></svg>
         </button>
       </div>
@@ -293,7 +318,7 @@ button,input,select{font-family:inherit}
           <p style="margin:0;display:flex;gap:8px;align-items:flex-start;font-size:14px;line-height:1.45;color:#4a5577"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9"></circle><line x1="12" y1="11" x2="12" y2="17" stroke-linecap="round"></line><circle cx="12" cy="7.5" r="1.1" fill="currentColor" stroke="none"></circle></svg>Options within a filter are combined with OR. Different filters are combined with AND. Filters stay applied when you search again.</p>
           <div style="display:flex;flex-direction:column;gap:10px">
             <span style="font-size:16px;font-weight:600;color:var(--col-text-primary)">Show only</span>
-            <div style="display:flex;flex-direction:column;gap:14px"><sc-for list="{{ dSwitches }}" as="sw" hint-placeholder-count="2"><button onClick="{{ sw.toggle }}" role="switch" aria-checked="{{ sw.on }}" style="display:flex;align-items:center;gap:10px;border:0;background:none;padding:0;cursor:pointer;font-size:16px;color:var(--col-text-primary)"><span style="width:38px;height:22px;border-radius:11px;background:{{ sw.trackBg }};flex:none;position:relative;transition:background .15s"><span style="position:absolute;top:2px;left:{{ sw.knobLeft }};width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:left .15s"></span></span>{{ sw.label }}</button></sc-for></div>
+            <div style="display:flex;flex-direction:column;gap:14px"><sc-for list="{{ dSwitches }}" as="sw" hint-placeholder-count="2"><button onClick="{{ sw.toggle }}" role="switch" aria-checked="{{ sw.on }}" style="display:flex;align-items:center;gap:10px;border:0;background:none;padding:0;cursor:pointer;font-size:16px;color:var(--col-text-primary)"><span style="width:38px;height:22px;border-radius:0;border:1px solid var(--col-bg-primary);background:{{ sw.trackBg }};flex:none;position:relative;transition:background .15s"><span style="position:absolute;top:1px;left:{{ sw.knobLeft }};width:16px;height:16px;border-radius:0;background:#fff;transition:left .15s"></span></span>{{ sw.label }}</button></sc-for></div>
           </div>
         </div>
         <sc-for list="{{ sections }}" as="sec" hint-placeholder-count="8">
@@ -301,7 +326,7 @@ button,input,select{font-family:inherit}
           <section style="border-bottom:1px solid #ebe8e2">
             <button onClick="{{ sec.toggle }}" aria-expanded="{{ sec.open }}" aria-controls="{{ sec.panelId }}" style="width:100%;border:0;background:none;padding:22px 0;display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;text-align:left">
               <span style="min-width:0;display:flex;flex-direction:column;gap:4px">
-                <span style="display:flex;align-items:center;gap:10px;font-size:20px;font-weight:600;color:var(--col-text-primary)">{{ sec.title }}<sc-if value="{{ sec.badge }}"><span style="min-width:22px;height:22px;padding:0 7px;border-radius:11px;background:var(--col-bg-primary);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">{{ sec.badge }}</span></sc-if></span>
+                <span style="display:flex;align-items:center;gap:10px;font-size:20px;font-weight:600;color:var(--col-text-primary)">{{ sec.title }}<sc-if value="{{ sec.badge }}"><span style="min-width:22px;height:22px;padding:0 7px;border-radius:0;background:var(--col-bg-primary);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">{{ sec.badge }}</span></sc-if></span>
                 <sc-if value="{{ sec.showSummary }}"><span style="font-size:14px;color:#4a5577;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ sec.summary }}</span></sc-if>
               </span>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--col-text-primary)" stroke-width="2.4" style="flex:none;transform:{{ sec.chev }};transition:transform .2s"><polyline points="6 9 12 15 18 9"></polyline></svg>
@@ -317,27 +342,27 @@ button,input,select{font-family:inherit}
                   </div>
                 </sc-if>
                 <sc-if value="{{ sec.isRows }}">
-                  <sc-for list="{{ sec.options }}" as="o"><button onClick="{{ o.toggle }}" disabled="{{ o.disabled }}" role="checkbox" aria-checked="{{ o.ariaChecked }}" style="display:flex;align-items:center;gap:14px;border:0;background:none;padding:9px 0 9px {{ o.indent }};cursor:{{ o.cursor }};text-align:left;font-size:16px;font-weight:{{ o.weight }};color:{{ o.color }}"><span style="flex:0 0 22px;height:22px;border-radius:4px;border:1.5px solid {{ o.boxBorder }};background:{{ o.boxBg }};display:flex;align-items:center;justify-content:center"><sc-if value="{{ o.checked }}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5"><polyline points="4 12 10 18 20 6"></polyline></svg></sc-if><sc-if value="{{ o.partial }}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="4"><line x1="5" y1="12" x2="19" y2="12"></line></svg></sc-if></span><span style="flex:1">{{ o.label }} <span style="color:var(--col-text-muted);font-weight:400">{{ o.countLabel }}</span></span></button></sc-for>
+                  <sc-for list="{{ sec.options }}" as="o"><button onClick="{{ o.toggle }}" disabled="{{ o.disabled }}" role="checkbox" aria-checked="{{ o.ariaChecked }}" style="display:flex;align-items:center;gap:14px;border:0;background:none;padding:9px 0 9px {{ o.indent }};cursor:{{ o.cursor }};text-align:left;font-size:16px;font-weight:{{ o.weight }};color:{{ o.color }}"><span style="flex:0 0 22px;height:22px;border-radius:0;border:1.5px solid {{ o.boxBorder }};background:{{ o.boxBg }};display:flex;align-items:center;justify-content:center"><sc-if value="{{ o.checked }}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5"><polyline points="4 12 10 18 20 6"></polyline></svg></sc-if><sc-if value="{{ o.partial }}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="4"><line x1="5" y1="12" x2="19" y2="12"></line></svg></sc-if></span><span style="flex:1">{{ o.label }} <span style="color:var(--col-text-muted);font-weight:400">{{ o.countLabel }}</span></span></button></sc-for>
                 </sc-if>
                 <sc-if value="{{ sec.empty }}"><span style="font-size:15px;color:var(--col-text-muted);padding:6px 0">No matching options</span></sc-if>
                 <sc-if value="{{ sec.hasMore }}"><button onClick="{{ sec.toggleMore }}" style="align-self:flex-start;margin-top:8px;border:0;background:none;padding:0;font-size:16px;font-weight:600;text-decoration:underline;color:var(--col-text-primary);cursor:pointer">{{ sec.moreLabel }}</button></sc-if>
                 <sc-if value="{{ sec.isDate }}">
                   <span style="font-size:15px;color:var(--col-text-muted)">{{ dateNote }}</span>
                   <div style="position:relative;margin:22px 12px 0;height:80px;display:flex;align-items:flex-end;gap:2px">
-                    <sc-for list="{{ bins }}" as="b" hint-placeholder-count="17"><span title="{{ b.title }}" style="flex:1;height:{{ b.h }};background:{{ b.bg }};border-radius:2px 2px 0 0"></span></sc-for>
+                    <sc-for list="{{ bins }}" as="b" hint-placeholder-count="17"><span title="{{ b.title }}" style="flex:1;height:{{ b.h }};background:{{ b.bg }};border-radius:0"></span></sc-for>
                   </div>
                   <div ref="{{ trackRef }}" style="position:relative;margin:26px 16px 0;height:4px;border-radius:0;background:#e3e0d9">
                     <span style="position:absolute;top:0;height:4px;border-radius:0;left:{{ rangeLeft }};width:{{ rangeWidth }};background:var(--col-bg-primary)"></span>
-                    <button onPointerDown="{{ downFrom }}" aria-label="Earliest year" style="position:absolute;top:-14px;left:{{ rangeLeft }};margin-left:-16px;width:32px;height:32px;border-radius:50%;border:1px solid var(--col-border-neutral);background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.18);cursor:grab;touch-action:none"></button>
+                    <button onPointerDown="{{ downFrom }}" aria-label="Earliest year" style="position:absolute;top:-14px;left:{{ rangeLeft }};margin-left:-16px;width:32px;height:32px;border-radius:0;border:2px solid var(--col-bg-primary);background:#fff;box-shadow:none;cursor:grab;touch-action:none"></button>
                     <span style="position:absolute;top:-38px;left:{{ rangeLeft }};transform:translateX(-50%);font-size:12px;font-weight:700;color:var(--col-bg-primary);background:#fff;padding:1px 5px;border-radius:0;white-space:nowrap">{{ fromYear }}</span>
-                    <button onPointerDown="{{ downTo }}" aria-label="Latest year" style="position:absolute;top:-14px;left:{{ rangeRight }};margin-left:-16px;width:32px;height:32px;border-radius:50%;border:1px solid var(--col-border-neutral);background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.18);cursor:grab;touch-action:none"></button>
+                    <button onPointerDown="{{ downTo }}" aria-label="Latest year" style="position:absolute;top:-14px;left:{{ rangeRight }};margin-left:-16px;width:32px;height:32px;border-radius:0;border:2px solid var(--col-bg-primary);background:#fff;box-shadow:none;cursor:grab;touch-action:none"></button>
                     <span style="position:absolute;top:-38px;left:{{ rangeRight }};transform:translateX(-50%);font-size:12px;font-weight:700;color:var(--col-bg-primary);background:#fff;padding:1px 5px;border-radius:0;white-space:nowrap">{{ toYear }}</span>
                   </div>
                   <div style="display:flex;justify-content:space-between;margin:10px 12px 0;font-size:13px;color:var(--col-text-muted)"><span>{{ domLo }}</span><span>{{ domHi }}</span></div>
                   <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-top:16px">
-                    <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--col-text-muted)">Start year<input inputmode="numeric" value="{{ yInFrom }}" onChange="{{ onYFrom }}" onKeyDown="{{ yKey }}" placeholder="{{ domLo }}" style="width:120px;border:1px solid var(--col-border-neutral);border-radius:0;padding:11px 14px;font-size:16px;color:var(--col-text-primary)"></label>
+                    <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--col-text-muted)">Start year<input inputmode="numeric" value="{{ yInFrom }}" onChange="{{ onYFrom }}" onKeyDown="{{ yKey }}" placeholder="{{ domLo }}" aria-label="Start year" style="width:120px;border:1px solid var(--col-border-neutral);border-radius:0;padding:11px 14px;font-size:16px;color:var(--col-text-primary)"></label>
                     <span style="padding-bottom:12px;color:var(--col-text-muted)">to</span>
-                    <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--col-text-muted)">End year<input inputmode="numeric" value="{{ yInTo }}" onChange="{{ onYTo }}" onKeyDown="{{ yKey }}" placeholder="{{ domHi }}" style="width:120px;border:1px solid var(--col-border-neutral);border-radius:0;padding:11px 14px;font-size:16px;color:var(--col-text-primary)"></label>
+                    <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--col-text-muted)">End year<input inputmode="numeric" value="{{ yInTo }}" onChange="{{ onYTo }}" onKeyDown="{{ yKey }}" placeholder="{{ domHi }}" aria-label="End year" style="width:120px;border:1px solid var(--col-border-neutral);border-radius:0;padding:11px 14px;font-size:16px;color:var(--col-text-primary)"></label>
                     <button onClick="{{ applyYears }}" style="height:46px;border:1px solid var(--col-bg-primary);background:#fff;color:var(--col-bg-primary);border-radius:0;padding:0 18px;font-size:15px;font-weight:600;cursor:pointer" style-hover="background:#f0f2f7">Apply</button>
                     <sc-if value="{{ hasDateRange }}"><button onClick="{{ clearYears }}" style="height:46px;border:0;background:none;padding:0 6px;font-size:15px;font-weight:600;text-decoration:underline;color:var(--col-text-primary);cursor:pointer">Reset</button></sc-if>
                   </div>
@@ -348,9 +373,9 @@ button,input,select{font-family:inherit}
                 </sc-if>
                 <sc-if value="{{ sec.isLife }}">
                   <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap">
-                    <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--col-text-muted)">Born after<input inputmode="numeric" value="{{ sec.birthFromVal }}" onChange="{{ sec.onBirthFrom }}" placeholder="e.g. 1800" style="width:130px;border:1px solid var(--col-border-neutral);border-radius:0;padding:11px 14px;font-size:16px;color:var(--col-text-primary)"></label>
+                    <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--col-text-muted)">Born after<input inputmode="numeric" value="{{ sec.birthFromVal }}" onChange="{{ sec.onBirthFrom }}" placeholder="e.g. 1800" aria-label="Born after" style="width:130px;border:1px solid var(--col-border-neutral);border-radius:0;padding:11px 14px;font-size:16px;color:var(--col-text-primary)"></label>
                     <span style="padding-bottom:12px;color:var(--col-text-muted)">to</span>
-                    <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--col-text-muted)">Born before<input inputmode="numeric" value="{{ sec.birthToVal }}" onChange="{{ sec.onBirthTo }}" placeholder="e.g. 1950" style="width:130px;border:1px solid var(--col-border-neutral);border-radius:0;padding:11px 14px;font-size:16px;color:var(--col-text-primary)"></label>
+                    <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--col-text-muted)">Born before<input inputmode="numeric" value="{{ sec.birthToVal }}" onChange="{{ sec.onBirthTo }}" placeholder="e.g. 1950" aria-label="Born before" style="width:130px;border:1px solid var(--col-border-neutral);border-radius:0;padding:11px 14px;font-size:16px;color:var(--col-text-primary)"></label>
                   </div>
                   <span style="font-size:13px;color:var(--col-text-muted)">Based on birth years found in creator names.</span>
                 </sc-if>
@@ -373,7 +398,7 @@ button,input,select{font-family:inherit}
 
 <sc-if value="{{ ackOpen }}">
   <div style="position:fixed;inset:0;z-index:120;background:rgba(10,14,25,.6);display:flex;align-items:center;justify-content:center;padding:24px 16px">
-    <div role="dialog" aria-modal="true" aria-labelledby="ack-title" style="width:100%;max-width:620px;max-height:100%;overflow-y:auto;background:#fff;border-radius:0;box-shadow:0 24px 64px rgba(0,0,0,.3);display:flex;flex-direction:column">
+    <div role="dialog" aria-modal="true" aria-labelledby="ack-title" style="width:100%;max-width:620px;max-height:100%;overflow-y:auto;background:#fff;border-radius:0;box-shadow:none;border:1px solid var(--col-bg-primary);display:flex;flex-direction:column">
       <div style="padding:28px 32px 8px;display:flex;flex-direction:column;gap:14px">
         <span style="font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--col-advisory-text)">Indigenous Cultural Notification</span>
         <h2 id="ack-title" style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:26px;line-height:1.2;color:var(--col-bg-primary)">Before you explore the collections</h2>
@@ -684,6 +709,114 @@ const uniq = k => [...new Set(ITEMS.flatMap(i => vals(i, k)))];
 const EMPTYF = () => { const f = {digital:true,downloadable:false,sort:'',q:'',scope:'all',collection:[],yFrom:null,yTo:null,accession:'',birthFrom:null,birthTo:null}; KEYS.forEach(k => f[k] = []); return f; };
 const clone = f => JSON.parse(JSON.stringify(f));
 const FOCUSABLE = 'button:not([disabled]),input,a[href],[tabindex]:not([tabindex="-1"])';
+
+// --- CCS-34: Boolean / exact-phrase query parsing -------------------------
+// Tokenizes a raw query string into quoted phrases, AND/OR/NOT operator
+// keywords, and plain words. Quoted text is kept as a single 'phrase' token.
+function tokenizeQuery(q) {
+  const tokens = [];
+  const re = /"([^"]+)"|(\S+)/g;
+  let m;
+  while ((m = re.exec(q))) {
+    if (m[1] !== undefined) tokens.push({ type: 'phrase', value: m[1].toLowerCase() });
+    else {
+      const w = m[2], up = w.toUpperCase();
+      if (up === 'AND' || up === 'OR' || up === 'NOT') tokens.push({ type: 'op', value: up });
+      else tokens.push({ type: 'word', value: w.toLowerCase() });
+    }
+  }
+  return tokens;
+}
+// Evaluates a token stream (from tokenizeQuery) against lowercased searchable
+// text. Left-to-right precedence only (no parentheses) — sufficient for this
+// scope. NOT negates whichever term immediately follows it; the implicit
+// combiner between two terms with no explicit operator between them is AND.
+function evalBooleanQuery(tokens, text) {
+  let result = null, pendingOp = 'AND', negateNext = false;
+  for (const tok of tokens) {
+    if (tok.type === 'op') {
+      if (tok.value === 'NOT') negateNext = true; else pendingOp = tok.value;
+      continue;
+    }
+    let termVal = text.includes(tok.value);
+    if (negateNext) { termVal = !termVal; negateNext = false; }
+    result = result === null ? termVal : (pendingOp === 'OR' ? (result || termVal) : (result && termVal));
+    pendingOp = 'AND';
+  }
+  return result === null ? true : result;
+}
+// Matches a search query against lowercased searchable text. If the query
+// contains explicit AND/OR/NOT keywords, evaluates it as a boolean
+// expression; otherwise falls back to the original behaviour exactly
+// (quoted exact-phrase match, or implicit AND of unquoted words) so
+// existing passing queries are unaffected.
+function matchesQuery(text, q) {
+  const trimmed = (q || '').trim();
+  if (!trimmed) return true;
+  const tokens = tokenizeQuery(trimmed);
+  if (tokens.some(t => t.type === 'op')) return evalBooleanQuery(tokens, text);
+  const m = trimmed.match(/^"(.+)"$/);
+  if (m) return text.includes(m[1].toLowerCase());
+  return trimmed.toLowerCase().split(/\s+/).every(w => text.includes(w));
+}
+
+// --- CCS-158 / CCS-288 / CCS-292 / CCS-293: spelling suggestions ---------
+// Vocabulary of searchable words built once from the actual record data
+// (title, creator, subject, type, material, place) — used to validate
+// candidate corrections so suggestions are genuinely close matches drawn
+// from real terms in the collection, not guesses (CCS-292).
+const VOCAB = (() => {
+  const set = new Set();
+  const addWords = v => { if (!v) return; String(v).toLowerCase().split(/[^a-z0-9]+/).forEach(w => { if (w.length > 1) set.add(w); }); };
+  ITEMS.forEach(it => { addWords(it.title); addWords(it.creator); addWords(it.subject); addWords(it.type); addWords(it.material); addWords(it.place); });
+  return set;
+})();
+// Standard Levenshtein edit distance (vanilla JS, no dependency).
+function levenshtein(a, b) {
+  if (a === b) return 0;
+  const al = a.length, bl = b.length;
+  if (!al) return bl; if (!bl) return al;
+  let prev = Array.from({ length: bl + 1 }, (_, i) => i);
+  for (let i = 1; i <= al; i++) {
+    const cur = [i];
+    for (let j = 1; j <= bl; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + cost);
+    }
+    prev = cur;
+  }
+  return prev[bl];
+}
+// Finds the closest vocabulary word to `word`, or null if `word` is already
+// valid or nothing is close enough. Thresholds (deliberately conservative,
+// sanity-check these): distance <= 2 for words of length >= 4, distance <= 1
+// for shorter words (length 3; words under 3 chars are skipped entirely —
+// too short for edit distance to be meaningful, e.g. "of", "in").
+function closestVocabWord(word) {
+  const w = word.toLowerCase();
+  if (w.length < 3 || VOCAB.has(w)) return null;
+  const maxDist = w.length >= 4 ? 2 : 1;
+  let best = null, bestDist = Infinity;
+  VOCAB.forEach(v => {
+    if (Math.abs(v.length - w.length) > maxDist) return;
+    const d = levenshtein(w, v);
+    if (d < bestDist) { bestDist = d; best = v; }
+  });
+  return bestDist <= maxDist ? best : null;
+}
+// Builds a "did you mean" correction for a query, per-word, independently
+// for every misspelled term — including the last word in a phrase
+// (CCS-288) and each word inside a quoted phrase (CCS-292/293). Returns the
+// corrected query string, or null if no word needed correcting.
+function spellingSuggestion(q) {
+  const trimmed = (q || '').trim();
+  if (!trimmed) return null;
+  const tokens = tokenizeQuery(trimmed).filter(t => t.type !== 'op');
+  let changed = false;
+  const fix = w => { if (VOCAB.has(w)) return w; const c = closestVocabWord(w); if (c) { changed = true; return c; } return w; };
+  const corrected = tokens.map(t => t.type === 'phrase' ? '"' + t.value.split(/\s+/).map(fix).join(' ') + '"' : fix(t.value));
+  return changed ? corrected.join(' ') : null;
+}
 class Component extends DCLogic {
   state = { f:EMPTYF(), loading:false, view:null, notice:true, sideQ:'', modal:false, draft:null, mOpen:{coll:true,type:true,date:true}, fq:{}, more:{}, sortOpen:false, perPage:20, ppOpen:false, page:1, scopeOpen:false, sugOpen:false, sugIdx:-1, yIn:null, yErr:'', counting:false, ackOpen:false, vw: typeof window !== 'undefined' ? window.innerWidth : 1200 };
   trackRef = React.createRef(); bodyRef = React.createRef(); sortRef = React.createRef(); ppRef = React.createRef(); mainRef = React.createRef();
@@ -725,8 +858,7 @@ class Component extends DCLogic {
       if (f.yFrom != null && it.year < f.yFrom) return false;
       if (f.yTo != null && it.year > f.yTo) return false;
     }
-    if (f.q) { const txt = scopeText(it, f.scope).toLowerCase(), q = f.q.toLowerCase().trim(), m = q.match(/^"(.+)"$/);
-      if (m ? !txt.includes(m[1]) : !q.split(/\s+/).every(w => txt.includes(w))) return false; }
+    if (f.q) { const txt = scopeText(it, f.scope).toLowerCase(); if (!matchesQuery(txt, f.q)) return false; }
     return true;
   }
   cnt(f, except, field) { const c = {}; ITEMS.forEach(it => { if (this.matchF(it, f, except)) (field === 'collection' || field === 'named' ? [it[field]].filter(Boolean) : vals(it, field)).forEach(v => c[v] = (c[v] || 0) + 1); }); return c; }
@@ -823,7 +955,7 @@ class Component extends DCLogic {
       onYFrom: e => { const v = e.target.value; this.setState(st => ({ yIn: { ...(st.yIn || {}), from: v } })); }, onYTo: e => { const v = e.target.value; this.setState(st => ({ yIn: { ...(st.yIn || {}), to: v } })); },
       yKey: e => { if (e.key === 'Enter') { e.preventDefault(); setY(); } }, applyYears: setY, yErr: s.yErr,
       hasDateRange: d.yFrom != null || d.yTo != null, clearYears: () => { this.setState({ yIn: null, yErr: '' }); this.setDraft(dd => ({ ...dd, yFrom: null, yTo: null })); },
-      overlayPad: sheet ? '0' : '32px 16px', dlgRadius: sheet ? '0' : '14px', dlgMaxH: sheet ? 'none' : '860px', bodyPad: sheet ? '20px' : '32px',
+      overlayPad: sheet ? '0' : '32px 16px', dlgRadius: '0', dlgMaxH: sheet ? 'none' : '860px', bodyPad: sheet ? '20px' : '32px',
       allSectionsLabel: allOpen ? 'Collapse all' : 'Expand all',
       toggleAllSections: () => this.setState({ mOpen: Object.fromEntries(FACETS.map(F => [F.key, !allOpen])) }),
       trapKey: e => { if (e.key !== 'Tab' || !this.dialogRef.current) return; const els = [...this.dialogRef.current.querySelectorAll(FOCUSABLE)]; if (!els.length) return;
@@ -851,7 +983,7 @@ class Component extends DCLogic {
     if (f.sort === 'old') list = [...list].sort((a, b) => (a.year ?? 1e9) - (b.year ?? 1e9));
     const results = list.map((it, idx) => {
       const licIcons = LIC[it.licence][2] || [];
-      return { ...it, href: '/collections/record?id=' + it.id, img: it.img ? '../images/' + it.img + '.jpg' : null, imgSrc: it.img ? '../images/' + it.img + '.jpg' : '', ar: it.img ? RATIO[it.img].join(' / ') : 'auto', delay: Math.min(idx, 12) * 35 + 'ms', hasImg: it.img != null && it.img !== '', noImg: !it.img,
+      return { ...it, href: '/collections/record.html?id=' + it.id, img: it.img ? '../images/' + it.img + '.jpg' : null, imgSrc: it.img ? '../images/' + it.img + '.jpg' : '', ar: it.img ? RATIO[it.img].join(' / ') : 'auto', delay: Math.min(idx, 12) * 35 + 'ms', hasImg: it.img != null && it.img !== '', noImg: !it.img,
         dateLabel: it.year ? 'c. ' + it.year : 'Undated', typeLic: it.type + ' · ' + LIC[it.licence][1], licIcon: LIC[it.licence][0], licLabel: LIC[it.licence][1], licIcons, hasLicIcons: licIcons.length > 0 };
     });
     const n = results.length, pageCount = Math.max(1, Math.ceil(n / s.perPage)), page = Math.min(s.page, pageCount);
@@ -859,6 +991,10 @@ class Component extends DCLogic {
     const q2 = s.sideQ.trim().toLowerCase();
     const sugList = q2.length >= 2 ? TERMS.filter(t => (f.scope === 'all' || t.sc === f.scope) && t.text.toLowerCase().includes(q2)).slice(0, 6) : [];
     const runQ = q => { this.setState({ sideQ: '', sugOpen: false, sugIdx: -1 }); this.apply(ff => ({ ...ff, q })); };
+    // CCS-158/288/292/293: only offer a spelling correction once a search has
+    // genuinely come back with zero results for a real query (matches the
+    // existing isEmpty/no-results threshold below) — never on a healthy result set.
+    const didYouMeanText = (!s.loading && n === 0 && f.q) ? spellingSuggestion(f.q) : null;
     const mob = s.vw < 640, sm = s.vw < 420;
     return {
       padHero: mob ? '16px 16px 24px' : '20px 32px 36px', h1Size: sm ? '26px' : mob ? '30px' : '40px',
@@ -914,6 +1050,7 @@ class Component extends DCLogic {
       clearAll: () => this.apply(ff => ({ ...EMPTYF(), sort: ff.sort })),
       skeletons: (n ? results.slice(0, 12).map(r => ({ ar: r.hasImg ? r.ar : 'auto', imgDisplay: r.hasImg ? 'block' : 'none' })) : SKEL.slice(0, 6).map(x => ({ ar: '1 / ' + (x / 300), imgDisplay: 'block' }))),
       results: results.slice((page - 1) * s.perPage, page * s.perPage), isGrid: !s.loading && view === 'masonry' && n > 0, isList: !s.loading && view === 'list' && n > 0, isEmpty: !s.loading && n === 0,
+      showDidYouMean: !!didYouMeanText, didYouMeanText, applyDidYouMean: () => runQ(didYouMeanText),
       modal: s.modal, closeModal: () => this.closeModal(), stop: e => e.stopPropagation(),
       bodyRef: this.bodyRef, trackRef: this.trackRef, dialogRef: this.dialogRef,
       ackOpen: s.ackOpen, acceptAck: () => { try { localStorage.setItem('ccs-cultural-ack', '1'); } catch (e) {} this.setState({ ackOpen: false }); }
@@ -935,7 +1072,7 @@ class Component extends DCLogic {
   <div class="footer-nav" style="max-width: 1400px; margin: 0 auto 48px;">
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 32px;">
       <div>
-        <h4 style="margin: 0 0 16px 0; font-size: 15px; font-weight: 600; color: #fff;">About us</h4>
+        <h3 style="margin: 0 0 16px 0; font-size: 15px; font-weight: 600; color: #fff;">About us</h3>
         <ul style="list-style: none; padding: 0; margin: 0;">
           <li style="margin-bottom: 12px;"><a href="https://www.unimelb.edu.au/about" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px;">About us</a></li>
           <li style="margin-bottom: 12px;"><a href="https://www.unimelb.edu.au/careers" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px;">Careers at Melbourne</a></li>
@@ -944,7 +1081,7 @@ class Component extends DCLogic {
         </ul>
       </div>
       <div>
-        <h4 style="margin: 0 0 16px 0; font-size: 15px; font-weight: 600; color: #fff;">Support</h4>
+        <h3 style="margin: 0 0 16px 0; font-size: 15px; font-weight: 600; color: #fff;">Support</h3>
         <ul style="list-style: none; padding: 0; margin: 0;">
           <li style="margin-bottom: 12px;"><a href="https://www.unimelb.edu.au/contact" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px;">Contact</a></li>
           <li style="margin-bottom: 12px;"><a href="https://www.unimelb.edu.au/campus-locations" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px;">Campus locations</a></li>

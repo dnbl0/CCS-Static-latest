@@ -66,8 +66,13 @@
     // Toggle sidebar visibility
     toggleSidebar() {
       const sidebar = document.querySelector('#item-media-sidebar');
+      const btn = document.querySelector('#toggle-media-sidebar');
       if(sidebar) {
-        sidebar.classList.toggle('open');
+        const isOpen = sidebar.classList.toggle('open');
+        if(btn) {
+          btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+          btn.setAttribute('title', isOpen ? 'Hide media metadata (I)' : 'Show media metadata (I)');
+        }
       }
     },
 
@@ -183,11 +188,33 @@
     }
   };
 
+  function updateHeaderHeight() {
+    const header = document.querySelector('section[aria-label="Site header"]');
+    const nav = document.querySelector('section[aria-label="Page navigation"]');
+    const total = (header ? header.offsetHeight : 0) + (nav ? nav.offsetHeight : 0);
+    if (total > 0) {
+      document.documentElement.style.setProperty('--header-total-height', total + 'px');
+    }
+  }
+
   // Initialize when DOM is ready
-  if(document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => KeyboardShortcuts.init());
-  } else {
+  function initAll() {
     KeyboardShortcuts.init();
+    updateHeaderHeight();
+    window.addEventListener('resize', updateHeaderHeight);
+    if (window.ResizeObserver) {
+      const ro = new ResizeObserver(() => updateHeaderHeight());
+      const header = document.querySelector('section[aria-label="Site header"]');
+      const nav = document.querySelector('section[aria-label="Page navigation"]');
+      if (header) ro.observe(header);
+      if (nav) ro.observe(nav);
+    }
+  }
+
+  if(document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAll);
+  } else {
+    initAll();
   }
 
   // Expose for external control if needed
@@ -197,6 +224,7 @@
 <x-dc>
 <helmet><style>
 :root{
+  --header-total-height: 212px;
   --col-bg-primary:#000f46;
   --col-bg-primary-dark:#000b34;
   --col-bg-primary-hover:#213e5d;
@@ -235,30 +263,46 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:#0b2a6b;text-decoration:under
 button,input{font-family:inherit}
 
 /* Fullscreen optimizations */
+[role="region"][aria-label="Item media"]:not(:fullscreen),
+section[aria-label="Item media"]:not(:fullscreen){max-height:calc(85vh - var(--header-total-height, 212px))!important}
 [role="region"][aria-label="Item media"]:fullscreen{background:#000;display:flex;align-items:center;justify-content:center;max-height:100vh}
 [role="region"][aria-label="Item media"]:fullscreen #item-media-sidebar{display:none;width:0}
 [role="region"][aria-label="Item media"]:fullscreen > div:last-child{width:100%;height:100%;display:flex;flex-direction:column}
 [role="region"][aria-label="Item media"]:fullscreen img{max-width:100vw;max-height:100vh}
 
 /* Sidebar open state */
-#item-media-sidebar.open{width:340px}
+#item-media-sidebar {
+  width: 0 !important;
+  max-width: 0 !important;
+  overflow: hidden !important;
+  visibility: hidden;
+  border-right: none !important;
+  transition: width .3s ease, visibility .3s ease;
+}
+#item-media-sidebar.open {
+  width: 340px !important;
+  max-width: 340px !important;
+  visibility: visible !important;
+  overflow-y: auto !important;
+  border-right: 1px solid #e7e7e9 !important;
+}
 
 /* Fullscreen toolbar - minimal and fades */
-.fs-toolbar{position:fixed;bottom:24px;right:24px;display:flex;gap:8px;background:rgba(0,0,0,.8);padding:12px 16px;border-radius:6px;backdrop-filter:blur(10px);opacity:1;transition:opacity .3s ease;z-index:999}
+.fs-toolbar{position:fixed;bottom:24px;right:24px;display:flex;gap:8px;background:rgba(0,0,0,.85);padding:12px 16px;border-radius:0;backdrop-filter:blur(10px);opacity:1;transition:opacity .3s ease;z-index:999}
 .fs-toolbar:hover{opacity:1}
-.fs-toolbar button{width:40px;height:40px;border:0;background:rgba(255,255,255,.1);color:#fff;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:4px;transition:all .2s ease}
+.fs-toolbar button{width:40px;height:40px;border:0;background:rgba(255,255,255,.1);color:#fff;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:0;transition:all .2s ease}
 .fs-toolbar button:hover{background:rgba(255,255,255,.2);color:#fff}
 
 /* Keyboard shortcut hints */
-.keyboard-hint{position:fixed;bottom:24px;left:24px;background:rgba(0,0,0,.8);color:#fff;padding:12px 16px;border-radius:6px;font-size:12px;backdrop-filter:blur(10px);z-index:999;pointer-events:none;opacity:0;transition:opacity .3s ease}
+.keyboard-hint{position:fixed;bottom:24px;left:24px;background:rgba(0,0,0,.85);color:#fff;padding:12px 16px;border-radius:0;font-size:12px;backdrop-filter:blur(10px);z-index:999;pointer-events:none;opacity:0;transition:opacity .3s ease}
 .keyboard-hint.show{opacity:1;pointer-events:auto}
-.keyboard-hint kbd{background:rgba(255,255,255,.1);padding:2px 6px;border-radius:3px;font-family:monospace;margin:0 2px}
+.keyboard-hint kbd{background:rgba(255,255,255,.1);padding:2px 6px;border-radius:0;font-family:monospace;margin:0 2px}
 
 /* Europeana-style Media Viewer - Responsive */
 @media(max-width:768px){
   [role="region"][aria-label="Item media"]{flex-direction:column!important}
-  #item-media-sidebar{width:100%!important;max-height:200px;border-right:none!important;border-bottom:1px solid #e7e7e9!important}
-  #item-media-sidebar > div:nth-child(2){max-height:150px}
+  #item-media-sidebar.open{width:100%!important;max-width:100%!important;max-height:220px;border-right:none!important;border-bottom:1px solid #e7e7e9!important}
+  #item-media-sidebar.open > div:nth-child(2){max-height:160px}
   [role="region"][aria-label="Item media"] > div:last-child{flex:1}
 }
 
@@ -269,7 +313,7 @@ button,input{font-family:inherit}
 
 /* High resolution displays */
 @media(min-width:1600px){
-  #item-media-sidebar{width:380px!important}
+  #item-media-sidebar.open{width:380px!important;max-width:380px!important}
 }
 
 /* Fullscreen on mobile */
@@ -321,12 +365,17 @@ button,input{font-family:inherit}
 </section>
 
 <sc-if value="{{ rec.hasDA }}" hint-placeholder-val="{{ false }}">
-<section ref="{{ viewerRef }}" aria-label="Item media" style="display:flex;width:100%;max-height:85vh;background:#1a1a1a;border-bottom:1px solid #e7e7e9;overflow:hidden">
-  <!-- Left Sidebar: Metadata (Europeana style, closed by default) -->
-  <aside id="item-media-sidebar" role="region" aria-label="Media metadata" style="width:0;flex-shrink:0;background:#fff;overflow-y:auto;border-right:1px solid #e7e7e9;display:flex;flex-direction:column;transition:width .3s ease;position:relative;z-index:10">
-    <div style="display:flex;align-items:center;gap:10px;padding:18px 20px;border-bottom:1px solid #e7e7e9">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0066cc" stroke-width="2"><list style="margin: 0;"></list><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-      <h2 style="margin:0;font-size:16px;font-weight:600;color:#1a1a1a">Media metadata</h2>
+<section ref="{{ viewerRef }}" role="region" aria-label="Item media" style="display:flex;width:100%;max-height:calc(85vh - var(--header-total-height, 212px));background:#1a1a1a;border-bottom:1px solid #e7e7e9;overflow:hidden">
+  <!-- Left Sidebar: Metadata (Europeana style, closed by default, toggled via info button) -->
+  <aside id="item-media-sidebar" role="region" aria-label="Media metadata" style="flex-shrink:0;background:#fff;display:flex;flex-direction:column;position:relative;z-index:10">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #e7e7e9">
+      <div style="display:flex;align-items:center;gap:10px">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00354c" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+        <h2 style="margin:0;font-size:16px;font-weight:600;color:#1a1a1a">Media metadata</h2>
+      </div>
+      <button onClick="{{ toggleSidebar }}" aria-label="Close media metadata" title="Close media metadata (Esc)" style="width:32px;height:32px;border:0;background:none;cursor:pointer;color:#555;padding:0;display:flex;align-items:center;justify-content:center;border-radius:0" style-hover="color:#000">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
     </div>
     <div style="flex:1;overflow-y:auto">
       <ul style="margin:0;padding:0;list-style:none">
@@ -348,12 +397,15 @@ button,input{font-family:inherit}
 
     <!-- Bottom Toolbar -->
     <div style="flex-shrink:0;height:56px;background:#fff;border-top:1px solid #e7e7e9;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 16px">
-      <span style="font-size:12px;color:#999">Press <kbd style="background:#f0f0f0;padding:2px 6px;border-radius:3px;font-family:monospace">?</kbd> for shortcuts</span>
-      <div style="display:flex;gap:12px">
+      <span style="font-size:12px;color:#999">Press <kbd style="background:#f0f0f0;padding:2px 6px;border-radius:0;font-family:monospace">?</kbd> for shortcuts</span>
+      <div style="display:flex;gap:12px;align-items:center">
+        <button id="toggle-media-sidebar" onClick="{{ toggleSidebar }}" aria-label="{{ sidebarLabel }}" aria-expanded="{{ sidebarOpen }}" aria-controls="item-media-sidebar" title="{{ sidebarLabel }} (I)" style="width:40px;height:40px;border:0;background:none;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--col-bg-primary);transition:color .2s ease" style-hover="color:var(--col-bg-primary-hover)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+        </button>
         <sc-if value="{{ canDownload }}">
-          <a href="{{ curImg }}" download="" aria-label="Download image" title="Download image (D)" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;color:#0066cc;transition:color .2s ease;text-decoration:none" style-hover="color:#003d99"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m-5-4l5 4 5-4M3 19h18" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
+          <a href="{{ curImg }}" download="" aria-label="Download image" title="Download image (D)" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;color:var(--col-bg-primary);transition:color .2s ease;text-decoration:none" style-hover="color:var(--col-bg-primary-hover)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m-5-4l5 4 5-4M3 19h18" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
         </sc-if>
-        <button onClick="{{ toggleFull }}" onKeyDown="if(event.key==='f'||event.key==='F') window.MediaViewer?.toggleFullscreen(document.querySelector('[role=\"region\"][aria-label=\"Item media\"]'))" aria-label="{{ fullLabel }}" title="{{ fullLabel }} (F)" style="width:40px;height:40px;border:0;background:none;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#0066cc;transition:color .2s ease" style-hover="color:#003d99"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 9 4 4 9 4"></polyline><polyline points="15 4 20 4 20 9"></polyline><polyline points="20 15 20 20 15 20"></polyline><polyline points="9 20 4 20 4 15"></polyline></svg></button>
+        <button onClick="{{ toggleFull }}" onKeyDown="if(event.key==='f'||event.key==='F') window.MediaViewer?.toggleFullscreen(document.querySelector('[role=\"region\"][aria-label=\"Item media\"]'))" aria-label="{{ fullLabel }}" title="{{ fullLabel }} (F)" style="width:40px;height:40px;border:0;background:none;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--col-bg-primary);transition:color .2s ease" style-hover="color:var(--col-bg-primary-hover)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 9 4 4 9 4"></polyline><polyline points="15 4 20 4 20 9"></polyline><polyline points="20 15 20 20 15 20"></polyline><polyline points="9 20 4 20 4 15"></polyline></svg></button>
       </div>
     </div>
 
@@ -361,22 +413,14 @@ button,input{font-family:inherit}
     <sc-if value="{{ multi }}" hint-placeholder-val="{{ false }}">
       <div style="flex-shrink:0;height:56px;background:#fff;border-top:1px solid #e7e7e9;display:flex;align-items:center;justify-content:space-between;padding:0 16px">
         <nav aria-label="Media pages" style="display:flex;align-items:center;gap:8px">
-          <button onClick="{{ prevImg }}" disabled="{{ atFirst }}" aria-label="Previous" title="Previous" style="width:32px;height:32px;border:1px solid #ddd;background:#fff;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#0066cc;transition:all .2s ease;border-radius:3px" style-hover="background:#f0f0f0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+          <button onClick="{{ prevImg }}" disabled="{{ atFirst }}" aria-label="Previous" title="Previous" style="width:32px;height:32px;border:1px solid #ddd;background:#fff;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--col-bg-primary);transition:all .2s ease;border-radius:0;min-width:40px;min-height:40px" style-hover="background:#f0f0f0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
           <span style="font-size:13px;white-space:nowrap;color:#666;padding:0 8px">{{ imgCount }}</span>
-          <button onClick="{{ nextImg }}" disabled="{{ atLast }}" aria-label="Next" title="Next" style="width:32px;height:32px;border:1px solid #ddd;background:#fff;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#0066cc;transition:all .2s ease;border-radius:3px" style-hover="background:#f0f0f0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+          <button onClick="{{ nextImg }}" disabled="{{ atLast }}" aria-label="Next" title="Next" style="width:32px;height:32px;border:1px solid #ddd;background:#fff;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--col-bg-primary);transition:all .2s ease;border-radius:0;min-width:40px;min-height:40px" style-hover="background:#f0f0f0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
         </nav>
       </div>
     </sc-if>
   </div>
 </section>
-</sc-if>
-<sc-if value="{{ noDA }}">
-  <section aria-label="No digital asset" style="background:#f1f0ec;border-bottom:1px solid #e3e0d9">
-    <div style="max-width:1200px;margin:0 auto;padding:40px 32px;display:flex;align-items:center;gap:16px;color:#4a5577">
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14"></rect><circle cx="8.5" cy="10" r="1.5"></circle><path d="M21 16l-5-5-9 8"></path><line x1="3" y1="3" x2="21" y2="21"></line></svg>
-      <div style="display:flex;flex-direction:column;gap:2px"><strong style="font-size:17px;color:var(--col-bg-primary)">No digital asset available</strong><span style="font-size:15px">This record has no image or media yet. Contact the collection to ask about access.</span></div>
-    </div>
-  </section>
 </sc-if>
 
 <header style="background:#fff;border-bottom:1px solid #e3e0d9">
@@ -659,10 +703,17 @@ class Component extends DCLogic {
 
   componentDidMount() {
     this.onFs = () => this.setState({ full: !!document.fullscreenElement });
-    this.onKey = e => { if (e.key === 'Escape' && this.state.sidebar) this.setSidebar(false); };
+    this.onKey = e => {
+      if (['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return;
+      if (e.key === 'Escape' && this.state.sidebar) this.setSidebar(false);
+      if (e.key === 'i' || e.key === 'I') {
+        e.preventDefault();
+        this.setSidebar(!this.state.sidebar);
+      }
+    };
     document.addEventListener('fullscreenchange', this.onFs);
     window.addEventListener('keydown', this.onKey);
-    if (location.hash === '#metadata') this.setState({ sidebar: true });
+    if (location.hash === '#metadata') this.setSidebar(true);
     if (!window.CCS) this.poll = setInterval(() => { if (window.CCS) { clearInterval(this.poll); this.setState({ ready: true }); } }, 60);
   }
   componentWillUnmount() {
@@ -673,6 +724,16 @@ class Component extends DCLogic {
   componentDidUpdate(pp) { if (pp.record !== this.props.record) this.setState({ idx: 0 }); }
   setSidebar(open) {
     this.setState({ sidebar: open });
+    const sidebar = document.querySelector('#item-media-sidebar');
+    const btn = document.querySelector('#toggle-media-sidebar');
+    if (sidebar) {
+      if (open) sidebar.classList.add('open');
+      else sidebar.classList.remove('open');
+    }
+    if (btn) {
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      btn.setAttribute('title', open ? 'Hide media metadata (I)' : 'Show media metadata (I)');
+    }
     try { history.replaceState(null, '', open ? location.pathname + location.search + '#metadata' : location.pathname + location.search); } catch (e) {}
   }
   flash(key, text) {
