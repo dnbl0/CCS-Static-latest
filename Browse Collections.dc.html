@@ -21,6 +21,9 @@
   --col-btn-primary-bg:#000f46;
   --col-btn-primary-bg-hover:#213e5d;
   --col-btn-primary-text:#fff;
+  --col-btn-action-bg:#46c8f0;
+  --col-btn-action-bg-hover:#29b3d9;
+  --col-btn-action-text:#000f46;
   --col-btn-outline:#000f46;
   --col-text-primary:#1b1f2a;
   --col-text-onbrand:#fff;
@@ -66,7 +69,7 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
         <label style="flex:1;min-width:0;display:flex;align-items:center"><span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Search Cross Collections</span>
           <input value="{{ headerQ }}" onChange="{{ onHeaderQ }}" placeholder="Search Cross Collections…" style="width:100%;min-width:0;border:0;background:none;padding:0 12px;font-size:17px;color:var(--col-text-muted);outline:none">
         </label>
-        <button type="submit" aria-label="Submit search" style="flex:none;display:flex;align-items:center;justify-content:center;border-left:1px solid var(--col-bg-primary);background:var(--col-bg-accent);color:var(--col-bg-primary);padding:0 12px;cursor:pointer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.5" y1="15.5" x2="21" y2="21"></line></svg></button>
+        <button type="submit" aria-label="Submit search" style="flex:none;display:flex;align-items:center;justify-content:center;border-left:1px solid var(--col-bg-primary);background:var(--col-btn-action-bg);color:var(--col-btn-action-text);padding:0 12px;cursor:pointer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.5" y1="15.5" x2="21" y2="21"></line></svg></button>
       </form>
     </search>
     <div style="display:flex;min-height:65px;width:100%;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:12px 24px;background:var(--col-bg-primary)">
@@ -111,7 +114,7 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
     </div>
     <div class="collections-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:24px">
       <sc-for list="{{ collections }}" as="c" hint-placeholder-count="5">
-        <a href="{{ c.href }}" style="display:flex;flex-direction:column;background:#fff;border:1px solid #e3e0d9;text-decoration:none;color:var(--col-text-primary);transition:box-shadow .2s,transform .2s" style-hover="box-shadow:0 10px 26px rgba(10,26,63,.14);transform:translateY(-2px);text-decoration:none">
+        <a href="{{ c.href }}" style="display:flex;flex-direction:column;background:#fff;border:1px solid #e3e0d9;text-decoration:none;color:var(--col-text-primary);transition:box-shadow .2s,transform .2s" style-hover="transform:translateY(-2px);text-decoration:none">
           <sc-if value="{{ c.hasImg }}" hint-placeholder-val="{{ false }}"><div style="width:100%;aspect-ratio:4 / 3;background:#f4f3f0;overflow:hidden"><img src="{{ c.imgSrc }}" alt="" style="width:100%;height:100%;object-fit:cover;display:block"></div></sc-if>
           <sc-if value="{{ c.noImg }}"><div style="width:100%;aspect-ratio:4 / 3;background:var(--col-bg-selected);display:flex;align-items:center;justify-content:center;color:#4a5577;font-size:13px;font-weight:600;text-align:center;padding:12px">Image to come</div></sc-if>
           <div style="display:flex;flex-direction:column;gap:6px;padding:18px 20px;flex:1">
@@ -127,7 +130,7 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
     <h2 id="h-themes" style="margin:0;font-family:'Fraunces',serif;font-weight:500;font-size:32px;color:var(--col-text-primary)">Explore by object</h2>
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px">
       <sc-for list="{{ themes }}" as="t" hint-placeholder-count="6">
-        <a href="{{ t.href }}" style="position:relative;display:flex;align-items:flex-end;aspect-ratio:4 / 3;background:var(--col-bg-primary);overflow:hidden;text-decoration:none;transition:box-shadow .2s" style-hover="text-decoration:none;box-shadow:0 10px 26px rgba(10,26,63,.25)">
+        <a href="{{ t.href }}" style="position:relative;display:flex;align-items:flex-end;aspect-ratio:4 / 3;background:var(--col-bg-primary);overflow:hidden;text-decoration:none;transition:box-shadow .2s" style-hover="text-decoration:none">
           <sc-if value="{{ t.hasImg }}" hint-placeholder-val="{{ false }}"><img src="{{ t.imgSrc }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></sc-if>
           <span aria-hidden="true" style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,15,70,0) 45%,rgba(0,15,70,.88) 100%)"></span>
           <span style="position:relative;padding:16px;font-family:'Fraunces',serif;font-size:19px;font-weight:600;color:#fff">{{ t.name }}</span>

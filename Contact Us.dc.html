@@ -13,6 +13,9 @@
   --col-bg-primary-dark:#000b34;
   --col-bg-primary-hover:#213e5d;
   --col-bg-accent:#abc1a7;
+  --col-btn-action-bg:#46c8f0;
+  --col-btn-action-bg-hover:#29b3d9;
+  --col-btn-action-text:#000f46;
   --col-bg-selected:#e8edf6;
   --col-text-primary:#1b1f2a;
   --col-text-muted:#5b6070;
@@ -30,7 +33,7 @@ a{color:#0b2a6b;text-decoration:underline;text-underline-offset:2px}a:hover{colo
 *{box-sizing:border-box}
       .btn{border-radius:0!important}
 /* Gen3-brand overrides on top of Bootstrap defaults */
-.btn-primary{--bs-btn-bg:var(--col-bg-primary);--bs-btn-border-color:var(--col-bg-primary);--bs-btn-hover-bg:var(--col-bg-primary-hover);--bs-btn-hover-border-color:var(--col-bg-primary-hover)}
+.btn-primary{--bs-btn-bg:var(--col-btn-action-bg);--bs-btn-border-color:var(--col-btn-action-bg);--bs-btn-color:var(--col-btn-action-text);--bs-btn-hover-bg:var(--col-btn-action-bg-hover);--bs-btn-hover-border-color:var(--col-btn-action-bg-hover);--bs-btn-hover-color:var(--col-btn-action-text)}
 .btn-outline-primary{--bs-btn-color:var(--col-bg-primary);--bs-btn-border-color:var(--col-bg-primary);--bs-btn-hover-bg:var(--col-bg-primary);--bs-btn-hover-border-color:var(--col-bg-primary)}
 .card{border-color:#e3e0d9;border-radius:0}
 .fw-serif{font-family:'Fraunces',serif}
@@ -47,7 +50,7 @@ a{color:#0b2a6b;text-decoration:underline;text-underline-offset:2px}a:hover{colo
         <label style="flex:1;min-width:0;display:flex;align-items:center"><span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Search Cross Collections</span>
           <input value="{{ headerQ }}" onChange="{{ onHeaderQ }}" placeholder="Search Cross Collections…" style="width:100%;min-width:0;border:0;background:none;padding:0 12px;font-size:17px;color:var(--col-text-muted);outline:none">
         </label>
-        <button type="submit" aria-label="Submit search" style="flex:none;display:flex;align-items:center;justify-content:center;border-left:1px solid var(--col-bg-primary);background:var(--col-bg-accent);color:var(--col-bg-primary);padding:0 12px;cursor:pointer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.5" y1="15.5" x2="21" y2="21"></line></svg></button>
+        <button type="submit" aria-label="Submit search" style="flex:none;display:flex;align-items:center;justify-content:center;border-left:1px solid var(--col-bg-primary);background:var(--col-btn-action-bg);color:var(--col-btn-action-text);padding:0 12px;cursor:pointer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.5" y1="15.5" x2="21" y2="21"></line></svg></button>
       </form>
     </search>
     <div style="display:flex;min-height:65px;width:100%;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:12px 24px;background:var(--col-bg-primary)">

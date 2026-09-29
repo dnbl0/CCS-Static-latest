@@ -35,6 +35,9 @@
       --col-btn-primary-bg-hover: #213e5d;
       --col-btn-primary-text: #fff;
       --col-btn-outline: #000f46;
+      --col-btn-action-bg: #46c8f0;
+      --col-btn-action-bg-hover: #29b3d9;
+      --col-btn-action-text: #000f46;
       --col-text-primary: #1b1f2a;
       --col-text-onbrand: #fff;
       --col-text-muted: #5b6070;
@@ -137,8 +140,8 @@
     .search-form button {
       flex: 0 0 auto;
       border: none;
-      background: var(--col-bg-accent);
-      color: var(--col-bg-primary);
+      background: var(--col-btn-action-bg);
+      color: var(--col-btn-action-text);
       padding: 0 16px;
       cursor: pointer;
       transition: all 0.2s ease;
@@ -194,12 +197,12 @@
     }
 
     .hero .search-form button {
-      background: var(--col-bg-primary);
-      color: #fff;
+      background: var(--col-btn-action-bg);
+      color: var(--col-btn-action-text);
     }
 
     .hero .search-form button:hover {
-      background: var(--col-bg-primary-hover);
+      background: var(--col-btn-action-bg-hover);
     }
 
     .hero .search-form {
@@ -219,12 +222,12 @@
 
     .hero .search-form button {
       border-left: 1px solid var(--col-border-neutral-mid);
-      background: var(--col-bg-primary);
-      color: #fff;
+      background: var(--col-btn-action-bg);
+      color: var(--col-btn-action-text);
     }
 
     .hero .search-form button:hover {
-      background: var(--col-bg-primary-hover);
+      background: var(--col-btn-action-bg-hover);
     }
 
     .section-title {
@@ -308,7 +311,6 @@
       background: var(--col-bg-accent);
       text-decoration: none;
       transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,0,0,.12);
     }
 
     .quick-link-card h3 {
@@ -403,7 +405,7 @@
             placeholder="Search the collection"
             style="border: 0; font-size: 15px;"
           >
-          <button type="submit" class="btn btn-secondary p-0" aria-label="Submit search" style="width: 48px; border: none;">
+          <button type="submit" class="btn btn-secondary p-0" aria-label="Submit search" style="width: 48px; border: none; background-color: var(--col-btn-action-bg) !important; color: var(--col-btn-action-text) !important;">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
               <circle cx="10.5" cy="10.5" r="6.5"></circle>
               <line x1="15.5" y1="15.5" x2="21" y2="21"></line>

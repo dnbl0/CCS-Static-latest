@@ -20,6 +20,9 @@
   --col-btn-primary-bg:#000f46;
   --col-btn-primary-bg-hover:#213e5d;
   --col-btn-primary-text:#fff;
+  --col-btn-action-bg:#46c8f0;
+  --col-btn-action-bg-hover:#29b3d9;
+  --col-btn-action-text:#000f46;
   --col-btn-outline:#000f46;
   --col-text-primary:#1b1f2a;
   --col-text-onbrand:#fff;
@@ -57,7 +60,7 @@ button,input{font-family:inherit}
         <label style="flex:1;min-width:0;display:flex;align-items:center"><span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Search Cross Collections</span>
           <input value="{{ headerQ }}" onChange="{{ onHeaderQ }}" placeholder="Search Cross Collections…" style="width:100%;min-width:0;border:0;background:none;padding:0 12px;font-size:17px;color:var(--col-text-muted);outline:none">
         </label>
-        <button type="submit" aria-label="Submit search" style="flex:none;display:flex;align-items:center;justify-content:center;border-left:1px solid var(--col-bg-primary);background:var(--col-bg-accent);color:var(--col-bg-primary);padding:0 12px;cursor:pointer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.5" y1="15.5" x2="21" y2="21"></line></svg></button>
+        <button type="submit" aria-label="Submit search" style="flex:none;display:flex;align-items:center;justify-content:center;border-left:1px solid var(--col-bg-primary);background:var(--col-btn-action-bg);color:var(--col-btn-action-text);padding:0 12px;cursor:pointer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.5" y1="15.5" x2="21" y2="21"></line></svg></button>
       </form>
     </search>
     <div style="display:flex;min-height:65px;width:100%;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:12px 24px;background:var(--col-bg-primary)">
@@ -106,7 +109,7 @@ button,input{font-family:inherit}
       </sc-if>
       <div style="display:flex;flex-direction:column;gap:20px">
         <sc-for list="{{ rest }}" as="c" hint-placeholder-count="4">
-          <a href="{{ c.href }}" style="display:flex;align-items:center;gap:16px;background:#fff;border:1px solid #e3e0d9;padding:16px;text-decoration:none;color:var(--col-text-primary);transition:box-shadow .2s" style-hover="box-shadow:0 10px 26px rgba(10,26,63,.14);text-decoration:none">
+          <a href="{{ c.href }}" style="display:flex;align-items:center;gap:16px;background:#fff;border:1px solid #e3e0d9;padding:16px;text-decoration:none;color:var(--col-text-primary);transition:box-shadow .2s" style-hover=";text-decoration:none">
             <sc-if value="{{ c.hasImg }}" hint-placeholder-val="{{ false }}"><div style="flex:none;width:88px;height:88px;background:#f4f3f0;overflow:hidden"><img src="{{ c.img }}" alt="" style="width:100%;height:100%;object-fit:cover;display:block"></div></sc-if>
             <sc-if value="{{ c.noImg }}"><div style="flex:none;width:88px;height:88px;background:var(--col-bg-selected);display:flex;align-items:center;justify-content:center;color:#4a5577;font-size:11px;font-weight:600;text-align:center;line-height:1.2;padding:4px">Image to come</div></sc-if>
             <div style="display:flex;flex-direction:column;gap:3px;min-width:0">

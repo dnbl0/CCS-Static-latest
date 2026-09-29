@@ -19,6 +19,9 @@
   --col-btn-primary-bg:#000f46;
   --col-btn-primary-bg-hover:#213e5d;
   --col-btn-primary-text:#fff;
+  --col-btn-action-bg:#46c8f0;
+  --col-btn-action-bg-hover:#29b3d9;
+  --col-btn-action-text:#000f46;
   --col-btn-outline:#000f46;
   --col-text-primary:#1b1f2a;
   --col-text-onbrand:#fff;
@@ -59,7 +62,7 @@ button,input,select{font-family:inherit}
         <label style="flex:1;min-width:0;display:flex;align-items:center"><span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Search Cross Collections</span>
           <input value="{{ headerQ }}" onChange="{{ onHeaderQ }}" placeholder="Search Cross Collections…" style="width:100%;min-width:0;border:0;background:none;padding:0 12px;font-size:17px;color:var(--col-text-muted);outline:none">
         </label>
-        <button type="submit" aria-label="Submit search" style="flex:none;display:flex;align-items:center;justify-content:center;border-left:1px solid var(--col-bg-primary);background:var(--col-bg-accent);color:var(--col-bg-primary);padding:0 12px;cursor:pointer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.5" y1="15.5" x2="21" y2="21"></line></svg></button>
+        <button type="submit" aria-label="Submit search" style="flex:none;display:flex;align-items:center;justify-content:center;border-left:1px solid var(--col-bg-primary);background:var(--col-btn-action-bg);color:var(--col-btn-action-text);padding:0 12px;cursor:pointer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.5" y1="15.5" x2="21" y2="21"></line></svg></button>
       </form>
     </search>
     <div style="display:flex;min-height:65px;width:100%;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:12px 24px;background:var(--col-bg-primary)">
@@ -213,14 +216,14 @@ button,input,select{font-family:inherit}
         <div style="background:#fff;border:1px solid #e3e0d9;padding:48px 24px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center">
           <h3 style="margin:0;font-family:'Fraunces',serif;font-weight:500;font-size:24px">No records match your search</h3>
           <p style="margin:0;color:var(--col-text-muted);font-size:15px">Try removing a filter or broadening your search terms.</p>
-          <button onClick="{{ clearAll }}" style="margin-top:8px;border:0;background:var(--col-bg-primary);color:#fff;padding:10px 18px;font-size:15px;font-weight:600;cursor:pointer">Clear all filters</button>
+          <button onClick="{{ clearAll }}" style="margin-top:8px;border:0;background:var(--col-btn-action-bg);color:var(--col-btn-action-text);padding:10px 18px;font-size:15px;font-weight:600;cursor:pointer">Clear all filters</button>
         </div>
       </sc-if>
 
       <sc-if value="{{ isGrid }}" hint-placeholder-val="{{ true }}">
         <div style="display:contents">
           <sc-for list="{{ results }}" as="r" hint-placeholder-count="9">
-            <article style="break-inside:avoid;margin:0 0 20px;position:relative;animation:cardIn .35s ease both;animation-delay:{{ r.delay }};background:#fff;border:1px solid #e3e0d9;box-shadow:0 1px 2px rgba(10,26,63,.06);display:flex;flex-direction:column;transition:box-shadow .2s" style-hover="box-shadow:0 10px 26px rgba(10,26,63,.14)">
+            <article style="break-inside:avoid;margin:0 0 20px;position:relative;animation:cardIn .35s ease both;animation-delay:{{ r.delay }};background:#fff;border:1px solid #e3e0d9;display:flex;flex-direction:column;transition:box-shadow .2s" style-hover="">
               <sc-if value="{{ r.hasImg }}" hint-placeholder-val="{{ false }}">
                 <a href="{{ r.href }}" style="display:block;background:#f4f3f0;line-height:0;aspect-ratio:{{ r.ar }};overflow:hidden"><img src="{{ r.imgSrc }}" alt="{{ r.title }}" decoding="async" style="display:block;width:100%;height:100%;object-fit:cover;animation:imgIn .5s ease both"></a>
               </sc-if>
@@ -362,7 +365,7 @@ button,input,select{font-family:inherit}
         <button onClick="{{ clearDraft }}" style="border:0;background:none;padding:10px 8px;font-size:16px;font-weight:600;text-decoration:underline;color:{{ clearColor }};cursor:pointer">Clear all</button>
         <div style="display:flex;align-items:center;gap:14px">
           <sc-if value="{{ zeroDraft }}"><span style="font-size:14px;color:var(--col-text-muted)">Remove a filter to see results</span></sc-if>
-          <button onClick="{{ applyModal }}" disabled="{{ applyDisabled }}" aria-live="polite" style="border:0;background:{{ applyBg }};color:#fff;border-radius:0;padding:14px 24px;font-size:16px;font-weight:600;cursor:{{ applyCursor }};min-width:190px;display:flex;align-items:center;justify-content:center;gap:10px">
+          <button onClick="{{ applyModal }}" disabled="{{ applyDisabled }}" aria-live="polite" style="border:0;background:{{ applyBg }};color:{{ applyColor }};border-radius:0;padding:14px 24px;font-size:16px;font-weight:600;cursor:{{ applyCursor }};min-width:190px;display:flex;align-items:center;justify-content:center;gap:10px">
             <sc-if value="{{ counting }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="animation:spin .8s linear infinite"><path d="M12 3a9 9 0 1 0 9 9"></path></svg></sc-if>{{ showLabel }}</button>
         </div>
       </div>
@@ -382,7 +385,7 @@ button,input,select{font-family:inherit}
       </div>
       <div style="padding:20px 32px 28px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
         <a href="/help?topic=indigenous" style="font-size:15px;font-weight:600;text-decoration:underline">Indigenous Cultural Data and Access</a>
-        <button onClick="{{ acceptAck }}" style="border:0;background:var(--col-bg-primary);color:#fff;border-radius:0;padding:14px 26px;font-size:16px;font-weight:600;cursor:pointer" style-hover="background:var(--col-bg-primary-hover)">I understand, continue</button>
+        <button onClick="{{ acceptAck }}" style="border:0;background:var(--col-btn-action-bg);color:var(--col-btn-action-text);border-radius:0;padding:14px 26px;font-size:16px;font-weight:600;cursor:pointer" style-hover="background:var(--col-btn-action-bg-hover)">I understand, continue</button>
       </div>
     </div>
   </div>
@@ -830,7 +833,7 @@ class Component extends DCLogic {
       clearColor: draftActive ? 'var(--col-text-primary)' : '#a3a7b0', counting: s.counting, zeroDraft: !s.counting && dN === 0,
       clearDraft: () => this.setDraft(dd => ({ ...EMPTYF(), sort: dd.sort, q: dd.q, scope: dd.scope })),
       showLabel: s.counting ? 'Updating…' : dN ? 'Show ' + dN + ' ' + (dN === 1 ? 'record' : 'records') : 'No records match',
-      applyDisabled: s.counting || dN === 0, applyBg: (s.counting || dN === 0) ? '#8a93a8' : 'var(--col-bg-primary)', applyCursor: (s.counting || dN === 0) ? 'default' : 'pointer',
+      applyDisabled: s.counting || dN === 0, applyBg: (s.counting || dN === 0) ? '#8a93a8' : 'var(--col-btn-action-bg)', applyColor: (s.counting || dN === 0) ? '#fff' : 'var(--col-btn-action-text)', applyCursor: (s.counting || dN === 0) ? 'default' : 'pointer',
       applyModal: () => { if (s.counting || dN === 0) return; const nd = clone(this.state.draft); this.closeModal(); this.apply(() => nd); }
     };
   }

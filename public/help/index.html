@@ -19,6 +19,9 @@
   --col-btn-primary-bg:#000f46;
   --col-btn-primary-bg-hover:#213e5d;
   --col-btn-primary-text:#fff;
+  --col-btn-action-bg:#46c8f0;
+  --col-btn-action-bg-hover:#29b3d9;
+  --col-btn-action-text:#000f46;
   --col-btn-outline:#000f46;
   --col-text-primary:#1b1f2a;
   --col-text-onbrand:#fff;
@@ -54,7 +57,7 @@ html{scroll-behavior:smooth}
         <label style="flex:1;min-width:0;display:flex;align-items:center"><span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Search Cross Collections</span>
           <input value="{{ headerQ }}" onChange="{{ onHeaderQ }}" placeholder="Search Cross Collections…" style="width:100%;min-width:0;border:0;background:none;padding:0 12px;font-size:17px;color:var(--col-text-muted);outline:none">
         </label>
-        <button type="submit" aria-label="Submit search" style="flex:none;display:flex;align-items:center;justify-content:center;border-left:1px solid var(--col-bg-primary);background:var(--col-bg-accent);color:var(--col-bg-primary);padding:0 12px;cursor:pointer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.5" y1="15.5" x2="21" y2="21"></line></svg></button>
+        <button type="submit" aria-label="Submit search" style="flex:none;display:flex;align-items:center;justify-content:center;border-left:1px solid var(--col-bg-primary);background:var(--col-btn-action-bg);color:var(--col-btn-action-text);padding:0 12px;cursor:pointer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.5" y1="15.5" x2="21" y2="21"></line></svg></button>
       </form>
     </search>
     <div style="display:flex;min-height:65px;width:100%;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:12px 24px;background:var(--col-bg-primary)">
@@ -94,7 +97,7 @@ html{scroll-behavior:smooth}
 <section aria-label="Help topics" style="background:#fff;border-bottom:1px solid #e3e0d9">
   <div style="max-width:1200px;margin:0 auto;padding:40px 32px 48px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px">
     <sc-for list="{{ topics }}" as="t" hint-placeholder-count="6">
-      <a href="{{ t.href }}" style="display:flex;flex-direction:column;gap:16px;padding:26px 24px;border:1px solid #e3e0d9;border-top:3px solid transparent;background:#fff;text-decoration:none;color:var(--col-text-primary);transition:border-color .15s,box-shadow .15s,transform .15s" style-hover="border-color:var(--col-bg-primary);box-shadow:0 10px 26px rgba(10,26,63,.12);transform:translateY(-2px)">
+      <a href="{{ t.href }}" style="display:flex;flex-direction:column;gap:16px;padding:26px 24px;border:1px solid #e3e0d9;border-top:3px solid transparent;background:#fff;text-decoration:none;color:var(--col-text-primary);transition:border-color .15s,box-shadow .15s,transform .15s" style-hover="border-color:var(--col-bg-primary);transform:translateY(-2px)">
         <span style="width:44px;height:44px;border-radius:50%;background:var(--col-bg-selected);color:var(--col-bg-primary);display:flex;align-items:center;justify-content:center;flex:none">{{ t.icon }}</span>
         <div style="display:flex;flex-direction:column;gap:8px;flex:1">
           <strong style="font-family:'Fraunces',serif;font-weight:600;font-size:20px;line-height:1.25;color:var(--col-bg-primary)">{{ t.title }}</strong>
