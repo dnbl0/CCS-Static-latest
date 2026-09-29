@@ -69,6 +69,10 @@ button,input,select{font-family:inherit}
 @keyframes cardIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes shimmer{0%{background-position:-600px 0}100%{background-position:600px 0}}
+.date-range-handle{box-shadow:0 1px 4px rgba(0,0,0,.25);transition:box-shadow .15s}
+.date-range-handle:hover{box-shadow:0 2px 6px rgba(11,20,45,.3)}
+.date-range-handle:focus-visible{box-shadow:0 1px 4px rgba(0,0,0,.25),0 0 0 4px rgba(11,20,45,.18);outline:none}
+.date-range-handle:active{box-shadow:0 2px 8px rgba(11,20,45,.4)}
 </style>
 </helmet>
 <div style="min-height:100vh;display:flex;flex-direction:column">
@@ -348,17 +352,16 @@ button,input,select{font-family:inherit}
                 <sc-if value="{{ sec.hasMore }}"><button onClick="{{ sec.toggleMore }}" style="align-self:flex-start;margin-top:8px;border:0;background:none;padding:0;font-size:16px;font-weight:600;text-decoration:underline;color:var(--col-text-primary);cursor:pointer">{{ sec.moreLabel }}</button></sc-if>
                 <sc-if value="{{ sec.isDate }}">
                   <span style="font-size:15px;color:var(--col-text-muted)">{{ dateNote }}</span>
-                  <div style="position:relative;margin:22px 12px 0;height:80px;display:flex;align-items:flex-end;gap:2px">
-                    <sc-for list="{{ bins }}" as="b" hint-placeholder-count="17"><span title="{{ b.title }}" style="flex:1;height:{{ b.h }};background:{{ b.bg }};border-radius:0"></span></sc-for>
+                  <div style="position:relative;margin:22px 16px 0;height:64px;display:flex;align-items:flex-end;gap:3px">
+                    <sc-for list="{{ bins }}" as="b" hint-placeholder-count="17"><span title="{{ b.title }}" style="flex:1;min-width:2px;height:{{ b.h }};background:{{ b.bg }};border-radius:0;transition:background .15s"></span></sc-for>
                   </div>
-                  <div ref="{{ trackRef }}" style="position:relative;margin:26px 16px 0;height:4px;border-radius:0;background:#e3e0d9">
-                    <span style="position:absolute;top:0;height:4px;border-radius:0;left:{{ rangeLeft }};width:{{ rangeWidth }};background:var(--col-bg-primary)"></span>
-                    <button onPointerDown="{{ downFrom }}" onKeyDown="{{ fromKey }}" role="slider" aria-orientation="horizontal" aria-valuenow="{{ fromYear }}" aria-valuemin="{{ domLo }}" aria-valuemax="{{ fromMax }}" aria-describedby="date-range-hint" tabindex="0" aria-label="Earliest year" style="position:absolute;top:-14px;left:{{ rangeLeft }};margin-left:-16px;width:32px;height:32px;border-radius:0;border:2px solid var(--col-bg-primary);background:#fff;box-shadow:none;cursor:grab;touch-action:none"></button>
-                    <span style="position:absolute;top:-38px;left:{{ rangeLeft }};transform:translateX(-50%);font-size:12px;font-weight:700;color:var(--col-bg-primary);background:#fff;padding:1px 5px;border-radius:0;white-space:nowrap">{{ fromYear }}</span>
-                    <button onPointerDown="{{ downTo }}" onKeyDown="{{ toKey }}" role="slider" aria-orientation="horizontal" aria-valuenow="{{ toYear }}" aria-valuemin="{{ toMin }}" aria-valuemax="{{ domHi }}" aria-describedby="date-range-hint" tabindex="0" aria-label="Latest year" style="position:absolute;top:-14px;left:{{ rangeRight }};margin-left:-16px;width:32px;height:32px;border-radius:0;border:2px solid var(--col-bg-primary);background:#fff;box-shadow:none;cursor:grab;touch-action:none"></button>
-                    <span style="position:absolute;top:-38px;left:{{ rangeRight }};transform:translateX(-50%);font-size:12px;font-weight:700;color:var(--col-bg-primary);background:#fff;padding:1px 5px;border-radius:0;white-space:nowrap">{{ toYear }}</span>
+                  <div ref="{{ trackRef }}" style="position:relative;margin:0 16px;height:24px">
+                    <div style="position:absolute;top:50%;left:0;right:0;height:4px;border-radius:0;background:#e3e0d9;transform:translateY(-50%)"></div>
+                    <span style="position:absolute;top:50%;height:4px;border-radius:0;left:{{ rangeLeft }};width:{{ rangeWidth }};background:var(--col-bg-primary);transform:translateY(-50%)"></span>
+                    <button class="date-range-handle" onPointerDown="{{ downFrom }}" onKeyDown="{{ fromKey }}" role="slider" aria-orientation="horizontal" aria-valuenow="{{ fromYear }}" aria-valuemin="{{ domLo }}" aria-valuemax="{{ fromMax }}" aria-describedby="date-range-hint" tabindex="0" aria-label="Earliest year" style="position:absolute;top:50%;left:{{ rangeLeft }};margin-left:-11px;transform:translateY(-50%);width:22px;height:22px;border-radius:50%;border:1.5px solid var(--col-bg-primary);background:#fff;cursor:grab;touch-action:none"></button>
+                    <button class="date-range-handle" onPointerDown="{{ downTo }}" onKeyDown="{{ toKey }}" role="slider" aria-orientation="horizontal" aria-valuenow="{{ toYear }}" aria-valuemin="{{ toMin }}" aria-valuemax="{{ domHi }}" aria-describedby="date-range-hint" tabindex="0" aria-label="Latest year" style="position:absolute;top:50%;left:{{ rangeRight }};margin-left:-11px;transform:translateY(-50%);width:22px;height:22px;border-radius:50%;border:1.5px solid var(--col-bg-primary);background:#fff;cursor:grab;touch-action:none"></button>
                   </div>
-                  <div style="display:flex;justify-content:space-between;margin:10px 12px 0;font-size:13px;color:var(--col-text-muted)"><span>{{ domLo }}</span><span>{{ domHi }}</span></div>
+                  <div style="display:flex;justify-content:space-between;margin:10px 16px 0;font-size:13px;color:var(--col-text-muted)"><span>{{ domLo }}</span><span>{{ domHi }}</span></div>
                   <span id="date-range-hint" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Arrow keys adjust this handle by one year, Home and End jump to the minimum and maximum. The Start year and End year fields below are also a valid way to set this range.</span>
                   <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-top:16px">
                     <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--col-text-muted)">Start year<input inputmode="numeric" value="{{ yInFrom }}" onChange="{{ onYFrom }}" onKeyDown="{{ yKey }}" placeholder="{{ domLo }}" aria-label="Start year" style="width:120px;border:1px solid var(--col-border-neutral);border-radius:0;padding:11px 14px;font-size:16px;color:var(--col-text-primary)"></label>
