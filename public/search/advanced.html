@@ -676,7 +676,7 @@ const SCOPES = [['all','All fields'],['title','Title'],['creator','Creator'],['s
 const scopeText = (it, sc) => sc === 'title' ? it.title : sc === 'creator' ? it.creator : sc === 'subject' ? it.subject : [it.title, it.creator, it.collection, it.named, it.type, it.subject, it.material, it.place, it.culture, ...(it.assoc || [])].filter(Boolean).join(' ');
 const TERMS = (() => { const m = new Map(); const add = (t, cat, sc) => { if (t && !m.has(t + cat)) m.set(t + cat, { text: t, cat, sc }); };
   ITEMS.forEach(it => { add(it.title, 'Title', 'title'); if (!/unknown|Staff photographer|^Japanese$/.test(it.creator)) add(it.creator, 'Creator', 'creator'); add(it.subject, 'Subject', 'subject'); add(it.place, 'Place', 'all'); add(it.material, 'Material', 'all'); }); return [...m.values()]; })();
-const LIC = {'Public Domain':['PD','Public domain',['images/cc/pd.svg']],'Rights Reserved':['cc','In copyright',[]],'CC BY':['cc','CC BY',['images/cc/cc.svg','images/cc/by.svg']],'CC BY-SA':['cc','CC BY-SA',['images/cc/cc.svg','images/cc/by.svg','images/cc/sa.svg']]};
+const LIC = {'Public Domain':['PD','Public domain',['../images/cc/pd.svg']],'Rights Reserved':['cc','In copyright',[]],'CC BY':['cc','CC BY',['../images/cc/cc.svg','../images/cc/by.svg']],'CC BY-SA':['cc','CC BY-SA',['../images/cc/cc.svg','../images/cc/by.svg','../images/cc/sa.svg']]};
 const SORTS = [['rel','Relevance'],['new','Date (newest)'],['old','Date (oldest)'],['az','Title A-Z']];
 const RATIO = {kangaroo:[676,762],cary:[676,816],goodenia:[680,426],grandfather:[680,547],heavy:[680,497],bottle:[676,944],vase:[676,948],compound:[676,944],inro1:[680,830],bottle2:[676,952],eucalypt:[590,157],dimalan:[676,429],inro2:[680,826],cabinet:[680,490],dimalan2:[676,436],piano:[680,347],inro3:[680,830],eucryphia:[676,719],'macintosh-web':[1600,1068],'calculator-web':[1600,1200],tsukioka:[600,338],'potentiometer-web':[1600,1034],'blower-web':[1600,1200],electrometer:[789,592],carbsoda:[1333,2000],toiletjar:[1333,2000],filmposter:[1522,2000],crookes:[250,376],pipes:[768,513],necklace:[2000,1328]};
 const SKEL = [300,200,340,240,280,190,320,230,260];
@@ -852,7 +852,7 @@ class Component extends DCLogic {
     if (f.sort === 'old') list = [...list].sort((a, b) => (a.year ?? 1e9) - (b.year ?? 1e9));
     const results = list.map((it, idx) => {
       const licIcons = LIC[it.licence][2] || [];
-      return { ...it, href: '/collections/record?id=' + it.id, img: it.img ? 'images/' + it.img + '.jpg' : null, imgSrc: it.img ? 'images/' + it.img + '.jpg' : '', ar: it.img ? RATIO[it.img].join(' / ') : 'auto', delay: Math.min(idx, 12) * 35 + 'ms', hasImg: it.img != null && it.img !== '', noImg: !it.img,
+      return { ...it, href: '/collections/record?id=' + it.id, img: it.img ? '../images/' + it.img + '.jpg' : null, imgSrc: it.img ? '../images/' + it.img + '.jpg' : '', ar: it.img ? RATIO[it.img].join(' / ') : 'auto', delay: Math.min(idx, 12) * 35 + 'ms', hasImg: it.img != null && it.img !== '', noImg: !it.img,
         dateLabel: it.year ? 'c. ' + it.year : 'Undated', typeLic: it.type + ' · ' + LIC[it.licence][1], licIcon: LIC[it.licence][0], licLabel: LIC[it.licence][1], licIcons, hasLicIcons: licIcons.length > 0 };
     });
     const n = results.length, pageCount = Math.max(1, Math.ceil(n / s.perPage)), page = Math.min(s.page, pageCount);
