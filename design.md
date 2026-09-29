@@ -863,6 +863,132 @@ For detailed file navigation, see:
 - `.reorganization/DIRECTORY-REFERENCE.md` - Complete file lookup
 - `.reorganization/REORGANIZATION-PLAN.md` - Structure rationale
 - `.reorganization/DATA-MAPPING.md` - Data organization
+- `.reorganization/IA-SITEMAP-RESTRUCTURE.md` - URL structure and IA implementation
+
+---
+
+## Information Architecture & Sitemap
+
+### Clean URL Structure
+
+All pages use semantic, REST-friendly URLs:
+
+**Home & Search**:
+- `/` → Home page
+- `/search` → Basic keyword search
+- `/search/advanced` → Advanced search interface
+
+**Collections**:
+- `/collections` → Browse all collections
+- `/collections/grainger-museum` → Grainger Museum
+- `/collections/harry-brookes-allen-museum` → Harry Brookes Allen Museum
+- `/collections/henry-forman-atkinson-dental-museum` → Henry Forman Atkinson Dental Museum
+- `/collections/medical-history-museum` → Medical History Museum
+- `/collections/university-art-collection` → University Art Collection
+- `/collections/record?id=X` → Individual collection item with media viewer
+
+**Support & Resources**:
+- `/help` → Help and guidance
+- `/help/faqs` → Frequently asked questions
+- `/contact` → Contact form
+
+### Page Nesting
+
+All pages organized under `/public` directory maintaining semantic structure:
+
+```
+public/
+├── index.html                    # / (home)
+├── search.html                   # /search
+├── contact.html                  # /contact
+├── search/
+│   └── advanced.html             # /search/advanced
+├── collections/
+│   ├── index.html                # /collections
+│   ├── record.html               # /collections/record
+│   ├── grainger-museum.html
+│   ├── harry-brookes-allen-museum.html
+│   ├── henry-forman-atkinson-dental-museum.html
+│   ├── medical-history-museum.html
+│   └── university-art-collection.html
+└── help/
+    └── index.html                # /help
+```
+
+---
+
+## Footer Implementation
+
+### UoM Footer Design
+
+All pages include the official University of Melbourne footer with:
+
+**Acknowledgement of Country** (top):
+- Wurundjeri land acknowledgement
+- Italicized, serif typography
+- Full width, prominent placement
+
+**Main Navigation** (grid layout):
+- About us: About, Careers, Safety, Newsroom
+- Support: Contact, Campus Locations, Emergency
+- Links route to official UoM URLs
+
+**Secondary Navigation** (horizontal):
+- Accessibility, Privacy, Terms & Privacy
+- Copyright notice
+
+### Footer Styling
+
+**Visual Design**:
+- Background: Navy #000f46 (primary brand color)
+- Text: White (#ffffff) with 80% opacity for secondary content
+- Borders: Subtle white borders with 10% opacity
+- Layout: Responsive grid (1 col mobile → 2 col desktop)
+
+**Typography**:
+- Headers: 15px, 600 weight (Source Sans 3)
+- Body links: 14px, regular weight
+- Secondary links: 13px, regular weight
+- Line height: 1.6 (accessible reading)
+
+**Interaction**:
+- Links: Underline on hover
+- Color: Remain white on hover (no color change on navy)
+- Focus: Visible outline for keyboard navigation
+
+**Structure**:
+```html
+<footer class="site-footer">
+  <div class="footer-acknowledgement">
+    <!-- Wurundjeri acknowledgement -->
+  </div>
+  
+  <nav class="footer-nav">
+    <!-- Main navigation in grid -->
+  </nav>
+  
+  <div class="footer-secondary">
+    <!-- Secondary links + copyright -->
+  </div>
+</footer>
+```
+
+### External Link References
+
+All footer links point to official University of Melbourne URLs:
+
+| Link | URL |
+|------|-----|
+| About us | https://www.unimelb.edu.au/about |
+| Careers | https://www.unimelb.edu.au/careers |
+| Safety | https://www.unimelb.edu.au/safety |
+| Newsroom | https://www.unimelb.edu.au/newsroom |
+| Contact | https://www.unimelb.edu.au/contact |
+| Campus Locations | https://www.unimelb.edu.au/campus-locations |
+| Emergency | https://www.unimelb.edu.au/emergency |
+| Accessibility | https://www.unimelb.edu.au/accessibility |
+| Privacy | https://www.unimelb.edu.au/privacy |
+| Terms & Privacy | https://www.unimelb.edu.au/terms-and-privacy |
 
 ---
 

@@ -141,32 +141,83 @@ Caption:       12px
 
 ## Architecture
 
+### URL Structure & Sitemap
+
+```
+/ (Home)
+├── /search                    # Basic keyword search
+├── /search/advanced           # Advanced search interface
+├── /collections               # Browse all collections
+├── /collections/{name}        # Collection-specific pages
+│   ├── /collections/grainger-museum
+│   ├── /collections/harry-brookes-allen-museum
+│   ├── /collections/henry-forman-atkinson-dental-museum
+│   ├── /collections/medical-history-museum
+│   └── /collections/university-art-collection
+├── /collections/record        # Individual record + media viewer
+├── /help                      # Help & guidance documentation
+└── /contact                   # Contact form
+
+Footer Links (External UoM URLs):
+├── About us → https://www.unimelb.edu.au/about
+├── Careers → https://www.unimelb.edu.au/careers
+├── Safety → https://www.unimelb.edu.au/safety
+├── Newsroom → https://www.unimelb.edu.au/newsroom
+├── Contact → https://www.unimelb.edu.au/contact
+├── Campus Locations → https://www.unimelb.edu.au/campus-locations
+├── Emergency → https://www.unimelb.edu.au/emergency
+├── Accessibility → https://www.unimelb.edu.au/accessibility
+├── Privacy → https://www.unimelb.edu.au/privacy
+└── Terms & Privacy → https://www.unimelb.edu.au/terms-and-privacy
+```
+
 ### Directory Structure
 
 ```
 CCS-Static/
-├── index.html                    # Main landing page
-├── Collection Search v3.dc.html  # Advanced search
-├── Browse Collections.dc.html    # Collection browsing
-├── Collection Landing.dc.html    # Collection details
-├── Collection Record.dc.html     # Individual record + media viewer
-├── Help and Support.dc.html      # Help & documentation
-├── Contact Us.dc.html            # Contact information
-├── components/                   # Design system components
-│   ├── fig-tokens.css           # Design tokens
-│   ├── fig-assets.css           # Asset styles
-│   └── [118+ additional]         # Theme & component styles
-├── images/                       # Collection images (45 files)
-├── assets/                       # Documentation & data (23 folders)
-├── collection-data.js           # Collection data
-├── support.js                   # Utility functions
-├── image-slot.js                # Image handling
-├── design.md                    # Design system documentation
-├── README.md                    # This file
-├── jira-mvp-mapping.md         # MVP requirements mapping
+├── public/                           # Web root (semantic URLs)
+│   ├── index.html                   # Home /
+│   ├── search.html                  # /search
+│   ├── contact.html                 # /contact
+│   ├── search/
+│   │   └── advanced.html            # /search/advanced
+│   ├── collections/
+│   │   ├── index.html               # /collections
+│   │   ├── record.html              # /collections/record
+│   │   ├── grainger-museum.html     # /collections/grainger-museum
+│   │   ├── harry-brookes-allen-museum.html
+│   │   ├── henry-forman-atkinson-dental-museum.html
+│   │   ├── medical-history-museum.html
+│   │   └── university-art-collection.html
+│   ├── help/
+│   │   └── index.html               # /help
+│   ├── styles/                      # CSS files
+│   ├── assets/                      # Images, data, documents
+│   └── pages/                       # Legacy pages (archived)
+├── components/                      # Design system components
+│   ├── fig-tokens.css              # Design tokens
+│   ├── fig-assets.css              # Asset styles
+│   └── [118+ additional]            # Theme & component styles
+├── src/
+│   └── js/                          # JavaScript utilities
+│       ├── utils/
+│       │   ├── helpers.js
+│       │   └── image-handler.js
+│       └── modules/
+├── images/                          # Collection images (70+ files)
+├── assets/                          # Documentation & data
+├── docs/                            # Developer documentation
+├── config/                          # Configuration files
+├── scripts/                         # Utility scripts
+├── .reorganization/                 # Reorganization documentation
+├── collection-data.js               # Collection metadata
+├── support.js                       # Utility functions
+├── design.md                        # Design system documentation
+├── README.md                        # This file
+├── jira-mvp-mapping.md             # MVP requirements mapping
 └── .github/
     └── workflows/
-        └── auto-merge.yml       # GitHub Actions automation
+        └── auto-merge.yml           # GitHub Actions automation
 ```
 
 ### Page Hierarchy
