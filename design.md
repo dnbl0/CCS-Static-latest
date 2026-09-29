@@ -1038,10 +1038,45 @@ Browse Collections and Collection Landing previously had zero `@media` queries. 
 
 ---
 
+## Gen 3 Compliance Audit (Live-Verified)
+
+Audited against the actual rendered `designsystem.web.unimelb.edu.au` pages (computed styles pulled from the live DOM, not just the Figma export) — buttons, forms, notices, tags, cards, and accordion — and cross-checked on two real production Gen 3 sites (`library.unimelb.edu.au`, `students.unimelb.edu.au`). Two systemic rules apply everywhere in Gen 3:
+
+1. **`border-radius: 0` on everything** except the checkbox control. No pills, no rounded cards, no rounded buttons.
+2. **`box-shadow: none` on everything** except transient overlays (modal). No card elevation shadows, no button shadows, no input shadows.
+
+### Corrected color tokens
+
+The prototype conflated two different roles under one navy variable. Added a dedicated action-color token, kept `--col-btn-primary-*` (navy) for brand chrome (headers/nav/footer) which was already correct there:
+
+```css
+/* Primary interactive action — confirmed live on the Gen 3 Search
+   component (52×51px search button) and Button style guide */
+--col-btn-action-bg: #46c8f0;       /* cyan */
+--col-btn-action-bg-hover: #29b3d9;
+--col-btn-action-text: #000f46;     /* navy */
+```
+
+| Role | Color | Verified on |
+|---|---|---|
+| Primary action (buttons, search submit) | Cyan `#46c8f0` bg, navy text | style-guide/buttons, components/search, library.unimelb.edu.au |
+| Secondary action | Sage `#abc1a7` bg, navy text | style-guide/buttons (already correct in this prototype) |
+| Tertiary / ghost | Transparent, navy border + text | style-guide/buttons |
+| Tag / badge | Pale sage `#eaefe9` bg, navy uppercase text, no border | components/tags (`.tags__item`) |
+| Notice — warning | Pale yellow bg, brown-orange border | style-guide/notices |
+
+Applied to: all header/hero search submit buttons, "Clear all filters," the filter-drawer "Show N records" button, the Indigenous acknowledgement modal's accept button, "Request to use" on record pages, and "Open Form" on Contact. Object-type badges rebuilt to match `.tags__item` exactly (previously a bordered pill).
+
+### Accordion (FAQ) — already close to compliant
+Gen 3's accordion is borderless, shadowless, sharp-cornered, with a hairline top divider between items and a light-gray (`#f1f1f1`) fill on the expanded panel. The Help page FAQ accordion already matches on every point except the expanded-panel fill (ours is transparent) — minor, optional polish, not fixed.
+
+---
+
 ## Version History
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 2.3 | 2026-09-29 | Live Gen 3 compliance audit: border-radius/box-shadow stripped site-wide, primary button color corrected to cyan, tags rebuilt to match `.tags__item` |
 | 2.2 | 2026-09-29 | Gen 3 breadcrumb component, 640px responsive breakpoint, Collections card-grid redesign, Grainger tile image sourced from `/assets` |
 | 2.1 | 2026-09-29 | Fixed fabricated Bootstrap SRI hashes (root cause of site-wide unstyled nav), broken relative paths, duplicate footers, wrong per-collection data |
 | 2.0 | 2026-09-29 | Updated for reorganized codebase structure |

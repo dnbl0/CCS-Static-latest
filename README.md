@@ -17,6 +17,7 @@ A comprehensive web platform for discovering and searching the University of Mel
 - Sourced the Grainger Museum Collection tile image from `assets/Collections - image tiles.docx` (was a placeholder).
 - Audited the prototype against the [2026 MVP Jira filter](https://unimelb.atlassian.net/issues/?filter=26999) and removed two out-of-scope features (spelling-suggestion "Did you mean?" UI, dormant Indigenous-data search filter) per items explicitly marked post-2026.
 - Corrected mismatched museum contact emails against `assets/CCS Help - Access and Information.docx`.
+- Live-audited the whole site against [designsystem.web.unimelb.edu.au](https://designsystem.web.unimelb.edu.au/components/) (computed styles, plus cross-checks on library.unimelb.edu.au and students.unimelb.edu.au): stripped `border-radius`/`box-shadow` everywhere per Gen 3's sharp-corner, no-shadow rule, corrected the primary button/search-button color from navy to Gen 3's actual cyan `#46c8f0`, and rebuilt object-type tags to match the live `.tags__item` component. See `design.md` → Gen 3 Compliance Audit.
 
 See `.reorganization/` for detailed write-ups of each pass.
 
