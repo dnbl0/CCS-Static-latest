@@ -2,7 +2,8 @@
 
 A comprehensive web platform for discovering and searching the University of Melbourne's cultural collections spanning visual arts, cartography, medical history, zoology, archives, and more.
 
-**Status**: ✅ Production Ready | **Design System**: UoM Gen 3 v15.14.0 | **Accessibility**: WCAG 2.1 Level AA
+**Status**: ✅ Production Ready | **Design System**: UoM Gen 3 v15.14.0 | **Accessibility**: WCAG 2.1 Level AA | **Structure**: Reorganized (Semantic)  
+**Bootstrap**: 5.3.3 (Official, SRI verified) | **Repository**: https://github.com/dnbl0/CCS-Static-latest
 
 ---
 

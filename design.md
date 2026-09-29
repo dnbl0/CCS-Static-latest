@@ -1,7 +1,17 @@
 # Cultural Collections Search - Design System Documentation
 
 **Project**: Cultural Collections Search (CCS) | **Institution**: University of Melbourne  
-**Design System**: UoM Gen 3 v15.14.0 | **Version**: 1.0 | **Date**: 2026-09-29
+**Design System**: UoM Gen 3 v15.14.0 | **Version**: 2.0 | **Date**: 2026-09-29  
+**Status**: ✅ Production Ready | **Codebase**: Reorganized (Semantic Structure)
+
+---
+
+## Quick Reference
+
+**Files Location**: See `.reorganization/DIRECTORY-REFERENCE.md` for complete file paths  
+**Styles**: `public/styles/` (variables.css, components.css, typography.css)  
+**Components**: Defined in `public/styles/components.css`  
+**Bootstrap**: `public/styles/vendor/bootstrap.min.css` (v5.3.3, official source)
 
 ---
 
@@ -16,6 +26,7 @@
 7. [Interactive States](#interactive-states)
 8. [Accessibility Standards](#accessibility-standards)
 9. [Page Templates](#page-templates)
+10. [File Organization](#file-organization)
 
 ---
 
@@ -786,10 +797,80 @@ Before finalizing designs, verify:
 
 ---
 
+## File Organization (Post-Reorganization)
+
+### Directory Structure
+```
+public/                              # Deployed files
+├── index.html
+├── pages/                           # HTML pages (.html standard extension)
+│   ├── browse.html
+│   ├── collection.html
+│   ├── contact.html
+│   ├── help.html
+│   ├── record.html                  # Media viewer
+│   ├── search.html
+│   └── home-legacy.html
+├── styles/                          # CSS
+│   ├── variables.css                # Design tokens
+│   ├── components.css               # Component styles
+│   ├── typography.css               # Font definitions
+│   └── vendor/bootstrap.min.css     # Bootstrap 5.3.3
+├── assets/
+│   ├── images/collections/          # Collection images
+│   ├── images/archive/              # Original formats
+│   ├── data/                        # Metadata, filters, media
+│   └── documents/                   # Help, advisory
+└── .htaccess                        # URL redirects
+
+src/                                 # Source code
+├── js/modules/                      # Feature modules
+└── js/utils/                        # Helper functions
+
+docs/                                # Documentation
+├── README.md
+├── design.md
+└── guides/
+```
+
+### CSS Files Location
+
+| File | Purpose |
+|------|---------|
+| `public/styles/variables.css` | CSS custom properties, color tokens, theme variables |
+| `public/styles/components.css` | Component styles (cards, buttons, forms, etc.) |
+| `public/styles/typography.css` | Font families, sizes, weights, line heights |
+| `public/styles/vendor/bootstrap.min.css` | Bootstrap 5.3.3 framework |
+
+### Styles Import
+
+```html
+<link rel="stylesheet" href="/public/styles/variables.css">
+<link rel="stylesheet" href="/public/styles/components.css">
+<link rel="stylesheet" href="/public/styles/vendor/bootstrap.min.css">
+```
+
+### Bootstrap Details
+
+- **Version**: 5.3.3 (Official from https://github.com/twbs/bootstrap)
+- **CDN**: jsDelivr (official npm distribution)
+- **SRI Hashing**: Enabled for security
+- **Configuration**: See `.reorganization/BOOTSTRAP-DEPENDENCIES.md`
+
+### Documentation
+
+For detailed file navigation, see:
+- `.reorganization/DIRECTORY-REFERENCE.md` - Complete file lookup
+- `.reorganization/REORGANIZATION-PLAN.md` - Structure rationale
+- `.reorganization/DATA-MAPPING.md` - Data organization
+
+---
+
 ## Version History
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 2.0 | 2026-09-29 | Updated for reorganized codebase structure |
 | 1.0 | 2026-09-29 | Initial design system documentation |
 
 ---
