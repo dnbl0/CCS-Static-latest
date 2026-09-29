@@ -23,10 +23,15 @@
 .skip-link:focus {
   top: 16px;
 }
-@media (max-width:640px){
-  .site-header-brand{width:80px!important}
-  .site-nav{gap:0!important}
-  .site-nav a{padding:8px 10px!important;font-size:14px!important}
+@media (max-width:1097.98px){
+  .site-nav{display:none!important}
+  .site-nav.is-open{display:flex!important;position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;background:var(--col-bg-primary);border-top:1px solid var(--col-border-header);z-index:30;padding:8px 0;box-shadow:0 8px 16px rgba(0,0,0,.15)}
+  .site-nav.is-open a{padding:14px 24px!important;font-size:16px!important;width:100%}
+  .site-nav-toggle{display:flex!important}
+}
+@media (max-width:768px){
+  nav[aria-label="Breadcrumb"] > ol:not(.bc-mobile){display:none!important}
+  nav[aria-label="Breadcrumb"] .bc-mobile{display:flex!important}
 }
 </style>
 </head>
@@ -46,12 +51,7 @@
   --col-text-primary:#1b1f2a;
   --col-text-muted:#5b6070;
   --col-border-header:#b5bac9;
-}@media (max-width:640px){
-  .site-header-brand{width:80px!important}
-  .site-nav{gap:0!important}
-  .site-nav a{padding:8px 10px!important;font-size:14px!important}
-}
-</style>
+}</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="components/fig-tokens.css">
@@ -68,15 +68,10 @@ a{color:#0b2a6b;text-decoration:underline;text-underline-offset:2px}a:hover{colo
 .btn-outline-primary{--bs-btn-color:var(--col-bg-primary);--bs-btn-border-color:var(--col-bg-primary);--bs-btn-hover-bg:var(--col-bg-primary);--bs-btn-hover-border-color:var(--col-bg-primary)}
 .card{border-color:#e3e0d9;border-radius:0}
 .fw-serif{font-family:'Fraunces',serif}
-@media (max-width:640px){
-  .site-header-brand{width:80px!important}
-  .site-nav{gap:0!important}
-  .site-nav a{padding:8px 10px!important;font-size:14px!important}
-}
 </style>
 </helmet>
 <div style="min-height:100vh;display:flex;flex-direction:column">
-<section aria-label="Site header" data-component="Header" style="display:flex;align-items:stretch;width:100%;border-bottom:1px solid var(--col-border-header);background:var(--col-bg-primary)">
+<section aria-label="Site header" data-component="Header" style="display:flex;align-items:stretch;width:100%;border-bottom:1px solid var(--col-border-header);background:var(--col-bg-primary);position:relative">
   <a href="/" aria-label="The University of Melbourne Homepage" style="flex:none;width:110px;display:flex;align-items:center;justify-content:center;border-right:1px solid var(--col-border-header);padding:8px;background:var(--col-bg-primary)">
     <img src="images/uom-logo-vertical.svg" alt="The University of Melbourne" style="width:100%;height:100%;object-fit:contain">
   </a>
@@ -91,7 +86,11 @@ a{color:#0b2a6b;text-decoration:underline;text-underline-offset:2px}a:hover{colo
     </search>
     <div style="display:flex;min-height:65px;width:100%;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:12px 24px;background:var(--col-bg-primary)">
       <a href="/" style="color:#fff;font-size:17px;font-weight:600;white-space:nowrap">Cultural Collections Search</a>
-      <nav aria-label="Primary navigation" style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
+      <button type="button" class="site-nav-toggle" aria-expanded="false" aria-controls="site-primary-nav" aria-label="Toggle menu" style="display:none;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:none;border:0;color:#fff;cursor:pointer;padding:6px 10px;min-width:44px;min-height:44px">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        <span style="font-size:11px;font-weight:600;line-height:1">Menu</span>
+      </button>
+      <nav id="site-primary-nav" aria-label="Primary navigation" class="site-nav" style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
         <a href="/search/advanced.html" style="color:#fff;font-size:16px;font-weight:600;padding:10px 14px">Search all records</a>
         <a href="/collections/index.html" style="color:#fff;font-size:16px;font-weight:600;padding:10px 14px">Browse collections</a>
         <a href="/help/index.html" style="color:#fff;font-size:16px;font-weight:600;padding:10px 14px">Help</a>
@@ -99,8 +98,45 @@ a{color:#0b2a6b;text-decoration:underline;text-underline-offset:2px}a:hover{colo
     </div>
   </div>
 </section>
+<script>
+(function(){
+  // Event delegation on document so this keeps working even if the DC
+  // template layer re-renders the header markup after this script runs.
+  document.addEventListener('click', function(e){
+    var toggle = e.target.closest && e.target.closest('.site-nav-toggle');
+    if (toggle) {
+      var header = toggle.closest('[data-component="Header"]');
+      var nav = header && header.querySelector('#site-primary-nav');
+      if (!nav) return;
+      var expanded = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+      nav.classList.toggle('is-open', !expanded);
+      return;
+    }
+    var openToggle = document.querySelector('.site-nav-toggle[aria-expanded="true"]');
+    if (openToggle) {
+      var openHeader = openToggle.closest('[data-component="Header"]');
+      if (!openHeader || !openHeader.contains(e.target)) {
+        openToggle.setAttribute('aria-expanded', 'false');
+        var openNav = openHeader && openHeader.querySelector('#site-primary-nav');
+        if (openNav) openNav.classList.remove('is-open');
+      }
+    }
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key !== 'Escape') return;
+    var openToggle = document.querySelector('.site-nav-toggle[aria-expanded="true"]');
+    if (!openToggle) return;
+    var openHeader = openToggle.closest('[data-component="Header"]');
+    openToggle.setAttribute('aria-expanded', 'false');
+    var openNav = openHeader && openHeader.querySelector('#site-primary-nav');
+    if (openNav) openNav.classList.remove('is-open');
+    openToggle.focus();
+  });
+})();
+</script>
 
-<nav aria-label="Breadcrumb" style="background:#00354c;height:40px;display:flex;align-items:center"><ol style="display:flex;align-items:center;flex-wrap:wrap;gap:4px;list-style:none;margin:0;padding:0 32px;font-size:16px;color:#fff"><li style="display:flex;align-items:center;gap:8px"><a href="/" aria-label="Cultural Collections" style="display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 3l9 8h-3v9h-4v-6h-4v6H6v-9H3l9-8z"/></svg><span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Cultural Collections</span></a><svg width="14" height="14" viewBox="0 0 24 24" fill="#fff" aria-hidden="true" style="flex:none"><path d="M9 6l6 6-6 6"/></svg></li><li style="display:flex;align-items:center;gap:8px"><a href="/help/index.html" style="color:#fff;text-decoration:none">Help and support</a><svg width="14" height="14" viewBox="0 0 24 24" fill="#fff" aria-hidden="true" style="flex:none"><path d="M9 6l6 6-6 6"/></svg></li><li style="font-weight:600">Indigenous Cultural Data and Access</li></ol></nav>
+<nav aria-label="Breadcrumb" style="background:#00354c;height:40px;display:flex;align-items:center"><ol style="display:flex;align-items:center;flex-wrap:wrap;gap:4px;list-style:none;margin:0;padding:0 32px;font-size:16px;color:#fff"><li style="display:flex;align-items:center;gap:8px"><a href="/" aria-label="Cultural Collections" style="display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 3l9 8h-3v9h-4v-6h-4v6H6v-9H3l9-8z"/></svg><span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Cultural Collections</span></a><svg width="14" height="14" viewBox="0 0 24 24" fill="#fff" aria-hidden="true" style="flex:none"><path d="M9 6l6 6-6 6"/></svg></li><li style="display:flex;align-items:center;gap:8px"><a href="/help/index.html" style="color:#fff;text-decoration:none">Help and support</a><svg width="14" height="14" viewBox="0 0 24 24" fill="#fff" aria-hidden="true" style="flex:none"><path d="M9 6l6 6-6 6"/></svg></li><li style="font-weight:600">Indigenous Cultural Data and Access</li></ol><ol class="bc-mobile" style="display:none;align-items:center;gap:6px;list-style:none;margin:0;padding:0 32px;font-size:16px;color:#fff"><li style="display:flex;align-items:center"><a href="/help/index.html" style="display:inline-flex;align-items:center;gap:6px;color:#fff;text-decoration:none;min-height:44px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span>Help and support</span></a></li></ol></nav>
 <section style="background:var(--col-bg-primary);color:#fff">
   <div class="container" style="max-width:1200px;padding:20px 32px 40px">
     <div class="mt-3" style="max-width:760px">
