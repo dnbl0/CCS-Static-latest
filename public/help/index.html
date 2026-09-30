@@ -239,17 +239,19 @@ html{scroll-behavior:smooth}
 
 <sc-if value="{{ notTopic }}" hint-placeholder-val="{{ true }}">
 <section aria-label="Help topics" style="background:#fff;border-bottom:1px solid #e3e0d9">
-  <div style="max-width:1200px;margin:0 auto;padding:40px 32px 48px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px">
-    <sc-for list="{{ topics }}" as="t" hint-placeholder-count="6">
-      <a href="{{ t.href }}" style="display:flex;flex-direction:column;gap:16px;padding:26px 24px;border:1px solid #e3e0d9;border-top:3px solid var(--col-bg-accent);background:#fff;text-decoration:none;color:var(--col-text-primary);transition:border-color .15s,transform .15s" style-hover="border-color:var(--col-bg-primary);transform:translateY(-2px)">
-        <span style="width:44px;height:44px;border-radius:0;background:var(--col-bg-selected);color:var(--col-bg-primary);display:flex;align-items:center;justify-content:center;flex:none">{{ t.icon }}</span>
-        <div style="display:flex;flex-direction:column;gap:8px;flex:1">
-          <strong style="font-family:'Fraunces',serif;font-weight:600;font-size:20px;line-height:1.25;color:var(--col-bg-primary)">{{ t.title }}</strong>
-          <span style="font-size:15px;line-height:1.5;color:#4a5577">{{ t.blurb }}</span>
-        </div>
-        <span style="display:flex;align-items:center;gap:6px;font-size:14px;font-weight:600;color:var(--col-bg-primary)">Read more<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="13 6 19 12 13 18"></polyline></svg></span>
-      </a>
-    </sc-for>
+  <div style="max-width:1200px;margin:0 auto;padding:40px 32px 48px">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));border-top:1px solid #e3e0d9;border-left:1px solid #e3e0d9">
+      <sc-for list="{{ topics }}" as="t" hint-placeholder-count="6">
+        <a href="{{ t.href }}" style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px;padding:36px 28px;border-right:1px solid #e3e0d9;border-bottom:1px solid #e3e0d9;background:#fff;text-decoration:none;color:var(--col-text-primary);transition:background-color .15s" style-hover="background-color:#fafaf8">
+          <strong style="font-family:'Fraunces',serif;font-weight:600;font-size:22px;line-height:1.3;color:var(--col-bg-primary)">{{ t.title }}</strong>
+          <span style="font-size:15px;line-height:1.6;color:#3b4050;max-width:320px">{{ t.blurb }}</span>
+          <span style="display:inline-flex;align-items:center;gap:8px;margin-top:8px;padding:12px 22px;background:var(--col-bg-accent, #abc1a7);color:var(--col-bg-primary);font-size:15px;font-weight:700;white-space:nowrap">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" style="flex:none"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="13 6 19 12 13 18"></polyline></svg>
+            Read more
+          </span>
+        </a>
+      </sc-for>
+    </div>
   </div>
 </section>
 </sc-if>
