@@ -1,155 +1,184 @@
+import React from 'react';
 import { BreadcrumbItem } from './BreadcrumbItem.jsx';
 
 // figma node: 7382:8804 Breadcrumbs (2 variants)
+// Aligned to UoM Gen 3 CMS Breadcrumbs: nav.page-breadcrumbs > ol.page-local-history > li[itemprop="itemListElement"]
 const __venc = (v) => String(v).replace(/[%|=]/g, encodeURIComponent);
 const __vkey = (p) => "breakpoint=" + __venc(p.breakpoint);
 
 export function Breadcrumbs(_p = {}) {
-  const props = { ..._p, breakpoint: _p.breakpoint ?? "lg / md", item2: _p.item2 ?? true, item3: _p.item3 ?? true, item8: _p.item8 ?? false, item4: _p.item4 ?? true, item6: _p.item6 ?? false, item5: _p.item5 ?? false, item7: _p.item7 ?? false };
+  const {
+    items,
+    className = "",
+    style = {},
+    breakpoint = "lg / md",
+    item2 = true,
+    item3 = true,
+    item4 = true,
+    item5 = false,
+    item6 = false,
+    item7 = false,
+    item8 = false,
+    icon1,
+    icon2,
+    icon3,
+    icon4,
+    ...props
+  } = _p;
+
+  // If custom items array is provided
+  if (items && Array.isArray(items)) {
+    return (
+      <nav className={`page-breadcrumbs ${className}`} style={style} aria-label="Breadcrumb">
+        <ol className="page-local-history" itemScope itemType="https://schema.org/BreadcrumbList">
+          {items.map((crumb, idx) => {
+            const isRoot = idx === 0;
+            const isLast = idx === items.length - 1;
+            return (
+              <li
+                key={idx}
+                className={isRoot ? "root" : ""}
+                itemProp="itemListElement"
+                itemScope
+                itemType="https://schema.org/ListItem"
+                aria-current={isLast ? "page" : undefined}
+              >
+                {crumb.href && !isLast ? (
+                  <a href={crumb.href} itemProp="item" title={crumb.title || crumb.label}>
+                    <span itemProp="name">{crumb.label}</span>
+                  </a>
+                ) : (
+                  <span itemProp="name">{crumb.label}</span>
+                )}
+                <meta content={String(idx + 1)} itemProp="position" />
+              </li>
+            );
+          })}
+        </ol>
+      </nav>
+    );
+  }
+
   const __body0 = () => (
-    <div className={props.className} style={{
-      width: 1440,
-      backgroundColor: "var(--background-tertiary-inverse)",
+    <nav className={`page-breadcrumbs ${className}`} style={{
+      width: "100%",
+      backgroundColor: "var(--uom-ds-color-background-tertiary-inverse, var(--background-tertiary-inverse, #00354c))",
+      color: "var(--uom-ds-color-text-link-inverse, #ffffff)",
       display: "flex",
       flexDirection: "row",
-      gap: "calc(var(--spacing-025) * 1px)",
-      padding: "8px 16px 8px 16px",
       alignItems: "flex-start",
       flexWrap: "wrap",
-      alignContent: "space-between",
       boxSizing: "border-box",
-      paddingLeft: "calc(var(--spacing-100) * 1px)",
-      paddingTop: "calc(var(--spacing-050) * 1px)",
-      paddingRight: "calc(var(--spacing-100) * 1px)",
-      paddingBottom: "calc(var(--spacing-050) * 1px)",
       position: "relative",
-      ...props.style,
-    }}>
-      <div style={{
-          position: "relative",
-          flexShrink: 0,
-          alignSelf: "stretch",
-          height: "auto",
-        }}>{props.icon1 ?? <BreadcrumbItem order={"first (home)"} state={"default"} />}</div>
-      {props.item8 && (
-      <div style={{
-          position: "relative",
-          flexShrink: 0,
-          alignSelf: "stretch",
-          height: "auto",
-        }}>{props.icon2 ?? <BreadcrumbItem order={"link"} state={"default"} />}</div>
-      )}
-      {props.item7 && (
-      <div style={{
-          position: "relative",
-          flexShrink: 0,
-          alignSelf: "stretch",
-          height: "auto",
-        }}>{props.icon3 ?? <BreadcrumbItem order={"link"} state={"default"} />}</div>
-      )}
-      {props.item6 && (
-      <div style={{
-          position: "relative",
-          flexShrink: 0,
-          alignSelf: "stretch",
-          height: "auto",
-        }}>{props.icon4 ?? <BreadcrumbItem order={"link"} state={"default"} />}</div>
-      )}
-      {props.item5 && (
-      <BreadcrumbItem
-        style={{
-          position: "relative",
-          flexShrink: 0,
-          alignSelf: "stretch",
-          height: "auto",
-        }}
-        order={"link"}
-        state={"default"}
-      />
-      )}
-      {props.item4 && (
-      <BreadcrumbItem
-        style={{
-          position: "relative",
-          flexShrink: 0,
-          alignSelf: "stretch",
-          height: "auto",
-        }}
-        order={"link"}
-        state={"default"}
-      />
-      )}
-      {props.item3 && (
-      <BreadcrumbItem
-        style={{
-          position: "relative",
-          flexShrink: 0,
-          alignSelf: "stretch",
-          height: "auto",
-        }}
-        order={"link"}
-        state={"default"}
-      />
-      )}
-      {props.item2 && (
-      <BreadcrumbItem
-        style={{
-          position: "relative",
-          flexShrink: 0,
-          alignSelf: "stretch",
-          height: "auto",
-        }}
-        order={"link"}
-        state={"default"}
-      />
-      )}
-      <BreadcrumbItem
-        style={{
-          position: "relative",
-          flexShrink: 0,
-          alignSelf: "stretch",
-          height: "auto",
-        }}
-        order={"last"}
-        state={"default"}
-      />
-    </div>
+      ...style,
+    }} aria-label="Breadcrumb">
+      <ol className="page-local-history" itemScope itemType="https://schema.org/BreadcrumbList" style={{
+        display: "flex",
+        alignItems: "center",
+        flexWrap: "wrap",
+        gap: "calc(var(--spacing-025, 4) * 1px)",
+        listStyle: "none",
+        margin: 0,
+        padding: "12px 32px",
+        maxWidth: 1440,
+        marginLeft: "auto",
+        marginRight: "auto",
+        boxSizing: "border-box",
+      }}>
+        <li className="root" itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
+          {icon1 ?? (
+            <a href="/" itemProp="item" title="Home" style={{ color: "#fff", textDecoration: "none" }}>
+              <span itemProp="name">Home</span>
+            </a>
+          )}
+          <meta content="1" itemProp="position" />
+        </li>
+        {item8 && (
+          <li className="" itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
+            {icon2 ?? <BreadcrumbItem order={"link"} state={"default"} label="CMS" />}
+            <meta content="2" itemProp="position" />
+          </li>
+        )}
+        {item7 && (
+          <li className="" itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
+            {icon3 ?? <BreadcrumbItem order={"link"} state={"default"} />}
+            <meta content="3" itemProp="position" />
+          </li>
+        )}
+        {item6 && (
+          <li className="" itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
+            {icon4 ?? <BreadcrumbItem order={"link"} state={"default"} />}
+            <meta content="4" itemProp="position" />
+          </li>
+        )}
+        {item5 && (
+          <li className="" itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
+            <BreadcrumbItem order={"link"} state={"default"} />
+            <meta content="5" itemProp="position" />
+          </li>
+        )}
+        {item4 && (
+          <li className="" itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
+            <BreadcrumbItem order={"link"} state={"default"} />
+            <meta content="6" itemProp="position" />
+          </li>
+        )}
+        {item3 && (
+          <li className="" itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
+            <BreadcrumbItem order={"link"} state={"default"} label="CMS" />
+            <meta content="2" itemProp="position" />
+          </li>
+        )}
+        {item2 && (
+          <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem" aria-current="page">
+            <BreadcrumbItem order={"last"} state={"default"} label="Breadcrumbs" />
+            <meta content="3" itemProp="position" />
+          </li>
+        )}
+      </ol>
+    </nav>
   );
+
   const __body1 = () => (
-    <div className={props.className} style={{
-      width: 360,
-      backgroundColor: "var(--background-tertiary-inverse)",
+    <nav className={`page-breadcrumbs ${className}`} style={{
+      width: "100%",
+      backgroundColor: "var(--uom-ds-color-background-tertiary-inverse, var(--background-tertiary-inverse, #00354c))",
+      color: "var(--uom-ds-color-text-link-inverse, #ffffff)",
       display: "flex",
       flexDirection: "row",
-      gap: "calc(var(--spacing-025) * 1px)",
-      padding: "8px 16px 8px 16px",
       alignItems: "flex-start",
       flexWrap: "wrap",
-      alignContent: "space-between",
       boxSizing: "border-box",
-      paddingLeft: "calc(var(--spacing-100) * 1px)",
-      paddingTop: "calc(var(--spacing-050) * 1px)",
-      paddingRight: "calc(var(--spacing-100) * 1px)",
-      paddingBottom: "calc(var(--spacing-050) * 1px)",
       position: "relative",
-      ...props.style,
-    }}>
-      {props.item2 && (
-      <div style={{
-          position: "relative",
-          flexShrink: 0,
-          alignSelf: "stretch",
-          height: "auto",
-        }}>{props.icon1 ?? <BreadcrumbItem order={"previous"} state={"default"} />}</div>
-      )}
-    </div>
+      ...style,
+    }} aria-label="Breadcrumb">
+      <ol className="page-local-history bc-mobile" itemScope itemType="https://schema.org/BreadcrumbList" style={{
+        display: "flex",
+        alignItems: "center",
+        gap: "6px",
+        listStyle: "none",
+        margin: 0,
+        padding: "12px 16px",
+        boxSizing: "border-box",
+      }}>
+        {item2 && (
+          <li className="root" itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
+            {icon1 ?? <BreadcrumbItem order={"previous"} state={"default"} label="Home" />}
+            <meta content="1" itemProp="position" />
+          </li>
+        )}
+      </ol>
+    </nav>
   );
+
   const __impls = {
     // figma: Breakpoint=LG / MD
     "breakpoint=lg / md": __body0,
     // figma: Breakpoint=SM
     "breakpoint=sm": __body1,
   };
-  return (__impls[__vkey(props)] ?? __body0)();
+
+  return (__impls[__vkey({ breakpoint })] ?? __body0)();
 }
+
 export default Breadcrumbs;

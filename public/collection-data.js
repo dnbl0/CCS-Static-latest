@@ -768,9 +768,10 @@
   const COLL_LABEL = { [FEIT]: 'Faculty of Engineering and Information Technology' };
   const UNKNOWN = /^(Maker unknown|Studio unknown|Staff photographer|Japanese)$/;
   const nameOnly = c => (c || '').replace(/\s*\(.*\)\s*$/, '');
+  const capitalize = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
 
   function buildCitations(it, date, coll, creditLine, accession) {
-    const title = it.title, type = it.objectType;
+    const title = it.title, type = capitalize(it.objectType);
     const collLine = creditLine.replace(/\.$/, '');
     const acc = accession ? `, ${accession}` : '';
     const dateStr = date || 'n.d.';
@@ -797,6 +798,7 @@
 
   // Sequence of appearance per CCS Data Inventory "AH sequencing" tab.
   function build(it) {
+    const objType = capitalize(it.objectType);
     const lic = LIC[it.licence];
     const images = (it.images || (it.img ? [it.img] : [])).map(k => `/images/${k}.jpg`);
     const hasDA = images.length > 0;
@@ -824,7 +826,7 @@
       [21, 'Access', it.access && [L(it.access, true)]],
       [23, 'Sub-collection', it.named && [L(it.named, true)]],
       [24, 'Collection', [L(coll, true)]],
-      [25, 'Type', [L(it.objectType, true)]],
+      [25, 'Type', [L(objType, true)]],
       [26, 'Category', it.subject && [L(it.subject, true)]],
       [31, 'Related record', it.relatedParent && [L(it.relatedParent, true)]],
       [32, 'Related record', it.relatedChild && [L(it.relatedChild, true)]],
@@ -852,11 +854,11 @@
       ...(cls ? [{ label: 'Classification', value: cls.name }] : [])
     ] : [];
     return {
-      id: it.id, title: it.title, altTitle: it.altTitle || null, type: it.objectType, byline, images, hasDA, fields: f, rights, media,
+      id: it.id, title: it.title, altTitle: it.altTitle || null, type: objType, byline, images, hasDA, fields: f, rights, media,
       licence: hasDA ? { ...lic, key: it.licence } : null, classification: cls, advisories, indigenous: !!it.indigenous,
       subjects: it.subjects || (it.subject ? [it.subject] : []), citation, citations, unit: UNIT[it.collection] || 'Museums and Collections',
       assetId: `CA-${String(it.id).padStart(6, '0')}`, collection: coll, named: it.named, subject: it.subject,
-      card: { id: it.id, title: it.title, img: images[0] || null, collection: coll, type: it.objectType, lic: lic.label, licIcon: lic.icon, licIcons: lic.icons || [], hasLicIcons: !!(lic.icons && lic.icons.length), indigenous: !!it.indigenous }
+      card: { id: it.id, title: it.title, img: images[0] || null, collection: coll, type: objType, lic: lic.label, licIcon: lic.icon, licIcons: lic.icons || [], hasLicIcons: !!(lic.icons && lic.icons.length), indigenous: !!it.indigenous }
     };
   }
 
