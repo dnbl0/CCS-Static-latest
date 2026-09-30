@@ -992,34 +992,42 @@ All footer links point to official University of Melbourne URLs:
 
 ---
 
-## Breadcrumb Component (Gen 3 Aligned)
+## Breadcrumb Component (Gen 3 CMS Aligned)
 
-Rebuilt to match the Gen 3 [Page Header](https://designsystem.web.unimelb.edu.au/components/page-header/) breadcrumb, replacing an earlier custom style (14px, dimmed `›`, underlined links, no icon).
+Rebuilt to strictly match the UoM Gen 3 CMS [Breadcrumbs](https://designsystem.web.unimelb.edu.au/components/breadcrumbs/) specification (`nav.page-breadcrumbs` > `ol.page-local-history` > `li.root` / `li[itemprop="itemListElement"]`).
 
-**Spec** (verified against the live Gen 3 site via computed styles):
-- 18px white text, weight 400, no default underline (underline on hover/focus only)
-- Home icon (house outline SVG) before the first crumb
-- `>` separator between items
-- Last crumb is plain text, not a link
-- Markup: `<ol>` + `schema.org/BreadcrumbList` structured data, mirroring Gen 3's `page-local-history` pattern
+**Spec**:
+- `nav.page-breadcrumbs`: `tab-size: 4`, `-webkit-text-size-adjust: 100%`, `box-sizing: border-box`, `background: var(--uom-ds-color-background-tertiary-inverse)` (`#00354c`), `color: var(--uom-ds-color-text-link-inverse)` (`#ffffff`), `font-family: var(--ff)` ("Source Sans 3", sans-serif), `font-size: var(--fs)` (`1.125rem` / 18px), `line-height: var(--lh)` (`1.5em`), `letter-spacing: var(--ls)` (`normal`)
+- `ol.page-local-history`: `itemscope="" itemtype="https://schema.org/BreadcrumbList"` structured data list
+- Root crumb: `<li class="root" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem">` with `<a href="/" itemprop="item" title="Home"><span itemprop="name">Home</span></a><meta content="1" itemprop="position">`
+- Subsequent crumbs: `<li itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem">` with schema.org item, name, and position metadata
 
 ```html
-<nav aria-label="Breadcrumb">
-  <ol itemscope itemtype="https://schema.org/BreadcrumbList" style="display:flex;align-items:center;gap:8px;list-style:none;margin:0;padding:0;font-size:18px;color:#fff">
-    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-      <a href="/" itemprop="item" class="breadcrumb-link"><svg><!-- home icon --></svg><span itemprop="name">Cultural Collections</span></a>
-      <meta itemprop="position" content="1">
-      <span aria-hidden="true">&gt;</span>
+<nav class="page-breadcrumbs" aria-label="Breadcrumb">
+  <ol class="page-local-history" itemscope="" itemtype="https://schema.org/BreadcrumbList">
+    <li class="root" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem">
+      <a href="/" itemprop="item" title="Home">
+        <span itemprop="name">Home</span>
+      </a>
+      <meta content="1" itemprop="position">
     </li>
-    <!-- ... -->
-    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" aria-current="page">
-      <span itemprop="name">Current page</span>
+    <li class="" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem">
+      <a href="/cms/" itemprop="item" title="CMS">
+        <span itemprop="name">CMS</span>
+      </a>
+      <meta content="2" itemprop="position">
+    </li>
+    <li itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page">
+      <a href="/cms/components/breadcrumbs/" itemprop="item" title="Breadcrumbs">
+        <span itemprop="name">Breadcrumbs</span>
+      </a>
+      <meta content="3" itemprop="position">
     </li>
   </ol>
 </nav>
 ```
 
-Live on: home, search, collections (browse + all 5 landing pages), record, help, contact.
+Live on: search, collections (browse + landing pages), record, help, contact.
 
 ---
 
