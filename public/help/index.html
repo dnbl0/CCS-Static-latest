@@ -159,7 +159,7 @@ html{scroll-behavior:smooth}
 <section aria-label="Help topics" style="background:#fff;border-bottom:1px solid #e3e0d9">
   <div style="max-width:1200px;margin:0 auto;padding:40px 32px 48px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px">
     <sc-for list="{{ topics }}" as="t" hint-placeholder-count="6">
-      <a href="{{ t.href }}" style="display:flex;flex-direction:column;gap:16px;padding:26px 24px;border:1px solid #e3e0d9;border-top:3px solid transparent;background:#fff;text-decoration:none;color:var(--col-text-primary);transition:border-color .15s,transform .15s" style-hover="border-color:var(--col-bg-primary);transform:translateY(-2px)">
+      <a href="{{ t.href }}" style="display:flex;flex-direction:column;gap:16px;padding:26px 24px;border:1px solid #e3e0d9;border-top:3px solid var(--col-bg-accent);background:#fff;text-decoration:none;color:var(--col-text-primary);transition:border-color .15s,transform .15s" style-hover="border-color:var(--col-bg-primary);transform:translateY(-2px)">
         <span style="width:44px;height:44px;border-radius:0;background:var(--col-bg-selected);color:var(--col-bg-primary);display:flex;align-items:center;justify-content:center;flex:none">{{ t.icon }}</span>
         <div style="display:flex;flex-direction:column;gap:8px;flex:1">
           <strong style="font-family:'Fraunces',serif;font-weight:600;font-size:20px;line-height:1.25;color:var(--col-bg-primary)">{{ t.title }}</strong>
