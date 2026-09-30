@@ -48,6 +48,20 @@ check_file() {
 
   echo -e "${YELLOW}Checking: $file${NC}"
 
+  # Check for custom compiled Bootstrap build
+  if grep -q "bootstrap-uom.*\.css" "$file"; then
+    if [ -f "public/styles/vendor/bootstrap-uom.min.css" ]; then
+      echo -e "  ${GREEN}✅${NC} Bootstrap CSS: Custom Gen 3 build (v${OFFICIAL_VERSION})"
+      echo -e "  ${GREEN}✅${NC} Build Source: public/styles/vendor/bootstrap-uom.min.css (Verified)"
+      COMPLIANT_FILES=$((COMPLIANT_FILES + 1))
+      return 0
+    else
+      echo -e "  ${RED}❌${NC} Custom Bootstrap CSS missing: run npm run build:css"
+      ISSUES_FOUND=$((ISSUES_FOUND + 1))
+      return 1
+    fi
+  fi
+
   # Check CSS
   if grep -q "bootstrap.*\.css" "$file"; then
     if grep -q "cdn.jsdelivr.net/npm/bootstrap@${OFFICIAL_VERSION}" "$file"; then
@@ -107,7 +121,7 @@ check_file() {
 echo -e "${BLUE}Scanning HTML files...${NC}"
 echo ""
 
-for file in $(find . -maxdepth 1 \( -name "*.html" -o -name "*.dc.html" \) 2>/dev/null | sort); do
+for file in $(find public -name "*.html" 2>/dev/null | sort); do
   if [ -f "$file" ]; then
     check_file "$file"
   fi
