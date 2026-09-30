@@ -94,20 +94,37 @@ jobs:
       - name: Create Pull Request
         if: steps.batch-check.outputs.is_batch == 'true'
         id: cpr
-        uses: peter-evans/create-pull-request@v5
+        uses: actions/github-script@v7
+        env:
+          PR_BODY: ${{ steps.pr-body.outputs.body }}
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: 'Merge batch changes to main'
-          title: 'Merge: Batch code changes'
-          body: ${{ steps.pr-body.outputs.body }}
-          branch: ${{ github.ref_name }}
-          base: main
-          labels: 'automated, ready-to-merge'
-          assignees: 'dnbl0'
-
-      - name: Report PR
-        if: steps.batch-check.outputs.is_batch == 'true'
-        run: echo "✅ Pull request #${{ steps.cpr.outputs.pull-request-number }} ready"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const branch = context.ref.replace('refs/heads/', '');
+            let pr;
+            const existing = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              head: `${context.repo.owner}:${branch}`,
+              base: 'main',
+              state: 'open'
+            });
+            if (existing.data.length > 0) {
+              pr = existing.data[0];
+            } else {
+              const body = process.env.PR_BODY || 'Automated PR for batch changes';
+              const res = await github.rest.pulls.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: `Merge: Batch code changes (${branch})`,
+                body: body,
+                head: branch,
+                base: 'main'
+              });
+              pr = res.data;
+            }
+            core.setOutput('pull-request-number', String(pr.number));
+            console.log(`✅ Pull request #${pr.number} ready`);
 
   auto-merge:
     needs: create-pr
