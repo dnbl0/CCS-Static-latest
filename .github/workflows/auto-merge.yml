@@ -20,6 +20,9 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+    outputs:
+      is_batch: ${{ steps.batch-check.outputs.is_batch }}
+      pr_number: ${{ steps.cpr.outputs.pull-request-number }}
 
     steps:
       - name: Checkout code
@@ -30,12 +33,18 @@ jobs:
       - name: Check for batch changes
         id: batch-check
         run: |
+          # actions/checkout only fetches the branch that triggered the run,
+          # so `main` has no local/remote-tracking ref yet - fetch it explicitly
+          # before diffing against it (this was the workflow's original bug:
+          # `main..HEAD` failed with "unknown revision").
+          git fetch origin main --depth=1
+
           # Count commits since last main merge
-          COMMIT_COUNT=$(git log --oneline main..HEAD | wc -l)
+          COMMIT_COUNT=$(git rev-list --count origin/main..HEAD)
           echo "commits=$COMMIT_COUNT" >> $GITHUB_OUTPUT
 
           # Check for significant file changes
-          CHANGED_FILES=$(git diff --name-only main..HEAD | wc -l)
+          CHANGED_FILES=$(git diff --name-only origin/main...HEAD | wc -l | tr -d ' ')
           echo "files=$CHANGED_FILES" >> $GITHUB_OUTPUT
 
           # Define batch threshold (3+ commits or 2+ file changes)
@@ -49,8 +58,8 @@ jobs:
         if: steps.batch-check.outputs.is_batch == 'true'
         id: pr-body
         run: |
-          COMMIT_LOG=$(git log --pretty=format:"- %s" main..HEAD)
-          CHANGED_FILES=$(git diff --name-only main..HEAD)
+          COMMIT_LOG=$(git log --pretty=format:"- %s" origin/main..HEAD)
+          CHANGED_FILES=$(git diff --name-only origin/main...HEAD)
 
           BODY="## Summary
 
@@ -84,6 +93,7 @@ jobs:
 
       - name: Create Pull Request
         if: steps.batch-check.outputs.is_batch == 'true'
+        id: cpr
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -95,16 +105,18 @@ jobs:
           labels: 'automated, ready-to-merge'
           assignees: 'dnbl0'
 
-      - name: Wait for PR checks
+      - name: Report PR
         if: steps.batch-check.outputs.is_batch == 'true'
-        run: |
-          echo "✅ Pull request created"
-          echo "⏳ Waiting for review and checks..."
-          sleep 2
+        run: echo "✅ Pull request #${{ steps.cpr.outputs.pull-request-number }} ready"
 
   auto-merge:
     needs: create-pr
-    if: github.event.pull_request && github.event.pull_request.labels.*.name == 'ready-to-merge'
+    # The workflow only triggers on `push`, so there is never a real
+    # `pull_request` event context here - the original condition
+    # (`github.event.pull_request && ...`) checked for one and could
+    # never be true, which meant this job never ran. Gate on the
+    # create-pr job's own outputs instead.
+    if: needs.create-pr.outputs.is_batch == 'true' && needs.create-pr.outputs.pr_number != ''
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -161,40 +173,33 @@ jobs:
 
       - name: Approve and Merge PR
         uses: actions/github-script@v7
+        env:
+          PR_NUMBER: ${{ needs.create-pr.outputs.pr_number }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const { data: pullRequests } = await github.rest.pulls.list({
+            const prNumber = Number(process.env.PR_NUMBER);
+
+            // Approve the PR
+            await github.rest.pulls.createReview({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              state: 'open',
-              labels: ['ready-to-merge']
+              pull_number: prNumber,
+              event: 'APPROVE',
+              body: '✅ All checks passed. Auto-approving for merge.\n\n- Design system compliance verified\n- File structure validated\n- HTML syntax checked\n- Ready for production'
             });
 
-            if (pullRequests.length > 0) {
-              const pr = pullRequests[0];
+            // Merge the PR
+            await github.rest.pulls.merge({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber,
+              merge_method: 'squash',
+              commit_title: `Merge batch changes [${new Date().toISOString().split('T')[0]}]`,
+              commit_message: `Auto-merged batch code changes\n\n🤖 Generated with Claude Code\nhttps://claude.ai/code/session_017ckbCb48hKGkC8eihG2JSK`
+            });
 
-              // Approve the PR
-              await github.rest.pulls.createReview({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: pr.number,
-                event: 'APPROVE',
-                body: '✅ All checks passed. Auto-approving for merge.\n\n- Design system compliance verified\n- File structure validated\n- HTML syntax checked\n- Ready for production'
-              });
-
-              // Merge the PR
-              await github.rest.pulls.merge({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: pr.number,
-                merge_method: 'squash',
-                commit_title: `Merge batch changes [${new Date().toISOString().split('T')[0]}]`,
-                commit_message: `Auto-merged batch code changes\n\n🤖 Generated with Claude Code\nhttps://claude.ai/code/session_017ckbCb48hKGkC8eihG2JSK`
-              });
-
-              console.log(`✅ PR #${pr.number} merged successfully`);
-            }
+            console.log(`✅ PR #${prNumber} merged successfully`);
 
       - name: Notify Merge Complete
         if: success()
@@ -240,112 +245,94 @@ jobs:
           echo "- Remove 'ready-to-merge' label to prevent auto-merge"
           echo "- Manual approval required if label removed"
 
----
-
 # WORKFLOW DOCUMENTATION
-
-## How It Works
-
-### 1. Trigger Events
-Workflow activates when:
-- Push to feature/*, bugfix/*, or enhance/* branches
-- Files changed include: .html, .css, .js, .md files
-
-### 2. Batch Detection
-- Counts commits since main branch
-- Counts changed files
-- Batch threshold: 3+ commits OR 2+ file changes
-- Only creates PR if batch criteria met
-
-### 3. PR Creation
-- Generates changelog from commit messages
-- Lists all changed files
-- Includes verification checklist
-- Auto-assigns to repository owner
-- Labels: 'automated', 'ready-to-merge'
-
-### 4. Verification Steps
-- ✅ Design system compliance (checks for design.md)
-- ✅ File structure validation (checks required directories)
-- ✅ HTML syntax verification (basic tag checking)
-- ✅ Documentation completeness
-
-### 5. Auto-Merge Process
-- Approves PR automatically
-- Merges using squash strategy (cleaner history)
-- Includes auto-generated commit message
-- Adds reference to Claude Code session
-
-### 6. Status Notifications
-- Success: Code merged and ready for production
-- Failure: Manual review required (check logs)
-
-## Configuration Options
-
-### Merge Strategy
-Current: `squash` (combines all commits into one)
-
-Options:
-- `merge`: Create merge commit (preserves history)
-- `rebase`: Rebase commits (linear history)
-- `squash`: Squash all commits (cleaner)
-
-### Trigger Conditions
-Current: 3+ commits OR 2+ file changes
-
-Customize in `steps.batch-check.outputs.is_batch`:
-```yaml
-if [ "$COMMIT_COUNT" -ge 3 ] || [ "$CHANGED_FILES" -ge 2 ]; then
-```
-
-### Approval Requirements
-Current: Auto-approves on verification
-
-To require manual approval:
-- Remove auto-approval step
-- Mark PR as draft
-- Require pull request reviews in branch settings
-
-## For Different Team Sizes
-
-### Solo Developer
-- This workflow is perfect as-is
-- Auto-merge saves time
-- Reviews happen before pushing
-
-### Small Team (2-3 people)
-- Keep auto-merge enabled
-- Add CODEOWNERS file for auto-assignment
-- Consider manual approval for major changes
-
-### Large Team
-- Disable auto-merge step
-- Require manual review
-- Use CODEOWNERS for routing
-- Add status checks (linting, tests)
-
-## Troubleshooting
-
-### PR not created?
-- Check branch naming (feature/*, bugfix/*, enhance/*)
-- Verify file changes meet batch threshold
-- Check workflow syntax
-
-### Auto-merge failed?
-- Check required files exist
-- Verify HTML syntax
-- Review GitHub Actions logs
-
-### Want to skip auto-merge?
-- Remove 'ready-to-merge' label from PR
-- Merge manually via GitHub UI
-- Or skip workflow with [skip ci] in commit
-
-## Future Enhancements
-
-- Add automated testing
-- Include accessibility checks
-- Add performance validation
-- Generate performance reports
-- Auto-create changelog entries
-- Notify team on merge
+#
+# ## How It Works
+#
+# ### 1. Trigger Events
+# Workflow activates when:
+# - Push to feature/*, bugfix/*, or enhance/* branches
+# - Files changed include: .html, .css, .js, .md files
+#
+# ### 2. Batch Detection
+# - Counts commits since main branch
+# - Counts changed files
+# - Batch threshold: 3+ commits OR 2+ file changes
+# - Only creates PR if batch criteria met
+#
+# ### 3. PR Creation
+# - Generates changelog from commit messages
+# - Lists all changed files
+# - Includes verification checklist
+# - Auto-assigns to repository owner
+# - Labels: 'automated', 'ready-to-merge'
+#
+# ### 4. Verification Steps
+# - Design system compliance (checks for design.md)
+# - File structure validation (checks required directories)
+# - HTML syntax verification (basic tag checking)
+# - Documentation completeness
+#
+# ### 5. Auto-Merge Process
+# - Runs in the same workflow run as PR creation (job `auto-merge`
+#   needs `create-pr` and reads its outputs directly) rather than
+#   waiting for a `pull_request` event, since a GITHUB_TOKEN-authored
+#   PR creation does not trigger other workflow runs.
+# - Approves PR automatically
+# - Merges using squash strategy (cleaner history)
+#
+# ### 6. Status Notifications
+# - Success: Code merged and ready for production
+# - Failure: Manual review required (check logs)
+#
+# ## Configuration Options
+#
+# ### Merge Strategy
+# Current: squash (combines all commits into one)
+# Options: merge (preserves history), rebase (linear history), squash (cleaner)
+#
+# ### Trigger Conditions
+# Current: 3+ commits OR 2+ file changes, set in the "Check for batch
+# changes" step of the create-pr job.
+#
+# ### Approval Requirements
+# Current: Auto-approves on verification. To require manual approval,
+# remove the "Approve and Merge PR" step and require reviews in branch
+# protection settings instead.
+#
+# ## For Different Team Sizes
+#
+# ### Solo Developer
+# - This workflow is perfect as-is; auto-merge saves time
+#
+# ### Small Team (2-3 people)
+# - Keep auto-merge enabled; add CODEOWNERS for auto-assignment;
+#   consider manual approval for major changes
+#
+# ### Large Team
+# - Disable the auto-merge job; require manual review; use CODEOWNERS
+#   for routing; add real status checks (linting, tests)
+#
+# ## Troubleshooting
+#
+# ### PR not created?
+# - Check branch naming (feature/*, bugfix/*, enhance/*)
+# - Verify file changes meet batch threshold
+# - Check workflow syntax
+#
+# ### Auto-merge didn't run?
+# - Confirm the create-pr job's `is_batch` output was `true` and a PR
+#   number was produced - the auto-merge job depends on both
+# - Check required files (design.md, README.md) exist
+# - Review GitHub Actions logs
+#
+# ### Want to skip auto-merge?
+# - Remove 'ready-to-merge' label from PR before the auto-merge job runs
+# - Or skip the workflow entirely with [skip ci] in the commit message
+#
+# ## Future Enhancements
+# - Add automated testing
+# - Include accessibility checks
+# - Add performance validation / reports
+# - Auto-create changelog entries
+# - Notify team on merge
