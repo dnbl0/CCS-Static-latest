@@ -553,9 +553,6 @@ section[aria-label="Item media"]:not(:fullscreen){max-height:calc(85vh - var(--h
         <button id="toggle-media-sidebar" onClick="{{ toggleSidebar }}" aria-label="{{ sidebarLabel }}" aria-expanded="{{ sidebarOpen }}" aria-controls="item-media-sidebar" title="{{ sidebarLabel }} (I)" style="width:40px;height:40px;border:0;background:none;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--col-bg-primary);transition:color .2s ease" style-hover="color:var(--col-bg-primary-hover)">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
         </button>
-        <sc-if value="{{ canDownload }}">
-          <a href="{{ curImg }}" download="" aria-label="Download image" title="Download image (D)" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;color:var(--col-bg-primary);transition:color .2s ease;text-decoration:none" style-hover="color:var(--col-bg-primary-hover)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m-5-4l5 4 5-4M3 19h18" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
-        </sc-if>
         <button onClick="{{ toggleFull }}" onKeyDown="if(event.key==='f'||event.key==='F') window.MediaViewer?.toggleFullscreen(document.querySelector('[role=\"region\"][aria-label=\"Item media\"]'))" aria-label="{{ fullLabel }}" title="{{ fullLabel }} (F)" style="width:40px;height:40px;border:0;background:none;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--col-bg-primary);transition:color .2s ease" style-hover="color:var(--col-bg-primary-hover)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 9 4 4 9 4"></polyline><polyline points="15 4 20 4 20 9"></polyline><polyline points="20 15 20 20 15 20"></polyline><polyline points="9 20 4 20 4 15"></polyline></svg></button>
       </div>
     </div>
@@ -597,7 +594,6 @@ section[aria-label="Item media"]:not(:fullscreen){max-height:calc(85vh - var(--h
       <button onClick="{{ openUse }}" style="height:44px;display:flex;align-items:center;gap:8px;border:1px solid var(--col-btn-action-bg);background:var(--col-btn-action-bg);color:var(--col-btn-action-text);padding:0 18px;font-size:15px;font-weight:600;text-decoration:none;cursor:pointer" style-hover="background:var(--col-btn-action-bg-hover);color:var(--col-btn-action-text);text-decoration:none"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"></path><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7l8-4z"></path></svg>Request to use</button>
       <button onClick="{{ openView }}" style="height:44px;display:flex;align-items:center;gap:8px;border:1px solid #c9ccd6;background:#fff;color:var(--col-bg-primary);padding:0 14px;font-size:15px;font-weight:600;cursor:pointer" style-hover="border-color:var(--col-bg-primary)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg>Request to view</button>
       <button onClick="{{ openContact }}" style="height:44px;display:flex;align-items:center;gap:8px;border:1px solid #c9ccd6;background:#fff;color:var(--col-bg-primary);padding:0 14px;font-size:15px;font-weight:600;cursor:pointer" style-hover="border-color:var(--col-bg-primary)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14"></rect><polyline points="3 7 12 13 21 7"></polyline></svg>Contact us</button>
-      
       <button onClick="{{ share }}" style="height:44px;display:flex;align-items:center;gap:8px;border:1px solid #c9ccd6;background:#fff;color:var(--col-bg-primary);padding:0 14px;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none" style-hover="border-color:var(--col-bg-primary)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"></path><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"></path></svg>{{ shareText }}</button>
     </div>
     <sc-if value="{{ hasAdvisory }}">
@@ -619,7 +615,6 @@ section[aria-label="Item media"]:not(:fullscreen){max-height:calc(85vh - var(--h
   <div style="max-width:1200px;margin:0 auto;padding:40px 32px 56px;display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start">
     <div style="flex:999 1 560px;min-width:0;display:flex;flex-direction:column;gap:24px">
       <section style="background:#fff;border:1px solid #e3e0d9">
-        <h2 style="margin:0;padding:20px 24px;border-bottom:1px solid var(--col-border-neutral-soft);font-family:'Fraunces',serif;font-weight:600;font-size:22px;line-height:1.25;color:var(--col-bg-primary);text-wrap:pretty">{{ rec.title }}</h2>
         <dl style="margin:0;padding:8px 24px 12px">
           <div style="display:grid;grid-template-columns:minmax(120px,200px) minmax(0,1fr);gap:4px 24px;padding:12px 0;border-bottom:1px solid #f1efea">
             <dt style="font-size:15px;font-weight:700;color:var(--col-text-primary)">Title</dt>
@@ -631,8 +626,7 @@ section[aria-label="Item media"]:not(:fullscreen){max-height:calc(85vh - var(--h
               <dd style="margin:0;font-size:15px;line-height:1.55;color:var(--col-text-primary);text-wrap:pretty;display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap">
                 <span style="display:flex;flex-direction:column;min-width:0">
                   <sc-for list="{{ r.lines }}" as="l">
-                    <sc-if value="{{ l.link }}"><a href="{{ r.href }}" style="align-self:flex-start;color:#0b2a6b;text-decoration:underline;text-underline-offset:2px">{{ l.text }}</a></sc-if>
-                    <sc-if value="{{ l.plain }}"><span style="color:{{ l.color }}">{{ l.text }}</span></sc-if>
+                    <span style="color:{{ l.color }}">{{ l.text }}</span>
                   </sc-for>
                 </span>
                 <sc-if value="{{ r.copy }}"><button onClick="{{ r.onCopy }}" aria-label="Copy accession number" title="Copy" style="display:flex;align-items:center;gap:4px;border:0;background:none;padding:2px 4px;color:#4a5577;font-size:13px;cursor:pointer" style-hover="color:var(--col-bg-primary)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="12"></rect><path d="M16 8V4H4v12h4"></path></svg>{{ r.copyText }}</button></sc-if>
@@ -643,7 +637,7 @@ section[aria-label="Item media"]:not(:fullscreen){max-height:calc(85vh - var(--h
             <div style="display:grid;grid-template-columns:minmax(120px,200px) minmax(0,1fr);gap:4px 24px;padding:12px 0;border-bottom:1px solid #f1efea">
               <dt style="font-size:15px;font-weight:700;color:var(--col-text-primary)">Subject</dt>
               <dd style="margin:0;display:flex;gap:8px;flex-wrap:wrap">
-                <sc-for list="{{ rec.subjects }}" as="sj"><a href="/search/advanced.html" style="background:var(--col-bg-accent-soft);color:var(--col-bg-primary);padding:5px 10px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-decoration:none" style-hover="background:#cbd7c2;text-decoration:none">{{ sj }}</a></sc-for>
+                <sc-for list="{{ rec.subjects }}" as="sj"><span style="background:var(--col-bg-accent-soft);color:var(--col-bg-primary);padding:5px 10px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase">{{ sj }}</span></sc-for>
               </dd>
             </div>
           </sc-if>
@@ -675,14 +669,6 @@ section[aria-label="Item media"]:not(:fullscreen){max-height:calc(85vh - var(--h
             <div style="display:flex;gap:18px;flex-wrap:wrap;align-items:center">
               <a href="/collections/index.html" style="color:var(--col-text-primary);font-weight:600;text-decoration:underline">View in collection browser</a>
               <a href="#" onClick="{{ reportIssue }}" style="display:flex;align-items:center;gap:6px;color:var(--col-text-primary);font-weight:600;text-decoration:underline"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V4h11l1 3h4v9h-8l-1-3H4"></path></svg>Report an issue</a>
-              <div style="position:relative">
-                <button onClick="{{ toggleExport }}" aria-haspopup="listbox" aria-expanded="{{ exportOpen }}" style="display:flex;align-items:center;gap:6px;border:0;background:none;padding:0;font-weight:600;text-decoration:underline;color:var(--col-text-primary);cursor:pointer"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"></path></svg>Export metadata</button>
-                <sc-if value="{{ exportOpen }}">
-                  <div role="listbox" style="position:absolute;right:0;bottom:calc(100% + 6px);z-index:5;min-width:190px;background:#fff;border:1px solid var(--col-bg-primary);display:flex;flex-direction:column;box-shadow:0 6px 16px rgba(10,26,63,.12)">
-                    <sc-for list="{{ exportFormats }}" as="ef"><button onClick="{{ ef.download }}" style="border:0;background:none;padding:11px 14px;text-align:left;font-size:15px;color:var(--col-text-primary);cursor:pointer" style-hover="background:#e3f4fb">{{ ef.label }}</button></sc-for>
-                  </div>
-                </sc-if>
-              </div>
             </div>
           </div>
       </section>
@@ -1052,23 +1038,6 @@ class Component extends DCLogic {
     } catch (e) {}
     this.setState({ copied: key }); clearTimeout(this.ct); this.ct = setTimeout(() => this.setState({ copied: null }), 1800);
   }
-  exportMetadata(fmt, R) {
-    let text, mime;
-    const fieldRows = [{ label: 'Title', value: R.title }, ...R.fields.map(f => ({ label: f.label, value: f.lines.map(l => l.text).join('; ') }))];
-    if (fmt === 'json') {
-      const obj = { title: R.title, type: R.type, collection: R.collection, assetId: R.assetId, citation: R.citation };
-      fieldRows.forEach(r => obj[r.label] = r.value);
-      text = JSON.stringify(obj, null, 2); mime = 'application/json';
-    } else if (fmt === 'csv') {
-      const rows = [['Field', 'Value'], ...fieldRows.map(r => [r.label, r.value])];
-      text = rows.map(r => r.map(c => '"' + String(c).replace(/"/g, '""') + '"').join(',')).join('\n'); mime = 'text/csv';
-    } else {
-      text = `TY  - GEN\nTI  - ${R.title}\nPY  - ${(fieldRows.find(r => r.label === 'Date') || {}).value || ''}\nPB  - University of Melbourne\nUR  - https://collections.unimelb.edu.au/item/${R.assetId}\nER  - \n`; mime = 'application/x-research-info-systems';
-    }
-    const blob = new Blob([text], { type: mime }), url = URL.createObjectURL(blob), a = document.createElement('a');
-    a.href = url; a.download = R.assetId + '-metadata.' + fmt; a.click(); URL.revokeObjectURL(url);
-    this.setState({ exportOpen: false });
-  }
 
   renderVals() {
     const s = this.state, CCS = window.CCS;
@@ -1085,18 +1054,13 @@ class Component extends DCLogic {
     const PAD = 24, BAR = 52, MAXH = 660, MINH = 420;
     const computedStageH = s.full ? '100vh' : (dim ? Math.min(MAXH, Math.max(MINH, dim.h + PAD * 2 + BAR)) + 'px' : MAXH + 'px');
     const media = R.media || [];
-    const mediaRows = !R.hasDA ? [] : [...media.slice(0, 2), ...(dim ? [{ label: 'File size', value: '~' + Math.round(dim.w * dim.h * 3 / 1024 / 1024 * 10) / 10 + ' MB (estimate)' }, { label: 'Dimensions', value: `${dim.w} × ${dim.h} pixels` }] : []), { label: 'File name', value: (imgs[idx] || '').split('/').pop() }, ...media.slice(2)];
+    const mediaRows = !R.hasDA ? [] : [...media.slice(0, 2), ...(dim ? [{ label: 'Dimensions', value: `${dim.w} × ${dim.h} pixels` }, { label: 'File size', value: '~' + Math.round(dim.w * dim.h * 3 / 1024 / 1024 * 10) / 10 + ' MB (estimate)' }] : []), { label: 'File name', value: (imgs[idx] || '').split('/').pop() }, ...media.slice(2)];
     const W = '#fff', DIM = 'rgba(255,255,255,.35)';
-    // advanced.html only reads `collection` and `type` from the URL on load (see its componentDidMount);
-    // facet links for fields without a matching URL param fall back to the unfiltered search page.
-    const facetHref = label => label === 'Collection' ? `/search/advanced.html?collection=${encodeURIComponent(R.collection)}`
-      : label === 'Type' ? `/search/advanced.html?type=${encodeURIComponent(R.type)}`
-      : '/search/advanced.html';
-    const fields = R.fields.map(f => ({ ...f, lines: f.lines.map(l => ({ text: l.text, link: !!l.link, plain: !l.link, color: l.muted ? 'var(--col-text-muted)' : 'var(--col-text-primary)' })),
-      href: facetHref(f.label), copyText: s.copied === 'acc' ? 'Copied' : 'Copy', onCopy: () => this.flash('acc', f.value) }));
+    const fields = R.fields.map(f => ({ ...f, lines: f.lines.map(l => ({ text: l.text, color: l.muted ? 'var(--col-text-muted)' : 'var(--col-text-primary)' })),
+      copyText: s.copied === 'acc' ? 'Copied' : 'Copy', onCopy: () => this.flash('acc', f.value) }));
     const relCards = CCS.related(id);
     const related = relCards.map(r => {
-      return { ...r, hasImg: !!r.img, href: `/collections/record?id=${r.id}` };
+      return { ...r, hasImg: !!r.img, href: `/collections/record.html?id=${r.id}` };
     });
     const cls = R.classification;
     return {
@@ -1107,8 +1071,7 @@ class Component extends DCLogic {
       typeHref: `/search/advanced.html?type=${encodeURIComponent(R.type)}`, collectionHref: `/search/advanced.html?collection=${encodeURIComponent(R.collection)}`,
       hasAdvisory: R.advisories.length > 0, hasSubjects: R.subjects.length > 0,
       hasLicence: !!R.licence, licIcons: R.licence ? (R.licence.icons || []) : [], hasLicIcons: !!(R.licence && R.licence.icons && R.licence.icons.length), licLabel: R.licence ? R.licence.label : '',
-      canDownload: !!(R.licence && R.licence.download),
-      hasClass: !!cls, clsBg: cls ? cls.bg : '', clsFg: cls ? cls.fg : '', clsName: cls ? cls.name : '', clsText: cls ? cls.text : '', clsCode: cls ? cls.name.match(/\(([^)]+)\)/)[1].replace(' ', '') : '',
+      hasClass: !!cls, clsBg: cls ? cls.bg : '', clsFg: cls ? cls.fg : '', clsName: cls ? cls.name : '', clsText: cls ? cls.text : '', clsCode: cls ? (cls.name.match(/\(([^)]+)\)/) ? cls.name.match(/\(([^)]+)\)/)[1].replace(' ', '') : cls.name) : '',
       viewerRef: this.viewerRef, stageH: computedStageH,
       curImg: imgs[idx] || '', hasCurImg: !!imgs[idx], onImgLoad: e => { const im = e.target, k = imgs[idx]; if (k && !s.dims[k]) this.setState(st => ({ dims: { ...st.dims, [k]: { w: im.naturalWidth, h: im.naturalHeight } } })); },
       multi: imgs.length > 1, imgCount: `${idx + 1} of ${imgs.length}`,
@@ -1135,9 +1098,7 @@ class Component extends DCLogic {
       share: () => this.flash('share', location.href), shareText: s.copied === 'share' ? 'Link copied' : 'Share',
       citeStyles: [['apa', 'APA 7'], ['mla', 'MLA 9'], ['chicago', 'Chicago 17'], ['harvard', 'Harvard']].map(([k, label]) => ({ label, pick: () => this.setState({ cite: k }), bg: s.cite === k ? 'var(--col-bg-primary)' : '#fff', color: s.cite === k ? '#fff' : 'var(--col-text-primary)', border: s.cite === k ? 'var(--col-bg-primary)' : 'var(--col-border-neutral)' })),
       citation: R.citations[s.cite], copyCite: () => this.flash('cite', R.citations[s.cite]), citeText: s.copied === 'cite' ? 'Copied' : 'Copy citation',
-      permalink: 'https://collections.unimelb.edu.au/item/' + R.assetId, permalinkShort: 'collections.unimelb.edu.au/item/' + R.assetId, copyLink: () => this.flash('link', 'https://collections.unimelb.edu.au/item/' + R.assetId), linkText: s.copied === 'link' ? 'Copied' : 'Copy link',
-      exportOpen: s.exportOpen, toggleExport: () => this.setState(st => ({ exportOpen: !st.exportOpen })),
-      exportFormats: [['json', 'JSON'], ['csv', 'CSV'], ['ris', 'RIS (citation manager)']].map(([k, label]) => ({ label, download: () => this.exportMetadata(k, R) }))
+      permalink: 'https://collections.unimelb.edu.au/item/' + R.assetId, permalinkShort: 'collections.unimelb.edu.au/item/' + R.assetId, copyLink: () => this.flash('link', 'https://collections.unimelb.edu.au/item/' + R.assetId), linkText: s.copied === 'link' ? 'Copied' : 'Copy link'
     };
   }
 }

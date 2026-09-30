@@ -45,7 +45,7 @@
     { id: 142, title: 'Set of cervical dilators, diameters from 7mm to 27mm, in case', img: null, collection: MHM, objectType: 'instruments', creator: 'Maker unknown', nationality: 'Australian', date: 'Circa 1940', dateStart: 1940, dateEnd: 1940, licence: 'Rights Reserved', access: 'By Appointment', subject: 'Medical Specialties', accession: 'MHM02290' },
     { id: 143, title: 'Suture clips', img: null, collection: MHM, objectType: 'suture materials', creator: 'Maker unknown', nationality: 'Australian', date: null, dateStart: null, dateEnd: null, licence: 'Rights Reserved', access: 'By Appointment', subject: 'Scientific Equipment', place: 'Germany', accession: 'MHM2013.14' },
     { id: 144, title: 'Tub of Pears\' Precipitated Fuller\'s Earth', img: null, collection: MHM, objectType: 'bottles and vessels', creator: 'A & F Pears Ltd (estab. 1835), toiletries/manufacturer', nationality: 'Australian', date: 'Circa 1900', dateStart: 1900, dateEnd: 1900, licence: 'Rights Reserved', access: 'By Appointment', subject: 'Pharmaceutical History', place: 'London, England', accession: 'MHM00185' },
-    { id: 145, title: 'Review of Hallmarks of mankind', img: null, collection: MHM, objectType: 'articles', creator: 'James Dixon Boyd (b.1909, d.1968), author', nationality: 'Australian', date: '17808', dateStart: 1780, dateEnd: 1780, licence: 'Rights Reserved', access: 'By Appointment', subject: 'Documents and Lectures', accession: 'MHM2014.72' },
+    { id: 145, title: 'Review of Hallmarks of mankind', img: null, collection: MHM, objectType: 'articles', creator: 'James Dixon Boyd (b.1909, d.1968), author', nationality: 'Australian', date: 'c. 1950s', dateStart: 1950, dateEnd: 1959, licence: 'Rights Reserved', access: 'By Appointment', subject: 'Documents and Lectures', accession: 'MHM2014.72' },
     { id: 146, title: 'Eau de Quinine tonic', img: null, collection: MHM, objectType: 'personal effects', creator: 'Pinaud (estab. 1830)', nationality: 'Australian', date: '1960s', dateStart: 1960, dateEnd: 1960, licence: 'Rights Reserved', access: 'By Appointment', subject: 'Pharmaceutical History', place: 'Paris, France', accession: 'MHM2000.15' },
     { id: 147, title: 'Traube\'s percussor by Aesculap', img: null, collection: MHM, objectType: 'examination instruments', creator: 'Maker unknown', nationality: 'Australian', date: 'Circa 1950', dateStart: 1950, dateEnd: 1950, licence: 'Rights Reserved', access: 'By Appointment', subject: 'Medical and Surgical Equipment and Instruments', accession: 'MHM02604' },
     { id: 148, title: 'Letter from H. Rogers to Dr. Robertson', img: null, collection: MHM, objectType: 'letters', creator: 'Hunter Rogers, author', nationality: 'Australian', date: 'Circa 26 Dec 1952', dateStart: 1952, dateEnd: 1952, licence: 'Rights Reserved', access: 'By Appointment', subject: 'Documents and Lectures', accession: 'MHM06099' },
@@ -119,7 +119,7 @@
     { id: 216, title: 'Design drawing reproductions and photographs of the Royal Dental Hospital Melbourne', img: null, collection: DENT, objectType: 'architectural elements', creator: 'Maker unknown', nationality: 'Australian', date: 'Circa 2001', dateStart: 2001, dateEnd: 2001, licence: 'Rights Reserved', access: 'By Appointment', subject: 'General', place: 'Melbourne, Victoria, Australia', accession: 'HFA3221' },
     { id: 217, title: 'Report of a committee of Enquiry 1903', img: null, collection: DENT, objectType: 'documents', creator: 'Maker unknown', nationality: 'Australian', date: '1903', dateStart: 1903, dateEnd: 1903, licence: 'Rights Reserved', access: 'By Appointment', subject: 'General', place: 'Melbourne, Victoria, Australia', accession: 'HFA3698' },
     { id: 218, title: 'Steriliser', img: null, collection: DENT, objectType: 'dental instruments', creator: 'Allen & Hanburys Ltd (estab. 1715, closed 1954), dental instruments/equipment/manufacturer', nationality: 'Australian', date: 'Circa 1858', dateStart: 1858, dateEnd: 1858, licence: 'Rights Reserved', access: 'By Appointment', subject: 'General', place: 'London, England', accession: 'HFA3813' },
-    { id: 219, title: 'Billie Sept 48, 1948', img: null, collection: DENT, objectType: 'photograph', creator: 'James Monahan Lewis (b.1880, d.1968)', nationality: 'Australian', date: '17777', dateStart: 1777, dateEnd: 1777, licence: 'Rights Reserved', access: 'By Appointment', subject: 'General', accession: 'HFA3927' },
+    { id: 219, title: 'Billie Sept 48, 1948', img: null, collection: DENT, objectType: 'photograph', creator: 'James Monahan Lewis (b.1880, d.1968)', nationality: 'Australian', date: '1948', dateStart: 1948, dateEnd: 1948, licence: 'Rights Reserved', access: 'By Appointment', subject: 'General', accession: 'HFA3927' },
     { id: 220, title: 'Dorothy Innes (née Frances ( Fanny) Gray) (1884-1958) in Wedding Dress', img: null, collection: DENT, objectType: 'photograph', creator: 'Lafayette Photography (estab. 1880), photographer', nationality: 'Australian', date: '1913', dateStart: 1913, dateEnd: 1913, licence: 'Rights Reserved', access: 'By Appointment', subject: 'General', place: 'Melbourne, Victoria, Australia', accession: 'HFA4089' },
     { id: 221, title: 'Photograph of large group of gentlemen outside the Masonic Chambers building', img: null, collection: DENT, objectType: 'photograph', creator: 'Maker unknown', nationality: 'Australian', date: null, dateStart: null, dateEnd: null, dateDisplay: '20th Century', licence: 'Rights Reserved', access: 'By Appointment', subject: 'General', accession: 'ADAV00211' },
     { id: 222, title: '“The Royal Dental Hospital of Melb” newspaper cutting', img: null, collection: DENT, objectType: 'newspaper articles', creator: 'The Australian Nurses Journal (estab. 1951, closed 1970), publisher/publishing', nationality: 'Australian', date: null, dateStart: null, dateEnd: null, licence: 'Rights Reserved', access: 'By Appointment', subject: 'General', place: 'Sydney, New South Wales, Australia', accession: 'HFA4226' },
@@ -741,6 +741,13 @@
       { id: 20248, title: 'Neanderthal temporal bone fragment, plaster cast', collection: HBA, objectType: 'models', creator: 'Dr. F. Krantz of Bonn, Rheinisches Mineralien-Kontor (estab. 1833), maker', accession: '516-500900', classification: 'Anthropology casts; Head', place: 'Bonn, Germany', date: 'Circa 1905', dateStart: 1905, dateEnd: 1905, description: 'Plaster cast of a right temporal bone fragment from a Neanderthal (Homo neanderthalensis). This bone was part of a fossil assemblage discovered in Krapina, Croatia between 1899 and 1905. These Neanderthal fossils have been dated at 120-130 thousand years old and represent one of the largest assemblages of Upper Pleistocene human skeletal remains ever found. These casts were bought by the Anatomy Department in the early 1900s to use as teaching specimens in classes on human anatomy and evolution.', licence: 'Rights Reserved', access: 'By Appointment' },
       { id: 20249, title: 'Dog femurs', collection: HBA, objectType: 'animal tissue', accession: '516-500941', classification: 'Dogs and relatives (Caniformia); Comparative anatomy', description: 'Left and right femurs from a domestic dog (Canis familiaris). Both bones are stained a brown colour and are damaged; left femur is missing distal end.', licence: 'Rights Reserved', access: 'By Appointment' },
       { id: 20250, title: 'Facial reconstruction model of an Ancient Egyptian', collection: HBA, objectType: 'models', creator: 'Jennifer Mann, sculptor/artist', accession: '516-500681', classification: 'Head', place: 'Macedon Ranges, Victoria, Australia', date: '2016', dateStart: 2016, dateEnd: 2016, description: 'This is a sculpted reconstruction of the face of an Ancient Egyptian mummified head (531-001070). A 3D printed skull formed the base on which sculptor Jennifer Mann has used all her forensic and artistic skill to create the reconstruction. Mann learned the technique for facial reconstruction at the Forensic Anthropology Centre at Texas State University where she studied with leading forensic sculptor Karen T. Taylor. She practised on skull casts previously used in actual cases to reconstruct unidentified murder victims. She cautions that any facial reconstruction can only be an approximation of what someone actually looked like in life, but the results she had at Texas closely matched those of the eventually identified murder victims. The methodology involves attaching to the printed skull plastic markers to indicate different tissue depths at key points on the face, based on averages in population data. This data is derived from modern Egyptians and has been specifically selected by reconstruction experts from around the world as the best approximation for ancient Egyptians. It was then about applying the clay according to the musculature of the face and known anatomical ratios based on the actual skull. For example, the nose is squashed almost flat by the tight bandaging, but Mann was able to estimate what her nose would have looked like using calculations based on the dimensions of the nasal cavity. The skull also displays a small overbite that Mann has reconstructed. The ears are based on the CT scan results. The reconstruction was then cast in a polyurethane resin and painted. The researchers have taken a middle course in the long-running debate on what the predominant skin colour of ancient Egyptians may have been, choosing a dark olive hue. The finishing touch was to reconstruct her hair, which has been modelled on that of an Egyptian woman, Lady Rai, who lived around 1570-1530 BCE and whose mummified body is now in the Egypt Museum in Cairo. She wears her hair in tightly-plaited thin braids either side of her head. For the reconstruction, replicating Lady Rai’s hair was an all-day job for a Melbourne African hair salon. (from \'Brought to Life, 2000 Years Later - https://pursuit.unimelb.edu.au/articles/brought-to-life-2000-years-later)', licence: 'Rights Reserved', access: 'By Appointment' },
+    { id: 50001, title: 'Apple Macintosh Personal Computer', img: 'macintosh-web', collection: FEIT, objectType: 'Equipment', accession: 'CS.00048', creator: 'Apple Computer, Inc.', date: '1984', dateStart: 1984, dateEnd: 1984, licence: 'Public Domain', access: 'By Appointment', place: 'United States of America', subject: 'Computer science' },
+    { id: 50002, title: 'Electromechanical Calculator, Marchant, c. 1956', img: 'calculator-web', collection: FEIT, objectType: 'Equipment', accession: 'CS.00145', creator: 'Marchant Calculating Machine Co.', date: 'c. 1956', dateStart: 1956, dateEnd: 1956, licence: 'Public Domain', access: 'By Appointment', place: 'Oakland, California, United States of America', subject: 'Computer science' },
+    { id: 50003, title: "Root's Blower, Schroeder, c. 1861", img: 'blower-web', collection: FEIT, objectType: 'Equipment', accession: 'EN.00008', creator: 'J. Schroeder', date: 'c. 1861', dateStart: 1861, dateEnd: 1861, licence: 'Public Domain', access: 'By Appointment', place: 'Darmstadt, Germany', subject: 'Engineering' },
+    { id: 50004, title: 'Potentiometer, Wolff, 1920', img: 'potentiometer-web', collection: FEIT, objectType: 'Equipment', accession: 'EE.00009', creator: 'Otto Wolff', date: '1920', dateStart: 1920, dateEnd: 1920, licence: 'Public Domain', access: 'By Appointment', place: 'Berlin, Germany', subject: 'Electrical engineering' },
+    { id: 50005, title: 'Physics Electrometer', img: 'electrometer', collection: 'Physics Collection', objectType: 'Scientific Instrument', accession: 'PH.00120', creator: 'Maker unknown', nationality: 'Australian', date: 'c. 1900', dateStart: 1900, dateEnd: 1900, licence: 'Public Domain', access: 'By Appointment', subject: 'Physics' },
+    { id: 50006, title: 'Crookes tube CH12', img: 'crookes', collection: 'Physics Collection', objectType: 'Scientific Instrument', accession: 'PH.00012', creator: 'Maker unknown', nationality: 'Australian', date: 'c. 1890', dateStart: 1890, dateEnd: 1890, licence: 'Public Domain', access: 'By Appointment', subject: 'Physics' },
+    { id: 50007, title: "Tametomo's Ferocity Drives Away the Smallpox Demons", img: 'tsukioka', collection: PDC, objectType: 'Woodblock print', creator: 'Yoshitoshi Tsukioka (1839–1892)', nationality: 'Japanese', date: '1890', dateStart: 1890, dateEnd: 1890, licence: 'Public Domain', access: 'Open Access', place: 'Tokyo, Japan', material: 'coloured ink on paper', subject: 'Asian art', description: 'From the series: Thirty-six Ghosts and Strange Apparitions.', creditLine: 'Prints and Drawing Collection, Special Collections and Archives, University of Melbourne.' },
   ];
 
   const LIC = {
@@ -771,7 +778,11 @@
   const capitalize = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
 
   function buildCitations(it, date, coll, creditLine, accession) {
-    const title = it.title, type = capitalize(it.objectType);
+    const rawTitle = it.title || '';
+    const cleanTitle = rawTitle.replace(/^["']|["']$/g, '');
+    const rawType = it.objectType || it.type || '';
+    const type = capitalize(rawType);
+    const typeBracket = type ? ` [${type}]` : '';
     const collLine = creditLine.replace(/\.$/, '');
     const acc = accession ? `, ${accession}` : '';
     const dateStr = date || 'n.d.';
@@ -789,26 +800,34 @@
       }
     }
     return {
-      apa: `${apaA}(${dateStr}). ${title} [${type}]. ${collLine}${acc}.`,
-      mla: `${mlaA}"${title}." ${dateStr}, ${collLine}${acc}.`,
-      chicago: `${chiA}"${title}." ${dateStr}. ${collLine}${acc}.`,
-      harvard: `${harA}${dateStr}. ${title}, [${type}]. ${collLine}${acc}.`
+      apa: `${apaA}(${dateStr}). ${cleanTitle}${typeBracket}. ${collLine}${acc}.`,
+      mla: `${mlaA}"${cleanTitle}." ${dateStr}, ${collLine}${acc}.`,
+      chicago: `${chiA}"${cleanTitle}." ${dateStr}. ${collLine}${acc}.`,
+      harvard: `${harA}${dateStr}. ${cleanTitle},${typeBracket}. ${collLine}${acc}.`
     };
   }
 
-  // Sequence of appearance per CCS Data Inventory "AH sequencing" tab.
+  // Sequence of appearance per CCS Field labels and filters - Final PRG specification
   function build(it) {
-    const objType = capitalize(it.objectType);
-    const lic = LIC[it.licence];
-    const images = (it.images || (it.img ? [it.img] : [])).map(k => `/images/${k}.jpg`);
+    const rawType = it.objectType || it.type || '';
+    const objType = capitalize(rawType) || (it.collection === GMC ? 'Cultural Object' : 'Object');
+    const lic = LIC[it.licence] || LIC['Rights Reserved'];
+    const imgList = it.images || (it.img ? [it.img] : []);
+    const images = imgList.map(k => k.startsWith('/') ? k : k.includes('.') ? `/images/${k}` : `/images/${k}.jpg`);
     const hasDA = images.length > 0;
-    const date = it.date || (it.dateStart != null ? String(it.dateStart) : null);
+    const date = it.date || it.dateDisplay || (it.year ? String(it.year) : null) || (it.dateStart != null ? String(it.dateStart) : null);
     const coll = COLL_LABEL[it.collection] || it.collection;
     const creditLine = it.creditLine || `${it.named && !it.named.includes('/') ? it.named + ', ' : ''}${coll}, University of Melbourne.`;
     const copyrightHolder = it.copyright || (it.licence === 'Public Domain' ? 'Copyright expired' : (!it.creator || UNKNOWN.test(it.creator)) ? 'Copyright holder unknown' : `© ${nameOnly(it.creator)}`);
     const L = (text, link) => ({ text, link: !!link });
     const creatorLines = it.creator ? [L(it.creator + (it.creatorRole ? `, ${it.creatorRole}` : ''), !UNKNOWN.test(it.creator))] : [];
     if (it.nationality && !UNKNOWN.test(it.creator)) creatorLines.push({ text: it.nationality, muted: true });
+    
+    // Film and gaming classification vs Museum Subject Classification
+    const isFilmRating = it.classification && ['G', 'PG', 'M', 'MA15+', 'CTC'].includes(it.classification);
+    const filmCls = isFilmRating ? CLASSIFICATION[it.classification] : (it.advisoryClassification ? CLASSIFICATION[it.advisoryClassification] : null);
+    const museumClassification = !isFilmRating ? (it.classification || null) : null;
+
     const f = [
       [3, 'Date', date && [L(date)]],
       [4, 'Creator', it.creator && creatorLines],
@@ -823,15 +842,16 @@
       [13, 'Inscriptions', it.inscription && [L(it.inscription)]],
       [14, 'Language', it.language && [L(it.language, true)]],
       [15, 'Accession number', it.accession && [L(it.accession)], true],
-      [21, 'Access', it.access && [L(it.access, true)]],
-      [23, 'Sub-collection', it.named && [L(it.named, true)]],
-      [24, 'Collection', [L(coll, true)]],
-      [25, 'Type', [L(objType, true)]],
-      [26, 'Category', it.subject && [L(it.subject, true)]],
+      [21, 'Classification', museumClassification && [L(museumClassification, true)]],
+      [22, 'Subject', it.subject && [L(it.subject, true)]],
+      [23, 'Access', it.access && [L(it.access, true)]],
+      [24, 'Sub-collection', it.named && [L(it.named, true)]],
+      [25, 'Collection', [L(coll, true)]],
+      [26, 'Type', [L(objType, true)]],
       [31, 'Related record', it.relatedParent && [L(it.relatedParent, true)]],
       [32, 'Related record', it.relatedChild && [L(it.relatedChild, true)]],
       [33, 'Related record', it.relatedRecord && [L(it.relatedRecord, true)]],
-      [34, 'Producer', it.producer && [L(it.producer)]],
+      [34, 'Producer', (it.producer || it.imageProducer) && [L(it.producer || it.imageProducer)]],
       [35, 'Source', it.sourceUrl && [L(it.sourceUrl)]]
     ].filter(r => r[2]).map(([seq, label, lines, copy]) => ({ seq, label, lines, copy: !!copy, value: lines[0].text }));
     const rights = [
@@ -839,23 +859,26 @@
       { seq: 17, label: 'Credit line', value: creditLine },
       ...(hasDA ? [{ seq: 20, label: 'Terms of use', value: it.terms || lic.terms }] : [])
     ];
-    const cls = it.classification ? CLASSIFICATION[it.classification] : null;
-    const advisories = (it.advisories || []).map(a => ADVISORY[a]);
+    const advisories = (it.advisories || []).map(a => ADVISORY[a]).filter(Boolean);
     const byline = [(!it.creator || UNKNOWN.test(it.creator)) ? null : nameOnly(it.creator), date].filter(Boolean).join(' · ');
     const citation = `${(!it.creator || UNKNOWN.test(it.creator)) ? '' : it.creator + ', '}${it.title}${date ? ', ' + date : ''}. ${creditLine.replace(/\.$/, '')}${it.accession ? ', ' + it.accession : ''}.`;
     const citations = buildCitations(it, date, coll, creditLine, it.accession);
+    
+    // Digital Asset Media metadata mapped according to CCS Field labels and filters Final PRG schema
     const media = hasDA ? [
       { label: 'Title', value: it.title },
-      { label: 'Format', value: 'image/jpeg' },
-      ...(it.imageProducer ? [{ label: 'Image producer', value: 'Image credit: ' + it.imageProducer }, ...(it.imageDate ? [{ label: 'Image production date', value: it.imageDate }] : [])] : []),
+      { label: 'Format', value: it.mediaFormat || (images[0] && images[0].endsWith('.png') ? 'image/png' : 'image/jpeg') },
+      ...(it.imageProducer || it.producer ? [{ label: 'Producer', value: it.imageProducer || it.producer }] : []),
+      ...(it.imageDate ? [{ label: 'Production date', value: it.imageDate }] : []),
       { label: 'Licence type', value: lic.label },
       { label: 'Terms of use', value: it.terms || lic.terms },
       { label: 'Advisory', value: advisories.length ? advisories.map(a => a.type).join(', ') : 'No advisory' },
-      ...(cls ? [{ label: 'Classification', value: cls.name }] : [])
+      ...(filmCls ? [{ label: 'Advisory classification', value: filmCls.name }] : [])
     ] : [];
+
     return {
       id: it.id, title: it.title, altTitle: it.altTitle || null, type: objType, byline, images, hasDA, fields: f, rights, media,
-      licence: hasDA ? { ...lic, key: it.licence } : null, classification: cls, advisories, indigenous: !!it.indigenous,
+      licence: hasDA ? { ...lic, key: it.licence } : null, classification: filmCls, advisories, indigenous: !!it.indigenous,
       subjects: it.subjects || (it.subject ? [it.subject] : []), citation, citations, unit: UNIT[it.collection] || 'Museums and Collections',
       assetId: `CA-${String(it.id).padStart(6, '0')}`, collection: coll, named: it.named, subject: it.subject,
       card: { id: it.id, title: it.title, img: images[0] || null, collection: coll, type: objType, lic: lic.label, licIcon: lic.icon, licIcons: lic.icons || [], hasLicIcons: !!(lic.icons && lic.icons.length), indigenous: !!it.indigenous }
