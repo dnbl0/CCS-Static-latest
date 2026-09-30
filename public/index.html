@@ -314,34 +314,6 @@
       line-height: 1.2;
     }
 
-    .quick-link-card {
-      padding: 32px;
-      background: var(--col-bg-accent-soft);
-      border: 1px solid var(--col-border-neutral-soft);
-      text-decoration: none;
-      transition: all 0.3s ease;
-      display: block;
-      height: 100%;
-      color: inherit;
-    }
-
-    .quick-link-card:hover {
-      background: var(--col-bg-accent);
-      text-decoration: none;
-      transform: translateY(-2px);
-    }
-
-    .quick-link-card h3 {
-      color: var(--col-bg-primary);
-      margin-bottom: 12px;
-    }
-
-    .quick-link-card p {
-      color: var(--col-text-muted);
-      font-size: 14px;
-      margin-bottom: 0;
-    }
-
     /* Stats strip (bg-inverted) */
     .stats-strip {
       background: var(--col-bg-primary);
@@ -418,11 +390,14 @@
     }
 
     .collection-tile-media {
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       flex: 0 0 45%;
       min-height: 320px;
       max-height: 420px;
       overflow: hidden;
+      background: var(--white-100, #fff);
     }
 
     .collection-tile-media img {
@@ -430,7 +405,7 @@
       height: 100%;
       min-height: 320px;
       max-height: 420px;
-      object-fit: cover;
+      object-fit: contain;
       display: block;
     }
 
@@ -480,63 +455,37 @@
       }
     }
 
-    /* Accordion: How search works */
-    .search-accordion-item {
-      border-top: 1px solid var(--col-border-neutral-soft);
-    }
-
-    .search-accordion-item:last-child {
-      border-bottom: 1px solid var(--col-border-neutral-soft);
-    }
-
-    .search-accordion-btn {
+    /* Help and support band */
+    .help-support-band {
       width: 100%;
-      border: 0;
-      background: none;
-      padding: 18px 4px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      text-align: left;
-      font-family: inherit;
-      font-size: 18px;
-      font-weight: 600;
-      color: var(--col-text-primary);
-      cursor: pointer;
+      background: var(--col-bg-primary);
+      color: #fff;
+      padding: 40px 0;
+      text-align: center;
     }
 
-    .search-accordion-btn .chev {
-      flex: none;
-      transition: transform .2s ease;
+    .help-support-band h2 {
+      font-family: 'Fraunces', serif;
+      font-weight: 500;
+      font-size: 26px;
+      margin: 0 0 8px;
+      color: #fff;
     }
 
-    .search-accordion-btn[aria-expanded="true"] .chev {
-      transform: rotate(180deg);
-    }
-
-    .search-accordion-panel {
+    .help-support-band p {
       margin: 0 0 20px;
-      font-size: 16px;
-      line-height: 1.6;
-      color: var(--col-text-muted);
-      max-width: 780px;
+      color: rgba(255, 255, 255, .85);
     }
 
-    .search-accordion-panel[hidden] {
-      display: none;
-    }
-
-    /* Before you visit */
-    .access-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 14px;
-      background: var(--col-bg-accent-soft);
-      color: var(--col-bg-primary);
-      font-size: 14px;
+    .help-support-band-cta {
+      display: inline-block;
       font-weight: 700;
+      color: #fff;
+      text-decoration: underline;
+    }
+
+    .help-support-band-cta:hover {
+      color: var(--col-btn-action-bg, #46c8f0);
     }
 
     footer {
@@ -895,149 +844,17 @@
         </div>
       </section>
 
-      <!-- Accordion: How search works -->
-      <section class="mb-5 py-4">
-        <h2 class="section-title mb-2">How search works</h2>
-        <p style="max-width: 760px; color: var(--col-text-muted); margin-bottom: 24px;">A few tips to help you find what you're looking for across the collection.</p>
-        <div id="search-accordion">
-
-          <div class="search-accordion-item">
-            <h3 style="margin: 0;">
-              <button type="button" class="search-accordion-btn" aria-expanded="true" aria-controls="acc-panel-basic" id="acc-btn-basic">
-                Basic search
-                <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="6 9 12 15 18 9"></polyline></svg>
-              </button>
-            </h3>
-            <p id="acc-panel-basic" role="region" aria-labelledby="acc-btn-basic" class="search-accordion-panel">The search box searches everything, so it's the best place to start. Use two or three keywords &ndash; searches often fail because they are too specific. All your keywords must appear in a record (an AND search). Suggestions appear as you type; they come from terms in the catalogue, so picking one always returns results.</p>
-          </div>
-
-          <div class="search-accordion-item">
-            <h3 style="margin: 0;">
-              <button type="button" class="search-accordion-btn" aria-expanded="false" aria-controls="acc-panel-facets" id="acc-btn-facets">
-                Faceted search / filters
-                <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="6 9 12 15 18 9"></polyline></svg>
-              </button>
-            </h3>
-            <p id="acc-panel-facets" role="region" aria-labelledby="acc-btn-facets" class="search-accordion-panel" hidden>Filters let you refine your results by structured data &ndash; format type, collection, date ranges and subject &ndash; and show the number of results per option. If your result set is large, review the filters to see what format, creators or subjects are represented, and select the ones most relevant to your query. Once you select a filter, it stays in effect until removed, including if you start a new search.</p>
-          </div>
-
-          <div class="search-accordion-item">
-            <h3 style="margin: 0;">
-              <button type="button" class="search-accordion-btn" aria-expanded="false" aria-controls="acc-panel-phrase" id="acc-btn-phrase">
-                Exact phrase
-                <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="6 9 12 15 18 9"></polyline></svg>
-              </button>
-            </h3>
-            <p id="acc-panel-phrase" role="region" aria-labelledby="acc-btn-phrase" class="search-accordion-panel" hidden>Use double quotation marks around your terms to match words in the exact order you typed them &ndash; for example, "architectural plan".</p>
-          </div>
-
-          <div class="search-accordion-item">
-            <h3 style="margin: 0;">
-              <button type="button" class="search-accordion-btn" aria-expanded="false" aria-controls="acc-panel-advanced" id="acc-btn-advanced">
-                Advanced search
-                <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="6 9 12 15 18 9"></polyline></svg>
-              </button>
-            </h3>
-            <p id="acc-panel-advanced" role="region" aria-labelledby="acc-btn-advanced" class="search-accordion-panel" hidden>Want to search a single field &ndash; title, creator, subject or date range? Or combine several fields using Contains all (AND), Contains any (OR) or Does not contain (NOT)? Use advanced search when you need to combine two or more specific fields, combine two or more values of a filter, or search items across two selected collections.</p>
-          </div>
-
-          <div class="search-accordion-item">
-            <h3 style="margin: 0;">
-              <button type="button" class="search-accordion-btn" aria-expanded="false" aria-controls="acc-panel-boolean" id="acc-btn-boolean">
-                Boolean
-                <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="6 9 12 15 18 9"></polyline></svg>
-              </button>
-            </h3>
-            <p id="acc-panel-boolean" role="region" aria-labelledby="acc-btn-boolean" class="search-accordion-panel" hidden>Create complex logic using AND, OR and NOT (all in upper case) and parentheses for nesting.</p>
-          </div>
-
-        </div>
-      </section>
-
-      <!-- Quick Actions -->
-      <section class="mb-5">
-        <h2 class="section-title mb-4">Quick actions</h2>
-        <div class="row g-4">
-          <div class="col-md-6">
-            <a href="/help/index.html?topic=search-tips" class="quick-link-card">
-              <h3 class="h5">Get help searching</h3>
-              <p>Read our search tips, covering basic search, filters, exact phrases, advanced search and Boolean logic.</p>
-            </a>
-          </div>
-          <div class="col-md-6">
-            <a href="/contact.html" class="quick-link-card">
-              <h3 class="h5">Contact a collection</h3>
-              <p>Reach out to the museum or collection team directly for access requests or further information.</p>
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <!-- Before you visit -->
-      <section class="mb-5 py-4">
-        <div class="row g-4 align-items-center">
-          <div class="col-lg-6">
-            <h2 class="section-title">Before you visit</h2>
-            <p style="color: var(--col-text-muted); line-height: 1.6; max-width: 640px;">Items across the collections are catalogued under three access levels, shown on every record: <strong style="color: var(--col-text-primary);">Open Access</strong>, <strong style="color: var(--col-text-primary);">By Appointment</strong>, and <strong style="color: var(--col-text-primary);">Restricted</strong>. Some items also carry a cultural or advisory notice for sensitive material &ndash; please engage respectfully with this content. To request access or further information about an item, contact the relevant collection and include the record's persistent link.</p>
-            <p style="margin-top: 16px;"><a href="/help/index.html?topic=access" style="font-weight: 700;">Read more about access and information →</a></p>
-          </div>
-          <div class="col-lg-6">
-            <div style="display: flex; flex-direction: column; gap: 12px;">
-              <span class="access-badge">Open Access</span>
-              <span class="access-badge">By Appointment</span>
-              <span class="access-badge">Restricted</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Feature card grid -->
-      <section class="mb-5">
-        <h2 class="section-title mb-4">Learn more</h2>
-        <div class="row g-4">
-          <div class="col-md-6 col-lg-4">
-            <a href="/indigenous-data.html" class="quick-link-card">
-              <h3 class="h5">Indigenous Cultural Data and Access</h3>
-              <p>Our notes on images and voices, language, terminology, and how to contact a collection team about cultural materials or access conditions.</p>
-            </a>
-          </div>
-          <div class="col-md-6 col-lg-4">
-            <a href="/help/index.html?topic=copyright" class="quick-link-card">
-              <h3 class="h5">Copyright and terms of use</h3>
-              <p>How a collection item can be used depends on its copyright licence, intellectual property or cultural advice.</p>
-            </a>
-          </div>
-          <div class="col-md-6 col-lg-4">
-            <a href="/help/index.html?topic=faq" class="quick-link-card">
-              <h3 class="h5">Search tips / FAQ</h3>
-              <p>Frequently asked questions to help you find what you're looking for across the cultural collections.</p>
-            </a>
-          </div>
-        </div>
-      </section>
-
     </div>
-  </main>
 
-  <script>
-    (function () {
-      var buttons = document.querySelectorAll('#search-accordion .search-accordion-btn');
-      buttons.forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          var expanded = btn.getAttribute('aria-expanded') === 'true';
-          var panel = document.getElementById(btn.getAttribute('aria-controls'));
-          btn.setAttribute('aria-expanded', String(!expanded));
-          if (panel) {
-            if (expanded) {
-              panel.setAttribute('hidden', '');
-            } else {
-              panel.removeAttribute('hidden');
-            }
-          }
-        });
-      });
-    })();
-  </script>
+    <!-- Help and support -->
+    <section class="help-support-band">
+      <div class="container">
+        <h2>Need a hand?</h2>
+        <p>Search tips, access levels, copyright and contact details for every collection team.</p>
+        <a href="/help/index.html" class="help-support-band-cta">Visit help and support →</a>
+      </div>
+    </section>
+  </main>
 
   <!-- Footer -->
 
