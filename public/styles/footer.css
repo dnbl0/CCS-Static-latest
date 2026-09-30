@@ -94,15 +94,15 @@
 
 /* Section Backgrounds */
 .page-footer .bg-primary-75 {
-  background-color: var(--col-bg-primary-75);
+  background-color: var(--col-bg-primary-75) !important;
 }
 
 .page-footer .bg-primary {
-  background-color: var(--col-bg-primary);
+  background-color: var(--col-bg-primary) !important;
 }
 
 .page-footer .bg-secondary {
-  background-color: var(--col-bg-secondary);
+  background-color: var(--col-bg-secondary) !important;
 }
 
 /* 1. Acknowledgement Section */
@@ -162,8 +162,21 @@
   border: 0;
   padding: 0;
   cursor: pointer;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   transition: color 0.2s;
+}
+
+.page-footer .button.button--text::after {
+  content: "";
+  display: inline-block;
+  flex: none;
+  width: 16px;
+  height: 16px;
+  background-color: currentColor;
+  mask: url("/images/arrow-right.svg") no-repeat center / contain;
+  -webkit-mask: url("/images/arrow-right.svg") no-repeat center / contain;
 }
 
 .page-footer .button.button--text:hover,
