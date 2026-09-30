@@ -1704,10 +1704,15 @@ function spellingSuggestion(q) {
   return changed ? corrected.join(' ') : null;
 }
 
+// CCS-143: history is scoped to the guest user's active browser session only
+// (confirmed on the ticket - "session only for guest user"; a persistent,
+// multi-day history is the separate, later CCS-206 story) - sessionStorage,
+// not localStorage, is the correct mechanism here since it's cleared when
+// the session/tab ends.
 const SEARCH_HISTORY_KEY = 'ccs-search-history';
 function getSearchHistory() {
   try {
-    const raw = localStorage.getItem(SEARCH_HISTORY_KEY);
+    const raw = sessionStorage.getItem(SEARCH_HISTORY_KEY);
     if (!raw) return [];
     const arr = JSON.parse(raw);
     return Array.isArray(arr) ? arr.filter(x => typeof x === 'string' && x.trim()) : [];
@@ -1722,19 +1727,19 @@ function saveSearchHistory(term) {
     list = list.filter(item => item.toLowerCase() !== t.toLowerCase());
     list.unshift(t);
     if (list.length > 10) list = list.slice(0, 10);
-    localStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(list));
+    sessionStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(list));
   } catch (e) {}
 }
 function removeSearchHistoryItem(term) {
   try {
     let list = getSearchHistory();
     list = list.filter(item => item.toLowerCase() !== (term || '').toLowerCase());
-    localStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(list));
+    sessionStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(list));
   } catch (e) {}
 }
 function clearSearchHistory() {
   try {
-    localStorage.removeItem(SEARCH_HISTORY_KEY);
+    sessionStorage.removeItem(SEARCH_HISTORY_KEY);
   } catch (e) {}
 }
 
@@ -1984,7 +1989,7 @@ class Component extends DCLogic {
         e.preventDefault();
         e.stopPropagation();
         removeSearchHistoryItem(term);
-        this.forceUpdate();
+        this.setState({ sugIdx: -1 });
       }
     }));
 
@@ -2036,7 +2041,7 @@ class Component extends DCLogic {
         e.preventDefault();
         e.stopPropagation();
         clearSearchHistory();
-        this.forceUpdate();
+        this.setState({ sugIdx: -1 });
       },
       hasSugs,
       sugsTopBorder: hasHistory ? '1px solid var(--col-border-neutral-mid)' : '0',
