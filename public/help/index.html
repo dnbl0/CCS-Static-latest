@@ -342,13 +342,6 @@ html{scroll-behavior:smooth}
   <p style="margin:0;max-width:760px">You can create complex Boolean logic using AND, OR, and NOT (all in upper-case) and parentheses for nesting.</p>
 </section>
 </sc-if>
-<sc-if value="{{ showIndigenous }}" hint-placeholder-val="{{ true }}">
-<section id="indigenous" aria-labelledby="h-indigenous" style="background:#fff;border:1px solid #e3e0d9;padding:28px 32px;display:flex;flex-direction:column;gap:14px;scroll-margin-top:20px;font-size:16px;line-height:1.6;color:#3b4050">
-  <h2 id="h-indigenous" style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:28px;color:var(--col-bg-primary)">Indigenous Cultural Data and Access</h2>
-  <p style="margin:0;max-width:760px">The University of Melbourne acknowledge Aboriginal and Torres Strait Islander people as the Traditional Owners of the unceded lands on which we work, learn and live. We pay respect to Elders past, present and future, and acknowledge the importance of Indigenous knowledge in the Academy. Read on for our notes on images and voices, language, terminology, and how to contact a collection team about cultural materials or access conditions.</p>
-  <p style="margin:0"><a href="/indigenous-data.html" style="font-weight:600">Read the full Indigenous Cultural Data and Access page ›</a></p>
-</section>
-</sc-if>
 
 <sc-if value="{{ showCopyright }}" hint-placeholder-val="{{ true }}">
 <section id="copyright" aria-labelledby="h-copyright" style="background:#fff;border:1px solid #e3e0d9;padding:28px 32px;display:flex;flex-direction:column;gap:14px;scroll-margin-top:20px;font-size:16px;line-height:1.6;color:#3b4050">
@@ -357,7 +350,7 @@ html{scroll-behavior:smooth}
   <ol style="margin:0;padding-left:22px;display:flex;flex-direction:column;gap:10px;max-width:760px">
     <li><strong style="color:var(--col-text-primary)">Free Access.</strong> Collection items available to download may be reused for personal, research, educational or non-commercial purposes. Attribution to the creator and acknowledgement of University of Melbourne is requested.</li>
     <li><strong style="color:var(--col-text-primary)">Licensed.</strong> Some collection items are available for use under Creative Commons or other licence types. Please follow the specific licence terms shown on the individual record.</li>
-    <li><strong style="color:var(--col-text-primary)">Cultural Conditions.</strong> Where collection items carrying a cultural or advisory notice, engage respectfully with the content. For more information see <a href="/help?topic=indigenous">Indigenous Cultural Data and Access</a>.</li>
+    <li><strong style="color:var(--col-text-primary)">Cultural Conditions.</strong> Where collection items carrying a cultural or advisory notice, engage respectfully with the content. For more information see <a href="/help/indigenous-data.html">Indigenous Cultural Data and Access</a>.</li>
     <li><strong style="color:var(--col-text-primary)">Contact the Collection</strong> when copyright terms are unclear, or when seeking permission to use collection items in publications, online, and commercial use. To assist in the query, note the information in Cite this item and prepare a description of your intended use.</li>
     <li><strong style="color:var(--col-text-primary)">University Copyright Office.</strong> To learn more about copyright and licensing, see the University Copyright Office website, including information on:
       <ul style="margin:6px 0 0;padding-left:20px">
@@ -645,15 +638,15 @@ class Component extends DCLogic {
   state = { open: 0 };
   renderVals() {
     const key = new URLSearchParams(location.search).get('topic');
-    const found = TOPICS.find(([k]) => k === key);
+    const found = TOPICS.find(([k]) => k === key && k !== 'indigenous');
     const topic = found ? { key: found[0], title: found[1], blurb: found[2] } : null;
     return {
       topic, notTopic: !topic,
       mainStyle: topic ? 'flex:1;max-width:1200px;width:100%;margin:0 auto;padding:40px 32px 80px;display:flex;flex-direction:column;gap:28px' : 'flex:1;max-width:1200px;width:100%;margin:0 auto;padding:0;display:flex;flex-direction:column;gap:0',
       showFaq: !!topic && topic.key === 'faq', showSearchTips: !!topic && topic.key === 'search-tips',
-      showIndigenous: !!topic && topic.key === 'indigenous', showCopyright: !!topic && topic.key === 'copyright',
+      showCopyright: !!topic && topic.key === 'copyright',
       showAccess: !!topic && topic.key === 'access', showPrivacy: !!topic && topic.key === 'privacy',
-      topics: TOPICS.map(([key, title, blurb, d]) => ({ href: '/help?topic=' + key, title, blurb, icon: iconEl(d) })),
+      topics: TOPICS.map(([key, title, blurb, d]) => ({ href: key === 'indigenous' ? '/help/indigenous-data.html' : '/help?topic=' + key, title, blurb, icon: iconEl(d) })),
       faqs: FAQS.map(([q, a], i) => ({ q, a, open: this.state.open === i, chev: this.state.open === i ? 'rotate(180deg)' : 'none', toggle: () => this.setState(s => ({ open: s.open === i ? -1 : i })), btnId: 'faq-btn-' + i, panelId: 'faq-panel-' + i }))
     };
   }
