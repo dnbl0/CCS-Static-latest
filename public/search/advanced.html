@@ -6,6 +6,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="../support.js"></script>
+<script src="../blacklight-adapter.js"></script>
 <style>
 .skip-link {
   position: absolute;
@@ -34,6 +35,7 @@
   nav[aria-label="Breadcrumb"] .bc-mobile{display:flex!important}
 }
 </style>
+  <link rel="stylesheet" href="../styles/vendor/bootstrap-uom.min.css">
   <link rel="stylesheet" href="../styles/footer.css">
   <link rel="stylesheet" href="../styles/header.css">
 </head>
@@ -257,7 +259,10 @@ button,input,select{font-family:inherit}
         <sc-if value="{{ loading }}"><span style="width:240px;height:26px;background:linear-gradient(90deg,#e9e7e2 0,#f5f4f1 40%,#e9e7e2 80%);background-size:1200px 100%;animation:shimmer 1.3s linear infinite"></span></sc-if>
         <sc-if value="{{ notLoading }}" hint-placeholder-val="{{ true }}"><h2 aria-live="polite" style="margin:0;font-size:22px;font-weight:600;line-height:1.3;color:var(--col-bg-primary);text-wrap:pretty">{{ titleText }}</h2></sc-if>
       </div>
-      <button onClick="{{ saveSearch }}" style="align-self:flex-start;display:flex;align-items:center;gap:6px;border:1px solid var(--col-bg-primary);background:#fff;color:var(--col-bg-primary);padding:6px 12px;font-size:14px;font-weight:600;cursor:pointer" style-hover="background:#f0f2f7"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12v18l-6-4.5L6 21z"></path></svg>{{ saveSearchLabel }}</button>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <button onClick="{{ saveSearch }}" style="align-self:flex-start;display:flex;align-items:center;gap:6px;border:1px solid var(--col-bg-primary);background:#fff;color:var(--col-bg-primary);padding:6px 12px;font-size:14px;font-weight:600;cursor:pointer" style-hover="background:#f0f2f7"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12v18l-6-4.5L6 21z"></path></svg>{{ saveSearchLabel }}</button>
+        <button id="api-mode-toggle" type="button" onClick="{{ toggleApiMode }}" title="Toggle between local mock data and live Blacklight API (/catalog.json)" style="display:inline-flex;align-items:center;gap:6px;border:1px solid var(--col-border-neutral-mid);background:{{ apiBtnBg }};color:{{ apiBtnColor }};padding:6px 12px;font-size:13px;font-weight:600;cursor:pointer;border-radius:0">{{ apiBtnText }}</button>
+      </div>
       <div ref="{{ ppRef }}" style="position:relative;align-self:flex-start;margin-top:2px">
           <button onClick="{{ togglePP }}" aria-haspopup="listbox" aria-expanded="{{ ppOpen }}" style="display:flex;align-items:center;gap:10px;border:0;background:none;padding:0;font-size:17px;color:var(--col-bg-primary);cursor:pointer">{{ rangeLabel }}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" style="transform:{{ ppChev }};transition:transform .15s"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
           <sc-if value="{{ ppOpen }}">
@@ -588,7 +593,7 @@ button,input,select{font-family:inherit}
 
 
 <!-- UoM Footer -->
-<footer aria-label="University of Melbourne footer" data-test="footer" class="page-footer">
+<footer aria-label="University of Melbourne footer" class="page-footer">
   <div class="page-footer__acknowledgement bg-primary-75" data-bound-textcenter="true">
     <div class="page-footer__inner" data-bound-textcenter="true">
       <div class="grid" data-bound-textcenter="true">
@@ -608,7 +613,7 @@ button,input,select{font-family:inherit}
             live. We pay respect to Elders past, present and future, and
             acknowledge the importance of Indigenous knowledge in the Academy.
           </p>
-          <a class="button button--text" href="https://www.unimelb.edu.au/indigenous">
+          <a class="button button--text" href="https://www.unimelb.edu.au/reconciliation">
             Read about our Indigenous priorities
           </a>
         </div>
@@ -1743,10 +1748,24 @@ function clearSearchHistory() {
 }
 
 class Component extends DCLogic {
-  state = { f:EMPTYF(), loading:false, view:null, notice:true, sideQ:'', modal:false, draft:null, mOpen:{coll:true,type:true,date:true}, fq:{}, more:{}, sortOpen:false, perPage:20, ppOpen:false, page:1, scopeOpen:false, sugOpen:false, sugIdx:-1, yIn:null, yErr:'', counting:false, ackOpen:false, vw: typeof window !== 'undefined' ? window.innerWidth : 1200 };
+  state = { f:EMPTYF(), loading:false, view:null, notice:true, sideQ:'', modal:false, draft:null, mOpen:{coll:true,type:true,date:true}, fq:{}, more:{}, sortOpen:false, perPage:20, ppOpen:false, page:1, scopeOpen:false, sugOpen:false, sugIdx:-1, yIn:null, yErr:'', counting:false, ackOpen:false, vw: typeof window !== 'undefined' ? window.innerWidth : 1200, liveItems: null, liveTotal: null, liveError: null };
   trackRef = React.createRef(); bodyRef = React.createRef(); sortRef = React.createRef(); ppRef = React.createRef(); mainRef = React.createRef();
   scopeRef = React.createRef(); dialogRef = React.createRef(); filterBtnRef = React.createRef(); ackRef = React.createRef();
   dom = { lo: 1700, hi: 2030 };
+
+  async fetchLive(f, page, perPage) {
+    if (typeof BlacklightAdapter === 'undefined' || !BlacklightAdapter.isLive()) return;
+    this.setState({ loading: true });
+    const targetF = f || this.state.f;
+    const targetPage = page || this.state.page;
+    const targetPerPage = perPage || this.state.perPage;
+    const res = await BlacklightAdapter.query(targetF, targetPage, targetPerPage);
+    if (res.source === 'live' && res.items) {
+      this.setState({ liveItems: res.items, liveTotal: res.total, loading: false, liveError: null });
+    } else {
+      this.setState({ liveItems: null, liveTotal: null, loading: false, liveError: res.error || null });
+    }
+  }
 
   componentDidMount() {
     this.onMove = e => this.move(e);
@@ -1760,16 +1779,18 @@ class Component extends DCLogic {
     try { if (!localStorage.getItem('ccs-cultural-ack')) { this.setState({ ackOpen: true }); setTimeout(() => { const el = this.ackRef.current && this.ackRef.current.querySelector(FOCUSABLE); el && el.focus(); }, 30); } } catch (e) {}
     const qs = new URLSearchParams(location.search);
     const pc = qs.get('collection'), pt = qs.get('type'), pq = qs.get('q'), psc = qs.get('scope');
+    let initF = null;
     if (pc || pt || pq || psc) {
       if (pq) saveSearchHistory(pq);
-      this.setState(s => {
-        const f = clone(s.f);
-        if (pc) f.collection = [pc];
-        if (pt) f.type = [pt];
-        if (pq) f.q = pq;
-        if (psc) f.scope = psc;
-        return { f };
-      });
+      initF = clone(this.state.f);
+      if (pc) initF.collection = [pc];
+      if (pt) initF.type = [pt];
+      if (pq) initF.q = pq;
+      if (psc) initF.scope = psc;
+      this.setState({ f: initF });
+    }
+    if (typeof BlacklightAdapter !== 'undefined' && BlacklightAdapter.isLive()) {
+      this.fetchLive(initF || this.state.f, 1, this.state.perPage);
     }
   }
   componentWillUnmount() {
@@ -1799,7 +1820,15 @@ class Component extends DCLogic {
   }
   cnt(f, except, field) { const c = {}; ITEMS.forEach(it => { if (this.matchF(it, f, except)) (field === 'collection' || field === 'named' ? [it[field]].filter(Boolean) : vals(it, field)).forEach(v => c[v] = (c[v] || 0) + 1); }); return c; }
   tog(f, k, v) { f[k] = f[k].includes(v) ? f[k].filter(x => x !== v) : [...f[k], v]; return f; }
-  apply(fn) { this.setState(s => ({ f: fn(clone(s.f)), loading: true, page: 1 })); clearTimeout(this.t); this.t = setTimeout(() => this.setState({ loading: false }), 420); }
+  apply(fn) {
+    const nextF = fn(clone(this.state.f));
+    this.setState({ f: nextF, loading: true, page: 1 });
+    clearTimeout(this.t);
+    this.t = setTimeout(() => this.setState({ loading: false }), 420);
+    if (typeof BlacklightAdapter !== 'undefined' && BlacklightAdapter.isLive()) {
+      this.fetchLive(nextF, 1, this.state.perPage);
+    }
+  }
   setDraft(fn) { this.setState(st => ({ draft: fn(clone(st.draft)), counting: true })); clearTimeout(this.ct); this.ct = setTimeout(() => this.setState({ counting: false }), 280); }
   togParent(h) { this.setDraft(d => { if (d.collection.includes(h.name)) d.collection = d.collection.filter(x => x !== h.name); else { d.collection.push(h.name); d.named = d.named.filter(x => !h.children.includes(x)); } return d; }); }
   togChild(h, ch) { this.setDraft(d => {
@@ -1939,17 +1968,29 @@ class Component extends DCLogic {
     if (f.accession) chips.push({ group: 'Accession number', label: f.accession, remove: () => this.apply(ff => ({ ...ff, accession: '' })) });
     if (f.birthFrom != null || f.birthTo != null) chips.push({ group: 'Creator birth years', label: (f.birthFrom ?? 'Any') + ' – ' + (f.birthTo ?? 'Any'), remove: () => this.apply(ff => ({ ...ff, birthFrom: null, birthTo: null })) });
     if (f.downloadable) chips.push({ group: 'Access', label: 'Only records with downloads', remove: () => this.apply(ff => ({ ...ff, downloadable: false })) });
-    let list = ITEMS.filter(it => this.matchF(it, f));
-    const tt = t => t.replace(/^\W+/, '');
-    if (f.sort === 'az') list = [...list].sort((a, b) => tt(a.title).localeCompare(tt(b.title)));
-    if (f.sort === 'new') list = [...list].sort((a, b) => (b.dateStart ?? -1e9) - (a.dateStart ?? -1e9));
-    if (f.sort === 'old') list = [...list].sort((a, b) => (a.dateStart ?? 1e9) - (b.dateStart ?? 1e9));
+    const isLive = typeof BlacklightAdapter !== 'undefined' && BlacklightAdapter.isLive();
+    const apiBtnText = isLive ? (s.liveError ? '● API: Fallback (Offline)' : '● API: Live Blacklight') : '○ API: Mock Data';
+    const apiBtnBg = isLive ? (s.liveError ? '#fff3cd' : '#e8edf6') : '#f4f5f8';
+    const apiBtnColor = isLive ? (s.liveError ? '#856404' : 'var(--col-bg-primary)') : 'var(--col-text-muted)';
+    let list;
+    if (isLive && s.liveItems) {
+      list = s.liveItems;
+    } else {
+      list = ITEMS.filter(it => this.matchF(it, f));
+      const tt = t => t.replace(/^\W+/, '');
+      if (f.sort === 'az') list = [...list].sort((a, b) => tt(a.title).localeCompare(tt(b.title)));
+      if (f.sort === 'new') list = [...list].sort((a, b) => (b.dateStart ?? -1e9) - (a.dateStart ?? -1e9));
+      if (f.sort === 'old') list = [...list].sort((a, b) => (a.dateStart ?? 1e9) - (b.dateStart ?? 1e9));
+    }
     const results = list.map((it, idx) => {
-      const licIcons = LIC[it.licence][2] || [];
-      return { ...it, href: '/collections/record.html?id=' + it.id, img: it.img ? '../images/' + it.img + '.jpg' : null, imgSrc: it.img ? '../images/' + it.img + '.jpg' : '', ar: it.img && RATIO[it.img] ? RATIO[it.img].join(' / ') : 'auto', delay: Math.min(idx, 12) * 35 + 'ms', hasImg: it.img != null && it.img !== '', noImg: !it.img,
-        type: capType(it.objectType), dateLabel: it.date || (it.dateStart ? 'c. ' + it.dateStart : 'Undated'), typeLic: capType(it.objectType) + ' · ' + LIC[it.licence][1], licIcon: LIC[it.licence][0], licLabel: LIC[it.licence][1], licIcons, hasLicIcons: licIcons.length > 0 };
+      const licEntry = LIC[it.licence] || ['rights', 'Rights Reserved', []];
+      const licIcons = licEntry[2] || [];
+      const imgPath = it.img ? (it.img.startsWith('http') || it.img.startsWith('/') ? it.img : '../images/' + it.img + '.jpg') : null;
+      return { ...it, href: '/collections/record.html?id=' + it.id, img: imgPath, imgSrc: imgPath || '', ar: it.img && RATIO[it.img] ? RATIO[it.img].join(' / ') : 'auto', delay: Math.min(idx, 12) * 35 + 'ms', hasImg: !!it.img, noImg: !it.img,
+        type: capType(it.objectType), dateLabel: it.date || (it.dateStart ? 'c. ' + it.dateStart : 'Undated'), typeLic: capType(it.objectType) + ' · ' + licEntry[1], licIcon: licEntry[0], licLabel: licEntry[1], licIcons, hasLicIcons: licIcons.length > 0 };
     });
-    const n = results.length, pageCount = Math.max(1, Math.ceil(n / s.perPage)), page = Math.min(s.page, pageCount);
+    const totalCount = (isLive && s.liveTotal != null) ? s.liveTotal : (isLive && s.liveItems ? s.liveItems.length : list.length);
+    const n = totalCount, pageCount = Math.max(1, Math.ceil(n / s.perPage)), page = Math.min(s.page, pageCount);
     // Windowed pagination: current page +/- 2, always show first/last, with an
     // ellipsis marker when the window doesn't reach the edge.
     const pageWindow = 2;
@@ -1958,7 +1999,15 @@ class Component extends DCLogic {
       if (start > 1) { pageNums.push(1); if (start > 2) pageNums.push('…'); }
       for (let i = start; i <= end; i++) pageNums.push(i);
       if (end < pageCount) { if (end < pageCount - 1) pageNums.push('…'); pageNums.push(pageCount); } }
-    const goPage = pg => { if (pg < 1 || pg > pageCount || pg === page) return; this.setState({ page: pg, loading: true }); clearTimeout(this.t); this.t = setTimeout(() => this.setState({ loading: false }), 420); const m = this.mainRef.current; if (m) window.scrollTo({ top: m.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' }); };
+    const goPage = pg => {
+      if (pg < 1 || pg > pageCount || pg === page) return;
+      this.setState({ page: pg, loading: true });
+      clearTimeout(this.t);
+      this.t = setTimeout(() => this.setState({ loading: false }), 420);
+      if (isLive) this.fetchLive(this.state.f, pg, this.state.perPage);
+      const m = this.mainRef.current;
+      if (m) window.scrollTo({ top: m.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
+    };
     const q2 = s.sideQ.trim().toLowerCase();
     const rawHistory = getSearchHistory();
     const recentList = !q2
@@ -2093,11 +2142,18 @@ class Component extends DCLogic {
       loading: s.loading, notLoading: !s.loading, chips, hasActive: chips.length > 0,
       clearAll: () => this.apply(ff => ({ ...EMPTYF(), sort: ff.sort })),
       skeletons: (n ? results.slice(0, 12).map(r => ({ ar: r.hasImg ? r.ar : 'auto', imgDisplay: r.hasImg ? 'block' : 'none' })) : SKEL.slice(0, 6).map(x => ({ ar: '1 / ' + (x / 300), imgDisplay: 'block' }))),
-      results: results.slice((page - 1) * s.perPage, page * s.perPage), isGrid: !s.loading && view === 'masonry' && n > 0, isList: !s.loading && view === 'list' && n > 0, isEmpty: !s.loading && n === 0,
+      results: (isLive && s.liveItems) ? results : results.slice((page - 1) * s.perPage, page * s.perPage), isGrid: !s.loading && view === 'masonry' && n > 0, isList: !s.loading && view === 'list' && n > 0, isEmpty: !s.loading && n === 0,
       showDidYouMean: !!didYouMeanText, didYouMeanText, applyDidYouMean: () => runQ(didYouMeanText),
       modal: s.modal, closeModal: () => this.closeModal(), stop: e => e.stopPropagation(),
       bodyRef: this.bodyRef, trackRef: this.trackRef, dialogRef: this.dialogRef,
-      ackOpen: s.ackOpen, ackRef: this.ackRef, acceptAck: () => this.closeAck(), closeAck: () => this.closeAck(), ackTrapKey: this.makeTrapKey(this.ackRef)
+      ackOpen: s.ackOpen, ackRef: this.ackRef, acceptAck: () => this.closeAck(), closeAck: () => this.closeAck(), ackTrapKey: this.makeTrapKey(this.ackRef),
+      apiBtnText, apiBtnBg, apiBtnColor,
+      toggleApiMode: () => {
+        if (typeof BlacklightAdapter !== 'undefined') {
+          const next = BlacklightAdapter.isLive() ? 'mock' : 'live';
+          BlacklightAdapter.setMode(next);
+        }
+      }
     };
   }
 }
