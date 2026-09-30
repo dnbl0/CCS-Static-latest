@@ -44,23 +44,10 @@ export function Header({
           <button
             data-popover-type="search"
             type="button"
-            className="uom-search-btn udds-focus items-center justify-center ring-inset flex h-full"
+            className="udds-focus items-center justify-center ring-inset text-brand-inverse fill-white-100 flex h-full p-[0.625rem] bg-background-button-secondary active:bg-background-button-secondary-active hover:bg-background-button-secondary-hover color-text-brand hover:color-text-brand"
             onClick={onSearchClick}
-            aria-label="Open search"
           >
-            <svg
-              className="size-150 w-5 h-5"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
+            <uom-ds-icon class="size-150" iconid="search" iconset="functional" isdecorative="" isfluid="" islabelhidden="" label="Search" sizevariant="prominent" data-testid="uom-ds-icon"></uom-ds-icon>
             <span className="sr-only">open search</span>
           </button>
         </div>
