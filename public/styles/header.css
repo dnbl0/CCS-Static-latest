@@ -361,13 +361,128 @@ header[data-component="Header"],
   color: var(--uom-ds-color-text-link-hover-inverse, #47c8f0);
 }
 
-/* Utilities for UnoCSS / Tailwind classes in Header */
-.bg-primary { background-color: var(--col-bg-primary, rgb(0 15 70)); }
-.bg-secondary { background-color: var(--col-heritage-dark-100, #000b34); }
+/* Utilities for UnoCSS / Tailwind classes in Header.
+   Prefixed with uom- because bare .bg-primary/.bg-secondary collide with
+   Bootstrap's !important utilities of the same name (Bootstrap wins on
+   !important regardless of specificity, which was silently breaking the
+   header's top nav tier background). Do not rename these back. */
+.uom-bg-primary { background-color: var(--col-bg-primary, rgb(0 15 70)); }
+.uom-bg-secondary { background-color: var(--col-heritage-dark-100, #000b34); }
 .border-r-brand-900 { border-right: 1px solid var(--uom-ds-color-brand-900, #212e5d); }
 .border-b-brand-900 { border-bottom: 1px solid var(--uom-ds-color-brand-900, #212e5d); }
 .text-brand-inverse { color: var(--uom-ds-color-text-brand-inverse, #ffffff); }
 .hover\:text-link-hover-inverse:hover { color: var(--uom-ds-color-text-link-hover-inverse, #47c8f0); }
+
+/* Mobile menu toggle (hamburger + label), shown only under the mega-menu breakpoint */
+.uom-page-header .uom-menu-toggle {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  background: none;
+  border: 0;
+  color: var(--uom-ds-color-text-brand-inverse, #ffffff);
+  cursor: pointer;
+  padding: 0.375rem 0.625rem;
+  min-width: 44px;
+  min-height: 44px;
+  flex-shrink: 0;
+}
+
+.uom-page-header .uom-menu-toggle .uom-menu-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+/* Full-screen search overlay, modelled on the Gen 3 Design System's
+   uom-ds-search-overlay (see designsystem.web.unimelb.edu.au/components/headers/) */
+.uom-search-popover {
+  display: none;
+  position: fixed;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1100;
+}
+
+.uom-search-popover.is-open {
+  display: block;
+}
+
+.uom-search-popover__inner {
+  background-color: var(--col-bg-primary, rgb(0 15 70));
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 1rem;
+}
+
+.uom-search-popover__form {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 16rem;
+  max-width: 40rem;
+}
+
+.uom-search-popover__form input {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: 0;
+  padding: 0.75rem 1rem;
+  font-size: 1.0625rem;
+  font-family: var(--uom-ds-typography-font-family-200, "Source Sans 3", sans-serif);
+  color: var(--uom-ds-color-text-brand, #000f46);
+}
+
+.uom-search-popover__form input:focus {
+  outline: 2px solid var(--col-blue-light-100, #47c8f0);
+  outline-offset: -2px;
+}
+
+.uom-search-popover__submit {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  padding: 0 0.875rem;
+  background-color: var(--uom-ds-color-background-button-secondary, #abc1a7);
+  color: var(--uom-ds-color-text-brand, #000f46);
+  cursor: pointer;
+}
+
+.uom-search-popover__submit:hover {
+  background-color: var(--uom-ds-color-background-button-secondary-hover, #c3d2c0);
+}
+
+.uom-search-popover__close {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  background: none;
+  border: 0;
+  color: var(--uom-ds-color-text-brand-inverse, #ffffff);
+  font-size: 0.875rem;
+  cursor: pointer;
+  padding: 0.4375rem;
+}
+
+.uom-search-popover__close:hover {
+  color: var(--uom-ds-color-text-link-hover-inverse, #47c8f0);
+  text-decoration: underline;
+}
 
 /* Screen reader only utility */
 .sr-only {
@@ -400,7 +515,33 @@ header[data-component="Header"],
   .uom-page-header .logo {
     height: var(--nav-height);
   }
+  .uom-page-header .uom-nav-top-tier {
+    display: none;
+  }
+  .uom-page-header .uom-menu-toggle {
+    display: flex;
+  }
   .uom-page-header .uom-primary-nav {
     display: none;
+    position: absolute;
+    top: var(--nav-height);
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    background-color: var(--col-bg-primary, rgb(0 15 70));
+    border-top: 1px solid var(--uom-ds-color-brand-900, #212e5d);
+    padding: 0.5rem 0;
+    z-index: 30;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  }
+  .uom-page-header .uom-primary-nav.is-open {
+    display: flex;
+  }
+  .uom-page-header .uom-primary-nav a {
+    width: 100%;
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
   }
 }
