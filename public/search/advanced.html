@@ -298,13 +298,41 @@ button,input,select{font-family:inherit}
         <sc-if value="{{ hasQ }}">
           <button type="button" onClick="{{ clearQ }}" aria-label="Remove search term" style="flex:none;display:flex;align-items:center;gap:6px;border:0;background:var(--col-bg-accent-soft);color:var(--col-bg-primary);padding:4px 8px;font-size:13px;font-weight:700;letter-spacing:.08em;cursor:pointer;max-width:150px" style-hover="background:#cbd7c2"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ qTag }}</span><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.6" style="flex:none"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg></button>
         </sc-if>
-        <input value="{{ sideQ }}" onChange="{{ onSideQ }}" onKeyDown="{{ barKey }}" onFocus="{{ openSug }}" onBlur="{{ closeSugSoon }}" role="combobox" aria-expanded="{{ sugOpen }}" aria-controls="search-suggestions" aria-autocomplete="list" aria-label="Search the collection" placeholder="{{ barPlaceholder }}" style="flex:1;min-width:40px;border:0;outline:none;font-size:15px;color:var(--col-text-primary);background:none">
+        <input value="{{ sideQ }}" onChange="{{ onSideQ }}" onKeyDown="{{ barKey }}" onFocus="{{ openSug }}" onClick="{{ openSug }}" onBlur="{{ closeSugSoon }}" role="combobox" aria-expanded="{{ sugOpen }}" aria-controls="search-suggestions" aria-autocomplete="list" aria-label="Search the collection" placeholder="{{ barPlaceholder }}" style="flex:1;min-width:40px;border:0;outline:none;font-size:15px;color:var(--col-text-primary);background:none">
       </div>
       <button type="submit" aria-label="Search" style="width:46px;border:0;border-left:1px solid var(--col-border-neutral-mid);background:#fff;color:#6b7080;cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="color:var(--col-bg-primary)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.5" y1="15.5" x2="21" y2="21"></line></svg></button>
       <sc-if value="{{ sugOpen }}">
-        <div id="search-suggestions" role="listbox" style="position:absolute;left:-1px;right:-1px;top:calc(100% + 1px);z-index:40;background:#fff;border:1px solid var(--col-bg-primary);box-shadow:none;display:flex;flex-direction:column">
-          <span style="padding:10px 14px 6px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--col-text-muted)">Suggestions</span>
-          <sc-for list="{{ sugs }}" as="g"><button type="button" role="option" aria-selected="{{ g.sel }}" onMouseDown="{{ g.pick }}" style="border:0;background:{{ g.bg }};padding:10px 14px;display:flex;justify-content:space-between;gap:12px;text-align:left;font-size:15px;color:var(--col-text-primary);cursor:pointer" style-hover="background:#e3f4fb"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ g.text }}</span><span style="flex:none;font-size:13px;color:var(--col-text-muted)">{{ g.cat }}</span></button></sc-for>
+        <div id="search-suggestions" role="listbox" aria-label="Search suggestions and recent history" style="position:absolute;left:-1px;right:-1px;top:calc(100% + 1px);z-index:40;background:#fff;border:1px solid var(--col-bg-primary);box-shadow:0 8px 24px rgba(0,0,0,0.12);display:flex;flex-direction:column;max-height:420px;overflow-y:auto">
+          <sc-if value="{{ hasHistory }}">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px 6px;background:#f8f9fa;border-bottom:1px solid var(--col-border-neutral-mid)">
+              <span style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--col-text-muted);display:flex;align-items:center;gap:6px">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>Recent Searches
+              </span>
+              <button type="button" onMouseDown="{{ clearHistory }}" aria-label="Clear all recent searches" style="border:0;background:none;font-size:11px;font-weight:600;color:var(--col-text-muted);cursor:pointer;padding:0" style-hover="color:var(--col-bg-primary);text-decoration:underline">Clear all</button>
+            </div>
+            <sc-for list="{{ historyItems }}" as="h">
+              <div style="display:flex;align-items:center;justify-content:space-between;background:{{ h.bg }};border-bottom:1px solid #f0f2f5" style-hover="background:#e3f4fb">
+                <button type="button" role="option" aria-selected="{{ h.sel }}" onMouseDown="{{ h.pick }}" style="flex:1;min-width:0;border:0;background:none;padding:10px 14px;display:flex;align-items:center;gap:10px;text-align:left;font-size:15px;color:var(--col-text-primary);cursor:pointer">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6b7080" stroke-width="2" style="flex:none"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                  <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ h.text }}</span>
+                </button>
+                <button type="button" aria-label="Remove '{{ h.text }}' from search history" onMouseDown="{{ h.remove }}" title="Remove from history" style="flex:none;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border:0;background:none;color:#9aa1af;cursor:pointer" style-hover="color:#d32f2f">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+              </div>
+            </sc-for>
+          </sc-if>
+          <sc-if value="{{ hasSugs }}">
+            <div style="padding:10px 14px 6px;background:#f8f9fa;border-bottom:1px solid var(--col-border-neutral-mid);border-top:{{ sugsTopBorder }}">
+              <span style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--col-text-muted)">Suggested Terms</span>
+            </div>
+            <sc-for list="{{ sugs }}" as="g">
+              <button type="button" role="option" aria-selected="{{ g.sel }}" onMouseDown="{{ g.pick }}" style="border:0;background:{{ g.bg }};padding:10px 14px;display:flex;justify-content:space-between;align-items:center;gap:12px;text-align:left;font-size:15px;color:var(--col-text-primary);cursor:pointer;border-bottom:1px solid #f0f2f5" style-hover="background:#e3f4fb">
+                <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ g.text }}</span>
+                <span style="flex:none;font-size:13px;color:var(--col-text-muted)">{{ g.cat }}</span>
+              </button>
+            </sc-for>
+          </sc-if>
         </div>
       </sc-if>
     </form>
@@ -1675,6 +1703,41 @@ function spellingSuggestion(q) {
   const corrected = tokens.map(t => t.type === 'phrase' ? '"' + t.value.split(/\s+/).map(fix).join(' ') + '"' : fix(t.value));
   return changed ? corrected.join(' ') : null;
 }
+
+const SEARCH_HISTORY_KEY = 'ccs-search-history';
+function getSearchHistory() {
+  try {
+    const raw = localStorage.getItem(SEARCH_HISTORY_KEY);
+    if (!raw) return [];
+    const arr = JSON.parse(raw);
+    return Array.isArray(arr) ? arr.filter(x => typeof x === 'string' && x.trim()) : [];
+  } catch (e) { return []; }
+}
+function saveSearchHistory(term) {
+  if (!term || typeof term !== 'string') return;
+  const t = term.trim();
+  if (!t) return;
+  try {
+    let list = getSearchHistory();
+    list = list.filter(item => item.toLowerCase() !== t.toLowerCase());
+    list.unshift(t);
+    if (list.length > 10) list = list.slice(0, 10);
+    localStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(list));
+  } catch (e) {}
+}
+function removeSearchHistoryItem(term) {
+  try {
+    let list = getSearchHistory();
+    list = list.filter(item => item.toLowerCase() !== (term || '').toLowerCase());
+    localStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(list));
+  } catch (e) {}
+}
+function clearSearchHistory() {
+  try {
+    localStorage.removeItem(SEARCH_HISTORY_KEY);
+  } catch (e) {}
+}
+
 class Component extends DCLogic {
   state = { f:EMPTYF(), loading:false, view:null, notice:true, sideQ:'', modal:false, draft:null, mOpen:{coll:true,type:true,date:true}, fq:{}, more:{}, sortOpen:false, perPage:20, ppOpen:false, page:1, scopeOpen:false, sugOpen:false, sugIdx:-1, yIn:null, yErr:'', counting:false, ackOpen:false, vw: typeof window !== 'undefined' ? window.innerWidth : 1200 };
   trackRef = React.createRef(); bodyRef = React.createRef(); sortRef = React.createRef(); ppRef = React.createRef(); mainRef = React.createRef();
@@ -1691,8 +1754,19 @@ class Component extends DCLogic {
     window.addEventListener('pointerdown', this.onDown); window.addEventListener('pointermove', this.onMove);
     window.addEventListener('pointerup', this.onUp); window.addEventListener('keydown', this.onKey); window.addEventListener('resize', this.onResize);
     try { if (!localStorage.getItem('ccs-cultural-ack')) { this.setState({ ackOpen: true }); setTimeout(() => { const el = this.ackRef.current && this.ackRef.current.querySelector(FOCUSABLE); el && el.focus(); }, 30); } } catch (e) {}
-    const qs = new URLSearchParams(location.search), pc = qs.get('collection'), pt = qs.get('type'), pq = qs.get('q');
-    if (pc || pt || pq) this.setState(s => { const f = clone(s.f); if (pc) f.collection = [pc]; if (pt) f.type = [pt]; if (pq) f.q = pq; return { f }; });
+    const qs = new URLSearchParams(location.search);
+    const pc = qs.get('collection'), pt = qs.get('type'), pq = qs.get('q'), psc = qs.get('scope');
+    if (pc || pt || pq || psc) {
+      if (pq) saveSearchHistory(pq);
+      this.setState(s => {
+        const f = clone(s.f);
+        if (pc) f.collection = [pc];
+        if (pt) f.type = [pt];
+        if (pq) f.q = pq;
+        if (psc) f.scope = psc;
+        return { f };
+      });
+    }
   }
   componentWillUnmount() {
     window.removeEventListener('pointerdown', this.onDown); window.removeEventListener('pointermove', this.onMove);
@@ -1882,8 +1956,52 @@ class Component extends DCLogic {
       if (end < pageCount) { if (end < pageCount - 1) pageNums.push('…'); pageNums.push(pageCount); } }
     const goPage = pg => { if (pg < 1 || pg > pageCount || pg === page) return; this.setState({ page: pg, loading: true }); clearTimeout(this.t); this.t = setTimeout(() => this.setState({ loading: false }), 420); const m = this.mainRef.current; if (m) window.scrollTo({ top: m.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' }); };
     const q2 = s.sideQ.trim().toLowerCase();
-    const sugList = q2.length >= 2 ? TERMS.filter(t => (f.scope === 'all' || t.sc === f.scope) && t.text.toLowerCase().includes(q2)).slice(0, 6) : [];
-    const runQ = q => { this.setState({ sideQ: '', sugOpen: false, sugIdx: -1 }); this.apply(ff => ({ ...ff, q })); };
+    const rawHistory = getSearchHistory();
+    const recentList = !q2
+      ? rawHistory.slice(0, 8)
+      : rawHistory.filter(item => item.toLowerCase().includes(q2)).slice(0, 5);
+    const sugList = q2.length >= 2
+      ? TERMS.filter(t => (f.scope === 'all' || t.sc === f.scope) && t.text.toLowerCase().includes(q2)).slice(0, 6)
+      : [];
+
+    const combinedItems = [
+      ...recentList.map(t => ({ type: 'history', text: t })),
+      ...sugList.map(t => ({ type: 'sug', text: t.text, cat: t.cat }))
+    ];
+
+    const runQ = q => {
+      saveSearchHistory(q);
+      this.setState({ sideQ: '', sugOpen: false, sugIdx: -1 });
+      this.apply(ff => ({ ...ff, q }));
+    };
+
+    const historyItems = recentList.map((term, i) => ({
+      text: term,
+      sel: i === s.sugIdx,
+      bg: i === s.sugIdx ? '#e3f4fb' : '#fff',
+      pick: e => { e.preventDefault(); runQ(term); },
+      remove: e => {
+        e.preventDefault();
+        e.stopPropagation();
+        removeSearchHistoryItem(term);
+        this.forceUpdate();
+      }
+    }));
+
+    const sugs = sugList.map((t, i) => {
+      const idx = recentList.length + i;
+      return {
+        text: t.text,
+        cat: t.cat,
+        sel: idx === s.sugIdx,
+        bg: idx === s.sugIdx ? '#e3f4fb' : '#fff',
+        pick: e => { e.preventDefault(); runQ(t.text); }
+      };
+    });
+
+    const hasHistory = historyItems.length > 0;
+    const hasSugs = sugs.length > 0;
+
     // CCS-158/288/292/293: only offer a spelling correction once a search has
     // genuinely come back with zero results for a real query (matches the
     // existing isEmpty/no-results threshold below) — never on a healthy result set.
@@ -1909,9 +2027,20 @@ class Component extends DCLogic {
       scopeRef: this.scopeRef, scopeOpen: s.scopeOpen, toggleScope: () => this.setState(st => ({ scopeOpen: !st.scopeOpen })),
       scopeLabel: SCOPES.find(x => x[0] === f.scope)[1],
       scopeOpts: SCOPES.map(([v, label]) => ({ label, sel: f.scope === v, bg: f.scope === v ? '#b3e5f5' : '#fff', pick: () => { this.setState({ scopeOpen: false }); if (f.q) this.apply(ff => ({ ...ff, scope: v })); else this.setState(st => ({ f: { ...st.f, scope: v } })); } })),
-      sugOpen: s.sugOpen && sugList.length > 0, openSug: () => this.setState({ sugOpen: true }),
-      closeSugSoon: () => { clearTimeout(this.bt); this.bt = setTimeout(() => this.setState({ sugOpen: false }), 120); },
-      sugs: sugList.map((t, i) => ({ text: t.text, cat: t.cat, sel: i === s.sugIdx, bg: i === s.sugIdx ? '#e3f4fb' : '#fff', pick: e => { e.preventDefault(); runQ(t.text); } })),
+      sugOpen: s.sugOpen && (hasHistory || hasSugs),
+      openSug: () => this.setState({ sugOpen: true, sugIdx: -1 }),
+      closeSugSoon: () => { clearTimeout(this.bt); this.bt = setTimeout(() => this.setState({ sugOpen: false, sugIdx: -1 }), 160); },
+      hasHistory,
+      historyItems,
+      clearHistory: e => {
+        e.preventDefault();
+        e.stopPropagation();
+        clearSearchHistory();
+        this.forceUpdate();
+      },
+      hasSugs,
+      sugsTopBorder: hasHistory ? '1px solid var(--col-border-neutral-mid)' : '0',
+      sugs,
       setGrid: () => this.setState({ view: 'masonry' }), setList: () => this.setState({ view: 'list' }),
       gridBg: view === 'masonry' ? '#c8d5c0' : '#fff', listBg: view === 'list' ? '#c8d5c0' : '#fff', isMasonry: view === 'masonry', isListView: view === 'list',
       titleText: 'Showing ' + n + ' ' + (n === 1 ? 'result' : 'results'), hasQ: !!f.q, qTag: (f.scope !== 'all' ? SCOPES.find(x => x[0] === f.scope)[1] + ': ' : '') + (f.q || '').toUpperCase(),
@@ -1929,11 +2058,24 @@ class Component extends DCLogic {
       nextBg: page < pageCount ? '#c8d5c0' : '#e4e7ec', nextColor: page < pageCount ? 'var(--col-bg-primary)' : '#9aa1af', nextCursor: page < pageCount ? 'pointer' : 'default',
       toTop: () => window.scrollTo({ top: 0, behavior: 'smooth' }),
       barPlaceholder: f.q ? 'Search for something else' : 'Search, or use "quotes" for an exact phrase',
-      barSubmit: e => { e.preventDefault(); if (s.sugOpen && s.sugIdx >= 0 && sugList[s.sugIdx]) return runQ(sugList[s.sugIdx].text); const q = s.sideQ.trim(); if (q) runQ(q); },
+      barSubmit: e => {
+        e.preventDefault();
+        if (s.sugOpen && s.sugIdx >= 0 && combinedItems[s.sugIdx]) {
+          return runQ(combinedItems[s.sugIdx].text);
+        }
+        const q = s.sideQ.trim();
+        if (q) runQ(q);
+      },
       barKey: e => {
-        if (e.key === 'ArrowDown' && sugList.length) { e.preventDefault(); this.setState(st => ({ sugOpen: true, sugIdx: Math.min(sugList.length - 1, st.sugIdx + 1) })); }
-        else if (e.key === 'ArrowUp' && sugList.length) { e.preventDefault(); this.setState(st => ({ sugIdx: Math.max(-1, st.sugIdx - 1) })); }
-        else if (e.key === 'Backspace' && !s.sideQ && f.q) this.apply(ff => ({ ...ff, q: '' }));
+        if (e.key === 'ArrowDown' && combinedItems.length) {
+          e.preventDefault();
+          this.setState(st => ({ sugOpen: true, sugIdx: Math.min(combinedItems.length - 1, st.sugIdx + 1) }));
+        } else if (e.key === 'ArrowUp' && combinedItems.length) {
+          e.preventDefault();
+          this.setState(st => ({ sugIdx: Math.max(-1, st.sugIdx - 1) }));
+        } else if (e.key === 'Backspace' && !s.sideQ && f.q) {
+          this.apply(ff => ({ ...ff, q: '' }));
+        }
       },
       ppOpts: [20, 40, 60].map(v => ({ label: v + ' per page', sel: s.perPage === v, bg: s.perPage === v ? '#b3e5f5' : '#fff', pick: () => { this.setState({ ppOpen: false, perPage: v }); this.apply(ff => ff); } })),
       switches: [['Digital asset', 'digital']].map(([label, k]) => { const on = f[k]; return { label, on, toggle: () => this.apply(ff => ({ ...ff, [k]: !ff[k] })),
