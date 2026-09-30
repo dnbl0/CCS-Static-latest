@@ -378,12 +378,11 @@ section[aria-label="Item media"]:not(:fullscreen){max-height:calc(85vh - var(--h
   <div class="uom-header-content shrink-1 flex-[33_1_fit-content] flex flex-col justify-end content-between h-full max-w-full overflow-x-visible scroll-smooth">
     <!-- Top navigation tier (search, hidden on mobile in favour of the menu toggle) -->
     <div class="uom-nav-top-tier border-b border-b-brand-900 flex justify-end">
-      <button type="button" class="uom-search-btn udds-focus items-center justify-center ring-inset flex h-full" popovertarget="uom-search-popover" aria-label="Open search">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="11" cy="11" r="8"></circle>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-        </svg>
-        <span class="sr-only">Open search</span>
+      <button data-popover-type="search" type="button" class="udds-focus items-center justify-center ring-inset text-brand-inverse fill-white-100 flex h-full p-[0.625rem] bg-background-button-secondary active:bg-background-button-secondary-active hover:bg-background-button-secondary-hover color-text-brand hover:color-text-brand" popovertarget="uom-search-popover">
+        <uom-ds-icon class="size-150" iconid="search" iconset="functional" isdecorative="" isfluid="" islabelhidden="" label="Search" sizevariant="prominent" data-testid="uom-ds-icon"></uom-ds-icon>
+        <span class="sr-only">
+          open search
+        </span>
       </button>
     </div>
 
