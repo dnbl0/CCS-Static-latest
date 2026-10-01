@@ -948,7 +948,8 @@
   const ACTIVE = ITEMS.filter(it => !SUPERSEDED[it.id]);
   const records = {};
   ACTIVE.forEach(it => { records[it.id] = build(it); });
-  Object.entries(SUPERSEDED).forEach(([old, canon]) => { records[old] = records[canon]; });
+  // Non-enumerable so Object.values/keys(records) (counts, listings) never see an object twice.
+  Object.entries(SUPERSEDED).forEach(([old, canon]) => Object.defineProperty(records, old, { value: records[canon], enumerable: false }));
   // Single source of truth for search: the same items, normalised to the shape the facets expect
   // (objectType, culture) with a thumbnail for every item that has digital media.
   const items = ACTIVE.map(it => ({
