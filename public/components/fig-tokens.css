@@ -1498,3 +1498,15 @@ section[data-component="Header"] input::placeholder {
   .page-banner__inner { padding: 40px 16px; }
   .page-banner h1 { font-size: 36px; }
 }
+
+
+/* Page banner description — copy sits under the banner heading */
+.page-banner__desc {
+  max-width: 760px;
+  margin: 16px auto 0;
+  font-size: 18px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.92);
+  text-wrap: pretty;
+}
+.page-banner--compact .page-banner__desc { margin-top: 12px; font-size: 17px; }
