@@ -1609,42 +1609,36 @@ ccs-licence[data-dismissed] .licence-badge__tip { visibility: hidden; opacity: 0
 @media (max-width: 520px) { .ccs-searchbar__scope-btn { padding: 0 10px; font-size: 13px; } .ccs-searchbar > button[type="submit"] { width: 48px; } }
 
 
-/* Collection landing hero — UoM Gen 3 image header, dark home-page variant (.contrast-helper > header.banner > .mid-align) */
-.contrast-helper {
+/* Collection landing hero — UoM Gen 3 campaign banner (split, dark), as used on unimelb.edu.au/giving */
+.campaign-banner-split {
   box-sizing: border-box;
   position: relative;
-  background-color: var(--col-bg-primary, #000f46);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-.contrast-helper .banner {
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  min-height: 370px;
-  padding-block: 4rem;
-  background: rgb(0 0 0 / 50%);
+  display: block;
+  overflow: hidden;
+  padding: 0;
+  background-color: var(--col-heritage-dark-100, #000b34);
   color: #fff;
 }
-.contrast-helper .mid-align { box-sizing: border-box; width: 100%; max-width: 1125px; margin: 0 auto; padding: 0 32px; text-align: center; }
-.contrast-helper .mid-align h1 { margin: 0 auto 24px; font-family: 'Fraunces', serif; font-weight: 400; font-size: 48px; line-height: 1.2; color: #fff; letter-spacing: -0.01em; }
-.contrast-helper .mid-align p { max-width: 880px; margin: 0 auto 18px; font-size: 24px; line-height: 1.2; color: #fff; text-wrap: pretty; }
-.contrast-helper .mid-align p:last-child { margin-bottom: 0; }
-.contrast-helper a.button {
-  display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px;
+.campaign-banner-split__img { position: absolute; top: 0; right: 0; bottom: 0; width: 42%; }
+.campaign-banner-split__img-inner { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; }
+.campaign-banner-split__inner { box-sizing: border-box; position: relative; max-width: none; margin: 0 max(2rem, calc((100% - 1240px) / 2)); padding: 134px 0 80px; }
+.campaign-banner-split__content { display: flex; width: 620px; max-width: 100%; min-height: 152px; }
+.campaign-banner-split__content-inner { padding: 0; }
+.campaign-banner-split h1 { margin: 0 0 24px; font-family: 'Fraunces', serif; font-weight: 400; font-size: 48px; line-height: 1.2; color: #fff; text-align: start; }
+.campaign-banner-split p { max-width: 880px; margin: 0 0 24px; font-size: 18px; line-height: 1.4; color: #fff; }
+.campaign-banner-split a.button {
+  display: inline-flex; align-items: center; gap: 8px; padding: 12px 16px 12px 12px;
   background: var(--col-blue-light-100, #46c8f0); color: var(--col-bg-primary, #000f46);
   font-size: 18px; font-weight: 600; line-height: 1.3333; text-decoration: none; border: 0; border-radius: 0;
 }
-.contrast-helper a.button::before {
+.campaign-banner-split a.button::before {
   content: ""; flex: none; width: 16px; height: 16px; background: currentColor;
   -webkit-mask: url('/images/arrow-right.svg') center / contain no-repeat; mask: url('/images/arrow-right.svg') center / contain no-repeat;
 }
-.contrast-helper a.button:hover { background: var(--col-blue-light-25, #d1f1fb); color: var(--col-bg-primary, #000f46); text-decoration: none; }
-.contrast-helper a.button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
-@media (max-width: 768px) {
-  .contrast-helper .banner { min-height: 300px; padding-block: 2.5rem; }
-  .contrast-helper .mid-align { padding: 0 16px; }
-  .contrast-helper .mid-align h1 { font-size: 36px; }
-  .contrast-helper .mid-align p { font-size: 20px; }
+.campaign-banner-split a.button:hover { background: var(--col-blue-light-25, #d1f1fb); color: var(--col-bg-primary, #000f46); text-decoration: none; }
+.campaign-banner-split a.button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+@media (max-width: 1100px) {
+  .campaign-banner-split__img { position: static; width: 100%; height: 240px; }
+  .campaign-banner-split__inner { margin: 0 2rem; padding: 40px 0 48px; }
+  .campaign-banner-split h1 { font-size: 36px; }
 }
