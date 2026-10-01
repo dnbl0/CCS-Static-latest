@@ -356,6 +356,7 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
             <div class="lp-panel__item"><span class="k">Opening hours</span><span class="v">{{ visit.hours }}</span></div>
             <div class="lp-panel__item"><span class="k">Location</span><span class="v">{{ visit.location }}</span></div>
             <sc-if value="{{ visit.contact }}"><div class="lp-panel__item"><span class="k">Enquiries</span><a class="v" href="mailto:{{ visit.contact }}">{{ visit.contact }}</a></div></sc-if>
+            <sc-if value="{{ visit.phone }}"><div class="lp-panel__item"><span class="k">Phone</span><a class="v" href="tel:{{ visit.phoneHref }}">{{ visit.phone }}</a></div></sc-if>
           </div>
         </section>
       </sc-if>
@@ -624,6 +625,8 @@ const BLURBS = {
   HBA: "One of Australia's largest collections of human tissue specimens, animal anatomy specimens and historical anatomical models, offering students and researchers a unique insight into the human body."
 };
 const VISIT = {
+  GMC: { warning: false, hours: 'Tuesday to Sunday, 12.00pm – 5.00pm', location: 'Grainger Museum, Parkville VIC 3010.', contact: 'grainger.museum@unimelb.edu.au', phone: '+61 3 8344 8828' },
+  UAC: { warning: false, hours: 'Tuesday to Sunday, 10.00am – 5.00pm', location: 'Potter Museum of Art, Parkville VIC 3010.', contact: 'uac@unimelb.edu.au', phone: '+61 3 8344 5148' },
   MHM: { warning: true, hours: 'Monday to Friday, 10.00am – 5.00pm', location: 'University of Melbourne, 233 Bouverie Street, Carlton, Victoria 3053.', contact: 'MDHS-museum@unimelb.edu.au' },
   DENT: { warning: false, hours: '9.00am – 5.00pm, Monday to Friday', location: 'Ground floor of the Royal Dental Hospital, 720 Swanston St, Carlton.', contact: null },
   HBA: { warning: false, hours: 'Monday to Friday: 9.00am to 5.00pm. Closed on weekends and public holidays.', location: 'University of Melbourne, Medical Building, Corner of Grattan Street and Royal Parade, Parkville 3052, Victoria. Not open to the general public; swipe card access is provided to students enrolled in relevant subjects.', contact: null }
@@ -686,7 +689,7 @@ class Component extends DCLogic {
     ];
     return {
       coll: { name, blurb: BLURBS[key] || '', count, searchHref: searchBase, externalUrl: EXTERNAL[key] || '', hasExternal: !!EXTERNAL[key] },
-      items, hasVisit: !!visit, visit: visit || {},
+      items, hasVisit: !!visit, visit: visit ? { ...visit, phoneHref: (visit.phone || '').replace(/[^+\d]/g, '') } : {},
       summaryLine: count + ' records · ' + typesSorted.length + ' object types',
       details,
       hasFeatured: feat.length > 0, cur: feat[idx] || blank.cur, count: (idx + 1) + ' of ' + feat.length, live: 'Highlight ' + (idx + 1) + ' of ' + feat.length,
