@@ -1,0 +1,33 @@
+{
+  "name": "ccs-static",
+  "version": "1.0.0",
+  "description": "A comprehensive web platform for discovering and searching the University of Melbourne's cultural collections spanning visual arts, cartography, medical history, zoology, archives, and more.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "build:css": "sass --quiet-deps --silence-deprecation=import --load-path=node_modules src/scss/custom-bootstrap.scss:public/styles/vendor/bootstrap-uom.min.css --style=compressed --no-source-map",
+    "build:css:dev": "sass --quiet-deps --silence-deprecation=import --load-path=node_modules src/scss/custom-bootstrap.scss:public/styles/vendor/bootstrap-uom.css",
+    "watch:css": "sass --quiet-deps --silence-deprecation=import --load-path=node_modules --watch src/scss/custom-bootstrap.scss:public/styles/vendor/bootstrap-uom.css",
+    "verify:bootstrap": "bash verify-bootstrap.sh",
+    "test": "npm run build:css && npm run verify:bootstrap && node tests/blacklight-adapter.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dnbl0/CCS-Static-latest.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/dnbl0/CCS-Static-latest/issues"
+  },
+  "homepage": "https://github.com/dnbl0/CCS-Static-latest#readme",
+  "devDependencies": {
+    "bootstrap": "^5.3.3",
+    "sass": "^1.105.1"
+  }
+}
