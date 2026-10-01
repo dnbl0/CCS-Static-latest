@@ -25,7 +25,12 @@ The site is a prototype driven by an in-repo dataset (735 listed records), not a
 
 ## Recent changes (2026-10-01)
 
-- **Single data source**: `public/collection-data.js` now defines `window.CCS` and is read by both `search/advanced.html` and `collections/record.html`. The embedded copy in `advanced.html` and `public/assets/data/collections.js` are gone. Early duplicate stub records are folded into fuller records via an alias map (`SUPERSEDED`); 735 records are listed.
+- **Search pages renamed**: the results page is now `search/search-results.html` (`/search/search-results`) and the new stand-alone form is `search/advanced-search.html`. Old `/search/advanced` and `/search/advanced.html` URLs redirect (`vercel.json`, `.htaccess`). The results page's "Advanced Search" button opens the form pre-filled with the current search.
+- **Collections removed**: the "Faculty of Engineering and Information Technology" and "Prints and Drawing Collection, Special Collections and Archives" collections (and their records 50001-50004 and 50007 and images) were removed from the data, filters and landing-page code.
+- **Filters modal**: facet vocabularies now follow the CCS Filters sheet - Object type is every term of a record's object type (case-insensitive), Classification is the museum subject classification, Film & gaming classification is the rating only (G, PG, M, MA 15+, R 18+, X 18+, RC), Digital asset format is Image / Audio / Video / PDF; Harry Brookes Allen Museum was missing from Collection title and is now listed; empty facets are hidden.
+- **Production date slider** rebuilt (Airbnb-style): fixed 1700-2030 scale with a 10-year histogram (earlier records are grouped in the first bar), two large draggable handles (mouse, touch, keyboard), click-the-track, live-updating Earliest/Latest year fields (negative = BCE), a live "N dated records" summary and a reset link; no Apply button.
+
+- **Single data source**: `public/collection-data.js` now defines `window.CCS` and is read by both `search/search-results.html` and `collections/record.html`. The embedded copy in the search page and `public/assets/data/collections.js` are gone. Early duplicate stub records are folded into fuller records via an alias map (`SUPERSEDED`); 735 records are listed.
 - **Record page**: per-record document title, "Record not found" state for unknown ids, a single "Contact us" button opening a keyboard-accessible request dialog (General enquiry / Request to use / Request to view), and a media viewer for images, audio and video. Field labels and order follow the 1 Oct 2026 PRG spreadsheet.
 - **Collections**: landing pages moved to `collections/<slug>/index.html`; the browse page's record counts are computed from the data and browse-by-type links repaired.
 - **Accessibility**: sitewide footer contrast, labelled landmarks, heading order, dialog focus management, 404 asset fixes.
@@ -44,8 +49,9 @@ All pages live in `public/` (the web root). They are "DC template" HTML: `{{ }}`
 | URL | File | Notes |
 |---|---|---|
 | `/` | `public/index.html` | Home |
-| `/search` | `public/search.html` | Redirect stub to `/search/advanced` (meta refresh, JS, and server redirect) |
-| `/search/advanced` | `public/search/advanced.html` | Search, facets (`FACETS`), results grid/list |
+| `/search` | `public/search.html` | Redirect stub to `/search/search-results` (meta refresh, JS, and server redirect) |
+| `/search/search-results` | `public/search/search-results.html` | Search, facets (`FACETS`), results grid/list |
+| `/search/advanced-search` | `public/search/advanced-search.html` | Stand-alone Advanced Search form (multi-row field search + filters); submits to `/search/search-results` |
 | `/collections` | `public/collections/index.html` | Browse all collections |
 | `/collections/<slug>` | `public/collections/<slug>/index.html` | Five landing pages: `grainger-museum`, `harry-brookes-allen-museum`, `henry-forman-atkinson-dental-museum`, `medical-history-museum`, `university-art-collection`. They share one template with per-collection data in JS dicts, so a change to the shared structure must be made in all five files |
 | `/collections/record?id=<id>` | `public/collections/record.html` | Record detail and media viewer |
@@ -62,7 +68,8 @@ Legacy `*.dc.html` filenames (for example `Collection Search v3.dc.html`) 301-re
 ```
 public/                     Deployed web root
   index.html, search.html, contact.html
-  search/advanced.html
+  search/search-results.html
+  search/advanced-search.html     # advanced search form (logic in search/advanced-search-form.js)
   collections/{index.html, record.html, <slug>/index.html}
   help/{index.html, indigenous-data.html}
   collection-data.js        Record data -> window.CCS (single source of truth)
@@ -90,7 +97,7 @@ design.md, github.md, jira-mvp-mapping.md, BOOTSTRAP-DEPENDENCIES.md   Supportin
 Notes on directories:
 
 - `src/js/utils/helpers.js` is a generated copy of the DC runtime and `image-handler.js` is the `<image-slot>` starter scaffold. Neither is loaded by any page; the pages use `public/support.js` and `public/image-slot.js`.
-- `public/blacklight-adapter.js` is loaded by `search/advanced.html` and `collections/record.html`. Its default mode is `mock` (local `collection-data.js`); `?api=live` switches to the Blacklight endpoint set in the adapter. It is covered by `tests/blacklight-adapter.test.js`.
+- `public/blacklight-adapter.js` is loaded by `search/search-results.html` and `collections/record.html`. Its default mode is `mock` (local `collection-data.js`); `?api=live` switches to the Blacklight endpoint set in the adapter. It is covered by `tests/blacklight-adapter.test.js`.
 - `public/components/*.jsx` / `*.d.ts` are exported design-system component sources; pages only load the two CSS files.
 
 ---
@@ -102,7 +109,7 @@ Notes on directories:
 ```js
 window.CCS = {
   records,   // id -> display-ready record (built by build()); superseded ids are non-enumerable aliases
-  items,     // normalised search items (objectType, culture, img) used by search/advanced.html
+  items,     // normalised search items (objectType, culture, img) used by search/search-results.html
   ids,       // listed record ids
   related(id, n = 4)  // related-record cards for the record page
 }
@@ -135,7 +142,7 @@ Some early prototype stubs duplicate a fuller record. `SUPERSEDED = { oldId: can
 Field labels, sequence numbers and order follow `assets/CCS Field labels and filters - Final - PRG - 1 OCT 2026.xlsx` (sheets "CCS Field labels" and "CCS Filters").
 
 - Record page fields: the `f` array in `build()` in `public/collection-data.js` (`[seq, label, lines]`). Rights fields (16, 17, 29) come from the `rights` array; media metadata (Title, Format, Licence type, Terms of use, Advisory ...) from `media`.
-- Filters: the `FACETS` array in `public/search/advanced.html` (group, key, title, kind).
+- Filters: the `FACETS` array in `public/search/search-results.html` (group, key, title, kind).
 
 ### Field mapping (spreadsheet "#" and Display Field to site label)
 
@@ -172,9 +179,25 @@ Field labels, sequence numbers and order follow `assets/CCS Field labels and fil
 | 29 | Terms of Use | Terms of use (rights block and media metadata, records with digital assets) |
 | 30 | Producer | Producer (no record populates it yet) |
 
-Filter groups in the spreadsheet map to `FACETS` groups in `search/advanced.html`: Collection details, Creator, Object, Subject / topic, Copyright & advisory, Access, Media type.
+Filter groups in the spreadsheet map to `FACETS` groups in `search/search-results.html`: Collection details, Creator, Object, Subject / topic, Copyright & advisory, Access, Media type.
 
 ---
+
+## Advanced Search
+
+`public/search/advanced-search.html` is a stand-alone form modelled on the CCS HiFi prototype's `catalog/advanced` page. Its logic lives in `public/search/advanced-search-form.js` (plain JS, no framework; option lists and counts are built from `window.CCS.items`). It is a plain GET form that opens the results page, `search/search-results.html`, with these URL parameters (the results page parses them in `parseAdvancedParams`):
+
+| Parameter | Meaning |
+|---|---|
+| `clause[i][field]` | `all_fields`, `title`, `creator`, `subject` or `description` |
+| `clause[i][op]` | `must` (contains all), `should` (contains any) or `must_not` (does not contain) |
+| `clause[i][query]` | search text; `"quotes"` make an exact phrase |
+| `f_inclusive[key][]` | filter values where ANY may match; `key` is `collection`, `type`, `creator`, `licence` or `access` |
+| `f[key][]` | filter values where ALL must match |
+| `range[year][begin]`, `range[year][end]` | production year range |
+| `sort` | `relevance`, `year-desc`, `year-asc` or `az` |
+
+Rows combine as: every `must` row matches, at least one `should` row matches (if any exist), and no `must_not` row matches. The results page shows each row and filter as a removable chip, and its "Advanced Search" button re-opens the form pre-filled with the current search (`advancedFormHref`). Empty rows are not sent, so URLs stay short.
 
 ## Record page behaviour
 
@@ -207,14 +230,14 @@ npm test          # full check, see below
 python3 -m http.server 8933 --directory public   # local server (as in .claude/launch.json)
 ```
 
-Clean URLs (`/search/advanced`, `/collections/record`) only resolve on a host that applies `vercel.json` or `.htaccess`; with a plain static server use the `.html` paths.
+Clean URLs (`/search/search-results`, `/collections/record`) only resolve on a host that applies `vercel.json` or `.htaccess`; with a plain static server use the `.html` paths.
 
 ### What `npm test` runs
 
 1. `build:css` - compiles Bootstrap (fails on Sass errors).
 2. `verify-bootstrap.sh` - for each page referencing Bootstrap, checks that the compiled `bootstrap-uom.min.css` exists (or that any CDN reference is version 5.3.3 with SRI).
 3. `tests/blacklight-adapter.test.js` - default mode is `mock`, request-parameter building and document transformation.
-4. `tests/page-integrity.test.js` - every `public/**/*.html` has a `<title>` and `lang`, no merge-conflict markers, and every local `href`/`src` resolves (clean-URL forms like `/search/advanced` resolve to `.html`/`index.html`). Broken css/js/page links fail; broken image links only warn.
+4. `tests/page-integrity.test.js` - every `public/**/*.html` has a `<title>` and `lang`, no merge-conflict markers, and every local `href`/`src` resolves (clean-URL forms like `/search/search-results` resolve to `.html`/`index.html`). Broken css/js/page links fail; broken image links only warn.
 5. `tests/collection-data.test.js` - loads `collection-data.js` in a bare sandbox; checks unique ids, titles, that field labels come from the specification list, and that `/assets` media files exist.
 
 **Warnings policy**: failures exit non-zero and fail CI. Warnings (printed as `WARNING:`) are informational and never fail the build; they track open data/content gaps (see Known issues). Current output: 0 failures, 5 warnings (no `<h1>` in `search.html`; the four unpopulated spec fields).
@@ -229,7 +252,7 @@ Clean URLs (`/search/advanced`, `/collections/record`) only resolve on a host th
 
 Deployed on Vercel. The project link (`.vercel/`) is local and git-ignored.
 
-- `vercel.json`: `cleanUrls: true`, `trailingSlash: false`, and 301 redirects from the legacy `*.dc.html` names (plain and `%20`-encoded) and from `/search` and `/search.html` to `/search/advanced`.
+- `vercel.json`: `cleanUrls: true`, `trailingSlash: false`, and 301 redirects from the legacy `*.dc.html` names (plain and `%20`-encoded) and from `/search` and `/search.html` to `/search/search-results`.
 - `public/.htaccess`: the Apache equivalent (redirects plus clean-URL rewrites) for hosting on Apache.
 - `.vercelignore` excludes the top-level `assets/` source material, `public/assets/`, `*.dc.html` and `.reorganization/` from uploads when deploying with the CLI. Because `public/assets/` is excluded there, check that digital assets load on the deployed site after changing how deployment is done.
 
@@ -239,7 +262,6 @@ Deployed on Vercel. The project link (`.vercel/`) is local and git-ignored.
 
 - **Accession numbers**: 15 of 735 records have no accession number (the data owner needs to supply them). `npm test` reports `accession number present on 720/735 records`.
 - **Unpopulated spec fields**: Editions, Source URL, Related child record and Producer are supported by `build()` but no record sets them (reported as test warnings).
-- **"Advanced Search" button** in the search toolbar of `search/advanced.html` links to `#` (no-op).
 - **`search.html`** redirect stub has no `<h1>` (test warning).
 - **Hosting behaviour unverified**: `vercel.json` redirects and `cleanUrls` have not been checked against the live Vercel deployment.
 - **Thin audio/video data**: only two audio/video items exist, so the sound-recording and film browse tiles map to small keyword searches.

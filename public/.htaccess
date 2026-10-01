@@ -5,18 +5,20 @@
   # --- Legacy filename redirects (301) to new clean URLs ---
   RewriteRule ^Contact\ Us\.dc\.html$ /contact [R=301,L]
   RewriteRule ^Collection\ Record\.dc\.html$ /collections/record [R=301,L,QSA]
-  RewriteRule ^Collection\ Search\ v3\.dc\.html$ /search/advanced [R=301,L,QSA]
+  RewriteRule ^Collection\ Search\ v3\.dc\.html$ /search/search-results [R=301,L,QSA]
   RewriteRule ^Browse\ Collections\.dc\.html$ /collections [R=301,L]
   RewriteRule ^Collection\ Landing\.dc\.html$ /collections [R=301,L]
   RewriteRule ^Help\ and\ Support\.dc\.html$ /help [R=301,L,QSA]
   RewriteRule ^CCS\ Home\ page\.dc\.html$ / [R=301,L]
-  RewriteRule ^search\.html$ /search/advanced [R=301,L,QSA]
-  RewriteRule ^search/?$ /search/advanced [R=301,L,QSA]
+  RewriteRule ^search\.html$ /search/search-results [R=301,L,QSA]
+  RewriteRule ^search/?$ /search/search-results [R=301,L,QSA]
+  RewriteRule ^search/advanced(\.html)?/?$ /search/search-results [R=301,L,QSA]
 
   # --- Clean URL rewriting (internal, URL bar stays clean) ---
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule ^search/advanced/?$ search/advanced.html [L]
+  RewriteRule ^search/search-results/?$ search/search-results.html [L]
+  RewriteRule ^search/advanced-search/?$ search/advanced-search.html [L]
   RewriteRule ^collections/record/?$ collections/record.html [L]
   RewriteRule ^collections/([a-z0-9-]+)/?$ collections/$1.html [L]
   RewriteRule ^collections/?$ collections/index.html [L]

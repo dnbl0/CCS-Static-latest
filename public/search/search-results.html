@@ -84,10 +84,31 @@ button,input,select{font-family:inherit}
 @keyframes cardIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes shimmer{0%{background-position:-600px 0}100%{background-position:600px 0}}
-.date-range-handle{box-shadow:0 1px 4px rgba(0,0,0,.25);transition:box-shadow .15s}
-.date-range-handle:hover{box-shadow:0 2px 6px rgba(11,20,45,.3)}
-.date-range-handle:focus-visible{box-shadow:0 1px 4px rgba(0,0,0,.25),0 0 0 4px rgba(11,20,45,.18);outline:none}
-.date-range-handle:active{box-shadow:0 2px 8px rgba(11,20,45,.4)}
+/* Production date facet: histogram + dual-handle slider + labelled year fields */
+.date-facet{display:flex;flex-direction:column;gap:0}
+.date-note{font-size:15px;color:var(--col-text-muted)}
+.date-summary{margin:14px 0 0;font-size:16px;font-weight:600;color:var(--col-text-primary);min-height:24px}
+.date-hist{display:flex;align-items:flex-end;gap:2px;height:84px;margin:12px 16px 0}
+.date-hist span{flex:1 1 0;min-width:2px;transition:background .15s,height .15s}
+.date-track{position:relative;margin:0 16px;height:36px;touch-action:none;cursor:pointer}
+.date-rail{position:absolute;top:50%;left:0;right:0;height:2px;background:#c3c6cd;transform:translateY(-50%)}
+.date-fill{position:absolute;top:50%;height:2px;background:var(--col-bg-primary);transform:translateY(-50%)}
+.date-range-handle{position:absolute;top:50%;width:28px;height:28px;margin:-14px 0 0 -14px;border-radius:50%;border:2px solid var(--col-bg-primary);background:#fff;cursor:grab;touch-action:none;padding:0}
+.date-range-handle::after{content:"";position:absolute;inset:-8px}
+.date-range-handle:hover{background:#e8edf6}
+.date-range-handle:active{cursor:grabbing;background:#d6e0f0}
+.date-range-handle:focus-visible{outline:3px solid #46c8f0;outline-offset:2px}
+.date-ends{display:flex;justify-content:space-between;margin:2px 16px 0;font-size:13px;color:var(--col-text-muted)}
+.date-inputs{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-top:16px}
+.date-field{display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--col-text-muted)}
+.date-field--end{align-items:flex-end}
+.date-field input{box-sizing:border-box;width:140px;height:48px;border:1px solid var(--col-border-neutral);border-radius:0;padding:0 14px;font:inherit;font-size:17px;color:var(--col-text-primary);text-align:center;background:#fff}
+.date-field input::placeholder{color:var(--col-text-muted)}
+.date-field input:focus-visible{outline:3px solid #46c8f0;outline-offset:2px;border-color:var(--col-bg-primary)}
+.date-help{margin:10px 0 0;font-size:13px;color:var(--col-text-muted)}
+.date-error{margin-top:6px;font-size:14px;color:#b3261e}
+.date-reset{align-self:flex-start;margin-top:10px;border:0;background:none;padding:0;font:inherit;font-size:15px;font-weight:600;text-decoration:underline;color:var(--col-text-primary);cursor:pointer}
+@media (max-width:480px){.date-field input{width:112px}}
 [aria-label="University links"] a:hover{color:var(--sage-100);text-decoration:underline}
 </style>
 </helmet>
@@ -123,7 +144,7 @@ button,input,select{font-family:inherit}
 
       <!-- Primary navigation -->
       <nav id="uom-primary-nav" class="uom-primary-nav" aria-label="Primary navigation">
-        <a href="/search/advanced.html">Search all records</a>
+        <a href="/search/search-results.html">Search all records</a>
         <a href="/collections/index.html">Browse collections</a>
         <a href="/help/index.html">Help</a>
         <a href="/contact.html">Contact</a>
@@ -146,7 +167,7 @@ button,input,select{font-family:inherit}
 <div id="uom-search-popover" class="uom-search-popover" role="dialog" aria-modal="true" aria-labelledby="uom-search-overlay-title">
   <div class="uom-search-popover__inner">
     <h2 id="uom-search-overlay-title" class="sr-only">Search</h2>
-    <form class="uom-search-popover__form" role="search" action="/search/advanced.html" method="get">
+    <form class="uom-search-popover__form" role="search" action="/search/search-results.html" method="get">
       <label for="uom-search-overlay-input" class="sr-only">Search Cultural Collections</label>
       <input id="uom-search-overlay-input" name="q" type="text" placeholder="Search" autocomplete="off">
       <button type="submit" class="uom-search-popover__submit" aria-label="Search">
@@ -357,7 +378,7 @@ button,input,select{font-family:inherit}
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="18" x2="20" y2="18"></line><line x1="15" y1="3.5" x2="15" y2="8.5"></line><line x1="9" y1="9.5" x2="9" y2="14.5"></line><line x1="13" y1="15.5" x2="13" y2="20.5"></line></svg>Filters
         <sc-if value="{{ filterCount }}"><span style="min-width:22px;height:22px;padding:0 6px;border-radius:0;background:var(--col-bg-primary);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">{{ filterCount }}</span></sc-if>
       </button>
-      <a href="#" style="height:48px;display:flex;align-items:center;gap:8px;white-space:nowrap;border:1px solid var(--col-bg-primary);background:#fff;color:var(--col-bg-primary);padding:0 16px;font-size:17px;font-weight:600;text-decoration:none" style-hover="background:#f0f2f7">
+      <a href="{{ advHref }}" style="height:48px;display:flex;align-items:center;gap:8px;white-space:nowrap;border:1px solid var(--col-bg-primary);background:#fff;color:var(--col-bg-primary);padding:0 16px;font-size:17px;font-weight:600;text-decoration:none" style-hover="background:#f0f2f7">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.5" y1="15.5" x2="21" y2="21"></line></svg>Advanced Search</a>
     </div>
   </div>
@@ -518,26 +539,28 @@ button,input,select{font-family:inherit}
                 <sc-if value="{{ sec.empty }}"><span style="font-size:15px;color:var(--col-text-muted);padding:6px 0">No matching options</span></sc-if>
                 <sc-if value="{{ sec.hasMore }}"><button onClick="{{ sec.toggleMore }}" style="align-self:flex-start;margin-top:8px;border:0;background:none;padding:0;font-size:16px;font-weight:600;text-decoration:underline;color:var(--col-text-primary);cursor:pointer">{{ sec.moreLabel }}</button></sc-if>
                 <sc-if value="{{ sec.isDate }}">
-                  <span style="font-size:15px;color:var(--col-text-muted)">{{ dateNote }}</span>
-                  <div style="position:relative;margin:22px 16px 0;height:64px;display:flex;align-items:flex-end;gap:3px">
-                    <sc-for list="{{ bins }}" as="b" hint-placeholder-count="17"><span title="{{ b.title }}" style="flex:1;min-width:2px;height:{{ b.h }};background:{{ b.bg }};border-radius:0;transition:background .15s"></span></sc-for>
+                  <div class="date-facet">
+                    <span class="date-note">{{ dateNote }}</span>
+                    <p class="date-summary" aria-live="polite">{{ dateSummary }}</p>
+                    <div class="date-hist" aria-hidden="true">
+                      <sc-for list="{{ bins }}" as="b" hint-placeholder-count="34"><span title="{{ b.title }}" style="height:{{ b.h }};background:{{ b.bg }}"></span></sc-for>
+                    </div>
+                    <div ref="{{ trackRef }}" class="date-track" onPointerDown="{{ downTrack }}">
+                      <div class="date-rail"></div>
+                      <span class="date-fill" style="left:{{ rangeLeft }};width:{{ rangeWidth }}"></span>
+                      <button type="button" class="date-range-handle" onPointerDown="{{ downFrom }}" onKeyDown="{{ fromKey }}" role="slider" aria-orientation="horizontal" aria-valuenow="{{ fromYear }}" aria-valuemin="{{ domLo }}" aria-valuemax="{{ fromMax }}" aria-valuetext="{{ fromText }}" aria-describedby="date-range-hint" aria-label="Earliest year" style="left:{{ rangeLeft }}"></button>
+                      <button type="button" class="date-range-handle" onPointerDown="{{ downTo }}" onKeyDown="{{ toKey }}" role="slider" aria-orientation="horizontal" aria-valuenow="{{ toYear }}" aria-valuemin="{{ toMin }}" aria-valuemax="{{ domHi }}" aria-valuetext="{{ toText }}" aria-describedby="date-range-hint" aria-label="Latest year" style="left:{{ rangeRight }}"></button>
+                    </div>
+                    <div class="date-ends"><span>{{ domLoLabel }}</span><span>{{ domHi }}</span></div>
+                    <span id="date-range-hint" class="sr-only">Arrow keys change this handle by one year, Page Up and Page Down by ten years, Home and End jump to the limits. You can also type years into the Earliest and Latest fields.</span>
+                    <div class="date-inputs">
+                      <label class="date-field"><span>Earliest year</span><input inputmode="numeric" value="{{ yInFrom }}" onChange="{{ onYFrom }}" onBlur="{{ commitYears }}" onKeyDown="{{ yKey }}" placeholder="Any" aria-label="Earliest year"></label>
+                      <label class="date-field date-field--end"><span>Latest year</span><input inputmode="numeric" value="{{ yInTo }}" onChange="{{ onYTo }}" onBlur="{{ commitYears }}" onKeyDown="{{ yKey }}" placeholder="Any" aria-label="Latest year"></label>
+                    </div>
+                    <p class="date-help">Use a minus sign for years BCE, e.g. -400.</p>
+                    <sc-if value="{{ yErr }}"><span role="alert" class="date-error">{{ yErr }}</span></sc-if>
+                    <sc-if value="{{ hasDateRange }}"><button type="button" class="date-reset" onClick="{{ clearYears }}">Reset production date</button></sc-if>
                   </div>
-                  <div ref="{{ trackRef }}" style="position:relative;margin:0 16px;height:24px">
-                    <div style="position:absolute;top:50%;left:0;right:0;height:4px;border-radius:0;background:#e3e0d9;transform:translateY(-50%)"></div>
-                    <span style="position:absolute;top:50%;height:4px;border-radius:0;left:{{ rangeLeft }};width:{{ rangeWidth }};background:var(--col-bg-primary);transform:translateY(-50%)"></span>
-                    <button class="date-range-handle" onPointerDown="{{ downFrom }}" onKeyDown="{{ fromKey }}" role="slider" aria-orientation="horizontal" aria-valuenow="{{ fromYear }}" aria-valuemin="{{ domLo }}" aria-valuemax="{{ fromMax }}" aria-describedby="date-range-hint" tabindex="0" aria-label="Earliest year" style="position:absolute;top:50%;left:{{ rangeLeft }};margin-left:-11px;transform:translateY(-50%);width:22px;height:22px;border-radius:50%;border:1.5px solid var(--col-bg-primary);background:#fff;cursor:grab;touch-action:none"></button>
-                    <button class="date-range-handle" onPointerDown="{{ downTo }}" onKeyDown="{{ toKey }}" role="slider" aria-orientation="horizontal" aria-valuenow="{{ toYear }}" aria-valuemin="{{ toMin }}" aria-valuemax="{{ domHi }}" aria-describedby="date-range-hint" tabindex="0" aria-label="Latest year" style="position:absolute;top:50%;left:{{ rangeRight }};margin-left:-11px;transform:translateY(-50%);width:22px;height:22px;border-radius:50%;border:1.5px solid var(--col-bg-primary);background:#fff;cursor:grab;touch-action:none"></button>
-                  </div>
-                  <div style="display:flex;justify-content:space-between;margin:10px 16px 0;font-size:13px;color:var(--col-text-muted)"><span>{{ domLo }}</span><span>{{ domHi }}</span></div>
-                  <span id="date-range-hint" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Arrow keys adjust this handle by one year, Home and End jump to the minimum and maximum. The Start year and End year fields below are also a valid way to set this range.</span>
-                  <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-top:16px">
-                    <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--col-text-muted)">Start year<input inputmode="numeric" value="{{ yInFrom }}" onChange="{{ onYFrom }}" onKeyDown="{{ yKey }}" placeholder="{{ domLo }}" aria-label="Start year" style="width:120px;border:1px solid var(--col-border-neutral);border-radius:0;padding:11px 14px;font-size:16px;color:var(--col-text-primary)"></label>
-                    <span style="padding-bottom:12px;color:var(--col-text-muted)">to</span>
-                    <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--col-text-muted)">End year<input inputmode="numeric" value="{{ yInTo }}" onChange="{{ onYTo }}" onKeyDown="{{ yKey }}" placeholder="{{ domHi }}" aria-label="End year" style="width:120px;border:1px solid var(--col-border-neutral);border-radius:0;padding:11px 14px;font-size:16px;color:var(--col-text-primary)"></label>
-                    <button onClick="{{ applyYears }}" style="height:46px;border:1px solid var(--col-bg-primary);background:#fff;color:var(--col-bg-primary);border-radius:0;padding:0 18px;font-size:15px;font-weight:600;cursor:pointer" style-hover="background:#f0f2f7">Apply</button>
-                    <sc-if value="{{ hasDateRange }}"><button onClick="{{ clearYears }}" style="height:46px;border:0;background:none;padding:0 6px;font-size:15px;font-weight:600;text-decoration:underline;color:var(--col-text-primary);cursor:pointer">Reset</button></sc-if>
-                  </div>
-                  <sc-if value="{{ yErr }}"><span role="alert" style="font-size:14px;color:#b3261e">{{ yErr }}</span></sc-if>
                 </sc-if>
                 <sc-if value="{{ sec.isText }}">
                   <input value="{{ sec.accessionVal }}" onChange="{{ sec.onAccession }}" aria-label="Accession number" placeholder="e.g. MHM2017.28" style="border:1px solid var(--col-border-neutral);border-radius:0;padding:12px 16px;font-size:16px;max-width:320px">
@@ -805,7 +828,7 @@ button,input,select{font-family:inherit}
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;defaultView&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;masonry&quot;,&quot;list&quot;],&quot;default&quot;:&quot;masonry&quot;,&quot;tsType&quot;:&quot;'masonry'|'list'&quot;},&quot;showCulturalNotice&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
-const MHM = 'Medical History Museum', UAC = 'University Art Collection', GMC = 'Grainger Museum Collection', PDC = 'Prints and Drawing Collection, Special Collections and Archives', DENT = 'Henry Forman Atkinson Dental Museum';
+const MHM = 'Medical History Museum', UAC = 'University Art Collection', GMC = 'Grainger Museum Collection', DENT = 'Henry Forman Atkinson Dental Museum';
 const BUSH = 'Bush Medicine collection', BUSHA = 'Bush Medicine collection/Aboriginal and Torres Strait Islander Art Collection';
 const HBA = 'Harry Brookes Allen Museum of Anatomy and Pathology';
 // Record data is shared with the record pages: see /collection-data.js (window.CCS)
@@ -813,11 +836,12 @@ const ITEMS = window.CCS.items;
 const HIER = [
  {name:MHM,children:['Roseby Collection',BUSH,BUSHA,'Frederic Wood Jones Collection']},
  {name:UAC,children:['Russell and Mab Grimwade Bequest','Michael Buxton Collection']},
- {name:GMC,children:[]},{name:'Faculty of Engineering and Information Technology',children:[]},{name:DENT,children:[]},{name:PDC,children:[]}
+ {name:GMC,children:[]},{name:DENT,children:[]},{name:HBA,children:[]}
 ];
 const LISTS = {
- type:['Photograph','Artwork','Publication','Video (Moving Image)','Audio (Interviews)','Cultural Object','Manuscript','Scientific Specimen','Personal computer','Calculator'],
- licence:['Public Domain','Rights Reserved','CC BY','CC BY-SA'], classification:['G','PG','M','MA15+'], access:['Open Access','Restricted','By Appointment']
+ licence:['Public Domain','Rights Reserved','CC BY','CC BY-SA'], access:['Open Access','Restricted','By Appointment'],
+ filmClass: window.CCS.FILM_RATING_LIST /* CCS Filters sheet #19: G, PG, M, MA 15+, R 18+, X 18+, RC */,
+ assetFormat: window.CCS.FORMAT_LIST /* sheet #22: images, audio, video, PDF */
 };
 const periodOf = it => it.period || (it.dateStart == null ? null : it.dateStart < 1800 ? 'Before 1800' : it.dateStart < 1900 ? '19th century' : it.dateStart < 2000 ? '20th century' : '21st century');
 const NATION_REGION = {American:'North America',Australian:'Oceania',British:'Europe',French:'Europe',German:'Europe',Chinese:'Asia',Japanese:'Asia',European:'Europe'};
@@ -827,7 +851,7 @@ const formatOf = it => !it.img ? 'None' : /Video/.test(it.objectType) ? 'Video' 
 const lifespanOf = creator => { const m = (creator || '').match(/\(([^)]+)\)\s*$/); if (!m) return {}; const inner = m[1];
   const range = inner.match(/^(\d{4})\s*[–-]\s*(\d{4})$/); if (range) return { birth: +range[1], death: +range[2] };
   const b = inner.match(/b\.\s*(\d{4})/), d = inner.match(/d\.\s*(\d{4})/); return { birth: b ? +b[1] : null, death: d ? +d[1] : null }; };
-const vals = (it, k) => k === 'period' ? [periodOf(it)].filter(Boolean) : k === 'filmClass' ? [].concat(it.classification ?? []) : k === 'classification' ? [].concat(it.subject ?? []) : k === 'named' ? [].concat(it.named ?? []) : k === 'region' ? [regionOf(it)].filter(Boolean) : k === 'assetFormat' ? [formatOf(it)] : k === 'type' ? [].concat(it.objectType ?? []) : [].concat(it[k] ?? []);
+const vals = (it, k) => k === 'period' ? [periodOf(it)].filter(Boolean) : k === 'filmClass' ? (it.ratings || []) : k === 'classification' ? (it.classes || []) : k === 'named' ? [].concat(it.named ?? []) : k === 'region' ? [regionOf(it)].filter(Boolean) : k === 'assetFormat' ? (it.formats || []) : k === 'type' ? (it.types || []) : [].concat(it[k] ?? []);
 const KEYS = ['type','period','creator','assoc','culture','place','subject','material','language','licence','access','nationality','classification','named','filmClass','region','assetFormat','subjectPlace','subjectEvent','daAccess'];
 const LABELS = {collection:'Collection',named:'Named collection',type:'Object type',period:'Date (era, period, century)',creator:'Creator',assoc:'Subject agent',culture:'Cultural affiliation',place:'Place of production',subject:'Subject',material:'Material',language:'Language',licence:'Licence',access:'Access',nationality:'Nationality',classification:'Classification',filmClass:'Film & gaming classification',region:'Region',assetFormat:'Format type',subjectPlace:'Subject location',subjectEvent:'Subject event'};
 const FACETS = [
@@ -863,10 +887,13 @@ const TERMS = (() => { const m = new Map(); const add = (t, cat, sc) => { if (t 
   ITEMS.forEach(it => { add(it.title, 'Title', 'title'); if (!/unknown|Staff photographer|^Japanese$/.test(it.creator)) add(it.creator, 'Creator', 'creator'); add(it.subject, 'Subject', 'subject'); add(it.place, 'Place', 'all'); add(it.material, 'Material', 'all'); }); return [...m.values()]; })();
 const LIC = {'Public Domain':['PD','Public domain',['../images/cc/pd.svg']],'Rights Reserved':['cc','In copyright',[]],'CC BY':['cc','CC BY',['../images/cc/cc.svg','../images/cc/by.svg']],'CC BY-SA':['cc','CC BY-SA',['../images/cc/cc.svg','../images/cc/by.svg','../images/cc/sa.svg']]};
 const SORTS = [['rel','Relevance'],['new','Date (newest)'],['old','Date (oldest)'],['az','Title A-Z']];
-const RATIO = {kangaroo:[676,762],cary:[676,816],goodenia:[680,426],grandfather:[680,547],heavy:[680,497],bottle:[676,944],vase:[676,948],compound:[676,944],inro1:[680,830],bottle2:[676,952],eucalypt:[590,157],dimalan:[676,429],inro2:[680,826],cabinet:[680,490],dimalan2:[676,436],piano:[680,347],inro3:[680,830],eucryphia:[676,719],'macintosh-web':[1600,1068],'calculator-web':[1600,1200],tsukioka:[600,338],'potentiometer-web':[1600,1034],'blower-web':[1600,1200],electrometer:[789,592],carbsoda:[1333,2000],toiletjar:[1333,2000],filmposter:[1522,2000],crookes:[250,376],pipes:[768,513],necklace:[2000,1328]};
+const RATIO = {kangaroo:[676,762],cary:[676,816],goodenia:[680,426],grandfather:[680,547],heavy:[680,497],bottle:[676,944],vase:[676,948],compound:[676,944],inro1:[680,830],bottle2:[676,952],eucalypt:[590,157],dimalan:[676,429],inro2:[680,826],cabinet:[680,490],dimalan2:[676,436],piano:[680,347],inro3:[680,830],eucryphia:[676,719],electrometer:[789,592],carbsoda:[1333,2000],toiletjar:[1333,2000],filmposter:[1522,2000],crookes:[250,376],pipes:[768,513],necklace:[2000,1328]};
 const SKEL = [300,200,340,240,280,190,320,230,260];
 const uniq = k => [...new Set(ITEMS.flatMap(i => vals(i, k)))];
-const EMPTYF = () => { const f = {digital:false,downloadable:false,sort:'',q:'',scope:'all',collection:[],yFrom:null,yTo:null,accession:'',birthFrom:null,birthTo:null,deathFrom:null,deathTo:null}; KEYS.forEach(k => f[k] = []); return f; };
+const EMPTYF = () => { const f = {digital:false,downloadable:false,sort:'',q:'',scope:'all',collection:[],yFrom:null,yTo:null,accession:'',birthFrom:null,birthTo:null,deathFrom:null,deathTo:null,clauses:[],fAll:{}}; KEYS.forEach(k => f[k] = []); return f; };
+// Production-date slider: a fixed 1700-2030 scale (earlier records are grouped into the first bar) keeps the
+// handles stable as other filters change and stops the few BCE records from squashing everything else.
+const DATE_LO = 1700, DATE_HI = 2030, DATE_BIN = 10, YEAR_MIN = -5000, YEAR_MAX = 2100;
 const clone = f => JSON.parse(JSON.stringify(f));
 const FOCUSABLE = 'button:not([disabled]),input,a[href],[tabindex]:not([tabindex="-1"])';
 
@@ -918,6 +945,62 @@ function matchesQuery(text, q) {
   const m = trimmed.match(/^"(.+)"$/);
   if (m) return text.includes(m[1].toLowerCase());
   return trimmed.toLowerCase().split(/\s+/).every(w => text.includes(w));
+}
+
+// --- Advanced Search (see advanced-search.html / advanced-search-form.js) ----------------------
+// Rows from the advanced form: {field, op, query}. 'must' = contains all terms, 'should' = contains any
+// term, 'must_not' = contains none. Every must row must match, at least one should row must match (when
+// there are any), and no must_not row may match.
+const ADV_FIELDS = { all_fields: 'All fields', title: 'Title', creator: 'Creator', subject: 'Subject', description: 'Description' };
+const ADV_OPS = { must: 'contains all', should: 'contains any', must_not: 'does not contain' };
+const advText = (it, field) => String(field === 'title' ? it.title : field === 'creator' ? it.creator : field === 'subject' ? it.subject : field === 'description' ? it.description : scopeText(it, 'all') + ' ' + (it.description || '') + ' ' + (it.accession || '')).toLowerCase();
+function matchClauses(it, clauses) {
+  let shouldSeen = false, shouldHit = false;
+  for (const c of clauses) {
+    const text = advText(it, c.field);
+    if (c.op === 'should') {
+      shouldSeen = true;
+      const terms = tokenizeQuery(c.query).filter(t => t.type !== 'op').map(t => t.value);
+      if (terms.some(t => text.includes(t))) shouldHit = true;
+    } else if (c.op === 'must_not') {
+      if (matchesQuery(text, c.query)) return false;
+    } else if (!matchesQuery(text, c.query)) return false;
+  }
+  return !shouldSeen || shouldHit;
+}
+// URL parameters from the advanced form -> filter state (null when the URL has none).
+const ADV_FILTER_KEYS = { collection: 'collection', type: 'type', creator: 'creator', licence: 'licence', access: 'access' };
+const ADV_SORTS = { 'year-desc': 'new', 'year-asc': 'old', az: 'az' };
+function parseAdvancedParams(qs) {
+  const f = EMPTYF(); let any = false;
+  const rows = {};
+  qs.forEach((val, name) => {
+    let m;
+    if ((m = name.match(/^clause\[(\d+)\]\[(field|op|query)\]$/))) (rows[m[1]] = rows[m[1]] || {})[m[2]] = val;
+    else if ((m = name.match(/^(f|f_inclusive)\[(\w+)\]\[\]$/)) && ADV_FILTER_KEYS[m[2]]) {
+      const k = ADV_FILTER_KEYS[m[2]], v = k === 'type' ? window.CCS.canonType(val) : val; if (!f[k].includes(v)) f[k].push(v);
+      if (m[1] === 'f') f.fAll[k] = true; any = true;
+    } else if ((m = name.match(/^range\[year\]\[(begin|end)\]$/)) && val !== '' && !isNaN(+val)) {
+      f[m[1] === 'begin' ? 'yFrom' : 'yTo'] = +val; any = true;
+    }
+  });
+  Object.keys(rows).sort((a, b) => a - b).forEach(i => {
+    const r = rows[i];
+    if (r.query && r.query.trim() && ADV_FIELDS[r.field || 'all_fields']) { f.clauses.push({ field: r.field || 'all_fields', op: ADV_OPS[r.op] ? r.op : 'must', query: r.query.trim() }); any = true; }
+  });
+  const so = qs.get('sort'); if (ADV_SORTS[so]) { f.sort = ADV_SORTS[so]; any = any || f.clauses.length > 0; }
+  return any ? f : null;
+}
+// Filter state -> advanced form URL, so "Edit advanced search" restores what the visitor entered.
+function advancedFormHref(f) {
+  const p = new URLSearchParams(); let i = 0;
+  (f.clauses || []).forEach(c => { p.set(`clause[${i}][field]`, c.field); p.set(`clause[${i}][op]`, c.op); p.set(`clause[${i}][query]`, c.query); i++; });
+  if (f.q) { p.set(`clause[${i}][field]`, f.scope === 'all' ? 'all_fields' : f.scope); p.set(`clause[${i}][op]`, 'must'); p.set(`clause[${i}][query]`, f.q); }
+  Object.keys(ADV_FILTER_KEYS).forEach(k => (f[k] || []).forEach(v => p.append(`${f.fAll && f.fAll[k] ? 'f' : 'f_inclusive'}[${k}][]`, v)));
+  if (f.yFrom != null) p.set('range[year][begin]', f.yFrom);
+  if (f.yTo != null) p.set('range[year][end]', f.yTo);
+  const so = Object.keys(ADV_SORTS).find(k => ADV_SORTS[k] === f.sort); if (so) p.set('sort', so);
+  const qs = p.toString(); return 'advanced-search.html' + (qs ? '?' + qs : '');
 }
 
 // --- CCS-158 / CCS-288 / CCS-292 / CCS-293: spelling suggestions ---------
@@ -1050,11 +1133,13 @@ class Component extends DCLogic {
     const qs = new URLSearchParams(location.search);
     const pc = qs.get('collection'), pt = qs.get('type'), pq = qs.get('q'), psc = qs.get('scope');
     let initF = null;
-    if (pc || pt || pq || psc) {
+    const advF = parseAdvancedParams(qs);
+    if (advF) { initF = advF; this.setState({ f: advF }); }
+    else if (pc || pt || pq || psc) {
       if (pq) saveSearchHistory(pq);
       initF = clone(this.state.f);
       if (pc) initF.collection = [pc];
-      if (pt) initF.type = [pt];
+      if (pt) initF.type = pt.split(';').map(t => window.CCS.canonType(t)).filter((t, i, a) => t && a.indexOf(t) === i);
       if (pq) initF.q = pq;
       if (psc) initF.scope = psc;
       this.setState({ f: initF });
@@ -1069,7 +1154,7 @@ class Component extends DCLogic {
     clearTimeout(this.t); clearTimeout(this.ct); clearTimeout(this.bt); document.body.style.overflow = '';
   }
   matchF(it, f, except) {
-    if (f.digital && !it.img) return false;
+    if (f.digital && !(it.formats && it.formats.length)) return false;
     if (f.downloadable && it.licence === 'Rights Reserved') return false;
     if (f.accession && !(it.accession || '').toLowerCase().includes(f.accession.toLowerCase())) return false;
     if (except !== 'life' && (f.birthFrom != null || f.birthTo != null)) {
@@ -1084,14 +1169,15 @@ class Component extends DCLogic {
       if (f.deathFrom != null && lp.death < f.deathFrom) return false;
       if (f.deathTo != null && lp.death > f.deathTo) return false;
     }
-    if (except !== 'coll' && f.collection.length && !f.collection.includes(it.collection)) return false;
-    for (const k of KEYS) if (k !== except && f[k].length && !vals(it, k).some(v => f[k].includes(v))) return false;
+    if (except !== 'coll' && f.collection.length && !(f.fAll && f.fAll.collection ? f.collection.every(c => c === it.collection) : f.collection.includes(it.collection))) return false;
+    for (const k of KEYS) if (k !== except && f[k].length) { const vs = vals(it, k); if (!(f.fAll && f.fAll[k] ? f[k].every(v => vs.includes(v)) : vs.some(v => f[k].includes(v)))) return false; }
     if (except !== 'date' && (f.yFrom != null || f.yTo != null)) {
-      if (!it.dateStart) return false;
+      if (it.dateStart == null) return false;
       if (f.yFrom != null && it.dateStart < f.yFrom) return false;
       if (f.yTo != null && it.dateStart > f.yTo) return false;
     }
     if (f.q) { const txt = scopeText(it, f.scope).toLowerCase(); if (!matchesQuery(txt, f.q)) return false; }
+    if (f.clauses && f.clauses.length && !matchClauses(it, f.clauses)) return false;
     return true;
   }
   cnt(f, except, field) { const c = {}; ITEMS.forEach(it => { if (this.matchF(it, f, except)) (field === 'collection' || field === 'named' ? [it[field]].filter(Boolean) : vals(it, field)).forEach(v => c[v] = (c[v] || 0) + 1); }); return c; }
@@ -1173,7 +1259,7 @@ class Component extends DCLogic {
       } else if (F.kind !== 'date' && F.kind !== 'text' && F.kind !== 'life') {
         const c = this.cnt(d, k, k), base = LISTS[k] || uniq(k);
         selected = d[k].slice();
-        let vs = F.kind === 'list' ? [...base].sort((a, b) => (c[b] || 0) - (c[a] || 0)) : base;
+        let vs = LISTS[k] && F.kind !== 'list' ? base : [...base].sort((a, b) => (c[b] || 0) - (c[a] || 0) || String(a).localeCompare(String(b)));
         options = vs.map(v => this.opt(v, c[v] || 0, d[k].includes(v), () => this.setDraft(dd => this.tog(dd, k, v))));
         if (F.kind === 'list') options = options.filter(o => o.count || o.checked);
         if (q) options = options.filter(o => o.label.toLowerCase().includes(q));
@@ -1198,36 +1284,58 @@ class Component extends DCLogic {
         onLifeFrom: e => { const v = e.target.value.trim(); this.setDraft(dd => ({ ...dd, [lk + 'From']: v === '' ? null : parseInt(v, 10) })); },
         onLifeTo: e => { const v = e.target.value.trim(); this.setDraft(dd => ({ ...dd, [lk + 'To']: v === '' ? null : parseInt(v, 10) })); } };
     });
-    // date domain, adaptive bins
-    const ys = ITEMS.filter(it => it.dateStart && this.matchF(it, d, 'date')).map(it => it.dateStart);
-    const lo = ys.length ? Math.floor(Math.min(...ys) / 10) * 10 : 1700, hi = ys.length ? Math.ceil((Math.max(...ys) + 1) / 10) * 10 : 2030;
-    this.dom = { lo, hi: Math.max(hi, lo + 10) };
-    const span = this.dom.hi - lo, size = span <= 30 ? 1 : span <= 400 ? 10 : 100, unit = size === 1 ? 'year' : size === 10 ? 'decade' : 'century';
-    const from = Math.max(lo, d.yFrom ?? lo), to = Math.min(this.dom.hi, d.yTo ?? this.dom.hi), pct = y => ((y - lo) / span) * 100 + '%';
-    const bins = []; for (let b = lo; b < this.dom.hi; b += size) bins.push({ b, c: ys.filter(y => y >= b && y < b + size).length });
-    const maxBin = Math.max(1, ...bins.map(x => x.c));
-    const undated = ITEMS.filter(it => !it.dateStart && this.matchF(it, d, 'date')).length;
+    // Hide facets that have no values at all in the dataset (e.g. digital-asset access, still 'tbd' in the CCS Filters sheet) instead of showing an empty section.
+    const sectionsVisible = sections.filter(sec => !(sec.empty && !sec.search && !sec.isDate && !sec.isText && !sec.isLife) || sec.badge);
+    sectionsVisible.forEach((sec, i) => { sec.groupStart = i === 0 || sectionsVisible[i - 1].group !== sec.group; });
+    // production-date slider: fixed scale, 10-year bars (first bar = "before 1710", last = 2020+)
+    const LO = DATE_LO, HI = DATE_HI, span = HI - LO, nBins = Math.ceil(span / DATE_BIN);
+    this.dom = { lo: LO, hi: HI };
+    const ys = ITEMS.filter(it => it.dateStart != null && this.matchF(it, d, 'date')).map(it => it.dateStart);
+    const counts = new Array(nBins).fill(0); ys.forEach(y => { counts[Math.min(nBins - 1, Math.max(0, Math.floor((y - LO) / DATE_BIN)))]++; });
+    const maxBin = Math.max(1, ...counts);
+    const rawFrom = d.yFrom, rawTo = d.yTo;
+    const from = rawFrom == null ? LO : Math.min(Math.max(rawFrom, LO), HI), to = rawTo == null ? HI : Math.min(Math.max(rawTo, LO), HI);
+    const pct = y => ((y - LO) / span) * 100 + '%';
+    const bins = counts.map((c, i) => {
+      const bs = i === 0 ? -Infinity : LO + i * DATE_BIN, be = i === nBins - 1 ? Infinity : LO + (i + 1) * DATE_BIN - 1;
+      const on = (rawFrom == null || be >= rawFrom) && (rawTo == null || bs <= rawTo);
+      const label = i === 0 ? 'Before ' + (LO + DATE_BIN) : i === nBins - 1 ? (LO + i * DATE_BIN) + ' onwards' : (LO + i * DATE_BIN) + '–' + be;
+      return { h: c ? Math.max(6, (c / maxBin) * 100) + '%' : '2px', bg: on ? 'var(--col-bg-primary)' : '#d5d8e0', title: label + ': ' + c + (c === 1 ? ' record' : ' records') };
+    });
+    const inRange = ys.filter(y => (rawFrom == null || y >= rawFrom) && (rawTo == null || y <= rawTo)).length;
+    const undated = ITEMS.filter(it => it.dateStart == null && this.matchF(it, d, 'date')).length;
+    const hasRange = rawFrom != null || rawTo != null;
+    const dateSummary = hasRange ? (rawFrom ?? 'Earliest') + ' – ' + (rawTo ?? 'Latest') + ' · ' + inRange + (inRange === 1 ? ' dated record' : ' dated records') : ys.length + ' dated records · all years';
     const draftActive = d.collection.length || KEYS.some(k => d[k].length) || d.yFrom != null || d.yTo != null || d.digital || d.downloadable || d.accession || d.birthFrom != null || d.birthTo != null || d.deathFrom != null || d.deathTo != null;
     const sw = (label, key) => { const on = d[key]; return { label, on, toggle: () => this.setDraft(dd => ({ ...dd, [key]: !dd[key] })),
       trackBg: on ? 'var(--col-bg-primary)' : '#c3c6cd', knobLeft: on ? '18px' : '2px' }; };
     const setY = () => { const yi = s.yIn || {}; const pf = yi.from != null ? yi.from : (d.yFrom ?? ''), pt = yi.to != null ? yi.to : (d.yTo ?? '');
-      const a = String(pf).trim() === '' ? null : parseInt(pf, 10), b = String(pt).trim() === '' ? null : parseInt(pt, 10);
-      if ((a != null && isNaN(a)) || (b != null && isNaN(b))) return this.setState({ yErr: 'Enter years as numbers, for example 1850.' });
-      const [f1, t1] = a != null && b != null && a > b ? [b, a] : [a, b];
+      const parse = v => { const t = String(v).trim(); if (t === '') return null; return /^-?\d{1,4}$/.test(t) ? parseInt(t, 10) : NaN; };
+      const a = parse(pf), b = parse(pt);
+      if (isNaN(a) || isNaN(b)) return this.setState({ yErr: 'Enter years as whole numbers, for example 1850 (or -400 for BCE).' });
+      if ((a != null && (a < YEAR_MIN || a > YEAR_MAX)) || (b != null && (b < YEAR_MIN || b > YEAR_MAX))) return this.setState({ yErr: 'Enter a year between ' + YEAR_MIN + ' and ' + YEAR_MAX + '.' });
+      if (a != null && b != null && a > b) return this.setState({ yErr: 'The earliest year can’t be after the latest year.' });
+      const [f1, t1] = [a, b];
+      if (f1 === d.yFrom && t1 === d.yTo && !s.yIn) return;
       this.setState({ yIn: null, yErr: '' }); this.setDraft(dd => ({ ...dd, yFrom: f1, yTo: t1 })); };
     const sheet = s.vw < 640, allOpen = FACETS.every(F => s.mOpen[F.key]);
     return {
-      sections, dSwitches: [sw('Has digital asset', 'digital'), sw('Only records with downloads', 'downloadable')],
-      dateNote: 'Grouped by ' + unit + '. ' + (undated ? undated + ' undated record' + (undated === 1 ? ' is' : 's are') + ' excluded when a range is set.' : 'Undated records are excluded when a range is set.'),
-      bins: bins.map(x => ({ h: (x.c ? Math.max(10, (x.c / maxBin) * 100) : 0) + '%', bg: (x.b + size > from && x.b <= to) ? 'var(--col-bg-primary)' : '#d5d8e0', title: (size === 1 ? x.b : x.b + '–' + (x.b + size - 1)) + ': ' + x.c })),
-      rangeLeft: pct(from), rangeRight: pct(to), rangeWidth: ((to - from) / span) * 100 + '%', domLo: String(lo), domHi: String(this.dom.hi), fromYear: String(from), toYear: String(to),
+      sections: sectionsVisible, dSwitches: [sw('Has digital asset', 'digital'), sw('Only records with downloads', 'downloadable')],
+      dateNote: undated ? undated + ' record' + (undated === 1 ? ' has' : 's have') + ' no production date and ' + (undated === 1 ? 'is' : 'are') + ' left out when a range is set.' : 'Records without a production date are left out when a range is set.',
+      dateSummary, bins,
+      rangeLeft: pct(from), rangeRight: pct(to), rangeWidth: ((to - from) / span) * 100 + '%', domLo: String(LO), domHi: String(HI), domLoLabel: LO + ' or earlier', fromYear: String(from), toYear: String(to),
       fromMax: String(to), toMin: String(from),
+      fromText: rawFrom == null ? 'No earliest year' : String(rawFrom), toText: rawTo == null ? 'No latest year' : String(rawTo),
       downFrom: e => { e.preventDefault(); this.drag = 'from'; e.currentTarget.focus(); }, downTo: e => { e.preventDefault(); this.drag = 'to'; e.currentTarget.focus(); },
+      downTrack: e => { if (this.drag || !this.trackRef.current || e.button > 0) return;
+        const r = this.trackRef.current.getBoundingClientRect(), y = Math.round(LO + Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)) * span);
+        const which = Math.abs(y - from) <= Math.abs(y - to) && !(y === from && from === to && y > LO) ? 'from' : 'to';
+        e.preventDefault(); this.drag = which; this.applyDragValue(which, y); },
       fromKey: this.sliderKey('from'), toKey: this.sliderKey('to'),
       yInFrom: s.yIn && s.yIn.from != null ? s.yIn.from : (d.yFrom ?? ''), yInTo: s.yIn && s.yIn.to != null ? s.yIn.to : (d.yTo ?? ''),
       onYFrom: e => { const v = e.target.value; this.setState(st => ({ yIn: { ...(st.yIn || {}), from: v } })); }, onYTo: e => { const v = e.target.value; this.setState(st => ({ yIn: { ...(st.yIn || {}), to: v } })); },
-      yKey: e => { if (e.key === 'Enter') { e.preventDefault(); setY(); } }, applyYears: setY, yErr: s.yErr,
-      hasDateRange: d.yFrom != null || d.yTo != null, clearYears: () => { this.setState({ yIn: null, yErr: '' }); this.setDraft(dd => ({ ...dd, yFrom: null, yTo: null })); },
+      yKey: e => { if (e.key === 'Enter') { e.preventDefault(); setY(); } }, commitYears: setY, yErr: s.yErr,
+      hasDateRange: hasRange, clearYears: () => { this.setState({ yIn: null, yErr: '' }); this.setDraft(dd => ({ ...dd, yFrom: null, yTo: null })); },
       overlayPad: sheet ? '0' : '32px 16px', dlgRadius: '0', dlgMaxH: sheet ? 'none' : '860px', bodyPad: sheet ? '20px' : '32px',
       allSectionsLabel: allOpen ? 'Collapse all' : 'Expand all',
       toggleAllSections: () => this.setState({ mOpen: Object.fromEntries(FACETS.map(F => [F.key, !allOpen])) }),
@@ -1243,7 +1351,8 @@ class Component extends DCLogic {
     const s = this.state, p = this.props, f = s.f;
     const view = s.view ?? p.defaultView ?? 'masonry';
     const chips = [];
-    ['collection', ...KEYS].forEach(k => f[k].forEach(v => chips.push({ group: k === 'collection' ? 'Collection' : LABELS[k], label: v, remove: () => this.apply(ff => this.tog(ff, k, v)) })));
+    ['collection', ...KEYS].forEach(k => f[k].forEach(v => chips.push({ group: (k === 'collection' ? 'Collection' : LABELS[k]) + (f.fAll && f.fAll[k] && f[k].length > 1 ? ' (all)' : ''), label: v, remove: () => this.apply(ff => this.tog(ff, k, v)) })));
+    (f.clauses || []).forEach((c, ci) => chips.push({ group: ADV_FIELDS[c.field] + ' ' + ADV_OPS[c.op], label: c.query, remove: () => this.apply(ff => ({ ...ff, clauses: ff.clauses.filter((_, j) => j !== ci) })) }));
     if (f.yFrom != null || f.yTo != null) chips.push({ group: 'Production date', label: (f.yFrom ?? 'Any') + ' – ' + (f.yTo ?? 'Present'), remove: () => this.apply(ff => ({ ...ff, yFrom: null, yTo: null })) });
     if (f.accession) chips.push({ group: 'Accession number', label: f.accession, remove: () => this.apply(ff => ({ ...ff, accession: '' })) });
     if (f.birthFrom != null || f.birthTo != null) chips.push({ group: 'Creator birth years', label: (f.birthFrom ?? 'Any') + ' – ' + (f.birthTo ?? 'Any'), remove: () => this.apply(ff => ({ ...ff, birthFrom: null, birthTo: null })) });
@@ -1379,7 +1488,7 @@ class Component extends DCLogic {
       gridBg: view === 'masonry' ? '#c8d5c0' : '#fff', listBg: view === 'list' ? '#c8d5c0' : '#fff', isMasonry: view === 'masonry', isListView: view === 'list',
       titleText: 'Showing ' + n + ' ' + (n === 1 ? 'result' : 'results'), hasQ: !!f.q, qTag: (f.scope !== 'all' ? SCOPES.find(x => x[0] === f.scope)[1] + ': ' : '') + (f.q || '').toUpperCase(),
       clearQ: () => this.apply(ff => ({ ...ff, q: '' })),
-      filterCount: (chips.length + (f.digital ? 1 : 0)) || null, filterBtnRef: this.filterBtnRef,
+      advHref: advancedFormHref(f), filterCount: (chips.length + (f.digital ? 1 : 0)) || null, filterBtnRef: this.filterBtnRef,
       ppRef: this.ppRef, ppOpen: s.ppOpen, ppChev: s.ppOpen ? 'rotate(180deg)' : 'none', togglePP: () => this.setState(st => ({ ppOpen: !st.ppOpen })),
       rangeLabel: n ? 'Showing ' + ((page - 1) * s.perPage + 1) + '–' + Math.min(page * s.perPage, n) + ' records' : 'Showing 0 records',
       mainRef: this.mainRef, showPager: n > 0 && !s.loading,

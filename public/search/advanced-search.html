@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta name="description" content="Combine fields and filters to find exactly what you are looking for across every University of Melbourne cultural collection.">
+<title>Advanced Search — Cultural Collections Search — University of Melbourne</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Browse collections — Cultural Collections Search</title>
-<meta name="description" content="Browse the University of Melbourne&#39;s cultural collections spanning visual arts, cartography, medical history, zoology and more.">
 <script src="../support.js"></script>
+<script src="../collection-data.js"></script>
+<script src="advanced-search-form.js" defer></script>
 <style>
 .skip-link {
   position: absolute;
@@ -34,10 +36,74 @@
   nav[aria-label="Breadcrumb"] .bc-mobile{display:flex!important}
 }
 </style>
-  <link rel="stylesheet" href="../styles/vendor/bootstrap-uom.min.css">
   <link rel="stylesheet" href="../styles/footer.css">
-  <link rel="stylesheet" href="../styles/collection.css">
   <link rel="stylesheet" href="../styles/header.css">
+<style>
+/* Advanced Search form */
+.adv-wrap{flex:1;max-width:1200px;width:100%;margin:0 auto;padding:48px 32px 96px;box-sizing:border-box}
+.adv-grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:48px;align-items:start}
+.adv h2{margin:0 0 20px;font-family:'Fraunces',serif;font-weight:600;font-size:26px;line-height:1.2;color:var(--col-bg-primary)}
+.adv section{padding:0 0 32px;margin:0 0 32px;border-bottom:1px solid var(--col-border-header)}
+.adv-row{display:flex;align-items:center;gap:12px;margin:0 0 16px}
+.adv-row-label{flex:0 0 125px;font-size:16px;font-weight:600;color:var(--col-bg-primary)}
+.adv-select,.adv-input,.adv-trigger{box-sizing:border-box;height:48px;border:1px solid var(--col-border-header);border-radius:0;background:#fff;color:var(--col-text-primary);font:inherit;font-size:16px;padding:0 12px;min-width:0}
+.adv-select{flex:0 0 auto;max-width:100%;appearance:none;-webkit-appearance:none;padding-right:36px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23000f46'%3E%3Cpath d='M12 15.4L6 9.4L7.4 8L12 12.6L16.6 8L18 9.4L12 15.4Z'/%3E%3C/svg%3E") no-repeat right 10px center/16px}
+.adv-term .adv-select:first-child{width:170px}
+.adv-term .adv-select:nth-child(2){width:210px}
+.adv-term .adv-input{flex:1 1 auto}
+.adv-input::placeholder{color:var(--col-text-muted)}
+.adv-input--narrow{width:130px;flex:0 0 auto}
+.adv-match{width:190px}
+.adv-select:focus-visible,.adv-input:focus-visible,.adv-trigger:focus-visible,.adv-delete:focus-visible,.adv-add:focus-visible,.adv-submit:focus-visible,.adv-reset:focus-visible,.adv-check:focus-visible{outline:3px solid #46c8f0;outline-offset:2px}
+.adv-delete{display:inline-flex;align-items:center;gap:6px;flex:none;border:0;background:none;padding:6px 4px;font:inherit;font-size:13px;font-weight:600;color:var(--col-text-muted);cursor:pointer}
+.adv-delete:hover{color:var(--col-text-primary);text-decoration:underline}
+.adv-delete-icon,.adv-add-icon{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;color:#fff;font-size:16px;font-weight:700;line-height:1}
+.adv-delete-icon{background:#b42318}
+.adv-add{display:inline-flex;align-items:center;gap:8px;border:0;background:none;padding:6px 0;font:inherit;font-size:16px;font-weight:600;color:var(--col-bg-primary);cursor:pointer}
+.adv-add:disabled{opacity:.5;cursor:not-allowed}
+.adv-add-icon{background:var(--col-bg-primary)}
+.adv-add-filter{display:inline-flex;align-items:center;gap:8px;margin-top:4px}
+.adv-add-filter .adv-select{width:190px;font-weight:600;color:var(--col-bg-primary)}
+.adv-add-filter[hidden]{display:none}
+.adv-multi{position:relative;flex:1 1 auto;min-width:0}
+.adv-trigger{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;text-align:left;cursor:pointer}
+.adv-trigger-text{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.adv-placeholder{color:var(--col-text-muted)}
+.adv-panel{position:absolute;z-index:20;left:0;right:0;top:calc(100% + 4px);background:#fff;border:1px solid var(--col-bg-primary);padding:12px}
+.adv-panel[hidden],.adv-none[hidden],.adv-option[hidden]{display:none}
+.adv-panel-search{width:100%;margin:0 0 8px;height:40px}
+.adv-options{list-style:none;margin:0;padding:0;max-height:260px;overflow-y:auto}
+.adv-option{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 6px}
+.adv-option:hover{background:var(--col-bg-selected)}
+.adv-option-main{display:flex;align-items:flex-start;gap:10px;min-width:0}
+.adv-option-main label{cursor:pointer;font-size:16px;line-height:1.35;overflow-wrap:anywhere}
+.adv-check{flex:none;width:18px;height:18px;margin:2px 0 0;accent-color:var(--col-bg-primary)}
+.adv-count{flex:none;font-size:13px;color:var(--col-text-muted);background:#f1f0ec;padding:1px 8px}
+.adv-none{margin:8px 6px 0;color:var(--col-text-muted);font-size:15px}
+.adv-sort-row{margin:0 0 24px}
+.adv-actions{display:flex;align-items:center;gap:24px}
+.adv-reset{font-size:16px;font-weight:600;color:var(--col-bg-primary);text-decoration:underline}
+.adv-submit{height:48px;border:0;border-radius:0;background:var(--col-bg-primary);color:#fff;font:inherit;font-size:17px;font-weight:600;padding:0 28px;cursor:pointer}
+.adv-submit:hover{background:var(--col-bg-primary-hover)}
+.adv-help{box-sizing:border-box;border:1px solid var(--col-border-header);background:#f1f0ec;padding:24px;display:flex;flex-direction:column;gap:24px;position:sticky;top:24px}
+.adv-help h2{font-size:21px;margin:0 0 12px;display:flex;align-items:center;gap:8px}
+.adv-help h2 svg{flex:none}
+.adv-help ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:10px;font-size:16px;line-height:1.5}
+.adv-help section{padding:0;margin:0;border:0}
+.adv-help section+section{border-top:1px solid var(--col-border-header);padding-top:24px}
+.adv-help code{font-family:ui-monospace,Menlo,monospace;font-size:14px;color:var(--col-text-primary)}
+@media (max-width:980px){.adv-grid{grid-template-columns:minmax(0,1fr);gap:40px}.adv-help{position:static}}
+@media (max-width:640px){
+  .adv-wrap{padding:32px 16px 64px}
+  .adv-row{flex-wrap:wrap;gap:8px 12px}
+  .adv-row-label{flex:1 0 100%}
+  .adv-term .adv-select:first-child,.adv-term .adv-select:nth-child(2),.adv-match{flex:1 1 100%;width:100%}
+  .adv-term .adv-input,.adv-multi{flex:1 1 100%}
+  .adv-input--narrow{flex:1 1 40%;width:auto}
+  .adv-delete{margin-left:auto}
+  .adv-add-filter .adv-select{width:100%}
+}
+</style>
 </head>
 <body>
 <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -47,103 +113,31 @@
   --col-bg-primary:#000f46;
   --col-bg-primary-dark:#000b34;
   --col-bg-primary-hover:#213e5d;
-  --col-bg-surface:#fff;
   --col-bg-accent:#abc1a7;
-  --col-bg-accent-soft:#dde5d6;
-  --col-bg-selected:#e8edf6;
-  --col-btn-primary-bg:#000f46;
-  --col-btn-primary-bg-hover:#213e5d;
-  --col-btn-primary-text:#fff;
   --col-btn-action-bg:#46c8f0;
   --col-btn-action-bg-hover:#29b3d9;
   --col-btn-action-text:#000f46;
-  --col-btn-outline:#000f46;
+  --col-bg-selected:#e8edf6;
   --col-text-primary:#1b1f2a;
-  --col-text-onbrand:#fff;
   --col-text-muted:#5b6070;
-  --col-border-brand:#000f46;
-  --col-border-neutral:#cfcac0;
-  --col-border-neutral-soft:#ece9e3;
-  --col-border-neutral-mid:#d9d6cf;
   --col-border-header:#b5bac9;
-  --col-advisory-bg:#fdf6d8;
-  --col-advisory-border:#efdc8e;
-  --col-advisory-text:#8a6200;
 }</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../components/fig-tokens.css">
 <link rel="stylesheet" href="../components/fig-assets.css">
-<script src="../collection-data.js"></script>
+<!-- Bootstrap 5.3.3 CSS (Custom UoM Gen 3 Build) -->
+<link rel="stylesheet" href="../styles/vendor/bootstrap-uom.min.css">
 <style>
 body{margin:0;background:var(--white-100);color:var(--col-text-primary);font-family:'Source Sans 3',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
-a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-decoration:underline}
+a{color:#0b2a6b;text-decoration:underline;text-underline-offset:2px}a:hover{color:var(--col-bg-primary)}
 *{box-sizing:border-box}
-.breadcrumb-link{color:#fff;text-decoration:none}
-.breadcrumb-link:hover,.breadcrumb-link:focus-visible{text-decoration:underline}
-
-/* Collections landing — Matrix-style content blocks */
-.cl-wrap{max-width:1200px;margin:0 auto;padding:0 32px}
-.cl-section{padding:56px 0}
-.cl-section--tint{background:#f1f0ec}
-.cl-section--navy{background:var(--col-bg-primary-dark,#000b34);color:#fff}
-.cl-h2{margin:0 0 8px;text-align:center;font-family:'Fraunces',serif;font-weight:500;font-size:clamp(26px,3vw,34px);line-height:1.2;color:var(--col-text-primary)}
-.cl-section--navy .cl-h2{color:#fff}
-.cl-sub{margin:0 auto 32px;text-align:center;max-width:720px;font-size:17px;line-height:1.55;color:#3b4050;text-wrap:pretty}
-.cl-lead{margin:0 auto;max-width:760px;text-align:center;font-size:20px;line-height:1.55;color:#1b1f2a;text-wrap:pretty}
-.cl-search{display:flex;align-items:stretch;gap:0;max-width:680px;margin:0 auto}
-.cl-search input{flex:1;min-width:0;height:52px;padding:0 16px;font:inherit;font-size:17px;border:1px solid var(--col-border-brand);border-right:0;border-radius:0;background:#fff;color:var(--col-text-primary)}
-.cl-search button{min-height:52px;box-sizing:border-box;padding:0 24px;font:inherit;font-size:16px;font-weight:600;display:inline-flex;align-items:center;gap:8px;border:1px solid #fff;background:#fff;color:var(--col-bg-primary);cursor:pointer;border-radius:0}
-.cl-search button:hover{background:var(--col-bg-selected,#e8edf6)}
-.cl-search input:focus-visible,.cl-search button:focus-visible{outline:3px solid #0b4ea2;outline-offset:2px}
-.cl-links{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-top:16px;font-size:15px}
-.cl-links a{color:#fff;text-decoration:underline}
-.cl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-.cl-card{position:relative;display:flex;flex-direction:column;background:#fff;border:1px solid #e3e0d9;transition:box-shadow .2s ease,border-color .2s ease}
-.cl-card:hover,.cl-card:focus-within{border-color:var(--col-bg-primary);box-shadow:0 6px 18px rgba(0,15,70,.12)}
-.cl-card__media{aspect-ratio:3/2;background:#f4f3f0;overflow:hidden}
-.cl-card__media img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s ease}
-.cl-card:hover .cl-card__media img{transform:scale(1.03)}
-.cl-card__body{display:flex;flex-direction:column;gap:10px;padding:20px 22px 24px;flex:1}
-.cl-card__tag{align-self:flex-start;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#0b4ea2}
-.cl-card__title{margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:22px;line-height:1.25}
-.cl-card__title a{color:var(--col-bg-primary);text-decoration:none}
-.cl-card__title a::after{content:"";position:absolute;inset:0}
-.cl-card__title a:focus-visible{outline:3px solid #0b4ea2;outline-offset:2px}
-.cl-card__desc{margin:0;font-size:16px;line-height:1.5;color:#3b4050;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
-.cl-card__cta{margin-top:auto;padding-top:6px;display:inline-flex;align-items:center;gap:6px;font-weight:600;font-size:16px;color:var(--col-bg-primary)}
-.cl-card--cta{background:var(--col-bg-primary);border-color:var(--col-bg-primary);color:#fff;justify-content:center}
-.cl-card--cta .cl-card__body{justify-content:center;gap:14px;padding:32px 28px}
-.cl-card--cta .cl-card__title a,.cl-card--cta .cl-card__cta{color:#fff}
-.cl-card--cta .cl-card__desc{color:rgba(255,255,255,.88);-webkit-line-clamp:unset;display:block}
-.cl-card--cta:hover{background:var(--col-bg-primary-hover,#213e5d)}
-.cl-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.cl-tile{position:relative;display:flex;align-items:flex-end;aspect-ratio:16/9;background:var(--col-bg-primary);overflow:hidden;color:#fff;text-decoration:none}
-.cl-tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .35s ease}
-.cl-tile:hover img{transform:scale(1.04)}
-.cl-tile::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,15,70,0) 40%,rgba(0,15,70,.9) 100%);z-index:1}
-.cl-tile__label{position:relative;z-index:2;width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:16px 18px;font-family:'Fraunces',serif;font-size:20px;font-weight:600}
-.cl-tile:hover{text-decoration:none;color:#fff}
-.cl-tile:focus-visible{outline:3px solid #46c8f0;outline-offset:3px}
-.cl-tile--plain{background:linear-gradient(135deg,#000f46,#213e5d)}
-.pathfinder-inset__view{margin-top:10px;font-weight:600;font-size:15px;color:var(--col-bg-primary);text-decoration:underline}
-.cl-help{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.cl-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.cl-facts .facts-card__item{align-items:flex-start}
-@media (max-width:1000px){.cl-grid,.cl-tiles,.cl-help{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:640px){
-  .cl-wrap{padding:0 16px}.cl-section{padding:40px 0}
-  .cl-grid,.cl-tiles,.cl-help,.cl-facts{grid-template-columns:1fr}
-  .cl-lead{font-size:18px}
-  .cl-search{flex-direction:column;gap:8px}.cl-search input{border-right:1px solid var(--col-border-brand)}
-}
-@media (prefers-reduced-motion:reduce){.cl-card,.cl-card__media img,.cl-tile img{transition:none}}
-@media (max-width:640px){
-  .hero-inner{padding:16px 20px 28px!important}
-  .hero-cta a{flex:1 1 100%!important;justify-content:center!important}
-  .collections-grid{grid-template-columns:1fr!important}
-  .footer-cols{flex-direction:column!important}
-}
+      .btn{border-radius:0!important}
+/* Gen3-brand overrides on top of Bootstrap defaults */
+.btn-primary{--bs-btn-bg:var(--col-btn-action-bg);--bs-btn-border-color:var(--col-btn-action-bg);--bs-btn-color:var(--col-btn-action-text);--bs-btn-hover-bg:var(--col-btn-action-bg-hover);--bs-btn-hover-border-color:var(--col-btn-action-bg-hover);--bs-btn-hover-color:var(--col-btn-action-text)}
+.btn-outline-primary{--bs-btn-color:var(--col-bg-primary);--bs-btn-border-color:var(--col-bg-primary);--bs-btn-hover-bg:var(--col-bg-primary);--bs-btn-hover-border-color:var(--col-bg-primary)}
+.card{border-color:#e3e0d9;border-radius:0}
+.fw-serif{font-family:'Fraunces',serif}
 [aria-label="University links"] a:hover{color:var(--sage-100);text-decoration:underline}
 </style>
 </helmet>
@@ -153,7 +147,7 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
   <div class="uom-logo-section flex items-center gap-050 h-full basis-auto border-r border-r-brand-900 shrink-0">
     <a class="logo self-center flex items-center w-auto relative h-[var(--nav-height)] shrink-0 group outline-none" href="https://www.unimelb.edu.au" aria-label="The University of Melbourne homepage">
       <div class="udds-focus-on-dark-inset size-full absolute inset-0"></div>
-      <img class="w-auto h-full outline-none" alt="The University of Melbourne" src="../images/UoM_Logo_Vert_Housed.svg">
+      <img class="w-auto h-full outline-none" alt="The University of Melbourne" src="/images/UoM_Logo_Vert_Housed.svg">
     </a>
   </div>
 
@@ -294,96 +288,88 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
 })();
 </script>
 
-<section style="width:100%;background:#00354c;height:40px;display:flex;align-items:center">
-  <nav class="page-breadcrumbs" aria-label="Breadcrumb"><ol class="page-local-history" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="root" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="/" itemprop="item" title="Home" aria-label="Home"><img src="../images/home.svg" alt="" width="16" height="16" style="vertical-align:middle"><span itemprop="name" class="sr-only">Home</span></a><meta content="1" itemprop="position"></li><li itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page"><span itemprop="name">Browse collections</span><meta content="2" itemprop="position"></li></ol><ol class="bc-mobile" style="display:none;align-items:center;gap:6px;list-style:none;margin:0;font-size:18px;color:#fff"><li style="display:flex;align-items:center"><a href="/" style="display:inline-flex;align-items:center;gap:6px;color:#fff;text-decoration:none;min-height:44px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span>Cultural Collections</span></a></li></ol></nav>
-</section>
+<nav class="page-breadcrumbs" aria-label="Breadcrumb"><ol class="page-local-history" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="root" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="/" itemprop="item" title="Home" aria-label="Home"><img src="../images/home.svg" alt="" width="16" height="16" style="vertical-align:middle"><span itemprop="name" class="sr-only">Home</span></a><meta content="1" itemprop="position"></li><li itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page"><span itemprop="name">Advanced Search</span><meta content="2" itemprop="position"></li></ol><ol class="bc-mobile" style="display:none;align-items:center;gap:6px;list-style:none;margin:0;font-size:18px;color:#fff"><li style="display:flex;align-items:center"><a href="/index.html" style="display:inline-flex;align-items:center;gap:6px;color:#fff;text-decoration:none;min-height:44px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span>Home</span></a></li></ol></nav>
 <section class="page-banner" aria-label="Page banner">
   <div class="page-banner__inner">
-    <h1>Browse collections</h1>
-    <p class="page-banner__desc">The University of Melbourne's cultural collections are unrivalled among Australian universities, spanning visual arts, cartography, medical history, zoology, archives and more, including significant collections of Aboriginal and Torres Strait Islander cultural heritage.</p>
+    <h1>Advanced Search</h1>
+    <p class="page-banner__desc">Combine fields and filters to find exactly what you're looking for across every collection.</p>
   </div>
 </section>
-<main id="main-content">
-  
-  <section class="cl-section cl-section--navy" aria-labelledby="h-search" style="padding:44px 0">
-    <div class="cl-wrap" style="text-align:center">
-      <h2 id="h-search" class="cl-h2" style="margin-bottom:20px">Search across every collection</h2>
-      <form class="cl-search" role="search" action="/search/search-results.html" method="get">
-        <label for="cl-q" class="sr-only">Search all collections</label>
-        <input id="cl-q" name="q" type="search" placeholder="Search by title, creator, subject or accession number" autocomplete="off">
-        <button type="submit"><span>Search</span></button>
-      </form>
-      <div class="cl-links"><a href="/search/search-results.html">Advanced search</a><a href="/help/index.html">Search tips</a></div>
-    </div>
-  </section>
 
-  <section class="cl-section" aria-labelledby="h-coll">
-    <div class="cl-wrap">
-      <h2 id="h-coll" class="cl-h2">Our collections</h2>
-      <p class="cl-sub">{{ collectionsCount }} held by museums, archives and faculties across the University. Choose a collection to see its story, highlights and how to visit.</p>
-      <div class="cl-grid">
-        <sc-for list="{{ collections }}" as="c" hint-placeholder-count="5">
-          <article class="cl-card">
-            <sc-if value="{{ c.hasImg }}" hint-placeholder-val="{{ false }}"><div class="cl-card__media"><img src="{{ c.imgSrc }}" alt="" loading="lazy"></div></sc-if>
-            <div class="cl-card__body">
-              <span class="cl-card__tag">{{ c.count }}</span>
-              <h3 class="cl-card__title"><a href="{{ c.href }}">{{ c.name }}</a></h3>
-              <p class="cl-card__desc">{{ c.blurb }}</p>
-              <span class="cl-card__cta" aria-hidden="true">View collection <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="13 6 19 12 13 18"></polyline></svg></span>
-            </div>
-          </article>
-        </sc-for>
-        <article class="cl-card cl-card--cta">
-          <div class="cl-card__body">
-            <h3 class="cl-card__title"><a href="/search/search-results.html">Search all records</a></h3>
-            <p class="cl-card__desc">Looking for something specific? Search and filter every record across all of the collections at once.</p>
-            <span class="cl-card__cta" aria-hidden="true">Start searching <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="13 6 19 12 13 18"></polyline></svg></span>
+<main id="main-content" class="adv-wrap">
+  <div class="adv-grid">
+    <div>
+      <search aria-label="Advanced search">
+        <form id="adv-form" class="adv" action="search-results.html" method="get">
+          <section aria-labelledby="adv-terms-h">
+            <h2 id="adv-terms-h">Search</h2>
+            <div id="adv-terms"></div>
+            <button type="button" id="adv-add-row" class="adv-add"><span class="adv-add-icon" aria-hidden="true">+</span> Add row</button>
+          </section>
+
+          <section aria-labelledby="adv-filters-h">
+            <h2 id="adv-filters-h">Filters</h2>
+            <div id="adv-filters"></div>
+            <label class="adv-add-filter">
+              <span class="adv-add-icon" aria-hidden="true">+</span>
+              <select id="adv-add-filter" class="adv-select" aria-label="Add filter">
+                <option value="">Add filter…</option>
+                <option value="collection">Collection Title</option>
+                <option value="creator">Creator Name</option>
+                <option value="type">Object Type</option>
+                <option value="licence">Licence Type</option>
+                <option value="access">Object Access Condition</option>
+                <option value="year">Production Date</option>
+              </select>
+            </label>
+          </section>
+
+          <div class="adv-row adv-sort-row">
+            <label for="adv-sort" class="adv-row-label">Sort results by</label>
+            <select id="adv-sort" name="sort" class="adv-select" style="width:210px">
+              <option value="relevance">Relevance</option>
+              <option value="year-desc">Date (Newest)</option>
+              <option value="year-asc">Date (Oldest)</option>
+              <option value="az">Title (A–Z)</option>
+            </select>
           </div>
-        </article>
-      </div>
+          <div class="adv-actions">
+            <a class="adv-reset" href="advanced-search.html">Reset</a>
+            <button type="submit" class="adv-submit">Search</button>
+          </div>
+        </form>
+      </search>
     </div>
-  </section>
 
-  <section class="cl-section cl-section--tint" aria-labelledby="h-facts">
-    <div class="cl-wrap">
-      <h2 id="h-facts" class="cl-h2">The collections at a glance</h2>
-      <p class="cl-sub">Cultural material from more than a century of teaching, research and collecting.</p>
-      <div class="cl-facts facts-card" style="flex-wrap:nowrap">
-        <sc-for list="{{ facts }}" as="f" hint-placeholder-count="3">
-          <div class="facts-card__item"><strong class="facts-card__stat">{{ f.stat }}</strong><span class="facts-card__sentence">{{ f.sentence }}</span></div>
-        </sc-for>
-      </div>
-    </div>
-  </section>
-
-  <section class="cl-section" aria-labelledby="h-themes">
-    <div class="cl-wrap">
-      <h2 id="h-themes" class="cl-h2">Explore by object type</h2>
-      <p class="cl-sub">Follow a type of object across every collection.</p>
-      <div class="cl-tiles">
-        <sc-for list="{{ themes }}" as="t" hint-placeholder-count="6">
-          <a class="cl-tile {{ t.cls }}" href="{{ t.href }}">
-            <sc-if value="{{ t.hasImg }}" hint-placeholder-val="{{ false }}"><img src="{{ t.imgSrc }}" alt=""></sc-if>
-            <span class="cl-tile__label">{{ t.name }} <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="13 6 19 12 13 18"></polyline></svg></span>
-          </a>
-        </sc-for>
-      </div>
-    </div>
-  </section>
-
-  <section class="cl-section cl-section--tint" aria-labelledby="h-help">
-    <div class="cl-wrap">
-      <h2 id="h-help" class="cl-h2">Help and guidance</h2>
-      <p class="cl-sub">Information on searching, accessing and respectfully using the collections.</p>
-      <div class="cl-help">
-        <a class="pathfinder-inset" href="/help/index.html"><span class="pathfinder-inset__heading">Help and support</span><span class="pathfinder-inset__desc">Searching, using and requesting items from the collections.</span><span class="pathfinder-inset__view">View</span></a>
-        <a class="pathfinder-inset" href="/help/indigenous-data.html"><span class="pathfinder-inset__heading">Indigenous cultural data and access</span><span class="pathfinder-inset__desc">How Aboriginal and Torres Strait Islander material is cared for and shared.</span><span class="pathfinder-inset__view">View</span></a>
-        <a class="pathfinder-inset" href="/contact.html"><span class="pathfinder-inset__heading">Contact the collections team</span><span class="pathfinder-inset__desc">Ask a question or request access to an item.</span><span class="pathfinder-inset__view">View</span></a>
-      </div>
-    </div>
-  </section>
+    <aside class="adv-help" aria-label="Search help">
+      <section aria-labelledby="adv-tips-h">
+        <h2 id="adv-tips-h">Tips for better results</h2>
+        <ul>
+          <li><strong>Rows:</strong> add rows to expand your search, or delete rows to simplify it.</li>
+          <li><strong>Search fields:</strong> search a specific field (Title, Creator, Subject, Description) instead of everywhere.</li>
+          <li><strong>Match type:</strong> each row can require its terms (<em>Contains all</em>), allow either (<em>Contains any</em>), or exclude them (<em>Does not contain</em>).</li>
+          <li><strong>Filters:</strong> narrow by object type, collection, creator, licence, access and production date — each filter has its own <em>Includes all (AND)</em> / <em>Includes any (OR)</em> choice.</li>
+          <li>Use quotation marks to search for an exact phrase, e.g. <code>"eucalyptus oil"</code>.</li>
+        </ul>
+      </section>
+      <section aria-labelledby="adv-ex-h">
+        <h2 id="adv-ex-h">Search examples</h2>
+        <ul>
+          <li>All Fields → Contains all → <em>eucalyptus oil bottle</em> will display records with all three terms anywhere in the record.</li>
+          <li>Subject field → Contains all → <em>botanical illustration</em> will display records with <em>botanical</em> AND <em>illustration</em> in the subject field.</li>
+          <li>Subject field → Contains any → <em>botanical illustration</em> will display records with <em>botanical</em> OR <em>illustration</em> in the subject field.</li>
+        </ul>
+      </section>
+      <section aria-labelledby="adv-fx-h">
+        <h2 id="adv-fx-h">Filter examples</h2>
+        <ul>
+          <li>Object Type → Includes all → <em>Photograph, Manuscript</em> will display records tagged with both Photograph AND Manuscript.</li>
+          <li>Object Type → Includes any → <em>Photograph, Manuscript</em> will display records tagged with either Photograph OR Manuscript.</li>
+        </ul>
+      </section>
+    </aside>
+  </div>
 </main>
-
 
 
 
@@ -601,42 +587,9 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script>
-const COLLS = [
- ['Medical History Museum', '../images/tile-mhm.jpg'], ['University Art Collection', '../images/tile-uac.jpg'], ['Grainger Museum Collection', '../images/tile-gmc.jpg'],
- ['Henry Forman Atkinson Dental Museum', '../images/tile-dental.png'], ['Harry Brookes Allen Museum of Anatomy and Pathology', '../images/tile-hba.jpg']
-];
-// Browse-by-type tiles: [label, search query string, image]. The search page matches `type=` exactly against each
-// item's raw objectType (free text, mixed case), so only tiles with a clean exact value use it; the rest use keyword or collection scope.
-const THEMES = [
-  ['Cultural objects', 'type=' + encodeURIComponent('Cultural Object'), '../images/tile-cultural-object.png'],
-  ['Photographs', 'q=photograph', '../images/tile-photograph.jpg'],
-  ['Art', 'collection=' + encodeURIComponent('University Art Collection'), '../images/tile-art.png'],
-  ['Sound recordings', 'q=recording', '../images/tile-sound.jpg'],
-  ['Film and video', 'q=video', null],
-  ['Technology and instruments', 'q=instrument', '../images/electrometer.jpg']
-];
-const KEY = { 'Medical History Museum': 'MHM', 'University Art Collection': 'UAC', 'Grainger Museum Collection': 'GMC', 'Henry Forman Atkinson Dental Museum': 'DENT', 'Harry Brookes Allen Museum of Anatomy and Pathology': 'HBA' };
-const SLUG = { MHM: 'medical-history-museum', UAC: 'university-art-collection', GMC: 'grainger-museum', DENT: 'henry-forman-atkinson-dental-museum', HBA: 'harry-brookes-allen-museum' };
-const S = '/search/search-results';
-const BLURBS = {
-  MHM: "Explore the social history of medicine and its role in society, including a nineteenth-century pharmacy complete with pharmaceutical jars and equipment.",
-  UAC: "Paintings, prints, sculpture and decorative arts spanning classical antiquity to contemporary Australian practice.",
-  GMC: "The personal archive, instruments and scores of composer Percy Grainger, held in trust for scholarship worldwide.",
-  DENT: "The oldest and most significant dental collection in Australia, tracing the history of dental health and education from 1884.",
-  HBA: "One of Australia's largest collections of human tissue specimens, animal anatomy specimens and historical anatomical models."
-};
 class Component extends DCLogic {
   renderVals() {
-    const CCS = window.CCS, all = CCS ? Object.values(CCS.records) : [];
-    const countOf = name => all.filter(r => r.collection === name).length;
-    const total = all.length;
-    const media = all.filter(r => r.hasDA).length;
-    return {
-      collections: COLLS.map(([name, img]) => { const n = countOf(name); return { name, imgSrc: img || '', hasImg: !!img, count: n ? n.toLocaleString('en-AU') + ' records' : 'Coming soon', blurb: BLURBS[KEY[name]] || '', href: SLUG[KEY[name]] ? '/collections/' + SLUG[KEY[name]] : '/collections' }; }),
-      themes: THEMES.map(([name, qs, img]) => ({ name, imgSrc: img || '', hasImg: !!img, cls: img ? '' : 'cl-tile--plain', href: S + '?' + qs })),
-      facts: [{ stat: total.toLocaleString('en-AU'), sentence: 'Catalogued records' }, { stat: String(COLLS.length), sentence: 'Collections' }, ...(media ? [{ stat: media.toLocaleString('en-AU'), sentence: 'Records with images, audio or video' }] : [])],
-      collectionsCount: COLLS.length + ' collections'
-    };
+    return {};
   }
 }
 </script>

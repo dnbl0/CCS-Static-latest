@@ -10,7 +10,7 @@
 
 The previous version of this document (dated 2026-09-29, "100% Complete") was inaccurate in two ways:
 
-1. **It mapped requirements to the wrong files.** It cited `Collection Search v3.dc.html`, `Collection Record.dc.html`, `Browse Collections.dc.html`, etc. — the **legacy, pre-reorganization root-level files**. These are orphaned: `grep -rn "\.dc\.html" public/` returns zero navigational links from the live site. The real, linked site is entirely under `public/` (`public/search/advanced.html`, `public/collections/record.html`, `public/collections/index.html`, etc.). `public/.htaccess` 301-redirects the legacy filenames to the real URLs, but nothing in the live site links to the legacy files directly.
+1. **It mapped requirements to the wrong files.** It cited `Collection Search v3.dc.html`, `Collection Record.dc.html`, `Browse Collections.dc.html`, etc. — the **legacy, pre-reorganization root-level files**. These are orphaned: `grep -rn "\.dc\.html" public/` returns zero navigational links from the live site. The real, linked site is entirely under `public/` (`public/search/search-results.html`, `public/collections/record.html`, `public/collections/index.html`, etc.). `public/.htaccess` 301-redirects the legacy filenames to the real URLs, but nothing in the live site links to the legacy files directly.
 2. **It asserted things were "Done"/"in scope" or "out of scope" based on assumption, not the actual Jira board or actual code.** For example, it claimed CCS-158 (spelling suggestions) was "out of scope — post-2026," but Jira shows it as **Done**, backed by three real bug tickets (CCS-288, 292, 293) describing tested production behavior. The code had none of it.
 
 This revision was produced by fetching the live Jira issues directly (see audit method above) and reading the actual `public/` code, and a set of genuine discrepancies found during that process have since been fixed (see "Fixes Applied" below).
@@ -19,10 +19,10 @@ This revision was produced by fetching the live Jira issues directly (see audit 
 
 ## Site Structure (ground truth, 2026-10-01)
 
-- **Live site**: everything under `public/` - `index.html`, `search.html` (redirect stub to `/search/advanced`), `search/advanced.html` (real search), `collections/index.html`, `collections/<slug>/index.html` (five landing pages: `grainger-museum`, `harry-brookes-allen-museum`, `henry-forman-atkinson-dental-museum`, `medical-history-museum`, `university-art-collection`), `collections/record.html`, `contact.html`, `help/index.html`, `help/indigenous-data.html`.
+- **Live site**: everything under `public/` - `index.html`, `search.html` (redirect stub to `/search/search-results`), `search/search-results.html` (real search), `collections/index.html`, `collections/<slug>/index.html` (five landing pages: `grainger-museum`, `harry-brookes-allen-museum`, `henry-forman-atkinson-dental-museum`, `medical-history-museum`, `university-art-collection`), `collections/record.html`, `contact.html`, `help/index.html`, `help/indigenous-data.html`.
 - **Legacy files**: the old root-level `*.dc.html` files and root `index.html` / `collection-data.js` no longer exist. The legacy `.dc.html` filenames survive only as 301-redirect sources in `vercel.json` and `public/.htaccess`.
 - **`config/redirects.json`**: documentation-only (nothing reads it at runtime). `vercel.json` and `public/.htaccess` are authoritative; the JSON file does not list the `/search` redirects.
-- **Shared data source**: `public/collection-data.js` defines `window.CCS` (`records`, `items`, `ids`, `related()`); `search/advanced.html` and `collections/record.html` both read it. 735 records are listed. See README.md.
+- **Shared data source**: `public/collection-data.js` defines `window.CCS` (`records`, `items`, `ids`, `related()`); `search/search-results.html` and `collections/record.html` both read it. 735 records are listed. See README.md.
 - **Live stylesheets**: `public/components/fig-tokens.css`, `fig-assets.css`, `public/styles/header.css`, `footer.css`, `collection.css`, and the locally built `public/styles/vendor/bootstrap-uom.min.css`. The dead duplicates `variables.css` / `components.css` have been deleted.
 
 ---
@@ -32,7 +32,7 @@ This revision was produced by fetching the live Jira issues directly (see audit 
 | # | Finding | Fix |
 |---|---|---|
 | 1 | `public/search.html` was a full duplicate of the homepage with a bolted-on JS redirect — flashed wrong content, broke with JS disabled | Reduced to a minimal, honest redirect (meta-refresh + JS fallback + visible link); added a server-side 301 in `.htaccess` |
-| 2 | CCS-158 (Spelling Suggestions, Done in Jira) had zero implementation | Implemented per-word Levenshtein-based "did you mean" in `search/advanced.html`, fixing the exact bugs described in CCS-288 (last-word correction) and CCS-292 (per-word, vocabulary-validated correction) |
+| 2 | CCS-158 (Spelling Suggestions, Done in Jira) had zero implementation | Implemented per-word Levenshtein-based "did you mean" in `search/search-results.html`, fixing the exact bugs described in CCS-288 (last-word correction) and CCS-292 (per-word, vocabulary-validated correction) |
 | 3 | CCS-34 (Boolean/exact-phrase search, Done in Jira) only had implicit AND + quoted-phrase; no explicit operators | Added real `AND`/`OR`/`NOT` parsing (left-to-right, no parentheses), with prior behavior preserved as fallback for non-boolean queries |
 | 4 | 3 records (`id` 152, 155, 171) had corrupted `year`/`dateDisplay` values (e.g. `year: 2663`) — not recoverable from source CSVs | Set to `year: null` (dateDisplay removed), matching the file's existing "unknown date" convention — no fabricated dates |
 | 5 | `config/redirects.json` mapped legacy files to a nonexistent `/pages/*.html` scheme, contradicting `.htaccess` | Rewritten to match `.htaccess`'s real targets |
@@ -48,14 +48,14 @@ This revision was produced by fetching the live Jira issues directly (see audit 
 
 | Story | Summary | Jira Status | Implementation |
 |---|---|---|---|
-| CCS-33 | Basic search | Done | `public/search/advanced.html` — real search UI; header/hero search on `public/index.html` submits into it. `public/search.html` is a redirect shim, not a duplicate page (fixed) |
-| CCS-34 | Boolean / exact-phrase search | Done | `search/advanced.html` — quoted exact-phrase + implicit AND (pre-existing) **plus** explicit `AND`/`OR`/`NOT` operators (added this cycle) |
-| CCS-37 | Search within a collection | Done | Collection-scope filter in `search/advanced.html` facets |
-| CCS-38 | Search filters | New | Type/date/format facet filters present in `search/advanced.html`. Indigenous-material-specific filter labels (per the Jira description's red-highlighted note) are **not** implemented — see Gaps below |
-| CCS-41 | Digital-assets-only filter | New | `f.digital` toggle in `search/advanced.html` (default off; when on, filters out records with no `img`) |
+| CCS-33 | Basic search | Done | `public/search/search-results.html` — real search UI; header/hero search on `public/index.html` submits into it. `public/search.html` is a redirect shim, not a duplicate page (fixed) |
+| CCS-34 | Boolean / exact-phrase search | Done | `search/search-results.html` — quoted exact-phrase + implicit AND (pre-existing) **plus** explicit `AND`/`OR`/`NOT` operators (added this cycle) |
+| CCS-37 | Search within a collection | Done | Collection-scope filter in `search/search-results.html` facets |
+| CCS-38 | Search filters | New | Type/date/format facet filters present in `search/search-results.html`. Indigenous-material-specific filter labels (per the Jira description's red-highlighted note) are **not** implemented — see Gaps below |
+| CCS-41 | Digital-assets-only filter | New | `f.digital` toggle in `search/search-results.html` (default off; when on, filters out records with no `img`) |
 | CCS-116 | Semantic search (app level) | Done | No frontend trace found; appears to be backend-scoped. Not independently verifiable from this repo — flag to backend team rather than assume |
 | CCS-123 | Fuzzy search | In Testing | No fuzzy-match logic beyond the spelling-suggestion feature added this cycle (which covers the "did you mean" UX, not general fuzzy ranking of results) |
-| CCS-124 | No-results messaging | New | Real implementation in `search/advanced.html` ("No records match your search" + "Clear all filters") |
+| CCS-124 | No-results messaging | New | Real implementation in `search/search-results.html` ("No records match your search" + "Clear all filters") |
 | CCS-158 | Offer spelling suggestions | Done | **Implemented this cycle** (see Fixes Applied #2) — was previously entirely absent despite Done status |
 | CCS-20 | Filter and refine public data | New | Covered by CCS-38's filters; Indigenous "subject area" sourcing from CMS not verifiable from this static repo (data-layer requirement) |
 | CCS-21 | Sensitivity notifications | New | Not independently verified this cycle — recommend a follow-up check against `advisories` field usage in `collection-data.js` and record page display |
