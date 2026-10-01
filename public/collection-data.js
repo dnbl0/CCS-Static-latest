@@ -755,11 +755,17 @@
   ];
 
   const LIC = {
-    'Public Domain': { label: 'Public Domain', icon: 'PD', icons: ['/images/cc/pd.svg'], download: true, terms: 'Copyright in this material has expired. The work is in the public domain and can be used for any purpose. Please acknowledge the creator and the University of Melbourne.' },
-    'CC BY': { label: 'CC BY', icon: 'cc', icons: ['/images/cc/cc.svg', '/images/cc/by.svg'], download: true, terms: 'Licensed under Creative Commons Attribution (CC BY). You may reuse this image with attribution to the creator and the University of Melbourne.' },
-    'CC BY-SA': { label: 'CC BY-SA', icon: 'cc', icons: ['/images/cc/cc.svg', '/images/cc/by.svg', '/images/cc/sa.svg'], download: true, terms: 'Licensed under Creative Commons Attribution-ShareAlike (CC BY-SA). Reuse with attribution; adaptations must be shared under the same licence.' },
-    'Rights Reserved': { label: 'In copyright', icon: 'cc', icons: [], download: false, terms: 'This material is protected by copyright. Contact the Collection to request permission before reproducing it in publications, online or for commercial use.' }
+    'Public Domain': { label: 'Public Domain', icon: 'cc', icons: ['/images/cc/pd.svg'], url: 'https://creativecommons.org/publicdomain/mark/1.0/', group: 'open', download: true, terms: 'Copyright in this material has expired. The work is in the public domain and can be used for any purpose. Please acknowledge the creator and the University of Melbourne.' },
+    'CC0': { label: 'CC0', icon: 'cc', icons: ['/images/cc/zero.svg'], url: 'https://creativecommons.org/publicdomain/zero/1.0/', group: 'open', download: true, terms: 'Released under CC0: the creator has waived their rights and the work can be used for any purpose.' },
+    'CC BY': { label: 'CC BY', icon: 'cc', icons: ['/images/cc/cc.svg', '/images/cc/by.svg'], url: 'https://creativecommons.org/licenses/by/4.0/', group: 'open', download: true, terms: 'Licensed under Creative Commons Attribution (CC BY). You may reuse this image with attribution to the creator and the University of Melbourne.' },
+    'CC BY-SA': { label: 'CC BY-SA', icon: 'cc', icons: ['/images/cc/cc.svg', '/images/cc/by.svg', '/images/cc/sa.svg'], url: 'https://creativecommons.org/licenses/by-sa/4.0/', group: 'open', download: true, terms: 'Licensed under Creative Commons Attribution-ShareAlike (CC BY-SA). Reuse with attribution; adaptations must be shared under the same licence.' },
+    'CC BY-NC': { label: 'CC BY-NC', icon: 'cc', icons: ['/images/cc/cc.svg', '/images/cc/by.svg', '/images/cc/nc.svg'], url: 'https://creativecommons.org/licenses/by-nc/4.0/', group: 'restricted', download: true, terms: 'Licensed under Creative Commons Attribution-NonCommercial (CC BY-NC). Reuse with attribution for non-commercial purposes only.' },
+    'CC BY-ND': { label: 'CC BY-ND', icon: 'cc', icons: ['/images/cc/cc.svg', '/images/cc/by.svg', '/images/cc/nd.svg'], url: 'https://creativecommons.org/licenses/by-nd/4.0/', group: 'restricted', download: true, terms: 'Licensed under Creative Commons Attribution-NoDerivatives (CC BY-ND). Reuse with attribution; no adaptations.' },
+    'CC BY-NC-SA': { label: 'CC BY-NC-SA', icon: 'cc', icons: ['/images/cc/cc.svg', '/images/cc/by.svg', '/images/cc/nc.svg', '/images/cc/sa.svg'], url: 'https://creativecommons.org/licenses/by-nc-sa/4.0/', group: 'restricted', download: true, terms: 'Licensed under Creative Commons Attribution-NonCommercial-ShareAlike (CC BY-NC-SA).' },
+    'CC BY-NC-ND': { label: 'CC BY-NC-ND', icon: 'cc', icons: ['/images/cc/cc.svg', '/images/cc/by.svg', '/images/cc/nc.svg', '/images/cc/nd.svg'], url: 'https://creativecommons.org/licenses/by-nc-nd/4.0/', group: 'restricted', download: true, terms: 'Licensed under Creative Commons Attribution-NonCommercial-NoDerivatives (CC BY-NC-ND).' },
+    'Rights Reserved': { label: 'In copyright', icon: 'cc', icons: ['/images/cc/in-copyright.svg'], url: '/help/index.html?topic=copyright', group: 'permission', download: false, terms: 'This material is protected by copyright. Contact the Collection to request permission before reproducing it in publications, online or for commercial use.' }
   };
+
   const ADVISORY = {
     deceased: { type: 'Deceased persons', title: 'Advisory: deceased persons', text: 'Aboriginal and Torres Strait Islander people should be aware that the University of Melbourne website and collections contain the names, images and voices of deceased people.' },
     language: { type: 'Language', title: 'Advisory: language', text: 'Some collection items include terms and views that are not appropriate today. They reflect the period in which they were created and are not the views of the University of Melbourne.' }
@@ -931,18 +937,17 @@
       { label: 'Format', value: it.mediaFormat || (slides[0] && slides[0].type) || 'image/jpeg' },
       ...(it.imageProducer || it.producer ? [{ label: 'Producer', value: it.imageProducer || it.producer }] : []),
       ...(it.imageDate ? [{ label: 'Production date', value: it.imageDate }] : []),
-      { label: 'Licence type', value: lic.label },
-      { label: 'Terms of use', value: it.terms || lic.terms },
+      // Licence and terms of use are shown once on the record page (licence badge + Rights and use panel), not repeated here.
       { label: 'Advisory', value: advisories.length ? advisories.map(a => a.type).join(', ') : 'No advisory' },
       ...(filmCls ? [{ label: 'Advisory classification', value: filmCls.name }] : [])
     ] : [];
 
     return {
       id: it.id, title: it.title, altTitle: it.altTitle || null, type: objType, byline, images, slides, hasDA, fields: f, rights, media,
-      licence: hasDA ? { ...lic, key: it.licence } : null, classification: filmCls, advisories, indigenous: !!it.indigenous,
+      licence: hasDA ? { ...lic, key: it.licence } : null, licenceKey: LIC[it.licence] ? it.licence : 'Rights Reserved', classification: filmCls, advisories, indigenous: !!it.indigenous,
       subjects: it.subjects || (it.subject ? [it.subject] : []), citation, citations, unit: UNIT[it.collection] || 'Museums and Collections',
       assetId: `CA-${String(it.id).padStart(6, '0')}`, collection: coll, named: it.named, subject: it.subject,
-      card: { id: it.id, title: it.title, img: images[0] || null, collection: coll, type: objType, lic: lic.label, licIcon: lic.icon, licIcons: lic.icons || [], hasLicIcons: !!(lic.icons && lic.icons.length), indigenous: !!it.indigenous }
+      card: { id: it.id, title: it.title, img: images[0] || null, collection: coll, type: objType, lic: lic.label, licenceKey: LIC[it.licence] ? it.licence : 'Rights Reserved', licIcon: lic.icon, licIcons: lic.icons || [], hasLicIcons: !!(lic.icons && lic.icons.length), indigenous: !!it.indigenous }
     };
   }
 
@@ -988,5 +993,5 @@
     return Object.values(records).filter(o => o.id !== id && score(o) >= 1.5).sort((a, b) => score(b) - score(a))
       .filter(o => !seen.has(o.title) && seen.add(o.title)).slice(0, n).map(o => o.card);
   }
-  window.CCS = { records, related, items, ids: ACTIVE.map(i => i.id), canonType, FILM_RATING_LIST, FORMAT_LIST: ['Image', 'Audio', 'Video', 'PDF'] };
+  window.CCS = { records, related, items, licences: LIC, ids: ACTIVE.map(i => i.id), canonType, FILM_RATING_LIST, FORMAT_LIST: ['Image', 'Audio', 'Video', 'PDF'] };
 })();

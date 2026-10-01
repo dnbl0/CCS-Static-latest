@@ -76,6 +76,7 @@
 <link rel="stylesheet" href="../../components/fig-tokens.css">
 <link rel="stylesheet" href="../../components/fig-assets.css">
 <script src="../../collection-data.js"></script>
+<script src="../../licence-badge.js"></script>
 <style>
 body{margin:0;background:var(--white-100);color:var(--col-text-primary);font-family:'Source Sans 3',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-decoration:underline}
@@ -296,7 +297,7 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
               <a href="{{ r.href }}" style="font-family:'Fraunces',serif;font-weight:600;font-size:17px;line-height:1.3;color:var(--col-text-primary);text-wrap:pretty">{{ r.title }}</a>
               <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:2px;padding-top:10px;border-top:1px solid var(--col-border-neutral-soft)">
                 <span style="font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--col-bg-primary)">{{ r.type }}</span>
-                <sc-if value="{{ r.lic }}"><span style="display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;letter-spacing:.05em;color:var(--col-text-muted)"><sc-if value="{{ r.hasLicIcons }}" hint-placeholder-val="{{ false }}"><sc-for list="{{ r.licIcons }}" as="ic" hint-placeholder-count="1"><img src="{{ ic }}" alt="" style="width:14px;height:14px"></sc-for></sc-if>{{ r.lic }}</span></sc-if>
+                <ccs-licence licence="{{ r.licenceKey }}"></ccs-licence>
               </div>
             </div>
           </article>
@@ -596,7 +597,7 @@ class Component extends DCLogic {
     const items = all.slice(0, 12).map(r => {
       const c = r.card || {};
       const img = c.img || '';
-      return { id: c.id, title: c.title || '', type: c.type || '', lic: c.lic || '', licIcons: c.licIcons || [], hasLicIcons: !!c.hasLicIcons, img, hasImg: img !== '', href: '/collections/record.html?id=' + r.id };
+      return { id: c.id, title: c.title || '', type: c.type || '', licenceKey: c.licenceKey || 'Rights Reserved', img, hasImg: img !== '', href: '/collections/record.html?id=' + r.id };
     });
     const visit = VISIT[key] || null;
     return {
