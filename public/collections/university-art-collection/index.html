@@ -239,18 +239,18 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
 })();
 </script>
 
-<section aria-label="Page navigation" style="background:#00354c;height:40px;display:flex;align-items:center">
-  <nav class="page-breadcrumbs" aria-label="Breadcrumb"><ol class="page-local-history" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="root" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="/" itemprop="item" title="Home" aria-label="Home"><img src="../../images/home.svg" alt="" width="16" height="16" style="vertical-align:middle"><span itemprop="name" class="sr-only">Home</span></a><meta content="1" itemprop="position"></li><li class="" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="/collections/index.html" itemprop="item" title="Browse collections"><span itemprop="name">Browse collections</span></a><meta content="2" itemprop="position"></li><li itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page"><span itemprop="name">{{ coll.name }}</span><meta content="3" itemprop="position"></li></ol><ol class="bc-mobile" style="display:none;align-items:center;gap:6px;list-style:none;margin:0;padding:0 32px;font-size:18px;color:#fff"><li style="display:flex;align-items:center"><a href="/collections/index.html" style="display:inline-flex;align-items:center;gap:6px;color:#fff;text-decoration:none;min-height:44px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span>Browse collections</span></a></li></ol></nav>
-</section>
+  <nav class="page-breadcrumbs" aria-label="Breadcrumb"><ol class="page-local-history" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="root" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="/" itemprop="item" title="Home" aria-label="Home"><img src="../../images/home.svg" alt="" width="16" height="16" style="vertical-align:middle"><span itemprop="name" class="sr-only">Home</span></a><meta content="1" itemprop="position"></li><li class="" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="/collections/index.html" itemprop="item" title="Browse collections"><span itemprop="name">Browse collections</span></a><meta content="2" itemprop="position"></li><li itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page"><span itemprop="name">{{ coll.name }}</span><meta content="3" itemprop="position"></li></ol><ol class="bc-mobile" style="display:none;align-items:center;gap:6px;list-style:none;margin:0;font-size:18px;color:#fff"><li style="display:flex;align-items:center"><a href="/collections/index.html" style="display:inline-flex;align-items:center;gap:6px;color:#fff;text-decoration:none;min-height:44px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span>Browse collections</span></a></li></ol></nav>
 
-<header style="background:var(--col-bg-primary);color:#fff">
-  <div class="hero-inner" style="max-width:1440px;margin:0 auto;padding:12px 32px 0">
-    <div style="display:flex;flex-direction:column;gap:16px;padding-bottom:36px;max-width:760px">
-      <div style="display:flex;flex-direction:column;gap:10px;max-width:640px">
-        <h1 style="margin:0;font-family:'Fraunces',serif;font-weight:500;font-size:clamp(30px,4vw,40px);line-height:1.1">{{ coll.name }}</h1>
-        <p style="margin:0;font-size:17px;line-height:1.55;color:rgba(255,255,255,.85);text-wrap:pretty">{{ coll.blurb }}</p>
-      </div>
-      <div class="facts-card facts-card--inverse" style="max-width:420px">
+<section class="page-banner" aria-label="Page banner">
+  <div class="page-banner__inner">
+    <h1>{{ coll.name }}</h1>
+  </div>
+</section>
+<section style="background:#fff;border-bottom:1px solid #e3e0d9">
+  <div class="hero-inner" style="max-width:1440px;margin:0 auto;padding:32px 32px 36px">
+    <div style="display:flex;flex-direction:column;gap:16px;max-width:760px;margin:0 auto;align-items:center;text-align:center">
+      <p style="margin:0;font-size:17px;line-height:1.55;color:#3b4050;text-wrap:pretty">{{ coll.blurb }}</p>
+      <div class="facts-card" style="max-width:420px;width:100%">
         <div class="facts-card__item">
           <strong class="facts-card__stat">{{ stats.count }}</strong>
           <span class="facts-card__sentence">Records</span>
@@ -260,21 +260,21 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
           <span class="facts-card__sentence">Object types</span>
         </div>
       </div>
-      <div class="hero-cta" style="display:flex;gap:12px;flex-wrap:wrap;padding-top:8px">
-        <a href="{{ coll.searchHref }}" style="height:44px;display:flex;align-items:center;gap:8px;border:1px solid #fff;background:#fff;color:var(--col-bg-primary);padding:0 18px;font-size:15px;font-weight:600;justify-content:center" style-hover="background:var(--col-bg-selected)">Search this collection</a>
-        <a href="/collections/index.html" style="height:44px;display:flex;align-items:center;gap:8px;border:1px solid #fff;background:none;color:#fff;padding:0 18px;font-size:15px;font-weight:600;justify-content:center" style-hover="background:rgba(255,255,255,.1)">Browse all collections</a>
+      <div class="hero-cta" style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;padding-top:8px">
+        <a href="{{ coll.searchHref }}" style="height:44px;display:flex;align-items:center;gap:8px;border:1px solid var(--col-bg-primary);background:var(--col-bg-primary);color:#fff;padding:0 18px;font-size:15px;font-weight:600;justify-content:center" style-hover="opacity:.9">Search this collection</a>
+        <a href="/collections/index.html" style="height:44px;display:flex;align-items:center;gap:8px;border:1px solid var(--col-bg-primary);background:none;color:var(--col-bg-primary);padding:0 18px;font-size:15px;font-weight:600;justify-content:center" style-hover="background:var(--col-bg-selected)">Browse all collections</a>
       </div>
     </div>
   </div>
   <sc-if value="{{ topTypes }}" hint-placeholder-val="{{ false }}">
-    <div style="max-width:1440px;margin:0 auto;padding:20px 32px 24px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;border-top:1px solid rgba(255,255,255,.15)">
-      <span style="font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:rgba(255,255,255,.65)">Object types</span>
+    <div style="max-width:1440px;margin:0 auto;padding:20px 32px 24px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:center;border-top:1px solid #e3e0d9">
+      <span style="font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#5b6070">Object types</span>
       <sc-for list="{{ topTypes }}" as="t" hint-placeholder-count="5">
         <span style="display:flex;align-items:center;gap:6px;background:#eaefe9;color:var(--col-bg-primary);padding:6px 12px;font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:.03em">{{ t.type }} <span style="opacity:.65">{{ t.n }}</span></span>
       </sc-for>
     </div>
   </sc-if>
-</header>
+</section>
 
 <main id="main-content" style="flex:1;max-width:1440px;width:100%;margin:0 auto;padding:40px 32px 64px;display:flex;flex-direction:column;gap:20px">
   <sc-if value="{{ visit.warning }}" hint-placeholder-val="{{ false }}">

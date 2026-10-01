@@ -748,6 +748,15 @@
     { id: 50005, title: 'Physics Electrometer', img: 'electrometer', collection: 'Physics Collection', objectType: 'Scientific Instrument', accession: 'PH.00120', creator: 'Maker unknown', nationality: 'Australian', date: 'c. 1900', dateStart: 1900, dateEnd: 1900, licence: 'Public Domain', access: 'By Appointment', subject: 'Physics' },
     { id: 50006, title: 'Crookes tube CH12', img: 'crookes', collection: 'Physics Collection', objectType: 'Scientific Instrument', accession: 'PH.00012', creator: 'Maker unknown', nationality: 'Australian', date: 'c. 1890', dateStart: 1890, dateEnd: 1890, licence: 'Public Domain', access: 'By Appointment', subject: 'Physics' },
     { id: 50007, title: "Tametomo's Ferocity Drives Away the Smallpox Demons", img: 'tsukioka', collection: PDC, objectType: 'Woodblock print', creator: 'Yoshitoshi Tsukioka (1839–1892)', nationality: 'Japanese', date: '1890', dateStart: 1890, dateEnd: 1890, licence: 'Public Domain', access: 'Open Access', place: 'Tokyo, Japan', material: 'coloured ink on paper', subject: 'Asian art', description: 'From the series: Thirty-six Ghosts and Strange Apparitions.', creditLine: 'Prints and Drawing Collection, Special Collections and Archives, University of Melbourne.' },
+    // Records added from CCS-data-EMu.csv / Vernon sample data for assets held in /assets
+    { id: 60001, title: 'Untitled [Timber eucalypt specimen cabinet]', altTitle: 'Chest, double with ten drawers', objectType: 'chest of drawers', date: '[c. 1919–20]', dateStart: 1915, dateEnd: 1925, creator: 'Grimwade, Sir Wilfrid Russell CBE', creatorDoB: '1879', creatorDoD: '1955', nationality: 'Australian', place: 'Oceania, Australia', material: 'eucalyptus, brass handles', accession: '1973.0755.000.A.000.L', copyright: '[Public domain - Copyright expired] Public Domain / no known copyright restrictions', creditLine: 'The University of Melbourne Art Collection. The Russell and Mab Grimwade Bequests, 1973\'', named: 'Russell and Mab Grimwade Bequest', collection: UAC, access: 'By Appointment', classification: 'Architecture, buildings and furniture', licence: 'Public Domain' },
+    { id: 60002, title: 'Goodenia hederacea - Goodeniaceae', objectType: 'painting, watercolour', date: '[c. 1948]', dateStart: 1948, dateEnd: 1950, creator: 'Stones, Margaret', creatorRole: 'artist', creatorDoB: '1920', creatorDoD: '2018', nationality: 'Australian', place: 'Oceania, Australia', material: 'watercolour over traces of pencil on medium weight wove paper', accession: '2001.0008.000.000', copyright: '[Reproduction Licence - Current] Stones, Margaret', creditLine: 'The University of Melbourne Art Collection. Gift of Kaye Turner, 2001', named: 'Museum of Art', collection: UAC, access: 'By Appointment', classification: 'Art and design', licence: 'Rights Reserved' },
+    { id: 60003, title: "Grandfather's father's country", objectType: 'painting', date: '2002', dateStart: 2002, dateEnd: 2002, creator: 'Peters, Rusty', creatorRole: 'artist', creatorDoB: '1935', creatorDoD: '2020', nationality: 'Australian', culturalAffiliation: 'Gija', place: 'Oceania, Australia', material: 'ochres on canvas', accession: '2006.0111.000.000', copyright: '[Copyright - Current] Peters, Rusty', creditLine: 'The University of Melbourne Art Collection. Purchased by the Ian Potter Museum of Art, 2006.', named: 'University of Melbourne Art Collection', collection: UAC, access: 'By Appointment', classification: 'Art and design', licence: 'Rights Reserved', indigenous: true, advisories: ['deceased'], subjects: ['By Indigenous People', 'Aboriginal and Torres Strait Islander art'] },
+    { id: 60004, title: 'Nyarrin Nyarrin – Fish Hole', objectType: 'painting', date: '2003', dateStart: 2003, dateEnd: 2003, creator: 'Mung Mung, Patrick', creatorRole: 'artist', creatorDoB: '1944', nationality: 'Australian', culturalAffiliation: 'Gija', place: 'Oceania, Australia, Western Australia, Warmun', material: 'earth pigments on canvas', accession: '2023.012.001', copyright: '[Copyright - Current] Mung Mung, Patrick', creditLine: "The University of Melbourne Art Collection. Donated through the Australian Government's Cultural Gifts Program by Ken Fehily, 2023", collection: UAC, access: 'By Appointment', classification: 'Art and design', licence: 'Rights Reserved', indigenous: true, subjects: ['By Indigenous People', 'Aboriginal and Torres Strait Islander art'] },
+    { id: 60005, title: 'Doubledecker Estey reed-box played air-blown reed-box tone-tool (Estey reed tone-tool)', objectType: 'drawing, "Free Music"', date: '[c. 1951]', dateStart: 1950, dateEnd: 1952, creator: 'Grainger, Percy Aldridge', creatorRole: 'artist', creatorDoB: '8 July 1882', creatorDoD: '20 February 1961', nationality: 'Australian', material: 'graphite on paper', accession: '4.0164', creditLine: 'Grainger Museum Collection. Collected by Percy Grainger', collection: GMC, access: 'By Appointment', classification: 'Art and design', licence: 'Rights Reserved', subjects: ['Free music', 'Reed-box tone tools', 'Illustrations'] },
+    { id: 60006, title: 'Monocular microscope', objectType: 'microscopes; instruments', date: 'Circa 1940', dateStart: 1940, dateEnd: 1940, creator: 'Ross and Company (estab. 1859, closed 1897), manufacturer', place: 'London, England', accession: 'HFA3310', classification: 'Laboratory Equipment and Materials', description: "Brass monocular Microsope with small wooden box of glass slides, inside larger wooden case with leather handle. The microscope belonged to the donor's mother, Eve S. Weiss (1926-2016), which she used during her Dentistry studies.", creditLine: 'Gift of Kerry Landman, 2016', collection: DENT, access: 'By Appointment', licence: 'Rights Reserved' },
+    { id: 60007, title: 'Microscope, optical', objectType: 'scientific; equipment', date: '1890s', dateStart: 1890, dateEnd: 1899, creator: 'W Watson & Sons (estab. 1837, closed 1969), manufacturer', place: 'London, England', accession: 'HFA2450', classification: 'Laboratory Equipment and Materials', description: "Typical early compound microscope in locked polished wooden case with eye and nose pieces, with two keys. The fitted case has a leather carry handle, much worn on top and a rack for eye pieces. Compound slide, condenser and double sided mirror. Polished and varnished brass.  Note: this tube with screw cap contains 1/8 objective and is loose in the box.", creditLine: 'Gift of Dr H Down', collection: DENT, access: 'By Appointment', licence: 'Rights Reserved' },
+    { id: 60008, title: 'The McCoy Society expedition to Lady Julia Percy Island, Victoria and Sir Joseph Banks Islands, South Australia', objectType: 'VHS Video; audiovisual; educational aids', date: '1936-1937', dateStart: 1936, dateEnd: 1937, accession: 'MHM2014.137', named: 'Frederic Wood Jones Collection', classification: 'Photography, Sound and Film', description: "VHS cassette titled 'Lady Julia Percy Island, Banks Islands'.  Features two films of  the McCoy Society for Field Investigation and Research's expeditions led by Professor Frederic Wood Jones. The first expedition to Lady Julia Percy Island, in the Bass Strait, Victoria 11th January- 20th February 1936 , and the second expedition to the Sir Joseph Banks Group of islands Reevesby, English and, Kirkby Island, December 1936- 1937.  In October 1935, the McCoy Society was formed to enable Science graduates and undergraduates of the university of Melbourne to investigate the natural conditions under which the fauna and flora of Australia exist. Frederic Wood Jones helped to found the McCoy Society for Field Investigation and Research, he became its first president and took part in its ecological surveys of various offshore islands.  The first survey, that of Julia Percy Island, in January and February 1936, proved so successful that this more ambitious enterprise, made possible by the many generous friends of the Society, was undertaken.  Late in November 1936 at Port Lincoln, South Australia the expedition set out into Spencer’s Gulf and land on Reevesby Isalnd, unload provisions and equipment and set up Canvas Headquarters Camp McCoy. Reevesby Island is a small, uninhabited island in the Sir Joseph Banks group of islands in southern Spencer Gulf, South Australia.  On the Lady Julia Percy Island expedition Fairy penguins, seal colonies, Muttonbirds, sharks, sting ray and Octopus are documented and captured.  On the Sir Joseph Banks group of islands Black Tiger Snakes, are captured alive for shipment to the Commonwealth Serum Laboratories Melbourne. Sea life is examined on the sea-bed through a glass-bottomed float, inshore sea life is gathered with a 70 fathom seine net and studied in glass aquaria. Other spieces documented include: Caspian Tern, (Sterna caspia) Crested Terns (Sterna bergii), Pied Cormorants, ants, wasps, White-cheeked Storm Petrel (Pelagodroma marina), seals, giant lugworms.", creditLine: 'Gift of Dr James Guest, 2014', collection: MHM, access: 'By Appointment', licence: 'Rights Reserved' },
   ];
 
   const LIC = {
@@ -807,14 +816,61 @@
     };
   }
 
+  // Digital assets held in /assets/images/collections, mapped to records by accession number
+  // (filename stem = accession with "." -> "_"; numbered suffixes are extra views). Records not
+  // listed here fall back to the optimised web copy named by `img` in /images.
+  const ASSET_DIR = '/assets/images/collections/';
+  const ASSET_IMAGES = {
+    12: ['MHM2017.28.jpg'],
+    149: ['MHM2017.19.jpg'],
+    10113: ['1973_0004_000_000_1.jpg'],
+    10114: ['1973_0071_000_000.jpg'],
+    10115: ['1973_0084_000_000.jpg'],
+    10116: ['1973_0870_000_A_000_F-MF.jpg'],
+    20001: ['MHM00048.jpg', 'MHM00048_2.jpg', 'MHM00048_3.jpg', 'MHM00048_4.jpg', 'MHM00048_5.jpg'],
+    20002: ['MHM2014.57.jpg'],
+    20003: ['MHM03589.jpg', 'MHM03589_1.jpg', 'MHM03589_2.jpg', 'MHM03589_3.jpg', 'MHM03589_4.jpg', 'MHM03589_7.jpg', 'MHM03589_9.jpg'],
+    20004: ['MHM2017.19.jpg'],
+    20005: ['MHM2017.24.jpg'],
+    20006: ['MHM2017.25.jpg'],
+    20007: ['MHM2017.27.jpg'],
+    20008: ['MHM2017.28.jpg'],
+    20009: ['MHM2017.31-MF.jpg'],
+    20010: ['MHM06961-PF.jpg'],
+    20011: ['MHM04297.jpg'],
+    20012: ['MHM2009.46_a.jpg'],
+    20013: ['MHM2009.47.jpg'],
+    20014: ['MHM2009.48.jpg'],
+    20015: ['MHM2009.50_a.jpg'],
+    20016: ['MHM2009.51_a.jpg'],
+    20017: ['MHM2009.49_a.jpg'],
+    60001: ['1973_0755-1~PF.jpg', '1973_0755-2~PF.jpg', '1973_0755_B~PF.jpg', '1973_0755_C~PF.jpg', '1973_0755_D~PF.jpg', '1973_0755_E~PF.jpg', '1973_0755_F~PF.jpg', '1973_0755_G~PF.jpg', '1973_0755_H~PF.jpg', '1973_0755_I~PF.jpg'],
+    60002: ['2001_0008 B web.jpg'],
+    60003: ['2006_0111 web.jpg'],
+    60004: ['Nyarrin-Nyarrin Patrick Mung Mung cropped.jpg'],
+    60005: ['GMC 04.0164.jpg', 'GMC 04.0164 verso.jpg'],
+    60006: ['HFA3310_004.jpg', 'HFA3310.2_a.jpg', 'HFA3310.2_b.jpg'],
+    60007: ['HFA2450_a.jpg', 'HFA2450_b.jpg']
+  };
+
+  // Audio/video held in /assets/data (not image-based, so listed separately from ASSET_IMAGES).
+  // Played in the item media viewer after any images.
+  const ASSET_AV = {
+    23: [{ kind: 'audio', src: '/assets/data/GraingerLowRes.mp3', type: 'audio/mpeg', label: 'Grainger audio recording' }],
+    60008: [{ kind: 'video', src: '/assets/data/MHM2014.137.2_2.mp4', type: 'video/mp4', label: 'McCoy Society expedition film' }]
+  };
+
   // Sequence of appearance per CCS Field labels and filters - Final PRG specification
   function build(it) {
     const rawType = it.objectType || it.type || '';
     const objType = capitalize(rawType) || (it.collection === GMC ? 'Cultural Object' : 'Object');
     const lic = LIC[it.licence] || LIC['Rights Reserved'];
-    const imgList = it.images || (it.img ? [it.img] : []);
+    const imgList = (ASSET_IMAGES[it.id] || []).map(f => ASSET_DIR + encodeURIComponent(f));
+    if (!imgList.length) imgList.push(...(it.images || (it.img ? [it.img] : [])));
     const images = imgList.map(k => k.startsWith('/') ? k : k.includes('.') ? `/images/${k}` : `/images/${k}.jpg`);
-    const hasDA = images.length > 0;
+    const av = ASSET_AV[it.id] || [];
+    const slides = [...images.map(src => ({ kind: 'image', src, type: /\.png$/i.test(src) ? 'image/png' : 'image/jpeg' })), ...av];
+    const hasDA = slides.length > 0;
     const date = it.date || it.dateDisplay || (it.year ? String(it.year) : null) || (it.dateStart != null ? String(it.dateStart) : null);
     const coll = COLL_LABEL[it.collection] || it.collection;
     const creditLine = it.creditLine || `${it.named && !it.named.includes('/') ? it.named + ', ' : ''}${coll}, University of Melbourne.`;
@@ -867,7 +923,7 @@
     // Digital Asset Media metadata mapped according to CCS Field labels and filters Final PRG schema
     const media = hasDA ? [
       { label: 'Title', value: it.title },
-      { label: 'Format', value: it.mediaFormat || (images[0] && images[0].endsWith('.png') ? 'image/png' : 'image/jpeg') },
+      { label: 'Format', value: it.mediaFormat || (slides[0] && slides[0].type) || 'image/jpeg' },
       ...(it.imageProducer || it.producer ? [{ label: 'Producer', value: it.imageProducer || it.producer }] : []),
       ...(it.imageDate ? [{ label: 'Production date', value: it.imageDate }] : []),
       { label: 'Licence type', value: lic.label },
@@ -877,7 +933,7 @@
     ] : [];
 
     return {
-      id: it.id, title: it.title, altTitle: it.altTitle || null, type: objType, byline, images, hasDA, fields: f, rights, media,
+      id: it.id, title: it.title, altTitle: it.altTitle || null, type: objType, byline, images, slides, hasDA, fields: f, rights, media,
       licence: hasDA ? { ...lic, key: it.licence } : null, classification: filmCls, advisories, indigenous: !!it.indigenous,
       subjects: it.subjects || (it.subject ? [it.subject] : []), citation, citations, unit: UNIT[it.collection] || 'Museums and Collections',
       assetId: `CA-${String(it.id).padStart(6, '0')}`, collection: coll, named: it.named, subject: it.subject,

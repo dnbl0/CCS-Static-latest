@@ -42,220 +42,26 @@
 <body>
 <a href="#main-content" class="skip-link">Skip to main content</a>
 <script>
-// Media Viewer Keyboard Shortcuts & Fullscreen Manager
+// Keeps --header-total-height in sync so the media viewer can size itself to the viewport.
 (function() {
-  const KeyboardShortcuts = {
-    // Initialize keyboard event listeners
-    init() {
-      document.addEventListener('keydown', this.handleKeydown.bind(this));
-      document.addEventListener('fullscreenchange', this.handleFullscreenChange.bind(this));
-      this.showHint();
-    },
-
-    // Handle keyboard events
-    handleKeydown(e) {
-      const active = document.activeElement;
-      if (active && (['INPUT', 'TEXTAREA', 'SELECT'].includes(active.tagName) || active.isContentEditable)) return;
-      const viewer = document.querySelector('[role="region"][aria-label="Item media"]');
-      const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement;
-
-      switch(e.key.toLowerCase()) {
-        case 'arrowleft':
-        case 'arrowup':
-          e.preventDefault();
-          this.triggerPrevious();
-          break;
-        case 'arrowright':
-        case 'arrowdown':
-          e.preventDefault();
-          this.triggerNext();
-          break;
-        case ' ':
-          if(isFullscreen) {
-            e.preventDefault();
-            this.togglePlayPause?.();
-          }
-          break;
-        case 'f':
-          if(!isFullscreen) {
-            e.preventDefault();
-            this.toggleFullscreen(viewer);
-          }
-          break;
-        case 'i':
-          e.preventDefault();
-          this.toggleSidebar();
-          break;
-        case 'escape':
-          if(isFullscreen) {
-            e.preventDefault();
-            document.exitFullscreen?.().catch(() => {});
-          }
-          this.hideHint();
-          break;
-        case '?':
-          e.preventDefault();
-          this.toggleHint();
-          break;
-      }
-    },
-
-    // Toggle sidebar visibility
-    toggleSidebar() {
-      const sidebar = document.querySelector('#item-media-sidebar');
-      const btn = document.querySelector('#toggle-media-sidebar');
-      if(sidebar) {
-        const isOpen = sidebar.classList.toggle('open');
-        if(btn) {
-          btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-          btn.setAttribute('title', isOpen ? 'Hide media metadata (I)' : 'Show media metadata (I)');
-        }
-      }
-    },
-
-    // Trigger previous image
-    triggerPrevious() {
-      const btn = document.querySelector('[aria-label="Previous"]');
-      if(btn && !btn.disabled) btn.click();
-    },
-
-    // Trigger next image
-    triggerNext() {
-      const btn = document.querySelector('[aria-label="Next"]');
-      if(btn && !btn.disabled) btn.click();
-    },
-
-    // Toggle fullscreen mode
-    toggleFullscreen(element) {
-      const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement;
-
-      if(!isFullscreen) {
-        if(element.requestFullscreen) {
-          element.requestFullscreen().catch(() => {});
-        } else if(element.webkitRequestFullscreen) {
-          element.webkitRequestFullscreen();
-        }
-      } else {
-        if(document.exitFullscreen) {
-          document.exitFullscreen().catch(() => {});
-        } else if(document.webkitExitFullscreen) {
-          document.webkitExitFullscreen();
-        }
-      }
-    },
-
-    // Handle fullscreen changes
-    handleFullscreenChange() {
-      const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement;
-      const toolbar = document.querySelector('.fs-toolbar');
-      const hint = document.querySelector('.keyboard-hint');
-
-      if(isFullscreen) {
-        this.createFullscreenToolbar();
-        if(hint) hint.classList.add('show');
-      } else {
-        if(toolbar) toolbar.remove();
-        if(hint) hint.classList.remove('show');
-      }
-    },
-
-    // Create fullscreen toolbar
-    createFullscreenToolbar() {
-      let toolbar = document.querySelector('.fs-toolbar');
-      if(toolbar) return;
-
-      toolbar = document.createElement('div');
-      toolbar.className = 'fs-toolbar';
-      toolbar.innerHTML = `
-        <button aria-label="Previous image" title="Previous (← or ↑)">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="15 18 9 12 15 6"></polyline>
-          </svg>
-        </button>
-        <button aria-label="Next image" title="Next (→ or ↓)">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="9 18 15 12 9 6"></polyline>
-          </svg>
-        </button>
-        <button aria-label="Exit fullscreen" title="Exit (Esc)">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="4 14 10 14 10 20"></polyline>
-            <polyline points="20 10 14 10 14 4"></polyline>
-            <line x1="14" y1="10" x2="21" y2="3"></line>
-            <line x1="3" y1="21" x2="10" y2="14"></line>
-          </svg>
-        </button>
-      `;
-
-      toolbar.querySelectorAll('button')[0].addEventListener('click', () => this.triggerPrevious());
-      toolbar.querySelectorAll('button')[1].addEventListener('click', () => this.triggerNext());
-      toolbar.querySelectorAll('button')[2].addEventListener('click', () => {
-        if(document.exitFullscreen) document.exitFullscreen();
-        else if(document.webkitExitFullscreen) document.webkitExitFullscreen();
-      });
-
-      document.body.appendChild(toolbar);
-    },
-
-    // Show keyboard hints
-    showHint() {
-      let hint = document.querySelector('.keyboard-hint');
-      if(!hint) {
-        hint = document.createElement('div');
-        hint.className = 'keyboard-hint';
-        hint.innerHTML = `
-          <strong>Keyboard shortcuts:</strong>
-          <kbd>←</kbd><kbd>→</kbd> Previous/Next
-          <kbd>I</kbd> Toggle info
-          <kbd>F</kbd> Fullscreen
-          <kbd>?</kbd> Help
-        `;
-        document.body.appendChild(hint);
-      }
-    },
-
-    toggleHint() {
-      const hint = document.querySelector('.keyboard-hint');
-      if(hint) hint.classList.toggle('show');
-    },
-
-    hideHint() {
-      const hint = document.querySelector('.keyboard-hint');
-      if(hint) hint.classList.remove('show');
-    }
-  };
-
   function updateHeaderHeight() {
     const header = document.querySelector('[data-component="Header"]');
     const nav = document.querySelector('section[aria-label="Page navigation"]');
     const total = (header ? header.offsetHeight : 0) + (nav ? nav.offsetHeight : 0);
-    if (total > 0) {
-      document.documentElement.style.setProperty('--header-total-height', total + 'px');
-    }
+    if (total > 0) document.documentElement.style.setProperty('--header-total-height', total + 'px');
   }
-
-  // Initialize when DOM is ready
-  function initAll() {
-    KeyboardShortcuts.init();
+  function init() {
     updateHeaderHeight();
     window.addEventListener('resize', updateHeaderHeight);
     if (window.ResizeObserver) {
-      const ro = new ResizeObserver(() => updateHeaderHeight());
+      const ro = new ResizeObserver(updateHeaderHeight);
       const header = document.querySelector('[data-component="Header"]');
       const nav = document.querySelector('section[aria-label="Page navigation"]');
       if (header) ro.observe(header);
       if (nav) ro.observe(nav);
     }
   }
-
-  if(document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initAll);
-  } else {
-    initAll();
-  }
-
-  // Expose for external control if needed
-  window.MediaViewer = KeyboardShortcuts;
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
 </script>
 <x-dc>
@@ -299,69 +105,53 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:#0b2a6b;text-decoration:under
 *{box-sizing:border-box}
 button,input{font-family:inherit}
 
-/* Fullscreen optimizations */
-[role="region"][aria-label="Item media"]:not(:fullscreen),
-section[aria-label="Item media"]:not(:fullscreen){max-height:calc(85vh - var(--header-total-height, 212px))!important}
-[role="region"][aria-label="Item media"]:fullscreen{background:#000;display:flex;align-items:center;justify-content:center;max-height:100vh}
-[role="region"][aria-label="Item media"]:fullscreen #item-media-sidebar{display:none;width:0}
-[role="region"][aria-label="Item media"]:fullscreen > div:last-child{width:100%;height:100%;display:flex;flex-direction:column}
-[role="region"][aria-label="Item media"]:fullscreen img{max-width:100vw;max-height:100vh}
-
-/* Sidebar open state */
-#item-media-sidebar {
-  width: 0 !important;
-  max-width: 0 !important;
-  overflow: hidden !important;
-  visibility: hidden;
-  border-right: none !important;
-  transition: width .3s ease, visibility .3s ease;
-}
-#item-media-sidebar.open {
-  width: 340px !important;
-  max-width: 340px !important;
-  visibility: visible !important;
-  overflow-y: auto !important;
-  border-right: 1px solid #e7e7e9 !important;
-}
-
-/* Fullscreen toolbar - minimal and fades */
-.fs-toolbar{position:fixed;bottom:24px;right:24px;display:flex;gap:8px;background:rgba(0,0,0,.85);padding:12px 16px;border-radius:0;backdrop-filter:blur(10px);opacity:1;transition:opacity .3s ease;z-index:999}
-.fs-toolbar:hover{opacity:1}
-.fs-toolbar button{width:40px;height:40px;border:0;background:rgba(255,255,255,.1);color:#fff;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:0;transition:all .2s ease}
-.fs-toolbar button:hover{background:rgba(255,255,255,.2);color:#fff}
-
-/* Keyboard shortcut hints */
-.keyboard-hint{position:fixed;bottom:24px;left:24px;background:rgba(0,0,0,.85);color:#fff;padding:12px 16px;border-radius:0;font-size:12px;backdrop-filter:blur(10px);z-index:999;pointer-events:none;opacity:0;transition:opacity .3s ease}
-.keyboard-hint.show{opacity:1;pointer-events:auto}
-.keyboard-hint kbd{background:rgba(255,255,255,.1);padding:2px 6px;border-radius:0;font-family:monospace;margin:0 2px}
-
-/* Europeana-style Media Viewer - Responsive */
+/* Item media viewer */
+.item-media{position:relative;display:flex;width:100%;height:clamp(420px,calc(100vh - 96px),780px);background:#1a1a1a;border-bottom:1px solid #e7e7e9;overflow:hidden}
+.item-media:focus{outline:none}
+.item-media:focus-visible{outline:3px solid #46c8f0;outline-offset:-3px}
+.item-media:fullscreen{height:100vh;width:100vw}
+.im-sidebar{flex:none;width:0;visibility:hidden;overflow:hidden;background:#fff;display:flex;flex-direction:column;transition:width .25s ease,visibility 0s linear .25s}
+.im-sidebar.open{width:340px;visibility:visible;border-right:1px solid #e7e7e9;transition:width .25s ease}
+.im-sidebar__inner{width:340px;max-width:100%;height:100%;display:flex;flex-direction:column;min-height:0}
+.im-sidebar__head{display:flex;align-items:center;justify-content:space-between;padding:12px 12px 12px 20px;border-bottom:1px solid #e7e7e9}
+.im-sidebar__body{flex:1;min-height:0;overflow-y:auto;margin:0;padding:0;list-style:none}
+.im-sidebar__body li{padding:14px 20px;border-bottom:1px solid #f0f0f0;display:flex;flex-direction:column;gap:4px}
+.im-sidebar__body .k{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:#5b6070}
+.im-sidebar__body .v{font-size:14px;line-height:1.5;color:#1a1a1a;text-wrap:pretty;word-break:break-word}
+.im-main{flex:1;min-width:0;display:flex;flex-direction:column;background:#1a1a1a}
+.im-stage{position:relative;flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:16px}
+.im-img{display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain}
+.im-video{display:block;width:100%;height:100%;max-height:100%;background:#000;object-fit:contain}
+.im-audio{width:min(560px,100%);display:flex;flex-direction:column;align-items:center;gap:20px;color:#fff;text-align:center}
+.im-audio svg{opacity:.85}
+.im-audio audio{width:100%}
+.im-msg{color:#fff;font-size:16px;text-align:center;max-width:420px;line-height:1.5}
+.im-bar{flex:none;display:flex;align-items:center;gap:4px;min-height:56px;padding:8px 12px;background:#fff;border-top:1px solid #e7e7e9}
+.im-bar__spacer{flex:1}
+.im-count{font-size:14px;color:#3b4050;padding:0 8px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.im-btn{width:40px;height:40px;min-width:40px;min-height:40px;display:inline-flex;align-items:center;justify-content:center;padding:0;border:0;border-radius:0;background:none;color:var(--col-bg-primary);cursor:pointer;transition:background-color .15s ease,color .15s ease}
+.im-btn:hover{background:#eef1f7}
+.im-btn:focus-visible{outline:3px solid #0b4ea2;outline-offset:-3px}
+.im-btn:disabled{color:#a6a6a6;cursor:not-allowed;background:none}
+.im-btn[aria-pressed="true"],.im-btn[aria-expanded="true"]{background:#e8edf6}
+.im-thumbs{flex:none;display:flex;gap:8px;overflow-x:auto;padding:10px 12px;background:#fff;border-top:1px solid #e7e7e9}
+.im-thumb{flex:none;width:56px;height:56px;padding:0;border:2px solid transparent;background:#f4f3f0;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--col-bg-primary);overflow:hidden}
+.im-thumb:hover{border-color:#9aa3b8}
+.im-thumb:focus-visible{outline:3px solid #0b4ea2;outline-offset:1px}
+.im-thumb[aria-current="true"]{border-color:#0b4ea2}
+.im-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.sr-live{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @media(max-width:768px){
-  [role="region"][aria-label="Item media"]{flex-direction:column!important}
-  #item-media-sidebar.open{width:100%!important;max-width:100%!important;max-height:220px;border-right:none!important;border-bottom:1px solid #e7e7e9!important}
-  #item-media-sidebar.open > div:nth-child(2){max-height:160px}
-  [role="region"][aria-label="Item media"] > div:last-child{flex:1}
+  .item-media{flex-direction:column;height:auto}
+  .im-stage{height:min(62vh,440px);flex:none}
+  .item-media:fullscreen .im-stage{height:auto;flex:1}
+  .im-sidebar{width:100%;height:0;transition:height .25s ease,visibility 0s linear .25s}
+  .im-sidebar.open{width:100%;height:240px;border-right:0;border-bottom:1px solid #e7e7e9;transition:height .25s ease}
+  .im-sidebar__inner{width:100%}
+  .item-media:fullscreen{height:100vh}
 }
-
-/* Touch-friendly button sizes */
-@media(hover:none) and (pointer:coarse){
-  button[aria-label]{width:44px!important;height:44px!important;min-width:44px;min-height:44px}
-}
-
-/* High resolution displays */
-@media(min-width:1600px){
-  #item-media-sidebar.open{width:380px!important;max-width:380px!important}
-}
-
-/* Fullscreen on mobile */
-@media(max-width:768px):fullscreen{
-  [role="region"][aria-label="Item media"]{height:100vh}
-}
-
-/* Print styles */
-@media print{
-  .fs-toolbar,.keyboard-hint,[role="navigation"]{display:none}
-}
+@media(prefers-reduced-motion:reduce){.im-sidebar,.im-sidebar.open,.im-btn{transition:none}}
+@media print{.item-media{display:none}}
 [aria-label="University links"] a:hover{color:var(--sage-100);text-decoration:underline}
 </style>
 </helmet>
@@ -514,75 +304,76 @@ section[aria-label="Item media"]:not(:fullscreen){max-height:calc(85vh - var(--h
 </script>
 
 <section style="width:100%;background:#00354c;height:40px;display:flex;align-items:center">
-  <nav class="page-breadcrumbs" aria-label="Breadcrumb"><ol class="page-local-history" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="root" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="/" itemprop="item" title="Home" aria-label="Home"><img src="../images/home.svg" alt="" width="16" height="16" style="vertical-align:middle"><span itemprop="name" class="sr-only">Home</span></a><meta content="1" itemprop="position"></li><li class="" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="/search/advanced.html" itemprop="item" title="Search results"><span itemprop="name">Search results</span></a><meta content="2" itemprop="position"></li><li itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page" style="max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"><span itemprop="name">{{ rec.title }}</span><meta content="3" itemprop="position"></li></ol><ol class="bc-mobile" style="display:none;align-items:center;gap:6px;list-style:none;margin:0;padding:0 32px;font-size:18px;color:#fff"><li style="display:flex;align-items:center"><a href="/search/advanced.html" style="display:inline-flex;align-items:center;gap:6px;color:#fff;text-decoration:none;min-height:44px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span>Search results</span></a></li></ol></nav>
+  <nav class="page-breadcrumbs" aria-label="Breadcrumb"><ol class="page-local-history" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="root" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="/" itemprop="item" title="Home" aria-label="Home"><img src="../images/home.svg" alt="" width="16" height="16" style="vertical-align:middle"><span itemprop="name" class="sr-only">Home</span></a><meta content="1" itemprop="position"></li><li class="" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="/search/advanced.html" itemprop="item" title="Search results"><span itemprop="name">Search results</span></a><meta content="2" itemprop="position"></li><li itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page" style="min-width:0;max-width:420px"><span itemprop="name" style="display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="{{ rec.title }}">{{ rec.title }}</span><meta content="3" itemprop="position"></li></ol><ol class="bc-mobile" style="display:none;align-items:center;gap:6px;list-style:none;margin:0;font-size:18px;color:#fff"><li style="display:flex;align-items:center"><a href="/search/advanced.html" style="display:inline-flex;align-items:center;gap:6px;color:#fff;text-decoration:none;min-height:44px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span>Search results</span></a></li></ol></nav>
+</section>
+
+<section class="page-banner page-banner--compact" aria-label="Page banner">
+  <div class="page-banner__inner">
+    <h1 style="text-wrap:balance">{{ rec.title }}</h1>
+  </div>
 </section>
 
 <sc-if value="{{ rec.hasDA }}" hint-placeholder-val="{{ false }}">
-<section ref="{{ viewerRef }}" role="region" aria-label="Item media" style="display:flex;width:100%;max-height:calc(85vh - var(--header-total-height, 212px));background:#1a1a1a;border-bottom:1px solid #e7e7e9;overflow:hidden">
-  <!-- Left Sidebar: Metadata (Europeana style, closed by default, toggled via info button) -->
-  <aside id="item-media-sidebar" role="region" aria-label="Media metadata" style="flex-shrink:0;background:#fff;display:flex;flex-direction:column;position:relative;z-index:10">
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #e7e7e9">
-      <div style="display:flex;align-items:center;gap:10px">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00354c" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+<section ref="{{ viewerRef }}" class="item-media" role="region" aria-roledescription="media viewer" aria-label="Item media" tabindex="0" aria-keyshortcuts="ArrowLeft ArrowRight I F">
+  <!-- Metadata panel (closed by default; toggled with the info button or I) -->
+  <aside id="item-media-sidebar" class="{{ sidebarCls }}" aria-label="Media metadata">
+    <div class="im-sidebar__inner">
+      <div class="im-sidebar__head">
         <h3 style="margin:0;font-size:16px;font-weight:600;color:#1a1a1a">Media metadata</h3>
+        <button type="button" class="im-btn" onClick="{{ closeSidebar }}" aria-label="Close media metadata" title="Close (Esc)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
       </div>
-      <button onClick="{{ toggleSidebar }}" aria-label="Close media metadata" title="Close media metadata (Esc)" style="width:32px;height:32px;border:0;background:none;cursor:pointer;color:#555;padding:0;display:flex;align-items:center;justify-content:center;border-radius:0" style-hover="color:#000">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-      </button>
-    </div>
-    <div style="flex:1;overflow-y:auto">
-      <ul style="margin:0;padding:0;list-style:none">
+      <ul class="im-sidebar__body" tabindex="-1">
         <sc-for list="{{ mediaRows }}" as="m" hint-placeholder-count="7">
-          <li style="padding:16px 20px;border-bottom:1px solid #f0f0f0;display:flex;flex-direction:column;gap:6px">
-            <span style="font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:#666">{{ m.label }}</span>
-            <span style="font-size:14px;line-height:1.5;color:#1a1a1a;text-wrap:pretty;word-break:break-word">{{ m.value }}</span>
-          </li>
+          <li><span class="k">{{ m.label }}</span><span class="v">{{ m.value }}</span></li>
         </sc-for>
       </ul>
     </div>
   </aside>
 
-  <!-- Right: Image Viewer -->
-  <div style="flex:1;display:flex;flex-direction:column;background:#1a1a1a">
-    <div style="flex:1;display:flex;align-items:center;justify-content:center;overflow:auto;padding:20px">
-      <sc-if value="{{ hasCurImg }}" hint-placeholder-val="{{ false }}"><img src="{{ curImg }}" alt="{{ rec.title }}" onLoad="{{ onImgLoad }}" style="max-width:100%;max-height:100%;object-fit:contain"></sc-if>
+  <div class="im-main">
+    <div class="im-stage">
+      <sc-if value="{{ isImage }}" hint-placeholder-val="{{ true }}"><img class="im-img" src="{{ cur.src }}" alt="{{ curAlt }}" onLoad="{{ onImgLoad }}"></sc-if>
+      <sc-if value="{{ isVideo }}" hint-placeholder-val="{{ false }}"><video class="im-video" src="{{ cur.src }}" controls="{{ yes }}" preload="metadata" playsinline="{{ yes }}" aria-label="{{ curAlt }}" onLoadedMetadata="{{ onMeta }}"></video></sc-if>
+      <sc-if value="{{ isAudio }}" hint-placeholder-val="{{ false }}">
+        <div class="im-audio">
+          <svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
+          <span style="font-size:16px">{{ cur.label }}</span>
+          <audio src="{{ cur.src }}" controls="{{ yes }}" preload="metadata" aria-label="{{ curAlt }}" onLoadedMetadata="{{ onMeta }}"></audio>
+        </div>
+      </sc-if>
+      <sc-if value="{{ curBroken }}" hint-placeholder-val="{{ false }}"><p class="im-msg" role="alert" style="position:absolute;inset:16px;display:flex;align-items:center;justify-content:center;background:#1a1a1a;margin:0">This media could not be loaded. Please try again later or contact the collection.</p></sc-if>
     </div>
 
-    <!-- Bottom Toolbar -->
-    <div style="flex-shrink:0;height:56px;background:#fff;border-top:1px solid #e7e7e9;display:flex;align-items:center;justify-content:flex-end;gap:12px;padding:0 16px">
-      <div style="display:flex;gap:12px;align-items:center">
-        <button id="toggle-media-sidebar" onClick="{{ toggleSidebar }}" aria-label="{{ sidebarLabel }}" aria-expanded="{{ sidebarOpen }}" aria-controls="item-media-sidebar" title="{{ sidebarLabel }} (I)" style="width:40px;height:40px;border:0;background:none;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--col-bg-primary);transition:color .2s ease" style-hover="color:var(--col-bg-primary-hover)">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-        </button>
-        <button onClick="{{ toggleFull }}" onKeyDown="if(event.key==='f'||event.key==='F') window.MediaViewer?.toggleFullscreen(document.querySelector('[role=\"region\"][aria-label=\"Item media\"]'))" aria-label="{{ fullLabel }}" title="{{ fullLabel }} (F)" style="width:40px;height:40px;border:0;background:none;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--col-bg-primary);transition:color .2s ease" style-hover="color:var(--col-bg-primary-hover)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 9 4 4 9 4"></polyline><polyline points="15 4 20 4 20 9"></polyline><polyline points="20 15 20 20 15 20"></polyline><polyline points="9 20 4 20 4 15"></polyline></svg></button>
-      </div>
+    <div class="im-bar" role="toolbar" aria-label="Media controls">
+      <sc-if value="{{ multi }}" hint-placeholder-val="{{ false }}">
+        <button type="button" class="im-btn" onClick="{{ prevImg }}" disabled="{{ atFirst }}" aria-label="Previous" title="Previous (←)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+        <span class="im-count" aria-hidden="true">{{ imgCount }}</span>
+        <button type="button" class="im-btn" onClick="{{ nextImg }}" disabled="{{ atLast }}" aria-label="Next" title="Next (→)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+      </sc-if>
+      <span class="im-bar__spacer"></span>
+      <button type="button" id="toggle-media-sidebar" class="im-btn" onClick="{{ toggleSidebar }}" aria-label="Media metadata" aria-expanded="{{ sidebarOpen }}" aria-controls="item-media-sidebar" title="{{ sidebarLabel }} (I)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+      <button type="button" class="im-btn" onClick="{{ toggleFull }}" aria-label="{{ fullLabel }}" title="{{ fullLabel }} (F)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><polyline points="4 9 4 4 9 4"></polyline><polyline points="15 4 20 4 20 9"></polyline><polyline points="20 15 20 20 15 20"></polyline><polyline points="9 20 4 20 4 15"></polyline></svg></button>
     </div>
 
-    <!-- Pages Navigation (if multi-page) -->
     <sc-if value="{{ multi }}" hint-placeholder-val="{{ false }}">
-      <div style="flex-shrink:0;height:56px;background:#fff;border-top:1px solid #e7e7e9;display:flex;align-items:center;justify-content:space-between;padding:0 16px">
-        <nav aria-label="Media pages" style="display:flex;align-items:center;gap:8px">
-          <button onClick="{{ prevImg }}" disabled="{{ atFirst }}" aria-label="Previous" title="Previous" style="width:32px;height:32px;border:1px solid #ddd;background:#fff;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--col-bg-primary);transition:all .2s ease;border-radius:0;min-width:40px;min-height:40px" style-hover="background:#f0f0f0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
-          <span style="font-size:13px;white-space:nowrap;color:#666;padding:0 8px">{{ imgCount }}</span>
-          <button onClick="{{ nextImg }}" disabled="{{ atLast }}" aria-label="Next" title="Next" style="width:32px;height:32px;border:1px solid #ddd;background:#fff;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--col-bg-primary);transition:all .2s ease;border-radius:0;min-width:40px;min-height:40px" style-hover="background:#f0f0f0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
-        </nav>
-      </div>
-      <div role="listbox" aria-label="Media thumbnails" style="flex-shrink:0;display:flex;gap:8px;overflow-x:auto;padding:10px 16px;background:#fff;border-top:1px solid #e7e7e9">
+      <div class="im-thumbs" role="group" aria-label="Media thumbnails">
         <sc-for list="{{ thumbs }}" as="th" hint-placeholder-count="2">
-          <button role="option" onClick="{{ th.go }}" aria-label="{{ th.label }}" aria-current="{{ th.current }}" title="{{ th.label }}" style="flex:none;width:56px;height:56px;padding:0;cursor:pointer;background:#f4f3f0;outline:{{ th.outline }};outline-offset:-2px">
-            <sc-if value="{{ th.hasSrc }}"><img src="{{ th.src }}" alt="" style="width:100%;height:100%;object-fit:cover;display:block"></sc-if>
+          <button type="button" class="im-thumb" onClick="{{ th.go }}" aria-label="{{ th.label }}" aria-current="{{ th.current }}" title="{{ th.label }}">
+            <sc-if value="{{ th.isImage }}"><img src="{{ th.src }}" alt="" loading="lazy"></sc-if>
+            <sc-if value="{{ th.isVideo }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><polygon points="6 4 20 12 6 20 6 4"></polygon></svg></sc-if>
+            <sc-if value="{{ th.isAudio }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg></sc-if>
           </button>
         </sc-for>
       </div>
     </sc-if>
   </div>
+  <div class="sr-live" role="status" aria-live="polite">{{ liveText }}</div>
 </section>
 </sc-if>
 
 <header style="background:#fff;border-bottom:1px solid #e3e0d9">
   <div style="max-width:1200px;margin:0 auto;padding:40px 32px 28px;display:flex;flex-direction:column;gap:24px">
     <div style="display:flex;flex-direction:column;gap:12px;max-width:920px">
-      <h1 style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:clamp(30px,4vw,42px);line-height:1.12;color:var(--col-bg-primary);text-wrap:balance">{{ rec.title }}</h1>
       <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase">
         <a href="{{ typeHref }}" style="color:#0b4ea2;text-decoration:none" style-hover="text-decoration:underline">{{ rec.type }}</a>
         <span aria-hidden="true" style="width:4px;height:4px;background:#9a9ea8"></span>
@@ -592,8 +383,6 @@ section[aria-label="Item media"]:not(:fullscreen){max-height:calc(85vh - var(--h
       <sc-if value="{{ rec.byline }}"><p style="margin:0;font-size:18px;color:#3b4050">{{ rec.byline }}</p></sc-if>
     </div>
     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding-top:20px;border-top:1px solid var(--col-border-neutral-soft)">
-      <button onClick="{{ openUse }}" style="height:44px;display:flex;align-items:center;gap:8px;border:1px solid var(--col-btn-action-bg);background:var(--col-btn-action-bg);color:var(--col-btn-action-text);padding:0 18px;font-size:15px;font-weight:600;text-decoration:none;cursor:pointer" style-hover="background:var(--col-btn-action-bg-hover);color:var(--col-btn-action-text);text-decoration:none"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"></path><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7l8-4z"></path></svg>Request to use</button>
-      <button onClick="{{ openView }}" style="height:44px;display:flex;align-items:center;gap:8px;border:1px solid #c9ccd6;background:#fff;color:var(--col-bg-primary);padding:0 14px;font-size:15px;font-weight:600;cursor:pointer" style-hover="border-color:var(--col-bg-primary)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg>Request to view</button>
       <button onClick="{{ openContact }}" style="height:44px;display:flex;align-items:center;gap:8px;border:1px solid #c9ccd6;background:#fff;color:var(--col-bg-primary);padding:0 14px;font-size:15px;font-weight:600;cursor:pointer" style-hover="border-color:var(--col-bg-primary)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14"></rect><polyline points="3 7 12 13 21 7"></polyline></svg>Contact us</button>
       <button onClick="{{ share }}" style="height:44px;display:flex;align-items:center;gap:8px;border:1px solid #c9ccd6;background:#fff;color:var(--col-bg-primary);padding:0 14px;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none" style-hover="border-color:var(--col-bg-primary)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"></path><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"></path></svg>{{ shareText }}</button>
     </div>
@@ -625,7 +414,7 @@ section[aria-label="Item media"]:not(:fullscreen){max-height:calc(85vh - var(--h
             <div style="display:grid;grid-template-columns:minmax(120px,200px) minmax(0,1fr);gap:4px 24px;padding:12px 0;border-bottom:1px solid #f1efea">
               <dt style="font-size:15px;font-weight:700;color:var(--col-text-primary)">{{ r.label }}</dt>
               <dd style="margin:0;font-size:15px;line-height:1.55;color:var(--col-text-primary);text-wrap:pretty;display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap">
-                <span style="display:flex;flex-direction:column;min-width:0">
+                <span style="display:flex;flex-direction:column;min-width:0;overflow-wrap:anywhere">
                   <sc-for list="{{ r.lines }}" as="l">
                     <span style="color:{{ l.color }}">{{ l.text }}</span>
                   </sc-for>
@@ -994,42 +783,66 @@ section[aria-label="Item media"]:not(:fullscreen){max-height:calc(85vh - var(--h
 <script type="text/x-dc" data-dc-script data-props="{&quot;record&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;12&quot;,&quot;24&quot;,&quot;16&quot;,&quot;25&quot;,&quot;23&quot;,&quot;4&quot;,&quot;21&quot;],&quot;default&quot;:&quot;12&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;showRelated&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;showCitation&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
 const ESC = s => s;
 class Component extends DCLogic {
-  state = { idx: 0, sidebar: false, pages: true, full: false, dims: {}, copied: null, ready: !!window.CCS, req: null, reqSent: false, cite: 'apa', exportOpen: false };
+  state = { idx: 0, sidebar: false, full: false, dims: {}, dur: {}, broken: {}, copied: null, ready: !!window.CCS, req: null, reqSent: false, cite: 'apa', exportOpen: false };
   viewerRef = React.createRef();
 
   componentDidMount() {
-    this.onFs = () => this.setState({ full: !!document.fullscreenElement });
+    this.onFs = () => this.setState({ full: !!(document.fullscreenElement || document.webkitFullscreenElement) });
     this.onKey = e => {
-      if (['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return;
-      if (e.key === 'Escape' && this.state.sidebar) this.setSidebar(false);
-      if (e.key === 'i' || e.key === 'I') {
-        e.preventDefault();
-        this.setSidebar(!this.state.sidebar);
+      if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.altKey) return;
+      const t = e.target, tag = t && t.tagName;
+      if (['INPUT', 'TEXTAREA', 'SELECT'].includes(tag) || (t && t.isContentEditable)) return;
+      const v = this.viewerRef.current;
+      if (!v) return;
+      // Only act while the viewer has focus (or is full screen) so the page keeps normal keyboard scrolling.
+      const inViewer = v.contains(document.activeElement) || document.fullscreenElement === v || document.webkitFullscreenElement === v;
+      if (!inViewer) return;
+      const onMedia = tag === 'VIDEO' || tag === 'AUDIO';
+      const k = e.key;
+      if (k === 'Escape' && this.state.sidebar) { e.preventDefault(); this.setSidebar(false); return; }
+      if ((k === 'ArrowLeft' || k === 'ArrowRight') && !onMedia) {
+        e.preventDefault(); this.step(k === 'ArrowRight' ? 1 : -1);
+      } else if ((k === 'i' || k === 'I') && tag !== 'BUTTON') {
+        e.preventDefault(); this.setSidebar(!this.state.sidebar);
+      } else if ((k === 'f' || k === 'F') && tag !== 'BUTTON') {
+        e.preventDefault(); this.toggleFull();
       }
     };
+    // error events don't bubble, so listen in the capture phase for failed images/video/audio inside the viewer
+    this.onMediaError = e => {
+      const v = this.viewerRef.current, t = e.target;
+      if (!v || !t || !t.getAttribute || !v.contains(t) || !['IMG', 'VIDEO', 'AUDIO'].includes(t.tagName)) return;
+      const k = t.getAttribute('src');
+      if (k && !t.closest('.im-thumbs') && !this.state.broken[k]) this.setState(st => ({ broken: { ...st.broken, [k]: true } }));
+    };
+    document.addEventListener('error', this.onMediaError, true);
     document.addEventListener('fullscreenchange', this.onFs);
+    document.addEventListener('webkitfullscreenchange', this.onFs);
     window.addEventListener('keydown', this.onKey);
-    if (location.hash === '#metadata') this.setSidebar(true);
+    if (location.hash === '#metadata') this.setState({ sidebar: true });
     if (!window.CCS) this.poll = setInterval(() => { if (window.CCS) { clearInterval(this.poll); this.setState({ ready: true }); } }, 60);
   }
   componentWillUnmount() {
+    document.removeEventListener('error', this.onMediaError, true);
     document.removeEventListener('fullscreenchange', this.onFs);
+    document.removeEventListener('webkitfullscreenchange', this.onFs);
     window.removeEventListener('keydown', this.onKey);
     clearInterval(this.poll); clearTimeout(this.ct);
   }
   componentDidUpdate(pp) { if (pp.record !== this.props.record) this.setState({ idx: 0 }); }
+  step(d) {
+    const R = window.CCS && window.CCS.records[this.curId]; const n = R ? R.slides.length : 0;
+    const i = Math.min(Math.max(this.state.idx + d, 0), n - 1);
+    if (i !== this.state.idx) this.setState({ idx: i });
+  }
+  toggleFull() {
+    const el = this.viewerRef.current; if (!el) return;
+    const fs = document.fullscreenElement || document.webkitFullscreenElement;
+    if (fs) (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+    else { const f = el.requestFullscreen || el.webkitRequestFullscreen; if (f) { const p = f.call(el); if (p && p.catch) p.catch(() => {}); } }
+  }
   setSidebar(open) {
     this.setState({ sidebar: open });
-    const sidebar = document.querySelector('#item-media-sidebar');
-    const btn = document.querySelector('#toggle-media-sidebar');
-    if (sidebar) {
-      if (open) sidebar.classList.add('open');
-      else sidebar.classList.remove('open');
-    }
-    if (btn) {
-      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      btn.setAttribute('title', open ? 'Hide media metadata (I)' : 'Show media metadata (I)');
-    }
     try { history.replaceState(null, '', open ? location.pathname + location.search + '#metadata' : location.pathname + location.search); } catch (e) {}
   }
   flash(key, text) {
@@ -1045,17 +858,28 @@ class Component extends DCLogic {
     const qid = Number(new URLSearchParams(location.search).get('id'));
     const id = (CCS && CCS.records[qid]) ? qid : Number(this.props.record ?? 12);
     const R = CCS && (CCS.records[id] || CCS.records[12]);
-    if (!R) return { rec: { title: '', type: '', byline: '', citation: '', unit: '', assetId: '', hasDA: true, images: [], subjects: [], advisories: [], rights: [] },
-      fields: [], related: [], mediaRows: [], thumbs: [], noDA: false, showRelated: false, viewerRef: this.viewerRef, stageH: '660px', curImg: '', hasCurImg: false,
-      toggleW: 'auto', toggleBg: 'transparent', toggleBorder: 'transparent', toggleColor: '#fff', dividerColor: '#767676', sidebarClosed: true, stageRight: '0',
-      shareText: 'Share', citeText: 'Copy citation', typeHref: '/search/advanced.html', collectionHref: '/search/advanced.html' };
-    const imgs = R.images, idx = Math.min(s.idx, Math.max(0, imgs.length - 1));
-    const go = i => { if (i >= 0 && i < imgs.length) this.setState({ idx: i }); };
-    const dim = s.dims[imgs[idx]];
-    const PAD = 24, BAR = 52, MAXH = 660, MINH = 420;
-    const computedStageH = s.full ? '100vh' : (dim ? Math.min(MAXH, Math.max(MINH, dim.h + PAD * 2 + BAR)) + 'px' : MAXH + 'px');
+    this.curId = R ? R.id : id;
+    if (!R) return { rec: { title: '', type: '', byline: '', citation: '', unit: '', assetId: '', hasDA: false, images: [], slides: [], subjects: [], advisories: [], rights: [] },
+      fields: [], related: [], mediaRows: [], thumbs: [], noDA: false, showRelated: false, viewerRef: this.viewerRef,
+      yes: true, cur: { src: '', label: '' }, curAlt: '', isImage: false, isVideo: false, isAudio: false, curBroken: false, onImgLoad() {}, onMeta() {}, multi: false, imgCount: '', liveText: '',
+      prevImg() {}, nextImg() {}, atFirst: true, atLast: true, sidebarOpen: false, sidebarCls: 'im-sidebar', sidebarLabel: '', toggleSidebar() {}, closeSidebar() {}, fullLabel: '', toggleFull() {},
+            shareText: 'Share', citeText: 'Copy citation', typeHref: '/search/advanced.html', collectionHref: '/search/advanced.html' };
+    const slides = R.slides, idx = Math.min(s.idx, Math.max(0, slides.length - 1));
+    const cur = slides[idx] || { kind: 'image', src: '', label: '' };
+    const go = i => { if (i >= 0 && i < slides.length) this.setState({ idx: i }); };
+    const dim = cur.kind === 'image' ? s.dims[cur.src] : null;
+    const dur = s.dur[cur.src];
+    const fmtDur = t => { t = Math.round(t); const h = Math.floor(t / 3600), m = Math.floor(t % 3600 / 60), sec = t % 60; return (h ? h + ':' + String(m).padStart(2, '0') : m) + ':' + String(sec).padStart(2, '0'); };
+    const kindWord = { image: 'Image', video: 'Video', audio: 'Audio' }[cur.kind];
+    const curAlt = slides.length > 1 ? `${R.title} — ${kindWord.toLowerCase()} ${idx + 1} of ${slides.length}` : R.title;
     const media = R.media || [];
-    const mediaRows = !R.hasDA ? [] : [...media.slice(0, 2), ...(dim ? [{ label: 'Dimensions', value: `${dim.w} × ${dim.h} pixels` }, { label: 'File size', value: '~' + Math.round(dim.w * dim.h * 3 / 1024 / 1024 * 10) / 10 + ' MB (estimate)' }] : []), { label: 'File name', value: (imgs[idx] || '').split('/').pop() }, ...media.slice(2)];
+    const fileName = decodeURIComponent((cur.src || '').split('/').pop());
+    const mediaRows = !R.hasDA ? [] : [
+      media[0], { label: 'Format', value: cur.type || (media[1] && media[1].value) },
+      ...(dim ? [{ label: 'Dimensions', value: `${dim.w} × ${dim.h} pixels` }] : []),
+      ...(dur ? [{ label: 'Duration', value: fmtDur(dur) }] : []),
+      { label: 'File name', value: fileName }, ...media.slice(2)
+    ].filter(Boolean);
     const W = '#fff', DIM = 'rgba(255,255,255,.35)';
     const fields = R.fields.map(f => ({ ...f, lines: f.lines.map(l => ({ text: l.text, color: l.muted ? 'var(--col-text-muted)' : 'var(--col-text-primary)' })),
       copyText: s.copied === 'acc' ? 'Copied' : 'Copy', onCopy: () => this.flash('acc', f.value) }));
@@ -1073,29 +897,25 @@ class Component extends DCLogic {
       hasAdvisory: R.advisories.length > 0, hasSubjects: R.subjects.length > 0,
       hasLicence: !!R.licence, licIcons: R.licence ? (R.licence.icons || []) : [], hasLicIcons: !!(R.licence && R.licence.icons && R.licence.icons.length), licLabel: R.licence ? R.licence.label : '',
       hasClass: !!cls, clsBg: cls ? cls.bg : '', clsFg: cls ? cls.fg : '', clsName: cls ? cls.name : '', clsText: cls ? cls.text : '', clsCode: cls ? (cls.name.match(/\(([^)]+)\)/) ? cls.name.match(/\(([^)]+)\)/)[1].replace(' ', '') : cls.name) : '',
-      viewerRef: this.viewerRef, stageH: computedStageH,
-      curImg: imgs[idx] || '', hasCurImg: !!imgs[idx], onImgLoad: e => { const im = e.target, k = imgs[idx]; if (k && !s.dims[k]) this.setState(st => ({ dims: { ...st.dims, [k]: { w: im.naturalWidth, h: im.naturalHeight } } })); },
-      multi: imgs.length > 1, imgCount: `${idx + 1} of ${imgs.length}`,
-      thumbs: imgs.map((src, i) => ({ src, hasSrc: !!src, n: i + 1, go: () => go(i), label: `Go to page ${i + 1}`, current: i === idx ? 'true' : undefined, outline: i === idx ? '2px solid #0b4ea2' : 'none' })),
-      prevImg: () => go(idx - 1), nextImg: () => go(idx + 1), atFirst: idx === 0, atLast: idx === imgs.length - 1,
-      pagesOpen: s.pages, pagesClosed: !s.pages, togglePages: () => this.setState(st => ({ pages: !st.pages })), pagesLabel: s.pages ? 'Hide pages' : 'Show pages',
-      pagesBarBg: s.pages ? '#fff' : 'transparent', pagesText: s.pages ? '#1a1a1a' : W, pagesDivider: s.pages ? '#d8d8d8' : '#767676',
-      prevColor: idx === 0 ? (s.pages ? '#a6a6a6' : DIM) : (s.pages ? '#1a1a1a' : W), nextColor: idx === imgs.length - 1 ? (s.pages ? '#a6a6a6' : DIM) : (s.pages ? '#1a1a1a' : W),
-      stageRight: imgs.length > 1 && s.pages ? '208px' : '0',
-      sidebarOpen: s.sidebar, sidebarClosed: !s.sidebar, sidebarLabel: s.sidebar ? 'Hide media metadata' : 'Show media metadata',
-      toggleSidebar: () => this.setSidebar(!s.sidebar),
-      toggleW: s.sidebar ? '315px' : 'auto', toggleBg: s.sidebar ? '#fff' : 'transparent', toggleBorder: s.sidebar ? '#e7e7e9' : 'transparent',
-      toggleColor: s.sidebar ? '#1a1a1a' : W, dividerColor: s.sidebar ? '#d8d8d8' : '#767676',
+      viewerRef: this.viewerRef, yes: true, cur, curAlt, isImage: cur.kind === 'image', isVideo: cur.kind === 'video', isAudio: cur.kind === 'audio',
+      curBroken: !!s.broken[cur.src],
+      onImgLoad: e => { const im = e.target, k = cur.src; if (k && !s.dims[k]) this.setState(st => ({ dims: { ...st.dims, [k]: { w: im.naturalWidth, h: im.naturalHeight } } })); },
+      onMeta: e => { const k = cur.src, d = e.target.duration; if (k && isFinite(d) && !s.dur[k]) this.setState(st => ({ dur: { ...st.dur, [k]: d } })); },
+      multi: slides.length > 1, imgCount: `${idx + 1} of ${slides.length}`, liveText: slides.length > 1 ? `${kindWord} ${idx + 1} of ${slides.length}` : '',
+      thumbs: slides.map((sl, i) => ({ src: sl.src, isImage: sl.kind === 'image', isVideo: sl.kind === 'video', isAudio: sl.kind === 'audio', go: () => go(i), label: `${{ image: 'Image', video: 'Video', audio: 'Audio' }[sl.kind]} ${i + 1} of ${slides.length}`, current: i === idx ? 'true' : undefined })),
+      prevImg: () => go(idx - 1), nextImg: () => go(idx + 1), atFirst: idx === 0, atLast: idx === slides.length - 1,
+      sidebarOpen: s.sidebar, sidebarCls: 'im-sidebar' + (s.sidebar ? ' open' : ''), sidebarLabel: s.sidebar ? 'Hide media metadata' : 'Show media metadata',
+      toggleSidebar: () => this.setSidebar(!s.sidebar), closeSidebar: () => this.setSidebar(false),
       fullLabel: s.full ? 'Exit full screen' : 'Full screen',
-      toggleFull: () => { const el = this.viewerRef.current; if (document.fullscreenElement) document.exitFullscreen(); else if (el && el.requestFullscreen) el.requestFullscreen().catch(() => {}); },
+      toggleFull: () => this.toggleFull(),
       reportIssue: e => { e.preventDefault(); this.setState({ req: 'contact', reqSent: false }); },
       reqOpen: !!s.req, reqForm: !!s.req && !s.reqSent, reqSent: s.reqSent, stopProp: e => e.stopPropagation(),
-      openUse: () => this.setState({ req: 'use', reqSent: false }), openView: () => this.setState({ req: 'view', reqSent: false }), openContact: () => this.setState({ req: 'contact', reqSent: false }),
+      openContact: () => this.setState({ req: 'contact', reqSent: false }),
       closeReq: () => this.setState({ req: null, reqSent: false }), submitReq: e => { e.preventDefault(); this.setState({ reqSent: true }); },
       reqTitle: { use: 'Request to use', view: 'Request to view', contact: 'Contact the collection' }[s.req] || '',
       reqHint: { use: 'Ask permission to reproduce this item in a publication, online or for commercial use. Describe your intended use.', view: 'Ask to view this item in person or to see media that is not shown online. Access may be by appointment or restricted.', contact: 'Ask a question, share knowledge about this item, or report incorrect or missing information.' }[s.req] || '',
       msgLabel: { use: 'Intended use', view: 'Reason for viewing and preferred dates', contact: 'Message' }[s.req] || 'Message',
-      reqTypes: [['use', 'Request to use'], ['view', 'Request to view'], ['contact', 'General enquiry']].map(([k, label]) => ({ label, sel: s.req === k, pick: () => this.setState({ req: k }), bg: s.req === k ? 'var(--col-bg-primary)' : '#fff', color: s.req === k ? '#fff' : 'var(--col-text-primary)', border: s.req === k ? 'var(--col-bg-primary)' : 'var(--col-border-neutral)' })),
+      reqTypes: [['contact', 'General enquiry'], ['use', 'Request to use'], ['view', 'Request to view']].map(([k, label]) => ({ label, sel: s.req === k, pick: () => this.setState({ req: k }), bg: s.req === k ? 'var(--col-bg-primary)' : '#fff', color: s.req === k ? '#fff' : 'var(--col-text-primary)', border: s.req === k ? 'var(--col-bg-primary)' : 'var(--col-border-neutral)' })),
       share: () => this.flash('share', location.href), shareText: s.copied === 'share' ? 'Link copied' : 'Share',
       citeStyles: [['apa', 'APA 7'], ['mla', 'MLA 9'], ['chicago', 'Chicago 17'], ['harvard', 'Harvard']].map(([k, label]) => ({ label, pick: () => this.setState({ cite: k }), bg: s.cite === k ? 'var(--col-bg-primary)' : '#fff', color: s.cite === k ? '#fff' : 'var(--col-text-primary)', border: s.cite === k ? 'var(--col-bg-primary)' : 'var(--col-border-neutral)' })),
       citation: R.citations[s.cite], copyCite: () => this.flash('cite', R.citations[s.cite]), citeText: s.copied === 'cite' ? 'Copied' : 'Copy citation',
