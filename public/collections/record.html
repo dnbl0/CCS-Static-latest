@@ -304,12 +304,12 @@ button,input{font-family:inherit}
 </script>
 
 <section style="width:100%;background:#00354c;height:40px;display:flex;align-items:center">
-  <nav class="page-breadcrumbs" aria-label="Breadcrumb"><ol class="page-local-history" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="root" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="/" itemprop="item" title="Home" aria-label="Home"><img src="../images/home.svg" alt="" width="16" height="16" style="vertical-align:middle"><span itemprop="name" class="sr-only">Home</span></a><meta content="1" itemprop="position"></li><li class="" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="/search/advanced.html" itemprop="item" title="Search results"><span itemprop="name">Search results</span></a><meta content="2" itemprop="position"></li><li itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page" style="min-width:0;max-width:420px"><span itemprop="name" style="display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="{{ rec.title }}">{{ rec.title }}</span><meta content="3" itemprop="position"></li></ol><ol class="bc-mobile" style="display:none;align-items:center;gap:6px;list-style:none;margin:0;font-size:18px;color:#fff"><li style="display:flex;align-items:center"><a href="/search/advanced.html" style="display:inline-flex;align-items:center;gap:6px;color:#fff;text-decoration:none;min-height:44px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span>Search results</span></a></li></ol></nav>
+  <nav class="page-breadcrumbs" aria-label="Breadcrumb"><ol class="page-local-history" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="root" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="/" itemprop="item" title="Home" aria-label="Home"><img src="../images/home.svg" alt="" width="16" height="16" style="vertical-align:middle"><span itemprop="name" class="sr-only">Home</span></a><meta content="1" itemprop="position"></li><li class="" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="/search/advanced.html" itemprop="item" title="Search results"><span itemprop="name">Search results</span></a><meta content="2" itemprop="position"></li><li itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page" style="min-width:0;max-width:420px"><span itemprop="name" style="display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="{{ pageTitle }}">{{ pageTitle }}</span><meta content="3" itemprop="position"></li></ol><ol class="bc-mobile" style="display:none;align-items:center;gap:6px;list-style:none;margin:0;font-size:18px;color:#fff"><li style="display:flex;align-items:center"><a href="/search/advanced.html" style="display:inline-flex;align-items:center;gap:6px;color:#fff;text-decoration:none;min-height:44px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span>Search results</span></a></li></ol></nav>
 </section>
 
 <section class="page-banner page-banner--compact" aria-label="Page banner">
   <div class="page-banner__inner">
-    <h1 style="text-wrap:balance">{{ rec.title }}</h1>
+    <h1 style="text-wrap:balance">{{ pageTitle }}</h1>
   </div>
 </section>
 
@@ -371,7 +371,19 @@ button,input{font-family:inherit}
 </section>
 </sc-if>
 
-<header style="background:#fff;border-bottom:1px solid #e3e0d9">
+<sc-if value="{{ notFound }}">
+<main id="main-content" style="flex:1;background:#f1f0ec">
+  <div style="max-width:1200px;margin:0 auto;padding:56px 32px 72px">
+    <section aria-labelledby="nf-title" style="background:#fff;border:1px solid #e3e0d9;padding:32px 28px;max-width:720px;display:flex;flex-direction:column;gap:16px">
+      <h2 id="nf-title" style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:34px;line-height:1.2;color:var(--col-bg-primary)">No record matches this link</h2>
+      <p style="margin:0;font-size:17px;line-height:1.55;color:var(--col-text-primary)">We could not find a record with that identifier. It may have been moved or removed, or the link may be incorrect.</p>
+      <div style="display:flex;gap:18px;flex-wrap:wrap;font-size:17px;font-weight:600"><a href="/search/advanced.html" style="color:var(--col-text-primary);text-decoration:underline">Search the collections</a><a href="/collections/index.html" style="color:var(--col-text-primary);text-decoration:underline">Browse collections</a></div>
+    </section>
+  </div>
+</main>
+</sc-if>
+<sc-if value="{{ found }}">
+<div style="background:#fff;border-bottom:1px solid #e3e0d9">
   <div style="max-width:1200px;margin:0 auto;padding:40px 32px 28px;display:flex;flex-direction:column;gap:24px">
     <div style="display:flex;flex-direction:column;gap:12px;max-width:920px">
       <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase">
@@ -383,7 +395,7 @@ button,input{font-family:inherit}
       <sc-if value="{{ rec.byline }}"><p style="margin:0;font-size:18px;color:#3b4050">{{ rec.byline }}</p></sc-if>
     </div>
     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding-top:20px;border-top:1px solid var(--col-border-neutral-soft)">
-      <button onClick="{{ openContact }}" style="height:44px;display:flex;align-items:center;gap:8px;border:1px solid #c9ccd6;background:#fff;color:var(--col-bg-primary);padding:0 14px;font-size:15px;font-weight:600;cursor:pointer" style-hover="border-color:var(--col-bg-primary)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14"></rect><polyline points="3 7 12 13 21 7"></polyline></svg>Contact us</button>
+      <button data-contact-btn onClick="{{ openContact }}" style="height:44px;display:flex;align-items:center;gap:8px;border:1px solid #c9ccd6;background:#fff;color:var(--col-bg-primary);padding:0 14px;font-size:15px;font-weight:600;cursor:pointer" style-hover="border-color:var(--col-bg-primary)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14"></rect><polyline points="3 7 12 13 21 7"></polyline></svg>Contact us</button>
       <button onClick="{{ share }}" style="height:44px;display:flex;align-items:center;gap:8px;border:1px solid #c9ccd6;background:#fff;color:var(--col-bg-primary);padding:0 14px;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none" style-hover="border-color:var(--col-bg-primary)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"></path><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"></path></svg>{{ shareText }}</button>
     </div>
     <sc-if value="{{ hasAdvisory }}">
@@ -399,7 +411,7 @@ button,input{font-family:inherit}
       </div>
     </sc-if>
   </div>
-</header>
+</div>
 
 <main id="main-content" style="flex:1;background:#f1f0ec">
   <div style="max-width:1200px;margin:0 auto;padding:40px 32px 56px;display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start">
@@ -425,9 +437,9 @@ button,input{font-family:inherit}
           </sc-for>
           <sc-if value="{{ hasSubjects }}">
             <div style="display:grid;grid-template-columns:minmax(120px,200px) minmax(0,1fr);gap:4px 24px;padding:12px 0;border-bottom:1px solid #f1efea">
-              <dt style="font-size:15px;font-weight:700;color:var(--col-text-primary)">Subject</dt>
-              <dd style="margin:0;display:flex;gap:8px;flex-wrap:wrap">
-                <sc-for list="{{ rec.subjects }}" as="sj"><span style="background:var(--col-bg-accent-soft);color:var(--col-bg-primary);padding:5px 10px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase">{{ sj }}</span></sc-for>
+              <dt style="font-size:15px;font-weight:700;color:var(--col-text-primary)">{{ subjLabel }}</dt>
+              <dd style="margin:0;display:flex;gap:8px;flex-wrap:wrap;min-width:0">
+                <sc-for list="{{ rec.subjects }}" as="sj"><span style="max-width:100%;overflow-wrap:anywhere;background:var(--col-bg-accent-soft);color:var(--col-bg-primary);padding:5px 10px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase">{{ sj }}</span></sc-for>
               </dd>
             </div>
           </sc-if>
@@ -496,6 +508,7 @@ button,input{font-family:inherit}
     </aside>
   </div>
 </main>
+</sc-if>
 
 <sc-if value="{{ showRelated }}" hint-placeholder-val="{{ true }}">
   <section aria-label="Related items" style="background:var(--white-100)">
@@ -535,9 +548,9 @@ button,input{font-family:inherit}
 </sc-if>
 <sc-if value="{{ reqOpen }}">
   <div onClick="{{ closeReq }}" style="position:fixed;inset:0;z-index:100;background:rgba(10,14,25,.55);display:flex;align-items:center;justify-content:center;padding:24px 16px">
-    <div role="dialog" aria-modal="true" aria-labelledby="req-title" onClick="{{ stopProp }}" style="width:100%;max-width:560px;max-height:100%;overflow-y:auto;background:#fff;border:1px solid var(--col-bg-primary);border-radius:0;box-shadow:none;display:flex;flex-direction:column">
+    <div ref="{{ dialogRef }}" role="dialog" aria-modal="true" aria-labelledby="req-title" onClick="{{ stopProp }}" onKeyDown="{{ reqKey }}" style="width:100%;max-width:560px;max-height:100%;overflow-y:auto;background:#fff;border:1px solid var(--col-bg-primary);border-radius:0;box-shadow:none;display:flex;flex-direction:column">
       <div style="padding:22px 28px;border-bottom:1px solid #ebe8e2;display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
-        <div style="display:flex;flex-direction:column;gap:4px"><h2 id="req-title" style="margin:0;font-size:20px;font-weight:700;color:var(--col-bg-primary)">{{ reqTitle }}</h2><span style="font-size:14px;color:var(--col-text-muted)">{{ rec.title }} · {{ rec.unit }}</span></div>
+        <div style="display:flex;flex-direction:column;gap:4px"><h2 id="req-title" tabindex="-1" style="margin:0;outline:none;font-size:20px;font-weight:700;color:var(--col-bg-primary)">{{ reqTitle }}</h2><span style="font-size:14px;color:var(--col-text-muted)">{{ rec.title }} · {{ rec.unit }}</span></div>
         <button onClick="{{ closeReq }}" aria-label="Close" style="width:36px;height:36px;border:0;border-radius:0;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="background:#f2f1ed"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--col-text-primary)" stroke-width="2.6"><line x1="5" y1="5" x2="19" y2="19"></line><line x1="19" y1="5" x2="5" y2="19"></line></svg></button>
       </div>
       <sc-if value="{{ reqForm }}">
@@ -785,6 +798,7 @@ const ESC = s => s;
 class Component extends DCLogic {
   state = { idx: 0, sidebar: false, full: false, dims: {}, dur: {}, broken: {}, copied: null, ready: !!window.CCS, req: null, reqSent: false, cite: 'apa', exportOpen: false };
   viewerRef = React.createRef();
+  dialogRef = React.createRef();
 
   componentDidMount() {
     this.onFs = () => this.setState({ full: !!(document.fullscreenElement || document.webkitFullscreenElement) });
@@ -830,6 +844,28 @@ class Component extends DCLogic {
     clearInterval(this.poll); clearTimeout(this.ct);
   }
   componentDidUpdate(pp) { if (pp.record !== this.props.record) this.setState({ idx: 0 }); }
+  focusReqTitle() { setTimeout(() => { const d = this.dialogRef.current, t = d && d.querySelector('#req-title'); if (t) t.focus(); }, 30); }
+  openReq(opener) {
+    this.reqOpener = opener || document.activeElement;
+    this.setState({ req: 'contact', reqSent: false }); this.focusReqTitle();
+  }
+  closeReqDlg() {
+    this.setState({ req: null, reqSent: false });
+    setTimeout(() => {
+      const o = this.reqOpener && document.contains(this.reqOpener) ? this.reqOpener : document.querySelector('[data-contact-btn]');
+      if (o) o.focus();
+      this.reqOpener = null;
+    }, 30);
+  }
+  reqKey = e => {
+    const d = this.dialogRef.current; if (!d) return;
+    if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); this.closeReqDlg(); return; }
+    if (e.key !== 'Tab') return;
+    const els = [...d.querySelectorAll('button:not([disabled]),input,textarea,select,a[href],[tabindex]:not([tabindex="-1"])')]; if (!els.length) return;
+    const first = els[0], last = els[els.length - 1], a = document.activeElement;
+    if (e.shiftKey && (a === first || a === d || a.id === 'req-title')) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && (a === last || a === d)) { e.preventDefault(); first.focus(); }
+  };
   step(d) {
     const R = window.CCS && window.CCS.records[this.curId]; const n = R ? R.slides.length : 0;
     const i = Math.min(Math.max(this.state.idx + d, 0), n - 1);
@@ -856,10 +892,12 @@ class Component extends DCLogic {
   renderVals() {
     const s = this.state, CCS = window.CCS;
     const qid = Number(new URLSearchParams(location.search).get('id'));
-    const id = (CCS && CCS.records[qid]) ? qid : Number(this.props.record ?? 12);
-    const R = CCS && (CCS.records[id] || CCS.records[12]);
+    const id = qid;
+    const R = CCS && CCS.records[id];
+    const notFound = !!CCS && !R;
     this.curId = R ? R.id : id;
-    if (!R) return { rec: { title: '', type: '', byline: '', citation: '', unit: '', assetId: '', hasDA: false, images: [], slides: [], subjects: [], advisories: [], rights: [] },
+    try { document.title = R ? `${R.title} — Cultural Collections Search — University of Melbourne` : (notFound ? 'Record not found — Cultural Collections Search — University of Melbourne' : document.title); } catch (e) {}
+    if (!R) return { notFound, found: false, pageTitle: notFound ? 'Record not found' : '', rec: { title: '', type: '', byline: '', citation: '', unit: '', assetId: '', hasDA: false, images: [], slides: [], subjects: [], advisories: [], rights: [] },
       fields: [], related: [], mediaRows: [], thumbs: [], noDA: false, showRelated: false, viewerRef: this.viewerRef,
       yes: true, cur: { src: '', label: '' }, curAlt: '', isImage: false, isVideo: false, isAudio: false, curBroken: false, onImgLoad() {}, onMeta() {}, multi: false, imgCount: '', liveText: '',
       prevImg() {}, nextImg() {}, atFirst: true, atLast: true, sidebarOpen: false, sidebarCls: 'im-sidebar', sidebarLabel: '', toggleSidebar() {}, closeSidebar() {}, fullLabel: '', toggleFull() {},
@@ -888,13 +926,18 @@ class Component extends DCLogic {
       return { ...r, hasImg: !!r.img, href: `/collections/record.html?id=${r.id}` };
     });
     const cls = R.classification;
+    // The Subject field row (when present) already shows the subject; only show the chip block when it adds something.
+    const subjField = R.fields.find(f => f.label === 'Subject');
+    const subjSame = !!subjField && subjField.value === R.subjects.join(', ') ;
+    const hasSubjects = R.subjects.length > 0 && !subjSame;
+    const subjLabel = subjField ? 'Subject terms' : 'Subject';
     return {
-      rec: R, fields, related, mediaRows, noDA: !R.hasDA,
+      notFound: false, found: true, pageTitle: R.title, subjLabel, rec: R, fields, related, mediaRows, noDA: !R.hasDA,
       showCitation: this.props.showCitation ?? false,
       showRelated: (this.props.showRelated ?? false) && related.length > 0, relIndigenous: relCards.some(r => r.indigenous),
       viewAll: `View all ${R.type.toLowerCase()} records`,
       typeHref: `/search/advanced.html?type=${encodeURIComponent(R.type)}`, collectionHref: `/search/advanced.html?collection=${encodeURIComponent(R.collection)}`,
-      hasAdvisory: R.advisories.length > 0, hasSubjects: R.subjects.length > 0,
+      hasAdvisory: R.advisories.length > 0, hasSubjects,
       hasLicence: !!R.licence, licIcons: R.licence ? (R.licence.icons || []) : [], hasLicIcons: !!(R.licence && R.licence.icons && R.licence.icons.length), licLabel: R.licence ? R.licence.label : '',
       hasClass: !!cls, clsBg: cls ? cls.bg : '', clsFg: cls ? cls.fg : '', clsName: cls ? cls.name : '', clsText: cls ? cls.text : '', clsCode: cls ? (cls.name.match(/\(([^)]+)\)/) ? cls.name.match(/\(([^)]+)\)/)[1].replace(' ', '') : cls.name) : '',
       viewerRef: this.viewerRef, yes: true, cur, curAlt, isImage: cur.kind === 'image', isVideo: cur.kind === 'video', isAudio: cur.kind === 'audio',
@@ -908,10 +951,11 @@ class Component extends DCLogic {
       toggleSidebar: () => this.setSidebar(!s.sidebar), closeSidebar: () => this.setSidebar(false),
       fullLabel: s.full ? 'Exit full screen' : 'Full screen',
       toggleFull: () => this.toggleFull(),
-      reportIssue: e => { e.preventDefault(); this.setState({ req: 'contact', reqSent: false }); },
+      reportIssue: e => { e.preventDefault(); this.openReq(e.currentTarget); },
       reqOpen: !!s.req, reqForm: !!s.req && !s.reqSent, reqSent: s.reqSent, stopProp: e => e.stopPropagation(),
-      openContact: () => this.setState({ req: 'contact', reqSent: false }),
-      closeReq: () => this.setState({ req: null, reqSent: false }), submitReq: e => { e.preventDefault(); this.setState({ reqSent: true }); },
+      openContact: e => this.openReq(e && e.currentTarget),
+      dialogRef: this.dialogRef, reqKey: this.reqKey,
+      closeReq: () => this.closeReqDlg(), submitReq: e => { e.preventDefault(); this.setState({ reqSent: true }); this.focusReqTitle(); },
       reqTitle: { use: 'Request to use', view: 'Request to view', contact: 'Contact the collection' }[s.req] || '',
       reqHint: { use: 'Ask permission to reproduce this item in a publication, online or for commercial use. Describe your intended use.', view: 'Ask to view this item in person or to see media that is not shown online. Access may be by appointment or restricted.', contact: 'Ask a question, share knowledge about this item, or report incorrect or missing information.' }[s.req] || '',
       msgLabel: { use: 'Intended use', view: 'Reason for viewing and preferred dates', contact: 'Message' }[s.req] || 'Message',
