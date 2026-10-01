@@ -885,35 +885,35 @@
     const museumClassification = !isFilmRating ? (it.classification || null) : null;
 
     const f = [
+      [2, 'Object type', [L(objType, true)]],
       [3, 'Date', date && [L(date)]],
       [4, 'Creator', it.creator && creatorLines],
-      [5, 'Cultural group', it.culturalAffiliation && [L(it.culturalAffiliation, true)]],
-      [6, 'Associated entity', it.associatedEntity && [L(it.associatedEntity, true)]],
-      [7, 'Place', it.place && [L(it.place)]],
-      [8, 'Description', it.description && [L(it.description)]],
-      [9, 'Series', it.series && [L(it.series, true)]],
-      [10, 'Editions', it.editions && [L(it.editions, true)]],
-      [11, 'Material', it.material && [L(it.material)]],
-      [12, 'Dimensions', it.dimensions && [L(it.dimensions)]],
-      [13, 'Inscriptions', it.inscription && [L(it.inscription)]],
-      [14, 'Language', it.language && [L(it.language, true)]],
+      [5, 'Associated entity', it.associatedEntity && [L(it.associatedEntity, true)]],
+      [6, 'Place', it.place && [L(it.place)]],
+      [7, 'Description', it.description && [L(it.description)]],
+      [8, 'Series', it.series && [L(it.series, true)]],
+      [9, 'Editions', it.editions && [L(it.editions, true)]],
+      [10, 'Material', it.material && [L(it.material)]],
+      [11, 'Dimensions (H x W x D)', it.dimensions && [L(it.dimensions)]],
+      [12, 'Inscription', it.inscription && [L(it.inscription)]],
+      [13, 'Language', it.language && [L(it.language, true)]],
+      [14, 'Cultural affiliation', it.culturalAffiliation && [L(it.culturalAffiliation, true)]],
       [15, 'Accession number', it.accession && [L(it.accession)], true],
+      [18, 'Named collection', it.named && [L(it.named, true)]],
+      [19, 'Collection', [L(coll, true)]],
+      [20, 'Access', it.access && [L(it.access, true)]],
       [21, 'Classification', museumClassification && [L(museumClassification, true)]],
       [22, 'Subject', it.subject && [L(it.subject, true)]],
-      [23, 'Access', it.access && [L(it.access, true)]],
-      [24, 'Sub-collection', it.named && [L(it.named, true)]],
-      [25, 'Collection', [L(coll, true)]],
-      [26, 'Type', [L(objType, true)]],
-      [31, 'Related record', it.relatedParent && [L(it.relatedParent, true)]],
-      [32, 'Related record', it.relatedChild && [L(it.relatedChild, true)]],
-      [33, 'Related record', it.relatedRecord && [L(it.relatedRecord, true)]],
-      [34, 'Producer', (it.producer || it.imageProducer) && [L(it.producer || it.imageProducer)]],
-      [35, 'Source', it.sourceUrl && [L(it.sourceUrl)]]
+      [23, 'Source URL', it.sourceUrl && [L(it.sourceUrl)]],
+      [24, 'Related parent record', it.relatedParent && [L(it.relatedParent, true)]],
+      [25, 'Related child record', it.relatedChild && [L(it.relatedChild, true)]],
+      [26, 'Related record', it.relatedRecord && [L(it.relatedRecord, true)]],
+      [30, 'Producer', (it.producer || it.imageProducer) && [L(it.producer || it.imageProducer)]]
     ].filter(r => r[2]).map(([seq, label, lines, copy]) => ({ seq, label, lines, copy: !!copy, value: lines[0].text }));
     const rights = [
       { seq: 16, label: 'Copyright', value: copyrightHolder },
       { seq: 17, label: 'Credit line', value: creditLine },
-      ...(hasDA ? [{ seq: 20, label: 'Terms of use', value: it.terms || lic.terms }] : [])
+      ...(hasDA ? [{ seq: 29, label: 'Terms of use', value: it.terms || lic.terms }] : [])
     ];
     const advisories = (it.advisories || []).map(a => ADVISORY[a]).filter(Boolean);
     const byline = [(!it.creator || UNKNOWN.test(it.creator)) ? null : nameOnly(it.creator), date].filter(Boolean).join(' · ');
