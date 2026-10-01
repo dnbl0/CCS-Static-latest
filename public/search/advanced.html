@@ -544,11 +544,11 @@ button,input,select{font-family:inherit}
                 </sc-if>
                 <sc-if value="{{ sec.isLife }}">
                   <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap">
-                    <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--col-text-muted)">Born after<input inputmode="numeric" value="{{ sec.birthFromVal }}" onChange="{{ sec.onBirthFrom }}" placeholder="e.g. 1800" aria-label="Born after" style="width:130px;border:1px solid var(--col-border-neutral);border-radius:0;padding:11px 14px;font-size:16px;color:var(--col-text-primary)"></label>
+                    <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--col-text-muted)">{{ sec.lifeFromLabel }}<input inputmode="numeric" value="{{ sec.lifeFromVal }}" onChange="{{ sec.onLifeFrom }}" placeholder="{{ sec.lifeFromHint }}" aria-label="{{ sec.lifeFromLabel }}" style="width:130px;border:1px solid var(--col-border-neutral);border-radius:0;padding:11px 14px;font-size:16px;color:var(--col-text-primary)"></label>
                     <span style="padding-bottom:12px;color:var(--col-text-muted)">to</span>
-                    <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--col-text-muted)">Born before<input inputmode="numeric" value="{{ sec.birthToVal }}" onChange="{{ sec.onBirthTo }}" placeholder="e.g. 1950" aria-label="Born before" style="width:130px;border:1px solid var(--col-border-neutral);border-radius:0;padding:11px 14px;font-size:16px;color:var(--col-text-primary)"></label>
+                    <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--col-text-muted)">{{ sec.lifeToLabel }}<input inputmode="numeric" value="{{ sec.lifeToVal }}" onChange="{{ sec.onLifeTo }}" placeholder="{{ sec.lifeToHint }}" aria-label="{{ sec.lifeToLabel }}" style="width:130px;border:1px solid var(--col-border-neutral);border-radius:0;padding:11px 14px;font-size:16px;color:var(--col-text-primary)"></label>
                   </div>
-                  <span style="font-size:13px;color:var(--col-text-muted)">Based on birth years found in creator names.</span>
+                  <span style="font-size:13px;color:var(--col-text-muted)">{{ sec.lifeNote }}</span>
                 </sc-if>
               </div>
             </sc-if>
@@ -813,7 +813,7 @@ const ITEMS = window.CCS.items;
 const HIER = [
  {name:MHM,children:['Roseby Collection',BUSH,BUSHA,'Frederic Wood Jones Collection']},
  {name:UAC,children:['Russell and Mab Grimwade Bequest','Michael Buxton Collection']},
- {name:GMC,children:[]},{name:'FEIT',children:[]},{name:DENT,children:[]},{name:PDC,children:[]}
+ {name:GMC,children:[]},{name:'Faculty of Engineering and Information Technology',children:[]},{name:DENT,children:[]},{name:PDC,children:[]}
 ];
 const LISTS = {
  type:['Photograph','Artwork','Publication','Video (Moving Image)','Audio (Interviews)','Cultural Object','Manuscript','Scientific Specimen','Personal computer','Calculator'],
@@ -834,16 +834,17 @@ const FACETS = [
  {group:'Collection details', key:'coll',title:'Collection title',kind:'tree',search:true},
  {group:'Collection details', key:'named',title:'Named collections',kind:'list',search:true},
  {group:'Creator', key:'creator',title:'Creator name',kind:'list',search:true},
- {group:'Creator', key:'life',title:'Creator birth / death years',kind:'life'},
- {group:'Creator', key:'nationality',title:'Nationality',kind:'list'},
+ {group:'Creator', key:'life',title:'Creator date of birth',kind:'life',dk:'birth'},
+ {group:'Creator', key:'lifeDeath',title:'Creator date of death',kind:'life',dk:'death'},
+ {group:'Creator', key:'nationality',title:'Nationality',kind:'list',search:true},
  {group:'Object', key:'date',title:'Production date',kind:'date'},
- {group:'Object', key:'period',title:'Date (era, period, century)',kind:'chips'},
- {group:'Object', key:'classification',title:'Classification',kind:'chips'},
- {group:'Object', key:'type',title:'Object type',kind:'chips'},
+ {group:'Object', key:'period',title:'Date (era, period, century)',kind:'chips',search:true},
+ {group:'Object', key:'classification',title:'Classification',kind:'chips',search:true},
+ {group:'Object', key:'type',title:'Object type',kind:'chips',search:true},
  {group:'Object', key:'material',title:'Materials / medium',kind:'list',search:true},
- {group:'Object', key:'language',title:'Language',kind:'chips'},
+ {group:'Object', key:'language',title:'Language',kind:'chips',search:true},
  {group:'Object', key:'place',title:"Object's place of production",kind:'list',search:true},
- {group:'Object', key:'region',title:'Region',kind:'chips'},
+ {group:'Object', key:'region',title:'Region',kind:'chips',search:true},
  {group:'Object', key:'accession',title:'Accession number',kind:'text'},
  {group:'Subject / topic', key:'subject',title:'Subject terms',kind:'list',search:true},
  {group:'Subject / topic', key:'assoc',title:'Subject agent',kind:'list',search:true},
@@ -865,7 +866,7 @@ const SORTS = [['rel','Relevance'],['new','Date (newest)'],['old','Date (oldest)
 const RATIO = {kangaroo:[676,762],cary:[676,816],goodenia:[680,426],grandfather:[680,547],heavy:[680,497],bottle:[676,944],vase:[676,948],compound:[676,944],inro1:[680,830],bottle2:[676,952],eucalypt:[590,157],dimalan:[676,429],inro2:[680,826],cabinet:[680,490],dimalan2:[676,436],piano:[680,347],inro3:[680,830],eucryphia:[676,719],'macintosh-web':[1600,1068],'calculator-web':[1600,1200],tsukioka:[600,338],'potentiometer-web':[1600,1034],'blower-web':[1600,1200],electrometer:[789,592],carbsoda:[1333,2000],toiletjar:[1333,2000],filmposter:[1522,2000],crookes:[250,376],pipes:[768,513],necklace:[2000,1328]};
 const SKEL = [300,200,340,240,280,190,320,230,260];
 const uniq = k => [...new Set(ITEMS.flatMap(i => vals(i, k)))];
-const EMPTYF = () => { const f = {digital:false,downloadable:false,sort:'',q:'',scope:'all',collection:[],yFrom:null,yTo:null,accession:'',birthFrom:null,birthTo:null}; KEYS.forEach(k => f[k] = []); return f; };
+const EMPTYF = () => { const f = {digital:false,downloadable:false,sort:'',q:'',scope:'all',collection:[],yFrom:null,yTo:null,accession:'',birthFrom:null,birthTo:null,deathFrom:null,deathTo:null}; KEYS.forEach(k => f[k] = []); return f; };
 const clone = f => JSON.parse(JSON.stringify(f));
 const FOCUSABLE = 'button:not([disabled]),input,a[href],[tabindex]:not([tabindex="-1"])';
 
@@ -1077,6 +1078,12 @@ class Component extends DCLogic {
       if (f.birthFrom != null && lp.birth < f.birthFrom) return false;
       if (f.birthTo != null && lp.birth > f.birthTo) return false;
     }
+    if (except !== 'lifeDeath' && (f.deathFrom != null || f.deathTo != null)) {
+      const lp = lifespanOf(it.creator);
+      if (!lp.death) return false;
+      if (f.deathFrom != null && lp.death < f.deathFrom) return false;
+      if (f.deathTo != null && lp.death > f.deathTo) return false;
+    }
     if (except !== 'coll' && f.collection.length && !f.collection.includes(it.collection)) return false;
     for (const k of KEYS) if (k !== except && f[k].length && !vals(it, k).some(v => f[k].includes(v))) return false;
     if (except !== 'date' && (f.yFrom != null || f.yTo != null)) {
@@ -1173,9 +1180,10 @@ class Component extends DCLogic {
       }
       const limit = F.kind === 'chips' ? 12 : 6;
       const hasDate = k === 'date' && (d.yFrom != null || d.yTo != null);
-      const hasLife = k === 'life' && (d.birthFrom != null || d.birthTo != null);
-      const badge = k === 'date' ? (hasDate ? 1 : null) : k === 'life' ? (hasLife ? 1 : null) : k === 'accession' ? (d.accession ? 1 : null) : (selected.length || null);
-      const summary = k === 'date' ? (hasDate ? (d.yFrom ?? 'Any') + ' – ' + (d.yTo ?? 'Present') : '') : k === 'life' ? (hasLife ? (d.birthFrom ?? 'Any') + ' – ' + (d.birthTo ?? 'Any') : '') : k === 'accession' ? (d.accession || '') : selected.length ? selected[0] + (selected.length > 1 ? ' +' + (selected.length - 1) : '') : '';
+      const lk = F.dk === 'death' ? 'death' : 'birth', lFrom = d[lk + 'From'], lTo = d[lk + 'To'];
+      const hasLife = F.kind === 'life' && (lFrom != null || lTo != null);
+      const badge = k === 'date' ? (hasDate ? 1 : null) : F.kind === 'life' ? (hasLife ? 1 : null) : k === 'accession' ? (d.accession ? 1 : null) : (selected.length || null);
+      const summary = k === 'date' ? (hasDate ? (d.yFrom ?? 'Any') + ' – ' + (d.yTo ?? 'Present') : '') : F.kind === 'life' ? (hasLife ? (lFrom ?? 'Any') + ' – ' + (lTo ?? 'Any') : '') : k === 'accession' ? (d.accession || '') : selected.length ? selected[0] + (selected.length > 1 ? ' +' + (selected.length - 1) : '') : '';
       return { key: k, title: F.title, group: F.group, groupStart: fi === 0 || FACETS[fi - 1].group !== F.group, open, panelId: 'facet-' + k, badge, summary, showSummary: !open && !!summary,
         chev: open ? 'rotate(180deg)' : 'none', toggle: () => this.setState(st => ({ mOpen: { ...st.mOpen, [k]: !st.mOpen[k] } })),
         isChips: false, isRows: F.kind === 'list' || F.kind === 'tree' || F.kind === 'chips', isDate: F.kind === 'date', isText: F.kind === 'text', isLife: F.kind === 'life',
@@ -1183,9 +1191,12 @@ class Component extends DCLogic {
         options: more ? options : options.slice(0, limit), empty: F.kind !== 'date' && F.kind !== 'text' && F.kind !== 'life' && options.length === 0,
         hasMore: options.length > limit, moreLabel: more ? 'Show fewer' : 'Show all ' + options.length, toggleMore: () => this.setState(st => ({ more: { ...st.more, [k]: !st.more[k] } })),
         accessionVal: d.accession || '', onAccession: e => { const v = e.target.value; this.setDraft(dd => ({ ...dd, accession: v })); },
-        birthFromVal: d.birthFrom ?? '', birthToVal: d.birthTo ?? '',
-        onBirthFrom: e => { const v = e.target.value.trim(); this.setDraft(dd => ({ ...dd, birthFrom: v === '' ? null : parseInt(v, 10) })); },
-        onBirthTo: e => { const v = e.target.value.trim(); this.setDraft(dd => ({ ...dd, birthTo: v === '' ? null : parseInt(v, 10) })); } };
+        lifeFromVal: lFrom ?? '', lifeToVal: lTo ?? '',
+        lifeFromLabel: lk === 'death' ? 'Died after' : 'Born after', lifeToLabel: lk === 'death' ? 'Died before' : 'Born before',
+        lifeFromHint: lk === 'death' ? 'e.g. 1850' : 'e.g. 1800', lifeToHint: lk === 'death' ? 'e.g. 2000' : 'e.g. 1950',
+        lifeNote: lk === 'death' ? 'Based on death years found in creator names.' : 'Based on birth years found in creator names.',
+        onLifeFrom: e => { const v = e.target.value.trim(); this.setDraft(dd => ({ ...dd, [lk + 'From']: v === '' ? null : parseInt(v, 10) })); },
+        onLifeTo: e => { const v = e.target.value.trim(); this.setDraft(dd => ({ ...dd, [lk + 'To']: v === '' ? null : parseInt(v, 10) })); } };
     });
     // date domain, adaptive bins
     const ys = ITEMS.filter(it => it.dateStart && this.matchF(it, d, 'date')).map(it => it.dateStart);
@@ -1196,7 +1207,7 @@ class Component extends DCLogic {
     const bins = []; for (let b = lo; b < this.dom.hi; b += size) bins.push({ b, c: ys.filter(y => y >= b && y < b + size).length });
     const maxBin = Math.max(1, ...bins.map(x => x.c));
     const undated = ITEMS.filter(it => !it.dateStart && this.matchF(it, d, 'date')).length;
-    const draftActive = d.collection.length || KEYS.some(k => d[k].length) || d.yFrom != null || d.yTo != null || d.digital || d.downloadable || d.accession || d.birthFrom != null || d.birthTo != null;
+    const draftActive = d.collection.length || KEYS.some(k => d[k].length) || d.yFrom != null || d.yTo != null || d.digital || d.downloadable || d.accession || d.birthFrom != null || d.birthTo != null || d.deathFrom != null || d.deathTo != null;
     const sw = (label, key) => { const on = d[key]; return { label, on, toggle: () => this.setDraft(dd => ({ ...dd, [key]: !dd[key] })),
       trackBg: on ? 'var(--col-bg-primary)' : '#c3c6cd', knobLeft: on ? '18px' : '2px' }; };
     const setY = () => { const yi = s.yIn || {}; const pf = yi.from != null ? yi.from : (d.yFrom ?? ''), pt = yi.to != null ? yi.to : (d.yTo ?? '');
@@ -1236,6 +1247,7 @@ class Component extends DCLogic {
     if (f.yFrom != null || f.yTo != null) chips.push({ group: 'Production date', label: (f.yFrom ?? 'Any') + ' – ' + (f.yTo ?? 'Present'), remove: () => this.apply(ff => ({ ...ff, yFrom: null, yTo: null })) });
     if (f.accession) chips.push({ group: 'Accession number', label: f.accession, remove: () => this.apply(ff => ({ ...ff, accession: '' })) });
     if (f.birthFrom != null || f.birthTo != null) chips.push({ group: 'Creator birth years', label: (f.birthFrom ?? 'Any') + ' – ' + (f.birthTo ?? 'Any'), remove: () => this.apply(ff => ({ ...ff, birthFrom: null, birthTo: null })) });
+    if (f.deathFrom != null || f.deathTo != null) chips.push({ group: 'Creator death years', label: (f.deathFrom ?? 'Any') + ' – ' + (f.deathTo ?? 'Any'), remove: () => this.apply(ff => ({ ...ff, deathFrom: null, deathTo: null })) });
     if (f.downloadable) chips.push({ group: 'Access', label: 'Only records with downloads', remove: () => this.apply(ff => ({ ...ff, downloadable: false })) });
     const isLive = typeof BlacklightAdapter !== 'undefined' && BlacklightAdapter.isLive();
     const apiBtnText = isLive ? (s.liveError ? '● API: Fallback (Offline)' : '● API: Live Blacklight') : '○ API: Mock Data';

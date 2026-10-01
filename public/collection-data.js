@@ -1,7 +1,7 @@
 // CCS record data + CCS Data Inventory (9 Sept) field mapping. Loaded as a global: window.CCS
 (function () {
   const MHM = 'Medical History Museum', UAC = 'University Art Collection', GMC = 'Grainger Museum Collection';
-  const PDC = 'Prints and Drawing Collection, Special Collections and Archives', FEIT = 'FEIT', DENT = 'Henry Forman Atkinson Dental Museum';
+  const PDC = 'Prints and Drawing Collection, Special Collections and Archives', FEIT = 'Faculty of Engineering and Information Technology', DENT = 'Henry Forman Atkinson Dental Museum';
   const HBA = 'Harry Brookes Allen Museum of Anatomy and Pathology';
   const BUSH = 'Bush Medicine collection', BUSHA = 'Bush Medicine collection/Aboriginal and Torres Strait Islander Art Collection';
 
