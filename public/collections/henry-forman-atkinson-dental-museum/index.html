@@ -269,25 +269,6 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
   </header>
 </div>
 
-<section aria-label="Collection summary" style="background:#fff;border-bottom:1px solid #e3e0d9;padding:16px 0">
-  <sc-if value="{{ noAdvisory }}" hint-placeholder-val="{{ true }}">
-    <div style="max-width:1200px;margin:0 auto;padding:0 32px">
-     <div style="padding:0;display:flex;flex-direction:column;gap:24px">
-      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase">
-        <a href="/collections/index.html" style="color:#0b4ea2;text-decoration:none" style-hover="text-decoration:underline">Collection</a>
-        <span aria-hidden="true" style="width:4px;height:4px;background:#9a9ea8"></span>
-        <span style="color:#0b4ea2">University of Melbourne</span>
-      </div>
-     </div>
-    </div>
-  </sc-if>
-  <sc-if value="{{ advisory }}" hint-placeholder-val="{{ false }}">
-    <div style="max-width:1200px;margin:0 auto;padding:8px 32px">
-      <p class="notice notice--warning" role="note"><strong>Rights / Advisory language:</strong> {{ advisory }}</p>
-    </div>
-  </sc-if>
-</section>
-
 <main id="main-content" style="flex:1;background:#f1f0ec">
   <div style="max-width:1200px;margin:0 auto;padding:40px 32px 56px;display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start">
     <div style="flex:999 1 560px;min-width:0;display:flex;flex-direction:column;gap:24px">
@@ -771,8 +752,8 @@ class Component extends DCLogic {
     const cp = COPY[key];
     return {
       coll: { name: COLL_KEYS[key], blurb: cp.summary, externalUrl: cp.external, banner: BANNERS[key], searchHref: '/search/search-results.html?collection=' + encodeURIComponent(COLL_KEYS[key]) },
-      about: cp.about, advisory: cp.advisory, noAdvisory: !cp.advisory,
-      details: cp.details.filter(([label]) => label !== 'Total items' && label !== 'Date range').map(([label, value]) => label === 'Physical location' && ADDRESS[key] ? { label, isAddress: true, lines: ADDRESS[key].lines, note: ADDRESS[key].note } : { label, isText: true, value }),
+      about: cp.about,
+      details: [...cp.details.filter(([label]) => label !== 'Total items' && label !== 'Date range').map(([label, value]) => label === 'Physical location' && ADDRESS[key] ? { label, isAddress: true, lines: ADDRESS[key].lines, note: ADDRESS[key].note } : { label, isText: true, value }), ...(cp.advisory ? [{ label: 'Rights / Advisory language', isText: true, value: cp.advisory }] : [])],
       visit: { hours: cp.hours, email: cp.email, phone: cp.phone, phoneHref: cp.phone.replace(/[^+\d]/g, '') }
     };
   }
