@@ -803,15 +803,15 @@
           <div class="stat-label">Collections</div>
         </div>
         <div class="col-6 col-lg-3">
-          <div class="stat-number">55</div>
+          <div class="stat-number" data-ccs-stat="named">55</div>
           <div class="stat-label">Named collections</div>
         </div>
         <div class="col-6 col-lg-3">
-          <div class="stat-number">728</div>
+          <div class="stat-number" data-ccs-stat="records">728</div>
           <div class="stat-label">Objects catalogued</div>
         </div>
         <div class="col-6 col-lg-3">
-          <div class="stat-number">42</div>
+          <div class="stat-number" data-ccs-stat="media">42</div>
           <div class="stat-label">With digital images</div>
         </div>
       </div>
@@ -940,6 +940,17 @@
   <!-- Bootstrap 5.3.3 JS Bundle (Official - https://github.com/twbs/bootstrap) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   <script src="support.js"></script>
+  <script src="collection-data.js"></script>
+  <script>
+  // Stats strip: computed from the catalogue data (window.CCS); static markup values are only a no-JS fallback.
+  (function () {
+    var C = window.CCS; if (!C || !C.records) return;
+    var recs = Object.keys(C.records).map(function (k) { return C.records[k]; });
+    var named = {}; recs.forEach(function (r) { if (r.named) named[r.named] = 1; });
+    var v = { records: recs.length, named: Object.keys(named).length, media: recs.filter(function (r) { return r.hasDA; }).length };
+    document.querySelectorAll('[data-ccs-stat]').forEach(function (el) { var n = v[el.getAttribute('data-ccs-stat')]; if (n != null) el.textContent = n.toLocaleString('en-AU'); });
+  })();
+  </script>
 
 <!-- UoM Footer -->
 <footer aria-label="University of Melbourne footer" class="page-footer">

@@ -607,11 +607,18 @@ const COLLS = [
  ['Medical History Museum', '../images/tile-mhm.jpg'], ['University Art Collection', '../images/tile-uac.jpg'], ['Grainger Museum Collection', '../images/tile-gmc.jpg'],
  ['Henry Forman Atkinson Dental Museum', '../images/tile-dental.png'], ['Harry Brookes Allen Museum of Anatomy and Pathology', '../images/tile-hba.jpg']
 ];
-const THEMES = [['Cultural objects', 'Cultural Object', '../images/tile-cultural-object.png'], ['Photographs', 'Photograph', '../images/tile-photograph.jpg'], ['Art', 'Artwork', '../images/tile-art.png'], ['Sound recordings', 'Audio (Interviews)', '../images/tile-sound.jpg'], ['Film and video', 'Video (Moving Image)', null], ['Technology and instruments', 'Cultural Object', '../images/electrometer.jpg']];
-const COUNTS = { 'Medical History Museum': 66, 'University Art Collection': 58, 'Grainger Museum Collection': 55, 'Henry Forman Atkinson Dental Museum': 26, 'Harry Brookes Allen Museum of Anatomy and Pathology': 25 };
+// Browse-by-type tiles: [label, search query string, image]. The search page matches `type=` exactly against each
+// item's raw objectType (free text, mixed case), so only tiles with a clean exact value use it; the rest use keyword or collection scope.
+const THEMES = [
+  ['Cultural objects', 'type=' + encodeURIComponent('Cultural Object'), '../images/tile-cultural-object.png'],
+  ['Photographs', 'q=photograph', '../images/tile-photograph.jpg'],
+  ['Art', 'collection=' + encodeURIComponent('University Art Collection'), '../images/tile-art.png'],
+  ['Sound recordings', 'q=recording', '../images/tile-sound.jpg'],
+  ['Film and video', 'q=video', null],
+  ['Technology and instruments', 'q=instrument', '../images/electrometer.jpg']
+];
 const KEY = { 'Faculty of Engineering and Information Technology': 'FEIT', 'Medical History Museum': 'MHM', 'University Art Collection': 'UAC', 'Grainger Museum Collection': 'GMC', 'Henry Forman Atkinson Dental Museum': 'DENT', 'Harry Brookes Allen Museum of Anatomy and Pathology': 'HBA', 'Prints and Drawing Collection, Special Collections and Archives': 'PDC' };
 const SLUG = { MHM: 'medical-history-museum', UAC: 'university-art-collection', GMC: 'grainger-museum', DENT: 'henry-forman-atkinson-dental-museum', HBA: 'harry-brookes-allen-museum' };
-const TYPE = { 'Art': 'Artwork', 'Sound Recording': 'Audio (Interviews)', 'Film': 'Video (Moving Image)', 'Technology': 'Cultural Object' };
 const S = '/search/advanced';
 const BLURBS = {
   MHM: "Explore the social history of medicine and its role in society, including a nineteenth-century pharmacy complete with pharmaceutical jars and equipment.",
@@ -623,13 +630,13 @@ const BLURBS = {
 class Component extends DCLogic {
   renderVals() {
     const CCS = window.CCS, all = CCS ? Object.values(CCS.records) : [];
-    const countOf = name => all.length ? all.filter(r => r.collection === name).length : (COUNTS[name] || 0);
-    const total = all.length || Object.values(COUNTS).reduce((a, b) => a + b, 0);
+    const countOf = name => all.filter(r => r.collection === name).length;
+    const total = all.length;
     const media = all.filter(r => r.hasDA).length;
     return {
-      collections: COLLS.map(([name, img]) => { const n = countOf(name); return { name, imgSrc: img || '', hasImg: !!img, count: n ? n + ' records' : 'Coming soon', blurb: BLURBS[KEY[name]] || '', href: SLUG[KEY[name]] ? '/collections/' + SLUG[KEY[name]] : '/collections' }; }),
-      themes: THEMES.map(([name, type, img]) => ({ name, imgSrc: img || '', hasImg: !!img, cls: img ? '' : 'cl-tile--plain', href: S + '?type=' + encodeURIComponent(type) })),
-      facts: [{ stat: String(total), sentence: 'Catalogued records' }, { stat: String(COLLS.length), sentence: 'Collections' }, ...(media ? [{ stat: String(media), sentence: 'Records with images, audio or video' }] : [])],
+      collections: COLLS.map(([name, img]) => { const n = countOf(name); return { name, imgSrc: img || '', hasImg: !!img, count: n ? n.toLocaleString('en-AU') + ' records' : 'Coming soon', blurb: BLURBS[KEY[name]] || '', href: SLUG[KEY[name]] ? '/collections/' + SLUG[KEY[name]] : '/collections' }; }),
+      themes: THEMES.map(([name, qs, img]) => ({ name, imgSrc: img || '', hasImg: !!img, cls: img ? '' : 'cl-tile--plain', href: S + '?' + qs })),
+      facts: [{ stat: total.toLocaleString('en-AU'), sentence: 'Catalogued records' }, { stat: String(COLLS.length), sentence: 'Collections' }, ...(media ? [{ stat: media.toLocaleString('en-AU'), sentence: 'Records with images, audio or video' }] : [])],
       collectionsCount: COLLS.length + ' collections'
     };
   }
