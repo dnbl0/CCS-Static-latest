@@ -36,6 +36,7 @@
 </style>
   <link rel="stylesheet" href="../styles/vendor/bootstrap-uom.min.css">
   <link rel="stylesheet" href="../styles/footer.css">
+  <link rel="stylesheet" href="../styles/collection.css">
   <link rel="stylesheet" href="../styles/header.css">
 </head>
 <body>
@@ -73,12 +74,69 @@
 <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../components/fig-tokens.css">
 <link rel="stylesheet" href="../components/fig-assets.css">
+<script src="../collection-data.js"></script>
 <style>
 body{margin:0;background:var(--white-100);color:var(--col-text-primary);font-family:'Source Sans 3',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-decoration:underline}
 *{box-sizing:border-box}
 .breadcrumb-link{color:#fff;text-decoration:none}
 .breadcrumb-link:hover,.breadcrumb-link:focus-visible{text-decoration:underline}
+
+/* Collections landing — Matrix-style content blocks */
+.cl-wrap{max-width:1200px;margin:0 auto;padding:0 32px}
+.cl-section{padding:56px 0}
+.cl-section--tint{background:#f1f0ec}
+.cl-section--navy{background:var(--col-bg-primary-dark,#000b34);color:#fff}
+.cl-h2{margin:0 0 8px;font-family:'Fraunces',serif;font-weight:500;font-size:clamp(26px,3vw,34px);line-height:1.2;color:var(--col-text-primary)}
+.cl-section--navy .cl-h2{color:#fff}
+.cl-sub{margin:0 0 28px;max-width:720px;font-size:17px;line-height:1.55;color:#3b4050;text-wrap:pretty}
+.cl-lead{margin:0 auto;max-width:760px;text-align:center;font-size:20px;line-height:1.55;color:#1b1f2a;text-wrap:pretty}
+.cl-search{display:flex;gap:0;max-width:680px;margin:0 auto}
+.cl-search input{flex:1;min-width:0;height:52px;padding:0 16px;font:inherit;font-size:17px;border:1px solid var(--col-border-brand);border-right:0;border-radius:0;background:#fff;color:var(--col-text-primary)}
+.cl-search button{height:52px;padding:0 24px;font:inherit;font-size:16px;font-weight:600;border:1px solid var(--col-btn-action-bg,#46c8f0);background:var(--col-btn-action-bg,#46c8f0);color:var(--col-btn-action-text,#000f46);cursor:pointer;border-radius:0}
+.cl-search button:hover{background:var(--col-btn-action-bg-hover,#29b3d9)}
+.cl-search input:focus-visible,.cl-search button:focus-visible{outline:3px solid #0b4ea2;outline-offset:2px}
+.cl-links{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-top:16px;font-size:15px}
+.cl-links a{color:#fff;text-decoration:underline}
+.cl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.cl-card{position:relative;display:flex;flex-direction:column;background:#fff;border:1px solid #e3e0d9;transition:box-shadow .2s ease,border-color .2s ease}
+.cl-card:hover,.cl-card:focus-within{border-color:var(--col-bg-primary);box-shadow:0 6px 18px rgba(0,15,70,.12)}
+.cl-card__media{aspect-ratio:3/2;background:#f4f3f0;overflow:hidden}
+.cl-card__media img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s ease}
+.cl-card:hover .cl-card__media img{transform:scale(1.03)}
+.cl-card__body{display:flex;flex-direction:column;gap:10px;padding:20px 22px 24px;flex:1}
+.cl-card__tag{align-self:flex-start;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#0b4ea2}
+.cl-card__title{margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:22px;line-height:1.25}
+.cl-card__title a{color:var(--col-bg-primary);text-decoration:none}
+.cl-card__title a::after{content:"";position:absolute;inset:0}
+.cl-card__title a:focus-visible{outline:3px solid #0b4ea2;outline-offset:2px}
+.cl-card__desc{margin:0;font-size:16px;line-height:1.5;color:#3b4050;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.cl-card__cta{margin-top:auto;padding-top:6px;display:inline-flex;align-items:center;gap:6px;font-weight:600;font-size:16px;color:var(--col-bg-primary)}
+.cl-card--cta{background:var(--col-bg-primary);border-color:var(--col-bg-primary);color:#fff;justify-content:center}
+.cl-card--cta .cl-card__body{justify-content:center;gap:14px;padding:32px 28px}
+.cl-card--cta .cl-card__title a,.cl-card--cta .cl-card__cta{color:#fff}
+.cl-card--cta .cl-card__desc{color:rgba(255,255,255,.88);-webkit-line-clamp:unset;display:block}
+.cl-card--cta:hover{background:var(--col-bg-primary-hover,#213e5d)}
+.cl-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.cl-tile{position:relative;display:flex;align-items:flex-end;aspect-ratio:16/10;background:var(--col-bg-primary);overflow:hidden;color:#fff;text-decoration:none}
+.cl-tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .35s ease}
+.cl-tile:hover img{transform:scale(1.04)}
+.cl-tile::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,15,70,0) 40%,rgba(0,15,70,.9) 100%);z-index:1}
+.cl-tile__label{position:relative;z-index:2;width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:16px 18px;font-family:'Fraunces',serif;font-size:20px;font-weight:600}
+.cl-tile:hover{text-decoration:none;color:#fff}
+.cl-tile:focus-visible{outline:3px solid #46c8f0;outline-offset:3px}
+.cl-tile--plain{background:linear-gradient(135deg,#000f46,#213e5d)}
+.cl-help{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.cl-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.cl-facts .facts-card__item{align-items:flex-start}
+@media (max-width:1000px){.cl-grid,.cl-tiles,.cl-help{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:640px){
+  .cl-wrap{padding:0 16px}.cl-section{padding:40px 0}
+  .cl-grid,.cl-tiles,.cl-help,.cl-facts{grid-template-columns:1fr}
+  .cl-lead{font-size:18px}
+  .cl-search{flex-direction:column;gap:8px}.cl-search input{border-right:1px solid var(--col-border-brand)}
+}
+@media (prefers-reduced-motion:reduce){.cl-card,.cl-card__media img,.cl-tile img{transition:none}}
 @media (max-width:640px){
   .hero-inner{padding:16px 20px 28px!important}
   .hero-cta a{flex:1 1 100%!important;justify-content:center!important}
@@ -243,40 +301,86 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
     <h1>Browse collections</h1>
   </div>
 </section>
-<section style="background:#fff">
-  <div style="max-width:760px;margin:0 auto;padding:32px 32px 0;text-align:center">
-    <p style="margin:0;font-size:17px;line-height:1.5;color:#3b4050">The University of Melbourne's cultural collections are unrivalled among Australian universities, spanning visual arts, cartography, medical history, zoology, archives and more, including significant collections of Aboriginal and Torres Strait Islander cultural heritage.</p>
-  </div>
-</section>
-<main id="main-content" style="flex:1;max-width:1200px;width:100%;margin:0 auto;padding:40px 32px 80px;display:flex;flex-direction:column;gap:48px">
-  <section aria-labelledby="h-coll" style="display:flex;flex-direction:column;gap:20px">
-    <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap">
-      <h2 id="h-coll" style="margin:0;font-family:'Fraunces',serif;font-weight:500;font-size:32px;color:var(--col-text-primary)">Collections</h2>
-      <span style="font-size:14px;color:var(--col-text-muted)">{{ collectionsCount }}</span>
-    </div>
-    <div class="collections-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:24px">
-      <sc-for list="{{ collections }}" as="c" hint-placeholder-count="5">
-        <a href="{{ c.href }}" style="display:flex;flex-direction:column;background:#fff;border:1px solid #e3e0d9;text-decoration:none;color:var(--col-text-primary);transition:transform .2s" style-hover="transform:translateY(-2px);text-decoration:none">
-          <sc-if value="{{ c.hasImg }}" hint-placeholder-val="{{ false }}"><div style="width:100%;aspect-ratio:4 / 3;background:#f4f3f0;overflow:hidden"><img src="{{ c.imgSrc }}" alt="" style="width:100%;height:100%;object-fit:cover;display:block"></div></sc-if>
-          <div style="display:flex;flex-direction:column;gap:6px;padding:18px 20px;flex:1">
-            <strong style="font-family:'Fraunces',serif;font-weight:600;font-size:20px;line-height:1.3;color:var(--col-bg-primary);text-wrap:pretty">{{ c.name }}</strong>
-            <span style="font-size:14px;color:var(--col-text-muted)">{{ c.count }}</span>
-            <span style="display:flex;align-items:center;gap:6px;margin-top:auto;padding-top:10px;font-size:14px;font-weight:600;color:var(--col-bg-primary)">View collection <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"></polyline></svg></span>
-          </div>
-        </a>
-      </sc-for>
+<main id="main-content">
+  <section class="cl-section" aria-label="Introduction" style="padding-bottom:40px">
+    <div class="cl-wrap"><p class="cl-lead">The University of Melbourne's cultural collections are unrivalled among Australian universities, spanning visual arts, cartography, medical history, zoology, archives and more, including significant collections of Aboriginal and Torres Strait Islander cultural heritage.</p></div>
+  </section>
+
+  <section class="cl-section cl-section--navy" aria-labelledby="h-search" style="padding:44px 0">
+    <div class="cl-wrap" style="text-align:center">
+      <h2 id="h-search" class="cl-h2" style="margin-bottom:20px">Search across every collection</h2>
+      <form class="cl-search" role="search" action="/search/advanced.html" method="get">
+        <label for="cl-q" class="sr-only">Search all collections</label>
+        <input id="cl-q" name="q" type="search" placeholder="Search by title, creator, subject or accession number" autocomplete="off">
+        <button type="submit">Search</button>
+      </form>
+      <div class="cl-links"><a href="/search/advanced.html">Advanced search</a><a href="/help/index.html">Search tips</a></div>
     </div>
   </section>
-  <section aria-labelledby="h-themes" style="display:flex;flex-direction:column;gap:20px">
-    <h2 id="h-themes" style="margin:0;font-family:'Fraunces',serif;font-weight:500;font-size:32px;color:var(--col-text-primary)">Explore by object</h2>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px">
-      <sc-for list="{{ themes }}" as="t" hint-placeholder-count="6">
-        <a href="{{ t.href }}" style="position:relative;display:flex;align-items:flex-end;aspect-ratio:4 / 3;background:var(--col-bg-primary);overflow:hidden;text-decoration:none;transition:transform .2s" style-hover="text-decoration:none">
-          <sc-if value="{{ t.hasImg }}" hint-placeholder-val="{{ false }}"><img src="{{ t.imgSrc }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></sc-if>
-          <span aria-hidden="true" style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,15,70,0) 45%,rgba(0,15,70,.88) 100%)"></span>
-          <span style="position:relative;padding:16px;font-family:'Fraunces',serif;font-size:19px;font-weight:600;color:#fff">{{ t.name }}</span>
-        </a>
-      </sc-for>
+
+  <section class="cl-section" aria-labelledby="h-coll">
+    <div class="cl-wrap">
+      <h2 id="h-coll" class="cl-h2">Our collections</h2>
+      <p class="cl-sub">{{ collectionsCount }} held by museums, archives and faculties across the University. Choose a collection to see its story, highlights and how to visit.</p>
+      <div class="cl-grid">
+        <sc-for list="{{ collections }}" as="c" hint-placeholder-count="5">
+          <article class="cl-card">
+            <sc-if value="{{ c.hasImg }}" hint-placeholder-val="{{ false }}"><div class="cl-card__media"><img src="{{ c.imgSrc }}" alt="" loading="lazy"></div></sc-if>
+            <div class="cl-card__body">
+              <span class="cl-card__tag">{{ c.count }}</span>
+              <h3 class="cl-card__title"><a href="{{ c.href }}">{{ c.name }}</a></h3>
+              <p class="cl-card__desc">{{ c.blurb }}</p>
+              <span class="cl-card__cta" aria-hidden="true">View collection <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="13 6 19 12 13 18"></polyline></svg></span>
+            </div>
+          </article>
+        </sc-for>
+        <article class="cl-card cl-card--cta">
+          <div class="cl-card__body">
+            <h3 class="cl-card__title"><a href="/search/advanced.html">Search all records</a></h3>
+            <p class="cl-card__desc">Looking for something specific? Search and filter every record across all of the collections at once.</p>
+            <span class="cl-card__cta" aria-hidden="true">Start searching <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="13 6 19 12 13 18"></polyline></svg></span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="cl-section cl-section--tint" aria-labelledby="h-facts">
+    <div class="cl-wrap">
+      <h2 id="h-facts" class="cl-h2">The collections at a glance</h2>
+      <p class="cl-sub">Cultural material from more than a century of teaching, research and collecting.</p>
+      <div class="cl-facts facts-card" style="flex-wrap:nowrap">
+        <sc-for list="{{ facts }}" as="f" hint-placeholder-count="3">
+          <div class="facts-card__item"><strong class="facts-card__stat">{{ f.stat }}</strong><span class="facts-card__sentence">{{ f.sentence }}</span></div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section class="cl-section" aria-labelledby="h-themes">
+    <div class="cl-wrap">
+      <h2 id="h-themes" class="cl-h2">Explore by object type</h2>
+      <p class="cl-sub">Follow a type of object across every collection.</p>
+      <div class="cl-tiles">
+        <sc-for list="{{ themes }}" as="t" hint-placeholder-count="6">
+          <a class="cl-tile {{ t.cls }}" href="{{ t.href }}">
+            <sc-if value="{{ t.hasImg }}" hint-placeholder-val="{{ false }}"><img src="{{ t.imgSrc }}" alt=""></sc-if>
+            <span class="cl-tile__label">{{ t.name }} <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="13 6 19 12 13 18"></polyline></svg></span>
+          </a>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section class="cl-section cl-section--tint" aria-labelledby="h-help">
+    <div class="cl-wrap">
+      <h2 id="h-help" class="cl-h2">Help and guidance</h2>
+      <p class="cl-sub">Information on searching, accessing and respectfully using the collections.</p>
+      <div class="cl-help">
+        <a class="pathfinder-inset" href="/help/index.html"><span class="pathfinder-inset__heading">Help and support</span><span class="pathfinder-inset__desc">Searching, using and requesting items from the collections.</span></a>
+        <a class="pathfinder-inset" href="/help/indigenous-data.html"><span class="pathfinder-inset__heading">Indigenous cultural data and access</span><span class="pathfinder-inset__desc">How Aboriginal and Torres Strait Islander material is cared for and shared.</span></a>
+        <a class="pathfinder-inset" href="/contact.html"><span class="pathfinder-inset__heading">Contact the collections team</span><span class="pathfinder-inset__desc">Ask a question or request access to an item.</span></a>
+      </div>
     </div>
   </section>
 </main>
@@ -502,17 +606,29 @@ const COLLS = [
  ['Medical History Museum', '../images/tile-mhm.jpg'], ['University Art Collection', '../images/tile-uac.jpg'], ['Grainger Museum Collection', '../images/tile-gmc.jpg'],
  ['Henry Forman Atkinson Dental Museum', '../images/tile-dental.png'], ['Harry Brookes Allen Museum of Anatomy and Pathology', '../images/tile-hba.jpg']
 ];
-const THEMES = [['Cultural Object', '../images/tile-cultural-object.png'], ['Photograph', '../images/tile-photograph.jpg'], ['Art', '../images/tile-art.png'], ['Sound Recording', '../images/tile-sound.jpg'], ['Film', null], ['Technology', '../images/electrometer.jpg']];
+const THEMES = [['Cultural objects', 'Cultural Object', '../images/tile-cultural-object.png'], ['Photographs', 'Photograph', '../images/tile-photograph.jpg'], ['Art', 'Artwork', '../images/tile-art.png'], ['Sound recordings', 'Audio (Interviews)', '../images/tile-sound.jpg'], ['Film and video', 'Video (Moving Image)', null], ['Technology and instruments', 'Cultural Object', '../images/electrometer.jpg']];
 const COUNTS = { 'Medical History Museum': 66, 'University Art Collection': 58, 'Grainger Museum Collection': 55, 'Henry Forman Atkinson Dental Museum': 26, 'Harry Brookes Allen Museum of Anatomy and Pathology': 25 };
 const KEY = { 'Faculty of Engineering and Information Technology': 'FEIT', 'Medical History Museum': 'MHM', 'University Art Collection': 'UAC', 'Grainger Museum Collection': 'GMC', 'Henry Forman Atkinson Dental Museum': 'DENT', 'Harry Brookes Allen Museum of Anatomy and Pathology': 'HBA', 'Prints and Drawing Collection, Special Collections and Archives': 'PDC' };
 const SLUG = { MHM: 'medical-history-museum', UAC: 'university-art-collection', GMC: 'grainger-museum', DENT: 'henry-forman-atkinson-dental-museum', HBA: 'harry-brookes-allen-museum' };
 const TYPE = { 'Art': 'Artwork', 'Sound Recording': 'Audio (Interviews)', 'Film': 'Video (Moving Image)', 'Technology': 'Cultural Object' };
 const S = '/search/advanced';
+const BLURBS = {
+  MHM: "Explore the social history of medicine and its role in society, including a nineteenth-century pharmacy complete with pharmaceutical jars and equipment.",
+  UAC: "Paintings, prints, sculpture and decorative arts spanning classical antiquity to contemporary Australian practice.",
+  GMC: "The personal archive, instruments and scores of composer Percy Grainger, held in trust for scholarship worldwide.",
+  DENT: "The oldest and most significant dental collection in Australia, tracing the history of dental health and education from 1884.",
+  HBA: "One of Australia's largest collections of human tissue specimens, animal anatomy specimens and historical anatomical models."
+};
 class Component extends DCLogic {
   renderVals() {
+    const CCS = window.CCS, all = CCS ? Object.values(CCS.records) : [];
+    const countOf = name => all.length ? all.filter(r => r.collection === name).length : (COUNTS[name] || 0);
+    const total = all.length || Object.values(COUNTS).reduce((a, b) => a + b, 0);
+    const media = all.filter(r => r.hasDA).length;
     return {
-      collections: COLLS.map(([name, img]) => ({ name, imgSrc: img || '', hasImg: !!img, noImg: !img, count: COUNTS[name] ? COUNTS[name] + ' records' : 'Coming soon', href: SLUG[KEY[name]] ? '/collections/' + SLUG[KEY[name]] : '/collections' })),
-      themes: THEMES.map(([name, img]) => ({ name, imgSrc: img || '', hasImg: !!img, href: S + '?type=' + encodeURIComponent(TYPE[name] || name) })),
+      collections: COLLS.map(([name, img]) => { const n = countOf(name); return { name, imgSrc: img || '', hasImg: !!img, count: n ? n + ' records' : 'Coming soon', blurb: BLURBS[KEY[name]] || '', href: SLUG[KEY[name]] ? '/collections/' + SLUG[KEY[name]] : '/collections' }; }),
+      themes: THEMES.map(([name, type, img]) => ({ name, imgSrc: img || '', hasImg: !!img, cls: img ? '' : 'cl-tile--plain', href: S + '?type=' + encodeURIComponent(type) })),
+      facts: [{ stat: String(total), sentence: 'Catalogued records' }, { stat: String(COLLS.length), sentence: 'Collections' }, ...(media ? [{ stat: String(media), sentence: 'Records with images, audio or video' }] : [])],
       collectionsCount: COLLS.length + ' collections'
     };
   }
