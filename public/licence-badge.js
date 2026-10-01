@@ -25,7 +25,11 @@
     attributeChangedCallback() { if (this.isConnected) this.render(); }
     render() {
       const L = window.CCS && window.CCS.licences;
-      const key = this.getAttribute('licence') || 'Rights Reserved';
+      const key = this.getAttribute('licence');
+      // The page templates (DC runtime) contain <ccs-licence licence="{{ ... }}"> placeholders. Those must stay
+      // empty: any children rendered inside a template element get adopted by React and later break reconciliation
+      // ("removeChild ... not a child of this node"). Only render once a real licence name is set.
+      if (!key || key.indexOf('{{') !== -1) { if (this.firstChild) this.textContent = ''; return; }
       const lic = L && (L[key] || L['Rights Reserved']);
       if (!lic) { this.textContent = ''; return; }
       const id = this._id || (this._id = 'licence-tip-' + (++uid));
