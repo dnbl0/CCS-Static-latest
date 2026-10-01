@@ -8,6 +8,7 @@
 <script src="../support.js"></script>
 <script src="../blacklight-adapter.js"></script>
 <script src="../collection-data.js"></script>
+<script src="../licence-badge.js"></script>
 <style>
 .skip-link {
   position: absolute;
@@ -448,9 +449,7 @@ button,input,select{font-family:inherit}
                 <a href="/collections/index.html" style="font-size:14px;color:#0b4ea2">{{ r.collection }}</a>
                 <span style="font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--col-bg-primary)">{{ r.type }}</span>
                 <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:4px;padding-top:12px;border-top:1px solid var(--col-border-neutral-soft)">
-                  <span style="display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--col-bg-primary)">
-                    <sc-if value="{{ r.hasLicIcons }}" hint-placeholder-val="{{ false }}"><sc-for list="{{ r.licIcons }}" as="ic" hint-placeholder-count="1"><img src="{{ ic }}" alt="" style="width:16px;height:16px"></sc-for></sc-if>{{ r.licLabel }}
-                  </span>
+                  <ccs-licence licence="{{ r.licenceKey }}"></ccs-licence>
                 </div>
               </div>
             </article>
@@ -473,7 +472,8 @@ button,input,select{font-family:inherit}
                   <span style="display:flex;flex-direction:column"><span style="color:var(--col-text-muted);font-size:12px">Creator</span>{{ r.creator }}</span>
                   <span style="display:flex;flex-direction:column"><span style="color:var(--col-text-muted);font-size:12px">Production date</span>{{ r.dateLabel }}</span>
                   <span style="display:flex;flex-direction:column"><span style="color:var(--col-text-muted);font-size:12px">Collection</span><span style="color:#0b4ea2">{{ r.collection }}</span></span>
-                  <span style="display:flex;flex-direction:column"><span style="color:var(--col-text-muted);font-size:12px">Object type · Licence</span>{{ r.typeLic }}</span>
+                  <span style="display:flex;flex-direction:column"><span style="color:var(--col-text-muted);font-size:12px">Object type</span>{{ r.type }}</span>
+                  <span style="display:flex;flex-direction:column;align-items:flex-start;gap:2px"><span style="color:var(--col-text-muted);font-size:12px">Licence</span><ccs-licence licence="{{ r.licenceKey }}"></ccs-licence></span>
                 </div>
               </div>
             </article>
@@ -885,7 +885,6 @@ const SCOPES = [['all','All fields'],['title','Title'],['creator','Creator'],['s
 const scopeText = (it, sc) => sc === 'title' ? it.title : sc === 'creator' ? it.creator : sc === 'subject' ? it.subject : [it.title, it.creator, it.collection, it.named, it.objectType, it.subject, it.material, it.place, it.culture, ...(it.assoc || [])].filter(Boolean).join(' ');
 const TERMS = (() => { const m = new Map(); const add = (t, cat, sc) => { if (t && !m.has(t + cat)) m.set(t + cat, { text: t, cat, sc }); };
   ITEMS.forEach(it => { add(it.title, 'Title', 'title'); if (!/unknown|Staff photographer|^Japanese$/.test(it.creator)) add(it.creator, 'Creator', 'creator'); add(it.subject, 'Subject', 'subject'); add(it.place, 'Place', 'all'); add(it.material, 'Material', 'all'); }); return [...m.values()]; })();
-const LIC = {'Public Domain':['PD','Public domain',['../images/cc/pd.svg']],'Rights Reserved':['cc','In copyright',[]],'CC BY':['cc','CC BY',['../images/cc/cc.svg','../images/cc/by.svg']],'CC BY-SA':['cc','CC BY-SA',['../images/cc/cc.svg','../images/cc/by.svg','../images/cc/sa.svg']]};
 const SORTS = [['rel','Relevance'],['new','Date (newest)'],['old','Date (oldest)'],['az','Title A-Z']];
 const RATIO = {kangaroo:[676,762],cary:[676,816],goodenia:[680,426],grandfather:[680,547],heavy:[680,497],bottle:[676,944],vase:[676,948],compound:[676,944],inro1:[680,830],bottle2:[676,952],eucalypt:[590,157],dimalan:[676,429],inro2:[680,826],cabinet:[680,490],dimalan2:[676,436],piano:[680,347],inro3:[680,830],eucryphia:[676,719],electrometer:[789,592],carbsoda:[1333,2000],toiletjar:[1333,2000],filmposter:[1522,2000],crookes:[250,376],pipes:[768,513],necklace:[2000,1328]};
 const SKEL = [300,200,340,240,280,190,320,230,260];
@@ -1373,11 +1372,10 @@ class Component extends DCLogic {
       if (f.sort === 'old') list = [...list].sort((a, b) => (a.dateStart ?? 1e9) - (b.dateStart ?? 1e9));
     }
     const results = list.map((it, idx) => {
-      const licEntry = LIC[it.licence] || ['rights', 'Rights Reserved', []];
-      const licIcons = licEntry[2] || [];
+      const licenceKey = window.CCS.licences[it.licence] ? it.licence : 'Rights Reserved';
       const imgPath = it.img ? (it.img.startsWith('http') || it.img.startsWith('/') ? it.img : '../images/' + it.img + '.jpg') : null;
       return { ...it, href: '/collections/record.html?id=' + it.id, img: imgPath, imgSrc: imgPath || '', ar: it.img && RATIO[it.img] ? RATIO[it.img].join(' / ') : 'auto', delay: Math.min(idx, 12) * 35 + 'ms', hasImg: !!it.img, noImg: !it.img,
-        type: capType(it.objectType), dateLabel: it.date || (it.dateStart ? 'c. ' + it.dateStart : 'Undated'), typeLic: capType(it.objectType) + ' · ' + licEntry[1], licIcon: licEntry[0], licLabel: licEntry[1], licIcons, hasLicIcons: licIcons.length > 0 };
+        type: capType(it.objectType), dateLabel: it.date || (it.dateStart ? 'c. ' + it.dateStart : 'Undated'), licenceKey };
     });
     const totalCount = (isLive && s.liveTotal != null) ? s.liveTotal : (isLive && s.liveItems ? s.liveItems.length : list.length);
     const n = totalCount, pageCount = Math.max(1, Math.ceil(n / s.perPage)), page = Math.min(s.page, pageCount);

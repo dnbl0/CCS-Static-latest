@@ -99,6 +99,7 @@
 <link rel="stylesheet" href="../components/fig-tokens.css">
 <link rel="stylesheet" href="../components/fig-assets.css">
 <script src="../collection-data.js"></script>
+<script src="../licence-badge.js"></script>
 <style>
 body{margin:0;background:var(--white-100);color:var(--col-text-primary);font-family:'Source Sans 3',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 a{color:#0b2a6b;text-decoration:none}a:hover{color:#0b2a6b;text-decoration:underline}
@@ -395,6 +396,7 @@ button,input{font-family:inherit}
       <sc-if value="{{ rec.byline }}"><p style="margin:0;font-size:18px;color:#3b4050">{{ rec.byline }}</p></sc-if>
     </div>
     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding-top:20px;border-top:1px solid var(--col-border-neutral-soft)">
+      <ccs-licence licence="{{ licKey }}" style="margin-right:auto"></ccs-licence>
       <button data-contact-btn onClick="{{ openContact }}" style="height:44px;display:flex;align-items:center;gap:8px;border:1px solid #c9ccd6;background:#fff;color:var(--col-bg-primary);padding:0 14px;font-size:15px;font-weight:600;cursor:pointer" style-hover="border-color:var(--col-bg-primary)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14"></rect><polyline points="3 7 12 13 21 7"></polyline></svg>Contact us</button>
       <button onClick="{{ share }}" style="height:44px;display:flex;align-items:center;gap:8px;border:1px solid #c9ccd6;background:#fff;color:var(--col-bg-primary);padding:0 14px;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none" style-hover="border-color:var(--col-bg-primary)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"></path><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"></path></svg>{{ shareText }}</button>
     </div>
@@ -480,12 +482,6 @@ button,input{font-family:inherit}
       <section style="background:#fff;border:1px solid #e3e0d9;display:flex;flex-direction:column">
         <h2 style="margin:0;padding:20px 24px;border-bottom:1px solid var(--col-border-neutral-soft);font-family:'Fraunces',serif;font-weight:600;font-size:22px;color:var(--col-bg-primary)">Rights and use</h2>
         <div style="padding:18px 24px 22px;display:flex;flex-direction:column;gap:14px">
-          <sc-if value="{{ hasLicence }}">
-            <div style="display:flex;align-items:center;gap:10px">
-              <span style="display:flex;align-items:center;gap:4px"><sc-if value="{{ hasLicIcons }}" hint-placeholder-val="{{ false }}"><sc-for list="{{ licIcons }}" as="ic" hint-placeholder-count="1"><img src="{{ ic }}" alt="" style="width:28px;height:28px"></sc-for></sc-if></span>
-              <div style="display:flex;flex-direction:column"><span style="font-size:12px;color:var(--col-text-muted)">Licence type</span><strong style="font-size:16px;color:var(--col-bg-primary)">{{ licLabel }}</strong></div>
-            </div>
-          </sc-if>
           <sc-if value="{{ hasClass }}">
             <div style="display:flex;align-items:flex-start;gap:10px">
               <span style="flex:none;min-width:30px;height:30px;padding:0 5px;background:{{ clsBg }};color:{{ clsFg }};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800">{{ clsCode }}</span>
@@ -502,7 +498,7 @@ button,input{font-family:inherit}
             <span style="font-size:13px;font-weight:700;color:var(--col-text-primary)">Responsible collection</span>
             <a href="#" style="font-size:14px;text-decoration:underline">{{ rec.unit }}</a>
           </div>
-          <a href="#" style="font-size:15px;font-weight:600;text-decoration:underline">About copyright and terms of use</a>
+          <a href="/help/index.html?topic=copyright" style="font-size:15px;font-weight:600;text-decoration:underline">About copyright and terms of use</a>
         </div>
       </section>
     </aside>
@@ -537,7 +533,7 @@ button,input{font-family:inherit}
               <span style="font-size:14px;color:#0b4ea2">{{ r.collection }}</span>
               <span style="font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--col-bg-primary)">{{ r.type }}</span>
               <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:4px;padding-top:12px;border-top:1px solid var(--col-border-neutral-soft)">
-                <span style="display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--col-bg-primary)"><sc-if value="{{ r.hasLicIcons }}" hint-placeholder-val="{{ false }}"><sc-for list="{{ r.licIcons }}" as="ic" hint-placeholder-count="1"><img src="{{ ic }}" alt="" style="width:16px;height:16px"></sc-for></sc-if>{{ r.lic }}</span>
+                <ccs-licence licence="{{ r.licenceKey }}"></ccs-licence>
               </div>
             </div>
           </article>
@@ -897,7 +893,7 @@ class Component extends DCLogic {
     const notFound = !!CCS && !R;
     this.curId = R ? R.id : id;
     try { document.title = R ? `${R.title} — Cultural Collections Search — University of Melbourne` : (notFound ? 'Record not found — Cultural Collections Search — University of Melbourne' : document.title); } catch (e) {}
-    if (!R) return { notFound, found: false, pageTitle: notFound ? 'Record not found' : '', rec: { title: '', type: '', byline: '', citation: '', unit: '', assetId: '', hasDA: false, images: [], slides: [], subjects: [], advisories: [], rights: [] },
+    if (!R) return { licKey: 'Rights Reserved', notFound, found: false, pageTitle: notFound ? 'Record not found' : '', rec: { title: '', type: '', byline: '', citation: '', unit: '', assetId: '', hasDA: false, images: [], slides: [], subjects: [], advisories: [], rights: [] },
       fields: [], related: [], mediaRows: [], thumbs: [], noDA: false, showRelated: false, viewerRef: this.viewerRef,
       yes: true, cur: { src: '', label: '' }, curAlt: '', isImage: false, isVideo: false, isAudio: false, curBroken: false, onImgLoad() {}, onMeta() {}, multi: false, imgCount: '', liveText: '',
       prevImg() {}, nextImg() {}, atFirst: true, atLast: true, sidebarOpen: false, sidebarCls: 'im-sidebar', sidebarLabel: '', toggleSidebar() {}, closeSidebar() {}, fullLabel: '', toggleFull() {},
@@ -938,7 +934,7 @@ class Component extends DCLogic {
       viewAll: `View all ${R.type.toLowerCase()} records`,
       typeHref: `/search/search-results.html?type=${encodeURIComponent(R.type)}`, collectionHref: `/search/search-results.html?collection=${encodeURIComponent(R.collection)}`,
       hasAdvisory: R.advisories.length > 0, hasSubjects,
-      hasLicence: !!R.licence, licIcons: R.licence ? (R.licence.icons || []) : [], hasLicIcons: !!(R.licence && R.licence.icons && R.licence.icons.length), licLabel: R.licence ? R.licence.label : '',
+      licKey: R.licenceKey,
       hasClass: !!cls, clsBg: cls ? cls.bg : '', clsFg: cls ? cls.fg : '', clsName: cls ? cls.name : '', clsText: cls ? cls.text : '', clsCode: cls ? (cls.name.match(/\(([^)]+)\)/) ? cls.name.match(/\(([^)]+)\)/)[1].replace(' ', '') : cls.name) : '',
       viewerRef: this.viewerRef, yes: true, cur, curAlt, isImage: cur.kind === 'image', isVideo: cur.kind === 'video', isAudio: cur.kind === 'audio',
       curBroken: !!s.broken[cur.src],
