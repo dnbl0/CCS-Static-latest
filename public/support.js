@@ -568,6 +568,7 @@
   }
   function walkText(node) {
     const txt = node.nodeValue ?? "";
+    const plainInterp = !!node.parentElement?.closest("[data-dc-plain-interp]");
     if (!txt.includes("{{")) {
       if (!txt.trim() && !txt.includes(" ")) return null;
       return () => txt;
@@ -582,6 +583,7 @@
         if (v === void 0) {
           if (!ctx?.__streamingNow) {
             if (document.body?.hasAttribute("data-dc-editor-on")) {
+              if (plainInterp) return "{{ " + p.trim() + " }}";
               return h(
                 "span",
                 { key: i, className: "sc-interp sc-unresolved" },
@@ -594,6 +596,7 @@
             );
             return null;
           }
+          if (plainInterp) return p.trim();
           return h(
             "span",
             { key: i, className: "sc-interp sc-missing" },
@@ -604,7 +607,7 @@
           return h(getReact().Fragment, { key: i }, v);
         }
         if (v === null || typeof v === "boolean") return null;
-        return h("span", { key: i, className: "sc-interp" }, String(v));
+        return plainInterp ? String(v) : h("span", { key: i, className: "sc-interp" }, String(v));
       })
     );
   }
