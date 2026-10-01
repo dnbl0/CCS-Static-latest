@@ -1,0 +1,144 @@
+/* ==========================================================================
+   Collection landing page components
+   Modelled on documented University of Melbourne Matrix CMS content
+   components (unimelb.edu.au/web/matrix-cms/content-templates), since the
+   collection landing pages don't run inside Matrix CMS itself and the
+   editorial component CSS isn't published for reuse. Semantic naming and
+   field structure follow the Matrix component specs; colours/spacing use
+   this site's own Gen 3 design tokens.
+   ========================================================================== */
+
+/* Notice — notices.unimelb.edu.au/web/matrix-cms/styling-content/notices
+   Matrix defines notice/notice--success/info/warning/danger as simple
+   feedback classes applicable to a <p> or <div>. We only need warning
+   (cultural/medical advisories), but keep info for completeness. */
+.notice {
+  margin: 0;
+  padding: 14px 18px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.notice--warning {
+  background: var(--col-advisory-bg, #fdf6d8);
+  border: 1px solid var(--col-advisory-border, #efdc8e);
+  color: #1b1f2a;
+}
+
+.notice--info {
+  background: #eaf6fb;
+  border: 1px solid #bfe4f2;
+  color: #003f8b;
+}
+
+/* Facts card — unimelb.edu.au/web/matrix-cms/content-templates/facts-card
+   "Max length of stat is approximately 6 characters... should NOT wrap."
+   Supports an inverse (dark-background) treatment for use inside a navy
+   hero, which the documented component doesn't need since Matrix pages
+   don't put Facts cards on a coloured hero background. */
+.facts-card {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.facts-card__item {
+  flex: 1 1 140px;
+  background: #fff;
+  border: 1px solid #e3e0d9;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.facts-card__stat {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 1.1;
+  color: var(--col-bg-primary, #000f46);
+  white-space: nowrap;
+}
+
+.facts-card__sentence {
+  font-size: 13px;
+  color: var(--col-text-muted, #5b6070);
+}
+
+.facts-card--inverse .facts-card__item {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.facts-card--inverse .facts-card__stat {
+  color: #fff;
+}
+
+.facts-card--inverse .facts-card__sentence {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* Contact box — unimelb.edu.au/web/matrix-cms/content-templates/contact-box
+   "List up to 4 terms with descriptions." Grey-background variant. */
+.contact-box {
+  background: #f4f3f0;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.contact-box__heading {
+  font-family: 'Fraunces', serif;
+  font-size: 18px;
+  color: var(--col-text-primary, #1b1f2a);
+}
+
+.contact-box__term {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--col-text-muted, #5b6070);
+  margin: 0 0 2px;
+}
+
+.contact-box__desc {
+  font-size: 15px;
+  color: var(--col-text-primary, #1b1f2a);
+  display: block;
+  text-decoration: none;
+}
+
+a.contact-box__desc:hover {
+  text-decoration: underline;
+}
+
+/* Pathfinder (inset, white) — single box used for an external redirect link.
+   unimelb.edu.au/web/matrix-cms/content-templates/pathfinder documents this
+   as the "Redirect page" asset pattern. */
+.pathfinder-inset {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: #fff;
+  border: 1px solid #e3e0d9;
+  padding: 22px;
+  text-decoration: none;
+}
+
+.pathfinder-inset:hover {
+  border-color: var(--col-bg-primary, #000f46);
+}
+
+.pathfinder-inset__heading {
+  font-family: 'Fraunces', serif;
+  font-size: 18px;
+  color: var(--col-text-primary, #1b1f2a);
+}
+
+.pathfinder-inset__desc {
+  font-size: 14px;
+  color: var(--col-text-muted, #5b6070);
+}
