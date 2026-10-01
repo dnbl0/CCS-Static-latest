@@ -876,8 +876,19 @@
     const creditLine = it.creditLine || `${it.named && !it.named.includes('/') ? it.named + ', ' : ''}${coll}, University of Melbourne.`;
     const copyrightHolder = it.copyright || (it.licence === 'Public Domain' ? 'Copyright expired' : (!it.creator || UNKNOWN.test(it.creator)) ? 'Copyright holder unknown' : `© ${nameOnly(it.creator)}`);
     const L = (text, link) => ({ text, link: !!link });
-    const creatorLines = it.creator ? [L(it.creator + (it.creatorRole ? `, ${it.creatorRole}` : ''), !UNKNOWN.test(it.creator))] : [];
-    if (it.nationality && !UNKNOWN.test(it.creator)) creatorLines.push({ text: it.nationality, muted: true });
+    // CCS Field labels sheet (Creator): person = "Full name (DoB - DoD) [nationality] Role";
+    // organisation = "Name (estab. X, closed Y)". Dates already present in the source display value are kept as-is.
+    const creatorText = (() => {
+      if (!it.creator) return '';
+      const known = !UNKNOWN.test(it.creator);
+      const hasParen = /\([^)]*\)/.test(it.creator);
+      const dob = it.creatorDoB, dod = it.creatorDoD;
+      const life = !hasParen && known && (dob || dod) ? (dob && dod ? ` (${dob} – ${dod})` : dob ? ` (b. ${dob})` : ` (d. ${dod})`) : '';
+      const nat = known && it.nationality ? ` [${it.nationality}]` : '';
+      const role = it.creatorRole ? ' ' + it.creatorRole.charAt(0).toUpperCase() + it.creatorRole.slice(1) : '';
+      return it.creator + life + nat + role;
+    })();
+    const creatorLines = creatorText ? [L(creatorText, !UNKNOWN.test(it.creator))] : [];
     
     // Film and gaming classification vs Museum Subject Classification
     const isFilmRating = it.classification && ['G', 'PG', 'M', 'MA15+', 'CTC'].includes(it.classification);
