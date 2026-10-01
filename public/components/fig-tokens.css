@@ -1522,3 +1522,7 @@ section[data-component="Header"] input::placeholder {
   white-space: normal;
   overflow-wrap: anywhere;
 }
+
+/* Wide banner: the search results page lays its sections out on a 1440px container, so the banner text
+   uses the same container and left edge as the content below it. */
+.page-banner--wide .page-banner__inner { max-width: 1440px; }
