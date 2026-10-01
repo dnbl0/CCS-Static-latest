@@ -317,16 +317,14 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
         <span aria-hidden="true" style="width:4px;height:4px;background:#9a9ea8"></span>
         <span style="color:#0b4ea2">University of Melbourne</span>
       </div>
-      <p style="margin:0;font-size:18px;color:#3b4050">{{ summaryLine }}</p>
     </div>
     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding-top:20px;border-top:1px solid var(--col-border-neutral-soft)">
       <a href="{{ coll.searchHref }}" class="lp-btn lp-btn--primary">Search this collection</a>
       <a href="/collections/index.html" class="lp-btn">Browse all collections</a>
-      <sc-if value="{{ coll.hasExternal }}" hint-placeholder-val="{{ false }}"><a href="{{ coll.externalUrl }}" target="_blank" rel="noopener" class="lp-btn">Explore online <span class="sr-only">(opens in new window)</span><span aria-hidden="true">↗</span></a></sc-if>
       <button type="button" onClick="{{ share }}" class="lp-btn" style="margin-left:auto"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"></path><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"></path></svg>{{ shareText }}</button>
     </div>
-    <sc-if value="{{ visit.warning }}" hint-placeholder-val="{{ false }}">
-      <p class="notice notice--warning" role="note">Aboriginal and Torres Strait Islander viewers are advised that this website may contain the image, voice, or name of deceased persons. We apologise for any distress that may occur.</p>
+    <sc-if value="{{ advisory }}" hint-placeholder-val="{{ false }}">
+      <p class="notice notice--warning" role="note"><strong>Rights / Advisory language:</strong> {{ advisory }}</p>
     </sc-if>
   </div>
 </section>
@@ -334,7 +332,12 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
 <main id="main-content" style="flex:1;background:#f1f0ec">
   <div style="max-width:1200px;margin:0 auto;padding:40px 32px 56px;display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start">
     <div style="flex:999 1 560px;min-width:0;display:flex;flex-direction:column;gap:24px">
-      <section aria-label="Collection details" style="background:#fff;border:1px solid #e3e0d9">
+      <section aria-labelledby="h-about" class="lp-panel">
+        <h2 id="h-about">About this collection</h2>
+        <div class="lp-panel__body"><p style="margin:0;font-size:16px;line-height:1.6;color:#3b4050;text-wrap:pretty">{{ about }}</p></div>
+      </section>
+      <section aria-labelledby="h-details" class="lp-panel">
+        <h2 id="h-details">Collection details</h2>
         <dl style="margin:0;padding:8px 24px 12px">
           <sc-for list="{{ details }}" as="d">
             <div class="lp-row">
@@ -348,26 +351,18 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
         </dl>
       </section>
     </div>
-    <aside aria-label="Visit and access" style="flex:1 1 320px;min-width:0;display:flex;flex-direction:column;gap:24px;position:sticky;top:24px">
-      <sc-if value="{{ hasVisit }}" hint-placeholder-val="{{ false }}">
-        <section class="lp-panel">
-          <h2>Visit</h2>
-          <div class="lp-panel__body">
-            <div class="lp-panel__item"><span class="k">Opening hours</span><span class="v">{{ visit.hours }}</span></div>
-            <div class="lp-panel__item"><span class="k">Location</span><span class="v">{{ visit.location }}</span></div>
-            <sc-if value="{{ visit.contact }}"><div class="lp-panel__item"><span class="k">Enquiries</span><a class="v" href="mailto:{{ visit.contact }}">{{ visit.contact }}</a></div></sc-if>
-            <sc-if value="{{ visit.phone }}"><div class="lp-panel__item"><span class="k">Phone</span><a class="v" href="tel:{{ visit.phoneHref }}">{{ visit.phone }}</a></div></sc-if>
-          </div>
-        </section>
-      </sc-if>
+    <aside aria-label="Visit details and external collection link" style="flex:1 1 320px;min-width:0;display:flex;flex-direction:column;gap:24px;position:sticky;top:24px">
       <section class="lp-panel">
-        <h2>Access and use</h2>
+        <h2>Visit details</h2>
         <div class="lp-panel__body">
-          <div class="lp-panel__item"><span class="k">Request an item</span><a class="v" href="/contact.html">Contact the collections team</a></div>
-          <div class="lp-panel__item"><span class="k">Copyright and terms of use</span><a class="v" href="/help/index.html?topic=copyright">About copyright and terms of use</a></div>
-          <div class="lp-panel__item"><span class="k">Indigenous cultural data</span><a class="v" href="/help/indigenous-data.html">Indigenous Cultural Data and Access</a></div>
+          <div class="lp-panel__item"><span class="k">Opening hours</span><span class="v">{{ visit.hours }}</span></div>
+          <div class="lp-panel__item"><span class="k">Enquiries</span><a class="v" href="mailto:{{ visit.email }}">{{ visit.email }}</a><a class="v" href="tel:{{ visit.phoneHref }}">{{ visit.phone }}</a></div>
         </div>
       </section>
+      <a href="{{ coll.externalUrl }}" target="_blank" rel="noopener" class="pathfinder-inset">
+        <strong class="pathfinder-inset__heading">External collection link</strong>
+        <span class="pathfinder-inset__desc">Explore the collection on the collections website <span class="sr-only">(opens in new window)</span><span aria-hidden="true">↗</span></span>
+      </a>
     </aside>
   </div>
 </main>
@@ -617,27 +612,189 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440},&quot;collection&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;MHM&quot;,&quot;UAC&quot;,&quot;GMC&quot;,&quot;DENT&quot;,&quot;HBA&quot;],&quot;default&quot;:&quot;GMC&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
 
 const COLL_KEYS = { MHM: 'Medical History Museum', UAC: 'University Art Collection', GMC: 'Grainger Museum Collection', DENT: 'Henry Forman Atkinson Dental Museum', HBA: 'Harry Brookes Allen Museum of Anatomy and Pathology' };
-const BLURBS = {
-  MHM: "Explore, inquire and enjoy the social history of medicine and its role in society through a diverse exhibition program. Visit the nineteenth century Savory and Moore Pharmacy complete with pharmaceutical jars and equipment.",
-  UAC: "Paintings, prints, sculpture and decorative arts spanning classical antiquity to contemporary Australian practice.",
-  GMC: "The personal archive, instruments and scores of composer Percy Grainger, held in trust for scholarship worldwide.",
-  DENT: "Visit the Henry Forman Atkinson Dental Museum to be inspired by the intriguing history of dental health and the development of the dental professions and dental education. It is the oldest and most significant dental collection in Australia, tracing its origins to 1884.",
-  HBA: "One of Australia's largest collections of human tissue specimens, animal anatomy specimens and historical anatomical models, offering students and researchers a unique insight into the human body."
+const COPY = {
+  "GMC": {
+    "name": "Grainger Museum Collection",
+    "summary": "The personal collection of composer Percy Grainger including instruments, manuscripts, correspondence and experimental machines.",
+    "about": "Australian musician and composer Percy Grainger established the Grainger Museum in 1938, motivated by the desire to interpret and contextualise his creative achievements and cultural environment. The Grainger Museum Collection, an internationally significant archive of over 100,000 items, spans a range of disciplines, from experimental sound technology and musical instruments to costumes, ethnography, art and design. The collection is brought to life through collaboration with students, academic partners and artists and their creative work and production.",
+    "advisory": "",
+    "details": [
+      [
+        "Total items",
+        "7,800"
+      ],
+      [
+        "Holding institution",
+        "Grainger Museum"
+      ],
+      [
+        "Physical location",
+        "Parkville VIC 3010"
+      ],
+      [
+        "Date range",
+        "1890 – present"
+      ],
+      [
+        "Languages",
+        "English"
+      ],
+      [
+        "Formats held",
+        "Instruments, Manuscripts, Correspondence"
+      ]
+    ],
+    "hours": "Tue–Sun 12:00pm – 5:00pm",
+    "email": "grainger.museum@unimelb.edu.au",
+    "phone": "+61 3 8344 8828",
+    "external": "https://storeroom.its.unimelb.edu.au/umc/grainger?page=collection-areas"
+  },
+  "HBA": {
+    "name": "Harry Brookes Allen Museum of Anatomy and Pathology",
+    "summary": "Anatomical and pathological specimens, models and teaching collections supporting medical education and research.",
+    "about": "The Harry Brookes Allen Museum of Anatomy and Pathology is one of Australia's largest collections of human tissue specimens, animal anatomy specimens and historical anatomical models, offering students and researchers a unique insight into the human body. Although the museum is not normally open to the public, tours of the museum are available for biology and medical professionals and students.",
+    "advisory": "Contains medical/anatomical content advisory.",
+    "details": [
+      [
+        "Total items",
+        "4,600"
+      ],
+      [
+        "Holding institution",
+        "Department of Anatomy and Physiology"
+      ],
+      [
+        "Physical location",
+        "University of Melbourne, Medical Building, Corner of Grattan Street and Royal Parade, Parkville 3052, Victoria. The Museum is located on Level 3 East of the main Medical Building (Building 181). Wheel chair access, toilets, parking and cafes are available on campus. The Museum is not open to the general public. Swipe card access is provided to students enrolled in relevant subjects."
+      ],
+      [
+        "Date range",
+        "1860 – present"
+      ],
+      [
+        "Languages",
+        "English"
+      ],
+      [
+        "Formats held",
+        "Specimens, Models"
+      ]
+    ],
+    "hours": "Monday to Friday: 9:00am to 5:00pm. Closed on weekends and public holidays",
+    "email": "MDHS-museum@unimelb.edu.au",
+    "phone": "+61 3 8344 5805",
+    "external": "https://collections.mdhs.unimelb.edu.au/explore"
+  },
+  "DENT": {
+    "name": "Henry Forman Atkinson Dental Museum",
+    "summary": "Instruments, equipment and teaching materials documenting the history of dentistry and oral health education.",
+    "about": "Visit the Henry Forman Atkinson Dental Museum to be inspired by the intriguing history of dental health and development of the dental professions and dental education. It is the oldest and most significant dental collection in Australia. Tracing its origins back to 1884 with the formation of the Odontological Society of Victoria, the organization responsible for establishing the first dental school in Victoria.",
+    "advisory": "Contains medical content advisory.",
+    "details": [
+      [
+        "Total items",
+        "3,400"
+      ],
+      [
+        "Holding institution",
+        "Melbourne Dental School"
+      ],
+      [
+        "Physical location",
+        "Ground floor of the Royal Dental Hospital, 720 Swanston St, Carlton. Located in the dental hospital surrounded by student classrooms, the museum is available to students, patients, their families, and the general public."
+      ],
+      [
+        "Date range",
+        "1900 – present"
+      ],
+      [
+        "Languages",
+        "English"
+      ],
+      [
+        "Formats held",
+        "Instruments, Equipment, Photographs"
+      ]
+    ],
+    "hours": "9:00am – 5:00pm Monday to Friday",
+    "email": "mhm.info@unimelb.edu.au",
+    "phone": "+61 3 8344 6012",
+    "external": "https://collections.mdhs.unimelb.edu.au/explore"
+  },
+  "MHM": {
+    "name": "Medical History Museum",
+    "summary": "Historical medical instruments, teaching models, pathological specimens and records documenting medical education.",
+    "about": "Explore, inquire and enjoy the social history of medicine and its role in society through a diverse exhibition program. Visit the nineteenth century Savory and Moore Pharmacy complete with pharmaceutical jars and equipment. The Medical History Museum is a free museum for those inquisitive about medicine's contribution to scientific discovery and community well being.",
+    "advisory": "Aboriginal and Torres Strait Islander viewers are advised that this website may contain the image, voice, or name of deceased persons. We apologise for any distress that may occur.",
+    "details": [
+      [
+        "Total items",
+        "6,200"
+      ],
+      [
+        "Holding institution",
+        "Faculty of Medicine, Dentistry and Health Sciences"
+      ],
+      [
+        "Physical location",
+        "University of Melbourne, 233 Bouverie Street, Carlton, Victoria 3053."
+      ],
+      [
+        "Date range",
+        "1862 – present"
+      ],
+      [
+        "Languages",
+        "English"
+      ],
+      [
+        "Formats held",
+        "Instruments, Models, Specimens"
+      ]
+    ],
+    "hours": "Monday to Friday, 10.00am to 5.00pm",
+    "email": "mhm.info@unimelb.edu.au",
+    "phone": "+61 3 8344 3498",
+    "external": "https://collections.mdhs.unimelb.edu.au/explore"
+  },
+  "UAC": {
+    "name": "University Art Collection",
+    "summary": "A major university art collection featuring Australian and international works spanning painting, sculpture and works on paper.",
+    "about": "The University of Melbourne Art Collection is the largest university-based art collection in Australia, comprising over 18,000 artworks. The collection includes major holdings of paintings, prints and drawings, ceramics and sculpture, including contemporary Australian art and Aboriginal and Torres Strait Islander art.",
+    "advisory": "",
+    "details": [
+      [
+        "Total items",
+        "14,300"
+      ],
+      [
+        "Holding institution",
+        "Potter Museum of Art"
+      ],
+      [
+        "Physical location",
+        "Parkville VIC 3010"
+      ],
+      [
+        "Date range",
+        "1850 – present"
+      ],
+      [
+        "Languages",
+        "English"
+      ],
+      [
+        "Formats held",
+        "Paintings, Sculpture, Works on paper"
+      ]
+    ],
+    "hours": "Tue–Sun 10:00am – 5:00pm",
+    "email": "uac@unimelb.edu.au",
+    "phone": "+61 3 8344 5148",
+    "external": "https://storeroom.its.unimelb.edu.au/umc/art?page=collection-areas"
+  }
 };
-const VISIT = {
-  GMC: { warning: false, hours: 'Tuesday to Sunday, 12.00pm – 5.00pm', location: 'Grainger Museum, Parkville VIC 3010.', contact: 'grainger.museum@unimelb.edu.au', phone: '+61 3 8344 8828' },
-  UAC: { warning: false, hours: 'Tuesday to Sunday, 10.00am – 5.00pm', location: 'Potter Museum of Art, Parkville VIC 3010.', contact: 'uac@unimelb.edu.au', phone: '+61 3 8344 5148' },
-  MHM: { warning: true, hours: 'Monday to Friday, 10.00am – 5.00pm', location: 'University of Melbourne, 233 Bouverie Street, Carlton, Victoria 3053.', contact: 'MDHS-museum@unimelb.edu.au' },
-  DENT: { warning: false, hours: '9.00am – 5.00pm, Monday to Friday', location: 'Ground floor of the Royal Dental Hospital, 720 Swanston St, Carlton.', contact: null },
-  HBA: { warning: false, hours: 'Monday to Friday: 9.00am to 5.00pm. Closed on weekends and public holidays.', location: 'University of Melbourne, Medical Building, Corner of Grattan Street and Royal Parade, Parkville 3052, Victoria. Not open to the general public; swipe card access is provided to students enrolled in relevant subjects.', contact: null }
-};
-const EXTERNAL = {
-  GMC: 'https://storeroom.its.unimelb.edu.au/umc/grainger?page=collection-areas',
-  UAC: 'https://storeroom.its.unimelb.edu.au/umc/art?page=collection-areas',
-  MHM: 'https://collections.mdhs.unimelb.edu.au/explore',
-  DENT: 'https://collections.mdhs.unimelb.edu.au/explore',
-  HBA: 'https://collections.mdhs.unimelb.edu.au/explore'
-};
+const BLURBS = Object.fromEntries(Object.entries(COPY).map(([k, v]) => [k, v.summary]));
 class Component extends DCLogic {
   state = { idx: 0, copied: false };
   componentDidMount() {
@@ -660,8 +817,8 @@ class Component extends DCLogic {
       m.setAttribute('content', (BLURBS[key] || '').slice(0, 160));
     } catch (e) {}
     const name = COLL_KEYS[key] || COLL_KEYS.MHM;
-    const blank = { cur: { img: '', title: '', href: '#' }, thumbs: [], hasFeatured: false, count: '', live: '', prev() {}, next() {}, atFirst: true, atLast: true, share() {}, shareText: 'Share', details: [], summaryLine: '' };
-    if (!CCS) return { ...blank, coll: { name, blurb: BLURBS[key] || '', count: '', searchHref: '#', externalUrl: '', hasExternal: false }, items: [], hasVisit: false, visit: {} };
+    const blank = { about: '', advisory: '', cur: { img: '', title: '', href: '#' }, thumbs: [], hasFeatured: false, count: '', live: '', prev() {}, next() {}, atFirst: true, atLast: true, share() {}, shareText: 'Share', details: [], summaryLine: '' };
+    if (!CCS) return { ...blank, coll: { name, blurb: BLURBS[key] || '', count: '', searchHref: '#', externalUrl: '', hasExternal: false }, items: [], hasVisit: false, visit: {}, about: '', advisory: '' };
     const all = CCS.records ? Object.values(CCS.records).filter(r => r.collection === name) : [];
     const count = all.length;
     const typeCounts = {};
@@ -679,18 +836,12 @@ class Component extends DCLogic {
     const rawItems = (CCS.items || []).filter(i => i.collection === name);
     const years = rawItems.flatMap(i => [i.dateStart, i.dateEnd]).filter(y => typeof y === 'number');
     const media = all.filter(r => r.hasDA).length;
-    const visit = VISIT[key] || null;
-    const details = [
-      { label: 'Collection', isText: true, value: name },
-      { label: 'Records', isText: true, value: count + (media ? ` (${media} with images, audio or video)` : '') },
-      ...(typesSorted.length ? [{ label: 'Object types', isLinks: true, links: typesSorted.slice(0, 8).map(([t, n]) => ({ text: t, n, href: searchBase + '&type=' + encodeURIComponent(t) })) }] : []),
-      ...(named.length ? [{ label: 'Named collections', isText: true, value: named.join('; ') }] : []),
-      ...(years.length ? [{ label: 'Date range', isText: true, value: Math.min(...years) + ' – ' + Math.max(...years) }] : [])
-    ];
+    const cp = COPY[key];
+    const details = cp.details.map(([label, value]) => ({ label, isText: true, value }));
     return {
-      coll: { name, blurb: BLURBS[key] || '', count, searchHref: searchBase, externalUrl: EXTERNAL[key] || '', hasExternal: !!EXTERNAL[key] },
-      items, hasVisit: !!visit, visit: visit ? { ...visit, phoneHref: (visit.phone || '').replace(/[^+\d]/g, '') } : {},
-      summaryLine: count + ' records · ' + typesSorted.length + ' object types',
+      coll: { name, blurb: BLURBS[key] || '', count, searchHref: searchBase, externalUrl: cp.external, hasExternal: true },
+      items, about: cp.about, advisory: cp.advisory, hasVisit: true,
+      visit: { hours: cp.hours, email: cp.email, phone: cp.phone, phoneHref: cp.phone.replace(/[^+\d]/g, '') },
       details,
       hasFeatured: feat.length > 0, cur: feat[idx] || blank.cur, count: (idx + 1) + ' of ' + feat.length, live: 'Highlight ' + (idx + 1) + ' of ' + feat.length,
       thumbs: feat.map((f, i) => ({ img: f.img, title: f.title, label: 'Highlight ' + (i + 1) + ': ' + f.title, go: () => go(i), current: i === idx ? 'true' : undefined })),
