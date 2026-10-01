@@ -274,7 +274,7 @@ button,input,select{font-family:inherit}
 
 
 <section aria-label="Search results summary" style="background:#fff">
-  <div style="max-width:1440px;margin:0 auto;padding:{{ padSum }};display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap">
+  <div style="margin:0 auto;padding:{{ padSum }};display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap">
     <div style="display:flex;flex-direction:column;gap:12px;max-width:360px;min-width:0">
       <div style="display:flex;align-items:center;min-height:32px">
         <sc-if value="{{ loading }}"><span style="width:240px;height:26px;background:linear-gradient(90deg,#e9e7e2 0,#f5f4f1 40%,#e9e7e2 80%);background-size:1200px 100%;animation:shimmer 1.3s linear infinite"></span></sc-if>
@@ -309,7 +309,7 @@ button,input,select{font-family:inherit}
   </div>
 </section>
 <div role="region" aria-label="Search tools" style="position:sticky;top:0;z-index:30;background:#fff;border-bottom:1px solid var(--col-border-neutral-mid);box-shadow:none">
-  <div style="max-width:1440px;margin:0 auto;padding:{{ padBar }};display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap">
+  <div style="margin:0 auto;padding:{{ padBar }};display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap">
     <form role="search" onSubmit="{{ barSubmit }}" style="position:relative;display:flex;flex:1 1 280px;min-width:0;max-width:600px;height:48px;border:1px solid var(--col-bg-primary);background:#fff">
       <div ref="{{ scopeRef }}" style="position:relative;flex:none;display:flex">
         <button type="button" onClick="{{ toggleScope }}" aria-haspopup="listbox" aria-expanded="{{ scopeOpen }}" aria-label="Search in" style="height:100%;display:flex;align-items:center;gap:8px;border:0;border-right:1px solid var(--col-border-neutral-mid);background:#f4f5f8;color:var(--col-bg-primary);padding:0 12px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap">{{ scopeLabel }}<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
@@ -385,7 +385,7 @@ button,input,select{font-family:inherit}
   </div>
 </div>
 
-<main id="main-content" ref="{{ mainRef }}" style="flex:1;max-width:1440px;width:100%;margin:0 auto;padding:{{ padMain }};display:flex;flex-direction:column;gap:18px">
+<main id="main-content" ref="{{ mainRef }}" style="flex:1;width:100%;margin:0 auto;padding:{{ padMain }};display:flex;flex-direction:column;gap:18px">
       <sc-if value="{{ hasActive }}">
           <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
             <sc-for list="{{ chips }}" as="c" hint-placeholder-count="2">
@@ -397,16 +397,6 @@ button,input,select{font-family:inherit}
             <button onClick="{{ clearAll }}" style="border:0;background:none;color:#0b2a6b;font-size:14px;font-weight:600;text-decoration:underline;cursor:pointer">Clear all</button>
           </div>
         </sc-if>
-      <sc-if value="{{ showNotice }}" hint-placeholder-val="{{ true }}">
-        <div role="note" style="display:flex;gap:12px;align-items:flex-start;background:var(--col-advisory-bg);border:1px solid var(--col-advisory-border);padding:14px 18px">
-          <svg width="22" height="22" viewBox="0 0 24 24" style="flex:none;margin-top:1px"><path d="M12 3l10 18H2z" fill="var(--col-advisory-text)"></path><rect x="11" y="9" width="2" height="6" fill="#fff"></rect><rect x="11" y="16.5" width="2" height="2" fill="#fff"></rect></svg>
-          <div style="flex:1;display:flex;flex-direction:column;gap:4px">
-            <strong style="font-size:17px;color:var(--col-bg-primary)">Warning</strong>
-            <p style="margin:0;font-size:15px;line-height:1.5;color:var(--col-text-primary)">Some results may contain materials of cultural significance. <a href="#" style="color:var(--col-text-primary);text-decoration:underline">Read our Cultural Acknowledgement</a></p>
-          </div>
-          <button onClick="{{ dismissNotice }}" aria-label="Dismiss warning" style="border:0;background:none;color:var(--col-text-primary);cursor:pointer;padding:2px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg></button>
-        </div>
-      </sc-if>
   <div style="columns:{{ cols }};column-gap:{{ colGap }}">
     <div style="display:{{ wrapDisplay }}">
       <sc-if value="{{ loading }}">
@@ -1098,7 +1088,7 @@ function clearSearchHistory() {
 }
 
 class Component extends DCLogic {
-  state = { f:EMPTYF(), loading:false, view:null, notice:true, sideQ:'', modal:false, draft:null, mOpen:{coll:true,type:true,date:true}, fq:{}, more:{}, sortOpen:false, perPage:20, ppOpen:false, page:1, scopeOpen:false, sugOpen:false, sugIdx:-1, yIn:null, yErr:'', counting:false, ackOpen:false, vw: typeof window !== 'undefined' ? window.innerWidth : 1200, liveItems: null, liveTotal: null, liveError: null };
+  state = { f:EMPTYF(), loading:false, view:null, sideQ:'', modal:false, draft:null, mOpen:{coll:true,type:true,date:true}, fq:{}, more:{}, sortOpen:false, perPage:20, ppOpen:false, page:1, scopeOpen:false, sugOpen:false, sugIdx:-1, yIn:null, yErr:'', counting:false, ackOpen:false, vw: typeof window !== 'undefined' ? window.innerWidth : 1200, liveItems: null, liveTotal: null, liveError: null };
   trackRef = React.createRef(); bodyRef = React.createRef(); sortRef = React.createRef(); ppRef = React.createRef(); mainRef = React.createRef();
   scopeRef = React.createRef(); dialogRef = React.createRef(); filterBtnRef = React.createRef(); ackRef = React.createRef();
   dom = { lo: 1700, hi: 2030 };
@@ -1524,7 +1514,6 @@ class Component extends DCLogic {
       sortOpts: SORTS.map(([v, label]) => ({ label, sel: f.sort === v, bg: f.sort === v ? '#b3e5f5' : '#fff', pick: () => { this.setState({ sortOpen: false }); this.apply(ff => ({ ...ff, sort: v })); } })),
       wrapDisplay: view === 'masonry' ? 'contents' : 'block',
       openModal: () => this.openModal(),
-      showNotice: s.notice && (p.showCulturalNotice ?? true), dismissNotice: () => this.setState({ notice: false }),
       loading: s.loading, notLoading: !s.loading, chips, hasActive: chips.length > 0,
       clearAll: () => this.apply(ff => ({ ...EMPTYF(), sort: ff.sort })),
       skeletons: (n ? results.slice(0, 12).map(r => ({ ar: r.hasImg ? r.ar : 'auto', imgDisplay: r.hasImg ? 'block' : 'none' })) : SKEL.slice(0, 6).map(x => ({ ar: '1 / ' + (x / 300), imgDisplay: 'block' }))),
