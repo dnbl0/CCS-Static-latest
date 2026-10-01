@@ -145,16 +145,16 @@
 }
 
 .page-footer__flags .logo-indigenous {
-  background-image: url('../images/flag-aboriginal.svg'), url('/images/flag-aboriginal.svg'), url('images/flag-aboriginal.svg');
+  background-image: url('/images/flag-aboriginal.svg');
 }
 
 .page-footer__flags .logo-torres {
-  background-image: url('../images/flag-torres-strait.svg'), url('/images/flag-torres-strait.svg'), url('images/flag-torres-strait.svg');
+  background-image: url('/images/flag-torres-strait.svg');
 }
 
 /* Button Text */
 .page-footer .button.button--text {
-  color: var(--col-blue-light-100);
+  color: var(--col-blue-light-75);
   font-weight: 600;
   font-size: 15px;
   text-decoration: underline;
@@ -265,7 +265,7 @@
   justify-content: center;
   width: 44px;
   height: 44px;
-  border-radius: 50%;
+  border-radius: 0;
   background: rgba(255, 255, 255, 0.12);
   color: #ffffff;
   transition: background 0.2s, color 0.2s, transform 0.15s;
@@ -295,7 +295,7 @@
   display: block;
   width: 140px;
   height: 140px;
-  background-image: url('../images/uom-logo-vertical.svg'), url('/images/uom-logo-vertical.svg'), url('images/uom-logo-vertical.svg');
+  background-image: url('/images/uom-logo-vertical.svg');
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
