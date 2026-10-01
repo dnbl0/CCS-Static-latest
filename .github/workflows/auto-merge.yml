@@ -37,7 +37,10 @@ jobs:
           # so `main` has no local/remote-tracking ref yet - fetch it explicitly
           # before diffing against it (this was the workflow's original bug:
           # `main..HEAD` failed with "unknown revision").
-          git fetch origin main --depth=1
+          # Do NOT pass --depth here: the checkout above is full-depth, and a
+          # shallow fetch of main truncates its history so `origin/main...HEAD`
+          # fails with "fatal: no merge base" (the cause of the red runs).
+          git fetch origin main
 
           # Count commits since last main merge
           COMMIT_COUNT=$(git rev-list --count origin/main..HEAD)
@@ -197,14 +200,22 @@ jobs:
           script: |
             const prNumber = Number(process.env.PR_NUMBER);
 
-            // Approve the PR
-            await github.rest.pulls.createReview({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: prNumber,
-              event: 'APPROVE',
-              body: '✅ All checks passed. Auto-approving for merge.\n\n- Design system compliance verified\n- File structure validated\n- HTML syntax checked\n- Ready for production'
-            });
+            // Approve the PR. GitHub rejects this ("GitHub Actions is not
+            // permitted to approve pull requests") unless the repo setting
+            // Settings > Actions > General > "Allow GitHub Actions to create
+            // and approve pull requests" is enabled. Fail soft so the job
+            // does not go red when that setting is off.
+            try {
+              await github.rest.pulls.createReview({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: prNumber,
+                event: 'APPROVE',
+                body: '✅ All checks passed. Auto-approving for merge.\n\n- Design system compliance verified\n- File structure validated\n- HTML syntax checked\n- Ready for production'
+              });
+            } catch (err) {
+              core.warning(`Could not auto-approve PR #${prNumber}: ${err.message}`);
+            }
 
             // Merge the PR
             await github.rest.pulls.merge({
