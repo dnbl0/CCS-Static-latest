@@ -87,14 +87,14 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
 .cl-section{padding:56px 0}
 .cl-section--tint{background:#f1f0ec}
 .cl-section--navy{background:var(--col-bg-primary-dark,#000b34);color:#fff}
-.cl-h2{margin:0 0 8px;font-family:'Fraunces',serif;font-weight:500;font-size:clamp(26px,3vw,34px);line-height:1.2;color:var(--col-text-primary)}
+.cl-h2{margin:0 0 8px;text-align:center;font-family:'Fraunces',serif;font-weight:500;font-size:clamp(26px,3vw,34px);line-height:1.2;color:var(--col-text-primary)}
 .cl-section--navy .cl-h2{color:#fff}
-.cl-sub{margin:0 0 28px;max-width:720px;font-size:17px;line-height:1.55;color:#3b4050;text-wrap:pretty}
+.cl-sub{margin:0 auto 32px;text-align:center;max-width:720px;font-size:17px;line-height:1.55;color:#3b4050;text-wrap:pretty}
 .cl-lead{margin:0 auto;max-width:760px;text-align:center;font-size:20px;line-height:1.55;color:#1b1f2a;text-wrap:pretty}
-.cl-search{display:flex;gap:0;max-width:680px;margin:0 auto}
+.cl-search{display:flex;align-items:stretch;gap:0;max-width:680px;margin:0 auto}
 .cl-search input{flex:1;min-width:0;height:52px;padding:0 16px;font:inherit;font-size:17px;border:1px solid var(--col-border-brand);border-right:0;border-radius:0;background:#fff;color:var(--col-text-primary)}
-.cl-search button{height:52px;padding:0 24px;font:inherit;font-size:16px;font-weight:600;border:1px solid var(--col-btn-action-bg,#46c8f0);background:var(--col-btn-action-bg,#46c8f0);color:var(--col-btn-action-text,#000f46);cursor:pointer;border-radius:0}
-.cl-search button:hover{background:var(--col-btn-action-bg-hover,#29b3d9)}
+.cl-search button{min-height:52px;box-sizing:border-box;padding:0 24px;font:inherit;font-size:16px;font-weight:600;display:inline-flex;align-items:center;gap:8px;border:1px solid #fff;background:#fff;color:var(--col-bg-primary);cursor:pointer;border-radius:0}
+.cl-search button:hover{background:var(--col-bg-selected,#e8edf6)}
 .cl-search input:focus-visible,.cl-search button:focus-visible{outline:3px solid #0b4ea2;outline-offset:2px}
 .cl-links{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-top:16px;font-size:15px}
 .cl-links a{color:#fff;text-decoration:underline}
@@ -118,7 +118,7 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
 .cl-card--cta .cl-card__desc{color:rgba(255,255,255,.88);-webkit-line-clamp:unset;display:block}
 .cl-card--cta:hover{background:var(--col-bg-primary-hover,#213e5d)}
 .cl-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.cl-tile{position:relative;display:flex;align-items:flex-end;aspect-ratio:16/10;background:var(--col-bg-primary);overflow:hidden;color:#fff;text-decoration:none}
+.cl-tile{position:relative;display:flex;align-items:flex-end;aspect-ratio:16/9;background:var(--col-bg-primary);overflow:hidden;color:#fff;text-decoration:none}
 .cl-tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .35s ease}
 .cl-tile:hover img{transform:scale(1.04)}
 .cl-tile::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,15,70,0) 40%,rgba(0,15,70,.9) 100%);z-index:1}
@@ -126,6 +126,7 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
 .cl-tile:hover{text-decoration:none;color:#fff}
 .cl-tile:focus-visible{outline:3px solid #46c8f0;outline-offset:3px}
 .cl-tile--plain{background:linear-gradient(135deg,#000f46,#213e5d)}
+.pathfinder-inset__view{margin-top:10px;font-weight:600;font-size:15px;color:var(--col-bg-primary);text-decoration:underline}
 .cl-help{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 .cl-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 .cl-facts .facts-card__item{align-items:flex-start}
@@ -312,7 +313,7 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
       <form class="cl-search" role="search" action="/search/advanced.html" method="get">
         <label for="cl-q" class="sr-only">Search all collections</label>
         <input id="cl-q" name="q" type="search" placeholder="Search by title, creator, subject or accession number" autocomplete="off">
-        <button type="submit">Search</button>
+        <button type="submit"><span>Search</span></button>
       </form>
       <div class="cl-links"><a href="/search/advanced.html">Advanced search</a><a href="/help/index.html">Search tips</a></div>
     </div>
@@ -377,9 +378,9 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
       <h2 id="h-help" class="cl-h2">Help and guidance</h2>
       <p class="cl-sub">Information on searching, accessing and respectfully using the collections.</p>
       <div class="cl-help">
-        <a class="pathfinder-inset" href="/help/index.html"><span class="pathfinder-inset__heading">Help and support</span><span class="pathfinder-inset__desc">Searching, using and requesting items from the collections.</span></a>
-        <a class="pathfinder-inset" href="/help/indigenous-data.html"><span class="pathfinder-inset__heading">Indigenous cultural data and access</span><span class="pathfinder-inset__desc">How Aboriginal and Torres Strait Islander material is cared for and shared.</span></a>
-        <a class="pathfinder-inset" href="/contact.html"><span class="pathfinder-inset__heading">Contact the collections team</span><span class="pathfinder-inset__desc">Ask a question or request access to an item.</span></a>
+        <a class="pathfinder-inset" href="/help/index.html"><span class="pathfinder-inset__heading">Help and support</span><span class="pathfinder-inset__desc">Searching, using and requesting items from the collections.</span><span class="pathfinder-inset__view">View</span></a>
+        <a class="pathfinder-inset" href="/help/indigenous-data.html"><span class="pathfinder-inset__heading">Indigenous cultural data and access</span><span class="pathfinder-inset__desc">How Aboriginal and Torres Strait Islander material is cared for and shared.</span><span class="pathfinder-inset__view">View</span></a>
+        <a class="pathfinder-inset" href="/contact.html"><span class="pathfinder-inset__heading">Contact the collections team</span><span class="pathfinder-inset__desc">Ask a question or request access to an item.</span><span class="pathfinder-inset__view">View</span></a>
       </div>
     </div>
   </section>
