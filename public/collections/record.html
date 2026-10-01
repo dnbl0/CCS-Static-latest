@@ -111,7 +111,7 @@ button,input{font-family:inherit}
 .item-media:focus-visible{outline:3px solid #46c8f0;outline-offset:-3px}
 .item-media:fullscreen{height:100vh;width:100vw}
 .im-sidebar{flex:none;width:0;visibility:hidden;overflow:hidden;background:#fff;display:flex;flex-direction:column;transition:width .25s ease,visibility 0s linear .25s}
-.im-sidebar.open{width:340px;visibility:visible;border-right:1px solid #e7e7e9;transition:width .25s ease}
+.im-sidebar.open{width:340px;visibility:visible;border-left:1px solid #e7e7e9;transition:width .25s ease}
 .im-sidebar__inner{width:340px;max-width:100%;height:100%;display:flex;flex-direction:column;min-height:0}
 .im-sidebar__head{display:flex;align-items:center;justify-content:space-between;padding:12px 12px 12px 20px;border-bottom:1px solid #e7e7e9}
 .im-sidebar__body{flex:1;min-height:0;overflow-y:auto;margin:0;padding:0;list-style:none}
@@ -145,8 +145,8 @@ button,input{font-family:inherit}
   .item-media{flex-direction:column;height:auto}
   .im-stage{height:min(62vh,440px);flex:none}
   .item-media:fullscreen .im-stage{height:auto;flex:1}
-  .im-sidebar{width:100%;height:0;transition:height .25s ease,visibility 0s linear .25s}
-  .im-sidebar.open{width:100%;height:240px;border-right:0;border-bottom:1px solid #e7e7e9;transition:height .25s ease}
+  .im-sidebar{order:-1;width:100%;height:0;transition:height .25s ease,visibility 0s linear .25s}
+  .im-sidebar.open{width:100%;height:240px;border-left:0;border-bottom:1px solid #e7e7e9;transition:height .25s ease}
   .im-sidebar__inner{width:100%}
   .item-media:fullscreen{height:100vh}
 }
@@ -315,21 +315,6 @@ button,input{font-family:inherit}
 
 <sc-if value="{{ rec.hasDA }}" hint-placeholder-val="{{ false }}">
 <section ref="{{ viewerRef }}" class="item-media" role="region" aria-roledescription="media viewer" aria-label="Item media" tabindex="0" aria-keyshortcuts="ArrowLeft ArrowRight I F">
-  <!-- Metadata panel (closed by default; toggled with the info button or I) -->
-  <aside id="item-media-sidebar" class="{{ sidebarCls }}" aria-label="Media metadata">
-    <div class="im-sidebar__inner">
-      <div class="im-sidebar__head">
-        <h3 style="margin:0;font-size:16px;font-weight:600;color:#1a1a1a">Media metadata</h3>
-        <button type="button" class="im-btn" onClick="{{ closeSidebar }}" aria-label="Close media metadata" title="Close (Esc)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
-      </div>
-      <ul class="im-sidebar__body" tabindex="-1">
-        <sc-for list="{{ mediaRows }}" as="m" hint-placeholder-count="7">
-          <li><span class="k">{{ m.label }}</span><span class="v">{{ m.value }}</span></li>
-        </sc-for>
-      </ul>
-    </div>
-  </aside>
-
   <div class="im-main">
     <div class="im-stage">
       <sc-if value="{{ isImage }}" hint-placeholder-val="{{ true }}"><img class="im-img" src="{{ cur.src }}" alt="{{ curAlt }}" onLoad="{{ onImgLoad }}"></sc-if>
@@ -368,6 +353,21 @@ button,input{font-family:inherit}
     </sc-if>
   </div>
   <div class="sr-live" role="status" aria-live="polite">{{ liveText }}</div>
+
+  <!-- Metadata panel (closed by default; toggled with the info button or I) -->
+  <aside id="item-media-sidebar" class="{{ sidebarCls }}" aria-label="Media metadata">
+    <div class="im-sidebar__inner">
+      <div class="im-sidebar__head">
+        <h3 style="margin:0;font-size:16px;font-weight:600;color:#1a1a1a">Media metadata</h3>
+        <button type="button" class="im-btn" onClick="{{ closeSidebar }}" aria-label="Close media metadata" title="Close (Esc)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+      </div>
+      <ul class="im-sidebar__body" tabindex="-1">
+        <sc-for list="{{ mediaRows }}" as="m" hint-placeholder-count="7">
+          <li><span class="k">{{ m.label }}</span><span class="v">{{ m.value }}</span></li>
+        </sc-for>
+      </ul>
+    </div>
+  </aside>
 </section>
 </sc-if>
 
