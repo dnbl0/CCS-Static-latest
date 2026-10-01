@@ -10,16 +10,17 @@
   RewriteRule ^Collection\ Landing\.dc\.html$ /collections [R=301,L]
   RewriteRule ^Help\ and\ Support\.dc\.html$ /help [R=301,L,QSA]
   RewriteRule ^CCS\ Home\ page\.dc\.html$ / [R=301,L]
-  RewriteRule ^search\.html$ /search/advanced.html [R=301,L,QSA]
+  RewriteRule ^search\.html$ /search/advanced [R=301,L,QSA]
+  RewriteRule ^search/?$ /search/advanced [R=301,L,QSA]
 
   # --- Clean URL rewriting (internal, URL bar stays clean) ---
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule ^search/advanced/?$ search/advanced.html [L]
-  RewriteRule ^search/?$ search.html [L]
   RewriteRule ^collections/record/?$ collections/record.html [L]
   RewriteRule ^collections/([a-z0-9-]+)/?$ collections/$1.html [L]
   RewriteRule ^collections/?$ collections/index.html [L]
   RewriteRule ^help/?$ help/index.html [L]
+  RewriteRule ^help/([a-z0-9-]+)/?$ help/$1.html [L]
   RewriteRule ^contact/?$ contact.html [L]
 </IfModule>

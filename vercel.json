@@ -1,0 +1,23 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/Contact Us.dc.html", "destination": "/contact", "statusCode": 301 },
+    { "source": "/Contact%20Us.dc.html", "destination": "/contact", "statusCode": 301 },
+    { "source": "/Collection Record.dc.html", "destination": "/collections/record", "statusCode": 301 },
+    { "source": "/Collection%20Record.dc.html", "destination": "/collections/record", "statusCode": 301 },
+    { "source": "/Collection Search v3.dc.html", "destination": "/search/advanced", "statusCode": 301 },
+    { "source": "/Collection%20Search%20v3.dc.html", "destination": "/search/advanced", "statusCode": 301 },
+    { "source": "/Browse Collections.dc.html", "destination": "/collections", "statusCode": 301 },
+    { "source": "/Browse%20Collections.dc.html", "destination": "/collections", "statusCode": 301 },
+    { "source": "/Collection Landing.dc.html", "destination": "/collections", "statusCode": 301 },
+    { "source": "/Collection%20Landing.dc.html", "destination": "/collections", "statusCode": 301 },
+    { "source": "/Help and Support.dc.html", "destination": "/help", "statusCode": 301 },
+    { "source": "/Help%20and%20Support.dc.html", "destination": "/help", "statusCode": 301 },
+    { "source": "/CCS Home page.dc.html", "destination": "/", "statusCode": 301 },
+    { "source": "/CCS%20Home%20page.dc.html", "destination": "/", "statusCode": 301 },
+    { "source": "/search.html", "destination": "/search/advanced", "statusCode": 301 },
+    { "source": "/search", "destination": "/search/advanced", "statusCode": 301 }
+  ]
+}
