@@ -90,6 +90,45 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
   .footer-cols{flex-direction:column!important}
 }
 [aria-label="University links"] a:hover{color:var(--sage-100);text-decoration:underline}
+
+/* Collection landing — styled like the item record page */
+.lv{background:#1a1a1a;display:flex;flex-direction:column}
+.lv:focus{outline:none}.lv:focus-visible{outline:3px solid #46c8f0;outline-offset:-3px}
+.lv-stage{height:clamp(300px,52vh,520px);display:flex;align-items:center;justify-content:center;padding:16px}
+.lv-img{display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain}
+.lv-bar{display:flex;align-items:center;gap:6px;min-height:56px;padding:8px 12px;background:#fff;border-top:1px solid #e7e7e9}
+.lv-btn{width:40px;height:40px;min-width:40px;display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:0;background:none;color:var(--col-bg-primary);cursor:pointer}
+.lv-btn:hover{background:#eef1f7}.lv-btn:disabled{color:#a6a6a6;cursor:not-allowed;background:none}.lv-btn:focus-visible,.lv-thumb:focus-visible{outline:3px solid #0b4ea2;outline-offset:-3px}
+.lv-count{font-size:14px;color:#3b4050;padding:0 8px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.lv-title{flex:1;min-width:0;padding:0 8px;font-weight:600;font-size:16px;color:var(--col-text-primary)}
+.lv-view{font-size:15px;font-weight:600;text-decoration:underline;white-space:nowrap;padding:0 8px}
+.lv-thumbs{display:flex;gap:8px;overflow-x:auto;padding:10px 12px;background:#fff;border-top:1px solid #e7e7e9}
+.lv-thumb{flex:none;width:56px;height:56px;padding:0;border:2px solid transparent;background:#f4f3f0;cursor:pointer;overflow:hidden}
+.lv-thumb:hover{border-color:#9aa3b8}.lv-thumb[aria-current="true"]{border-color:#0b4ea2}.lv-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.sr-live{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.lp-btn{height:44px;display:inline-flex;align-items:center;gap:8px;border:1px solid #c9ccd6;background:#fff;color:var(--col-bg-primary);padding:0 14px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none}
+.lp-btn:hover{border-color:var(--col-bg-primary);text-decoration:none}
+.lp-btn--primary{background:var(--col-bg-primary);border-color:var(--col-bg-primary);color:#fff}.lp-btn--primary:hover{background:var(--col-bg-primary-hover);color:#fff}
+.lp-row{display:grid;grid-template-columns:minmax(120px,200px) minmax(0,1fr);gap:4px 24px;padding:12px 0;border-bottom:1px solid #f1efea}
+.lp-row:last-child{border-bottom:0}
+.lp-row dt{font-size:15px;font-weight:700;color:var(--col-text-primary)}
+.lp-row dd{margin:0;font-size:15px;line-height:1.55;color:var(--col-text-primary);overflow-wrap:anywhere}
+.lp-links{display:flex;flex-wrap:wrap;gap:6px 14px}.lp-links a{text-decoration:underline}.lp-n{color:var(--col-text-muted);font-size:13px}
+.lp-panel{background:#fff;border:1px solid #e3e0d9;display:flex;flex-direction:column}
+.lp-panel h2{margin:0;padding:20px 24px;border-bottom:1px solid var(--col-border-neutral-soft);font-family:'Fraunces',serif;font-weight:600;font-size:22px;color:var(--col-bg-primary)}
+.lp-panel__body{padding:18px 24px 22px;display:flex;flex-direction:column;gap:14px}
+.lp-panel__item{display:flex;flex-direction:column;gap:3px;padding-top:12px;border-top:1px solid #f1efea}.lp-panel__item:first-child{padding-top:0;border-top:0}
+.lp-panel__item .k{font-size:13px;font-weight:700;color:var(--col-text-primary)}
+.lp-panel__item .v{font-size:14px;line-height:1.5;color:#3b4050;text-wrap:pretty;overflow-wrap:anywhere}.lp-panel__item a.v{text-decoration:underline;color:#0b2a6b}
+.lp-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.lp-card{background:#fff;border:1px solid #e3e0d9;display:flex;flex-direction:column;transition:box-shadow .2s}.lp-card:hover{box-shadow:0 6px 18px rgba(0,15,70,.12)}
+.lp-card__img{display:block;aspect-ratio:4/3;background:#f4f3f0;overflow:hidden}.lp-card__img img{width:100%;height:100%;object-fit:contain;display:block}
+.lp-card__body{display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:16px 18px 18px;flex:1}
+.lp-card__title{font-family:'Fraunces',serif;font-weight:600;font-size:17px;line-height:1.3;color:var(--col-text-primary);text-wrap:pretty}
+.lp-card__type{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--col-bg-primary)}
+.lp-card ccs-licence{margin-top:auto}
+@media(max-width:1000px){.lp-cards{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.lp-cards{grid-template-columns:1fr}.lp-row{grid-template-columns:1fr}.lv-title{display:none}.lv-view{margin-left:auto}.lv-stage{height:300px}}
 </style>
 </helmet>
 <div style="min-height:100vh;display:flex;flex-direction:column">
@@ -242,99 +281,119 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
 
   <nav class="page-breadcrumbs" aria-label="Breadcrumb"><ol class="page-local-history" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="root" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="/" itemprop="item" title="Home" aria-label="Home"><img src="../../images/home.svg" alt="" width="16" height="16" style="vertical-align:middle"><span itemprop="name" class="sr-only">Home</span></a><meta content="1" itemprop="position"></li><li class="" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="/collections/index.html" itemprop="item" title="Browse collections"><span itemprop="name">Browse collections</span></a><meta content="2" itemprop="position"></li><li itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page"><span itemprop="name">{{ coll.name }}</span><meta content="3" itemprop="position"></li></ol><ol class="bc-mobile" style="display:none;align-items:center;gap:6px;list-style:none;margin:0;font-size:18px;color:#fff"><li style="display:flex;align-items:center"><a href="/collections/index.html" style="display:inline-flex;align-items:center;gap:6px;color:#fff;text-decoration:none;min-height:44px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span>Browse collections</span></a></li></ol></nav>
 
-<section class="page-banner" aria-label="Page banner">
+<section class="page-banner page-banner--compact" aria-label="Page banner">
   <div class="page-banner__inner">
     <h1>{{ coll.name }}</h1>
     <p class="page-banner__desc">{{ coll.blurb }}</p>
   </div>
 </section>
-<section aria-label="Introduction" style="background:#fff;border-bottom:1px solid #e3e0d9">
-  <div class="hero-inner" style="max-width:1440px;margin:0 auto;padding:32px 32px 36px">
-    <div style="display:flex;flex-direction:column;gap:16px;max-width:760px;margin:0 auto;align-items:center;text-align:center">
-      <div class="facts-card" style="max-width:420px;width:100%">
-        <div class="facts-card__item">
-          <strong class="facts-card__stat">{{ stats.count }}</strong>
-          <span class="facts-card__sentence">Records</span>
-        </div>
-        <div class="facts-card__item">
-          <strong class="facts-card__stat">{{ stats.types }}</strong>
-          <span class="facts-card__sentence">Object types</span>
-        </div>
-      </div>
-      <div class="hero-cta" style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;padding-top:8px">
-        <a href="{{ coll.searchHref }}" style="height:44px;display:flex;align-items:center;gap:8px;border:1px solid var(--col-bg-primary);background:var(--col-bg-primary);color:#fff;padding:0 18px;font-size:15px;font-weight:600;justify-content:center" style-hover="opacity:.9">Search this collection</a>
-        <a href="/collections/index.html" style="height:44px;display:flex;align-items:center;gap:8px;border:1px solid var(--col-bg-primary);background:none;color:var(--col-bg-primary);padding:0 18px;font-size:15px;font-weight:600;justify-content:center" style-hover="background:var(--col-bg-selected)">Browse all collections</a>
-      </div>
-    </div>
-  </div>
-  <sc-if value="{{ topTypes }}" hint-placeholder-val="{{ false }}">
-    <div style="max-width:1440px;margin:0 auto;padding:20px 32px 24px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:center;border-top:1px solid #e3e0d9">
-      <span style="font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#5b6070">Object types</span>
-      <sc-for list="{{ topTypes }}" as="t" hint-placeholder-count="5">
-        <span style="display:flex;align-items:center;gap:6px;background:#eaefe9;color:var(--col-bg-primary);padding:6px 12px;font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:.03em">{{ t.type }} <span style="opacity:.65">{{ t.n }}</span></span>
-      </sc-for>
-    </div>
-  </sc-if>
-</section>
 
-<main id="main-content" style="flex:1;max-width:1440px;width:100%;margin:0 auto;padding:40px 32px 64px;display:flex;flex-direction:column;gap:20px">
-  <sc-if value="{{ visit.warning }}" hint-placeholder-val="{{ false }}">
-    <p class="notice notice--warning" role="note">Aboriginal and Torres Strait Islander viewers are advised that this website may contain the image, voice, or name of deceased persons. We apologise for any distress that may occur.</p>
-  </sc-if>
-  <div style="display:flex;gap:40px;align-items:flex-start;flex-wrap:wrap">
-    <div style="flex:3 1 480px;min-width:0;display:flex;flex-direction:column;gap:20px">
-      <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap">
-        <h2 style="margin:0;font-family:'Fraunces',serif;font-weight:500;font-size:28px;color:var(--col-text-primary)">From the collection</h2>
-        <a href="{{ coll.searchHref }}" style="font-size:15px;font-weight:600">View all {{ coll.count }} records</a>
+<sc-if value="{{ hasFeatured }}" hint-placeholder-val="{{ false }}">
+<section class="lv" role="region" aria-roledescription="carousel" aria-label="Highlights from the collection" tabindex="0">
+  <div class="lv-stage">
+    <img class="lv-img" src="{{ cur.img }}" alt="{{ cur.title }}">
+  </div>
+  <div class="lv-bar" role="toolbar" aria-label="Highlight controls">
+    <button type="button" class="lv-btn" onClick="{{ prev }}" disabled="{{ atFirst }}" aria-label="Previous highlight" title="Previous"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+    <span class="lv-count" aria-hidden="true">{{ count }}</span>
+    <button type="button" class="lv-btn" onClick="{{ next }}" disabled="{{ atLast }}" aria-label="Next highlight" title="Next"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+    <a class="lv-title" href="{{ cur.href }}">{{ cur.title }}</a>
+    <a class="lv-view" href="{{ cur.href }}">View record</a>
+  </div>
+  <div class="lv-thumbs" role="group" aria-label="Highlights">
+    <sc-for list="{{ thumbs }}" as="th" hint-placeholder-count="6">
+      <button type="button" class="lv-thumb" onClick="{{ th.go }}" aria-label="{{ th.label }}" aria-current="{{ th.current }}" title="{{ th.title }}"><img src="{{ th.img }}" alt="" loading="lazy"></button>
+    </sc-for>
+  </div>
+  <div class="sr-live" role="status" aria-live="polite">{{ live }}</div>
+</section>
+</sc-if>
+
+<section aria-label="Collection summary" style="background:#fff;border-bottom:1px solid #e3e0d9">
+  <div style="max-width:1200px;margin:0 auto;padding:40px 32px 28px;display:flex;flex-direction:column;gap:24px">
+    <div style="display:flex;flex-direction:column;gap:12px;max-width:920px">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase">
+        <a href="/collections/index.html" style="color:#0b4ea2;text-decoration:none" style-hover="text-decoration:underline">Collection</a>
+        <span aria-hidden="true" style="width:4px;height:4px;background:#9a9ea8"></span>
+        <span style="color:#0b4ea2">University of Melbourne</span>
       </div>
-      <div style="column-width:260px;column-gap:20px">
-        <sc-for list="{{ items }}" as="r" hint-placeholder-count="8">
-          <article style="break-inside:avoid;margin:0 0 20px;background:#fff;border:1px solid #e3e0d9;display:flex;flex-direction:column;transition:transform .2s" style-hover="">
-            <sc-if value="{{ r.hasImg }}" hint-placeholder-val="{{ false }}">
-              <a href="{{ r.href }}" style="display:block;background:#f4f3f0;line-height:0;overflow:hidden"><img src="{{ r.img }}" alt="{{ r.title }}" style="display:block;width:100%;height:auto;object-fit:contain"></a>
-            </sc-if>
-            <div style="padding:16px 18px 18px;display:flex;flex-direction:column;gap:8px">
-              <a href="{{ r.href }}" style="font-family:'Fraunces',serif;font-weight:600;font-size:17px;line-height:1.3;color:var(--col-text-primary);text-wrap:pretty">{{ r.title }}</a>
-              <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:2px;padding-top:10px;border-top:1px solid var(--col-border-neutral-soft)">
-                <span style="font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--col-bg-primary)">{{ r.type }}</span>
-                <ccs-licence licence="{{ r.licenceKey }}"></ccs-licence>
-              </div>
-            </div>
-          </article>
-        </sc-for>
-      </div>
+      <p style="margin:0;font-size:18px;color:#3b4050">{{ summaryLine }}</p>
     </div>
-    <sc-if value="{{ hasSidebar }}" hint-placeholder-val="{{ false }}">
-    <aside style="flex:1 1 260px;min-width:240px;max-width:320px;align-self:flex-start;display:flex;flex-direction:column;gap:20px;position:sticky;top:20px">
-      <sc-if value="{{ hasVisit }}" hint-placeholder-val="{{ false }}">
-        <div class="contact-box">
-          <strong class="contact-box__heading">Visit</strong>
-          <div>
-            <div class="contact-box__term">Opening hours</div>
-            <div class="contact-box__desc">{{ visit.hours }}</div>
-          </div>
-          <div>
-            <div class="contact-box__term">Location</div>
-            <div class="contact-box__desc">{{ visit.location }}</div>
-          </div>
-          <sc-if value="{{ visit.contact }}">
-            <div>
-              <div class="contact-box__term">Enquiries</div>
-              <a class="contact-box__desc" href="mailto:{{ visit.contact }}">{{ visit.contact }}</a>
-            </div>
-          </sc-if>
-        </div>
-      </sc-if>
-      <sc-if value="{{ coll.hasExternal }}" hint-placeholder-val="{{ false }}">
-        <a href="{{ coll.externalUrl }}" target="_blank" rel="noopener" class="pathfinder-inset">
-          <strong class="pathfinder-inset__heading">Explore the collection online</strong>
-          <span class="pathfinder-inset__desc">Browse the full holdings on the museum's own collection website ↗</span>
-        </a>
-      </sc-if>
-    </aside>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding-top:20px;border-top:1px solid var(--col-border-neutral-soft)">
+      <a href="{{ coll.searchHref }}" class="lp-btn lp-btn--primary">Search this collection</a>
+      <a href="/collections/index.html" class="lp-btn">Browse all collections</a>
+      <sc-if value="{{ coll.hasExternal }}" hint-placeholder-val="{{ false }}"><a href="{{ coll.externalUrl }}" target="_blank" rel="noopener" class="lp-btn">Explore online <span class="sr-only">(opens in new window)</span><span aria-hidden="true">↗</span></a></sc-if>
+      <button type="button" onClick="{{ share }}" class="lp-btn" style="margin-left:auto"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"></path><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"></path></svg>{{ shareText }}</button>
+    </div>
+    <sc-if value="{{ visit.warning }}" hint-placeholder-val="{{ false }}">
+      <p class="notice notice--warning" role="note">Aboriginal and Torres Strait Islander viewers are advised that this website may contain the image, voice, or name of deceased persons. We apologise for any distress that may occur.</p>
     </sc-if>
   </div>
+</section>
+
+<main id="main-content" style="flex:1;background:#f1f0ec">
+  <div style="max-width:1200px;margin:0 auto;padding:40px 32px 56px;display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start">
+    <div style="flex:999 1 560px;min-width:0;display:flex;flex-direction:column;gap:24px">
+      <section aria-label="Collection details" style="background:#fff;border:1px solid #e3e0d9">
+        <dl style="margin:0;padding:8px 24px 12px">
+          <sc-for list="{{ details }}" as="d">
+            <div class="lp-row">
+              <dt>{{ d.label }}</dt>
+              <dd>
+                <sc-if value="{{ d.isLinks }}"><span class="lp-links"><sc-for list="{{ d.links }}" as="l"><a href="{{ l.href }}">{{ l.text }} <span class="lp-n">{{ l.n }}</span></a></sc-for></span></sc-if>
+                <sc-if value="{{ d.isText }}"><span>{{ d.value }}</span></sc-if>
+              </dd>
+            </div>
+          </sc-for>
+        </dl>
+      </section>
+    </div>
+    <aside aria-label="Visit and access" style="flex:1 1 320px;min-width:0;display:flex;flex-direction:column;gap:24px;position:sticky;top:24px">
+      <sc-if value="{{ hasVisit }}" hint-placeholder-val="{{ false }}">
+        <section class="lp-panel">
+          <h2>Visit</h2>
+          <div class="lp-panel__body">
+            <div class="lp-panel__item"><span class="k">Opening hours</span><span class="v">{{ visit.hours }}</span></div>
+            <div class="lp-panel__item"><span class="k">Location</span><span class="v">{{ visit.location }}</span></div>
+            <sc-if value="{{ visit.contact }}"><div class="lp-panel__item"><span class="k">Enquiries</span><a class="v" href="mailto:{{ visit.contact }}">{{ visit.contact }}</a></div></sc-if>
+          </div>
+        </section>
+      </sc-if>
+      <section class="lp-panel">
+        <h2>Access and use</h2>
+        <div class="lp-panel__body">
+          <div class="lp-panel__item"><span class="k">Request an item</span><a class="v" href="/contact.html">Contact the collections team</a></div>
+          <div class="lp-panel__item"><span class="k">Copyright and terms of use</span><a class="v" href="/help/index.html?topic=copyright">About copyright and terms of use</a></div>
+          <div class="lp-panel__item"><span class="k">Indigenous cultural data</span><a class="v" href="/help/indigenous-data.html">Indigenous Cultural Data and Access</a></div>
+        </div>
+      </section>
+    </aside>
+  </div>
 </main>
+
+<section aria-label="Records from this collection" style="background:var(--white-100)">
+  <div style="max-width:1200px;margin:0 auto;padding:48px 32px 72px;display:flex;flex-direction:column;gap:20px">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap">
+      <h2 style="margin:0;font-family:'Fraunces',serif;font-weight:500;font-size:34px;color:var(--col-text-primary)">Records from this collection</h2>
+      <a href="{{ coll.searchHref }}" style="font-size:15px;font-weight:600">View all {{ coll.count }} records</a>
+    </div>
+    <div class="lp-cards">
+      <sc-for list="{{ items }}" as="r" hint-placeholder-count="8">
+        <article class="lp-card">
+          <sc-if value="{{ r.hasImg }}" hint-placeholder-val="{{ false }}">
+            <a href="{{ r.href }}" tabindex="-1" aria-hidden="true" class="lp-card__img"><img src="{{ r.img }}" alt="" loading="lazy"></a>
+          </sc-if>
+          <div class="lp-card__body">
+            <a href="{{ r.href }}" class="lp-card__title">{{ r.title }}</a>
+            <span class="lp-card__type">{{ r.type }}</span>
+            <ccs-licence licence="{{ r.licenceKey }}"></ccs-licence>
+          </div>
+        </article>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
 
 
 
@@ -577,34 +636,64 @@ const EXTERNAL = {
   HBA: 'https://collections.mdhs.unimelb.edu.au/explore'
 };
 class Component extends DCLogic {
+  state = { idx: 0, copied: false };
+  componentDidMount() {
+    this.onKey = e => {
+      const v = document.querySelector('.lv'); if (!v || !v.contains(document.activeElement)) return;
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') { e.preventDefault(); this.step(e.key === 'ArrowRight' ? 1 : -1); }
+    };
+    window.addEventListener('keydown', this.onKey);
+  }
+  componentWillUnmount() { window.removeEventListener('keydown', this.onKey); clearTimeout(this.ct); }
+  step(d) { const n = this.featuredCount || 0; const i = Math.min(Math.max(this.state.idx + d, 0), n - 1); if (i !== this.state.idx) this.setState({ idx: i }); }
   renderVals() {
     const CCS = window.CCS;
     const qKey = (new URLSearchParams(location.search).get('collection') || '').toUpperCase();
     const key = COLL_KEYS[qKey] ? qKey : 'DENT';
     try {
-      document.title = (COLL_KEYS[key] || 'Henry Forman Atkinson Dental Museum') + ' — Cultural Collections Search';
+      document.title = (COLL_KEYS[key] || COLL_KEYS['DENT']) + ' — Cultural Collections Search';
       let m = document.querySelector('meta[name="description"]');
       if (!m) { m = document.createElement('meta'); m.setAttribute('name', 'description'); document.head.appendChild(m); }
       m.setAttribute('content', (BLURBS[key] || '').slice(0, 160));
     } catch (e) {}
     const name = COLL_KEYS[key] || COLL_KEYS.MHM;
-    if (!CCS) return { coll: { name, blurb: BLURBS[key] || '', count: '', searchHref: '#', externalUrl: '', hasExternal: false }, items: [], stats: { count: '', types: '' }, topTypes: [], hasVisit: false, visit: {} };
+    const blank = { cur: { img: '', title: '', href: '#' }, thumbs: [], hasFeatured: false, count: '', live: '', prev() {}, next() {}, atFirst: true, atLast: true, share() {}, shareText: 'Share', details: [], summaryLine: '' };
+    if (!CCS) return { ...blank, coll: { name, blurb: BLURBS[key] || '', count: '', searchHref: '#', externalUrl: '', hasExternal: false }, items: [], hasVisit: false, visit: {} };
     const all = CCS.records ? Object.values(CCS.records).filter(r => r.collection === name) : [];
     const count = all.length;
     const typeCounts = {};
     all.forEach(r => { typeCounts[r.type] = (typeCounts[r.type] || 0) + 1; });
-    const topTypes = Object.entries(typeCounts).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([t, n]) => ({ type: t, n }));
-    const items = all.slice(0, 12).map(r => {
-      const c = r.card || {};
-      const img = c.img || '';
-      return { id: c.id, title: c.title || '', type: c.type || '', licenceKey: c.licenceKey || 'Rights Reserved', img, hasImg: img !== '', href: '/collections/record.html?id=' + r.id };
-    });
+    const typesSorted = Object.entries(typeCounts).sort((a, b) => b[1] - a[1]);
+    const searchBase = '/search/search-results.html?collection=' + encodeURIComponent(name);
+    const toCard = r => { const c = r.card || {}; const img = c.img || ''; return { id: c.id, title: c.title || '', type: c.type || '', licenceKey: c.licenceKey || 'Rights Reserved', img, hasImg: img !== '', href: '/collections/record.html?id=' + r.id }; };
+    const withImg = all.filter(r => r.card && r.card.img);
+    const feat = withImg.slice(0, 10).map(toCard);
+    this.featuredCount = feat.length;
+    const idx = Math.min(this.state.idx, Math.max(0, feat.length - 1));
+    const go = i => this.setState({ idx: i });
+    const items = withImg.slice(0, 8).map(toCard);
+    const named = [...new Set(all.map(r => r.named).filter(Boolean))].slice(0, 8);
+    const rawItems = (CCS.items || []).filter(i => i.collection === name);
+    const years = rawItems.flatMap(i => [i.dateStart, i.dateEnd]).filter(y => typeof y === 'number');
+    const media = all.filter(r => r.hasDA).length;
     const visit = VISIT[key] || null;
+    const details = [
+      { label: 'Collection', isText: true, value: name },
+      { label: 'Records', isText: true, value: count + (media ? ` (${media} with images, audio or video)` : '') },
+      ...(typesSorted.length ? [{ label: 'Object types', isLinks: true, links: typesSorted.slice(0, 8).map(([t, n]) => ({ text: t, n, href: searchBase + '&type=' + encodeURIComponent(t) })) }] : []),
+      ...(named.length ? [{ label: 'Named collections', isText: true, value: named.join('; ') }] : []),
+      ...(years.length ? [{ label: 'Date range', isText: true, value: Math.min(...years) + ' – ' + Math.max(...years) }] : [])
+    ];
     return {
-      coll: { name, blurb: BLURBS[key] || '', count, searchHref: '/search/search-results.html?collection=' + encodeURIComponent(name), externalUrl: EXTERNAL[key] || '', hasExternal: !!EXTERNAL[key] },
-      items, hasVisit: !!visit, hasSidebar: !!visit || !!EXTERNAL[key], visit: visit || {},
-      stats: { count, types: Object.keys(typeCounts).length },
-      topTypes
+      coll: { name, blurb: BLURBS[key] || '', count, searchHref: searchBase, externalUrl: EXTERNAL[key] || '', hasExternal: !!EXTERNAL[key] },
+      items, hasVisit: !!visit, visit: visit || {},
+      summaryLine: count + ' records · ' + typesSorted.length + ' object types',
+      details,
+      hasFeatured: feat.length > 0, cur: feat[idx] || blank.cur, count: (idx + 1) + ' of ' + feat.length, live: 'Highlight ' + (idx + 1) + ' of ' + feat.length,
+      thumbs: feat.map((f, i) => ({ img: f.img, title: f.title, label: 'Highlight ' + (i + 1) + ': ' + f.title, go: () => go(i), current: i === idx ? 'true' : undefined })),
+      prev: () => this.step(-1), next: () => this.step(1), atFirst: idx === 0, atLast: idx >= feat.length - 1,
+      shareText: this.state.copied ? 'Link copied' : 'Share',
+      share: () => { try { const p = navigator.clipboard && navigator.clipboard.writeText(location.href); if (p && p.catch) p.catch(() => {}); } catch (e) {} this.setState({ copied: true }); clearTimeout(this.ct); this.ct = setTimeout(() => this.setState({ copied: false }), 1800); }
     };
   }
 }
