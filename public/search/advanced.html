@@ -260,7 +260,7 @@ button,input,select{font-family:inherit}
       </div>
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
         <button onClick="{{ saveSearch }}" style="align-self:flex-start;display:flex;align-items:center;gap:6px;border:1px solid var(--col-bg-primary);background:#fff;color:var(--col-bg-primary);padding:6px 12px;font-size:14px;font-weight:600;cursor:pointer" style-hover="background:#f0f2f7"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12v18l-6-4.5L6 21z"></path></svg>{{ saveSearchLabel }}</button>
-        <button id="api-mode-toggle" type="button" onClick="{{ toggleApiMode }}" title="Toggle between local mock data and live Blacklight API (/catalog.json)" style="display:inline-flex;align-items:center;gap:6px;border:1px solid var(--col-border-neutral-mid);background:{{ apiBtnBg }};color:{{ apiBtnColor }};padding:6px 12px;font-size:13px;font-weight:600;cursor:pointer;border-radius:0">{{ apiBtnText }}</button>
+        <button id="api-mode-toggle" type="button" onClick="{{ toggleApiMode }}" title="Toggle between local mock data and live Blacklight API (/catalog.json)" style="display:{{ apiBtnDisplay }};align-items:center;gap:6px;border:1px solid var(--col-border-neutral-mid);background:{{ apiBtnBg }};color:{{ apiBtnColor }};padding:6px 12px;font-size:13px;font-weight:600;cursor:pointer;border-radius:0">{{ apiBtnText }}</button>
       </div>
       <div ref="{{ ppRef }}" style="position:relative;align-self:flex-start;margin-top:2px">
           <button onClick="{{ togglePP }}" aria-haspopup="listbox" aria-expanded="{{ ppOpen }}" style="display:flex;align-items:center;gap:10px;border:0;background:none;padding:0;font-size:17px;color:var(--col-bg-primary);cursor:pointer">{{ rangeLabel }}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" style="transform:{{ ppChev }};transition:transform .15s"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
@@ -1416,6 +1416,8 @@ class Component extends DCLogic {
       modal: s.modal, closeModal: () => this.closeModal(), stop: e => e.stopPropagation(),
       bodyRef: this.bodyRef, trackRef: this.trackRef, dialogRef: this.dialogRef,
       ackOpen: s.ackOpen, ackRef: this.ackRef, acceptAck: () => this.closeAck(), closeAck: () => this.closeAck(), ackTrapKey: this.makeTrapKey(this.ackRef),
+      // Developer-only data-source toggle: hidden for visitors, shown with ?dev in the URL
+      apiBtnDisplay: /[?&]dev\b/.test(location.search) ? 'inline-flex' : 'none',
       apiBtnText, apiBtnBg, apiBtnColor,
       toggleApiMode: () => {
         if (typeof BlacklightAdapter !== 'undefined') {
