@@ -274,7 +274,7 @@ button,input,select{font-family:inherit}
 
 
 <section aria-label="Search results summary" style="background:#fff">
-  <div style="max-width:1440px;margin:0 auto;padding:{{ padSum }};display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap">
+  <div style="margin:0 auto;padding:{{ padSum }};display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap">
     <div style="display:flex;flex-direction:column;gap:12px;max-width:360px;min-width:0">
       <div style="display:flex;align-items:center;min-height:32px">
         <sc-if value="{{ loading }}"><span style="width:240px;height:26px;background:linear-gradient(90deg,#e9e7e2 0,#f5f4f1 40%,#e9e7e2 80%);background-size:1200px 100%;animation:shimmer 1.3s linear infinite"></span></sc-if>
@@ -309,7 +309,7 @@ button,input,select{font-family:inherit}
   </div>
 </section>
 <div role="region" aria-label="Search tools" style="position:sticky;top:0;z-index:30;background:#fff;border-bottom:1px solid var(--col-border-neutral-mid);box-shadow:none">
-  <div style="max-width:1440px;margin:0 auto;padding:{{ padBar }};display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap">
+  <div style="margin:0 auto;padding:{{ padBar }};display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap">
     <form role="search" onSubmit="{{ barSubmit }}" style="position:relative;display:flex;flex:1 1 280px;min-width:0;max-width:600px;height:48px;border:1px solid var(--col-bg-primary);background:#fff">
       <div ref="{{ scopeRef }}" style="position:relative;flex:none;display:flex">
         <button type="button" onClick="{{ toggleScope }}" aria-haspopup="listbox" aria-expanded="{{ scopeOpen }}" aria-label="Search in" style="height:100%;display:flex;align-items:center;gap:8px;border:0;border-right:1px solid var(--col-border-neutral-mid);background:#f4f5f8;color:var(--col-bg-primary);padding:0 12px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap">{{ scopeLabel }}<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
@@ -385,7 +385,7 @@ button,input,select{font-family:inherit}
   </div>
 </div>
 
-<main id="main-content" ref="{{ mainRef }}" style="flex:1;max-width:1440px;width:100%;margin:0 auto;padding:{{ padMain }};display:flex;flex-direction:column;gap:18px">
+<main id="main-content" ref="{{ mainRef }}" style="flex:1;width:100%;margin:0 auto;padding:{{ padMain }};display:flex;flex-direction:column;gap:18px">
       <sc-if value="{{ hasActive }}">
           <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
             <sc-for list="{{ chips }}" as="c" hint-placeholder-count="2">
