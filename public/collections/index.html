@@ -110,26 +110,15 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
 .cl-card--cta .cl-card__title a,.cl-card--cta .cl-card__cta{color:#fff}
 .cl-card--cta .cl-card__desc{color:rgba(255,255,255,.88);-webkit-line-clamp:unset;display:block}
 .cl-card--cta:hover{background:var(--col-bg-primary-hover,#213e5d)}
-.cl-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.cl-tile{position:relative;display:flex;align-items:flex-end;aspect-ratio:16/9;background:var(--col-bg-primary);overflow:hidden;color:#fff;text-decoration:none}
-.cl-tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .35s ease}
-.cl-tile:hover img{transform:scale(1.04)}
-.cl-tile::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,15,70,0) 40%,rgba(0,15,70,.9) 100%);z-index:1}
-.cl-tile__label{position:relative;z-index:2;width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:16px 18px;font-family:'Fraunces',serif;font-size:20px;font-weight:600}
-.cl-tile:hover{text-decoration:none;color:#fff}
-.cl-tile:focus-visible{outline:3px solid #46c8f0;outline-offset:3px}
-.cl-tile--plain{background:linear-gradient(135deg,#000f46,#213e5d)}
 .pathfinder-inset__view{margin-top:10px;font-weight:600;font-size:15px;color:var(--col-bg-primary);text-decoration:underline}
 .cl-help{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.cl-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.cl-facts .facts-card__item{align-items:flex-start}
-@media (max-width:1000px){.cl-grid,.cl-tiles,.cl-help{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:1000px){.cl-grid,.cl-help{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:640px){
   .cl-wrap{padding:0 16px}.cl-section{padding:40px 0}
-  .cl-grid,.cl-tiles,.cl-help,.cl-facts{grid-template-columns:1fr}
+  .cl-grid,.cl-help{grid-template-columns:1fr}
   .cl-lead{font-size:18px}
   }
-@media (prefers-reduced-motion:reduce){.cl-card,.cl-card__media img,.cl-tile img{transition:none}}
+@media (prefers-reduced-motion:reduce){.cl-card,.cl-card__media img{transition:none}}
 @media (max-width:640px){
   .hero-inner{padding:16px 20px 28px!important}
   .hero-cta a{flex:1 1 100%!important;justify-content:center!important}
@@ -321,33 +310,6 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
             <span class="cl-card__cta" aria-hidden="true">Start searching <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="13 6 19 12 13 18"></polyline></svg></span>
           </div>
         </article>
-      </div>
-    </div>
-  </section>
-
-  <section class="cl-section cl-section--tint" aria-labelledby="h-facts">
-    <div class="cl-wrap">
-      <h2 id="h-facts" class="cl-h2">The collections at a glance</h2>
-      <p class="cl-sub">Cultural material from more than a century of teaching, research and collecting.</p>
-      <div class="cl-facts facts-card" style="flex-wrap:nowrap">
-        <sc-for list="{{ facts }}" as="f" hint-placeholder-count="3">
-          <div class="facts-card__item"><strong class="facts-card__stat">{{ f.stat }}</strong><span class="facts-card__sentence">{{ f.sentence }}</span></div>
-        </sc-for>
-      </div>
-    </div>
-  </section>
-
-  <section class="cl-section" aria-labelledby="h-themes">
-    <div class="cl-wrap">
-      <h2 id="h-themes" class="cl-h2">Explore by object type</h2>
-      <p class="cl-sub">Follow a type of object across every collection.</p>
-      <div class="cl-tiles">
-        <sc-for list="{{ themes }}" as="t" hint-placeholder-count="6">
-          <a class="cl-tile {{ t.cls }}" href="{{ t.href }}">
-            <sc-if value="{{ t.hasImg }}" hint-placeholder-val="{{ false }}"><img src="{{ t.imgSrc }}" alt=""></sc-if>
-            <span class="cl-tile__label">{{ t.name }} <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="13 6 19 12 13 18"></polyline></svg></span>
-          </a>
-        </sc-for>
       </div>
     </div>
   </section>
@@ -586,19 +548,8 @@ const COLLS = [
  ['Medical History Museum', '../images/tile-mhm.jpg'], ['University Art Collection', '../images/tile-uac.jpg'], ['Grainger Museum Collection', '../images/tile-gmc.jpg'],
  ['Henry Forman Atkinson Dental Museum', '../images/tile-dental.png'], ['Harry Brookes Allen Museum of Anatomy and Pathology', '../images/tile-hba.jpg']
 ];
-// Browse-by-type tiles: [label, search query string, image]. The search page matches `type=` exactly against each
-// item's raw objectType (free text, mixed case), so only tiles with a clean exact value use it; the rest use keyword or collection scope.
-const THEMES = [
-  ['Cultural objects', 'type=' + encodeURIComponent('Cultural Object'), '../images/tile-cultural-object.png'],
-  ['Photographs', 'q=photograph', '../images/tile-photograph.jpg'],
-  ['Art', 'collection=' + encodeURIComponent('University Art Collection'), '../images/tile-art.png'],
-  ['Sound recordings', 'q=recording', '../images/tile-sound.jpg'],
-  ['Film and video', 'q=video', null],
-  ['Technology and instruments', 'q=instrument', '../images/electrometer.jpg']
-];
 const KEY = { 'Medical History Museum': 'MHM', 'University Art Collection': 'UAC', 'Grainger Museum Collection': 'GMC', 'Henry Forman Atkinson Dental Museum': 'DENT', 'Harry Brookes Allen Museum of Anatomy and Pathology': 'HBA' };
 const SLUG = { MHM: 'medical-history-museum', UAC: 'university-art-collection', GMC: 'grainger-museum', DENT: 'henry-forman-atkinson-dental-museum', HBA: 'harry-brookes-allen-museum' };
-const S = '/search/search-results';
 const BLURBS = {
   MHM: "Explore the social history of medicine and its role in society, including a nineteenth-century pharmacy complete with pharmaceutical jars and equipment.",
   UAC: "Paintings, prints, sculpture and decorative arts spanning classical antiquity to contemporary Australian practice.",
@@ -610,12 +561,8 @@ class Component extends DCLogic {
   renderVals() {
     const CCS = window.CCS, all = CCS ? Object.values(CCS.records) : [];
     const countOf = name => all.filter(r => r.collection === name).length;
-    const total = all.length;
-    const media = all.filter(r => r.hasDA).length;
     return {
       collections: COLLS.map(([name, img]) => { const n = countOf(name); return { name, imgSrc: img || '', hasImg: !!img, count: n ? n.toLocaleString('en-AU') + ' records' : 'Coming soon', blurb: BLURBS[KEY[name]] || '', href: SLUG[KEY[name]] ? '/collections/' + SLUG[KEY[name]] : '/collections' }; }),
-      themes: THEMES.map(([name, qs, img]) => ({ name, imgSrc: img || '', hasImg: !!img, cls: img ? '' : 'cl-tile--plain', href: S + '?' + qs })),
-      facts: [{ stat: total.toLocaleString('en-AU'), sentence: 'Catalogued records' }, { stat: String(COLLS.length), sentence: 'Collections' }, ...(media ? [{ stat: media.toLocaleString('en-AU'), sentence: 'Records with images, audio or video' }] : [])],
       collectionsCount: COLLS.length + ' collections'
     };
   }

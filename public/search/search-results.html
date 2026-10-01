@@ -297,7 +297,7 @@ button,input,select{font-family:inherit}
       <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;min-width:0">
         <sc-for list="{{ switches }}" as="sw" hint-placeholder-count="2">
           <button onClick="{{ sw.toggle }}" role="switch" aria-checked="{{ sw.on }}" style="display:flex;align-items:center;gap:10px;border:0;background:none;padding:0;cursor:pointer;font-size:14px;font-weight:600;color:var(--col-bg-primary)">
-            <span style="width:38px;height:22px;border-radius:0;border:1px solid var(--col-bg-primary);background:{{ sw.trackBg }};flex:none;position:relative;transition:background .15s"><span style="position:absolute;top:1px;left:{{ sw.knobLeft }};width:16px;height:16px;border-radius:0;background:#fff;transition:left .15s"></span></span>{{ sw.label }}
+            <span style="width:38px;height:22px;border-radius:999px;border:1px solid var(--col-bg-primary);background:{{ sw.trackBg }};flex:none;position:relative;transition:background .15s"><span style="position:absolute;top:1px;left:{{ sw.knobLeft }};width:16px;height:16px;border-radius:50%;background:#fff;transition:left .15s"></span></span>{{ sw.label }}
           </button>
         </sc-for>
       </div>
@@ -377,7 +377,7 @@ button,input,select{font-family:inherit}
         </div>
       <button ref="{{ filterBtnRef }}" onClick="{{ openModal }}" aria-haspopup="dialog" style="height:48px;display:flex;align-items:center;gap:8px;border:1px solid var(--col-bg-primary);background:#fff;color:var(--col-bg-primary);padding:0 16px;font-size:17px;font-weight:600;cursor:pointer" style-hover="background:#f0f2f7">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="18" x2="20" y2="18"></line><line x1="15" y1="3.5" x2="15" y2="8.5"></line><line x1="9" y1="9.5" x2="9" y2="14.5"></line><line x1="13" y1="15.5" x2="13" y2="20.5"></line></svg>Filters
-        <sc-if value="{{ filterCount }}"><span style="min-width:22px;height:22px;padding:0 6px;border-radius:0;background:var(--col-bg-primary);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">{{ filterCount }}</span></sc-if>
+        <sc-if value="{{ filterCount }}"><span style="min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:var(--col-bg-primary);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">{{ filterCount }}</span></sc-if>
       </button>
       <a href="{{ advHref }}" style="height:48px;display:flex;align-items:center;gap:8px;white-space:nowrap;border:1px solid var(--col-bg-primary);background:#fff;color:var(--col-bg-primary);padding:0 16px;font-size:17px;font-weight:600;text-decoration:none" style-hover="background:#f0f2f7">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.5" y1="15.5" x2="21" y2="21"></line></svg>Advanced Search</a>
@@ -497,7 +497,7 @@ button,input,select{font-family:inherit}
 
 <sc-if value="{{ modal }}">
   <div onClick="{{ closeModal }}" style="position:fixed;inset:0;z-index:100;background:rgba(10,14,25,.55);display:flex;align-items:center;justify-content:center;padding:{{ overlayPad }}">
-    <div ref="{{ dialogRef }}" role="dialog" aria-modal="true" aria-labelledby="filters-title" onClick="{{ stop }}" onKeyDown="{{ trapKey }}" style="width:100%;max-width:800px;height:100%;max-height:{{ dlgMaxH }};background:#fff;border-radius:0;box-shadow:none;border:1px solid var(--col-bg-primary);display:flex;flex-direction:column;overflow:hidden">
+    <div ref="{{ dialogRef }}" role="dialog" aria-modal="true" aria-labelledby="filters-title" data-dc-plain-interp onClick="{{ stop }}" onKeyDown="{{ trapKey }}" style="width:100%;max-width:800px;height:100%;max-height:{{ dlgMaxH }};background:#fff;border-radius:0;box-shadow:none;border:1px solid var(--col-bg-primary);display:flex;flex-direction:column;overflow:hidden">
       <div style="position:relative;flex:none;height:64px;display:flex;align-items:center;justify-content:center;border-bottom:1px solid #ebe8e2">
         <button onClick="{{ toggleAllSections }}" style="position:absolute;left:20px;top:18px;border:0;background:none;padding:4px;font-size:14px;font-weight:600;color:#0b2a6b;text-decoration:underline;cursor:pointer">{{ allSectionsLabel }}</button>
         <h2 id="filters-title" style="margin:0;font-size:18px;font-weight:700;color:var(--col-bg-primary)">Filters</h2>
@@ -507,18 +507,16 @@ button,input,select{font-family:inherit}
       </div>
       <div ref="{{ bodyRef }}" style="flex:1;min-height:0;overflow-y:auto;padding:0 {{ bodyPad }}">
         <div style="padding:20px 0;border-bottom:1px solid #ebe8e2;display:flex;flex-direction:column;gap:14px">
-          <p style="margin:0;display:flex;gap:8px;align-items:flex-start;font-size:14px;line-height:1.45;color:#4a5577"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9"></circle><line x1="12" y1="11" x2="12" y2="17" stroke-linecap="round"></line><circle cx="12" cy="7.5" r="1.1" fill="currentColor" stroke="none"></circle></svg>Options within a filter are combined with OR. Different filters are combined with AND. Filters stay applied when you search again.</p>
           <div style="display:flex;flex-direction:column;gap:10px">
             <span style="font-size:16px;font-weight:600;color:var(--col-text-primary)">Show only</span>
-            <div style="display:flex;flex-direction:column;gap:14px"><sc-for list="{{ dSwitches }}" as="sw" hint-placeholder-count="2"><button onClick="{{ sw.toggle }}" role="switch" aria-checked="{{ sw.on }}" style="display:flex;align-items:center;gap:10px;border:0;background:none;padding:0;cursor:pointer;font-size:16px;color:var(--col-text-primary)"><span style="width:38px;height:22px;border-radius:0;border:1px solid var(--col-bg-primary);background:{{ sw.trackBg }};flex:none;position:relative;transition:background .15s"><span style="position:absolute;top:1px;left:{{ sw.knobLeft }};width:16px;height:16px;border-radius:0;background:#fff;transition:left .15s"></span></span>{{ sw.label }}</button></sc-for></div>
+            <div style="display:flex;flex-direction:column;gap:14px"><sc-for list="{{ dSwitches }}" as="sw" hint-placeholder-count="2"><button onClick="{{ sw.toggle }}" role="switch" aria-checked="{{ sw.on }}" style="display:flex;align-items:center;gap:10px;border:0;background:none;padding:0;cursor:pointer;font-size:16px;color:var(--col-text-primary)"><span style="width:38px;height:22px;border-radius:999px;border:1px solid var(--col-bg-primary);background:{{ sw.trackBg }};flex:none;position:relative;transition:background .15s"><span style="position:absolute;top:1px;left:{{ sw.knobLeft }};width:16px;height:16px;border-radius:50%;background:#fff;transition:left .15s"></span></span>{{ sw.label }}</button></sc-for></div>
           </div>
         </div>
         <sc-for list="{{ sections }}" as="sec" hint-placeholder-count="8">
-          <sc-if value="{{ sec.groupStart }}"><h3 style="margin:18px 0 0;padding:0;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--col-text-muted)">{{ sec.group }}</h3></sc-if>
           <section style="border-bottom:1px solid #ebe8e2">
             <button onClick="{{ sec.toggle }}" aria-expanded="{{ sec.open }}" aria-controls="{{ sec.panelId }}" style="width:100%;border:0;background:none;padding:22px 0;display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;text-align:left">
               <span style="min-width:0;display:flex;flex-direction:column;gap:4px">
-                <span style="display:flex;align-items:center;gap:10px;font-size:20px;font-weight:600;color:var(--col-text-primary)">{{ sec.title }}<sc-if value="{{ sec.badge }}"><span style="min-width:22px;height:22px;padding:0 7px;border-radius:0;background:var(--col-bg-primary);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">{{ sec.badge }}</span></sc-if></span>
+                <span style="display:flex;align-items:center;gap:10px;font-size:20px;font-weight:600;color:var(--col-text-primary)">{{ sec.title }}<sc-if value="{{ sec.badge }}"><span style="min-width:22px;height:22px;padding:0 7px;border-radius:999px;background:var(--col-bg-primary);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">{{ sec.badge }}</span></sc-if></span>
                 <sc-if value="{{ sec.showSummary }}"><span style="font-size:14px;color:#4a5577;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ sec.summary }}</span></sc-if>
               </span>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--col-text-primary)" stroke-width="2.4" style="flex:none;transform:{{ sec.chev }};transition:transform .2s"><polyline points="6 9 12 15 18 9"></polyline></svg>
