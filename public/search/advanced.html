@@ -239,15 +239,17 @@ button,input,select{font-family:inherit}
 </script>
 
 <section style="width:100%;background:#00354c;height:40px;display:flex;align-items:center">
-  <nav class="page-breadcrumbs" aria-label="Breadcrumb"><ol class="page-local-history" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="root" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="/" itemprop="item" title="Home" aria-label="Home"><img src="../images/home.svg" alt="" width="16" height="16" style="vertical-align:middle"><span itemprop="name" class="sr-only">Home</span></a><meta content="1" itemprop="position"></li><li itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page"><span itemprop="name">Search results</span><meta content="2" itemprop="position"></li></ol><ol class="bc-mobile" style="display:none;align-items:center;gap:6px;list-style:none;margin:0;padding:0 32px;font-size:16px;color:#fff"><li style="display:flex;align-items:center"><a href="/" style="display:inline-flex;align-items:center;gap:6px;color:#fff;text-decoration:none;min-height:44px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span>Cultural Collections</span></a></li></ol></nav>
+  <nav class="page-breadcrumbs" aria-label="Breadcrumb"><ol class="page-local-history" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="root" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="/" itemprop="item" title="Home" aria-label="Home"><img src="../images/home.svg" alt="" width="16" height="16" style="vertical-align:middle"><span itemprop="name" class="sr-only">Home</span></a><meta content="1" itemprop="position"></li><li itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page"><span itemprop="name">Search results</span><meta content="2" itemprop="position"></li></ol><ol class="bc-mobile" style="display:none;align-items:center;gap:6px;list-style:none;margin:0;font-size:16px;color:#fff"><li style="display:flex;align-items:center"><a href="/" style="display:inline-flex;align-items:center;gap:6px;color:#fff;text-decoration:none;min-height:44px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span>Cultural Collections</span></a></li></ol></nav>
 </section>
 
-<section aria-label="Page banner" style="background:var(--col-bg-primary);color:#fff">
-  <div style="max-width:1440px;margin:0 auto;padding:{{ padHero }};display:flex;flex-direction:column;gap:22px">
-    <div style="display:flex;flex-direction:column;gap:10px;max-width:760px">
-      <h1 style="margin:0;font-family:'Fraunces',serif;font-weight:500;font-size:{{ h1Size }};line-height:1.1">Search the Collection</h1>
-      <p style="margin:0;font-size:17px;line-height:1.5;color:rgba(255,255,255,.85);text-wrap:pretty">Explore artworks, objects, manuscripts, photographs and recordings held across the University of Melbourne's cultural collections.</p>
-    </div>
+<section class="page-banner" aria-label="Page banner">
+  <div class="page-banner__inner">
+    <h1>Search the Collection</h1>
+  </div>
+</section>
+<section style="background:#fff">
+  <div style="max-width:760px;margin:0 auto;padding:32px 32px 0;text-align:center">
+    <p style="margin:0;font-size:17px;line-height:1.5;color:#3b4050">Explore artworks, objects, manuscripts, photographs and recordings held across the University of Melbourne's cultural collections.</p>
   </div>
 </section>
 
@@ -1564,22 +1566,22 @@ const LABELS = {collection:'Collection',named:'Named collection',type:'Object ty
 const FACETS = [
  {group:'Collection details', key:'coll',title:'Collection title',kind:'tree',search:true},
  {group:'Collection details', key:'named',title:'Named collections',kind:'list',search:true},
- {group:'Collection details', key:'classification',title:'Classification',kind:'chips'},
- {group:'Collection details', key:'accession',title:'Accession number',kind:'text'},
- {group:'Object', key:'type',title:'Object type',kind:'chips'},
+ {group:'Creator', key:'creator',title:'Creator name',kind:'list',search:true},
+ {group:'Creator', key:'life',title:'Creator birth / death years',kind:'life'},
+ {group:'Creator', key:'nationality',title:'Nationality',kind:'list'},
  {group:'Object', key:'date',title:'Production date',kind:'date'},
  {group:'Object', key:'period',title:'Date (era, period, century)',kind:'chips'},
+ {group:'Object', key:'classification',title:'Classification',kind:'chips'},
+ {group:'Object', key:'type',title:'Object type',kind:'chips'},
+ {group:'Object', key:'material',title:'Materials / medium',kind:'list',search:true},
+ {group:'Object', key:'language',title:'Language',kind:'chips'},
  {group:'Object', key:'place',title:"Object's place of production",kind:'list',search:true},
  {group:'Object', key:'region',title:'Region',kind:'chips'},
- {group:'Object', key:'language',title:'Language',kind:'chips'},
- {group:'Object', key:'material',title:'Materials / medium',kind:'list',search:true},
- {group:'Creator', key:'creator',title:'Creator name',kind:'list',search:true},
- {group:'Creator', key:'nationality',title:'Nationality',kind:'list'},
- {group:'Creator', key:'life',title:'Creator birth / death years',kind:'life'},
+ {group:'Object', key:'accession',title:'Accession number',kind:'text'},
  {group:'Subject / topic', key:'subject',title:'Subject terms',kind:'list',search:true},
+ {group:'Subject / topic', key:'assoc',title:'Subject agent',kind:'list',search:true},
  {group:'Subject / topic', key:'subjectPlace',title:'Subject location',kind:'list',search:true},
  {group:'Subject / topic', key:'subjectEvent',title:'Subject event',kind:'list',search:true},
- {group:'Subject / topic', key:'assoc',title:'Subject agent',kind:'list',search:true},
  {group:'Subject / topic', key:'culture',title:'Cultural affiliation',kind:'list',search:true},
  {group:'Copyright & advisory', key:'licence',title:'Licence type',kind:'chips'},
  {group:'Copyright & advisory', key:'filmClass',title:'Film & gaming classification',kind:'chips'},
