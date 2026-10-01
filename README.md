@@ -46,6 +46,7 @@ All pages live in `public/` (the web root). They are "DC template" HTML: `{{ }}`
 | `/` | `public/index.html` | Home |
 | `/search` | `public/search.html` | Redirect stub to `/search/advanced` (meta refresh, JS, and server redirect) |
 | `/search/advanced` | `public/search/advanced.html` | Search, facets (`FACETS`), results grid/list |
+| `/search/advanced-search` | `public/search/advanced-search.html` | Stand-alone Advanced Search form (multi-row field search + filters); submits to `/search/advanced` |
 | `/collections` | `public/collections/index.html` | Browse all collections |
 | `/collections/<slug>` | `public/collections/<slug>/index.html` | Five landing pages: `grainger-museum`, `harry-brookes-allen-museum`, `henry-forman-atkinson-dental-museum`, `medical-history-museum`, `university-art-collection`. They share one template with per-collection data in JS dicts, so a change to the shared structure must be made in all five files |
 | `/collections/record?id=<id>` | `public/collections/record.html` | Record detail and media viewer |
@@ -63,6 +64,7 @@ Legacy `*.dc.html` filenames (for example `Collection Search v3.dc.html`) 301-re
 public/                     Deployed web root
   index.html, search.html, contact.html
   search/advanced.html
+  search/advanced-search.html     # advanced search form (logic in search/advanced-search-form.js)
   collections/{index.html, record.html, <slug>/index.html}
   help/{index.html, indigenous-data.html}
   collection-data.js        Record data -> window.CCS (single source of truth)
@@ -176,6 +178,22 @@ Filter groups in the spreadsheet map to `FACETS` groups in `search/advanced.html
 
 ---
 
+## Advanced Search
+
+`public/search/advanced-search.html` is a stand-alone form modelled on the CCS HiFi prototype's `catalog/advanced` page. Its logic lives in `public/search/advanced-search-form.js` (plain JS, no framework; option lists and counts are built from `window.CCS.items`). It is a plain GET form that opens the results page, `search/advanced.html`, with these URL parameters (the results page parses them in `parseAdvancedParams`):
+
+| Parameter | Meaning |
+|---|---|
+| `clause[i][field]` | `all_fields`, `title`, `creator`, `subject` or `description` |
+| `clause[i][op]` | `must` (contains all), `should` (contains any) or `must_not` (does not contain) |
+| `clause[i][query]` | search text; `"quotes"` make an exact phrase |
+| `f_inclusive[key][]` | filter values where ANY may match; `key` is `collection`, `type`, `creator`, `licence` or `access` |
+| `f[key][]` | filter values where ALL must match |
+| `range[year][begin]`, `range[year][end]` | production year range |
+| `sort` | `relevance`, `year-desc`, `year-asc` or `az` |
+
+Rows combine as: every `must` row matches, at least one `should` row matches (if any exist), and no `must_not` row matches. The results page shows each row and filter as a removable chip, and its "Advanced Search" button re-opens the form pre-filled with the current search (`advancedFormHref`). Empty rows are not sent, so URLs stay short.
+
 ## Record page behaviour
 
 `public/collections/record.html?id=<id>`:
@@ -239,7 +257,6 @@ Deployed on Vercel. The project link (`.vercel/`) is local and git-ignored.
 
 - **Accession numbers**: 15 of 735 records have no accession number (the data owner needs to supply them). `npm test` reports `accession number present on 720/735 records`.
 - **Unpopulated spec fields**: Editions, Source URL, Related child record and Producer are supported by `build()` but no record sets them (reported as test warnings).
-- **"Advanced Search" button** in the search toolbar of `search/advanced.html` links to `#` (no-op).
 - **`search.html`** redirect stub has no `<h1>` (test warning).
 - **Hosting behaviour unverified**: `vercel.json` redirects and `cleanUrls` have not been checked against the live Vercel deployment.
 - **Thin audio/video data**: only two audio/video items exist, so the sound-recording and film browse tiles map to small keyword searches.

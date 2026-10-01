@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="description" content="Combine fields and filters to find exactly what you are looking for across every University of Melbourne cultural collection.">
+<title>Advanced Search — Cultural Collections Search — University of Melbourne</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../support.js"></script>
+<script src="../collection-data.js"></script>
+<script src="advanced-search-form.js" defer></script>
+<style>
+.skip-link {
+  position: absolute;
+  top: -120px;
+  left: 16px;
+  background: var(--col-btn-action-bg, #46c8f0);
+  color: var(--col-btn-action-text, #000f46);
+  padding: 12px 18px;
+  z-index: 99999;
+  font-weight: 700;
+  text-decoration: none;
+  border: 2px solid var(--col-bg-primary, #000f46);
+  transition: top 0.2s ease;
+}
+.skip-link:focus {
+  top: 16px;
+}
+@media (max-width:1097.98px){
+  .site-nav{display:none!important}
+  .site-nav.is-open{display:flex!important;position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;background:var(--col-bg-primary);border-top:1px solid var(--col-border-header);z-index:30;padding:8px 0;box-shadow:0 8px 16px rgba(0,0,0,.15)}
+  .site-nav.is-open a{padding:14px 24px!important;font-size:16px!important;width:100%}
+  .site-nav-toggle{display:flex!important}
+}
+@media (max-width:768px){
+  nav[aria-label="Breadcrumb"] > ol:not(.bc-mobile){display:none!important}
+  nav[aria-label="Breadcrumb"] .bc-mobile{display:flex!important}
+}
+</style>
+  <link rel="stylesheet" href="../styles/footer.css">
+  <link rel="stylesheet" href="../styles/header.css">
+<style>
+/* Advanced Search form */
+.adv-wrap{flex:1;max-width:1200px;width:100%;margin:0 auto;padding:48px 32px 96px;box-sizing:border-box}
+.adv-grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:48px;align-items:start}
+.adv h2{margin:0 0 20px;font-family:'Fraunces',serif;font-weight:600;font-size:26px;line-height:1.2;color:var(--col-bg-primary)}
+.adv section{padding:0 0 32px;margin:0 0 32px;border-bottom:1px solid var(--col-border-header)}
+.adv-row{display:flex;align-items:center;gap:12px;margin:0 0 16px}
+.adv-row-label{flex:0 0 125px;font-size:16px;font-weight:600;color:var(--col-bg-primary)}
+.adv-select,.adv-input,.adv-trigger{box-sizing:border-box;height:48px;border:1px solid var(--col-border-header);border-radius:0;background:#fff;color:var(--col-text-primary);font:inherit;font-size:16px;padding:0 12px;min-width:0}
+.adv-select{flex:0 0 auto;max-width:100%;appearance:none;-webkit-appearance:none;padding-right:36px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23000f46'%3E%3Cpath d='M12 15.4L6 9.4L7.4 8L12 12.6L16.6 8L18 9.4L12 15.4Z'/%3E%3C/svg%3E") no-repeat right 10px center/16px}
+.adv-term .adv-select:first-child{width:170px}
+.adv-term .adv-select:nth-child(2){width:210px}
+.adv-term .adv-input{flex:1 1 auto}
+.adv-input::placeholder{color:var(--col-text-muted)}
+.adv-input--narrow{width:130px;flex:0 0 auto}
+.adv-match{width:190px}
+.adv-select:focus-visible,.adv-input:focus-visible,.adv-trigger:focus-visible,.adv-delete:focus-visible,.adv-add:focus-visible,.adv-submit:focus-visible,.adv-reset:focus-visible,.adv-check:focus-visible{outline:3px solid #46c8f0;outline-offset:2px}
+.adv-delete{display:inline-flex;align-items:center;gap:6px;flex:none;border:0;background:none;padding:6px 4px;font:inherit;font-size:13px;font-weight:600;color:var(--col-text-muted);cursor:pointer}
+.adv-delete:hover{color:var(--col-text-primary);text-decoration:underline}
+.adv-delete-icon,.adv-add-icon{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;color:#fff;font-size:16px;font-weight:700;line-height:1}
+.adv-delete-icon{background:#b42318}
+.adv-add{display:inline-flex;align-items:center;gap:8px;border:0;background:none;padding:6px 0;font:inherit;font-size:16px;font-weight:600;color:var(--col-bg-primary);cursor:pointer}
+.adv-add:disabled{opacity:.5;cursor:not-allowed}
+.adv-add-icon{background:var(--col-bg-primary)}
+.adv-add-filter{display:inline-flex;align-items:center;gap:8px;margin-top:4px}
+.adv-add-filter .adv-select{width:190px;font-weight:600;color:var(--col-bg-primary)}
+.adv-add-filter[hidden]{display:none}
+.adv-multi{position:relative;flex:1 1 auto;min-width:0}
+.adv-trigger{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;text-align:left;cursor:pointer}
+.adv-trigger-text{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.adv-placeholder{color:var(--col-text-muted)}
+.adv-panel{position:absolute;z-index:20;left:0;right:0;top:calc(100% + 4px);background:#fff;border:1px solid var(--col-bg-primary);padding:12px}
+.adv-panel[hidden],.adv-none[hidden],.adv-option[hidden]{display:none}
+.adv-panel-search{width:100%;margin:0 0 8px;height:40px}
+.adv-options{list-style:none;margin:0;padding:0;max-height:260px;overflow-y:auto}
+.adv-option{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 6px}
+.adv-option:hover{background:var(--col-bg-selected)}
+.adv-option-main{display:flex;align-items:flex-start;gap:10px;min-width:0}
+.adv-option-main label{cursor:pointer;font-size:16px;line-height:1.35;overflow-wrap:anywhere}
+.adv-check{flex:none;width:18px;height:18px;margin:2px 0 0;accent-color:var(--col-bg-primary)}
+.adv-count{flex:none;font-size:13px;color:var(--col-text-muted);background:#f1f0ec;padding:1px 8px}
+.adv-none{margin:8px 6px 0;color:var(--col-text-muted);font-size:15px}
+.adv-sort-row{margin:0 0 24px}
+.adv-actions{display:flex;align-items:center;gap:24px}
+.adv-reset{font-size:16px;font-weight:600;color:var(--col-bg-primary);text-decoration:underline}
+.adv-submit{height:48px;border:0;border-radius:0;background:var(--col-bg-primary);color:#fff;font:inherit;font-size:17px;font-weight:600;padding:0 28px;cursor:pointer}
+.adv-submit:hover{background:var(--col-bg-primary-hover)}
+.adv-help{box-sizing:border-box;border:1px solid var(--col-border-header);background:#f1f0ec;padding:24px;display:flex;flex-direction:column;gap:24px;position:sticky;top:24px}
+.adv-help h2{font-size:21px;margin:0 0 12px;display:flex;align-items:center;gap:8px}
+.adv-help h2 svg{flex:none}
+.adv-help ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:10px;font-size:16px;line-height:1.5}
+.adv-help section{padding:0;margin:0;border:0}
+.adv-help section+section{border-top:1px solid var(--col-border-header);padding-top:24px}
+.adv-help code{font-family:ui-monospace,Menlo,monospace;font-size:14px;color:var(--col-text-primary)}
+@media (max-width:980px){.adv-grid{grid-template-columns:minmax(0,1fr);gap:40px}.adv-help{position:static}}
+@media (max-width:640px){
+  .adv-wrap{padding:32px 16px 64px}
+  .adv-row{flex-wrap:wrap;gap:8px 12px}
+  .adv-row-label{flex:1 0 100%}
+  .adv-term .adv-select:first-child,.adv-term .adv-select:nth-child(2),.adv-match{flex:1 1 100%;width:100%}
+  .adv-term .adv-input,.adv-multi{flex:1 1 100%}
+  .adv-input--narrow{flex:1 1 40%;width:auto}
+  .adv-delete{margin-left:auto}
+  .adv-add-filter .adv-select{width:100%}
+}
+</style>
+</head>
+<body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<x-dc>
+<helmet><style>
+:root{
+  --col-bg-primary:#000f46;
+  --col-bg-primary-dark:#000b34;
+  --col-bg-primary-hover:#213e5d;
+  --col-bg-accent:#abc1a7;
+  --col-btn-action-bg:#46c8f0;
+  --col-btn-action-bg-hover:#29b3d9;
+  --col-btn-action-text:#000f46;
+  --col-bg-selected:#e8edf6;
+  --col-text-primary:#1b1f2a;
+  --col-text-muted:#5b6070;
+  --col-border-header:#b5bac9;
+}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../components/fig-tokens.css">
+<link rel="stylesheet" href="../components/fig-assets.css">
+<!-- Bootstrap 5.3.3 CSS (Custom UoM Gen 3 Build) -->
+<link rel="stylesheet" href="../styles/vendor/bootstrap-uom.min.css">
+<style>
+body{margin:0;background:var(--white-100);color:var(--col-text-primary);font-family:'Source Sans 3',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#0b2a6b;text-decoration:underline;text-underline-offset:2px}a:hover{color:var(--col-bg-primary)}
+*{box-sizing:border-box}
+      .btn{border-radius:0!important}
+/* Gen3-brand overrides on top of Bootstrap defaults */
+.btn-primary{--bs-btn-bg:var(--col-btn-action-bg);--bs-btn-border-color:var(--col-btn-action-bg);--bs-btn-color:var(--col-btn-action-text);--bs-btn-hover-bg:var(--col-btn-action-bg-hover);--bs-btn-hover-border-color:var(--col-btn-action-bg-hover);--bs-btn-hover-color:var(--col-btn-action-text)}
+.btn-outline-primary{--bs-btn-color:var(--col-bg-primary);--bs-btn-border-color:var(--col-bg-primary);--bs-btn-hover-bg:var(--col-bg-primary);--bs-btn-hover-border-color:var(--col-bg-primary)}
+.card{border-color:#e3e0d9;border-radius:0}
+.fw-serif{font-family:'Fraunces',serif}
+[aria-label="University links"] a:hover{color:var(--sage-100);text-decoration:underline}
+</style>
+</helmet>
+<div style="min-height:100vh;display:flex;flex-direction:column">
+<header class="uom-page-header top-0 flex h-[var(--nav-height)] z-1000 items-center transition-height transition-colors transition-300 ease-in-out" data-component="Header" aria-label="Site header">
+  <!-- University logo section -->
+  <div class="uom-logo-section flex items-center gap-050 h-full basis-auto border-r border-r-brand-900 shrink-0">
+    <a class="logo self-center flex items-center w-auto relative h-[var(--nav-height)] shrink-0 group outline-none" href="https://www.unimelb.edu.au" aria-label="The University of Melbourne homepage">
+      <div class="udds-focus-on-dark-inset size-full absolute inset-0"></div>
+      <img class="w-auto h-full outline-none" alt="The University of Melbourne" src="/images/UoM_Logo_Vert_Housed.svg">
+    </a>
+  </div>
+
+  <!-- Main content area with responsive flex layout -->
+  <div class="uom-header-content shrink-1 flex-[33_1_fit-content] flex flex-col justify-end content-between h-full max-w-full overflow-x-visible scroll-smooth">
+    <!-- Top navigation tier (search, hidden on mobile in favour of the menu toggle) -->
+    <div class="uom-nav-top-tier border-b border-b-brand-900 flex justify-end">
+      <button data-popover-type="search" type="button" class="udds-focus items-center justify-center ring-inset text-brand-inverse fill-white-100 flex h-full p-[0.625rem] bg-background-button-secondary active:bg-background-button-secondary-active hover:bg-background-button-secondary-hover color-text-brand hover:color-text-brand" popovertarget="uom-search-popover">
+        <uom-ds-icon class="size-150" iconid="search" iconset="functional" isdecorative="" isfluid="" islabelhidden="" label="Search" sizevariant="prominent" data-testid="uom-ds-icon"></uom-ds-icon>
+        <span class="sr-only">
+          open search
+        </span>
+      </button>
+    </div>
+
+    <!-- Bottom navigation tier with site name, primary nav, and mobile menu toggle -->
+    <div class="uom-nav-bottom-tier flex h-full m-025 justify-between items-stretch gap-x-125">
+      <!-- Site name/faculty link -->
+      <a class="uom-site-title text-brand-inverse hover:text-link-hover-inverse udds-focus-on-dark" href="/index.html">
+        Cultural Collections Search
+      </a>
+
+      <!-- Primary navigation -->
+      <nav id="uom-primary-nav" class="uom-primary-nav" aria-label="Primary navigation">
+        <a href="/search/advanced.html">Search all records</a>
+        <a href="/collections/index.html">Browse collections</a>
+        <a href="/help/index.html">Help</a>
+        <a href="/contact.html">Contact</a>
+      </nav>
+
+      <!-- Mobile menu toggle -->
+      <button type="button" class="uom-menu-toggle" aria-expanded="false" aria-controls="uom-primary-nav" aria-label="Toggle menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+        <span class="uom-menu-label">Menu</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Full-screen search overlay -->
+<div id="uom-search-popover" class="uom-search-popover" role="dialog" aria-modal="true" aria-labelledby="uom-search-overlay-title">
+  <div class="uom-search-popover__inner">
+    <h2 id="uom-search-overlay-title" class="sr-only">Search</h2>
+    <form class="uom-search-popover__form" role="search" action="/search/advanced.html" method="get">
+      <label for="uom-search-overlay-input" class="sr-only">Search Cultural Collections</label>
+      <input id="uom-search-overlay-input" name="q" type="text" placeholder="Search" autocomplete="off">
+      <button type="submit" class="uom-search-popover__submit" aria-label="Search">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </button>
+    </form>
+    <button type="button" class="uom-search-popover__close" id="uom-search-popover-close" aria-label="Close search">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+      <span>Close</span>
+    </button>
+  </div>
+</div>
+<script>
+(function(){
+  document.addEventListener('click', function(e){
+    var toggle = e.target.closest && e.target.closest('.uom-menu-toggle');
+    if (toggle) {
+      var header = toggle.closest('[data-component="Header"]');
+      var nav = header && header.querySelector('.uom-primary-nav');
+      if (!nav) return;
+      var expanded = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+      nav.classList.toggle('is-open', !expanded);
+      return;
+    }
+    var openToggle = document.querySelector('.uom-menu-toggle[aria-expanded="true"]');
+    if (openToggle) {
+      var openHeader = openToggle.closest('[data-component="Header"]');
+      if (!openHeader || !openHeader.contains(e.target)) {
+        openToggle.setAttribute('aria-expanded', 'false');
+        var openNav = openHeader && openHeader.querySelector('.uom-primary-nav');
+        if (openNav) openNav.classList.remove('is-open');
+      }
+    }
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key !== 'Escape') return;
+    var openToggle = document.querySelector('.uom-menu-toggle[aria-expanded="true"]');
+    if (!openToggle) return;
+    var openHeader = openToggle.closest('[data-component="Header"]');
+    openToggle.setAttribute('aria-expanded', 'false');
+    var openNav = openHeader && openHeader.querySelector('.uom-primary-nav');
+    if (openNav) openNav.classList.remove('is-open');
+    openToggle.focus();
+  });
+
+  // Full-screen search overlay. Elements are looked up live (never cached)
+  // because this site's template layer can re-render the DOM after this
+  // script runs, which would otherwise detach any cached references.
+  var lastSearchTrigger = null;
+
+  function openSearch(trigger) {
+    var pop = document.getElementById('uom-search-popover');
+    if (!pop) return;
+    lastSearchTrigger = trigger || null;
+    pop.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+    var input = document.getElementById('uom-search-overlay-input');
+    if (input) input.focus();
+  }
+  function closeSearch() {
+    var pop = document.getElementById('uom-search-popover');
+    if (!pop) return;
+    pop.classList.remove('is-open');
+    document.body.style.overflow = '';
+    if (lastSearchTrigger) lastSearchTrigger.focus();
+  }
+
+  document.addEventListener('click', function(e){
+    var opener = e.target.closest && e.target.closest('[popovertarget="uom-search-popover"]');
+    if (opener) {
+      e.preventDefault();
+      openSearch(opener);
+      return;
+    }
+    var closer = e.target.closest && e.target.closest('#uom-search-popover-close');
+    if (closer) closeSearch();
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key !== 'Escape') return;
+    var pop = document.getElementById('uom-search-popover');
+    if (pop && pop.classList.contains('is-open')) closeSearch();
+  });
+})();
+</script>
+
+<nav class="page-breadcrumbs" aria-label="Breadcrumb"><ol class="page-local-history" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="root" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="/" itemprop="item" title="Home" aria-label="Home"><img src="../images/home.svg" alt="" width="16" height="16" style="vertical-align:middle"><span itemprop="name" class="sr-only">Home</span></a><meta content="1" itemprop="position"></li><li itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page"><span itemprop="name">Advanced Search</span><meta content="2" itemprop="position"></li></ol><ol class="bc-mobile" style="display:none;align-items:center;gap:6px;list-style:none;margin:0;font-size:18px;color:#fff"><li style="display:flex;align-items:center"><a href="/index.html" style="display:inline-flex;align-items:center;gap:6px;color:#fff;text-decoration:none;min-height:44px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span>Home</span></a></li></ol></nav>
+<section class="page-banner" aria-label="Page banner">
+  <div class="page-banner__inner">
+    <h1>Advanced Search</h1>
+    <p class="page-banner__desc">Combine fields and filters to find exactly what you're looking for across every collection.</p>
+  </div>
+</section>
+
+<main id="main-content" class="adv-wrap">
+  <div class="adv-grid">
+    <div>
+      <search aria-label="Advanced search">
+        <form id="adv-form" class="adv" action="advanced.html" method="get">
+          <section aria-labelledby="adv-terms-h">
+            <h2 id="adv-terms-h">Search</h2>
+            <div id="adv-terms"></div>
+            <button type="button" id="adv-add-row" class="adv-add"><span class="adv-add-icon" aria-hidden="true">+</span> Add row</button>
+          </section>
+
+          <section aria-labelledby="adv-filters-h">
+            <h2 id="adv-filters-h">Filters</h2>
+            <div id="adv-filters"></div>
+            <label class="adv-add-filter">
+              <span class="adv-add-icon" aria-hidden="true">+</span>
+              <select id="adv-add-filter" class="adv-select" aria-label="Add filter">
+                <option value="">Add filter…</option>
+                <option value="collection">Collection Title</option>
+                <option value="creator">Creator Name</option>
+                <option value="type">Object Type</option>
+                <option value="licence">Licence Type</option>
+                <option value="access">Object Access Condition</option>
+                <option value="year">Production Date</option>
+              </select>
+            </label>
+          </section>
+
+          <div class="adv-row adv-sort-row">
+            <label for="adv-sort" class="adv-row-label">Sort results by</label>
+            <select id="adv-sort" name="sort" class="adv-select" style="width:210px">
+              <option value="relevance">Relevance</option>
+              <option value="year-desc">Date (Newest)</option>
+              <option value="year-asc">Date (Oldest)</option>
+              <option value="az">Title (A–Z)</option>
+            </select>
+          </div>
+          <div class="adv-actions">
+            <a class="adv-reset" href="advanced-search.html">Reset</a>
+            <button type="submit" class="adv-submit">Search</button>
+          </div>
+        </form>
+      </search>
+    </div>
+
+    <aside class="adv-help" aria-label="Search help">
+      <section aria-labelledby="adv-tips-h">
+        <h2 id="adv-tips-h">Tips for better results</h2>
+        <ul>
+          <li><strong>Rows:</strong> add rows to expand your search, or delete rows to simplify it.</li>
+          <li><strong>Search fields:</strong> search a specific field (Title, Creator, Subject, Description) instead of everywhere.</li>
+          <li><strong>Match type:</strong> each row can require its terms (<em>Contains all</em>), allow either (<em>Contains any</em>), or exclude them (<em>Does not contain</em>).</li>
+          <li><strong>Filters:</strong> narrow by object type, collection, creator, licence, access and production date — each filter has its own <em>Includes all (AND)</em> / <em>Includes any (OR)</em> choice.</li>
+          <li>Use quotation marks to search for an exact phrase, e.g. <code>"eucalyptus oil"</code>.</li>
+        </ul>
+      </section>
+      <section aria-labelledby="adv-ex-h">
+        <h2 id="adv-ex-h">Search examples</h2>
+        <ul>
+          <li>All Fields → Contains all → <em>eucalyptus oil bottle</em> will display records with all three terms anywhere in the record.</li>
+          <li>Subject field → Contains all → <em>botanical illustration</em> will display records with <em>botanical</em> AND <em>illustration</em> in the subject field.</li>
+          <li>Subject field → Contains any → <em>botanical illustration</em> will display records with <em>botanical</em> OR <em>illustration</em> in the subject field.</li>
+        </ul>
+      </section>
+      <section aria-labelledby="adv-fx-h">
+        <h2 id="adv-fx-h">Filter examples</h2>
+        <ul>
+          <li>Object Type → Includes all → <em>Photograph, Manuscript</em> will display records tagged with both Photograph AND Manuscript.</li>
+          <li>Object Type → Includes any → <em>Photograph, Manuscript</em> will display records tagged with either Photograph OR Manuscript.</li>
+        </ul>
+      </section>
+    </aside>
+  </div>
+</main>
+
+
+
+<!-- UoM Footer -->
+<footer aria-label="University of Melbourne footer" class="page-footer">
+  <div class="page-footer__acknowledgement bg-primary-75" data-bound-textcenter="true">
+    <div class="page-footer__inner" data-bound-textcenter="true">
+      <div class="grid" data-bound-textcenter="true">
+        <div class="grid__col-sm-4 grid__col-md-3" data-bound-textcenter="true">
+          <p class="page-footer__acknowledgement-title" data-bound-textcenter="true">
+            Acknowledgement of Country
+          </p>
+          <div class="page-footer__flags" data-bound-textcenter="true">
+            <div class="logo-indigenous" role="img" aria-label="Aboriginal flag" data-bound-textcenter="true"></div>
+            <div class="logo-torres" role="img" aria-label="Torres Strait Islander flag" data-bound-textcenter="true"></div>
+          </div>
+        </div>
+        <div class="grid__col-sm-8 grid__col-md-9" data-bound-textcenter="true">
+          <p data-bound-textcenter="true">
+            We acknowledge Aboriginal and Torres Strait Islander people as the
+            Traditional Owners of the unceded lands on which we work, learn and
+            live. We pay respect to Elders past, present and future, and
+            acknowledge the importance of Indigenous knowledge in the Academy.
+          </p>
+          <a class="button button--text" href="https://www.unimelb.edu.au/reconciliation">
+            Read about our Indigenous priorities
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-footer__content bg-primary" data-bound-textcenter="true">
+    <div class="page-footer__inner" data-bound-textcenter="true">
+      <h2 class="screenreaders-only" data-bound-textcenter="true">Site footer</h2>
+      <div class="grid" data-bound-textcenter="true">
+        <div class="grid__col-sm-4 grid__col-md-3" data-bound-textcenter="true">
+          <ul class="page-footer__links" data-bound-textcenter="true">
+            <li class="page-footer__links-item" data-bound-textcenter="true">
+              <a class="button button--text" href="https://about.unimelb.edu.au/">
+                About us
+              </a>
+            </li>
+            <li class="page-footer__links-item" data-bound-textcenter="true">
+              <a class="button button--text" href="https://about.unimelb.edu.au/careers">
+                Careers at Melbourne
+              </a>
+            </li>
+            <li class="page-footer__links-item" data-bound-textcenter="true">
+              <a class="button button--text" href="https://www.unimelb.edu.au/respect">
+                Safety and respect
+              </a>
+            </li>
+            <li class="page-footer__links-item" data-bound-textcenter="true">
+              <a class="button button--text" href="https://www.unimelb.edu.au/newsroom">
+                Newsroom
+              </a>
+            </li>
+            <li class="page-footer__links-item" data-bound-textcenter="true">
+              <a class="button button--text" href="https://www.unimelb.edu.au/contact">
+                Contact
+              </a>
+            </li>
+            <li class="page-footer__links-item" data-bound-textcenter="true">
+              <a class="button button--text" href="https://about.unimelb.edu.au/priorities-and-partnerships/campus-development/campus-locations">
+                Campus locations
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="grid__col-sm-4 grid__col-md-3" data-bound-textcenter="true">
+          <div class="page-footer__contact" data-bound-textcenter="true">
+            <p class="page-footer__contact-heading" data-bound-textcenter="true">Contact details</p>
+            <div class="page-footer__contact-details" data-bound-textcenter="true">
+              <div data-bound-textcenter="true">
+                <strong>Phone</strong>
+                <a href="tel:13 6352">13 MELB (13 6352)</a>
+                <br>
+              </div>
+              <div data-bound-textcenter="true">
+                <strong>International</strong>
+                <a href="tel:+61 3 9035 5511">+61 3 9035 5511</a>
+              </div>
+            </div>
+            <div data-bound-textcenter="true">
+              <p data-bound-textcenter="true">
+                <strong>Address</strong>
+                <br>
+                The University of Melbourne
+                <br>
+                Grattan Street, Parkville
+                <br>
+                Victoria 3010
+                <br>
+                Australia
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="grid__col-sm-4 grid__col-md-6" data-bound-textcenter="true">
+          <div class="grid" data-bound-textcenter="true">
+            <div class="grid__col-10 grid__col-md-6" data-bound-textcenter="true">
+              <div class="page-footer__contact" data-bound-textcenter="true">
+                <p class="page-footer__contact-heading" id="footer-connect-heading" data-bound-textcenter="true">
+                  Connect with us
+                </p>
+                <ul class="page-footer__social" aria-labelledby="footer-connect-heading" data-bound-textcenter="true">
+                  <li class="page-footer__social-item" data-bound-textcenter="true">
+                    <a href="https://www.facebook.com/unimelb" target="_blank" aria-label="Facebook">
+                      <span data-icon="facebook" data-size="md" data-bound-iconhelper="true"><svg class="icon" role="img" aria-label="Facebook">
+      <use xlink:href="#icon-facebook"></use>
+    </svg></span>
+                    </a>
+                  </li>
+                  <li class="page-footer__social-item" data-bound-textcenter="true">
+                    <a href="https://www.linkedin.com/school/university-of-melbourne" target="_blank" aria-label="Linkedin">
+                      <span data-icon="linkedin" data-size="md" data-bound-iconhelper="true"><svg class="icon" role="img" aria-label="Linkedin">
+      <use xlink:href="#icon-linkedin"></use>
+    </svg></span>
+                    </a>
+                  </li>
+                  <li class="page-footer__social-item" data-bound-textcenter="true">
+                    <a href="https://www.instagram.com/unimelb" target="_blank" aria-label="Instagram">
+                      <span data-icon="instagram" data-size="md" data-bound-iconhelper="true"><svg class="icon" role="img" aria-label="Instagram">
+      <use xlink:href="#icon-instagram"></use>
+    </svg></span>
+                    </a>
+                  </li>
+                  <li class="page-footer__social-item" data-bound-textcenter="true">
+                    <a href="https://www.unimelb.edu.au/alumni/support-resources/contact-us/wechat" target="_blank" aria-label="Wechat">
+                      <span data-icon="wechat" data-size="md" data-bound-iconhelper="true"><svg class="icon" role="img" aria-label="Wechat">
+      <use xlink:href="#icon-wechat"></use>
+    </svg></span>
+                    </a>
+                  </li>
+                  <li class="page-footer__social-item" data-bound-textcenter="true">
+                    <a href="https://www.tiktok.com/@unimelb" target="_blank" aria-label="Tiktok">
+                      <span data-icon="tiktok" data-size="md" data-bound-iconhelper="true"><svg class="icon" role="img" aria-label="Tiktok">
+      <use xlink:href="#icon-tiktok"></use>
+    </svg></span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="grid__col-10 grid__col-md-6" data-bound-textcenter="true">
+              <div class="page-footer__logo" data-bound-textcenter="true">
+                <a href="https://www.unimelb.edu.au" class="logo logo--unhoused logo--xl" aria-label="The University of Melbourne homepage"></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-footer__disclaimer bg-secondary" data-bound-textcenter="true">
+    <div class="page-footer__inner" data-bound-textcenter="true">
+      <div class="grid" data-bound-textcenter="true">
+        <div class="grid__col-md-4" data-bound-textcenter="true">
+          <ul class="page-footer__legal" data-bound-textcenter="true">
+            <li class="page-footer__legal-item" data-bound-textcenter="true">
+              <a href="https://safety.unimelb.edu.au/emergency">Emergency</a>
+            </li>
+            <li class="page-footer__legal-item" data-bound-textcenter="true">
+              <a href="https://www.unimelb.edu.au/legal">Terms &amp; privacy</a>
+            </li>
+            <li class="page-footer__legal-item" data-bound-textcenter="true">
+              <a href="https://www.unimelb.edu.au/accessibility">
+                Accessibility
+              </a>
+            </li>
+            <li class="page-footer__legal-item" data-bound-textcenter="true">
+              <a href="https://about.unimelb.edu.au/strategy/governance/compliance-obligations/privacy">
+                Privacy
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="grid__col-md-8" data-bound-textcenter="true">
+          <ul class="page-footer__important" data-bound-textcenter="true">
+            <li class="page-footer__important-item" data-bound-textcenter="true">
+              The University of Melbourne (Australian University):
+              <strong>PRV12150</strong>
+            </li>
+            <li class="page-footer__important-item" data-bound-textcenter="true">
+              CRICOS number:
+              <strong>00116K</strong>
+            </li>
+            <li class="page-footer__important-item" data-bound-textcenter="true">
+              ABN:
+              <strong>84 002 705 224</strong>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="icon-facebook" viewBox="0 0 24 24">
+    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+  </symbol>
+  <symbol id="icon-linkedin" viewBox="0 0 24 24">
+    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451c.979 0 1.778-.773 1.778-1.729V1.73C24 .774 23.205 0 22.225 0z"/>
+  </symbol>
+  <symbol id="icon-instagram" viewBox="0 0 24 24">
+    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+  </symbol>
+  <symbol id="icon-wechat" viewBox="0 0 32 32">
+    <path d="M14.5 2.5C7.6 2.5 2 7.1 2 12.8c0 3.2 1.7 6.1 4.5 8l-.9 3.5 3.8-1.9c1.6.6 3.3.9 5.1.9.3 0 .7 0 1-.1-.4-1-.6-2.1-.6-3.2 0-5.8 5.6-10.5 12.5-10.5.8 0 1.6.1 2.3.2C28.2 6.5 21.9 2.5 14.5 2.5zm-4.3 7c1 0 1.8.8 1.8 1.8s-.8 1.8-1.8 1.8-1.8-.8-1.8-1.8.8-1.8 1.8-1.8zm8.6 0c1 0 1.8.8 1.8 1.8s-.8 1.8-1.8 1.8-1.8-.8-1.8-1.8.8-1.8 1.8-1.8zm6.6 5.5c-5.8 0-10.5 3.9-10.5 8.8 0 2.7 1.4 5.2 3.8 6.8l-.8 2.9 3.2-1.6c1.4.5 2.8.7 4.3.7 5.8 0 10.5-3.9 10.5-8.8s-4.7-8.8-10.5-8.8zm-3.5 6c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5zm7 0c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5z"/>
+  </symbol>
+  <symbol id="icon-tiktok" viewBox="0 0 32 32">
+    <path d="M19.5 5.5c1.4 1.8 3.5 3 5.9 3.2v3.7c-2.1 0-4.1-.7-5.9-1.9v8.3c0 4.3-3.5 7.8-7.8 7.8S3.9 23.1 3.9 18.8s3.5-7.8 7.8-7.8c.6 0 1.1.1 1.7.2v4.1c-.5-.2-1.1-.3-1.7-.3-2.1 0-3.8 1.7-3.8 3.8s1.7 3.8 3.8 3.8 3.8-1.7 3.8-3.8V2h4.2v3.5z"/>
+  </symbol>
+</svg>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+
+
+
+</body>
+</html>

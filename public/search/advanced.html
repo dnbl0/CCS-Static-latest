@@ -357,7 +357,7 @@ button,input,select{font-family:inherit}
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="18" x2="20" y2="18"></line><line x1="15" y1="3.5" x2="15" y2="8.5"></line><line x1="9" y1="9.5" x2="9" y2="14.5"></line><line x1="13" y1="15.5" x2="13" y2="20.5"></line></svg>Filters
         <sc-if value="{{ filterCount }}"><span style="min-width:22px;height:22px;padding:0 6px;border-radius:0;background:var(--col-bg-primary);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">{{ filterCount }}</span></sc-if>
       </button>
-      <a href="#" style="height:48px;display:flex;align-items:center;gap:8px;white-space:nowrap;border:1px solid var(--col-bg-primary);background:#fff;color:var(--col-bg-primary);padding:0 16px;font-size:17px;font-weight:600;text-decoration:none" style-hover="background:#f0f2f7">
+      <a href="{{ advHref }}" style="height:48px;display:flex;align-items:center;gap:8px;white-space:nowrap;border:1px solid var(--col-bg-primary);background:#fff;color:var(--col-bg-primary);padding:0 16px;font-size:17px;font-weight:600;text-decoration:none" style-hover="background:#f0f2f7">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.5" y1="15.5" x2="21" y2="21"></line></svg>Advanced Search</a>
     </div>
   </div>
@@ -865,7 +865,7 @@ const SORTS = [['rel','Relevance'],['new','Date (newest)'],['old','Date (oldest)
 const RATIO = {kangaroo:[676,762],cary:[676,816],goodenia:[680,426],grandfather:[680,547],heavy:[680,497],bottle:[676,944],vase:[676,948],compound:[676,944],inro1:[680,830],bottle2:[676,952],eucalypt:[590,157],dimalan:[676,429],inro2:[680,826],cabinet:[680,490],dimalan2:[676,436],piano:[680,347],inro3:[680,830],eucryphia:[676,719],'macintosh-web':[1600,1068],'calculator-web':[1600,1200],tsukioka:[600,338],'potentiometer-web':[1600,1034],'blower-web':[1600,1200],electrometer:[789,592],carbsoda:[1333,2000],toiletjar:[1333,2000],filmposter:[1522,2000],crookes:[250,376],pipes:[768,513],necklace:[2000,1328]};
 const SKEL = [300,200,340,240,280,190,320,230,260];
 const uniq = k => [...new Set(ITEMS.flatMap(i => vals(i, k)))];
-const EMPTYF = () => { const f = {digital:false,downloadable:false,sort:'',q:'',scope:'all',collection:[],yFrom:null,yTo:null,accession:'',birthFrom:null,birthTo:null}; KEYS.forEach(k => f[k] = []); return f; };
+const EMPTYF = () => { const f = {digital:false,downloadable:false,sort:'',q:'',scope:'all',collection:[],yFrom:null,yTo:null,accession:'',birthFrom:null,birthTo:null,clauses:[],fAll:{}}; KEYS.forEach(k => f[k] = []); return f; };
 const clone = f => JSON.parse(JSON.stringify(f));
 const FOCUSABLE = 'button:not([disabled]),input,a[href],[tabindex]:not([tabindex="-1"])';
 
@@ -917,6 +917,62 @@ function matchesQuery(text, q) {
   const m = trimmed.match(/^"(.+)"$/);
   if (m) return text.includes(m[1].toLowerCase());
   return trimmed.toLowerCase().split(/\s+/).every(w => text.includes(w));
+}
+
+// --- Advanced Search (see advanced-search.html / advanced-search-form.js) ----------------------
+// Rows from the advanced form: {field, op, query}. 'must' = contains all terms, 'should' = contains any
+// term, 'must_not' = contains none. Every must row must match, at least one should row must match (when
+// there are any), and no must_not row may match.
+const ADV_FIELDS = { all_fields: 'All fields', title: 'Title', creator: 'Creator', subject: 'Subject', description: 'Description' };
+const ADV_OPS = { must: 'contains all', should: 'contains any', must_not: 'does not contain' };
+const advText = (it, field) => String(field === 'title' ? it.title : field === 'creator' ? it.creator : field === 'subject' ? it.subject : field === 'description' ? it.description : scopeText(it, 'all') + ' ' + (it.description || '') + ' ' + (it.accession || '')).toLowerCase();
+function matchClauses(it, clauses) {
+  let shouldSeen = false, shouldHit = false;
+  for (const c of clauses) {
+    const text = advText(it, c.field);
+    if (c.op === 'should') {
+      shouldSeen = true;
+      const terms = tokenizeQuery(c.query).filter(t => t.type !== 'op').map(t => t.value);
+      if (terms.some(t => text.includes(t))) shouldHit = true;
+    } else if (c.op === 'must_not') {
+      if (matchesQuery(text, c.query)) return false;
+    } else if (!matchesQuery(text, c.query)) return false;
+  }
+  return !shouldSeen || shouldHit;
+}
+// URL parameters from the advanced form -> filter state (null when the URL has none).
+const ADV_FILTER_KEYS = { collection: 'collection', type: 'type', creator: 'creator', licence: 'licence', access: 'access' };
+const ADV_SORTS = { 'year-desc': 'new', 'year-asc': 'old', az: 'az' };
+function parseAdvancedParams(qs) {
+  const f = EMPTYF(); let any = false;
+  const rows = {};
+  qs.forEach((val, name) => {
+    let m;
+    if ((m = name.match(/^clause\[(\d+)\]\[(field|op|query)\]$/))) (rows[m[1]] = rows[m[1]] || {})[m[2]] = val;
+    else if ((m = name.match(/^(f|f_inclusive)\[(\w+)\]\[\]$/)) && ADV_FILTER_KEYS[m[2]]) {
+      const k = ADV_FILTER_KEYS[m[2]]; if (!f[k].includes(val)) f[k].push(val);
+      if (m[1] === 'f') f.fAll[k] = true; any = true;
+    } else if ((m = name.match(/^range\[year\]\[(begin|end)\]$/)) && val !== '' && !isNaN(+val)) {
+      f[m[1] === 'begin' ? 'yFrom' : 'yTo'] = +val; any = true;
+    }
+  });
+  Object.keys(rows).sort((a, b) => a - b).forEach(i => {
+    const r = rows[i];
+    if (r.query && r.query.trim() && ADV_FIELDS[r.field || 'all_fields']) { f.clauses.push({ field: r.field || 'all_fields', op: ADV_OPS[r.op] ? r.op : 'must', query: r.query.trim() }); any = true; }
+  });
+  const so = qs.get('sort'); if (ADV_SORTS[so]) { f.sort = ADV_SORTS[so]; any = any || f.clauses.length > 0; }
+  return any ? f : null;
+}
+// Filter state -> advanced form URL, so "Edit advanced search" restores what the visitor entered.
+function advancedFormHref(f) {
+  const p = new URLSearchParams(); let i = 0;
+  (f.clauses || []).forEach(c => { p.set(`clause[${i}][field]`, c.field); p.set(`clause[${i}][op]`, c.op); p.set(`clause[${i}][query]`, c.query); i++; });
+  if (f.q) { p.set(`clause[${i}][field]`, f.scope === 'all' ? 'all_fields' : f.scope); p.set(`clause[${i}][op]`, 'must'); p.set(`clause[${i}][query]`, f.q); }
+  Object.keys(ADV_FILTER_KEYS).forEach(k => (f[k] || []).forEach(v => p.append(`${f.fAll && f.fAll[k] ? 'f' : 'f_inclusive'}[${k}][]`, v)));
+  if (f.yFrom != null) p.set('range[year][begin]', f.yFrom);
+  if (f.yTo != null) p.set('range[year][end]', f.yTo);
+  const so = Object.keys(ADV_SORTS).find(k => ADV_SORTS[k] === f.sort); if (so) p.set('sort', so);
+  const qs = p.toString(); return 'advanced-search.html' + (qs ? '?' + qs : '');
 }
 
 // --- CCS-158 / CCS-288 / CCS-292 / CCS-293: spelling suggestions ---------
@@ -1049,7 +1105,9 @@ class Component extends DCLogic {
     const qs = new URLSearchParams(location.search);
     const pc = qs.get('collection'), pt = qs.get('type'), pq = qs.get('q'), psc = qs.get('scope');
     let initF = null;
-    if (pc || pt || pq || psc) {
+    const advF = parseAdvancedParams(qs);
+    if (advF) { initF = advF; this.setState({ f: advF }); }
+    else if (pc || pt || pq || psc) {
       if (pq) saveSearchHistory(pq);
       initF = clone(this.state.f);
       if (pc) initF.collection = [pc];
@@ -1077,14 +1135,15 @@ class Component extends DCLogic {
       if (f.birthFrom != null && lp.birth < f.birthFrom) return false;
       if (f.birthTo != null && lp.birth > f.birthTo) return false;
     }
-    if (except !== 'coll' && f.collection.length && !f.collection.includes(it.collection)) return false;
-    for (const k of KEYS) if (k !== except && f[k].length && !vals(it, k).some(v => f[k].includes(v))) return false;
+    if (except !== 'coll' && f.collection.length && !(f.fAll && f.fAll.collection ? f.collection.every(c => c === it.collection) : f.collection.includes(it.collection))) return false;
+    for (const k of KEYS) if (k !== except && f[k].length) { const vs = vals(it, k); if (!(f.fAll && f.fAll[k] ? f[k].every(v => vs.includes(v)) : vs.some(v => f[k].includes(v)))) return false; }
     if (except !== 'date' && (f.yFrom != null || f.yTo != null)) {
       if (!it.dateStart) return false;
       if (f.yFrom != null && it.dateStart < f.yFrom) return false;
       if (f.yTo != null && it.dateStart > f.yTo) return false;
     }
     if (f.q) { const txt = scopeText(it, f.scope).toLowerCase(); if (!matchesQuery(txt, f.q)) return false; }
+    if (f.clauses && f.clauses.length && !matchClauses(it, f.clauses)) return false;
     return true;
   }
   cnt(f, except, field) { const c = {}; ITEMS.forEach(it => { if (this.matchF(it, f, except)) (field === 'collection' || field === 'named' ? [it[field]].filter(Boolean) : vals(it, field)).forEach(v => c[v] = (c[v] || 0) + 1); }); return c; }
@@ -1232,7 +1291,8 @@ class Component extends DCLogic {
     const s = this.state, p = this.props, f = s.f;
     const view = s.view ?? p.defaultView ?? 'masonry';
     const chips = [];
-    ['collection', ...KEYS].forEach(k => f[k].forEach(v => chips.push({ group: k === 'collection' ? 'Collection' : LABELS[k], label: v, remove: () => this.apply(ff => this.tog(ff, k, v)) })));
+    ['collection', ...KEYS].forEach(k => f[k].forEach(v => chips.push({ group: (k === 'collection' ? 'Collection' : LABELS[k]) + (f.fAll && f.fAll[k] && f[k].length > 1 ? ' (all)' : ''), label: v, remove: () => this.apply(ff => this.tog(ff, k, v)) })));
+    (f.clauses || []).forEach((c, ci) => chips.push({ group: ADV_FIELDS[c.field] + ' ' + ADV_OPS[c.op], label: c.query, remove: () => this.apply(ff => ({ ...ff, clauses: ff.clauses.filter((_, j) => j !== ci) })) }));
     if (f.yFrom != null || f.yTo != null) chips.push({ group: 'Production date', label: (f.yFrom ?? 'Any') + ' – ' + (f.yTo ?? 'Present'), remove: () => this.apply(ff => ({ ...ff, yFrom: null, yTo: null })) });
     if (f.accession) chips.push({ group: 'Accession number', label: f.accession, remove: () => this.apply(ff => ({ ...ff, accession: '' })) });
     if (f.birthFrom != null || f.birthTo != null) chips.push({ group: 'Creator birth years', label: (f.birthFrom ?? 'Any') + ' – ' + (f.birthTo ?? 'Any'), remove: () => this.apply(ff => ({ ...ff, birthFrom: null, birthTo: null })) });
@@ -1367,7 +1427,7 @@ class Component extends DCLogic {
       gridBg: view === 'masonry' ? '#c8d5c0' : '#fff', listBg: view === 'list' ? '#c8d5c0' : '#fff', isMasonry: view === 'masonry', isListView: view === 'list',
       titleText: 'Showing ' + n + ' ' + (n === 1 ? 'result' : 'results'), hasQ: !!f.q, qTag: (f.scope !== 'all' ? SCOPES.find(x => x[0] === f.scope)[1] + ': ' : '') + (f.q || '').toUpperCase(),
       clearQ: () => this.apply(ff => ({ ...ff, q: '' })),
-      filterCount: (chips.length + (f.digital ? 1 : 0)) || null, filterBtnRef: this.filterBtnRef,
+      advHref: advancedFormHref(f), filterCount: (chips.length + (f.digital ? 1 : 0)) || null, filterBtnRef: this.filterBtnRef,
       ppRef: this.ppRef, ppOpen: s.ppOpen, ppChev: s.ppOpen ? 'rotate(180deg)' : 'none', togglePP: () => this.setState(st => ({ ppOpen: !st.ppOpen })),
       rangeLabel: n ? 'Showing ' + ((page - 1) * s.perPage + 1) + '–' + Math.min(page * s.perPage, n) + ' records' : 'Showing 0 records',
       mainRef: this.mainRef, showPager: n > 0 && !s.loading,
