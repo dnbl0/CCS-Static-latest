@@ -37,6 +37,7 @@
   <link rel="stylesheet" href="../../styles/vendor/bootstrap-uom.min.css">
   <link rel="stylesheet" href="../../styles/footer.css">
   <link rel="stylesheet" href="../../styles/header.css">
+  <link rel="stylesheet" href="../../styles/collection.css">
 </head>
 <body>
 <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -249,9 +250,15 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
         <h1 style="margin:0;font-family:'Fraunces',serif;font-weight:500;font-size:clamp(30px,4vw,40px);line-height:1.1">{{ coll.name }}</h1>
         <p style="margin:0;font-size:17px;line-height:1.55;color:rgba(255,255,255,.85);text-wrap:pretty">{{ coll.blurb }}</p>
       </div>
-      <div style="display:flex;gap:28px;flex-wrap:wrap;padding-top:4px">
-        <div style="display:flex;flex-direction:column;gap:2px"><strong style="font-family:'Fraunces',serif;font-size:26px">{{ stats.count }}</strong><span style="font-size:13px;color:rgba(255,255,255,.75)">Records</span></div>
-        <div style="display:flex;flex-direction:column;gap:2px"><strong style="font-family:'Fraunces',serif;font-size:26px">{{ stats.types }}</strong><span style="font-size:13px;color:rgba(255,255,255,.75)">Object types</span></div>
+      <div class="facts-card facts-card--inverse" style="max-width:420px">
+        <div class="facts-card__item">
+          <strong class="facts-card__stat">{{ stats.count }}</strong>
+          <span class="facts-card__sentence">Records</span>
+        </div>
+        <div class="facts-card__item">
+          <strong class="facts-card__stat">{{ stats.types }}</strong>
+          <span class="facts-card__sentence">Object types</span>
+        </div>
       </div>
       <div class="hero-cta" style="display:flex;gap:12px;flex-wrap:wrap;padding-top:8px">
         <a href="{{ coll.searchHref }}" style="height:44px;display:flex;align-items:center;gap:8px;border:1px solid #fff;background:#fff;color:var(--col-bg-primary);padding:0 18px;font-size:15px;font-weight:600;justify-content:center" style-hover="background:var(--col-bg-selected)">Search this collection</a>
@@ -271,10 +278,7 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
 
 <main id="main-content" style="flex:1;max-width:1440px;width:100%;margin:0 auto;padding:40px 32px 64px;display:flex;flex-direction:column;gap:20px">
   <sc-if value="{{ visit.warning }}" hint-placeholder-val="{{ false }}">
-    <div role="note" style="display:flex;gap:12px;align-items:flex-start;background:var(--col-advisory-bg);border:1px solid var(--col-advisory-border);padding:14px 18px">
-      <svg width="22" height="22" viewBox="0 0 24 24" style="flex:none;margin-top:1px"><path d="M12 3l10 18H2z" fill="var(--col-advisory-text)"></path><rect x="11" y="9" width="2" height="6" fill="#fff"></rect><rect x="11" y="16.5" width="2" height="2" fill="#fff"></rect></svg>
-      <p style="margin:0;font-size:15px;line-height:1.5;color:#1b1f2a">Aboriginal and Torres Strait Islander viewers are advised that this website may contain the image, voice, or name of deceased persons. We apologise for any distress that may occur.</p>
-    </div>
+    <p class="notice notice--warning" role="note">Aboriginal and Torres Strait Islander viewers are advised that this website may contain the image, voice, or name of deceased persons. We apologise for any distress that may occur.</p>
   </sc-if>
   <div style="display:flex;gap:40px;align-items:flex-start;flex-wrap:wrap">
     <div style="flex:3 1 480px;min-width:0;display:flex;flex-direction:column;gap:20px">
@@ -302,37 +306,28 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
     <sc-if value="{{ hasSidebar }}" hint-placeholder-val="{{ false }}">
     <aside style="flex:1 1 260px;min-width:240px;max-width:320px;align-self:flex-start;display:flex;flex-direction:column;gap:20px;position:sticky;top:20px">
       <sc-if value="{{ hasVisit }}" hint-placeholder-val="{{ false }}">
-        <div style="display:flex;flex-direction:column;gap:18px;background:#fff;border:1px solid #e3e0d9;padding:22px">
-          <strong style="font-family:'Fraunces',serif;font-size:18px;color:var(--col-text-primary)">Visit</strong>
-          <div style="display:flex;gap:10px;align-items:flex-start">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--col-bg-primary)" stroke-width="2" style="flex:none;margin-top:2px"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
-            <div style="display:flex;flex-direction:column;gap:2px">
-              <strong style="font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--col-text-muted)">Opening hours</strong>
-              <span style="font-size:15px;color:var(--col-text-primary)">{{ visit.hours }}</span>
-            </div>
+        <div class="contact-box">
+          <strong class="contact-box__heading">Visit</strong>
+          <div>
+            <div class="contact-box__term">Opening hours</div>
+            <div class="contact-box__desc">{{ visit.hours }}</div>
           </div>
-          <div style="display:flex;gap:10px;align-items:flex-start">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--col-bg-primary)" stroke-width="2" style="flex:none;margin-top:2px"><path d="M12 21s7-6.5 7-11.5A7 7 0 0 0 5 9.5C5 14.5 12 21 12 21z"></path><circle cx="12" cy="9.5" r="2.4"></circle></svg>
-            <div style="display:flex;flex-direction:column;gap:2px">
-              <strong style="font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--col-text-muted)">Location</strong>
-              <span style="font-size:15px;color:var(--col-text-primary)">{{ visit.location }}</span>
-            </div>
+          <div>
+            <div class="contact-box__term">Location</div>
+            <div class="contact-box__desc">{{ visit.location }}</div>
           </div>
           <sc-if value="{{ visit.contact }}">
-            <div style="display:flex;gap:10px;align-items:flex-start">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--col-bg-primary)" stroke-width="2" style="flex:none;margin-top:2px"><rect x="3" y="5" width="18" height="14"></rect><polyline points="3 7 12 13 21 7"></polyline></svg>
-              <div style="display:flex;flex-direction:column;gap:2px">
-                <strong style="font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--col-text-muted)">Enquiries</strong>
-                <a href="mailto:{{ visit.contact }}" style="font-size:15px">{{ visit.contact }}</a>
-              </div>
+            <div>
+              <div class="contact-box__term">Enquiries</div>
+              <a class="contact-box__desc" href="mailto:{{ visit.contact }}">{{ visit.contact }}</a>
             </div>
           </sc-if>
         </div>
       </sc-if>
       <sc-if value="{{ coll.hasExternal }}" hint-placeholder-val="{{ false }}">
-        <a href="{{ coll.externalUrl }}" target="_blank" rel="noopener" style="display:flex;flex-direction:column;gap:6px;background:#fff;border:1px solid #e3e0d9;padding:22px" style-hover="border-color:var(--col-bg-primary)">
-          <strong style="font-family:'Fraunces',serif;font-size:18px;color:var(--col-text-primary)">Explore the collection online</strong>
-          <span style="font-size:14px;color:var(--col-text-muted)">Browse the full holdings on the museum's own collection website ↗</span>
+        <a href="{{ coll.externalUrl }}" target="_blank" rel="noopener" class="pathfinder-inset">
+          <strong class="pathfinder-inset__heading">Explore the collection online</strong>
+          <span class="pathfinder-inset__desc">Browse the full holdings on the museum's own collection website ↗</span>
         </a>
       </sc-if>
     </aside>
