@@ -1,17 +1,16 @@
 # Cultural Collections Search - Design System Documentation
 
 **Project**: Cultural Collections Search (CCS) | **Institution**: University of Melbourne  
-**Design System**: UoM Gen 3 v15.14.0 | **Version**: 2.0 | **Date**: 2026-09-29  
-**Status**: ✅ Production Ready | **Codebase**: Reorganized (Semantic Structure)
+**Design System**: UoM Gen 3 v15.14.0 | **Version**: 2.4 | **Date**: 2026-10-01  
+**Status**: Prototype (no formal accessibility audit) | **Codebase**: Static pages under `public/`
 
 ---
 
 ## Quick Reference
 
-**Files Location**: See `.reorganization/DIRECTORY-REFERENCE.md` for complete file paths  
-**Styles**: `public/styles/` (variables.css, components.css, typography.css)  
-**Components**: Defined in `public/styles/components.css`  
-**Bootstrap**: `public/styles/vendor/bootstrap.min.css` (v5.3.3, official source)
+**Files Location**: See `README.md` (Repository layout)  
+**Styles**: `public/components/fig-tokens.css`, `public/components/fig-assets.css`, `public/styles/header.css`, `footer.css`, `collection.css`, plus page-local `<style>` blocks  
+**Bootstrap**: `public/styles/vendor/bootstrap-uom.min.css` (5.3.3, built locally from `src/scss/custom-bootstrap.scss` with `npm run build:css`)
 
 ---
 
@@ -36,6 +35,8 @@
 
 All colors follow the University of Melbourne Gen 3 Design System official palette.
 
+**Where tokens live**: `public/components/fig-tokens.css` carries the Gen 3 tokens (for example `--col-heritage-100` = `rgb(0 15 70)` = #000f46, `--col-btn-action-bg: #46c8f0`). Each page also declares its own `:root` overrides in an inline `<style>` block (`--col-bg-primary`, `--col-bg-accent`, `--col-text-muted`, ...), and values differ slightly between the tables below and those blocks (for example `index.html` sets `--col-bg-primary-dark: #000b34` and `--col-bg-primary-hover: #213e5d`). Treat the page-local `:root` block as authoritative for that page. In `fig-tokens.css`, `--col-bg-accent` is a blue-dark token, whereas the pages' local `--col-bg-accent` is the sage `#abc1a7`.
+
 #### Primary Colors
 
 | Token | Hex Value | Usage | RGB | HSL |
@@ -55,9 +56,9 @@ All colors follow the University of Melbourne Gen 3 Design System official palet
 
 | Token | Hex Value | Usage | Contrast (on white) |
 |-------|-----------|-------|-------------------|
-| Text Primary | #1b1f2a | Body text, headings | 14:1 |
-| Text Muted | #5b6070 | Secondary text, labels | 7.2:1 |
-| Text Inverse | #ffffff | On dark backgrounds | 14:1 |
+| Text Primary | #1b1f2a | Body text, headings | 16.5:1 |
+| Text Muted | #5b6070 | Secondary text, labels | 6.3:1 |
+| Text Inverse | #ffffff | On dark backgrounds (on #000f46) | 18.2:1 |
 
 #### Neutral Colors
 
@@ -149,6 +150,8 @@ Body: 'Source Sans 3', system-ui, -apple-system, sans-serif
 ---
 
 ## Component Library
+
+> **Note**: the component specs below are the original design intent. The later Gen 3 audit (see "Gen 3 Compliance Audit") set `border-radius: 0` and `box-shadow: none` sitewide and moved primary actions to cyan `#46c8f0`; where the two differ (rounded corners, shadows, navy/sage buttons), the audit and the live code win.
 
 ### Search Form Component
 
@@ -541,13 +544,16 @@ Body: 15px → 18px at tablet+
 - Accents: Sage light #dde5d6
 - Media: Deep black #1a1a1a
 
-### Contrast Ratios (WCAG AA)
+### Contrast Ratios (calculated, WCAG relative luminance)
 
-All text meets ≥4.5:1 ratio:
-- Navy on white: 14:1 ✅
-- White on navy: 14:1 ✅
-- Green button: 5.2:1 ✅
-- Muted text: 7.2:1 ✅
+Targets are ≥4.5:1 for text. Calculated values for the main pairings:
+- Navy #000f46 on white: 18.2:1
+- Text #1b1f2a on white: 16.5:1
+- Navy on sage #abc1a7: 9.4:1
+- Navy on action cyan #46c8f0: 9.3:1
+- Muted text #5b6070 on white: 6.3:1 (on #faf9f6: 6.0:1)
+
+These are spot calculations, not a full audit of every page.
 
 ---
 
@@ -620,33 +626,35 @@ All text meets ≥4.5:1 ratio:
 
 ## Accessibility Standards
 
-### WCAG 2.1 Level AA Compliance
+### WCAG 2.1 Level AA - Targets and Status
+
+**Status**: WCAG 2.1 AA is the target. Pages have been scanned with axe-core and the issues it reported were fixed (remaining items are listed in `README.md` under Known issues). There has been no formal audit, manual assistive-technology testing or certification, so the checklist below states what the design aims for, not verified conformance.
 
 **Color Contrast** (1.4.3):
-- ✅ Text: ≥4.5:1 ratio
-- ✅ Large text (18px+): ≥3:1 ratio
-- ✅ UI components: ≥3:1 ratio
+- Text: ≥4.5:1 ratio
+- Large text (18px+): ≥3:1 ratio
+- UI components: ≥3:1 ratio
 
 **Resize Text** (1.4.4):
-- ✅ Page scales to 200% without loss
-- ✅ Text reflows to single column
-- ✅ No horizontal scrolling
+- Page scales to 200% without loss
+- Text reflows to single column
+- No horizontal scrolling
 
 **Keyboard Navigation** (2.1.1):
-- ✅ All functionality keyboard accessible
-- ✅ Logical tab order
-- ✅ No keyboard traps
+- All functionality keyboard accessible
+- Logical tab order
+- No keyboard traps
 
 **Focus Visible** (2.4.7):
-- ✅ Visible focus indicator on all interactive elements
-- ✅ Focus outline 2-3px, high contrast
-- ✅ Clear visual indicator
+- Visible focus indicator on all interactive elements
+- Focus outline 2-3px, high contrast
+- Clear visual indicator
 
 **Semantic HTML**:
-- ✅ Proper heading hierarchy (H1 → H2 → H3)
-- ✅ Form labels associated with inputs
-- ✅ Landmarks: header, nav, main, footer
-- ✅ List structures preserved
+- Proper heading hierarchy (H1 → H2 → H3)
+- Form labels associated with inputs
+- Landmarks: header, nav, main, footer
+- List structures preserved
 
 ### ARIA Implementation
 
@@ -662,12 +670,12 @@ All text meets ≥4.5:1 ratio:
 <span class="visually-hidden">Screen reader text</span>
 ```
 
-**Landmark Regions**:
+**Landmark Regions** (native elements; explicit roles are not needed). Repeated landmarks of the same type carry an `aria-label`, for example the footer `aria-label="University of Melbourne footer"` and the breadcrumb `nav aria-label="Breadcrumb"`:
 ```html
-<header role="banner">...</header>
-<nav role="navigation">...</nav>
-<main role="main">...</main>
-<footer role="contentinfo">...</footer>
+<header>...</header>
+<nav aria-label="Breadcrumb">...</nav>
+<main>...</main>
+<footer aria-label="University of Melbourne footer">...</footer>
 ```
 
 ---
@@ -699,7 +707,7 @@ All text meets ≥4.5:1 ratio:
 - Body: 15-18px
 - Hero text: 18px, white
 
-### Collection Record (Collection Record.dc.html)
+### Collection Record (`public/collections/record.html?id=<id>`)
 
 **Structure**:
 1. Header (with breadcrumb)
@@ -715,12 +723,13 @@ All text meets ≥4.5:1 ratio:
 - Text: Dark #1b1f2a
 
 **Interactive**:
-- I: Toggle sidebar visibility
-- F: Fullscreen view
-- ←/→: Navigate images
-- ?: Show keyboard help
+- Media viewer for images, audio and video; metadata sidebar
+- Keyboard shortcuts apply only while the viewer has focus or is full screen (see the script in `record.html` for the current keys)
+- "Contact us" button opens a request dialog (General enquiry / Request to use / Request to view) with focus trap and Esc to close
+- Unknown ids show "Record not found"; each record sets its own document title
+- Field labels and order follow `assets/CCS Field labels and filters - Final - PRG - 1 OCT 2026.xlsx` (see `README.md`)
 
-### Search Results (Collection Search v3.dc.html)
+### Search Results (`public/search/advanced.html`)
 
 **Structure**:
 1. Header + search bar
@@ -734,14 +743,13 @@ All text meets ≥4.5:1 ratio:
 - Tablet: Collapsed filters
 - Mobile: Full-width results
 
-### Browse Collections (Browse Collections.dc.html)
+### Browse Collections (`public/collections/index.html`)
 
 **Structure**:
 1. Header + search
-2. Category filters
-3. Collection grid (3-4 columns)
-4. Pagination
-5. Footer
+2. Collection card grid (record counts computed from the data)
+3. Browse tiles (by type / format; some map to keyword searches)
+4. Footer
 
 **Card Style**:
 - Gallery cards with image overlay
@@ -797,73 +805,67 @@ Before finalizing designs, verify:
 
 ---
 
-## File Organization (Post-Reorganization)
+## File Organization
 
 ### Directory Structure
 ```
-public/                              # Deployed files
-├── index.html
-├── pages/                           # HTML pages (.html standard extension)
-│   ├── browse.html
-│   ├── collection.html
-│   ├── contact.html
-│   ├── help.html
-│   ├── record.html                  # Media viewer
-│   ├── search.html
-│   └── home-legacy.html
-├── styles/                          # CSS
-│   ├── variables.css                # Design tokens
-│   ├── components.css               # Component styles
-│   ├── typography.css               # Font definitions
-│   └── vendor/bootstrap.min.css     # Bootstrap 5.3.3
-├── assets/
-│   ├── images/collections/          # Collection images
-│   ├── images/archive/              # Original formats
-│   ├── data/                        # Metadata, filters, media
-│   └── documents/                   # Help, advisory
-└── .htaccess                        # URL redirects
+public/                              # Deployed web root
+├── index.html, search.html, contact.html
+├── search/advanced.html
+├── collections/
+│   ├── index.html, record.html
+│   └── <slug>/index.html            # 5 collection landing pages
+├── help/{index.html, indigenous-data.html}
+├── collection-data.js               # Record data -> window.CCS
+├── blacklight-adapter.js, support.js, image-slot.js
+├── components/                      # fig-tokens.css, fig-assets.css (+ exported .jsx/.d.ts)
+├── styles/                          # header.css, footer.css, collection.css, vendor/bootstrap-uom.min.css
+├── assets/                          # images/collections, data (audio/video, metadata), documents
+├── images/                          # optimised web images and icons
+└── .htaccess                        # Apache redirects/rewrites
 
-src/                                 # Source code
-├── js/modules/                      # Feature modules
-└── js/utils/                        # Helper functions
-
-docs/                                # Documentation
-├── README.md
-├── design.md
-└── guides/
+src/scss/custom-bootstrap.scss       # Bootstrap theme source
+src/js/utils/                        # helpers.js, image-handler.js (not loaded by pages)
+tests/                               # Node test scripts (npm test)
+config/redirects.json                # documentation-only
+vercel.json                          # clean URLs + legacy redirects
 ```
 
 ### CSS Files Location
 
 | File | Purpose |
 |------|---------|
-| `public/styles/variables.css` | CSS custom properties, color tokens, theme variables |
-| `public/styles/components.css` | Component styles (cards, buttons, forms, etc.) |
-| `public/styles/typography.css` | Font families, sizes, weights, line heights |
-| `public/styles/vendor/bootstrap.min.css` | Bootstrap 5.3.3 framework |
+| `public/components/fig-tokens.css` | Gen 3 design tokens (colour, type, spacing) and global focus styles |
+| `public/components/fig-assets.css` | Asset/component styles from the design export |
+| `public/styles/header.css` | Site header and search overlay |
+| `public/styles/footer.css` | UoM footer |
+| `public/styles/collection.css` | Collection landing pages |
+| `public/styles/vendor/bootstrap-uom.min.css` | Bootstrap 5.3.3, compiled locally |
+
+`variables.css`, `typography.css` and `components.css` (and the top-level `styles/` and `images/` folders) were dead duplicates and have been deleted.
 
 ### Styles Import
 
 ```html
-<link rel="stylesheet" href="/public/styles/variables.css">
-<link rel="stylesheet" href="/public/styles/components.css">
-<link rel="stylesheet" href="/public/styles/vendor/bootstrap.min.css">
+<link rel="stylesheet" href="styles/vendor/bootstrap-uom.min.css">
+<link rel="stylesheet" href="components/fig-tokens.css">
+<link rel="stylesheet" href="components/fig-assets.css">
+<link rel="stylesheet" href="styles/header.css">
+<link rel="stylesheet" href="styles/footer.css">
 ```
+
+Paths are relative to the page (`../` prefixes on pages in subfolders).
 
 ### Bootstrap Details
 
-- **Version**: 5.3.3 (Official from https://github.com/twbs/bootstrap)
-- **CDN**: jsDelivr (official npm distribution)
-- **SRI Hashing**: Enabled for security
-- **Configuration**: See `.reorganization/BOOTSTRAP-DEPENDENCIES.md`
+- **Version**: 5.3.3, compiled from the npm package with a custom Sass theme (`npm run build:css`)
+- **JS bundle**: only `index.html` loads `bootstrap.bundle.min.js` from jsDelivr, pinned to 5.3.3 with an SRI hash
+- **Configuration**: see `BOOTSTRAP-DEPENDENCIES.md`
 
 ### Documentation
 
-For detailed file navigation, see:
-- `.reorganization/DIRECTORY-REFERENCE.md` - Complete file lookup
-- `.reorganization/REORGANIZATION-PLAN.md` - Structure rationale
-- `.reorganization/DATA-MAPPING.md` - Data organization
-- `.reorganization/IA-SITEMAP-RESTRUCTURE.md` - URL structure and IA implementation
+- `README.md` - overview, data guide, tests, hosting, known issues
+- `BOOTSTRAP-DEPENDENCIES.md`, `github.md`, `jira-mvp-mapping.md`
 
 ---
 
@@ -875,7 +877,7 @@ All pages use semantic, REST-friendly URLs:
 
 **Home & Search**:
 - `/` → Home page
-- `/search` → Basic keyword search
+- `/search` → Redirects to `/search/advanced`
 - `/search/advanced` → Advanced search interface
 
 **Collections**:
@@ -889,30 +891,30 @@ All pages use semantic, REST-friendly URLs:
 
 **Support & Resources**:
 - `/help` → Help and guidance
-- `/help/faqs` → Frequently asked questions
-- `/contact` → Contact form
+- `/help/indigenous-data` → Indigenous cultural data and access
+- `/contact` → Contact groups and collection contacts
 
 ### Page Nesting
 
-All pages organized under `/public` directory maintaining semantic structure:
+All pages are organised under `public/`:
 
 ```
 public/
 ├── index.html                    # / (home)
-├── search.html                   # /search
+├── search.html                   # /search (redirect stub)
 ├── contact.html                  # /contact
-├── search/
-│   └── advanced.html             # /search/advanced
+├── search/advanced.html          # /search/advanced
 ├── collections/
 │   ├── index.html                # /collections
-│   ├── record.html               # /collections/record
-│   ├── grainger-museum.html
-│   ├── harry-brookes-allen-museum.html
-│   ├── henry-forman-atkinson-dental-museum.html
-│   ├── medical-history-museum.html
-│   └── university-art-collection.html
+│   ├── record.html               # /collections/record?id=<id>
+│   ├── grainger-museum/index.html
+│   ├── harry-brookes-allen-museum/index.html
+│   ├── henry-forman-atkinson-dental-museum/index.html
+│   ├── medical-history-museum/index.html
+│   └── university-art-collection/index.html
 └── help/
-    └── index.html                # /help
+    ├── index.html                # /help
+    └── indigenous-data.html      # /help/indigenous-data
 ```
 
 ---
@@ -1084,6 +1086,7 @@ Gen 3's accordion is borderless, shadowless, sharp-cornered, with a hairline top
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 2.4 | 2026-10-01 | Docs refreshed to match the code: file paths, deleted duplicate CSS, local Bootstrap build, compliance wording changed from "compliant" to "target, axe-core scanned, not formally audited", calculated contrast values |
 | 2.3 | 2026-09-29 | Live Gen 3 compliance audit: border-radius/box-shadow stripped site-wide, primary button color corrected to cyan, tags rebuilt to match `.tags__item` |
 | 2.2 | 2026-09-29 | Gen 3 breadcrumb component, 640px responsive breakpoint, Collections card-grid redesign, Grainger tile image sourced from `/assets` |
 | 2.1 | 2026-09-29 | Fixed fabricated Bootstrap SRI hashes (root cause of site-wide unstyled nav), broken relative paths, duplicate footers, wrong per-collection data |
@@ -1092,6 +1095,5 @@ Gen 3's accordion is borderless, shadowless, sharp-cornered, with a hairline top
 
 ---
 
-**Last Updated**: 2026-09-29  
-**Maintained By**: Design Team  
-**Status**: ✅ Complete and Verified
+**Last Updated**: 2026-10-01  
+**Maintained By**: Design Team

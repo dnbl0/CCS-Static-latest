@@ -1,626 +1,264 @@
 # Cultural Collections Search - University of Melbourne
 
-A comprehensive web platform for discovering and searching the University of Melbourne's cultural collections spanning visual arts, cartography, medical history, zoology, archives, and more.
+A static front-end prototype for searching and browsing the University of Melbourne's cultural collections (Grainger Museum, Medical History Museum, University Art Collection, Harry Brookes Allen Museum, Henry Forman Atkinson Dental Museum, and a few smaller collections).
 
-**Status**: ✅ Production Ready | **Design System**: UoM Gen 3 v15.14.0 | **Accessibility**: WCAG 2.1 Level AA | **Structure**: Reorganized (Semantic)  
-**Bootstrap**: 5.3.3 (Official, SRI verified) | **Repository**: https://github.com/dnbl0/CCS-Static-latest
+**Design system**: UoM Gen 3 | **Bootstrap**: 5.3.3 (built locally) | **Hosting**: Vercel | **Repository**: https://github.com/dnbl0/CCS-Static-latest
 
----
-
-## Recent Changes (2026-09-29)
-
-- **Critical fix**: Bootstrap CDN `<link>`/`<script>` tags carried fabricated SRI hashes that silently blocked Bootstrap's CSS/JS from loading (browser shows 200 OK, but the resource is never applied). This was the root cause of the unstyled, stacked navbar across the site. Replaced with real hashes verified via `openssl dgst` against the live jsDelivr files.
-- Fixed broken relative asset paths introduced during the IA migration; made `public/` fully self-contained (images/components/scripts copied in, not reached via `../` above the doc root) so it works correctly once `public/` is the real production web root.
-- Removed duplicate footers (old page footer + new UoM footer both present) across all 12 restructured pages; fixed dead links still pointing at pre-migration `.dc.html` filenames.
-- Fixed all 5 collection landing pages silently showing "Medical History Museum" regardless of URL (template's `this.props.collection` fallback is always empty in these static exports).
-- Rebuilt the breadcrumb to match the [Gen 3 Page Header component](https://designsystem.web.unimelb.edu.au/components/page-header/) (home icon, 18px white text, `>` separator, no default underline). Added a 640px responsive breakpoint and redesigned "Browse collections" from a plain list into a card grid.
-- Sourced the Grainger Museum Collection tile image from `assets/Collections - image tiles.docx` (was a placeholder).
-- Audited the prototype against the [2026 MVP Jira filter](https://unimelb.atlassian.net/issues/?filter=26999) and removed two out-of-scope features (spelling-suggestion "Did you mean?" UI, dormant Indigenous-data search filter) per items explicitly marked post-2026.
-- Corrected mismatched museum contact emails against `assets/CCS Help - Access and Information.docx`.
-- Live-audited the whole site against [designsystem.web.unimelb.edu.au](https://designsystem.web.unimelb.edu.au/components/) (computed styles, plus cross-checks on library.unimelb.edu.au and students.unimelb.edu.au): stripped `border-radius`/`box-shadow` everywhere per Gen 3's sharp-corner, no-shadow rule, corrected the primary button/search-button color from navy to Gen 3's actual cyan `#46c8f0`, and rebuilt object-type tags to match the live `.tags__item` component. See `design.md` → Gen 3 Compliance Audit.
-
-See `.reorganization/` for detailed write-ups of each pass.
+The site is a prototype driven by an in-repo dataset (735 listed records), not a live catalogue. Accessibility work has been done and checked with axe-core scans (clean apart from the items listed under [Known issues](#known-issues--follow-ups)), but the site has **not** had a formal WCAG audit or certification.
 
 ---
 
-## Table of Contents
+## Contents
 
-1. [Project Overview](#project-overview)
-2. [Features](#features)
-3. [Design System](#design-system)
-4. [Architecture](#architecture)
-5. [Developer Guide](#developer-guide)
-6. [Stakeholder Information](#stakeholder-information)
-7. [AI Agent Guide](#ai-agent-guide)
-8. [Setup & Deployment](#setup--deployment)
-
----
-
-## Project Overview
-
-The Cultural Collections Search (CCS) website is the primary digital interface for the University of Melbourne's cultural collections. It provides users with powerful search, browsing, and discovery capabilities across 73 in-scope requirements from the 2026 MVP.
-
-### Key Metrics
-- **Design Compliance**: 100% aligned with UoM Gen 3 Design System
-- **Accessibility**: WCAG 2.1 Level AA fully compliant
-- **Responsive Design**: Works on all devices (mobile, tablet, desktop)
-- **Performance**: Fast-loading, optimized images
-- **Audit Score**: A (92/100) - Production ready
+1. [Recent changes](#recent-changes-2026-10-01)
+2. [Pages and URLs](#pages-and-urls)
+3. [Repository layout](#repository-layout)
+4. [Data: how records work](#data-how-records-work)
+5. [Field labels and the spreadsheet](#field-labels-and-the-spreadsheet)
+6. [Record page behaviour](#record-page-behaviour)
+7. [Styling](#styling)
+8. [Develop, test and deploy](#develop-test-and-deploy)
+9. [Known issues / follow-ups](#known-issues--follow-ups)
+10. [Related docs](#related-docs)
 
 ---
 
-## Features
+## Recent changes (2026-10-01)
 
-### ✅ Search & Discovery
-- **Advanced Search**: Boolean operators, phrase search, filters
-- **Multiple Entry Points**: Header search bar + hero search
-- **Smart Filtering**: By collection, format, type, date range
-- **Persistent URLs**: Shareable, bookmarkable search results
-- **Search Accessibility**: Keyboard navigable, screen reader friendly
+- **Single data source**: `public/collection-data.js` now defines `window.CCS` and is read by both `search/advanced.html` and `collections/record.html`. The embedded copy in `advanced.html` and `public/assets/data/collections.js` are gone. Early duplicate stub records are folded into fuller records via an alias map (`SUPERSEDED`); 735 records are listed.
+- **Record page**: per-record document title, "Record not found" state for unknown ids, a single "Contact us" button opening a keyboard-accessible request dialog (General enquiry / Request to use / Request to view), and a media viewer for images, audio and video. Field labels and order follow the 1 Oct 2026 PRG spreadsheet.
+- **Collections**: landing pages moved to `collections/<slug>/index.html`; the browse page's record counts are computed from the data and browse-by-type links repaired.
+- **Accessibility**: sitewide footer contrast, labelled landmarks, heading order, dialog focus management, 404 asset fixes.
+- **Tooling**: `vercel.json` (clean URLs + legacy redirects), a test suite run by `npm test` and by CI, and a locally built Bootstrap.
+- **Deploy fix**: `.vercelignore` previously excluded `public/assets/`, so record images, audio and video returned 404 on the live site; it now ignores only the top-level `assets/` working folder. (`public/assets` is ~237 MB; consider trimming unused media.)
+- **Cleanup**: root-level `.dc.html` files, the `.reorganization/` notes, `variables.css` / `typography.css` / `components.css` and the top-level `styles/` and `images/` duplicates were deleted.
 
-### ✅ Content Browsing
-- **Featured Collections**: Curated highlights on home page
-- **Collection Grid**: Responsive card layout (3 columns desktop, 2 tablet, 1 mobile)
-- **Metadata Display**: Rich information for each record
-- **Media Viewer**: Europeana pattern with fullscreen support
-- **Related Items**: Connected records and collections
-
-### ✅ User Experience
-- **Responsive Design**: Mobile-first, all breakpoints tested
-- **Keyboard Navigation**: Full keyboard support + shortcuts
-- **Accessible Color Scheme**: 4.5:1+ contrast ratios
-- **Intuitive Navigation**: Clear information architecture
-- **Touch-Friendly**: 44px+ minimum touch targets
-
-### ✅ Technical Excellence
-- **Clean HTML**: Semantic structure, proper heading hierarchy
-- **CSS Architecture**: Organized, maintainable, design tokens
-- **Component Library**: Reusable patterns (cards, forms, navigation)
-- **Progressive Enhancement**: Works without JavaScript
-- **Browser Support**: Chrome, Firefox, Safari (latest versions)
+Earlier history (2026-09-29 and before: SRI fix, IA restructure, header rollout, Gen 3 audit) is in `git log`.
 
 ---
 
-## Design System
+## Pages and URLs
 
-### UoM Gen 3 Color Palette
+All pages live in `public/` (the web root). They are "DC template" HTML: `{{ }}` placeholders in the markup plus a `class Component extends DCLogic` script, rendered at runtime by `public/support.js` (a generated runtime - do not edit it).
 
-```css
---col-bg-primary: #000f46;           /* Navy blue (main brand color) */
---col-bg-primary-dark: #000a32;      /* Darker navy for gradients */
---col-bg-primary-hover: #001a66;     /* Navy on hover states */
---col-bg-accent: #abc1a7;            /* Sage green (secondary accent) */
---col-bg-accent-soft: #dde5d6;       /* Light sage for backgrounds */
---col-text-primary: #1b1f2a;         /* Dark charcoal for body text */
---col-text-muted: #5b6070;           /* Medium gray for secondary text */
---col-border-neutral-soft: #e0e0e0;  /* Light gray borders */
---col-border-neutral-mid: #cfcac0;   /* Medium gray borders */
---col-bg-accent-soft: #faf9f6;       /* Off-white/cream background */
-```
+| URL | File | Notes |
+|---|---|---|
+| `/` | `public/index.html` | Home |
+| `/search` | `public/search.html` | Redirect stub to `/search/advanced` (meta refresh, JS, and server redirect) |
+| `/search/advanced` | `public/search/advanced.html` | Search, facets (`FACETS`), results grid/list |
+| `/collections` | `public/collections/index.html` | Browse all collections |
+| `/collections/<slug>` | `public/collections/<slug>/index.html` | Five landing pages: `grainger-museum`, `harry-brookes-allen-museum`, `henry-forman-atkinson-dental-museum`, `medical-history-museum`, `university-art-collection`. They share one template with per-collection data in JS dicts, so a change to the shared structure must be made in all five files |
+| `/collections/record?id=<id>` | `public/collections/record.html` | Record detail and media viewer |
+| `/contact` | `public/contact.html` | Contact groups and collection contacts |
+| `/help` | `public/help/index.html` | Help and guidance |
+| `/help/indigenous-data` | `public/help/indigenous-data.html` | Indigenous cultural data and access |
 
-### Typography System
-
-**Font Families**:
-- Headings: `'Fraunces', serif` (weight: 500-600, distinctive serif)
-- Body: `'Source Sans 3', system-ui, sans-serif` (weight: 400-600, clean sans)
-- Monospace: `monospace` (for data/code)
-
-**Type Scale**:
-```
-H1 (Hero):     clamp(34px, 5vw, 52px)   // Responsive scaling
-H2 (Section):  30px
-H3:            22-24px
-Body:          15-18px
-Labels:        12-14px (weight: 600)
-Caption:       12px
-```
-
-**Line Heights**: 1.08-1.6 depending on context (1.5+ for body text)
-
-### Spacing System
-
-8px baseline grid:
-```
-8px:  1 unit   (decorative spacing)
-16px: 2 units  (element padding)
-24px: 3 units  (section gaps)
-32px: 4 units  (container padding)
-48px: 6 units  (large spacing)
-64px: 8 units  (major section spacing)
-```
-
-### Component Patterns
-
-**Search Form**:
-- Border: 1px solid #e0e0e0
-- Border-radius: 4px
-- Height: 48px (touch-friendly)
-- Max-width: 360px
-- Box-shadow: 0 2px 4px rgba(0,0,0,.08)
-- Focus: 3px blue outline
-
-**Cards**:
-- Image overlay with gradient (text centered bottom)
-- Border: 1px solid #e0e0e0
-- Border-radius: 4px
-- Hover: translateY(-2px) + shadow
-- Responsive grid: 3 cols (desktop), 2 cols (tablet), 1 col (mobile)
-
-**Buttons**:
-- Primary: Navy #000f46
-- Secondary: Sage green #abc1a7
-- Padding: 12-18px
-- Border-radius: 4px
-- Focus: Visible outline
+Legacy `*.dc.html` filenames (for example `Collection Search v3.dc.html`) 301-redirect to the pages above (see [Hosting](#hosting)).
 
 ---
 
-## Architecture
-
-### URL Structure & Sitemap
+## Repository layout
 
 ```
-/ (Home)
-├── /search                    # Basic keyword search
-├── /search/advanced           # Advanced search interface
-├── /collections               # Browse all collections
-├── /collections/{name}        # Collection-specific pages
-│   ├── /collections/grainger-museum
-│   ├── /collections/harry-brookes-allen-museum
-│   ├── /collections/henry-forman-atkinson-dental-museum
-│   ├── /collections/medical-history-museum
-│   └── /collections/university-art-collection
-├── /collections/record        # Individual record + media viewer
-├── /help                      # Help & guidance documentation
-└── /contact                   # Contact form
-
-Footer Links (External UoM URLs):
-├── About us → https://www.unimelb.edu.au/about
-├── Careers → https://www.unimelb.edu.au/careers
-├── Safety → https://www.unimelb.edu.au/safety
-├── Newsroom → https://www.unimelb.edu.au/newsroom
-├── Contact → https://www.unimelb.edu.au/contact
-├── Campus Locations → https://www.unimelb.edu.au/campus-locations
-├── Emergency → https://www.unimelb.edu.au/emergency
-├── Accessibility → https://www.unimelb.edu.au/accessibility
-├── Privacy → https://www.unimelb.edu.au/privacy
-└── Terms & Privacy → https://www.unimelb.edu.au/terms-and-privacy
+public/                     Deployed web root
+  index.html, search.html, contact.html
+  search/advanced.html
+  collections/{index.html, record.html, <slug>/index.html}
+  help/{index.html, indigenous-data.html}
+  collection-data.js        Record data -> window.CCS (single source of truth)
+  blacklight-adapter.js     Optional live/mock adapter for a Blacklight JSON API (mock by default)
+  support.js                DC template runtime (generated)
+  image-slot.js             <image-slot> placeholder component (loaded by index.html)
+  components/               fig-tokens.css, fig-assets.css (live CSS), plus Figma-exported .jsx/.d.ts components
+  styles/                   header.css, footer.css, collection.css, vendor/bootstrap-uom.min.css
+  assets/                   images/collections (digital assets), data (audio/video, metadata sheets), documents
+  images/                   Optimised web images and icons used by pages
+  .htaccess                 Apache equivalent of the vercel.json redirects
+src/scss/custom-bootstrap.scss   Bootstrap 5.3.3 theme source (see Styling)
+src/js/utils/               helpers.js, image-handler.js (see below)
+tests/                      Plain-Node test scripts (see Develop, test and deploy)
+config/redirects.json      Documentation-only list of legacy redirects (nothing reads it at runtime; vercel.json and .htaccess are authoritative)
+assets/                     Source material for content: spreadsheets, CSVs, help/landing-page copy (.docx), original images. Not deployed (listed in .vercelignore)
+skills/                     Empty directory (a gitlink entry with no .gitmodules); not used by the site
+.github/workflows/          ci.yml, auto-merge.yml, vercel-deploy.yml
+.agents/rules/              PR workflow rule for coding agents
+verify-bootstrap.sh         Checks Bootstrap references in pages (run by npm test)
+vercel.json                 Vercel config
+design.md, github.md, jira-mvp-mapping.md, BOOTSTRAP-DEPENDENCIES.md   Supporting docs
 ```
 
-### Directory Structure
+Notes on directories:
 
-```
-CCS-Static/
-├── public/                           # Web root (semantic URLs)
-│   ├── index.html                   # Home /
-│   ├── search.html                  # /search
-│   ├── contact.html                 # /contact
-│   ├── search/
-│   │   └── advanced.html            # /search/advanced
-│   ├── collections/
-│   │   ├── index.html               # /collections
-│   │   ├── record.html              # /collections/record
-│   │   ├── grainger-museum.html     # /collections/grainger-museum
-│   │   ├── harry-brookes-allen-museum.html
-│   │   ├── henry-forman-atkinson-dental-museum.html
-│   │   ├── medical-history-museum.html
-│   │   └── university-art-collection.html
-│   ├── help/
-│   │   └── index.html               # /help
-│   ├── styles/                      # CSS files
-│   ├── assets/                      # Images, data, documents
-│   └── pages/                       # Legacy pages (archived)
-├── components/                      # Design system components
-│   ├── fig-tokens.css              # Design tokens
-│   ├── fig-assets.css              # Asset styles
-│   └── [118+ additional]            # Theme & component styles
-├── src/
-│   └── js/                          # JavaScript utilities
-│       ├── utils/
-│       │   ├── helpers.js
-│       │   └── image-handler.js
-│       └── modules/
-├── images/                          # Collection images (70+ files)
-├── assets/                          # Documentation & data
-├── docs/                            # Developer documentation
-├── config/                          # Configuration files
-├── scripts/                         # Utility scripts
-├── .reorganization/                 # Reorganization documentation
-├── collection-data.js               # Collection metadata
-├── support.js                       # Utility functions
-├── design.md                        # Design system documentation
-├── README.md                        # This file
-├── jira-mvp-mapping.md             # MVP requirements mapping
-└── .github/
-    └── workflows/
-        └── auto-merge.yml           # GitHub Actions automation
-```
-
-### Page Hierarchy
-
-```
-index.html (Home/Landing)
-├── Collection Search v3.dc.html (Search interface)
-├── Browse Collections.dc.html (Browse interface)
-├── Collection Landing.dc.html (Collection details)
-├── Collection Record.dc.html (Record detail + media viewer)
-├── Help and Support.dc.html (Help documentation)
-└── Contact Us.dc.html (Contact form)
-```
-
-### Responsive Breakpoints
-
-```
-Mobile:    < 768px    (1 column layout, full-width elements)
-Tablet:    768px-1199px (2 columns, adjusted spacing)
-Desktop:   1200px+    (3+ columns, optimized layout)
-Large:     1600px+    (enhanced sidebars, wider media viewer)
-```
+- `src/js/utils/helpers.js` is a generated copy of the DC runtime and `image-handler.js` is the `<image-slot>` starter scaffold. Neither is loaded by any page; the pages use `public/support.js` and `public/image-slot.js`.
+- `public/blacklight-adapter.js` is loaded by `search/advanced.html` and `collections/record.html`. Its default mode is `mock` (local `collection-data.js`); `?api=live` switches to the Blacklight endpoint set in the adapter. It is covered by `tests/blacklight-adapter.test.js`.
+- `public/components/*.jsx` / `*.d.ts` are exported design-system component sources; pages only load the two CSS files.
 
 ---
 
-## Developer Guide
+## Data: how records work
 
-### Getting Started
+`public/collection-data.js` is an IIFE that sets:
 
-**Prerequisites**:
-- No build system needed (static HTML/CSS)
-- Text editor or IDE
-- Local web server for testing
-
-**Local Development**:
-```bash
-# Option 1: Python 3
-python -m http.server 8000
-
-# Option 2: Node.js
-npx http-server -p 8000
-
-# Option 3: Ruby
-ruby -run -ehttpd . -p8000
+```js
+window.CCS = {
+  records,   // id -> display-ready record (built by build()); superseded ids are non-enumerable aliases
+  items,     // normalised search items (objectType, culture, img) used by search/advanced.html
+  ids,       // listed record ids
+  related(id, n = 4)  // related-record cards for the record page
+}
 ```
 
-Visit `http://localhost:8000` in your browser.
+`ITEMS` (an array of plain objects near the top of the file) is the raw data; `build(it)` turns each item into a record. `Object.values(CCS.records)` has one entry per listed record (735 today).
 
-### File Structure Notes
+### Add or edit a record
 
-- **index.html**: Main entry point, hero section, featured collections
-- **Collection Record.dc.html**: Media viewer with keyboard shortcuts (I, F, →, ←, ?)
-- **components/**: External design system CSS files (do not edit)
-- **images/**: All visual assets (optimized JPG format)
-- **assets/**: Supporting documentation and data
+1. Add or edit an object in the `ITEMS` array. Use a unique numeric `id` that is not already in `ITEMS` or in `SUPERSEDED` (ids in use today: 1-238, 10001-10250, 20001-20250, 50001-50007, 60001-60008).
+2. Use the item keys that `build()` reads, for example: `title`, `collection` (one of the constants at the top, e.g. `MHM`, `UAC`, `GMC`), `objectType`, `date`/`dateStart`/`dateEnd`, `creator`, `creatorRole`, `associatedEntity`, `place`, `description`, `series`, `material`, `dimensions`, `inscription`, `language`, `culturalAffiliation`, `accession`, `named`, `access`, `classification`, `subject`/`subjects`, `relatedParent`/`relatedChild`/`relatedRecord`, `copyright`, `creditLine`, `licence`, `advisories`, `img` or `images`.
+3. Leave a field out and it is not shown; no placeholder is rendered.
+4. Run `npm test`. `collection-data.test.js` checks unique ids, non-empty titles, that every field label is one of the specification labels, and that referenced `/assets` files exist.
 
-### CSS Architecture
+### Superseded records (`SUPERSEDED`)
 
-**Priority** (specificity):
-1. CSS custom properties (--col-*, --font-*)
-2. Base element styles (html, body, a, button)
-3. Component classes (.search-form, .gallery-card, .quick-link-card)
-4. Modifier classes (.hover, .active, .disabled)
-5. Media queries (mobile-first approach)
+Some early prototype stubs duplicate a fuller record. `SUPERSEDED = { oldId: canonicalId, ... }` folds them: `records[oldId]` still resolves (old links keep working) to the canonical record, but the old id is not enumerable, so it is not listed or counted twice. To retire a duplicate, add `oldId: canonicalId` to the map; the old item is dropped from `ACTIVE`.
 
-**Key Selectors**:
-```css
-/* Design tokens (top of file) */
-:root { --col-bg-primary: #000f46; ... }
+### Digital assets (`ASSET_IMAGES`, `ASSET_AV`)
 
-/* Components */
-.search-form { /* search input + button */ }
-.gallery-card { /* image cards with overlay */ }
-.quick-link-card { /* feature cards */ }
-
-/* Responsive adjustments */
-@media (max-width: 768px) { /* mobile adjustments */ }
-@media (min-width: 1200px) { /* desktop optimizations */ }
-```
-
-### Accessibility Implementation
-
-**Semantic HTML**:
-```html
-<header>...</header>         <!-- Page header -->
-<nav>...</nav>               <!-- Navigation -->
-<main>...</main>             <!-- Main content -->
-<footer>...</footer>         <!-- Footer -->
-<section>...</section>       <!-- Content sections -->
-<h1>, <h2>, <h3>            <!-- Heading hierarchy (no skips) -->
-```
-
-**ARIA Labels**:
-```html
-<input aria-label="Search the collection">
-<button aria-label="Submit search"></button>
-<svg aria-hidden="true">...</svg>
-```
-
-**Keyboard Navigation**:
-- Tab: Focus order follows visual order
-- Enter: Activate buttons/submit forms
-- Arrow keys: Navigate media viewer images (←/→)
-- I: Toggle media info sidebar
-- F: Toggle fullscreen
-- Esc: Exit fullscreen
-- ?: Show keyboard help
-
-**Color Contrast**:
-- Navy on white: 14:1 ratio ✅
-- White on navy: 14:1 ratio ✅
-- Green button: 5.2:1 ratio ✅
-- All text: ≥4.5:1 for WCAG AA ✅
-
-### JavaScript (Media Viewer)
-
-**File**: Collection Record.dc.html (inline script)
-
-**Features**:
-- Keyboard event listener (global)
-- Fullscreen API with fallbacks
-- Sidebar toggle (I key)
-- Image navigation (← → keys)
-- Public API: `window.MediaViewer.toggleFullscreen()`, `.toggleInfo()`, etc.
-
-**No dependencies**: Pure vanilla JavaScript, no jQuery or libraries needed.
-
-### Modifying Components
-
-**Adding a New Page**:
-1. Copy an existing .dc.html file as template
-2. Update the page title, heading, and content
-3. Keep the same nav structure for consistency
-4. Test on mobile (768px) and desktop (1200px+)
-
-**Updating Colors**:
-1. Modify CSS custom properties in `<style>` section
-2. Use `var(--col-*)` notation in component styles
-3. Test contrast ratios (use WebAIM contrast checker)
-4. Update design.md if adding new colors
-
-**Creating New Cards**:
-1. Use `.gallery-card` or `.quick-link-card` as base class
-2. Keep images square or use `object-fit: cover`
-3. Test grid responsiveness at all breakpoints
-4. Ensure hover effects are smooth and accessible
-
-### Testing Checklist
-
-- [ ] Visual: Desktop, tablet, mobile layouts
-- [ ] Keyboard: Tab through all interactive elements
-- [ ] Screen reader: Navigation, labels, landmarks
-- [ ] Colors: Contrast ratio check
-- [ ] Links: All navigation links work
-- [ ] Images: All images load, have alt text
-- [ ] Forms: Search bars submit correctly
-- [ ] Performance: Page loads quickly
+- `ASSET_IMAGES` maps a record id to a list of file names in `public/assets/images/collections/` (the filename stem is the accession number with `.` replaced by `_`; numbered suffixes are extra views). Files are URL-encoded and served from `/assets/images/collections/`.
+- `ASSET_AV` maps a record id to audio/video objects `{ kind: 'audio'|'video', src, type, label }` with files in `public/assets/data/`. They play in the media viewer after any images.
+- Records without an `ASSET_IMAGES` entry fall back to the web image named by `img` (or `images`) in `public/images/`.
+- Add the file under `public/assets/...` first (not the top-level `assets/`, which is not deployed), then add the mapping.
 
 ---
 
-## Stakeholder Information
+## Field labels and the spreadsheet
 
-### For Project Managers
+Field labels, sequence numbers and order follow `assets/CCS Field labels and filters - Final - PRG - 1 OCT 2026.xlsx` (sheets "CCS Field labels" and "CCS Filters").
 
-**MVP Status**: ✅ Complete
-- **73 in-scope requirements**: Implemented
-- **Design compliance**: 100% aligned with UoM Gen 3
-- **Accessibility**: WCAG 2.1 AA certified
-- **Timeline**: On schedule for 2026 launch
+- Record page fields: the `f` array in `build()` in `public/collection-data.js` (`[seq, label, lines]`). Rights fields (16, 17, 29) come from the `rights` array; media metadata (Title, Format, Licence type, Terms of use, Advisory ...) from `media`.
+- Filters: the `FACETS` array in `public/search/advanced.html` (group, key, title, kind).
 
-**Quality Metrics**:
-- Audit score: A (92/100)
-- Zero critical issues
-- Full responsive design support
-- Browser compatibility verified
+### Field mapping (spreadsheet "#" and Display Field to site label)
 
-### For Product Owners
+| # | Spreadsheet field | Site label / location |
+|---|---|---|
+| 1 | Title | Page heading (`title`) |
+| 2 | Object Type | Object type |
+| 3 | Date | Date |
+| 4 | Creator | Creator |
+| 5 | Associated Entity | Associated entity |
+| 6 | Place | Place |
+| 7 | Description | Description |
+| 8 | Series | Series |
+| 9 | Editions | Editions (no record populates it yet) |
+| 10 | Material | Material |
+| 11 | Dimensions | Dimensions (H x W x D) |
+| 12 | Inscription | Inscription |
+| 13 | Language | Language |
+| 14 | Cultural Affiliation | Cultural affiliation |
+| 15 | Accession Number | Accession number |
+| 16 | Copyright | Copyright (rights block) |
+| 17 | Credit Line | Credit line (rights block) |
+| 18 | Named Collection | Named collection |
+| 19 | Collection | Collection |
+| 20 | Access | Access |
+| 21 | Classification | Classification |
+| 22 | Subject | Subject |
+| 23 | Source URL | Source URL (no record populates it yet) |
+| 24 | Related Parent Record | Related parent record |
+| 25 | Related Child Record | Related child record (no record populates it yet) |
+| 26 | Related Record | Related record |
+| 27 | Licence Type | Licence type (media metadata, records with digital assets) |
+| 28 | Advisory | Advisory (media metadata) |
+| 29 | Terms of Use | Terms of use (rights block and media metadata, records with digital assets) |
+| 30 | Producer | Producer (no record populates it yet) |
 
-**User Experience**:
-- Intuitive search and browsing
-- Mobile-first responsive design
-- Fast page loads
-- Professional branding
-
-**Content Management**:
-- Static HTML pages (easy to update)
-- Clear page structure
-- Image assets in `/images` folder
-- Metadata in collection data structures
-
-**Future Enhancements** (out of scope for MVP):
-- Advanced search filters
-- Social sharing features
-- User accounts/saved searches
-- Analytics tracking
-- Dynamic content integration
-
-### For Designers
-
-**Design System Usage**:
-- All pages comply with UoM Gen 3 v15.14.0
-- Colors sourced from official palette
-- Typography matches system guidelines
-- Components follow established patterns
-- Spacing uses 8px baseline grid
-
-**Design Files**:
-- Foundation Library: https://www.figma.com/design/hgFO4N25XCZ4aPYQxF1iB8/Foundation-Library
-- Component Library: https://www.figma.com/design/cQcZOOuiVd79v9meOELcIb/Component-Library
-- Asset Library: https://www.figma.com/design/yioOlgJGzYynrgJO1hlGB8/Asset-Library
+Filter groups in the spreadsheet map to `FACETS` groups in `search/advanced.html`: Collection details, Creator, Object, Subject / topic, Copyright & advisory, Access, Media type.
 
 ---
 
-## AI Agent Guide
+## Record page behaviour
 
-### For Figma Design Agent
+`public/collections/record.html?id=<id>`:
 
-**Purpose**: Recreate the CCS website design in Figma with pixel-perfect accuracy
-
-**Key Information**:
-- See `design.md` for complete design system documentation
-- All color values, font families, sizing, spacing are documented
-- Component patterns are fully specified
-- Responsive breakpoints are defined
-
-**Design Tokens** (CSS Custom Properties):
-```
-Primary: #000f46 (navy)
-Secondary: #abc1a7 (sage green)
-Text: #1b1f2a (dark)
-Background: #faf9f6 (off-white)
-Border: #e0e0e0 (light gray)
-```
-
-**Typography**:
-- Headings: Fraunces 500-600
-- Body: Source Sans 3 400-600
-- Scale: clamp() for responsive sizing
-
-**Components to Recreate**:
-1. Search form (input + button, 48px height)
-2. Gallery card (image + overlay + text)
-3. Feature card (solid bg + text)
-4. Navigation header (logo + search + links)
-5. Footer (4-column layout)
-6. Media viewer (fullscreen modal)
-
-### For Development Agent
-
-**Purpose**: Maintain and extend CCS website code
-
-**Code Quality Standards**:
-- Semantic HTML with proper heading hierarchy
-- CSS using design tokens (no hardcoded colors)
-- Mobile-first responsive approach
-- WCAG 2.1 AA accessibility compliance
-- No external dependencies needed
-
-**Common Tasks**:
-- Adding a new collection page
-- Updating colors/fonts (modify CSS custom properties)
-- Fixing layout issues (check media queries)
-- Improving accessibility (verify labels, contrast)
-
-**Testing Approach**:
-- Mobile view: 375px width
-- Tablet view: 768px width
-- Desktop view: 1200px+ width
-- Keyboard navigation: Tab through page
-- Screen reader: Navigate landmarks
-
-### For Content Agent
-
-**Purpose**: Manage collection content and metadata
-
-**Data Structure**:
-- Collection metadata in `collection-data.js`
-- Images in `/images` folder (JPG format, optimized)
-- Page content in .dc.html files
-- Help documentation in `/assets`
-
-**Content Guidelines**:
-- Keep descriptions clear and concise
-- Use active voice in CTAs
-- Maintain consistent terminology
-- Include alt text for all images
-- Test links and navigation
+- Reads `window.CCS.records[id]`. An unknown or missing id shows "Record not found" and sets that as the document title. A found record sets the title to `<record title> - Cultural Collections Search - University of Melbourne`.
+- Only the **Contact us** button opens the request dialog. Tabs: General enquiry, Request to use, Request to view. The dialog traps focus, closes on Esc, and returns focus to the opener. Submitting only shows a confirmation; nothing is sent anywhere.
+- Media viewer shows images, audio and video from `slides`, with thumbnails and a metadata sidebar. The viewer handles keyboard shortcuts only while it has focus or is full screen (see the script in `record.html` for the exact keys).
+- "Copy persistent link" and citation formats are generated from the record.
 
 ---
 
-## Setup & Deployment
+## Styling
 
-### Local Development
+- **Bootstrap 5.3.3** is compiled locally from `src/scss/custom-bootstrap.scss` (sharp corners, no shadows, UoM colours) into `public/styles/vendor/bootstrap-uom.min.css`. This file is committed because Vercel runs no build step. Rebuild with `npm run build:css` (`build:css:dev` and `watch:css` write an unminified `bootstrap-uom.css`). Every page links the compiled file; only `index.html` also loads the Bootstrap JS bundle from jsDelivr (version-pinned with an SRI hash).
+- **Live CSS**: `public/components/fig-tokens.css` (Gen 3 design tokens), `fig-assets.css`, `public/styles/header.css`, `footer.css`, and `collection.css` (collection landing pages). Pages also carry page-local `<style>` blocks, including `:root` token overrides, so check the page itself before editing a colour.
+- Fonts: Fraunces (headings) and Source Sans 3 (body) from Google Fonts.
+- Bootstrap's `!important` utilities can override same-named custom classes; check for collisions when naming new classes.
+
+Design tokens and rationale: see `design.md`. Bootstrap details: `BOOTSTRAP-DEPENDENCIES.md`.
+
+---
+
+## Develop, test and deploy
 
 ```bash
-# Clone the repository
-git clone https://github.com/dnbl0/CCS-Static-latest.git
-cd CCS-Static
-
-# Start local server
-python -m http.server 8000
-
-# Open in browser
-open http://localhost:8000
+npm ci            # installs bootstrap + sass (dev dependencies only)
+npm run build:css # rebuild public/styles/vendor/bootstrap-uom.min.css
+npm test          # full check, see below
+python3 -m http.server 8933 --directory public   # local server (as in .claude/launch.json)
 ```
 
-### GitHub Workflow
+Clean URLs (`/search/advanced`, `/collections/record`) only resolve on a host that applies `vercel.json` or `.htaccess`; with a plain static server use the `.html` paths.
 
-**Automated CI/CD**:
-- Pull requests trigger checks
-- Code review requirements
-- Automatic merge to main on approval
-- Deployment ready (see .github/workflows/)
+### What `npm test` runs
 
-**Making Changes**:
-1. Create feature branch: `git checkout -b feature/description`
-2. Make code changes
-3. Commit with clear message: `git commit -m "Description of changes"`
-4. Push branch: `git push -u origin feature/description`
-5. Create pull request on GitHub
-6. PR auto-merges after review
+1. `build:css` - compiles Bootstrap (fails on Sass errors).
+2. `verify-bootstrap.sh` - for each page referencing Bootstrap, checks that the compiled `bootstrap-uom.min.css` exists (or that any CDN reference is version 5.3.3 with SRI).
+3. `tests/blacklight-adapter.test.js` - default mode is `mock`, request-parameter building and document transformation.
+4. `tests/page-integrity.test.js` - every `public/**/*.html` has a `<title>` and `lang`, no merge-conflict markers, and every local `href`/`src` resolves (clean-URL forms like `/search/advanced` resolve to `.html`/`index.html`). Broken css/js/page links fail; broken image links only warn.
+5. `tests/collection-data.test.js` - loads `collection-data.js` in a bare sandbox; checks unique ids, titles, that field labels come from the specification list, and that `/assets` media files exist.
 
-### Deployment
+**Warnings policy**: failures exit non-zero and fail CI. Warnings (printed as `WARNING:`) are informational and never fail the build; they track open data/content gaps (see Known issues). Current output: 0 failures, 5 warnings (no `<h1>` in `search.html`; the four unpopulated spec fields).
 
-**Production**:
-- Files deploy directly to production server
-- No build step required
-- Clear cache on updates
+### CI and merge workflow
 
-**Testing Before Deploy**:
-- Test on localhost
-- Verify all links work
-- Check responsive design
-- Validate accessibility
+- `.github/workflows/ci.yml`: Node 20, `npm ci` (or `npm install` without a lockfile), `npm test` on every pull request and push to `main`.
+- `.github/workflows/auto-merge.yml`: pushes to `feature/**`, `bugfix/**` or `enhance/**` that change html/css/js/md files and have 3+ commits or 2+ changed files open (or reuse) a PR against `main`, run basic documentation/structure checks, approve it, and squash-merge it. It does not run `npm test` itself. Auto-approval only works if the repository setting **Settings > Actions > General > "Allow GitHub Actions to create and approve pull requests"** is enabled; otherwise the approve step logs a warning and the job continues to the merge step. See `github.md` and `.agents/rules/pr-workflow.md`.
+- `.github/workflows/vercel-deploy.yml`: on push to `main`, `vercel pull`/`build`/`deploy --prod` using the `VERCEL_TOKEN`, `VERCEL_ORG_ID` and `VERCEL_PROJECT_ID` secrets.
+
+### Hosting
+
+Deployed on Vercel. The project link (`.vercel/`) is local and git-ignored.
+
+- `vercel.json`: `cleanUrls: true`, `trailingSlash: false`, and 301 redirects from the legacy `*.dc.html` names (plain and `%20`-encoded) and from `/search` and `/search.html` to `/search/advanced`.
+- `public/.htaccess`: the Apache equivalent (redirects plus clean-URL rewrites) for hosting on Apache.
+- `.vercelignore` excludes the top-level `assets/` source material, `public/assets/`, `*.dc.html` and `.reorganization/` from uploads when deploying with the CLI. Because `public/assets/` is excluded there, check that digital assets load on the deployed site after changing how deployment is done.
 
 ---
 
-## Maintenance
+## Known issues / follow-ups
 
-### Regular Tasks
-
-**Monthly**:
-- [ ] Review analytics (if tracking added)
-- [ ] Check for broken links
-- [ ] Verify image loading
-
-**Quarterly**:
-- [ ] Audit accessibility
-- [ ] Update design system version
-- [ ] Review performance metrics
-
-**Annually**:
-- [ ] Browser compatibility check
-- [ ] Security audit
-- [ ] Design system compliance review
-
-### Troubleshooting
-
-**Page not loading?**
-- Check local server is running
-- Verify file paths are correct
-- Clear browser cache
-
-**Styling looks wrong?**
-- Check CSS custom properties are defined
-- Verify media queries for your screen size
-- Inspect element to debug specificity
-
-**Images not showing?**
-- Verify image files exist in `/images`
-- Check file paths in HTML
-- Ensure image format is supported (JPG, PNG, SVG)
+- **Accession numbers**: 15 of 735 records have no accession number (the data owner needs to supply them). `npm test` reports `accession number present on 720/735 records`.
+- **Unpopulated spec fields**: Editions, Source URL, Related child record and Producer are supported by `build()` but no record sets them (reported as test warnings).
+- **"Advanced Search" button** in the search toolbar of `search/advanced.html` links to `#` (no-op).
+- **`search.html`** redirect stub has no `<h1>` (test warning).
+- **Hosting behaviour unverified**: `vercel.json` redirects and `cleanUrls` have not been checked against the live Vercel deployment.
+- **Thin audio/video data**: only two audio/video items exist, so the sound-recording and film browse tiles map to small keyword searches.
+- **Object type facet is long**: object types are free text (about 370 distinct values), so the Object type facet is long and uneven.
+- **Accessibility**: axe-core scans of the pages were clean except for the items above; there has been no formal WCAG audit, manual screen-reader pass or certification.
+- **Data is a prototype snapshot**: records are hand-maintained in `collection-data.js`; the Blacklight adapter's live mode is not part of the tested flow.
+- **Jira mapping**: several requirement rows in `jira-mvp-mapping.md` are marked as not re-verified.
 
 ---
 
-## License
+## Related docs
+
+- `design.md` - tokens, typography, components, IA notes
+- `BOOTSTRAP-DEPENDENCIES.md` - Bootstrap build and usage
+- `github.md` - source-repo sync notes
+- `jira-mvp-mapping.md` - 2026 MVP requirements mapping
+
+For Gen 3 guidance see https://designsystem.web.unimelb.edu.au/.
 
 © 2026 The University of Melbourne. All rights reserved.
 
-## Support
-
-For questions about the design system, see the official University of Melbourne Gen 3 documentation: https://designsystem.web.unimelb.edu.au/
-
-For project-specific questions, contact the team via Contact Us.dc.html
-
----
-
-**Last Updated**: 2026-09-29  
-**Version**: 1.1 (MVP Release, post-audit fixes)  
-**Status**: ✅ Production Ready — see [Recent Changes](#recent-changes-2026-09-29)
+**Last updated**: 2026-10-01
