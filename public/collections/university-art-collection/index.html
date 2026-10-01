@@ -96,6 +96,8 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
 .lp-row{display:grid;grid-template-columns:minmax(120px,200px) minmax(0,1fr);gap:4px 24px;padding:12px 0;border-bottom:1px solid #f1efea}
 .lp-row:last-child{border-bottom:0}
 .lp-row dt{font-size:15px;font-weight:700;color:var(--col-text-primary)}
+.lp-address{font-style:normal;display:flex;flex-direction:column;letter-spacing:.02em}
+.lp-address-note{margin:8px 0 0;color:#3b4050}
 .lp-row dd{margin:0;font-size:15px;line-height:1.55;color:var(--col-text-primary);overflow-wrap:anywhere}
 .lp-links{display:flex;flex-wrap:wrap;gap:6px 14px}.lp-links a{text-decoration:underline}.lp-n{color:var(--col-text-muted);font-size:13px}
 .lp-panel{background:#fff;border:1px solid #e3e0d9;display:flex;flex-direction:column}
@@ -264,19 +266,23 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
   </div>
 </section>
 
-<section aria-label="Collection summary" style="background:#fff;border-bottom:1px solid #e3e0d9">
-  <div style="max-width:1200px;margin:0 auto;padding:40px 32px 28px;display:flex;flex-direction:column;gap:24px">
-    <div style="display:flex;flex-direction:column;gap:12px;max-width:920px">
+<section aria-label="Collection summary" style="background:#fff;border-bottom:1px solid #e3e0d9;padding:16px 0">
+  <sc-if value="{{ noAdvisory }}" hint-placeholder-val="{{ true }}">
+    <div style="max-width:1200px;margin:0 auto;padding:0 32px">
+     <div style="padding:0;display:flex;flex-direction:column;gap:24px">
       <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase">
         <a href="/collections/index.html" style="color:#0b4ea2;text-decoration:none" style-hover="text-decoration:underline">Collection</a>
         <span aria-hidden="true" style="width:4px;height:4px;background:#9a9ea8"></span>
         <span style="color:#0b4ea2">University of Melbourne</span>
       </div>
+     </div>
     </div>
-    <sc-if value="{{ advisory }}" hint-placeholder-val="{{ false }}">
+  </sc-if>
+  <sc-if value="{{ advisory }}" hint-placeholder-val="{{ false }}">
+    <div style="max-width:1200px;margin:0 auto;padding:8px 32px">
       <p class="notice notice--warning" role="note"><strong>Rights / Advisory language:</strong> {{ advisory }}</p>
-    </sc-if>
-  </div>
+    </div>
+  </sc-if>
 </section>
 
 <main id="main-content" style="flex:1;background:#f1f0ec">
@@ -295,24 +301,21 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
               <dd>
                 <sc-if value="{{ d.isLinks }}"><span class="lp-links"><sc-for list="{{ d.links }}" as="l"><a href="{{ l.href }}">{{ l.text }} <span class="lp-n">{{ l.n }}</span></a></sc-for></span></sc-if>
                 <sc-if value="{{ d.isText }}"><span>{{ d.value }}</span></sc-if>
+                <sc-if value="{{ d.isAddress }}"><address class="lp-address"><sc-for list="{{ d.lines }}" as="ln"><span>{{ ln }}</span></sc-for></address><sc-if value="{{ d.note }}"><p class="lp-address-note">{{ d.note }}</p></sc-if></sc-if>
               </dd>
             </div>
           </sc-for>
         </dl>
       </section>
     </div>
-    <aside aria-label="Visit details and external collection link" style="flex:1 1 320px;min-width:0;display:flex;flex-direction:column;gap:24px;position:sticky;top:24px">
+    <aside aria-label="Visit details" style="flex:1 1 320px;min-width:0;display:flex;flex-direction:column;gap:24px;position:sticky;top:24px">
       <section class="lp-panel">
         <h2>Visit details</h2>
         <div class="lp-panel__body">
           <div class="lp-panel__item"><span class="k">Opening hours</span><span class="v">{{ visit.hours }}</span></div>
-          <div class="lp-panel__item"><span class="k">Enquiries</span><a class="v" href="mailto:{{ visit.email }}">{{ visit.email }}</a><a class="v" href="tel:{{ visit.phoneHref }}">{{ visit.phone }}</a></div>
+          <div class="lp-panel__item"><span class="k">Enquiries</span><a class="v" href="mailto:{{ visit.email }}">{{ visit.email }}</a><a class="v" href="tel:{{ visit.phoneHref }}">{{ visit.phone }}</a><a class="v" href="{{ coll.externalUrl }}" target="_blank" rel="noopener">View this collections website <span class="sr-only">(opens in new window)</span><span aria-hidden="true">↗</span></a></div>
         </div>
       </section>
-      <a href="{{ coll.externalUrl }}" target="_blank" rel="noopener" class="pathfinder-inset">
-        <strong class="pathfinder-inset__heading">External collection link</strong>
-        <span class="pathfinder-inset__desc">Explore the collection on the collections website <span class="sr-only">(opens in new window)</span><span aria-hidden="true">↗</span></span>
-      </a>
     </aside>
   </div>
 </main>
@@ -533,6 +536,45 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440},&quot;collection&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;MHM&quot;,&quot;UAC&quot;,&quot;GMC&quot;,&quot;DENT&quot;,&quot;HBA&quot;],&quot;default&quot;:&quot;UAC&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
 
 const COLL_KEYS = { MHM: 'Medical History Museum', UAC: 'University Art Collection', GMC: 'Grainger Museum Collection', DENT: 'Henry Forman Atkinson Dental Museum', HBA: 'Harry Brookes Allen Museum of Anatomy and Pathology' };
+const ADDRESS = {
+  "GMC": {
+    "lines": [
+      "PARKVILLE VIC 3010"
+    ],
+    "note": ""
+  },
+  "UAC": {
+    "lines": [
+      "PARKVILLE VIC 3010"
+    ],
+    "note": ""
+  },
+  "MHM": {
+    "lines": [
+      "UNIVERSITY OF MELBOURNE",
+      "233 BOUVERIE STREET",
+      "CARLTON VIC 3053"
+    ],
+    "note": ""
+  },
+  "DENT": {
+    "lines": [
+      "ROYAL DENTAL HOSPITAL",
+      "720 SWANSTON STREET",
+      "CARLTON VIC 3053"
+    ],
+    "note": "Ground floor of the Royal Dental Hospital. Located in the dental hospital surrounded by student classrooms, the museum is available to students, patients, their families, and the general public."
+  },
+  "HBA": {
+    "lines": [
+      "LEVEL 3 EAST, MEDICAL BUILDING (BUILDING 181)",
+      "UNIVERSITY OF MELBOURNE",
+      "CORNER GRATTAN STREET AND ROYAL PARADE",
+      "PARKVILLE VIC 3052"
+    ],
+    "note": "Wheel chair access, toilets, parking and cafes are available on campus. The Museum is not open to the general public. Swipe card access is provided to students enrolled in relevant subjects."
+  }
+};
 const COPY = {
   "GMC": {
     "name": "Grainger Museum Collection",
@@ -729,8 +771,8 @@ class Component extends DCLogic {
     const cp = COPY[key];
     return {
       coll: { name: COLL_KEYS[key], blurb: cp.summary, externalUrl: cp.external },
-      about: cp.about, advisory: cp.advisory,
-      details: cp.details.filter(([label]) => label !== 'Total items' && label !== 'Date range').map(([label, value]) => ({ label, isText: true, value })),
+      about: cp.about, advisory: cp.advisory, noAdvisory: !cp.advisory,
+      details: cp.details.filter(([label]) => label !== 'Total items' && label !== 'Date range').map(([label, value]) => label === 'Physical location' && ADDRESS[key] ? { label, isAddress: true, lines: ADDRESS[key].lines, note: ADDRESS[key].note } : { label, isText: true, value }),
       visit: { hours: cp.hours, email: cp.email, phone: cp.phone, phoneHref: cp.phone.replace(/[^+\d]/g, '') }
     };
   }
