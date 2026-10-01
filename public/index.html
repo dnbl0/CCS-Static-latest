@@ -177,78 +177,6 @@
       outline-offset: -2px;
     }
 
-    .hero {
-      background: linear-gradient(135deg, var(--col-bg-primary) 0%, var(--col-bg-primary-dark) 100%);
-      color: #fff;
-      padding: 88px 32px 72px;
-    }
-
-    .hero h1 {
-      color: #fff;
-      font-family: 'Fraunces', serif;
-      font-weight: 500;
-      font-size: clamp(40px, 6vw, 64px);
-      line-height: 1.05;
-      margin-bottom: 20px;
-    }
-
-    .hero p {
-      font-size: 18px;
-      line-height: 1.55;
-      color: rgba(255, 255, 255, .85);
-      max-width: 720px;
-      margin-bottom: 12px;
-    }
-
-    .hero .search-form {
-      background: #fff;
-      border: 1px solid #fff;
-      
-      max-width: 600px;
-    }
-
-    .hero .search-form input {
-      color: var(--col-text-primary);
-    }
-
-    .hero .search-form input::placeholder {
-      color: #ccc;
-    }
-
-    .hero .search-form button {
-      background: var(--col-btn-action-bg);
-      color: var(--col-btn-action-text);
-    }
-
-    .hero .search-form button:hover {
-      background: var(--col-btn-action-bg-hover);
-    }
-
-    .hero .search-form {
-      height: 56px;
-      border: 1px solid #fff;
-      margin-top: 16px;
-    }
-
-    .hero .search-form input {
-      color: var(--col-text-primary);
-      background: none;
-    }
-
-    .hero .search-form input::placeholder {
-      color: var(--col-text-muted);
-    }
-
-    .hero .search-form button {
-      border-left: 1px solid var(--col-border-neutral-mid);
-      background: var(--col-btn-action-bg);
-      color: var(--col-btn-action-text);
-    }
-
-    .hero .search-form button:hover {
-      background: var(--col-btn-action-bg-hover);
-    }
-
     .section-title {
       font-family: 'Fraunces', serif;
       font-weight: 500;
@@ -321,110 +249,7 @@
        Reference: https://www.unimelb.edu.au/web/matrix-cms/content-templates/two-columns
        ========================================================================== */
 
-    .ct-twocolumns.content-block {
-      width: 100%;
-      padding: 64px 0;
-      box-sizing: border-box;
-    }
-
-    .ct-twocolumns.bg-alt {
-      background-color: var(--col-bg-alt-25, #f1f1f1);
-    }
-
-    .ct-twocolumns:not(.bg-alt) {
-      background-color: var(--col-bg-surface, #ffffff);
-    }
-
-    .ct-twocolumns .grid {
-      max-width: 1288px;
-      margin: 0 auto;
-      padding: 0 24px;
-      box-sizing: border-box;
-    }
-
-    .ct-twocolumns .grid--cols-2 {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 48px;
-      align-items: center;
-      width: 100%;
-    }
-
-    .ct-twocolumns .grid--cols-2 > .grid--cols-6 {
-      grid-column: span 6;
-      width: 100%;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .ct-twocolumns h2 {
-      font-family: 'Fraunces', serif;
-      font-weight: 500;
-      font-size: clamp(24px, 2.8vw, 32px);
-      line-height: 1.15;
-      color: var(--col-text-primary, #000f46);
-      margin: 0 0 16px 0;
-    }
-
-    .ct-twocolumns p {
-      font-size: 16px;
-      line-height: 1.65;
-      color: var(--col-text-muted, #5b6070);
-      margin: 0 0 20px 0;
-    }
-
-    .ct-twocolumns figure {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      overflow: hidden;
-      background: #ffffff;
-      border: 1px solid var(--col-border-neutral-soft, #ece9e3);
-    }
-
     /* Images keep their original aspect ratio (no fixed height / cropping) */
-    .ct-twocolumns figure img {
-      display: block;
-      width: 100%;
-      height: auto;
-    }
-
-
-    .ct-twocolumns .button,
-    .button.button--secondary {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Source Sans 3', system-ui, sans-serif;
-      font-weight: 600;
-      font-size: 15px;
-      line-height: 1.4;
-      padding: 12px 22px;
-      background-color: var(--col-bg-accent, #abc1a7);
-      color: var(--col-text-primary, #000f46);
-      text-decoration: none;
-      cursor: pointer;
-      border: 0;
-      border-radius: 0;
-      transition: background-color 0.2s ease, color 0.2s ease;
-      width: fit-content;
-    }
-
-    .ct-twocolumns .button:hover,
-    .button.button--secondary:hover {
-      background-color: #9ab998;
-      color: var(--col-text-primary, #000f46);
-      text-decoration: none;
-    }
-
-    .ct-twocolumns .button:focus-visible,
-    .button.button--secondary:focus-visible {
-      outline: 2px solid var(--col-bg-primary, #000f46);
-      outline-offset: 2px;
-    }
 
     .button.with.arrow::before,
     .button.with-arrow::before {
@@ -438,26 +263,7 @@
       mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Cpath d='m40.003 66.665-3.5-3.583 20.583-20.583h-43.75v-5h43.75L36.503 16.915l3.5-3.583 26.666 26.667z'/%3E%3C/svg%3E") no-repeat center / contain;
     }
 
-    @media (max-width: 768px) {
-      .ct-twocolumns.content-block {
-        padding: 40px 0;
-      }
-
-      .ct-twocolumns .grid--cols-2 {
-        display: flex;
-        flex-direction: column;
-        gap: 24px;
-      }
-
-      .ct-twocolumns .grid--swap {
-        flex-direction: column;
-      }
-
-      .ct-twocolumns .grid--cols-2:not(.grid--swap) {
-        flex-direction: column-reverse;
-      }
-
-    }
+    
 
     footer {
       background: var(--col-bg-primary);
@@ -507,20 +313,51 @@
       .navbar-brand {
         width: 80px;
       }
-
-      .hero {
-        padding: 40px 16px 48px;
-      }
-
-      .hero h1 {
-        font-size: 28px;
-      }
-
-      .hero p {
-        font-size: 16px;
-      }
     }
-  </style>
+  
+    /* ==== Home page — UoM Gen 3 patterns ====
+       Header: Matrix home page template (dark) — .contrast-helper > header.banner > .mid-align
+       Collections: Page listing, image list (consistent image ratio)
+       Help: campaign banner split (dark)
+       Refs: matrix-cms/templates/home/home-dark, content-templates/listing, designsystem.web.unimelb.edu.au/components/headers */
+    .home-hero { background: var(--col-heritage-dark-100, #000b34); background-image: linear-gradient(135deg, var(--col-bg-primary, #000f46) 0%, var(--col-heritage-dark-100, #000b34) 100%); }
+    .home-hero .banner { box-sizing: border-box; display: flex; align-items: center; min-height: 420px; padding-block: 4rem; color: #fff; }
+    .home-hero .mid-align { box-sizing: border-box; width: 100%; max-width: 1125px; margin: 0 auto; padding: 0 32px; text-align: center; }
+    .home-hero h1 { margin: 0 auto 24px; font-family: 'Fraunces', serif; font-weight: 400; font-size: 56px; line-height: 1.1; letter-spacing: -0.01em; color: #fff; }
+    .home-hero .mid-align > p { max-width: 880px; margin: 0 auto 32px; font-size: 24px; line-height: 1.3; color: rgba(255, 255, 255, 0.92); text-wrap: pretty; }
+    .home-hero .ccs-searchbar { margin: 0 auto; text-align: left; }
+    .home-hero .ccs-searchbar:not(.ccs-searchbar) { max-width: 640px; }
+
+    .collections-list { background: var(--col-bg-alt-25, #f1f1f1); padding: 72px 0; }
+    .collections-list__grid { box-sizing: border-box; display: flex; flex-wrap: wrap; justify-content: center; gap: 32px; max-width: 1288px; margin: 0 auto; padding: 0 32px; list-style: none; }
+    .collections-list__item { box-sizing: border-box; flex: 0 1 calc((100% - 64px) / 3); min-width: 280px; display: flex; flex-direction: column; background: #fff; border: 1px solid #e3e0d9; }
+    .collections-list__item figure { margin: 0; aspect-ratio: 3 / 2; overflow: hidden; background: #f4f3f0; }
+    .collections-list__item figure img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .collections-list__body { display: flex; flex-direction: column; flex: 1; gap: 12px; padding: 24px 24px 28px; }
+    .collections-list__body h2 { margin: 0; font-family: 'Fraunces', serif; font-weight: 400; font-size: 28px; line-height: 1.2; color: var(--col-text-primary, #000f46); }
+    .collections-list__body p { margin: 0; font-size: 17px; line-height: 1.5; color: var(--col-text-secondary, #2d2d2d); }
+    .collections-list__body p:last-child { margin-top: auto; padding-top: 12px; }
+    .collections-list a.button {
+      display: inline-flex; align-items: center; gap: 8px; padding: 12px 16px 12px 12px;
+      background: var(--col-sage-light-100, #abc1a7); color: var(--col-bg-primary, #000f46);
+      font-size: 18px; font-weight: 600; line-height: 1.3333; text-decoration: none; border: 0; border-radius: 0;
+    }
+    .collections-list a.button::before { content: ""; flex: none; width: 16px; height: 16px; background: currentColor; -webkit-mask: url('/images/arrow-right.svg') center / contain no-repeat; mask: url('/images/arrow-right.svg') center / contain no-repeat; }
+    .collections-list a.button:hover { background: var(--col-sage-light-50, #d5e0d3); text-decoration: none; }
+    .collections-list a.button:focus-visible { outline: 3px solid var(--col-bg-primary, #000f46); outline-offset: 3px; }
+
+    .help-split.campaign-banner-split__inner { padding-block: 96px; }
+    @media (max-width: 1000px) { .collections-list__item { flex-basis: calc((100% - 32px) / 2); } }
+    @media (max-width: 640px) {
+      .home-hero .banner { min-height: 320px; padding-block: 2.5rem; }
+      .home-hero .mid-align { padding: 0 16px; }
+      .home-hero h1 { font-size: 40px; }
+      .home-hero .mid-align > p { font-size: 20px; }
+      .collections-list { padding: 40px 0; }
+      .collections-list__grid { padding: 0 16px; gap: 24px; }
+      .collections-list__item { flex-basis: 100%; min-width: 0; }
+    }
+</style>
 <style>
 .skip-link {
   position: absolute;
@@ -681,14 +518,13 @@
 </script>
 
   <main id="main-content" class="flex-grow-1">
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8">
-          <h1>Cultural Collections</h1>
-          <p>The University of Melbourne's cultural collections are unrivalled among Australian universities, spanning historical and contemporary collections across visual arts, cartography, medical history, zoology, archives and more, including significant collections of Aboriginal and Torres Strait Islander cultural heritage.</p>
-          <form role="search" action="/search/search-results.html" method="get" data-ccs-searchbar style="margin-top: 16px;">
+  <!-- Header: Matrix home page template (dark theme) -->
+  <div class="home-hero contrast-helper">
+    <header class="banner" role="presentation">
+      <div class="mid-align">
+        <h1>Cultural Collections</h1>
+        <p>The University of Melbourne's cultural collections are unrivalled among Australian universities, spanning historical and contemporary collections across visual arts, cartography, medical history, zoology, archives and more, including significant collections of Aboriginal and Torres Strait Islander cultural heritage.</p>
+        <form role="search" action="/search/search-results.html" method="get" data-ccs-searchbar>
             <label for="hero-search" class="sr-only">Search the collection</label>
             <input id="hero-search" type="text" name="q" autocomplete="off">
             <button type="submit" aria-label="Search">
@@ -698,114 +534,74 @@
               </svg>
             </button>
           </form>
+      </div>
+    </header>
+  </div>
+
+  <!-- Collections: Matrix page listing, image list (3 columns) -->
+  <section class="collections-list" aria-label="Collections">
+    <ul class="collections-list__grid">
+      <li class="collections-list__item">
+        <figure><img src="images/tile-gmc.jpg" alt="Grainger Museum" loading="lazy" /></figure>
+        <div class="collections-list__body">
+          <h2>Grainger Museum</h2>
+          <p>The personal archive, instruments and scores of composer Percy Grainger, held in trust for scholarship worldwide.</p>
+          <p><a class="button" href="/collections/grainger-museum">Explore the Grainger Museum</a></p>
+        </div>
+      </li>
+      <li class="collections-list__item">
+        <figure><img src="images/tile-mhm.jpg" alt="Medical History Museum" loading="lazy" /></figure>
+        <div class="collections-list__body">
+          <h2>Medical History Museum</h2>
+          <p>Explore, inquire and enjoy the social history of medicine and its role in society through a diverse exhibition program. Visit the nineteenth century Savory and Moore Pharmacy complete with pharmaceutical jars and equipment.</p>
+          <p><a class="button" href="/collections/medical-history-museum">Explore the Medical History Museum</a></p>
+        </div>
+      </li>
+      <li class="collections-list__item">
+        <figure><img src="images/tile-uac.jpg" alt="University Art Collection" loading="lazy" /></figure>
+        <div class="collections-list__body">
+          <h2>University Art Collection</h2>
+          <p>Paintings, prints, sculpture and decorative arts spanning classical antiquity to contemporary Australian practice.</p>
+          <p><a class="button" href="/collections/university-art-collection">Explore the University Art Collection</a></p>
+        </div>
+      </li>
+      <li class="collections-list__item">
+        <figure><img src="images/tile-dental.png" alt="Henry Forman Atkinson Dental Museum" loading="lazy" /></figure>
+        <div class="collections-list__body">
+          <h2>Henry Forman Atkinson Dental Museum</h2>
+          <p>Visit the Henry Forman Atkinson Dental Museum to be inspired by the intriguing history of dental health and the development of the dental professions and dental education. It is the oldest and most significant dental collection in Australia, tracing its origins to 1884.</p>
+          <p><a class="button" href="/collections/henry-forman-atkinson-dental-museum">Explore the Dental Museum</a></p>
+        </div>
+      </li>
+      <li class="collections-list__item">
+        <figure><img src="images/tile-hba.jpg" alt="Harry Brookes Allen Museum of Anatomy and Pathology" loading="lazy" /></figure>
+        <div class="collections-list__body">
+          <h2>Harry Brookes Allen Museum</h2>
+          <p>One of Australia's largest collections of human tissue specimens, animal anatomy specimens and historical anatomical models, offering students and researchers a unique insight into the human body.</p>
+          <p><a class="button" href="/collections/harry-brookes-allen-museum">Explore the Harry Brookes Allen Museum</a></p>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Help: Matrix campaign banner split (dark), image right -->
+  <section aria-label="Help and support">
+    <div class="campaign-banner-split campaign-banner-split--dark">
+      <div class="campaign-banner-split__img">
+        <img class="campaign-banner-split__img-inner" src="/images/stop1-help.jpg" alt="Staff members and a visitor talk inside a service area with information desks, digital kiosks and signage." loading="lazy" />
+      </div>
+      <div class="max campaign-banner-split__inner help-split">
+        <div class="campaign-banner-split__content">
+          <div class="campaign-banner-split__content-inner">
+            <h2>Need help?</h2>
+            <p>Search tips, access levels, copyright and contact details for every collection team.</p>
+            <a class="button" href="/help/index.html">Visit help and support</a>
+          </div>
         </div>
       </div>
     </div>
   </section>
-
-    <!-- ==========================================================================
-         Five Collections: Text - Two Columns Content Template (Image Left & Image Right)
-         Source: https://www.unimelb.edu.au/web/matrix-cms/content-templates/two-columns
-         ========================================================================== -->
-
-    <!-- MCE: Text Layout content template version 4.1.0 (Image Left) -->
-    <div class="ct-twocolumns content-block" data-component="image-left">
-      <div class="grid grid--cols-2 grid--swap">  <!--start grid -->
-        <div class="grid--cols-6">
-          <figure>
-            <img src="images/tile-gmc.jpg" alt="Grainger Museum" />
-          </figure>
-        </div>
-        <div class="grid--cols-6">
-          <h2>Grainger Museum</h2>
-          <p id="image-left">The personal archive, instruments and scores of composer Percy Grainger, held in trust for scholarship worldwide.</p>
-          <p><a class="button button--secondary" href="/collections/grainger-museum">Explore the Grainger Museum</a></p>
-        </div>
-      </div> <!--end grid -->
-    </div>
-
-    <!-- MCE: Text Layout content template version 4.1.0 (Image Right) -->
-    <div class="ct-twocolumns content-block bg-alt" data-component="image-right">
-      <div class="grid grid--cols-2">  <!--start grid -->
-        <div class="grid--cols-6">
-          <h2>Medical History Museum</h2>
-          <p id="image-right">Explore, inquire and enjoy the social history of medicine and its role in society through a diverse exhibition program. Visit the nineteenth century Savory and Moore Pharmacy complete with pharmaceutical jars and equipment.</p>
-          <p><a class="button button--secondary" href="/collections/medical-history-museum">Explore the Medical History Museum</a></p>
-        </div>
-        <div class="grid--cols-6">
-          <figure>
-            <img src="images/tile-mhm.jpg" alt="Medical History Museum" />
-          </figure>
-        </div>
-      </div> <!--end grid -->
-    </div>
-
-    <!-- MCE: Text Layout content template version 4.1.0 (Image Left) -->
-    <div class="ct-twocolumns content-block" data-component="image-left">
-      <div class="grid grid--cols-2 grid--swap">  <!--start grid -->
-        <div class="grid--cols-6">
-          <figure>
-            <img src="images/tile-uac.jpg" alt="University Art Collection" />
-          </figure>
-        </div>
-        <div class="grid--cols-6">
-          <h2>University Art Collection</h2>
-          <p id="collection-uac">Paintings, prints, sculpture and decorative arts spanning classical antiquity to contemporary Australian practice.</p>
-          <p><a class="button button--secondary" href="/collections/university-art-collection">Explore the University Art Collection</a></p>
-        </div>
-      </div> <!--end grid -->
-    </div>
-
-    <!-- MCE: Text Layout content template version 4.1.0 (Image Right) -->
-    <div class="ct-twocolumns content-block bg-alt" data-component="image-right">
-      <div class="grid grid--cols-2">  <!--start grid -->
-        <div class="grid--cols-6">
-          <h2>Henry Forman Atkinson Dental Museum</h2>
-          <p id="collection-dental">Visit the Henry Forman Atkinson Dental Museum to be inspired by the intriguing history of dental health and the development of the dental professions and dental education. It is the oldest and most significant dental collection in Australia, tracing its origins to 1884.</p>
-          <p><a class="button button--secondary" href="/collections/henry-forman-atkinson-dental-museum">Explore the Dental Museum</a></p>
-        </div>
-        <div class="grid--cols-6">
-          <figure>
-            <img src="images/tile-dental.png" alt="Henry Forman Atkinson Dental Museum" />
-          </figure>
-        </div>
-      </div> <!--end grid -->
-    </div>
-
-    <!-- MCE: Text Layout content template version 4.1.0 (Image Left) -->
-    <div class="ct-twocolumns content-block" data-component="image-left">
-      <div class="grid grid--cols-2 grid--swap">  <!--start grid -->
-        <div class="grid--cols-6">
-          <figure>
-            <img src="images/tile-hba.jpg" alt="Harry Brookes Allen Museum of Anatomy and Pathology" />
-          </figure>
-        </div>
-        <div class="grid--cols-6">
-          <h2>Harry Brookes Allen Museum</h2>
-          <p id="collection-hba">One of Australia's largest collections of human tissue specimens, animal anatomy specimens and historical anatomical models, offering students and researchers a unique insight into the human body.</p>
-          <p><a class="button button--secondary" href="/collections/harry-brookes-allen-museum">Explore the Harry Brookes Allen Museum</a></p>
-        </div>
-      </div> <!--end grid -->
-    </div>
-
-    <!-- MCE: Text Layout content template version 4.1.0 (Need help? - Image Right) -->
-    <!-- Matches the UoM students landing page (https://students.unimelb.edu.au/) preceding the Acknowledgement of Country -->
-    <div class="ct-twocolumns content-block bg-alt" data-component="image-right">
-      <div class="grid grid--cols-2">  <!--start grid -->
-        <div class="grid--cols-6">
-          <h2>Need help?</h2>
-          <p>Search tips, access levels, copyright and contact details for every collection team.</p>
-          <p><a class="button button--secondary with arrow" href="/help/index.html">Visit help and support</a></p>
-        </div>
-        <div class="grid--cols-6">
-          <figure>
-            <!-- image URL -->
-            <img src="/images/stop1-help.jpg" alt="Staff members and a visitor talk inside a service area with information desks, digital kiosks and signage." />
-          </figure>
-        </div>
-      </div> <!--end grid -->
-    </div>
-  </main>
+</main>
 
   <!-- Footer -->
 
