@@ -184,6 +184,7 @@
     }
 
     .hero h1 {
+      color: #fff;
       font-family: 'Fraunces', serif;
       font-weight: 500;
       font-size: clamp(40px, 6vw, 64px);
@@ -746,19 +747,11 @@
         <div class="col-lg-8">
           <h1>Cultural Collections</h1>
           <p>The University of Melbourne's cultural collections are unrivalled among Australian universities, spanning historical and contemporary collections across visual arts, cartography, medical history, zoology, archives and more, including significant collections of Aboriginal and Torres Strait Islander cultural heritage.</p>
-          <form role="search" action="/search/search-results.html" method="get" class="search-form" style="margin-top: 4px;">
-            <label for="hero-search" style="flex: 1; min-width: 0; display: flex; align-items: center;">
-              <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0);">Search the collection</span>
-              <input
-                id="hero-search"
-                type="text"
-                name="q"
-                aria-label="Search the collection"
-                placeholder="Search the collection"
-              >
-            </label>
+          <form role="search" action="/search/search-results.html" method="get" data-ccs-searchbar style="margin-top: 16px;">
+            <label for="hero-search" class="sr-only">Search the collection</label>
+            <input id="hero-search" type="text" name="q" autocomplete="off">
             <button type="submit" aria-label="Search">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true">
                 <circle cx="10.5" cy="10.5" r="6.5"></circle>
                 <line x1="15.5" y1="15.5" x2="21" y2="21"></line>
               </svg>
@@ -910,6 +903,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   <script src="support.js"></script>
   <script src="collection-data.js"></script>
+  <script src="search-bar.js"></script>
   <script>
   // Stats strip: computed from the catalogue data (window.CCS); static markup values are only a no-JS fallback.
   (function () {
