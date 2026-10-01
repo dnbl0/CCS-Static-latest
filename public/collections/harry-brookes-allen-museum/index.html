@@ -259,14 +259,15 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
 
   <nav class="page-breadcrumbs" aria-label="Breadcrumb"><ol class="page-local-history" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="root" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="/" itemprop="item" title="Home" aria-label="Home"><img src="../../images/home.svg" alt="" width="16" height="16" style="vertical-align:middle"><span itemprop="name" class="sr-only">Home</span></a><meta content="1" itemprop="position"></li><li class="" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="/collections/index.html" itemprop="item" title="Browse collections"><span itemprop="name">Browse collections</span></a><meta content="2" itemprop="position"></li><li itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page"><span itemprop="name">{{ coll.name }}</span><meta content="3" itemprop="position"></li></ol><ol class="bc-mobile" style="display:none;align-items:center;gap:6px;list-style:none;margin:0;font-size:18px;color:#fff"><li style="display:flex;align-items:center"><a href="/collections/index.html" style="display:inline-flex;align-items:center;gap:6px;color:#fff;text-decoration:none;min-height:44px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span>Browse collections</span></a></li></ol></nav>
 
-<section class="banner" aria-label="Page banner" style="background-image: url('{{ coll.banner }}');">
-  <div class="bottom-align-flat">
-    <div class="left">
+<div class="contrast-helper" style="background-image: url('{{ coll.banner }}');">
+  <header class="banner" role="presentation">
+    <div class="mid-align">
       <h1>{{ coll.name }}</h1>
-      <p class="banner__desc">{{ coll.blurb }}</p>
+      <p>{{ coll.blurb }}</p>
+      <p><a href="{{ coll.searchHref }}" class="button">Explore the collection</a></p>
     </div>
-  </div>
-</section>
+  </header>
+</div>
 
 <section aria-label="Collection summary" style="background:#fff;border-bottom:1px solid #e3e0d9;padding:16px 0">
   <sc-if value="{{ noAdvisory }}" hint-placeholder-val="{{ true }}">
@@ -769,7 +770,7 @@ class Component extends DCLogic {
     } catch (e) {}
     const cp = COPY[key];
     return {
-      coll: { name: COLL_KEYS[key], blurb: cp.summary, externalUrl: cp.external, banner: BANNERS[key] },
+      coll: { name: COLL_KEYS[key], blurb: cp.summary, externalUrl: cp.external, banner: BANNERS[key], searchHref: '/search/search-results.html?collection=' + encodeURIComponent(COLL_KEYS[key]) },
       about: cp.about, advisory: cp.advisory, noAdvisory: !cp.advisory,
       details: cp.details.filter(([label]) => label !== 'Total items' && label !== 'Date range').map(([label, value]) => label === 'Physical location' && ADDRESS[key] ? { label, isAddress: true, lines: ADDRESS[key].lines, note: ADDRESS[key].note } : { label, isText: true, value }),
       visit: { hours: cp.hours, email: cp.email, phone: cp.phone, phoneHref: cp.phone.replace(/[^+\d]/g, '') }

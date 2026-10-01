@@ -1609,26 +1609,42 @@ ccs-licence[data-dismissed] .licence-badge__tip { visibility: hidden; opacity: 0
 @media (max-width: 520px) { .ccs-searchbar__scope-btn { padding: 0 10px; font-size: 13px; } .ccs-searchbar > button[type="submit"] { width: 48px; } }
 
 
-/* Collection landing banner (image header) */
-.banner {
+/* Collection landing hero — UoM Gen 3 image header, dark home-page variant (.contrast-helper > header.banner > .mid-align) */
+.contrast-helper {
   box-sizing: border-box;
   position: relative;
-  display: flex;
-  flex-flow: row wrap;
-  align-items: center;
-  width: 100%;
-  min-height: 50vh;
-  padding-block: 4rem;
-  overflow: hidden;
-  background-color: #000b34;
+  background-color: var(--col-bg-primary, #000f46);
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+}
+.contrast-helper .banner {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  min-height: 370px;
+  padding-block: 4rem;
+  background: rgb(0 0 0 / 50%);
   color: #fff;
 }
-.banner::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgb(0 11 52 / 82%) 0%, rgb(0 11 52 / 60%) 55%, rgb(0 11 52 / 25%) 100%); }
-.banner .bottom-align-flat { position: relative; box-sizing: border-box; width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 32px; }
-.banner .left { max-width: 760px; text-align: left; text-shadow: 0 1px 3px rgb(0 0 0 / 35%); }
-.banner h1 { margin: 0; font-family: 'Fraunces', serif; font-weight: 400; font-size: clamp(32px, 4.5vw, 48px); line-height: 1.2; color: #fff; }
-.banner .banner__desc { margin: 16px 0 0; font-size: 18px; line-height: 1.5; color: #fff; text-wrap: pretty; }
-@media (max-width: 768px) { .banner { min-height: 40vh; padding-block: 2.5rem; } .banner .bottom-align-flat { padding: 0 16px; } }
+.contrast-helper .mid-align { box-sizing: border-box; width: 100%; max-width: 1125px; margin: 0 auto; padding: 0 32px; text-align: center; }
+.contrast-helper .mid-align h1 { margin: 0 auto 24px; font-family: 'Fraunces', serif; font-weight: 400; font-size: 48px; line-height: 1.2; color: #fff; letter-spacing: -0.01em; }
+.contrast-helper .mid-align p { max-width: 880px; margin: 0 auto 18px; font-size: 24px; line-height: 1.2; color: #fff; text-wrap: pretty; }
+.contrast-helper .mid-align p:last-child { margin-bottom: 0; }
+.contrast-helper a.button {
+  display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px;
+  background: var(--col-blue-light-100, #46c8f0); color: var(--col-bg-primary, #000f46);
+  font-size: 18px; font-weight: 600; line-height: 1.3333; text-decoration: none; border: 0; border-radius: 0;
+}
+.contrast-helper a.button::before {
+  content: ""; flex: none; width: 16px; height: 16px; background: currentColor;
+  -webkit-mask: url('/images/arrow-right.svg') center / contain no-repeat; mask: url('/images/arrow-right.svg') center / contain no-repeat;
+}
+.contrast-helper a.button:hover { background: var(--col-blue-light-25, #d1f1fb); color: var(--col-bg-primary, #000f46); text-decoration: none; }
+.contrast-helper a.button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+@media (max-width: 768px) {
+  .contrast-helper .banner { min-height: 300px; padding-block: 2.5rem; }
+  .contrast-helper .mid-align { padding: 0 16px; }
+  .contrast-helper .mid-align h1 { font-size: 36px; }
+  .contrast-helper .mid-align p { font-size: 20px; }
+}
