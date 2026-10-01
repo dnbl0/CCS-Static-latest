@@ -86,16 +86,9 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
 .cl-wrap{max-width:1200px;margin:0 auto;padding:0 32px}
 .cl-section{padding:56px 0}
 .cl-section--tint{background:#f1f0ec}
-.cl-section--navy{background:var(--col-bg-primary-dark,#000b34);color:#fff}
 .cl-h2{margin:0 0 8px;text-align:center;font-family:'Fraunces',serif;font-weight:500;font-size:clamp(26px,3vw,34px);line-height:1.2;color:var(--col-text-primary)}
-.cl-section--navy .cl-h2{color:#fff}
 .cl-sub{margin:0 auto 32px;text-align:center;max-width:720px;font-size:17px;line-height:1.55;color:#3b4050;text-wrap:pretty}
 .cl-lead{margin:0 auto;max-width:760px;text-align:center;font-size:20px;line-height:1.55;color:#1b1f2a;text-wrap:pretty}
-.cl-search{display:flex;align-items:stretch;gap:0;max-width:680px;margin:0 auto}
-.cl-search input{flex:1;min-width:0;height:52px;padding:0 16px;font:inherit;font-size:17px;border:1px solid var(--col-border-brand);border-right:0;border-radius:0;background:#fff;color:var(--col-text-primary)}
-.cl-search button{min-height:52px;box-sizing:border-box;padding:0 24px;font:inherit;font-size:16px;font-weight:600;display:inline-flex;align-items:center;gap:8px;border:1px solid #fff;background:#fff;color:var(--col-bg-primary);cursor:pointer;border-radius:0}
-.cl-search button:hover{background:var(--col-bg-selected,#e8edf6)}
-.cl-search input:focus-visible,.cl-search button:focus-visible{outline:3px solid #0b4ea2;outline-offset:2px}
 .cl-links{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-top:16px;font-size:15px}
 .cl-links a{color:#fff;text-decoration:underline}
 .cl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
@@ -135,8 +128,7 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
   .cl-wrap{padding:0 16px}.cl-section{padding:40px 0}
   .cl-grid,.cl-tiles,.cl-help,.cl-facts{grid-template-columns:1fr}
   .cl-lead{font-size:18px}
-  .cl-search{flex-direction:column;gap:8px}.cl-search input{border-right:1px solid var(--col-border-brand)}
-}
+  }
 @media (prefers-reduced-motion:reduce){.cl-card,.cl-card__media img,.cl-tile img{transition:none}}
 @media (max-width:640px){
   .hero-inner{padding:16px 20px 28px!important}
@@ -305,17 +297,6 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
 </section>
 <main id="main-content">
   
-  <section class="cl-section cl-section--navy" aria-labelledby="h-search" style="padding:44px 0">
-    <div class="cl-wrap" style="text-align:center">
-      <h2 id="h-search" class="cl-h2" style="margin-bottom:20px">Search across every collection</h2>
-      <form class="cl-search" role="search" action="/search/search-results.html" method="get">
-        <label for="cl-q" class="sr-only">Search all collections</label>
-        <input id="cl-q" name="q" type="search" placeholder="Search by title, creator, subject or accession number" autocomplete="off">
-        <button type="submit"><span>Search</span></button>
-      </form>
-      <div class="cl-links"><a href="/search/search-results.html">Advanced search</a><a href="/help/index.html">Search tips</a></div>
-    </div>
-  </section>
 
   <section class="cl-section" aria-labelledby="h-coll">
     <div class="cl-wrap">
