@@ -321,7 +321,7 @@
       padding: 64px 32px;
     }
 
-    .stats-strip h3 {
+    .stats-strip h2 {
       font-family: 'Source Sans 3', system-ui, sans-serif;
       font-weight: 600;
       font-size: clamp(24px, 2.6vw, 32px);
@@ -618,17 +618,13 @@
 <a href="#main-content" class="skip-link">Skip to main content</a>
   <!-- Header & Navigation -->
   <header class="uom-page-header top-0 flex h-[var(--nav-height)] z-1000 items-center transition-height transition-colors transition-300 ease-in-out" data-component="Header" aria-label="Site header">
-  <!-- University logo section -->
   <div class="uom-logo-section flex items-center gap-050 h-full basis-auto border-r border-r-brand-900 shrink-0">
     <a class="logo self-center flex items-center w-auto relative h-[var(--nav-height)] shrink-0 group outline-none" href="https://www.unimelb.edu.au" aria-label="The University of Melbourne homepage">
       <div class="udds-focus-on-dark-inset size-full absolute inset-0"></div>
-      <img class="w-auto h-full outline-none" alt="The University of Melbourne" src="images/UoM_Logo_Vert_Housed.svg">
+      <img class="w-auto h-full outline-none" alt="The University of Melbourne" src="/images/UoM_Logo_Vert_Housed.svg">
     </a>
   </div>
-
-  <!-- Main content area with responsive flex layout -->
   <div class="uom-header-content shrink-1 flex-[33_1_fit-content] flex flex-col justify-end content-between h-full max-w-full overflow-x-visible scroll-smooth">
-    <!-- Top navigation tier (search, hidden on mobile in favour of the menu toggle) -->
     <div class="uom-nav-top-tier border-b border-b-brand-900 flex justify-end">
       <button data-popover-type="search" type="button" class="udds-focus items-center justify-center ring-inset text-brand-inverse fill-white-100 flex h-full p-[0.625rem] bg-background-button-secondary active:bg-background-button-secondary-active hover:bg-background-button-secondary-hover color-text-brand hover:color-text-brand" popovertarget="uom-search-popover">
         <uom-ds-icon class="size-150" iconid="search" iconset="functional" isdecorative="" isfluid="" islabelhidden="" label="Search" sizevariant="prominent" data-testid="uom-ds-icon"></uom-ds-icon>
@@ -637,23 +633,16 @@
         </span>
       </button>
     </div>
-
-    <!-- Bottom navigation tier with site name, primary nav, and mobile menu toggle -->
     <div class="uom-nav-bottom-tier flex h-full m-025 justify-between items-stretch gap-x-125">
-      <!-- Site name/faculty link -->
       <a class="uom-site-title text-brand-inverse hover:text-link-hover-inverse udds-focus-on-dark" href="/index.html">
         Cultural Collections Search
       </a>
-
-      <!-- Primary navigation -->
       <nav id="uom-primary-nav" class="uom-primary-nav" aria-label="Primary navigation">
         <a href="/search/advanced.html">Search all records</a>
         <a href="/collections/index.html">Browse collections</a>
         <a href="/help/index.html">Help</a>
         <a href="/contact.html">Contact</a>
       </nav>
-
-      <!-- Mobile menu toggle -->
       <button type="button" class="uom-menu-toggle" aria-expanded="false" aria-controls="uom-primary-nav" aria-label="Toggle menu">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
           <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -763,6 +752,7 @@
 })();
 </script>
 
+  <main id="main-content" class="flex-grow-1">
   <!-- Hero Section -->
   <section class="hero">
     <div class="container">
@@ -796,7 +786,7 @@
   <!-- Stats Strip -->
   <section class="stats-strip">
     <div class="container">
-      <h3>Explore the University of Melbourne's cultural collections</h3>
+      <h2>Explore the University of Melbourne's cultural collections</h2>
       <div class="row g-4">
         <div class="col-6 col-lg-3">
           <div class="stat-number">5</div>
@@ -822,8 +812,6 @@
     </div>
   </section>
 
-  <!-- Main Content -->
-  <main id="main-content" class="flex-grow-1">
     <!-- ==========================================================================
          Five Collections: Text - Two Columns Content Template (Image Left & Image Right)
          Source: https://www.unimelb.edu.au/web/matrix-cms/content-templates/two-columns
@@ -926,7 +914,7 @@
         <div class="grid--cols-6">
           <figure>
             <!-- image URL -->
-            <img src="images/stop1-help.jpg" alt="Staff members and a visitor talk inside a service area with information desks, digital kiosks and signage." />
+            <img src="/images/stop1-help.jpg" alt="Staff members and a visitor talk inside a service area with information desks, digital kiosks and signage." />
           </figure>
         </div>
       </div> <!--end grid -->
