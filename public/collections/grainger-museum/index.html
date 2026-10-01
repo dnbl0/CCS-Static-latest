@@ -671,7 +671,7 @@ class Component extends DCLogic {
     this.featuredCount = feat.length;
     const idx = Math.min(this.state.idx, Math.max(0, feat.length - 1));
     const go = i => this.setState({ idx: i });
-    const items = withImg.slice(0, 8).map(toCard);
+    const items = (withImg.length >= 4 ? withImg : [...withImg, ...all.filter(r => !(r.card && r.card.img))]).slice(0, 8).map(toCard);
     const named = [...new Set(all.map(r => r.named).filter(Boolean))].slice(0, 8);
     const rawItems = (CCS.items || []).filter(i => i.collection === name);
     const years = rawItems.flatMap(i => [i.dateStart, i.dateEnd]).filter(y => typeof y === 'number');
