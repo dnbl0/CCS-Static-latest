@@ -187,7 +187,7 @@ button,input{font-family:inherit}
 
       <!-- Primary navigation -->
       <nav id="uom-primary-nav" class="uom-primary-nav" aria-label="Primary navigation">
-        <a href="/search/advanced.html">Search all records</a>
+        <a href="/search/search-results.html">Search all records</a>
         <a href="/collections/index.html">Browse collections</a>
         <a href="/help/index.html">Help</a>
         <a href="/contact.html">Contact</a>
@@ -210,7 +210,7 @@ button,input{font-family:inherit}
 <div id="uom-search-popover" class="uom-search-popover" role="dialog" aria-modal="true" aria-labelledby="uom-search-overlay-title">
   <div class="uom-search-popover__inner">
     <h2 id="uom-search-overlay-title" class="sr-only">Search</h2>
-    <form class="uom-search-popover__form" role="search" action="/search/advanced.html" method="get">
+    <form class="uom-search-popover__form" role="search" action="/search/search-results.html" method="get">
       <label for="uom-search-overlay-input" class="sr-only">Search Cultural Collections</label>
       <input id="uom-search-overlay-input" name="q" type="text" placeholder="Search" autocomplete="off">
       <button type="submit" class="uom-search-popover__submit" aria-label="Search">
@@ -304,7 +304,7 @@ button,input{font-family:inherit}
 </script>
 
 <section style="width:100%;background:#00354c;height:40px;display:flex;align-items:center">
-  <nav class="page-breadcrumbs" aria-label="Breadcrumb"><ol class="page-local-history" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="root" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="/" itemprop="item" title="Home" aria-label="Home"><img src="../images/home.svg" alt="" width="16" height="16" style="vertical-align:middle"><span itemprop="name" class="sr-only">Home</span></a><meta content="1" itemprop="position"></li><li class="" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="/search/advanced.html" itemprop="item" title="Search results"><span itemprop="name">Search results</span></a><meta content="2" itemprop="position"></li><li itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page"><span itemprop="name">{{ pageTitle }}</span><meta content="3" itemprop="position"></li></ol><ol class="bc-mobile" style="display:none;align-items:center;gap:6px;list-style:none;margin:0;font-size:18px;color:#fff"><li style="display:flex;align-items:center"><a href="/search/advanced.html" style="display:inline-flex;align-items:center;gap:6px;color:#fff;text-decoration:none;min-height:44px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span>Search results</span></a></li></ol></nav>
+  <nav class="page-breadcrumbs" aria-label="Breadcrumb"><ol class="page-local-history" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="root" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="/" itemprop="item" title="Home" aria-label="Home"><img src="../images/home.svg" alt="" width="16" height="16" style="vertical-align:middle"><span itemprop="name" class="sr-only">Home</span></a><meta content="1" itemprop="position"></li><li class="" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="/search/search-results.html" itemprop="item" title="Search results"><span itemprop="name">Search results</span></a><meta content="2" itemprop="position"></li><li itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page"><span itemprop="name">{{ pageTitle }}</span><meta content="3" itemprop="position"></li></ol><ol class="bc-mobile" style="display:none;align-items:center;gap:6px;list-style:none;margin:0;font-size:18px;color:#fff"><li style="display:flex;align-items:center"><a href="/search/search-results.html" style="display:inline-flex;align-items:center;gap:6px;color:#fff;text-decoration:none;min-height:44px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span>Search results</span></a></li></ol></nav>
 </section>
 
 <section class="page-banner page-banner--compact" aria-label="Page banner">
@@ -377,7 +377,7 @@ button,input{font-family:inherit}
     <section aria-labelledby="nf-title" style="background:#fff;border:1px solid #e3e0d9;padding:32px 28px;max-width:720px;display:flex;flex-direction:column;gap:16px">
       <h2 id="nf-title" style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:34px;line-height:1.2;color:var(--col-bg-primary)">No record matches this link</h2>
       <p style="margin:0;font-size:17px;line-height:1.55;color:var(--col-text-primary)">We could not find a record with that identifier. It may have been moved or removed, or the link may be incorrect.</p>
-      <div style="display:flex;gap:18px;flex-wrap:wrap;font-size:17px;font-weight:600"><a href="/search/advanced.html" style="color:var(--col-text-primary);text-decoration:underline">Search the collections</a><a href="/collections/index.html" style="color:var(--col-text-primary);text-decoration:underline">Browse collections</a></div>
+      <div style="display:flex;gap:18px;flex-wrap:wrap;font-size:17px;font-weight:600"><a href="/search/search-results.html" style="color:var(--col-text-primary);text-decoration:underline">Search the collections</a><a href="/collections/index.html" style="color:var(--col-text-primary);text-decoration:underline">Browse collections</a></div>
     </section>
   </div>
 </main>
@@ -515,7 +515,7 @@ button,input{font-family:inherit}
     <div style="max-width:1200px;margin:0 auto;padding:48px 32px 72px;display:flex;flex-direction:column;gap:20px">
       <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap">
         <h2 style="margin:0;font-family:'Fraunces',serif;font-weight:500;font-size:34px;color:var(--col-text-primary)">Related items</h2>
-        <a href="/search/advanced.html" style="font-size:17px;font-weight:600;text-decoration:underline">{{ viewAll }}</a>
+        <a href="/search/search-results.html" style="font-size:17px;font-weight:600;text-decoration:underline">{{ viewAll }}</a>
       </div>
       <sc-if value="{{ relIndigenous }}">
         <div role="note" style="display:flex;gap:12px;align-items:flex-start;background:var(--col-advisory-bg);border:1px solid var(--col-advisory-border);padding:14px 18px">
@@ -901,7 +901,7 @@ class Component extends DCLogic {
       fields: [], related: [], mediaRows: [], thumbs: [], noDA: false, showRelated: false, viewerRef: this.viewerRef,
       yes: true, cur: { src: '', label: '' }, curAlt: '', isImage: false, isVideo: false, isAudio: false, curBroken: false, onImgLoad() {}, onMeta() {}, multi: false, imgCount: '', liveText: '',
       prevImg() {}, nextImg() {}, atFirst: true, atLast: true, sidebarOpen: false, sidebarCls: 'im-sidebar', sidebarLabel: '', toggleSidebar() {}, closeSidebar() {}, fullLabel: '', toggleFull() {},
-            shareText: 'Share', citeText: 'Copy citation', typeHref: '/search/advanced.html', collectionHref: '/search/advanced.html' };
+            shareText: 'Share', citeText: 'Copy citation', typeHref: '/search/search-results.html', collectionHref: '/search/search-results.html' };
     const slides = R.slides, idx = Math.min(s.idx, Math.max(0, slides.length - 1));
     const cur = slides[idx] || { kind: 'image', src: '', label: '' };
     const go = i => { if (i >= 0 && i < slides.length) this.setState({ idx: i }); };
@@ -936,7 +936,7 @@ class Component extends DCLogic {
       showCitation: this.props.showCitation ?? false,
       showRelated: (this.props.showRelated ?? false) && related.length > 0, relIndigenous: relCards.some(r => r.indigenous),
       viewAll: `View all ${R.type.toLowerCase()} records`,
-      typeHref: `/search/advanced.html?type=${encodeURIComponent(R.type)}`, collectionHref: `/search/advanced.html?collection=${encodeURIComponent(R.collection)}`,
+      typeHref: `/search/search-results.html?type=${encodeURIComponent(R.type)}`, collectionHref: `/search/search-results.html?collection=${encodeURIComponent(R.collection)}`,
       hasAdvisory: R.advisories.length > 0, hasSubjects,
       hasLicence: !!R.licence, licIcons: R.licence ? (R.licence.icons || []) : [], hasLicIcons: !!(R.licence && R.licence.icons && R.licence.icons.length), licLabel: R.licence ? R.licence.label : '',
       hasClass: !!cls, clsBg: cls ? cls.bg : '', clsFg: cls ? cls.fg : '', clsName: cls ? cls.name : '', clsText: cls ? cls.text : '', clsCode: cls ? (cls.name.match(/\(([^)]+)\)/) ? cls.name.match(/\(([^)]+)\)/)[1].replace(' ', '') : cls.name) : '',

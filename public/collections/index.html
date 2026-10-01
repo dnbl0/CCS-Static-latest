@@ -178,7 +178,7 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
 
       <!-- Primary navigation -->
       <nav id="uom-primary-nav" class="uom-primary-nav" aria-label="Primary navigation">
-        <a href="/search/advanced.html">Search all records</a>
+        <a href="/search/search-results.html">Search all records</a>
         <a href="/collections/index.html">Browse collections</a>
         <a href="/help/index.html">Help</a>
         <a href="/contact.html">Contact</a>
@@ -201,7 +201,7 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
 <div id="uom-search-popover" class="uom-search-popover" role="dialog" aria-modal="true" aria-labelledby="uom-search-overlay-title">
   <div class="uom-search-popover__inner">
     <h2 id="uom-search-overlay-title" class="sr-only">Search</h2>
-    <form class="uom-search-popover__form" role="search" action="/search/advanced.html" method="get">
+    <form class="uom-search-popover__form" role="search" action="/search/search-results.html" method="get">
       <label for="uom-search-overlay-input" class="sr-only">Search Cultural Collections</label>
       <input id="uom-search-overlay-input" name="q" type="text" placeholder="Search" autocomplete="off">
       <button type="submit" class="uom-search-popover__submit" aria-label="Search">
@@ -308,12 +308,12 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
   <section class="cl-section cl-section--navy" aria-labelledby="h-search" style="padding:44px 0">
     <div class="cl-wrap" style="text-align:center">
       <h2 id="h-search" class="cl-h2" style="margin-bottom:20px">Search across every collection</h2>
-      <form class="cl-search" role="search" action="/search/advanced.html" method="get">
+      <form class="cl-search" role="search" action="/search/search-results.html" method="get">
         <label for="cl-q" class="sr-only">Search all collections</label>
         <input id="cl-q" name="q" type="search" placeholder="Search by title, creator, subject or accession number" autocomplete="off">
         <button type="submit"><span>Search</span></button>
       </form>
-      <div class="cl-links"><a href="/search/advanced.html">Advanced search</a><a href="/help/index.html">Search tips</a></div>
+      <div class="cl-links"><a href="/search/search-results.html">Advanced search</a><a href="/help/index.html">Search tips</a></div>
     </div>
   </section>
 
@@ -335,7 +335,7 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
         </sc-for>
         <article class="cl-card cl-card--cta">
           <div class="cl-card__body">
-            <h3 class="cl-card__title"><a href="/search/advanced.html">Search all records</a></h3>
+            <h3 class="cl-card__title"><a href="/search/search-results.html">Search all records</a></h3>
             <p class="cl-card__desc">Looking for something specific? Search and filter every record across all of the collections at once.</p>
             <span class="cl-card__cta" aria-hidden="true">Start searching <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="13 6 19 12 13 18"></polyline></svg></span>
           </div>
@@ -615,9 +615,9 @@ const THEMES = [
   ['Film and video', 'q=video', null],
   ['Technology and instruments', 'q=instrument', '../images/electrometer.jpg']
 ];
-const KEY = { 'Faculty of Engineering and Information Technology': 'FEIT', 'Medical History Museum': 'MHM', 'University Art Collection': 'UAC', 'Grainger Museum Collection': 'GMC', 'Henry Forman Atkinson Dental Museum': 'DENT', 'Harry Brookes Allen Museum of Anatomy and Pathology': 'HBA', 'Prints and Drawing Collection, Special Collections and Archives': 'PDC' };
+const KEY = { 'Medical History Museum': 'MHM', 'University Art Collection': 'UAC', 'Grainger Museum Collection': 'GMC', 'Henry Forman Atkinson Dental Museum': 'DENT', 'Harry Brookes Allen Museum of Anatomy and Pathology': 'HBA' };
 const SLUG = { MHM: 'medical-history-museum', UAC: 'university-art-collection', GMC: 'grainger-museum', DENT: 'henry-forman-atkinson-dental-museum', HBA: 'harry-brookes-allen-museum' };
-const S = '/search/advanced';
+const S = '/search/search-results';
 const BLURBS = {
   MHM: "Explore the social history of medicine and its role in society, including a nineteenth-century pharmacy complete with pharmaceutical jars and equipment.",
   UAC: "Paintings, prints, sculpture and decorative arts spanning classical antiquity to contemporary Australian practice.",

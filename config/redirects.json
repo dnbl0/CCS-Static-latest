@@ -2,7 +2,7 @@
   "redirects": [
     { "from": "/Contact Us.dc.html", "to": "/contact", "permanent": true },
     { "from": "/Collection Record.dc.html", "to": "/collections/record", "permanent": true },
-    { "from": "/Collection Search v3.dc.html", "to": "/search/advanced", "permanent": true },
+    { "from": "/Collection Search v3.dc.html", "to": "/search/search-results", "permanent": true },
     { "from": "/Browse Collections.dc.html", "to": "/collections", "permanent": true },
     { "from": "/Collection Landing.dc.html", "to": "/collections", "permanent": true },
     { "from": "/Help and Support.dc.html", "to": "/help", "permanent": true },

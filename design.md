@@ -729,7 +729,7 @@ These are spot calculations, not a full audit of every page.
 - Unknown ids show "Record not found"; each record sets its own document title
 - Field labels and order follow `assets/CCS Field labels and filters - Final - PRG - 1 OCT 2026.xlsx` (see `README.md`)
 
-### Search Results (`public/search/advanced.html`)
+### Search Results (`public/search/search-results.html`)
 
 **Structure**:
 1. Header + search bar
@@ -811,7 +811,7 @@ Before finalizing designs, verify:
 ```
 public/                              # Deployed web root
 ├── index.html, search.html, contact.html
-├── search/advanced.html
+├── search/search-results.html
 ├── collections/
 │   ├── index.html, record.html
 │   └── <slug>/index.html            # 5 collection landing pages
@@ -877,8 +877,8 @@ All pages use semantic, REST-friendly URLs:
 
 **Home & Search**:
 - `/` → Home page
-- `/search` → Redirects to `/search/advanced`
-- `/search/advanced` → Advanced search interface
+- `/search` → Redirects to `/search/search-results`
+- `/search/search-results` → Advanced search interface
 
 **Collections**:
 - `/collections` → Browse all collections
@@ -903,7 +903,7 @@ public/
 ├── index.html                    # / (home)
 ├── search.html                   # /search (redirect stub)
 ├── contact.html                  # /contact
-├── search/advanced.html          # /search/advanced
+├── search/search-results.html          # /search/search-results
 ├── collections/
 │   ├── index.html                # /collections
 │   ├── record.html               # /collections/record?id=<id>

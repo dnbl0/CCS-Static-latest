@@ -123,7 +123,7 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
 
       <!-- Primary navigation -->
       <nav id="uom-primary-nav" class="uom-primary-nav" aria-label="Primary navigation">
-        <a href="/search/advanced.html">Search all records</a>
+        <a href="/search/search-results.html">Search all records</a>
         <a href="/collections/index.html">Browse collections</a>
         <a href="/help/index.html">Help</a>
         <a href="/contact.html">Contact</a>
@@ -146,7 +146,7 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
 <div id="uom-search-popover" class="uom-search-popover" role="dialog" aria-modal="true" aria-labelledby="uom-search-overlay-title">
   <div class="uom-search-popover__inner">
     <h2 id="uom-search-overlay-title" class="sr-only">Search</h2>
-    <form class="uom-search-popover__form" role="search" action="/search/advanced.html" method="get">
+    <form class="uom-search-popover__form" role="search" action="/search/search-results.html" method="get">
       <label for="uom-search-overlay-input" class="sr-only">Search Cultural Collections</label>
       <input id="uom-search-overlay-input" name="q" type="text" placeholder="Search" autocomplete="off">
       <button type="submit" class="uom-search-popover__submit" aria-label="Search">
@@ -553,16 +553,14 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
 </svg>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440},&quot;collection&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;MHM&quot;,&quot;UAC&quot;,&quot;GMC&quot;,&quot;DENT&quot;,&quot;PDC&quot;,&quot;FEIT&quot;,&quot;HBA&quot;],&quot;default&quot;:&quot;UAC&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440},&quot;collection&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;MHM&quot;,&quot;UAC&quot;,&quot;GMC&quot;,&quot;DENT&quot;,&quot;HBA&quot;],&quot;default&quot;:&quot;UAC&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
 
-const COLL_KEYS = { MHM: 'Medical History Museum', UAC: 'University Art Collection', GMC: 'Grainger Museum Collection', DENT: 'Henry Forman Atkinson Dental Museum', PDC: 'Prints and Drawing Collection, Special Collections and Archives', FEIT: 'FEIT', HBA: 'Harry Brookes Allen Museum of Anatomy and Pathology' };
+const COLL_KEYS = { MHM: 'Medical History Museum', UAC: 'University Art Collection', GMC: 'Grainger Museum Collection', DENT: 'Henry Forman Atkinson Dental Museum', HBA: 'Harry Brookes Allen Museum of Anatomy and Pathology' };
 const BLURBS = {
   MHM: "Explore, inquire and enjoy the social history of medicine and its role in society through a diverse exhibition program. Visit the nineteenth century Savory and Moore Pharmacy complete with pharmaceutical jars and equipment.",
   UAC: "Paintings, prints, sculpture and decorative arts spanning classical antiquity to contemporary Australian practice.",
   GMC: "The personal archive, instruments and scores of composer Percy Grainger, held in trust for scholarship worldwide.",
   DENT: "Visit the Henry Forman Atkinson Dental Museum to be inspired by the intriguing history of dental health and the development of the dental professions and dental education. It is the oldest and most significant dental collection in Australia, tracing its origins to 1884.",
-  PDC: "Prints, drawings and rare publications from the University's Special Collections and Archives.",
-  FEIT: "Scientific instruments and early computing technology from the Faculty of Engineering and Information Technology.",
   HBA: "One of Australia's largest collections of human tissue specimens, animal anatomy specimens and historical anatomical models, offering students and researchers a unique insight into the human body."
 };
 const VISIT = {
@@ -602,7 +600,7 @@ class Component extends DCLogic {
     });
     const visit = VISIT[key] || null;
     return {
-      coll: { name, blurb: BLURBS[key] || '', count, searchHref: '/search/advanced.html?collection=' + encodeURIComponent(name), externalUrl: EXTERNAL[key] || '', hasExternal: !!EXTERNAL[key] },
+      coll: { name, blurb: BLURBS[key] || '', count, searchHref: '/search/search-results.html?collection=' + encodeURIComponent(name), externalUrl: EXTERNAL[key] || '', hasExternal: !!EXTERNAL[key] },
       items, hasVisit: !!visit, hasSidebar: !!visit || !!EXTERNAL[key], visit: visit || {},
       stats: { count, types: Object.keys(typeCounts).length },
       topTypes

@@ -1,7 +1,7 @@
 // CCS record data + CCS Data Inventory (9 Sept) field mapping. Loaded as a global: window.CCS
 (function () {
   const MHM = 'Medical History Museum', UAC = 'University Art Collection', GMC = 'Grainger Museum Collection';
-  const PDC = 'Prints and Drawing Collection, Special Collections and Archives', FEIT = 'Faculty of Engineering and Information Technology', DENT = 'Henry Forman Atkinson Dental Museum';
+  const DENT = 'Henry Forman Atkinson Dental Museum';
   const HBA = 'Harry Brookes Allen Museum of Anatomy and Pathology';
   const BUSH = 'Bush Medicine collection', BUSHA = 'Bush Medicine collection/Aboriginal and Torres Strait Islander Art Collection';
 
@@ -741,13 +741,8 @@
       { id: 20248, title: 'Neanderthal temporal bone fragment, plaster cast', collection: HBA, objectType: 'models', creator: 'Dr. F. Krantz of Bonn, Rheinisches Mineralien-Kontor (estab. 1833), maker', accession: '516-500900', classification: 'Anthropology casts; Head', place: 'Bonn, Germany', date: 'Circa 1905', dateStart: 1905, dateEnd: 1905, description: 'Plaster cast of a right temporal bone fragment from a Neanderthal (Homo neanderthalensis). This bone was part of a fossil assemblage discovered in Krapina, Croatia between 1899 and 1905. These Neanderthal fossils have been dated at 120-130 thousand years old and represent one of the largest assemblages of Upper Pleistocene human skeletal remains ever found. These casts were bought by the Anatomy Department in the early 1900s to use as teaching specimens in classes on human anatomy and evolution.', licence: 'Rights Reserved', access: 'By Appointment' },
       { id: 20249, title: 'Dog femurs', collection: HBA, objectType: 'animal tissue', accession: '516-500941', classification: 'Dogs and relatives (Caniformia); Comparative anatomy', description: 'Left and right femurs from a domestic dog (Canis familiaris). Both bones are stained a brown colour and are damaged; left femur is missing distal end.', licence: 'Rights Reserved', access: 'By Appointment' },
       { id: 20250, title: 'Facial reconstruction model of an Ancient Egyptian', collection: HBA, objectType: 'models', creator: 'Jennifer Mann, sculptor/artist', accession: '516-500681', classification: 'Head', place: 'Macedon Ranges, Victoria, Australia', date: '2016', dateStart: 2016, dateEnd: 2016, description: 'This is a sculpted reconstruction of the face of an Ancient Egyptian mummified head (531-001070). A 3D printed skull formed the base on which sculptor Jennifer Mann has used all her forensic and artistic skill to create the reconstruction. Mann learned the technique for facial reconstruction at the Forensic Anthropology Centre at Texas State University where she studied with leading forensic sculptor Karen T. Taylor. She practised on skull casts previously used in actual cases to reconstruct unidentified murder victims. She cautions that any facial reconstruction can only be an approximation of what someone actually looked like in life, but the results she had at Texas closely matched those of the eventually identified murder victims. The methodology involves attaching to the printed skull plastic markers to indicate different tissue depths at key points on the face, based on averages in population data. This data is derived from modern Egyptians and has been specifically selected by reconstruction experts from around the world as the best approximation for ancient Egyptians. It was then about applying the clay according to the musculature of the face and known anatomical ratios based on the actual skull. For example, the nose is squashed almost flat by the tight bandaging, but Mann was able to estimate what her nose would have looked like using calculations based on the dimensions of the nasal cavity. The skull also displays a small overbite that Mann has reconstructed. The ears are based on the CT scan results. The reconstruction was then cast in a polyurethane resin and painted. The researchers have taken a middle course in the long-running debate on what the predominant skin colour of ancient Egyptians may have been, choosing a dark olive hue. The finishing touch was to reconstruct her hair, which has been modelled on that of an Egyptian woman, Lady Rai, who lived around 1570-1530 BCE and whose mummified body is now in the Egypt Museum in Cairo. She wears her hair in tightly-plaited thin braids either side of her head. For the reconstruction, replicating Lady Rai’s hair was an all-day job for a Melbourne African hair salon. (from \'Brought to Life, 2000 Years Later - https://pursuit.unimelb.edu.au/articles/brought-to-life-2000-years-later)', licence: 'Rights Reserved', access: 'By Appointment' },
-    { id: 50001, title: 'Apple Macintosh Personal Computer', img: 'macintosh-web', collection: FEIT, objectType: 'Equipment', accession: 'CS.00048', creator: 'Apple Computer, Inc.', date: '1984', dateStart: 1984, dateEnd: 1984, licence: 'Public Domain', access: 'By Appointment', place: 'United States of America', subject: 'Computer science' },
-    { id: 50002, title: 'Electromechanical Calculator, Marchant, c. 1956', img: 'calculator-web', collection: FEIT, objectType: 'Equipment', accession: 'CS.00145', creator: 'Marchant Calculating Machine Co.', date: 'c. 1956', dateStart: 1956, dateEnd: 1956, licence: 'Public Domain', access: 'By Appointment', place: 'Oakland, California, United States of America', subject: 'Computer science' },
-    { id: 50003, title: "Root's Blower, Schroeder, c. 1861", img: 'blower-web', collection: FEIT, objectType: 'Equipment', accession: 'EN.00008', creator: 'J. Schroeder', date: 'c. 1861', dateStart: 1861, dateEnd: 1861, licence: 'Public Domain', access: 'By Appointment', place: 'Darmstadt, Germany', subject: 'Engineering' },
-    { id: 50004, title: 'Potentiometer, Wolff, 1920', img: 'potentiometer-web', collection: FEIT, objectType: 'Equipment', accession: 'EE.00009', creator: 'Otto Wolff', date: '1920', dateStart: 1920, dateEnd: 1920, licence: 'Public Domain', access: 'By Appointment', place: 'Berlin, Germany', subject: 'Electrical engineering' },
     { id: 50005, title: 'Physics Electrometer', img: 'electrometer', collection: 'Physics Collection', objectType: 'Scientific Instrument', accession: 'PH.00120', creator: 'Maker unknown', nationality: 'Australian', date: 'c. 1900', dateStart: 1900, dateEnd: 1900, licence: 'Public Domain', access: 'By Appointment', subject: 'Physics' },
     { id: 50006, title: 'Crookes tube CH12', img: 'crookes', collection: 'Physics Collection', objectType: 'Scientific Instrument', accession: 'PH.00012', creator: 'Maker unknown', nationality: 'Australian', date: 'c. 1890', dateStart: 1890, dateEnd: 1890, licence: 'Public Domain', access: 'By Appointment', subject: 'Physics' },
-    { id: 50007, title: "Tametomo's Ferocity Drives Away the Smallpox Demons", img: 'tsukioka', collection: PDC, objectType: 'Woodblock print', creator: 'Yoshitoshi Tsukioka (1839–1892)', nationality: 'Japanese', date: '1890', dateStart: 1890, dateEnd: 1890, licence: 'Public Domain', access: 'Open Access', place: 'Tokyo, Japan', material: 'coloured ink on paper', subject: 'Asian art', description: 'From the series: Thirty-six Ghosts and Strange Apparitions.', creditLine: 'Prints and Drawing Collection, Special Collections and Archives, University of Melbourne.' },
     // Records added from CCS-data-EMu.csv / Vernon sample data for assets held in /assets
     { id: 60001, title: 'Untitled [Timber eucalypt specimen cabinet]', altTitle: 'Chest, double with ten drawers', objectType: 'chest of drawers', date: '[c. 1919–20]', dateStart: 1915, dateEnd: 1925, creator: 'Grimwade, Sir Wilfrid Russell CBE', creatorDoB: '1879', creatorDoD: '1955', nationality: 'Australian', place: 'Oceania, Australia', material: 'eucalyptus, brass handles', accession: '1973.0755.000.A.000.L', copyright: '[Public domain - Copyright expired] Public Domain / no known copyright restrictions', creditLine: 'The University of Melbourne Art Collection. The Russell and Mab Grimwade Bequests, 1973\'', named: 'Russell and Mab Grimwade Bequest', collection: UAC, access: 'By Appointment', classification: 'Architecture, buildings and furniture', licence: 'Public Domain' },
     { id: 60002, title: 'Goodenia hederacea - Goodeniaceae', objectType: 'painting, watercolour', date: '[c. 1948]', dateStart: 1948, dateEnd: 1950, creator: 'Stones, Margaret', creatorRole: 'artist', creatorDoB: '1920', creatorDoD: '2018', nationality: 'Australian', place: 'Oceania, Australia', material: 'watercolour over traces of pencil on medium weight wove paper', accession: '2001.0008.000.000', copyright: '[Reproduction Licence - Current] Stones, Margaret', creditLine: 'The University of Melbourne Art Collection. Gift of Kaye Turner, 2001', named: 'Museum of Art', collection: UAC, access: 'By Appointment', classification: 'Art and design', licence: 'Rights Reserved' },
@@ -778,10 +773,9 @@
   };
   const UNIT = {
     [MHM]: 'Medical, Dental and Health Sciences Museums', [DENT]: 'Medical, Dental and Health Sciences Museums',
-    [UAC]: 'Museums and Collections', [GMC]: 'Museums and Collections',
-    [PDC]: 'Special Collections and Archives', [FEIT]: 'Faculty of Engineering and Information Technology'
+    [UAC]: 'Museums and Collections', [GMC]: 'Museums and Collections'
   };
-  const COLL_LABEL = { [FEIT]: 'Faculty of Engineering and Information Technology' };
+  const COLL_LABEL = {};
   const UNKNOWN = /^(Maker unknown|Studio unknown|Staff photographer|Japanese)$/;
   const nameOnly = c => (c || '').replace(/\s*\(.*\)\s*$/, '');
   const capitalize = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
@@ -963,12 +957,30 @@
   Object.entries(SUPERSEDED).forEach(([old, canon]) => Object.defineProperty(records, old, { value: records[canon], enumerable: false }));
   // Single source of truth for search: the same items, normalised to the shape the facets expect
   // (objectType, culture) with a thumbnail for every item that has digital media.
-  const items = ACTIVE.map(it => ({
-    ...it,
-    objectType: it.objectType || it.type,
-    culture: it.culture || it.culturalAffiliation,
-    img: it.img || (records[it.id].images[0] || null)
-  }));
+  // Facet vocabularies (CCS Filters sheet): Object type = every term of the record's object type
+  // (semicolon-separated, case-insensitive); Classification = the museum's subject classification;
+  // Film & gaming classification = the film/game rating only (G, PG, M, MA 15+, R 18+, X 18+, RC).
+  const FILM_RATINGS = { G: 'G', PG: 'PG', M: 'M', 'MA15+': 'MA 15+', 'MA 15+': 'MA 15+', 'R18+': 'R 18+', 'R 18+': 'R 18+', 'X18+': 'X 18+', 'X 18+': 'X 18+', RC: 'RC' };
+  const FILM_RATING_LIST = ['G', 'PG', 'M', 'MA 15+', 'R 18+', 'X 18+', 'RC'];
+  const terms = v => String(v == null ? '' : v).split(';').map(t => t.trim()).filter(Boolean);
+  const rawTypes = it => terms(it.objectType || it.type);
+  const typeCounts = {};
+  ACTIVE.forEach(it => rawTypes(it).forEach(t => { const k = t.toLowerCase(); (typeCounts[k] = typeCounts[k] || {})[t] = (typeCounts[k][t] || 0) + 1; }));
+  const TYPE_DISPLAY = {};
+  Object.keys(typeCounts).forEach(k => {
+    const best = Object.keys(typeCounts[k]).sort((a, b) => typeCounts[k][b] - typeCounts[k][a] || a.localeCompare(b))[0];
+    TYPE_DISPLAY[k] = best.charAt(0).toUpperCase() + best.slice(1);
+  });
+  const canonType = v => TYPE_DISPLAY[String(v).trim().toLowerCase()] || String(v).trim();
+  const uniqList = a => a.filter((x, i) => a.indexOf(x) === i);
+  const typesOf = it => uniqList(rawTypes(it).map(canonType));
+  const classesOf = it => terms(it.classification).filter(c => !FILM_RATINGS[c] && c !== 'CTC');
+  const ratingsOf = it => uniqList([it.classification, it.advisoryClassification].filter(Boolean).map(c => FILM_RATINGS[c]).filter(Boolean));
+  const items = ACTIVE.map(it => {
+    const base = { ...it, objectType: it.objectType || it.type, culture: it.culture || it.culturalAffiliation, img: it.img || (records[it.id].images[0] || null) };
+    const kinds = uniqList(records[it.id].slides.map(sl => ({ image: 'Image', audio: 'Audio', video: 'Video' })[sl.kind]).filter(Boolean));
+    return { ...base, types: typesOf(base), classes: classesOf(base), ratings: ratingsOf(base), formats: kinds };
+  });
   function related(id, n = 4) {
     const r = records[id]; if (!r) return [];
     const score = o => (o.named && o.named === r.named ? 3 : 0) + (o.subject === r.subject ? 2 : 0) + (o.collection === r.collection ? 1 : 0) + (o.hasDA ? 0.5 : 0);
@@ -976,5 +988,5 @@
     return Object.values(records).filter(o => o.id !== id && score(o) >= 1.5).sort((a, b) => score(b) - score(a))
       .filter(o => !seen.has(o.title) && seen.add(o.title)).slice(0, n).map(o => o.card);
   }
-  window.CCS = { records, related, items, ids: ACTIVE.map(i => i.id) };
+  window.CCS = { records, related, items, ids: ACTIVE.map(i => i.id), canonType, FILM_RATING_LIST, FORMAT_LIST: ['Image', 'Audio', 'Video', 'PDF'] };
 })();

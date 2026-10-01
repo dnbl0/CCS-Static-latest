@@ -1,7 +1,7 @@
 /* Advanced Search form (public/search/advanced-search.html).
  *
  * Builds a multi-row search + filter form and submits it as a plain GET to
- * /search/advanced.html (the results page), which understands:
+ * /search/search-results.html (the results page), which understands:
  *   clause[i][field]  all_fields | title | creator | subject | description
  *   clause[i][op]     must (contains all) | should (contains any) | must_not (does not contain)
  *   clause[i][query]  free text; "quotes" make an exact phrase
@@ -20,7 +20,7 @@
   var FILTERS = [
     { key: 'collection', label: 'Collection Title', get: function (it) { return [it.collection]; }, on: true },
     { key: 'creator', label: 'Creator Name', get: function (it) { return [it.creator]; } },
-    { key: 'type', label: 'Object Type', get: function (it) { return [it.objectType]; }, on: true },
+    { key: 'type', label: 'Object Type', get: function (it) { return it.types || []; }, on: true },
     { key: 'licence', label: 'Licence Type', get: function (it) { return [it.licence]; } },
     { key: 'access', label: 'Object Access Condition', get: function (it) { return [it.access]; } },
     { key: 'year', label: 'Production Date', range: true, on: true }
