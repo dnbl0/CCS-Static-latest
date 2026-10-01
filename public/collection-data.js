@@ -954,7 +954,7 @@
   // Early prototype stubs that duplicate a fuller record for the same object (same accession number or
   // same title with no accession). They are folded into the fuller record: the old id still resolves
   // (records[oldId] is the canonical record) but is no longer listed or searchable twice.
-  const SUPERSEDED = { 12: 20008, 149: 20004, 169: 20018, 3: 60002, 4: 60003, 7: 10114, 8: 20001, 2: 20003 };
+  const SUPERSEDED = { 14: 60001, 12: 20008, 149: 20004, 169: 20018, 3: 60002, 4: 60003, 7: 10114, 8: 20001, 2: 20003 };
   const ACTIVE = ITEMS.filter(it => !SUPERSEDED[it.id]);
   const records = {};
   ACTIVE.forEach(it => { records[it.id] = build(it); });
