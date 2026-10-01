@@ -259,35 +259,22 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
 
   <nav class="page-breadcrumbs" aria-label="Breadcrumb"><ol class="page-local-history" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="root" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="/" itemprop="item" title="Home" aria-label="Home"><img src="../../images/home.svg" alt="" width="16" height="16" style="vertical-align:middle"><span itemprop="name" class="sr-only">Home</span></a><meta content="1" itemprop="position"></li><li class="" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="/collections/index.html" itemprop="item" title="Browse collections"><span itemprop="name">Browse collections</span></a><meta content="2" itemprop="position"></li><li itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page"><span itemprop="name">{{ coll.name }}</span><meta content="3" itemprop="position"></li></ol><ol class="bc-mobile" style="display:none;align-items:center;gap:6px;list-style:none;margin:0;font-size:18px;color:#fff"><li style="display:flex;align-items:center"><a href="/collections/index.html" style="display:inline-flex;align-items:center;gap:6px;color:#fff;text-decoration:none;min-height:44px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span>Browse collections</span></a></li></ol></nav>
 
-<section class="banner" aria-label="Page banner" style="background-image: url('{{ coll.banner }}');">
-  <div class="bottom-align-flat">
-    <div class="left">
-      <h1>{{ coll.name }}</h1>
-      <p class="banner__desc">{{ coll.blurb }}</p>
+<header class="campaign-banner-split campaign-banner-split--dark" role="presentation">
+  <div class="campaign-banner-split__img">
+    <img class="campaign-banner-split__img-inner" src="{{ coll.banner }}" alt="">
+  </div>
+  <div class="max campaign-banner-split__inner">
+    <div class="campaign-banner-split__content">
+      <div class="campaign-banner-split__content-inner">
+        <h1>{{ coll.name }}</h1>
+        <p>{{ coll.blurb }}</p>
+        <a href="{{ coll.searchHref }}" class="button">Explore the collection</a>
+      </div>
     </div>
   </div>
-</section>
+</header>
 
-<section aria-label="Collection summary" style="background:#fff;border-bottom:1px solid #e3e0d9;padding:16px 0">
-  <sc-if value="{{ noAdvisory }}" hint-placeholder-val="{{ true }}">
-    <div style="max-width:1200px;margin:0 auto;padding:0 32px">
-     <div style="padding:0;display:flex;flex-direction:column;gap:24px">
-      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase">
-        <a href="/collections/index.html" style="color:#0b4ea2;text-decoration:none" style-hover="text-decoration:underline">Collection</a>
-        <span aria-hidden="true" style="width:4px;height:4px;background:#9a9ea8"></span>
-        <span style="color:#0b4ea2">University of Melbourne</span>
-      </div>
-     </div>
-    </div>
-  </sc-if>
-  <sc-if value="{{ advisory }}" hint-placeholder-val="{{ false }}">
-    <div style="max-width:1200px;margin:0 auto;padding:8px 32px">
-      <p class="notice notice--warning" role="note"><strong>Rights / Advisory language:</strong> {{ advisory }}</p>
-    </div>
-  </sc-if>
-</section>
-
-<main id="main-content" style="flex:1;background:#f1f0ec">
+<main id="main-content" style="flex:1;background:#fff">
   <div style="max-width:1200px;margin:0 auto;padding:40px 32px 56px;display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start">
     <div style="flex:999 1 560px;min-width:0;display:flex;flex-direction:column;gap:24px">
       <section aria-labelledby="h-about" class="lp-panel">
@@ -310,7 +297,7 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
         </dl>
       </section>
     </div>
-    <aside aria-label="Visit details" style="flex:1 1 320px;min-width:0;display:flex;flex-direction:column;gap:24px;position:sticky;top:24px">
+    <aside aria-label="Visit details" style="flex:1 1 320px;min-width:0;display:flex;flex-direction:column;gap:24px">
       <section class="lp-panel">
         <h2>Visit details</h2>
         <div class="lp-panel__body">
@@ -769,9 +756,9 @@ class Component extends DCLogic {
     } catch (e) {}
     const cp = COPY[key];
     return {
-      coll: { name: COLL_KEYS[key], blurb: cp.summary, externalUrl: cp.external, banner: BANNERS[key] },
-      about: cp.about, advisory: cp.advisory, noAdvisory: !cp.advisory,
-      details: cp.details.filter(([label]) => label !== 'Total items' && label !== 'Date range').map(([label, value]) => label === 'Physical location' && ADDRESS[key] ? { label, isAddress: true, lines: ADDRESS[key].lines, note: ADDRESS[key].note } : { label, isText: true, value }),
+      coll: { name: COLL_KEYS[key], blurb: cp.summary, externalUrl: cp.external, banner: BANNERS[key], searchHref: '/search/search-results.html?collection=' + encodeURIComponent(COLL_KEYS[key]) },
+      about: cp.about,
+      details: [...cp.details.filter(([label]) => label !== 'Total items' && label !== 'Date range').map(([label, value]) => label === 'Physical location' && ADDRESS[key] ? { label, isAddress: true, lines: ADDRESS[key].lines, note: ADDRESS[key].note } : { label, isText: true, value }), ...(cp.advisory ? [{ label: 'Rights / Advisory language', isText: true, value: cp.advisory }] : [])],
       visit: { hours: cp.hours, email: cp.email, phone: cp.phone, phoneHref: cp.phone.replace(/[^+\d]/g, '') }
     };
   }
