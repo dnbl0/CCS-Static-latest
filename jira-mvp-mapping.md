@@ -2,7 +2,7 @@
 
 **Project**: CCS-2026 | **Jira Source**: [unimelb.atlassian.net CCS board](https://unimelb.atlassian.net/jira/software/c/projects/CCS/boards/6889?label=CCS-2026) (label `CCS-2026`, ~140 issues)
 **Audit Method**: Live Jira MCP fetch (66 frontend-relevant epics/stories/bugs, verbatim descriptions) cross-checked against a from-scratch read of the actual `public/` codebase — not against this document's own prior claims.
-**Audit Date**: 2026-09-29 | **Status**: Corrected — see "Correction Notice" below
+**Audit Date**: 2026-09-29 (file paths and data notes refreshed 2026-10-01) | **Status**: Corrected — see "Correction Notice" below. Jira statuses and requirement rows reflect the 29 Sept audit and have not been re-fetched since.
 
 ---
 
@@ -17,13 +17,13 @@ This revision was produced by fetching the live Jira issues directly (see audit 
 
 ---
 
-## Site Structure (ground truth)
+## Site Structure (ground truth, 2026-10-01)
 
-- **Canonical live site**: `public/` — `index.html`, `search.html` (redirect shim → `search/advanced.html`), `search/advanced.html` (real search), `collections/index.html`, `collections/{grainger-museum,harry-brookes-allen-museum,henry-forman-atkinson-dental-museum,medical-history-museum,university-art-collection}.html`, `collections/record.html`, `contact.html`, `help/index.html`, `indigenous-data.html`.
-- **Legacy/orphaned**: root-level `*.dc.html` files (`CCS Home page.dc.html`, `Browse Collections.dc.html`, `Collection Record.dc.html`, `Collection Search v3.dc.html`, `Contact Us.dc.html`, `Help and Support.dc.html`, `Collection Landing.dc.html`) and root `index.html`/`collection-data.js`. Not linked from `public/`; retained only as 301-redirect sources in `public/.htaccess`. Do not treat these as the current implementation.
-- **`config/redirects.json`**: documentation-only (grepped — nothing in the codebase reads it at runtime); now corrected to match `public/.htaccess`'s real redirect targets.
-- **Shared data source**: `public/collection-data.js` (`ITEMS` array) feeds both `search/advanced.html` and the collection/record pages — single source, not duplicated.
-- **Live stylesheet**: pages load `public/components/fig-tokens.css` + `fig-assets.css`. `public/styles/variables.css`/`components.css` are byte-identical but **unreferenced by any page** — dead code kept in sync as a precaution, worth removing in a follow-up cleanup.
+- **Live site**: everything under `public/` - `index.html`, `search.html` (redirect stub to `/search/advanced`), `search/advanced.html` (real search), `collections/index.html`, `collections/<slug>/index.html` (five landing pages: `grainger-museum`, `harry-brookes-allen-museum`, `henry-forman-atkinson-dental-museum`, `medical-history-museum`, `university-art-collection`), `collections/record.html`, `contact.html`, `help/index.html`, `help/indigenous-data.html`.
+- **Legacy files**: the old root-level `*.dc.html` files and root `index.html` / `collection-data.js` no longer exist. The legacy `.dc.html` filenames survive only as 301-redirect sources in `vercel.json` and `public/.htaccess`.
+- **`config/redirects.json`**: documentation-only (nothing reads it at runtime). `vercel.json` and `public/.htaccess` are authoritative; the JSON file does not list the `/search` redirects.
+- **Shared data source**: `public/collection-data.js` defines `window.CCS` (`records`, `items`, `ids`, `related()`); `search/advanced.html` and `collections/record.html` both read it. 735 records are listed. See README.md.
+- **Live stylesheets**: `public/components/fig-tokens.css`, `fig-assets.css`, `public/styles/header.css`, `footer.css`, `collection.css`, and the locally built `public/styles/vendor/bootstrap-uom.min.css`. The dead duplicates `variables.css` / `components.css` have been deleted.
 
 ---
 
@@ -38,7 +38,7 @@ This revision was produced by fetching the live Jira issues directly (see audit 
 | 5 | `config/redirects.json` mapped legacy files to a nonexistent `/pages/*.html` scheme, contradicting `.htaccess` | Rewritten to match `.htaccess`'s real targets |
 | 6 | 4 of 5 museum collection pages had a stale `data-props` schema default of `"MHM"` (actual render logic was already correct per-page) | Corrected each page's default to its real code (GMC/HBA/DENT/UAC) |
 | 7 | No centralized `:focus-visible` styling anywhere in the live stylesheet (WCAG 2.4.7 gap) | Added a `:focus-visible` rule using the design system's `--focus-focus` token to `public/components/fig-tokens.css` (the file actually loaded by pages) |
-| 8 | CCS-234 epic lists "Indigenous Cultural Data and Access" as its own static page; only existed as a subsection of the help page | Extracted to standalone `public/indigenous-data.html` (content preserved verbatim, no invented claims), linked from help and the homepage nav |
+| 8 | CCS-234 epic lists "Indigenous Cultural Data and Access" as its own static page; only existed as a subsection of the help page | Extracted to standalone `public/help/indigenous-data.html` (content preserved verbatim, no invented claims), linked from help and the homepage nav |
 
 ---
 
@@ -52,7 +52,7 @@ This revision was produced by fetching the live Jira issues directly (see audit 
 | CCS-34 | Boolean / exact-phrase search | Done | `search/advanced.html` — quoted exact-phrase + implicit AND (pre-existing) **plus** explicit `AND`/`OR`/`NOT` operators (added this cycle) |
 | CCS-37 | Search within a collection | Done | Collection-scope filter in `search/advanced.html` facets |
 | CCS-38 | Search filters | New | Type/date/format facet filters present in `search/advanced.html`. Indigenous-material-specific filter labels (per the Jira description's red-highlighted note) are **not** implemented — see Gaps below |
-| CCS-41 | Digital-assets-only filter | New | `f.digital` toggle in `search/advanced.html`, verified real (default true, filters records with no `img`) |
+| CCS-41 | Digital-assets-only filter | New | `f.digital` toggle in `search/advanced.html` (default off; when on, filters out records with no `img`) |
 | CCS-116 | Semantic search (app level) | Done | No frontend trace found; appears to be backend-scoped. Not independently verifiable from this repo — flag to backend team rather than assume |
 | CCS-123 | Fuzzy search | In Testing | No fuzzy-match logic beyond the spelling-suggestion feature added this cycle (which covers the "did you mean" UX, not general fuzzy ranking of results) |
 | CCS-124 | No-results messaging | New | Real implementation in `search/advanced.html` ("No records match your search" + "Clear all filters") |
@@ -62,24 +62,24 @@ This revision was produced by fetching the live Jira issues directly (see audit 
 | CCS-22 | UoM ID surfacing | New | `accession` field displayed on `collections/record.html` |
 | CCS-25 | Persistent URLs | In Testing | `collections/record.html` has a "Copy persistent link" button (verified in code) |
 | CCS-27 | Display rights information | Done | `collections/record.html` displays `licence`/`rights` fields and licence icons |
-| CCS-217 | View Collection Asset Details (with/without DAs) | New | `collections/record.html` and collection pages handle both cases (records with `img: null` render without a media viewer) |
+| CCS-217 | View Collection Asset Details (with/without DAs) | New | `collections/record.html` handles both cases (records with no digital asset render without a media viewer) |
 
 ### Content Classification & Access
 
 | Story | Summary | Jira Status | Implementation |
 |---|---|---|---|
 | CCS-64 | Link DAs and metadata with CA metadata | New | Data-layer requirement; `collection-data.js`'s single shared `ITEMS` structure is consistent with this, but the "aspect ratio without distortion" clause (item 4 in the Jira description) was not independently re-verified this cycle |
-| CCS-65 | Digital asset formats | New | 2026 priority is Images/Audio/Video/PDF per Jira; current dataset/UI is image-only — audio/video/PDF handling not verified in this repo |
+| CCS-65 | Digital asset formats | New | 2026 priority is Images/Audio/Video/PDF per Jira; images, audio and video are supported by the record page media viewer (`ASSET_IMAGES` / `ASSET_AV` in `collection-data.js`), but only two audio/video items exist; PDF handling is not implemented |
 | CCS-66 | Categories of content | New | Parent story for CCS-166/68/69 below |
-| CCS-68 | Content classification — Request to USE | Done | Not independently re-verified this cycle (was claimed present in the prior doc version; recommend explicit re-check of `collections/record.html` for a request-to-use flow) |
-| CCS-69 | Content classification — Request to VIEW | New | Same caveat as CCS-68 |
+| CCS-68 | Content classification — Request to USE | Done | The record page's "Contact us" dialog has a "Request to use" tab (form is front-end only; submitting shows a confirmation and sends nothing). Not otherwise verified against the Jira description |
+| CCS-69 | Content classification — Request to VIEW | New | "Request to view" tab exists in the same dialog; same caveat as CCS-68 |
 | CCS-166 | Content classification — VIEW only | New | Same caveat as CCS-68 |
 
 ### Accessibility & Security
 
 | Story | Summary | Jira Status | Implementation |
 |---|---|---|---|
-| CCS-51 | WCAG 2.1 AA compliance | New | Skip links, aria-labels present (verified); `:focus-visible` gap fixed this cycle (Fixes Applied #7). Full WCAG AA conformance has **not** been formally tested — treat as partially verified, not certified |
+| CCS-51 | WCAG 2.1 AA compliance | New | Skip links, aria-labels present (verified); `:focus-visible` gap fixed this cycle (Fixes Applied #7; fix made in 2026-09-29 cycle). Axe-core scans have been run and their findings fixed, but full WCAG AA conformance has **not** been formally tested — treat as partially verified, not certified |
 | CCS-62 | Accessibility (Assistive Technology Compatibility) | New | Not implemented; correctly reflects Jira's "New" status |
 | CCS-70 | Security model — Guest | Done | All `public/` pages are guest-accessible by default (no login gating found) |
 | CCS-145 | Security (BR-18.04) | New | Backend/infrastructure scope; not applicable to this static frontend |
@@ -91,13 +91,13 @@ This revision was produced by fetching the live Jira issues directly (see audit 
 |---|---|---|---|
 | Home | CCS-294 | New (no Jira description) | `public/index.html` |
 | Browse all collections | CCS-19 | New | `public/collections/index.html` |
-| Grainger Museum | CCS-295 | New (no Jira description) | `public/collections/grainger-museum.html` |
-| Harry Brookes Allen Museum | CCS-296 | New (no Jira description) | `public/collections/harry-brookes-allen-museum.html` |
-| Henry Forman Atkinson Dental Museum | CCS-297 | New (no Jira description) | `public/collections/henry-forman-atkinson-dental-museum.html` |
-| Medical History Museum | CCS-298 | New (no Jira description) | `public/collections/medical-history-museum.html` |
-| University Art Collection | CCS-299 | New (no Jira description) | `public/collections/university-art-collection.html` |
+| Grainger Museum | CCS-295 | New (no Jira description) | `public/collections/grainger-museum/index.html` |
+| Harry Brookes Allen Museum | CCS-296 | New (no Jira description) | `public/collections/harry-brookes-allen-museum/index.html` |
+| Henry Forman Atkinson Dental Museum | CCS-297 | New (no Jira description) | `public/collections/henry-forman-atkinson-dental-museum/index.html` |
+| Medical History Museum | CCS-298 | New (no Jira description) | `public/collections/medical-history-museum/index.html` |
+| University Art Collection | CCS-299 | New (no Jira description) | `public/collections/university-art-collection/index.html` |
 | Contact | CCS-233 | New | `public/contact.html` |
-| Indigenous Cultural Data and Access | CCS-52 | New | **Was a subsection of `help/index.html`; extracted to standalone `public/indigenous-data.html` this cycle** (Fixes Applied #8) |
+| Indigenous Cultural Data and Access | CCS-52 | New | **Was a subsection of `help/index.html`; extracted to standalone `public/help/indigenous-data.html` this cycle** (Fixes Applied #8) |
 | Help/Guidance | — ("tbd" in epic) | — | `public/help/index.html` |
 | CCS-47 | Contact Us — record view | New | Not independently re-verified this cycle |
 | CCS-50 | Acknowledgements (home page) | Done | Land acknowledgement present in `public/index.html` footer (verified) |
@@ -123,7 +123,7 @@ These match between Jira and code — no discrepancy:
 
 ## Data Integration (backend scope, not applicable to this static frontend)
 
-EMu, Vernon (MDHS), and Nexus DAM integration stories (CCS-48, 49, 118, 183–187, 197, 207, 209, 211, 230, 231, 237, 238, 240, 241, 244, 245, 263, 265, 266, 304, 310–313, 321, 322, 332, 333, and related bugs CCS-306/307) are backend/data-pipeline work with no frontend surface in this repo. `public/collection-data.js`'s field structure (`id`, `title`, `img`/`images[]`, `collection`, `type`, `creator`, `licence`, `access`, `accession`, `subject`, etc.) is what a real backend integration would need to populate — this document does not assert those integrations are complete, only that the frontend has a consistent shape ready to receive real data.
+EMu, Vernon (MDHS), and Nexus DAM integration stories (CCS-48, 49, 118, 183–187, 197, 207, 209, 211, 230, 231, 237, 238, 240, 241, 244, 245, 263, 265, 266, 304, 310–313, 321, 322, 332, 333, and related bugs CCS-306/307) are backend/data-pipeline work with no frontend surface in this repo. `public/collection-data.js`'s field structure (`id`, `title`, `img`/`images[]`, `collection`, `objectType`, `creator`, `licence`, `access`, `accession`, `subject`, etc., following `assets/CCS Field labels and filters - Final - PRG - 1 OCT 2026.xlsx`) is what a real backend integration would need to populate — this document does not assert those integrations are complete, only that the frontend has a consistent shape ready to receive real data.
 
 Specs referenced but not machine-readable from this repo: `public/assets/data/metadata/CCS Data inventory - final - 12 Aug.xlsx` (CCS-272), `CCS Fields and Filters.xlsx` (CCS-216) — these are one-line stub issues in Jira pointing at attachments; the actual field/attribute list was not retrievable via the Jira API and should be reviewed directly by whoever owns those spreadsheets.
 
@@ -132,8 +132,8 @@ Specs referenced but not machine-readable from this repo: `public/assets/data/me
 ## Open Items For Follow-Up
 
 1. **Re-verify, not assumed**: CCS-21 (sensitivity notifications), CCS-47 (contact-us record view), CCS-64 (item 4 — image aspect ratio), CCS-65 (audio/video/PDF format handling), CCS-68/69/166 (request-to-use/view flows) — these were asserted "implemented" in the prior version of this document without the same rigor applied to the items above; they should get the same live-code verification treatment before being marked confirmed.
-2. **Dead code cleanup**: `public/styles/variables.css` and `public/styles/components.css` are unreferenced duplicates of `public/components/fig-tokens.css`/`fig-assets.css`. Consider removing to avoid future edits landing in the wrong (dead) file.
-3. **WCAG AA certification**: no formal automated or manual WCAG 2.1 AA audit has been run against this codebase as part of this cycle — the prior document's "certified" claim was not backed by an actual audit trail and should not be relied upon.
+2. **Dead code cleanup**: done - `public/styles/variables.css` / `components.css` and the other duplicates were deleted (2026-10-01).
+3. **WCAG AA certification**: no formal WCAG 2.1 AA audit has been run (axe-core scans only) — the prior document's "certified" claim was not backed by an actual audit trail and should not be relied upon.
 
 ---
 
