@@ -931,14 +931,16 @@ class Component extends DCLogic {
     window.addEventListener('pointerup', this.onUp); window.addEventListener('keydown', this.onKey); window.addEventListener('resize', this.onResize);
     try { if (!localStorage.getItem('ccs-cultural-ack')) { this.setState({ ackOpen: true }); setTimeout(() => { const el = this.ackRef.current && this.ackRef.current.querySelector(FOCUSABLE); el && el.focus(); }, 30); } } catch (e) {}
     const qs = new URLSearchParams(location.search);
-    const pc = qs.get('collection'), pt = qs.get('type'), pq = qs.get('q'), psc = qs.get('scope');
+    const pc = qs.get('collection'), pt = qs.get('type'), pq = qs.get('q'), psc = qs.get('scope'), pn = qs.get('named'), pcl = qs.get('classification');
     let initF = null;
     const advF = parseAdvancedParams(qs);
     if (advF) { initF = advF; this.setState({ f: advF }); }
-    else if (pc || pt || pq || psc) {
+    else if (pc || pt || pq || psc || pn || pcl) {
       if (pq) saveSearchHistory(pq);
       initF = clone(this.state.f);
       if (pc) initF.collection = [pc];
+      if (pn) initF.named = [pn];
+      if (pcl) initF.classification = [pcl];
       if (pt) initF.type = pt.split(';').map(t => window.CCS.canonType(t)).filter((t, i, a) => t && a.indexOf(t) === i);
       if (pq) initF.q = pq;
       if (psc) initF.scope = psc;

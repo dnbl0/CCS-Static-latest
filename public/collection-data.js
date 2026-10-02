@@ -896,7 +896,9 @@
     
     // Film and gaming classification vs Museum Subject Classification
     const isFilmRating = it.classification && ['G', 'PG', 'M', 'MA15+', 'CTC'].includes(it.classification);
-    const filmCls = isFilmRating ? CLASSIFICATION[it.classification] : (it.advisoryClassification ? CLASSIFICATION[it.advisoryClassification] : null);
+    // Moving-image records with no recorded rating show "Unclassified (CTC)" rather than silently looking unrestricted.
+    const isMovingImage = /moving image|video|audiovisual|^film$/i.test(objType || '');
+    const filmCls = isFilmRating ? CLASSIFICATION[it.classification] : (it.advisoryClassification ? CLASSIFICATION[it.advisoryClassification] : (isMovingImage ? CLASSIFICATION.CTC : null));
     const museumClassification = !isFilmRating ? (it.classification || null) : null;
 
     const f = [

@@ -133,14 +133,14 @@ Specs referenced but not machine-readable from this repo: `public/assets/data/me
 
 | Issue | Requirement (verbatim intent) | Prototype status | Gap |
 |---|---|---|---|
-| CCS-19 | Browse collections, sub-collections or hierarchies from source systems | 5 collection landing pages + browse index | **Gap**: no sub-collection/hierarchy navigation (only "Named collection" field text) |
+| CCS-19 | Browse collections, sub-collections or hierarchies from source systems | Landing pages now list "Browse by sub-collection" (named collections, with counts) and "Browse by classification"; each link opens search pre-filtered (`?collection=&named=` / `&classification=`) | **Partial**: one level of hierarchy (collection > named collection); deeper source-system hierarchies (series, parent/child) are not navigable |
 | CCS-20 | Filter by theme, date, type, format incl. DA metadata; Indigenous "subject area" from CMS | Type, date, format, collection filters on search; Advanced Filters | **Gap**: Indigenous subject-area is a data-layer item; no theme facet |
 | CCS-21 | Notify users of sensitive material + usage guidance | Advisory banner on record | **Data gap**: only 2 records tagged |
 | CCS-22 | Visible stable identifier for citation/reuse | UoM ID + accession shown, copyable | Done |
 | CCS-25 | Link to existing public sites (IMu/Vernon) | Persistent link + `Source URL` field (when present) | **Partial**: `Source URL` only populated where source data supplies it |
 | CCS-38 | Refine results by type/date/theme/format; Indigenous labels (Indigeneity, research/non-research, region, country, family group, language, issue) | Type, date, format, collection filters | **Gap**: Indigenous filter labels and theme not implemented |
 | CCS-41 | Digital-assets-only toggle | Toggle on search results | Done |
-| CCS-44 | Authorised users can access content classified G, PG, M15+ etc. | Rating badge + guidance on record (`CLASSIFICATION` dict) | **Partial**: display works but only 1 of 728 records has a rating (id 23); no authorised-user gating (BR-09 login out of prototype scope) |
+| CCS-44 | Authorised users can access content classified G, PG, M15+ etc. | Rating badge + guidance on record; moving-image records with no recorded rating show "Unclassified (CTC)" (4 of 728 records show a classification) | **Partial**: no authorised-user gating (needs login, BR-09); real ratings need to come from the collection teams |
 | CCS-46 | Save favourites / personal lists | Not present | **Gap**: needs login (BR-09); not in prototype |
 | CCS-47 | Contact collections team (use, view, more info, digitisation, physical access, contribute) | Request to use / view / contact dialog on record | **Partial**: use/view/contact covered; digitisation, physical access and contribute-information request types not offered |
 
