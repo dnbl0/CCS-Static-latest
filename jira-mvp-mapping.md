@@ -144,6 +144,10 @@ Specs referenced but not machine-readable from this repo: `public/assets/data/me
 | CCS-46 | Save favourites / personal lists | Not present | **Gap**: needs login (BR-09); not in prototype |
 | CCS-47 | Contact collections team (use, view, more info, digitisation, physical access, contribute) | Request to use / view / contact dialog on record | **Partial**: use/view/contact covered; digitisation, physical access and contribute-information request types not offered |
 
+## DA Licence Type, Terms of Use and Web Access (2026-10-03)
+
+Source: Nexus DAM Knowledge Hub pages "License Type & Terms of Use" and "Cross Collection Search (Web) Readiness". The record page now shows the standard Terms of Use statement for the licence type (with copyright holder, date and responsible collection filled in), a Web access status, and the official Australian Classification marking for rated records. Web access is derived (open licence with a digital asset = View + Download, otherwise View only; no digital asset = no status) until the real DA Web Access Status field is supplied by the DAM integration. Search cards show the same status and marking.
+
 ## Open Items For Follow-Up
 
 1. **Re-verify, not assumed**: CCS-21 (sensitivity notifications), CCS-47 (contact-us record view), CCS-64 (item 4 — image aspect ratio), CCS-65 (audio/video/PDF format handling), CCS-68/69/166 (request-to-use/view flows) — these were asserted "implemented" in the prior version of this document without the same rigor applied to the items above; they should get the same live-code verification treatment before being marked confirmed.

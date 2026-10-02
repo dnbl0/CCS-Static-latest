@@ -1604,3 +1604,15 @@ body.page-search-results .search-results-view__button-set-list {
   color: var(--col-bg-primary);
   cursor: pointer;
 }
+
+body.page-search-results .search-results-article__text--web-access {
+  margin-left: auto;
+  font-size: 13px;
+  color: var(--col-text-muted);
+}
+
+body.page-search-results .search-results-article__image-classification {
+  flex: none;
+  width: 28px;
+  height: 28px;
+}

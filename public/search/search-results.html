@@ -390,6 +390,8 @@
                 <span class="search-results-article__text search-results-article__text--v5">{{ r.type }}</span>
                 <div class="search-results-article__group search-results-article__group--v1">
                   <ccs-licence licence="{{ r.licenceKey }}"></ccs-licence>
+                  <sc-if value="{{ r.webAccess }}"><span class="search-results-article__text search-results-article__text--web-access">{{ r.webAccess }}</span></sc-if>
+                  <sc-if value="{{ r.ratingLogo }}"><img class="search-results-article__image-classification" src="{{ r.ratingLogo }}" alt="Classification marking: {{ r.ratingName }}" width="28" height="28"></sc-if>
                 </div>
               </div>
             </article>
