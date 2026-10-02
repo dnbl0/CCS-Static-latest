@@ -828,6 +828,8 @@
     10115: ['1973_0084_000_000.jpg'],
     // group photograph of the six studies, then each study (A-F)
     10116: ['1973_0870_000_A_000_F-MF.jpg', '1973_0870_000_000A-MF.jpg', '1973_0870_000_000B-MF.jpg', '1973_0870_000_000C-MF.jpg', '1973_0870_000_000D-MF.jpg', '1973_0870_000_000E-MF.jpg', '1973_0870_000_000F-MF.jpg'],
+    // 10079 (Kangaroo-pouch tone-tool) photograph from the DAM UX proof-of-concept folder
+    10079: ['GM00.0216_1.jpg'],
     20001: ['MHM00048.jpg', 'MHM00048_2.jpg', 'MHM00048_3.jpg', 'MHM00048_4.jpg', 'MHM00048_5.jpg'],
     20002: ['MHM2014.57.jpg'],
     20003: ['MHM03589.jpg', 'MHM03589_1.jpg', 'MHM03589_2.jpg', 'MHM03589_3.jpg', 'MHM03589_4.jpg', 'MHM03589_7.jpg', 'MHM03589_9.jpg'],
@@ -842,9 +844,10 @@
     20012: ['MHM2009.46_a.jpg'],
     20013: ['MHM2009.47.jpg'],
     20014: ['MHM2009.48.jpg'],
-    20015: ['MHM2009.50_a.jpg'],
+    20015: ['MHM2009.50_a.jpg', 'MHM2009.50_b.jpg'],
     20016: ['MHM2009.51_a.jpg'],
     20017: ['MHM2009.49_a.jpg'],
+    20154: ['MHM00394.jpg'],
     60001: ['1973_0755-1~PF.jpg', '1973_0755-2~PF.jpg', '1973_0755_B~PF.jpg', '1973_0755_C~PF.jpg', '1973_0755_D~PF.jpg', '1973_0755_E~PF.jpg', '1973_0755_F~PF.jpg', '1973_0755_G~PF.jpg', '1973_0755_H~PF.jpg', '1973_0755_I~PF.jpg'],
     60002: ['2001_0008 B web.jpg'],
     60003: ['2006_0111 web.jpg'],
