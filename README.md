@@ -10,7 +10,7 @@ The site is a prototype driven by an in-repo dataset (735 listed records), not a
 
 ## Contents
 
-1. [Recent changes](#recent-changes-2026-10-01)
+1. [Recent changes](#recent-changes)
 2. [Pages and URLs](#pages-and-urls)
 3. [Repository layout](#repository-layout)
 4. [Data: how records work](#data-how-records-work)
@@ -23,7 +23,19 @@ The site is a prototype driven by an in-repo dataset (735 listed records), not a
 
 ---
 
-## Recent changes (2026-10-01)
+## Recent changes
+
+### 2026-10-02
+
+- **Homepage rebuilt from Figma** (`public/index.html`, desktop and mobile frames) using reusable **Navigation** and **Section** components (`public/styles/home.css`, see [Styling](#styling)). The hero uses the Parkville banner photo; collection cards use the collection banner images in `public/images/banners/`.
+- **New header and footer on every page** (`.ccs-nav--header` / `.ccs-nav--footer`). The header has Browse collections and Help **dropdown menus**, a UniMelb-style mobile menu drawer, and behaviour in `public/nav.js` (Esc, click outside, Tab-out close a menu). The old `.uom-page-header` rules and `styles/footer.css` were removed; the colour variables that other styles used moved into `styles/header.css`.
+- **Help**: help links use `/help?topic=faq|search-tips|copyright|access|privacy`; the FAQ topic page reuses the homepage accordion (`.ccs-acc`).
+- **Advanced Filters page rebuilt from Figma** (`/search/advanced-search`): custom dropdown, multi-select checkbox menus, "Add filter", a From/To date range with calendar, validation and error summary. Dates accept digits only and must lie between the earliest and latest dates in the records. See [Advanced Search](#advanced-search).
+- **Browser tests**: `tests/advanced-filters.test.js` (playwright-core + Chromium) runs in `npm test` and CI.
+- **Fonts**: the homepage loads the same Google Fonts families and weights as the live unimelb.edu.au site (Fraunces 300-700 incl. italic, Source Sans 3 300-700 incl. italic, Source Code Pro 400); Fraunces is requested with its SOFT and WONK axes.
+- **Tidy-up**: unused images, the empty `skills/` gitlink and the unused `src/js/utils/` copies were removed.
+
+### 2026-10-01
 
 - **Search pages renamed**: the results page is now `search/search-results.html` (`/search/search-results`) and the new stand-alone form is `search/advanced-search.html`. Old `/search/advanced` and `/search/advanced.html` URLs redirect (`vercel.json`, `.htaccess`). The results page's "Advanced Search" button opens the form pre-filled with the current search.
 - **Collections removed**: the "Faculty of Engineering and Information Technology" and "Prints and Drawing Collection, Special Collections and Archives" collections (and their records 50001-50004 and 50007 and images) were removed from the data, filters and landing-page code.
@@ -48,15 +60,15 @@ All pages live in `public/` (the web root). They are "DC template" HTML: `{{ }}`
 
 | URL | File | Notes |
 |---|---|---|
-| `/` | `public/index.html` | Home |
+| `/` | `public/index.html` | Home (Figma design: hero search, collection cards, help and guidance, FAQ accordion) |
 | `/search` | `public/search.html` | Redirect stub to `/search/search-results` (meta refresh, JS, and server redirect) |
 | `/search/search-results` | `public/search/search-results.html` | Search, facets (`FACETS`), results grid/list |
-| `/search/advanced-search` | `public/search/advanced-search.html` | Stand-alone Advanced Search form (multi-row field search + filters); submits to `/search/search-results` |
+| `/search/advanced-search` | `public/search/advanced-search.html` | Advanced Filters form (multi-row field search, filters, production-date range); submits to `/search/search-results` |
 | `/collections` | `public/collections/index.html` | Browse all collections |
 | `/collections/<slug>` | `public/collections/<slug>/index.html` | Five landing pages: `grainger-museum`, `harry-brookes-allen-museum`, `henry-forman-atkinson-dental-museum`, `medical-history-museum`, `university-art-collection`. They share one template with per-collection data in JS dicts, so a change to the shared structure must be made in all five files |
 | `/collections/record?id=<id>` | `public/collections/record.html` | Record detail and media viewer |
 | `/contact` | `public/contact.html` | Contact groups and collection contacts |
-| `/help` | `public/help/index.html` | Help and guidance |
+| `/help` | `public/help/index.html` | Help and guidance. `?topic=faq`, `search-tips`, `copyright`, `access` or `privacy` shows one topic |
 | `/help/indigenous-data` | `public/help/indigenous-data.html` | Indigenous cultural data and access |
 
 Legacy `*.dc.html` filenames (for example `Collection Search v3.dc.html`) 301-redirect to the pages above (see [Hosting](#hosting)).
@@ -68,6 +80,7 @@ Legacy `*.dc.html` filenames (for example `Collection Search v3.dc.html`) 301-re
 ```
 public/                     Deployed web root
   index.html, search.html, contact.html
+  nav.js                    Header behaviour: dropdown menus + mobile drawer (event-delegated; used by every page)
   search/search-results.html
   search/advanced-search.html     # advanced search form (logic in search/advanced-search-form.js)
   collections/{index.html, record.html, <slug>/index.html}
@@ -77,16 +90,14 @@ public/                     Deployed web root
   support.js                DC template runtime (generated)
   image-slot.js             <image-slot> placeholder component (loaded by index.html)
   components/               fig-tokens.css, fig-assets.css (live CSS), plus Figma-exported .jsx/.d.ts components
-  styles/                   header.css, footer.css, collection.css, vendor/bootstrap-uom.min.css
+  styles/                   home.css (Navigation + Section components), advanced-filters.css (form components), header.css (search overlay + tokens), collection.css, vendor/bootstrap-uom.min.css
   assets/                   images/collections (digital assets), data (audio/video, metadata sheets), documents
-  images/                   Optimised web images and icons used by pages
+  images/                   Optimised web images and icons used by pages (home/ = Figma homepage assets, advanced/ = Advanced Filters icons)
   .htaccess                 Apache equivalent of the vercel.json redirects
 src/scss/custom-bootstrap.scss   Bootstrap 5.3.3 theme source (see Styling)
-src/js/utils/               helpers.js, image-handler.js (see below)
 tests/                      Plain-Node test scripts (see Develop, test and deploy)
 config/redirects.json      Documentation-only list of legacy redirects (nothing reads it at runtime; vercel.json and .htaccess are authoritative)
 assets/                     Source material for content: spreadsheets, CSVs, help/landing-page copy (.docx), original images. Not deployed (listed in .vercelignore)
-skills/                     Empty directory (a gitlink entry with no .gitmodules); not used by the site
 .github/workflows/          ci.yml, auto-merge.yml, vercel-deploy.yml
 .agents/rules/              PR workflow rule for coding agents
 verify-bootstrap.sh         Checks Bootstrap references in pages (run by npm test)
@@ -96,7 +107,6 @@ design.md, github.md, jira-mvp-mapping.md, BOOTSTRAP-DEPENDENCIES.md   Supportin
 
 Notes on directories:
 
-- `src/js/utils/helpers.js` is a generated copy of the DC runtime and `image-handler.js` is the `<image-slot>` starter scaffold. Neither is loaded by any page; the pages use `public/support.js` and `public/image-slot.js`.
 - `public/blacklight-adapter.js` is loaded by `search/search-results.html` and `collections/record.html`. Its default mode is `mock` (local `collection-data.js`); `?api=live` switches to the Blacklight endpoint set in the adapter. It is covered by `tests/blacklight-adapter.test.js`.
 - `public/components/*.jsx` / `*.d.ts` are exported design-system component sources; pages only load the two CSS files.
 
@@ -185,7 +195,7 @@ Filter groups in the spreadsheet map to `FACETS` groups in `search/search-result
 
 ## Advanced Search
 
-`public/search/advanced-search.html` is a stand-alone form modelled on the CCS HiFi prototype's `catalog/advanced` page. Its logic lives in `public/search/advanced-search-form.js` (plain JS, no framework; option lists and counts are built from `window.CCS.items`). It is a plain GET form that opens the results page, `search/search-results.html`, with these URL parameters (the results page parses them in `parseAdvancedParams`):
+`public/search/advanced-search.html` is a stand-alone form built from the Figma Advanced Filters frames. Markup uses the reusable classes in `public/styles/advanced-filters.css` (`.ccs-banner`, `.ccs-page`, `.ccs-combo`, `.ccs-input`, `.ccs-date` / `.ccs-cal`, `.ccs-btn`, `.ccs-delete`, `.ccs-instructions`, `.ccs-errors`). Its logic lives in `public/search/advanced-search-form.js` (plain JS, no framework; option lists and counts are built from `window.CCS.items`) and is made of three small components: `Select` (single-select combobox/listbox), `Multi` (checkbox menu, used by filter values and "Add filter") and `DateField` (typed date + calendar popover). Keyboard: Arrow keys, Home, End, Enter, Space, Esc and Tab; menus close on selection (single), Esc, outside click or re-activating the field, and multi-select menus stay open while ticking. Search rows range from 1 to 8 (the last row cannot be deleted). Dates accept digits and `/` only (`dd/mm/yyyy` or a year; a leading minus means BCE), must lie between the earliest and latest dates in `window.CCS.items`, and an end date cannot precede the start date; invalid input shows an error beside the field and in a summary at the top of the form. It is a plain GET form that opens the results page, `search/search-results.html`, with these URL parameters (the results page parses them in `parseAdvancedParams`):
 
 | Parameter | Meaning |
 |---|---|
@@ -194,7 +204,7 @@ Filter groups in the spreadsheet map to `FACETS` groups in `search/search-result
 | `clause[i][query]` | search text; `"quotes"` make an exact phrase |
 | `f_inclusive[key][]` | filter values where ANY may match; `key` is `collection`, `type`, `creator`, `licence` or `access` |
 | `f[key][]` | filter values where ALL must match |
-| `range[year][begin]`, `range[year][end]` | production year range |
+| `range[year][begin]`, `range[year][end]` | production year range (the form sends the year of the chosen date) |
 | `sort` | `relevance`, `year-desc`, `year-asc` or `az` |
 
 Rows combine as: every `must` row matches, at least one `should` row matches (if any exist), and no `must_not` row matches. The results page shows each row and filter as a removable chip, and its "Advanced Search" button re-opens the form pre-filled with the current search (`advancedFormHref`). Empty rows are not sent, so URLs stay short.
@@ -213,8 +223,9 @@ Rows combine as: every `must` row matches, at least one `should` row matches (if
 ## Styling
 
 - **Bootstrap 5.3.3** is compiled locally from `src/scss/custom-bootstrap.scss` (sharp corners, no shadows, UoM colours) into `public/styles/vendor/bootstrap-uom.min.css`. This file is committed because Vercel runs no build step. Rebuild with `npm run build:css` (`build:css:dev` and `watch:css` write an unminified `bootstrap-uom.css`). Every page links the compiled file; only `index.html` also loads the Bootstrap JS bundle from jsDelivr (version-pinned with an SRI hash).
-- **Live CSS**: `public/components/fig-tokens.css` (Gen 3 design tokens), `fig-assets.css`, `public/styles/header.css`, `footer.css`, and `collection.css` (collection landing pages). Pages also carry page-local `<style>` blocks, including `:root` token overrides, so check the page itself before editing a colour.
-- Fonts: Fraunces (headings) and Source Sans 3 (body) from Google Fonts.
+- **Live CSS**: `public/components/fig-tokens.css` (Gen 3 design tokens; sizes are unitless numbers, so component CSS writes px values), `fig-assets.css`, `public/styles/home.css`, `advanced-filters.css`, `header.css` and `collection.css` (collection landing pages). Pages also carry page-local `<style>` blocks, including `:root` token overrides, so check the page itself before editing a colour.
+- **Components** (plain CSS classes + static markup, no build step): `home.css` defines **Navigation** (`.ccs-nav--header`, `.ccs-nav--footer`) and **Section** (`.ccs-section--hero | intro | cards | help | faq`, plus the shared `.ccs-link` and `.ccs-acc` accordion). The header/footer markup is repeated in every page (there is no include mechanism), so a change must be made in all of them; `nav.js` provides the dropdown and drawer behaviour. `advanced-filters.css` defines the form components listed under Advanced Search. Hidden/shown state of menus is driven by `aria-expanded` and CSS rather than the `hidden` attribute where the DC template layer could re-render the markup.
+- **Fonts**: Fraunces (headings), Source Sans 3 (body) and Source Code Pro (code) from Google Fonts. The homepage and Advanced Filters pages request Fraunces with its SOFT/WONK axes (the Figma heading settings); the homepage matches the families and weights loaded by unimelb.edu.au.
 - Bootstrap's `!important` utilities can override same-named custom classes; check for collisions when naming new classes.
 
 Design tokens and rationale: see `design.md`. Bootstrap details: `BOOTSTRAP-DEPENDENCIES.md`.
@@ -224,7 +235,7 @@ Design tokens and rationale: see `design.md`. Bootstrap details: `BOOTSTRAP-DEPE
 ## Develop, test and deploy
 
 ```bash
-npm ci            # installs bootstrap + sass (dev dependencies only)
+npm ci            # installs bootstrap, sass and playwright-core (dev dependencies only)
 npm run build:css # rebuild public/styles/vendor/bootstrap-uom.min.css
 npm test          # full check, see below
 python3 -m http.server 8933 --directory public   # local server (as in .claude/launch.json)
@@ -239,12 +250,13 @@ Clean URLs (`/search/search-results`, `/collections/record`) only resolve on a h
 3. `tests/blacklight-adapter.test.js` - default mode is `mock`, request-parameter building and document transformation.
 4. `tests/page-integrity.test.js` - every `public/**/*.html` has a `<title>` and `lang`, no merge-conflict markers, and every local `href`/`src` resolves (clean-URL forms like `/search/search-results` resolve to `.html`/`index.html`). Broken css/js/page links fail; broken image links only warn.
 5. `tests/collection-data.test.js` - loads `collection-data.js` in a bare sandbox; checks unique ids, titles, that field labels come from the specification list, and that `/assets` media files exist.
+6. `tests/advanced-filters.test.js` - browser test (playwright-core with a Chromium build) of the Advanced Filters page: responsive layout at 1440 and 390px, dropdown keyboard behaviour and ARIA roles, multi-select and Add filter, row management limits, submission URL, pre-fill and Reset, and date-range validation. It starts its own static server. If no Chromium is found it prints `SKIP` and passes; set `PLAYWRIGHT_CHROMIUM_PATH` or run `npx playwright-core install chromium` to enable it locally.
 
 **Warnings policy**: failures exit non-zero and fail CI. Warnings (printed as `WARNING:`) are informational and never fail the build; they track open data/content gaps (see Known issues). Current output: 0 failures, 5 warnings (no `<h1>` in `search.html`; the four unpopulated spec fields).
 
 ### CI and merge workflow
 
-- `.github/workflows/ci.yml`: Node 20, `npm ci` (or `npm install` without a lockfile), `npm test` on every pull request and push to `main`.
+- `.github/workflows/ci.yml`: Node 20, `npm ci` (or `npm install` without a lockfile), installs Chromium for the browser test, then `npm test`, on every pull request and push to `main`.
 - `.github/workflows/auto-merge.yml`: pushes to `feature/**`, `bugfix/**` or `enhance/**` that change html/css/js/md files and have 3+ commits or 2+ changed files open (or reuse) a PR against `main`, run basic documentation/structure checks, approve it, and squash-merge it. It does not run `npm test` itself. Auto-approval only works if the repository setting **Settings > Actions > General > "Allow GitHub Actions to create and approve pull requests"** is enabled; otherwise the approve step logs a warning and the job continues to the merge step. See `github.md` and `.agents/rules/pr-workflow.md`.
 - `.github/workflows/vercel-deploy.yml`: on push to `main`, `vercel pull`/`build`/`deploy --prod` using the `VERCEL_TOKEN`, `VERCEL_ORG_ID` and `VERCEL_PROJECT_ID` secrets.
 
@@ -283,4 +295,4 @@ For Gen 3 guidance see https://designsystem.web.unimelb.edu.au/.
 
 © 2026 The University of Melbourne. All rights reserved.
 
-**Last updated**: 2026-10-01
+**Last updated**: 2026-10-02
