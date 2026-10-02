@@ -50,111 +50,6 @@
       text-decoration: underline;
     }
 
-    .navbar {
-      background-color: var(--col-bg-primary) !important;
-      padding: 0 !important;
-    }
-
-    .navbar-brand {
-      padding: 0;
-      width: 110px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-right: 1px solid var(--col-border-header);
-    }
-
-    .navbar-brand img {
-      width: 100%;
-      max-width: 100px;
-      object-fit: contain;
-    }
-
-    .navbar-nav .nav-link {
-      color: #fff !important;
-      font-weight: 600;
-      font-size: 16px;
-      padding: 10px 14px !important;
-    }
-
-    .navbar-nav .nav-link:hover {
-      background: var(--col-bg-primary-hover);
-    }
-
-    .top-links {
-      background-color: var(--col-bg-primary-dark) !important;
-    }
-
-    .top-links .nav-link {
-      color: var(--sage-400) !important;
-      font-size: 13px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: .08em;
-      padding: 4px 10px !important;
-    }
-
-    .top-links .nav-link:hover {
-      color: var(--sage-100) !important;
-      text-decoration: underline;
-    }
-
-    .navbar-text {
-      color: #fff !important;
-      font-weight: 600;
-      font-size: 17px;
-    }
-
-    .search-form {
-      display: flex;
-      height: 48px;
-      background: #fff;
-      border: 1px solid #e0e0e0;
-      max-width: 360px;
-      overflow: hidden;
-    }
-
-    .search-form:focus-within {
-      border-color: var(--col-bg-primary);
-      box-shadow: 0 0 0 3px rgba(0, 15, 70, 0.1);
-    }
-
-    .search-form input {
-      flex: 1;
-      border: 0;
-      background: none;
-      padding: 0 14px;
-      font-size: 15px;
-      color: var(--col-text-primary);
-      outline: none;
-    }
-
-    .search-form input::placeholder {
-      color: #999;
-    }
-
-    .search-form button {
-      flex: 0 0 auto;
-      border: none;
-      background: var(--col-btn-action-bg);
-      color: var(--col-btn-action-text);
-      padding: 0 16px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .search-form button:hover {
-      background: #9ab998;
-    }
-
-    .search-form button:focus {
-      outline: 2px solid var(--col-bg-primary);
-      outline-offset: -2px;
-    }
-
     .hero {
       background: linear-gradient(135deg, var(--col-bg-primary) 0%, var(--col-bg-primary-dark) 100%);
       color: #fff;
@@ -176,203 +71,7 @@
       color: rgba(255, 255, 255, .85);
       max-width: 720px;
       margin-bottom: 12px;
-    }
-
-    .hero .search-form {
-      background: #fff;
-      border: 1px solid #fff;
-      
-      max-width: 600px;
-    }
-
-    .hero .search-form input {
-      color: var(--col-text-primary);
-    }
-
-    .hero .search-form input::placeholder {
-      color: #ccc;
-    }
-
-    .hero .search-form button {
-      background: var(--col-btn-action-bg);
-      color: var(--col-btn-action-text);
-    }
-
-    .hero .search-form button:hover {
-      background: var(--col-btn-action-bg-hover);
-    }
-
-    .hero .search-form {
-      height: 56px;
-      border: 1px solid #fff;
-      margin-top: 16px;
-    }
-
-    .hero .search-form input {
-      color: var(--col-text-primary);
-      background: none;
-    }
-
-    .hero .search-form input::placeholder {
-      color: var(--col-text-muted);
-    }
-
-    .hero .search-form button {
-      border-left: 1px solid var(--col-border-neutral-mid);
-      background: var(--col-btn-action-bg);
-      color: var(--col-btn-action-text);
-    }
-
-    .hero .search-form button:hover {
-      background: var(--col-btn-action-bg-hover);
-    }
-
-    .section-title {
-      font-family: 'Fraunces', serif;
-      font-weight: 500;
-      font-size: 30px;
-      color: var(--col-text-primary);
-      margin-bottom: 24px;
-    }
-
-    .gallery-card {
-      position: relative;
-      display: block;
-      min-height: 280px;
-      background: var(--col-bg-primary);
-      overflow: hidden;
-      text-decoration: none;
-      border: 1px solid var(--col-border-neutral-soft);
-      transition: transform 0.3s ease;
-      height: 100%;
-    }
-
-    .gallery-card:hover {
-      transform: translateY(-4px);
-      
-      text-decoration: none;
-    }
-
-    .gallery-card img {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .gallery-card-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(10, 26, 63, 0) 30%, rgba(10, 26, 63, .92) 100%);
-    }
-
-    .gallery-card-content {
-      position: absolute;
-      left: 24px;
-      right: 24px;
-      bottom: 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      z-index: 1;
-    }
-
-    .gallery-card-label {
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: .09em;
-      text-transform: uppercase;
-      color: #b9c6e6;
-    }
-
-    .gallery-card-title {
-      font-size: 20px;
-      font-weight: 600;
-      color: #fff;
-      line-height: 1.2;
-    }
-
-    /* ==========================================================================
-       University of Melbourne Matrix CMS - Text - Two Columns Template Styles
-       (MCE: Text Layout content template version 4.1.0)
-       Reference: https://www.unimelb.edu.au/web/matrix-cms/content-templates/two-columns
-       ========================================================================== */
-
-    .ct-twocolumns.content-block {
-      width: 100%;
-      padding: 64px 0;
-      box-sizing: border-box;
-    }
-
-    .ct-twocolumns.bg-alt {
-      background-color: var(--col-bg-alt-25, #f1f1f1);
-    }
-
-    .ct-twocolumns:not(.bg-alt) {
-      background-color: var(--col-bg-surface, #ffffff);
-    }
-
-    .ct-twocolumns .grid {
-      max-width: 1288px;
-      margin: 0 auto;
-      padding: 0 24px;
-      box-sizing: border-box;
-    }
-
-    .ct-twocolumns .grid--cols-2 {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 48px;
-      align-items: center;
-      width: 100%;
-    }
-
-    .ct-twocolumns .grid--cols-2 > .grid--cols-6 {
-      grid-column: span 6;
-      width: 100%;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .ct-twocolumns h2 {
-      font-family: 'Fraunces', serif;
-      font-weight: 500;
-      font-size: clamp(24px, 2.8vw, 32px);
-      line-height: 1.15;
-      color: var(--col-text-primary, #000f46);
-      margin: 0 0 16px 0;
-    }
-
-    .ct-twocolumns p {
-      font-size: 16px;
-      line-height: 1.65;
-      color: var(--col-text-muted, #5b6070);
-      margin: 0 0 20px 0;
-    }
-
-    .ct-twocolumns figure {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      overflow: hidden;
-      background: #ffffff;
-      border: 1px solid var(--col-border-neutral-soft, #ece9e3);
-    }
-
-    /* Images keep their original aspect ratio (no fixed height / cropping) */
-    .ct-twocolumns figure img {
-      display: block;
-      width: 100%;
-      height: auto;
-    }
-
-
-    .ct-twocolumns .button,
-    .button.button--secondary {
+    }.button.button--secondary {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -389,17 +88,11 @@
       border-radius: 0;
       transition: background-color 0.2s ease, color 0.2s ease;
       width: fit-content;
-    }
-
-    .ct-twocolumns .button:hover,
-    .button.button--secondary:hover {
+    }.button.button--secondary:hover {
       background-color: #9ab998;
       color: var(--col-text-primary, #000f46);
       text-decoration: none;
-    }
-
-    .ct-twocolumns .button:focus-visible,
-    .button.button--secondary:focus-visible {
+    }.button.button--secondary:focus-visible {
       outline: 2px solid var(--col-bg-primary, #000f46);
       outline-offset: 2px;
     }
@@ -416,27 +109,6 @@
       mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Cpath d='m40.003 66.665-3.5-3.583 20.583-20.583h-43.75v-5h43.75L36.503 16.915l3.5-3.583 26.666 26.667z'/%3E%3C/svg%3E") no-repeat center / contain;
     }
 
-    @media (max-width: 768px) {
-      .ct-twocolumns.content-block {
-        padding: 40px 0;
-      }
-
-      .ct-twocolumns .grid--cols-2 {
-        display: flex;
-        flex-direction: column;
-        gap: 24px;
-      }
-
-      .ct-twocolumns .grid--swap {
-        flex-direction: column;
-      }
-
-      .ct-twocolumns .grid--cols-2:not(.grid--swap) {
-        flex-direction: column-reverse;
-      }
-
-    }
-
     footer {
       background: var(--col-bg-primary);
       color: #fff;
@@ -451,40 +123,7 @@
     footer a:hover {
       color: #fff;
     }
-
-    .footer-section h3 {
-      font-size: 15px;
-      font-weight: 700;
-      margin-bottom: 16px;
-      text-transform: uppercase;
-      letter-spacing: .05em;
-    }
-
-    .footer-section ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .footer-section li {
-      margin-bottom: 8px;
-    }
-
-    .footer-section a {
-      font-size: 14px;
-    }
-
-    .footer-bottom {
-      padding-top: 32px;
-      border-top: 1px solid rgba(255, 255, 255, .1);
-      font-size: 13px;
-      color: rgba(255, 255, 255, .65);
-    }
-
-    @media (max-width: 768px) {
-      .navbar-brand {
-        width: 80px;
-      }
+@media (max-width: 768px) {
 
       .hero {
         padding: 40px 16px 48px;
@@ -497,4 +136,4 @@
       .hero p {
         font-size: 16px;
       }
-    }
+}
