@@ -349,7 +349,7 @@
                     <span class="record-section__text record-section__text--v2" style="--dyn-color:{{ l.color }}">{{ l.text }}</span>
                   </sc-for>
                 </span>
-                <sc-if value="{{ r.copy }}"><button class="record-section__definition-button-copy" onClick="{{ r.onCopy }}" aria-label="Copy accession number" title="Copy"><svg class="record-section__button-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="12"></rect><path d="M16 8V4H4v12h4"></path></svg>{{ r.copyText }}</button></sc-if>
+                <sc-if value="{{ r.copy }}"><button class="record-section__definition-button-copy" onClick="{{ r.onCopy }}" aria-label="Copy {{ r.label }}" title="Copy"><svg class="record-section__button-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="12"></rect><path d="M16 8V4H4v12h4"></path></svg>{{ r.copyText }}</button></sc-if>
               </dd>
             </div>
           </sc-for>
@@ -656,7 +656,8 @@ class Component extends DCLogic {
 
   renderVals() {
     const s = this.state, CCS = window.CCS;
-    const qid = Number(new URLSearchParams(location.search).get('id'));
+    const qs = new URLSearchParams(location.search), itemCode = /^CA-0*(\d+)$/i.exec(qs.get('item') || '');
+    const qid = Number(itemCode ? itemCode[1] : qs.get('id'));
     const id = qid;
     const R = CCS && CCS.records[id];
     const notFound = !!CCS && !R;
@@ -722,7 +723,7 @@ class Component extends DCLogic {
       reqTypes: [['contact', 'General enquiry'], ['use', 'Request to use'], ['view', 'Request to view']].map(([k, label]) => ({ label, sel: s.req === k, pick: () => this.setState({ req: k }), bg: s.req === k ? 'var(--col-bg-primary)' : '#fff', color: s.req === k ? '#fff' : 'var(--col-text-primary)', border: s.req === k ? 'var(--col-bg-primary)' : 'var(--col-border-neutral)' })),
       citeStyles: [['apa', 'APA 7'], ['mla', 'MLA 9'], ['chicago', 'Chicago 17'], ['harvard', 'Harvard']].map(([k, label]) => ({ label, pick: () => this.setState({ cite: k }), bg: s.cite === k ? 'var(--col-bg-primary)' : '#fff', color: s.cite === k ? '#fff' : 'var(--col-text-primary)', border: s.cite === k ? 'var(--col-bg-primary)' : 'var(--col-border-neutral)' })),
       citation: R.citations[s.cite], copyCite: () => this.flash('cite', R.citations[s.cite]), citeText: s.copied === 'cite' ? 'Copied' : 'Copy citation',
-      permalink: 'https://collections.unimelb.edu.au/item/' + R.assetId, permalinkShort: 'collections.unimelb.edu.au/item/' + R.assetId, copyLink: () => this.flash('link', 'https://collections.unimelb.edu.au/item/' + R.assetId), linkText: s.copied === 'link' ? 'Copied' : 'Copy link'
+      permalink: location.origin + '/item/' + R.assetId, permalinkShort: location.host + '/item/' + R.assetId, copyLink: () => this.flash('link', location.origin + '/item/' + R.assetId), linkText: s.copied === 'link' ? 'Copied' : 'Copy link'
     };
   }
 }

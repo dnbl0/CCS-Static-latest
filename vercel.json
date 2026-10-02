@@ -2,6 +2,9 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": true,
   "trailingSlash": false,
+  "rewrites": [
+    { "source": "/item/:code", "destination": "/collections/record?item=:code" }
+  ],
   "redirects": [
     { "source": "/Contact Us.dc.html", "destination": "/contact", "statusCode": 301 },
     { "source": "/Contact%20Us.dc.html", "destination": "/contact", "statusCode": 301 },

@@ -913,6 +913,7 @@
       [12, 'Inscription', it.inscription && [L(it.inscription)]],
       [13, 'Language', it.language && [L(it.language, true)]],
       [14, 'Cultural affiliation', it.culturalAffiliation && [L(it.culturalAffiliation, true)]],
+      [14.5, 'UoM ID', [L(`CA-${String(it.id).padStart(6, '0')}`)], true],
       [15, 'Accession number', it.accession && [L(it.accession)], true],
       [18, 'Named collection', it.named && [L(it.named, true)]],
       [19, 'Collection', [L(coll, true)]],

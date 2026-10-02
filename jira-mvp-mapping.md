@@ -58,9 +58,9 @@ This revision was produced by fetching the live Jira issues directly (see audit 
 | CCS-124 | No-results messaging | New | Real implementation in `search/search-results.html` ("No records match your search" + "Clear all filters") |
 | CCS-158 | Offer spelling suggestions | Done | **Implemented this cycle** (see Fixes Applied #2) — was previously entirely absent despite Done status |
 | CCS-20 | Filter and refine public data | New | Covered by CCS-38's filters; Indigenous "subject area" sourcing from CMS not verifiable from this static repo (data-layer requirement) |
-| CCS-21 | Sensitivity notifications | New | Not independently verified this cycle — recommend a follow-up check against `advisories` field usage in `collection-data.js` and record page display |
-| CCS-22 | UoM ID surfacing | New | `accession` field displayed on `collections/record.html` |
-| CCS-25 | Persistent URLs | In Testing | `collections/record.html` has a "Copy persistent link" button (verified in code) |
+| CCS-21 | Sensitivity notifications | New | Verified 2026-10-03: record page shows advisory banners from `advisories` (ADVISORY dict in `collection-data.js`). Only 2 of 728 records carry advisories, so Indigenous deceased-persons / language notices are not applied sitewide: **data gap**, not a UI gap |
+| CCS-22 | UoM ID surfacing | New | **Done 2026-10-03**: every record shows a copyable `UoM ID` (stable `CA-000123` asset ID) above the accession number, so the 12 records with no accession (child records) still have a visible identifier |
+| CCS-25 | Persistent URLs | In Testing | **Done 2026-10-03**: persistent link now resolves: `/item/CA-000123` rewrites (vercel.json + .htaccess) to the record page, and the displayed/copied link uses the current host. Production domain (collections.unimelb.edu.au) is a deployment concern |
 | CCS-27 | Display rights information | Done | `collections/record.html` displays `licence`/`rights` fields and licence icons |
 | CCS-217 | View Collection Asset Details (with/without DAs) | New | `collections/record.html` handles both cases (records with no digital asset render without a media viewer) |
 
@@ -128,6 +128,21 @@ EMu, Vernon (MDHS), and Nexus DAM integration stories (CCS-48, 49, 118, 183–18
 Specs referenced but not machine-readable from this repo: `public/assets/data/metadata/CCS Data inventory - final - 12 Aug.xlsx` (CCS-272), `CCS Fields and Filters.xlsx` (CCS-216) — these are one-line stub issues in Jira pointing at attachments; the actual field/attribute list was not retrievable via the Jira API and should be reviewed directly by whoever owns those spreadsheets.
 
 ---
+
+## Gap List for Stories Still "New" (re-read from Jira 2026-10-03)
+
+| Issue | Requirement (verbatim intent) | Prototype status | Gap |
+|---|---|---|---|
+| CCS-19 | Browse collections, sub-collections or hierarchies from source systems | 5 collection landing pages + browse index | **Gap**: no sub-collection/hierarchy navigation (only "Named collection" field text) |
+| CCS-20 | Filter by theme, date, type, format incl. DA metadata; Indigenous "subject area" from CMS | Type, date, format, collection filters on search; Advanced Filters | **Gap**: Indigenous subject-area is a data-layer item; no theme facet |
+| CCS-21 | Notify users of sensitive material + usage guidance | Advisory banner on record | **Data gap**: only 2 records tagged |
+| CCS-22 | Visible stable identifier for citation/reuse | UoM ID + accession shown, copyable | Done |
+| CCS-25 | Link to existing public sites (IMu/Vernon) | Persistent link + `Source URL` field (when present) | **Partial**: `Source URL` only populated where source data supplies it |
+| CCS-38 | Refine results by type/date/theme/format; Indigenous labels (Indigeneity, research/non-research, region, country, family group, language, issue) | Type, date, format, collection filters | **Gap**: Indigenous filter labels and theme not implemented |
+| CCS-41 | Digital-assets-only toggle | Toggle on search results | Done |
+| CCS-44 | Authorised users can access content classified G, PG, M15+ etc. | Rating badge + guidance on record (`CLASSIFICATION` dict) | **Partial**: display works but only 1 of 728 records has a rating (id 23); no authorised-user gating (BR-09 login out of prototype scope) |
+| CCS-46 | Save favourites / personal lists | Not present | **Gap**: needs login (BR-09); not in prototype |
+| CCS-47 | Contact collections team (use, view, more info, digitisation, physical access, contribute) | Request to use / view / contact dialog on record | **Partial**: use/view/contact covered; digitisation, physical access and contribute-information request types not offered |
 
 ## Open Items For Follow-Up
 

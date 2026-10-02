@@ -5,6 +5,7 @@
   # --- Legacy filename redirects (301) to new clean URLs ---
   RewriteRule ^Contact\ Us\.dc\.html$ /contact [R=301,L]
   RewriteRule ^Collection\ Record\.dc\.html$ /collections/record [R=301,L,QSA]
+  RewriteRule ^item/(CA-[0-9]+)$ /collections/record?item=$1 [L]
   RewriteRule ^Collection\ Search\ v3\.dc\.html$ /search/search-results [R=301,L,QSA]
   RewriteRule ^Browse\ Collections\.dc\.html$ /collections [R=301,L]
   RewriteRule ^Collection\ Landing\.dc\.html$ /collections [R=301,L]

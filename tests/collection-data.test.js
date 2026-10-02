@@ -5,7 +5,7 @@ const vm = require('vm');
 const SPEC_LABELS = [
   'Object type', 'Date', 'Creator', 'Associated entity', 'Place', 'Description', 'Series',
   'Editions', 'Material', 'Dimensions (H x W x D)', 'Inscription', 'Language',
-  'Cultural affiliation', 'Accession number', 'Named collection', 'Collection', 'Access',
+  'Cultural affiliation', 'UoM ID', 'Accession number', 'Named collection', 'Collection', 'Access',
   'Classification', 'Subject', 'Source URL', 'Related parent record', 'Related child record',
   'Related record', 'Producer'
 ];
