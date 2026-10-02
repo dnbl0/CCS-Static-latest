@@ -268,25 +268,49 @@
   var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   var DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   function pad(n) { return (n < 10 ? '0' : '') + n; }
-  function dim(y, m) { return new Date(y, m, 0).getDate(); }
+  function isLeap(y) { return (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0; }
+  function dim(y, m) { return [31, isLeap(y) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][m - 1]; }
   function toKey(d) { return d.y * 10000 + d.m * 100 + d.d; }
-  function fmt(d) { return pad(d.d) + '/' + pad(d.m) + '/' + d.y; }
+  function fmt(d) { return d.y < 1 ? String(d.y) : pad(d.d) + '/' + pad(d.m) + '/' + d.y; }   // BCE years have no calendar date: shown as a bare year
   function longFmt(d) { return d.d + ' ' + MONTHS[d.m - 1] + ' ' + d.y; }
-  function addDays(d, n) { var t = new Date(d.y, d.m - 1, d.d + n); return { y: t.getFullYear(), m: t.getMonth() + 1, d: t.getDate() }; }
-  function addMonths(d, n) { var t = new Date(d.y, d.m - 1 + n, 1); var y = t.getFullYear(), m = t.getMonth() + 1; return { y: y, m: m, d: Math.min(d.d, dim(y, m)) }; }
-  function weekday(d) { return (new Date(d.y, d.m - 1, d.d).getDay() + 6) % 7; }   // Monday = 0
-  // "1950" | "d/m/yyyy" | "yyyy-mm-dd".  A bare year means 1 Jan (edge 'begin') or 31 Dec (edge 'end').
+  function addDays(d, n) {
+    var y = d.y, m = d.m, day = d.d + n;
+    while (day > dim(y, m)) { day -= dim(y, m); if (++m > 12) { m = 1; y++; } }
+    while (day < 1) { if (--m < 1) { m = 12; y--; } day += dim(y, m); }
+    return { y: y, m: m, d: day };
+  }
+  function addMonths(d, n) { var t = d.y * 12 + (d.m - 1) + n, y = Math.floor(t / 12), m = t - y * 12 + 1; return { y: y, m: m, d: Math.min(d.d, dim(y, m)) }; }
+  function weekday(d) {                      // Monday = 0 (Zeller-style, valid for the whole proleptic Gregorian range)
+    var y = d.y, m = d.m; if (m < 3) { m += 12; y--; }
+    var h = (d.d + Math.floor(13 * (m + 1) / 5) + (((y % 100) + 100) % 100) + Math.floor((((y % 100) + 100) % 100) / 4) + Math.floor(Math.floor(y / 100) / 4) + 5 * Math.floor(y / 100)) % 7;
+    return (h + 5) % 7;
+  }
+  // Earliest / latest production years in the collection records (bounds for the date fields).
+  var yearBounds = null;
+  function bounds() {
+    if (yearBounds) return yearBounds;
+    var items = (window.CCS && window.CCS.items) || [], lo = Infinity, hi = -Infinity;
+    items.forEach(function (it) {
+      [it.dateStart, it.dateEnd].forEach(function (v) { if (typeof v === 'number' && isFinite(v)) { if (v < lo) lo = v; if (v > hi) hi = v; } });
+    });
+    yearBounds = lo <= hi ? { min: lo, max: hi } : { min: -9999, max: 9999 };
+    return yearBounds;
+  }
+  function yearLabel(y) { return y < 1 ? Math.abs(y) + ' BCE' : String(y); }
+  // Digits and "/" only (plus a leading minus for a BCE year).  "1950" | "d/m/yyyy".
+  // A bare year means 1 Jan (edge 'begin') or 31 Dec (edge 'end').  Returns {empty} | {error} | {date} | {range} (out of bounds).
   function parseDate(text, edge) {
     var s = (text || '').trim(); if (!s) return { empty: true };
-    var m, dd, mm, yy;
-    if ((m = s.match(/^(\d{1,4})$/))) {
-      var y = Number(m[1]); if (y < 1 || y > 2100) return { error: true };
+    var m, b = bounds();
+    if ((m = s.match(/^(-?)(\d{1,4})$/))) {
+      var y = (m[1] ? -1 : 1) * Number(m[2]);
+      if (y < b.min || y > b.max) return { range: true };
       return { date: edge === 'end' ? { y: y, m: 12, d: 31 } : { y: y, m: 1, d: 1 }, yearOnly: true };
     }
-    if ((m = s.match(/^(\d{1,2})[\/.\-](\d{1,2})[\/.\-](\d{4})$/))) { dd = +m[1]; mm = +m[2]; yy = +m[3]; }
-    else if ((m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/))) { yy = +m[1]; mm = +m[2]; dd = +m[3]; }
-    else return { error: true };
-    if (yy < 1 || yy > 2100 || mm < 1 || mm > 12 || dd < 1 || dd > dim(yy, mm)) return { error: true };
+    if (!(m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/))) return { error: true };
+    var dd = +m[1], mm = +m[2], yy = +m[3];
+    if (yy < 1 || mm < 1 || mm > 12 || dd < 1 || dd > dim(yy, mm)) return { error: true };
+    if (yy < b.min || yy > b.max) return { range: true };
     return { date: { y: yy, m: mm, d: dd } };
   }
 
@@ -294,11 +318,10 @@
     var id = o.id || nextId('adv-date');
     var self = { root: null, open: false, date: null, min: null, max: null, edge: o.edge };
     var calId = id + '-cal', errId = id + '-err', hintId = id + '-hint', titleId = id + '-cal-title';
+    var b = bounds();
     var label = el('label', { 'for': id, 'class': 'sr-only', text: o.label });
-    var input = el('input', { type: 'text', id: id, 'class': 'ccs-input ccs-date__input', placeholder: o.placeholder, autocomplete: 'off', inputmode: 'numeric', 'aria-describedby': hintId });
-    var toggle = el('button', { type: 'button', 'class': 'ccs-date__toggle', 'aria-haspopup': 'dialog', 'aria-expanded': 'false', 'aria-controls': calId, 'aria-label': 'Choose ' + o.label.toLowerCase() }, [img(IMG + 'icon-calendar.svg')]);
-    var field = el('div', { 'class': 'ccs-date__field' }, [input, toggle]);
-    var hint = el('span', { id: hintId, 'class': 'sr-only', text: 'Enter a date as dd/mm/yyyy, or just a year. Use the calendar button to pick a date.' });
+    var input = el('input', { type: 'text', id: id, 'class': 'ccs-input ccs-date__input', placeholder: o.placeholder, autocomplete: 'off', inputmode: 'numeric', maxlength: '10', 'aria-haspopup': 'dialog', 'aria-expanded': 'false', 'aria-controls': calId, 'aria-describedby': hintId });
+    var hint = el('span', { id: hintId, 'class': 'sr-only', text: 'Numbers only. Enter a date as dd/mm/yyyy, or just a year between ' + yearLabel(b.min) + ' and ' + yearLabel(b.max) + '. Press Arrow Down to open the calendar.' });
     var cal = el('div', { id: calId, 'class': 'ccs-cal', role: 'dialog', 'aria-label': 'Choose ' + o.label.toLowerCase(), hidden: true });
     var title = el('h3', { id: titleId, 'class': 'ccs-cal__title', 'aria-live': 'polite' });
     var prev = el('button', { type: 'button', 'class': 'ccs-cal__nav', 'aria-label': 'Previous month' }, [img(IMG + 'icon-chevron-left.svg')]);
@@ -310,12 +333,16 @@
     cal.appendChild(head); cal.appendChild(grid); cal.appendChild(el('div', { 'class': 'ccs-cal__foot' }, [clear, close]));
     var err = el('p', { id: errId, 'class': 'ccs-error', hidden: true });
     var status = el('span', { 'class': 'sr-only', role: 'status' });
-    var root = el('div', { 'class': 'ccs-date' }, [label, field, hint, cal, err, status]);
+    var root = el('div', { 'class': 'ccs-date' }, [label, input, hint, cal, err, status]);
     self.root = root; self.input = input; self.errorEl = err;
     var view = null, focusDate = null;   // month shown + date focused in the grid
 
     function today() { var t = new Date(); return { y: t.getFullYear(), m: t.getMonth() + 1, d: t.getDate() }; }
-    function disabled(d) { return (self.min && toKey(d) < toKey(self.min)) || (self.max && toKey(d) > toKey(self.max)); }
+    // the calendar covers whole dates only (year 1 onwards) and never leaves the records' date range
+    function lo() { var d = { y: Math.max(b.min, 1), m: 1, d: 1 }; return self.min && toKey(self.min) > toKey(d) ? self.min : d; }
+    function hi() { var d = { y: b.max, m: 12, d: 31 }; return self.max && toKey(self.max) < toKey(d) ? self.max : d; }
+    function disabled(d) { return toKey(d) < toKey(lo()) || toKey(d) > toKey(hi()); }
+    function clamp(d) { return toKey(d) < toKey(lo()) ? lo() : toKey(d) > toKey(hi()) ? hi() : d; }
     function say(msg) { status.textContent = ''; setTimeout(function () { status.textContent = msg; }, 30); }
 
     self.setError = function (msg) {
@@ -327,7 +354,9 @@
     self.read = function () {
       var r = parseDate(input.value, self.edge);
       if (r.empty) { self.date = null; return ''; }
-      if (r.error) { self.date = null; return o.label + ' is not a valid date. Enter dd/mm/yyyy or a year.'; }
+      self.date = null;
+      if (r.error) return o.label + ' must be a date in the format dd/mm/yyyy, or a year (numbers only).';
+      if (r.range) return o.label + ' must be between ' + yearLabel(b.min) + ' and ' + yearLabel(b.max) + ', the earliest and latest dates in the collections.';
       self.date = r.date; return '';
     };
     self.set = function (d, silent) {
@@ -353,42 +382,41 @@
         h += '</tr>';
       }
       grid.innerHTML = h + '</tbody>';
+      prev.disabled = toKey(addMonths(first, -1)) < toKey({ y: lo().y, m: lo().m, d: 1 });
+      next.disabled = toKey(addMonths(first, 1)) > toKey(hi());
     }
-    function focusDay() { var b = $('.ccs-cal__day[data-d="' + focusDate.d + '"]', grid); if (b) b.focus(); }
-    function go(d) {
-      if (self.min && toKey(d) < toKey(self.min)) d = self.min;      // never move onto a day that would invert the range
-      else if (self.max && toKey(d) > toKey(self.max)) d = self.max;
-      focusDate = d; view = { y: d.y, m: d.m, d: 1 }; render(); focusDay();
-    }
-    function showMonth(d) { focusDate = d; view = { y: d.y, m: d.m, d: 1 }; render(); }
+    function focusDay() { var bt = $('.ccs-cal__day[data-d="' + focusDate.d + '"]', grid); if (bt) bt.focus(); }
+    function go(d) { d = clamp(d); focusDate = d; view = { y: d.y, m: d.m, d: 1 }; render(); focusDay(); }
+    function showMonth(d) { d = clamp(d); focusDate = d; view = { y: d.y, m: d.m, d: 1 }; render(); }
     function choose(d) {
       if (disabled(d)) return;
       self.set(d); say(o.label + ' set to ' + longFmt(d));
       self.close(true);
     }
-    self.show = function () {
-      if (self.open) return;
-      setOpen(self);
-      self.read();
-      var t = today();
-      var start = self.date || t;
-      if (!self.date) { if (self.min && toKey(start) < toKey(self.min)) start = self.min; if (self.max && toKey(start) > toKey(self.max)) start = self.max; }
-      focusDate = start; view = { y: start.y, m: start.m, d: 1 };
-      self.open = true; cal.hidden = false; toggle.setAttribute('aria-expanded', 'true'); root.classList.add('is-open');
-      render(); focusDay();
+    // show(): opens the calendar. Focus stays in the text box (so people can keep typing) unless intoGrid is set.
+    self.show = function (intoGrid) {
+      if (!self.open) {
+        setOpen(self);
+        self.read();
+        var start = clamp(self.date && self.date.y >= 1 ? self.date : today());
+        focusDate = start; view = { y: start.y, m: start.m, d: 1 };
+        self.open = true; cal.hidden = false; input.setAttribute('aria-expanded', 'true'); root.classList.add('is-open');
+        render();
+      }
+      if (intoGrid) focusDay();
     };
     self.close = function (refocus) {
       if (!self.open) return;
-      self.open = false; cal.hidden = true; toggle.setAttribute('aria-expanded', 'false'); root.classList.remove('is-open');
+      self.open = false; cal.hidden = true; input.setAttribute('aria-expanded', 'false'); root.classList.remove('is-open');
       if (openMenu === self) openMenu = null;
-      if (refocus) toggle.focus();
+      if (refocus) input.focus();
     };
-    toggle.addEventListener('click', function () { if (self.open) self.close(true); else self.show(); });
+    input.addEventListener('click', function () { self.show(false); });
     prev.addEventListener('click', function () { showMonth(addMonths(focusDate, -1)); });
     next.addEventListener('click', function () { showMonth(addMonths(focusDate, 1)); });
     grid.addEventListener('click', function (e) {
-      var b = e.target.closest('.ccs-cal__day'); if (!b || b.disabled) return;
-      choose({ y: view.y, m: view.m, d: Number(b.getAttribute('data-d')) });
+      var bt = e.target.closest('.ccs-cal__day'); if (!bt || bt.disabled) return;
+      choose({ y: view.y, m: view.m, d: Number(bt.getAttribute('data-d')) });
     });
     clear.addEventListener('click', function () { self.set(null); say(o.label + ' cleared'); self.close(true); });
     close.addEventListener('click', function () { self.close(true); });
@@ -396,7 +424,7 @@
       var k = e.key, onDay = e.target.classList && e.target.classList.contains('ccs-cal__day');
       if (k === 'Escape') { e.preventDefault(); e.stopPropagation(); self.close(true); return; }
       if (k === 'Tab') {   // keep Tab inside the dialog
-        var f = $$('.ccs-cal__nav, .ccs-cal__day[tabindex="0"], .ccs-cal__action', cal);
+        var f = $$('.ccs-cal__nav:not(:disabled), .ccs-cal__day[tabindex="0"], .ccs-cal__action', cal);
         var i = f.indexOf(document.activeElement);
         if (e.shiftKey && i <= 0) { e.preventDefault(); f[f.length - 1].focus(); }
         else if (!e.shiftKey && i === f.length - 1) { e.preventDefault(); f[0].focus(); }
@@ -417,10 +445,15 @@
       if (handled) e.preventDefault();
     });
     input.addEventListener('keydown', function (e) {
-      if (e.key === 'ArrowDown' && e.altKey) { e.preventDefault(); self.show(); }
+      if (e.key === 'ArrowDown') { e.preventDefault(); self.show(true); }
       else if (e.key === 'Escape' && self.open) { e.stopPropagation(); self.close(false); }
     });
-    input.addEventListener('input', function () { self.setError(''); });
+    // Numbers only: strip anything that is not a digit or "/" (and keep a minus only at the very start, for BCE years)
+    input.addEventListener('input', function () {
+      var v = input.value, cleaned = v.replace(/[^0-9\/\-]/g, '').replace(/(?!^)-/g, '');
+      if (cleaned !== v) { input.value = cleaned; say('Numbers only'); }
+      self.setError('');
+    });
     input.addEventListener('change', function () { self.setError(self.read()); if (o.onChange) o.onChange(self); });
     return self;
   }
