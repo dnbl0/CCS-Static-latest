@@ -1,0 +1,39 @@
+/* advanced-filters: styles moved out of inline style="" attributes. Class names are semantic (block__element) and scoped by the page class on <body> (page-advanced-filters), which gives them the precedence the inline styles had over shared component CSS. Do not reintroduce inline styles. */
+
+body.page-advanced-filters .advanced-filters-page__group {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+body.page-advanced-filters .advanced-filters-page__icon {
+  display: none;
+}
+
+body.page-advanced-filters .bc-mobile--styled {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  list-style: none;
+  margin: 0;
+  font-size: 18px;
+  color: #fff;
+}
+
+body.page-advanced-filters .bc-mobile__item {
+  display: flex;
+  align-items: center;
+}
+
+body.page-advanced-filters .bc-mobile__item-link-home {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #fff;
+  text-decoration: none;
+  min-height: 44px;
+}
+
+body.page-advanced-filters .page-local-history__link-image {
+  vertical-align: middle;
+}

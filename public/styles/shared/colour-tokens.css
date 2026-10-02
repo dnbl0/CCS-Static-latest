@@ -1,0 +1,15 @@
+/* Moved out of an inline <style> block (colour-tokens). Used by: advanced-filters, contact, indigenous-data. */
+
+:root{
+  --col-bg-primary:#000f46;
+  --col-bg-primary-dark:#000b34;
+  --col-bg-primary-hover:#213e5d;
+  --col-bg-accent:#abc1a7;
+  --col-btn-action-bg:#46c8f0;
+  --col-btn-action-bg-hover:#29b3d9;
+  --col-btn-action-text:#000f46;
+  --col-bg-selected:#e8edf6;
+  --col-text-primary:#1b1f2a;
+  --col-text-muted:#5b6070;
+  --col-border-header:#b5bac9;
+}

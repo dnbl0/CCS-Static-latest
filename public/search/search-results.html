@@ -9,188 +9,100 @@
 <script src="../blacklight-adapter.js"></script>
 <script src="../collection-data.js"></script>
 <script src="../licence-badge.js"></script>
-<style>
-.skip-link {
-  position: absolute;
-  top: -120px;
-  left: 16px;
-  background: var(--col-btn-action-bg, #46c8f0);
-  color: var(--col-btn-action-text, #000f46);
-  padding: 12px 18px;
-  z-index: 99999;
-  font-weight: 700;
-  text-decoration: none;
-  border: 2px solid var(--col-bg-primary, #000f46);
-  transition: top 0.2s ease;
-}
-.skip-link:focus {
-  top: 16px;
-}
-@media (max-width:1097.98px){
-  .site-nav{display:none!important}
-  .site-nav.is-open{display:flex!important;position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;background:var(--col-bg-primary);border-top:1px solid var(--col-border-header);z-index:30;padding:8px 0;box-shadow:0 8px 16px rgba(0,0,0,.15)}
-  .site-nav.is-open a{padding:14px 24px!important;font-size:16px!important;width:100%}
-  .site-nav-toggle{display:flex!important}
-}
-@media (max-width:768px){
-  nav[aria-label="Breadcrumb"] > ol:not(.bc-mobile){display:none!important}
-  nav[aria-label="Breadcrumb"] .bc-mobile{display:flex!important}
-}
-</style>
+<link rel="stylesheet" href="/styles/shared/skip-link.css">
   <link rel="stylesheet" href="../styles/vendor/bootstrap-uom.min.css">
   <link rel="stylesheet" href="/styles/home.css">
   <link rel="stylesheet" href="../styles/header.css">
+  <link rel="stylesheet" href="/styles/pages/search-results.css">
 </head>
-<body>
-<a href="#main-content" class="skip-link">Skip to main content</a>
+<body class="page-search-results">
+<a href="#main-content" class="skip-link search-results-page__link-skip-main-content">Skip to main content</a>
 <x-dc>
-<helmet><style>
-:root{
-  --col-bg-primary:#000f46;
-  --col-bg-primary-dark:#000b34;
-  --col-bg-primary-hover:#213e5d;
-  --col-bg-surface:#fff;
-  --col-bg-accent:#abc1a7;
-  --col-bg-accent-soft:#dde5d6;
-  --col-bg-selected:#e8edf6;
-  --col-btn-primary-bg:#000f46;
-  --col-btn-primary-bg-hover:#213e5d;
-  --col-btn-primary-text:#fff;
-  --col-btn-action-bg:#46c8f0;
-  --col-btn-action-bg-hover:#29b3d9;
-  --col-btn-action-text:#000f46;
-  --col-btn-outline:#000f46;
-  --col-text-primary:#1b1f2a;
-  --col-text-onbrand:#fff;
-  --col-text-muted:#5b6070;
-  --col-border-brand:#000f46;
-  --col-border-neutral:#cfcac0;
-  --col-border-neutral-soft:#ece9e3;
-  --col-border-neutral-mid:#d9d6cf;
-  --col-border-header:#b5bac9;
-  --col-advisory-bg:#fdf6d8;
-  --col-advisory-border:#efdc8e;
-  --col-advisory-text:#8a6200;
-}</style>
+<helmet><link rel="stylesheet" href="/styles/shared/colour-tokens-v2.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../components/fig-tokens.css">
 <link rel="stylesheet" href="../components/fig-assets.css">
-<style>
-body{margin:0;background:var(--white-100);color:var(--col-text-primary);font-family:'Source Sans 3',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
-a{color:#0b2a6b;text-decoration:none}a:hover{color:#0b2a6b;text-decoration:underline}
-*{box-sizing:border-box}
-button,input,select{font-family:inherit}
-@keyframes imgIn{from{opacity:0}to{opacity:1}}
-@keyframes cardIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-@keyframes spin{to{transform:rotate(360deg)}}
-@keyframes shimmer{0%{background-position:-600px 0}100%{background-position:600px 0}}
-/* Production date facet: histogram + dual-handle slider + labelled year fields */
-.date-facet{display:flex;flex-direction:column;gap:0}
-.date-note{font-size:15px;color:var(--col-text-muted)}
-.date-summary{margin:14px 0 0;font-size:16px;font-weight:600;color:var(--col-text-primary);min-height:24px}
-.date-hist{display:flex;align-items:flex-end;gap:2px;height:84px;margin:12px 16px 0}
-.date-hist span{flex:1 1 0;min-width:2px;transition:background .15s,height .15s}
-.date-track{position:relative;margin:0 16px;height:36px;touch-action:none;cursor:pointer}
-.date-rail{position:absolute;top:50%;left:0;right:0;height:2px;background:#c3c6cd;transform:translateY(-50%)}
-.date-fill{position:absolute;top:50%;height:2px;background:var(--col-bg-primary);transform:translateY(-50%)}
-.date-range-handle{position:absolute;top:50%;width:28px;height:28px;margin:-14px 0 0 -14px;border-radius:50%;border:2px solid var(--col-bg-primary);background:#fff;cursor:grab;touch-action:none;padding:0}
-.date-range-handle::after{content:"";position:absolute;inset:-8px}
-.date-range-handle:hover{background:#e8edf6}
-.date-range-handle:active{cursor:grabbing;background:#d6e0f0}
-.date-range-handle:focus-visible{outline:3px solid #46c8f0;outline-offset:2px}
-.date-ends{display:flex;justify-content:space-between;margin:2px 16px 0;font-size:13px;color:var(--col-text-muted)}
-.date-inputs{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-top:16px}
-.date-field{display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--col-text-muted)}
-.date-field--end{align-items:flex-end}
-.date-field input{box-sizing:border-box;width:140px;height:48px;border:1px solid var(--col-border-neutral);border-radius:0;padding:0 14px;font:inherit;font-size:17px;color:var(--col-text-primary);text-align:center;background:#fff}
-.date-field input::placeholder{color:var(--col-text-muted)}
-.date-field input:focus-visible{outline:3px solid #46c8f0;outline-offset:2px;border-color:var(--col-bg-primary)}
-.date-help{margin:10px 0 0;font-size:13px;color:var(--col-text-muted)}
-.date-error{margin-top:6px;font-size:14px;color:#b3261e}
-.date-reset{align-self:flex-start;margin-top:10px;border:0;background:none;padding:0;font:inherit;font-size:15px;font-weight:600;text-decoration:underline;color:var(--col-text-primary);cursor:pointer}
-@media (max-width:480px){.date-field input{width:112px}}
-[aria-label="University links"] a:hover{color:var(--sage-100);text-decoration:underline}
-</style>
+<link rel="stylesheet" href="/styles/pages/search-results.base-elements.css">
 </helmet>
-<div style="min-height:100vh;display:flex;flex-direction:column">
+<div class="search-results-page__group search-results-page__group--v1">
 
 <header class="ccs-nav ccs-nav--header" data-component="Header" aria-label="Site header">
   <div class="ccs-nav__brand">
-    <a href="https://www.unimelb.edu.au" aria-label="The University of Melbourne homepage">
-      <picture><source media="(max-width: 1023px)" srcset="/images/home/logo-header-mobile.svg"><img src="/images/home/logo-header-desktop.svg" alt=""></picture>
+    <a class="ccs-nav__link-university-melbourne-homepage" href="https://www.unimelb.edu.au" aria-label="The University of Melbourne homepage">
+      <picture class="ccs-nav__link-picture"><source media="(max-width: 1023px)" srcset="/images/home/logo-header-mobile.svg"><img class="ccs-nav__picture-image" src="/images/home/logo-header-desktop.svg" alt=""></picture>
     </a>
   </div>
   <div class="ccs-nav__main">
     <div class="ccs-nav__top">
-      <nav aria-label="University of Melbourne">
-        <ul>
-          <li><a href="https://study.unimelb.edu.au">Study</a></li>
-          <li><a href="https://students.unimelb.edu.au">Students</a></li>
-          <li><a href="https://research.unimelb.edu.au">Research</a></li>
-          <li><a href="https://library.unimelb.edu.au">Library</a></li>
-          <li><a href="https://staff.unimelb.edu.au">Staff</a></li>
-          <li><a href="https://www.unimelb.edu.au/alumni">Alumni</a></li>
-          <li><a href="https://giving.unimelb.edu.au">Giving</a></li>
-          <li><a href="https://about.unimelb.edu.au">About</a></li>
-          <li><a href="https://www.unimelb.edu.au/contact">Contact</a></li>
+      <nav class="search-results-university-melbourne" aria-label="University of Melbourne">
+        <ul class="search-results-university-melbourne__list">
+          <li class="search-results-university-melbourne__list-item"><a class="search-results-university-melbourne__item-link-study" href="https://study.unimelb.edu.au">Study</a></li>
+          <li class="search-results-university-melbourne__list-item"><a class="search-results-university-melbourne__item-link-students" href="https://students.unimelb.edu.au">Students</a></li>
+          <li class="search-results-university-melbourne__list-item"><a class="search-results-university-melbourne__item-link-research" href="https://research.unimelb.edu.au">Research</a></li>
+          <li class="search-results-university-melbourne__list-item"><a class="search-results-university-melbourne__item-link-library" href="https://library.unimelb.edu.au">Library</a></li>
+          <li class="search-results-university-melbourne__list-item"><a class="search-results-university-melbourne__item-link-staff" href="https://staff.unimelb.edu.au">Staff</a></li>
+          <li class="search-results-university-melbourne__list-item"><a class="search-results-university-melbourne__item-link-alumni" href="https://www.unimelb.edu.au/alumni">Alumni</a></li>
+          <li class="search-results-university-melbourne__list-item"><a class="search-results-university-melbourne__item-link-giving" href="https://giving.unimelb.edu.au">Giving</a></li>
+          <li class="search-results-university-melbourne__list-item"><a class="search-results-university-melbourne__item-link-about" href="https://about.unimelb.edu.au">About</a></li>
+          <li class="search-results-university-melbourne__list-item"><a class="search-results-university-melbourne__item-link-contact" href="https://www.unimelb.edu.au/contact">Contact</a></li>
         </ul>
       </nav>
       <button type="button" class="ccs-nav__search" popovertarget="uom-search-popover" data-popover-type="search" aria-label="Open search">
-        <img src="/images/home/icon-search-onaccent.svg" alt="">
+        <img class="ccs-nav__image" src="/images/home/icon-search-onaccent.svg" alt="">
       </button>
     </div>
     <div class="ccs-nav__bottom">
       <a class="ccs-nav__title" href="/index.html">Cultural Collections</a>
       <nav id="ccs-primary-nav" class="ccs-nav__primary" aria-label="Primary navigation">
         <div class="ccs-nav__drawer-search">
-          <form role="search" action="/search/search-results.html" method="get">
-            <label for="ccs-drawer-q" class="sr-only">Search Cultural Collections</label>
-            <input id="ccs-drawer-q" name="q" type="text" autocomplete="off" placeholder="Search">
-            <button type="submit" aria-label="Search"><img src="/images/home/icon-search-onaccent.svg" alt=""></button>
+          <form class="ccs-nav__form-search" role="search" action="/search/search-results.html" method="get">
+            <label for="ccs-drawer-q" class="sr-only search-results-form__label-search-cultural-collections">Search Cultural Collections</label>
+            <input class="ccs-drawer-q" id="ccs-drawer-q" name="q" type="text" autocomplete="off" placeholder="Search">
+            <button class="search-results-form__button" type="submit" aria-label="Search"><img class="search-results-form__button-image" src="/images/home/icon-search-onaccent.svg" alt=""></button>
           </form>
         </div>
-        <ul>
-          <li><a href="/search/search-results.html" aria-current="page">Search all records</a></li>
-          <li>
-            <button type="button" class="ccs-nav__trigger" aria-expanded="false" aria-controls="ccs-dd-collections">Browse collections<img src="/images/home/icon-expand.svg" alt=""></button>
+        <ul class="ccs-nav__list">
+          <li class="ccs-nav__list-item"><a class="ccs-nav__item-link-search-all-records" href="/search/search-results.html" aria-current="page">Search all records</a></li>
+          <li class="ccs-nav__list-item">
+            <button type="button" class="ccs-nav__trigger" aria-expanded="false" aria-controls="ccs-dd-collections">Browse collections<img class="ccs-nav__image" src="/images/home/icon-expand.svg" alt=""></button>
             <div id="ccs-dd-collections" class="ccs-nav__panel">
-              <a class="ccs-nav__panel-title" href="/collections/index.html"><img src="/images/home/icon-arrow-footer.svg" alt="">Browse collections</a>
+              <a class="ccs-nav__panel-title" href="/collections/index.html"><img class="ccs-nav__image" src="/images/home/icon-arrow-footer.svg" alt="">Browse collections</a>
               <ul class="ccs-nav__panel-list">
-                <li><a href="/collections/medical-history-museum/"><img src="/images/home/icon-arrow-footer.svg" alt="">Medical History Museum</a></li>
-                <li><a href="/collections/henry-forman-atkinson-dental-museum/"><img src="/images/home/icon-arrow-footer.svg" alt="">Henry Forman Atkinson Dental Museum</a></li>
-                <li><a href="/collections/harry-brookes-allen-museum/"><img src="/images/home/icon-arrow-footer.svg" alt="">Harry Brookes Allen Museum</a></li>
-                <li><a href="/collections/university-art-collection/"><img src="/images/home/icon-arrow-footer.svg" alt="">University Art Collection</a></li>
-                <li><a href="/collections/grainger-museum/"><img src="/images/home/icon-arrow-footer.svg" alt="">Grainger Museum Collection</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-medical-history-museum" href="/collections/medical-history-museum/"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Medical History Museum</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-henry-forman-atkinson" href="/collections/henry-forman-atkinson-dental-museum/"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Henry Forman Atkinson Dental Museum</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-harry-brookes-allen" href="/collections/harry-brookes-allen-museum/"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Harry Brookes Allen Museum</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-university-art-collection" href="/collections/university-art-collection/"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">University Art Collection</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-grainger-museum-collection" href="/collections/grainger-museum/"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Grainger Museum Collection</a></li>
               </ul>
             </div>
           </li>
-          <li>
-            <button type="button" class="ccs-nav__trigger" aria-expanded="false" aria-controls="ccs-dd-help">Help<img src="/images/home/icon-expand.svg" alt=""></button>
+          <li class="ccs-nav__list-item">
+            <button type="button" class="ccs-nav__trigger" aria-expanded="false" aria-controls="ccs-dd-help">Help<img class="ccs-nav__image" src="/images/home/icon-expand.svg" alt=""></button>
             <div id="ccs-dd-help" class="ccs-nav__panel">
-              <a class="ccs-nav__panel-title" href="/help/index.html"><img src="/images/home/icon-arrow-footer.svg" alt="">Help and support</a>
+              <a class="ccs-nav__panel-title" href="/help/index.html"><img class="ccs-nav__image" src="/images/home/icon-arrow-footer.svg" alt="">Help and support</a>
               <ul class="ccs-nav__panel-list">
-                <li><a href="/help?topic=faq"><img src="/images/home/icon-arrow-footer.svg" alt="">Frequently Asked Questions</a></li>
-                <li><a href="/help?topic=search-tips"><img src="/images/home/icon-arrow-footer.svg" alt="">Search tips</a></li>
-                <li><a href="/help?topic=copyright"><img src="/images/home/icon-arrow-footer.svg" alt="">Copyright and terms of use</a></li>
-                <li><a href="/help?topic=access"><img src="/images/home/icon-arrow-footer.svg" alt="">Access and information</a></li>
-                <li><a href="/help?topic=privacy"><img src="/images/home/icon-arrow-footer.svg" alt="">Privacy</a></li>
-                <li><a href="/help/indigenous-data.html"><img src="/images/home/icon-arrow-footer.svg" alt="">Indigenous cultural data and access</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-frequently-asked-questions" href="/help?topic=faq"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Frequently Asked Questions</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-search-tips" href="/help?topic=search-tips"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Search tips</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-copyright-terms-use" href="/help?topic=copyright"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Copyright and terms of use</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-access-information" href="/help?topic=access"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Access and information</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-privacy" href="/help?topic=privacy"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Privacy</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-indigenous-cultural-data" href="/help/indigenous-data.html"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Indigenous cultural data and access</a></li>
               </ul>
             </div>
           </li>
-          <li><a href="/contact.html">Contact</a></li>
+          <li class="ccs-nav__list-item"><a class="ccs-nav__item-link-contact" href="/contact.html">Contact</a></li>
         </ul>
         <ul class="ccs-nav__drawer-top" aria-label="University of Melbourne">
-        <li><a href="https://study.unimelb.edu.au">Study</a></li>
-        <li><a href="https://students.unimelb.edu.au">Students</a></li>
-        <li><a href="https://research.unimelb.edu.au">Research</a></li>
-        <li><a href="https://library.unimelb.edu.au">Library</a></li>
-        <li><a href="https://staff.unimelb.edu.au">Staff</a></li>
-        <li><a href="https://www.unimelb.edu.au/alumni">Alumni</a></li>
-        <li><a href="https://giving.unimelb.edu.au">Giving</a></li>
-        <li><a href="https://about.unimelb.edu.au">About</a></li>
-        <li><a href="https://www.unimelb.edu.au/contact">Contact</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-study" href="https://study.unimelb.edu.au">Study</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-students" href="https://students.unimelb.edu.au">Students</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-research" href="https://research.unimelb.edu.au">Research</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-library" href="https://library.unimelb.edu.au">Library</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-staff" href="https://staff.unimelb.edu.au">Staff</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-alumni" href="https://www.unimelb.edu.au/alumni">Alumni</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-giving" href="https://giving.unimelb.edu.au">Giving</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-about" href="https://about.unimelb.edu.au">About</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-contact" href="https://www.unimelb.edu.au/contact">Contact</a></li>
         </ul>
       </nav>
     </div>
@@ -198,30 +110,30 @@ button,input,select{font-family:inherit}
   <button type="button" class="ccs-nav__menu" aria-expanded="false" aria-controls="ccs-primary-nav">
     <svg class="ccs-nav__menu-open" viewBox="0 0 24 24" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     <svg class="ccs-nav__menu-close" viewBox="0 0 24 24" aria-hidden="true"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
-    <span>Menu</span>
+    <span class="ccs-nav__text">Menu</span>
   </button>
 </header>
 
 <!-- Full-screen search overlay -->
 <div id="uom-search-popover" class="uom-search-popover" role="dialog" aria-modal="true" aria-labelledby="uom-search-overlay-title">
   <div class="uom-search-popover__inner">
-    <h2 id="uom-search-overlay-title" class="sr-only">Search</h2>
+    <h2 id="uom-search-overlay-title" class="sr-only uom-search-popover__heading">Search</h2>
     <form class="uom-search-popover__form" role="search" action="/search/search-results.html" method="get">
-      <label for="uom-search-overlay-input" class="sr-only">Search Cultural Collections</label>
-      <input id="uom-search-overlay-input" name="q" type="text" placeholder="Search" autocomplete="off">
+      <label for="uom-search-overlay-input" class="sr-only uom-search-popover__label-search-cultural-collections">Search Cultural Collections</label>
+      <input class="uom-search-overlay-input" id="uom-search-overlay-input" name="q" type="text" placeholder="Search" autocomplete="off">
       <button type="submit" class="uom-search-popover__submit" aria-label="Search">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <svg class="uom-search-popover__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="11" cy="11" r="8"></circle>
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
       </button>
     </form>
     <button type="button" class="uom-search-popover__close" id="uom-search-popover-close" aria-label="Close search">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <svg class="uom-search-popover__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <line x1="18" y1="6" x2="6" y2="18"></line>
         <line x1="6" y1="6" x2="18" y2="18"></line>
       </svg>
-      <span>Close</span>
+      <span class="uom-search-popover__text">Close</span>
     </button>
   </div>
 </div>
@@ -299,154 +211,154 @@ button,input,select{font-family:inherit}
 })();
 </script>
 
-<section style="width:100%;background:#00354c;height:40px;display:flex;align-items:center">
-  <nav class="page-breadcrumbs" aria-label="Breadcrumb"><ol class="page-local-history" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="root" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="/" itemprop="item" title="Home" aria-label="Home"><img src="../images/home.svg" alt="" width="16" height="16" style="vertical-align:middle"><span itemprop="name" class="sr-only">Home</span></a><meta content="1" itemprop="position"></li><li itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page"><span itemprop="name">Search results</span><meta content="2" itemprop="position"></li></ol><ol class="bc-mobile" style="display:none;align-items:center;gap:6px;list-style:none;margin:0;font-size:16px;color:#fff"><li style="display:flex;align-items:center"><a href="/" style="display:inline-flex;align-items:center;gap:6px;color:#fff;text-decoration:none;min-height:44px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span>Cultural Collections</span></a></li></ol></nav>
+<section class="search-results-page__section">
+  <nav class="page-breadcrumbs" aria-label="Breadcrumb"><ol class="page-local-history" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="root" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a class="page-local-history__item-link-home" href="/" itemprop="item" title="Home" aria-label="Home"><img class="page-local-history__link-image" src="../images/home.svg" alt="" width="16" height="16"><span itemprop="name" class="sr-only page-local-history__link-text">Home</span></a><meta content="1" itemprop="position"></li><li class="page-local-history__item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page"><span class="page-local-history__item-text" itemprop="name">Search results</span><meta content="2" itemprop="position"></li></ol><ol class="bc-mobile bc-mobile--styled"><li class="bc-mobile__item"><a class="bc-mobile__item-link-cultural-collections" href="/"><svg class="bc-mobile__link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span class="bc-mobile__link-text">Cultural Collections</span></a></li></ol></nav>
 </section>
 
 <section class="page-banner" aria-label="Page banner">
-  <div class="page-banner__inner" style="max-width:1440px">
-    <h1>Search the Collection</h1>
+  <div class="page-banner__inner page-banner__inner--styled">
+    <h1 class="page-banner__heading-search-collection">Search the Collection</h1>
     <p class="page-banner__desc">Explore artworks, objects, manuscripts, photographs and recordings held across the University of Melbourne's cultural collections.</p>
   </div>
 </section>
 
 
-<section aria-label="Search results summary" style="background:#fff">
-  <div style="max-width:1440px;margin:0 auto;padding:{{ padSum }};display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap">
-    <div style="display:flex;flex-direction:column;gap:12px;max-width:360px;min-width:0">
-      <div style="display:flex;align-items:center;min-height:32px">
-        <sc-if value="{{ loading }}"><span style="width:240px;height:26px;background:linear-gradient(90deg,#e9e7e2 0,#f5f4f1 40%,#e9e7e2 80%);background-size:1200px 100%;animation:shimmer 1.3s linear infinite"></span></sc-if>
-        <sc-if value="{{ notLoading }}" hint-placeholder-val="{{ true }}"><h2 aria-live="polite" style="margin:0;font-size:22px;font-weight:600;line-height:1.3;color:var(--col-bg-primary);text-wrap:pretty">{{ titleText }}</h2></sc-if>
+<section class="search-results-summary" aria-label="Search results summary">
+  <div class="search-results-summary__group search-results-summary__group--v6" style="--dyn-padding:{{ padSum }}">
+    <div class="search-results-summary__group search-results-summary__group--v5">
+      <div class="search-results-summary__group search-results-summary__group--v4">
+        <sc-if value="{{ loading }}"><span class="search-results-summary__text search-results-summary__text--v2"></span></sc-if>
+        <sc-if value="{{ notLoading }}" hint-placeholder-val="{{ true }}"><h2 class="search-results-summary__heading" aria-live="polite">{{ titleText }}</h2></sc-if>
       </div>
-      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-        <button onClick="{{ saveSearch }}" style="align-self:flex-start;display:flex;align-items:center;gap:6px;border:1px solid var(--col-bg-primary);background:#fff;color:var(--col-bg-primary);padding:6px 12px;font-size:14px;font-weight:600;cursor:pointer" style-hover="background:#f0f2f7"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12v18l-6-4.5L6 21z"></path></svg>{{ saveSearchLabel }}</button>
-        <button id="api-mode-toggle" type="button" onClick="{{ toggleApiMode }}" title="Toggle between local mock data and live Blacklight API (/catalog.json)" style="display:{{ apiBtnDisplay }};align-items:center;gap:6px;border:1px solid var(--col-border-neutral-mid);background:{{ apiBtnBg }};color:{{ apiBtnColor }};padding:6px 12px;font-size:13px;font-weight:600;cursor:pointer;border-radius:0">{{ apiBtnText }}</button>
+      <div class="search-results-summary__group search-results-summary__group--v2">
+        <button class="search-results-summary__button-save-search" onClick="{{ saveSearch }}"><svg class="search-results-summary__button-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12v18l-6-4.5L6 21z"></path></svg>{{ saveSearchLabel }}</button>
+        <button class="search-results-api-mode-toggle" id="api-mode-toggle" type="button" onClick="{{ toggleApiMode }}" title="Toggle between local mock data and live Blacklight API (/catalog.json)" style="--dyn-display:{{ apiBtnDisplay }};--dyn-background:{{ apiBtnBg }};--dyn-color:{{ apiBtnColor }}">{{ apiBtnText }}</button>
       </div>
-      <div ref="{{ ppRef }}" style="position:relative;align-self:flex-start;margin-top:2px">
-          <button onClick="{{ togglePP }}" aria-haspopup="listbox" aria-expanded="{{ ppOpen }}" style="display:flex;align-items:center;gap:10px;border:0;background:none;padding:0;font-size:17px;color:var(--col-bg-primary);cursor:pointer">{{ rangeLabel }}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" style="transform:{{ ppChev }};transition:transform .15s"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+      <div class="search-results-summary__group-pp" ref="{{ ppRef }}">
+          <button class="search-results-summary__button-toggle-pp" onClick="{{ togglePP }}" aria-haspopup="listbox" aria-expanded="{{ ppOpen }}">{{ rangeLabel }}<svg class="search-results-summary__button-icon search-results-summary__button-icon--styled" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" style="--dyn-transform:{{ ppChev }}"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
           <sc-if value="{{ ppOpen }}">
-            <div role="listbox" style="position:absolute;left:0;top:calc(100% + 6px);z-index:50;min-width:180px;background:#fff;border:1px solid var(--col-bg-primary);display:flex;flex-direction:column;box-shadow:none">
-              <sc-for list="{{ ppOpts }}" as="o"><button role="option" aria-selected="{{ o.sel }}" onClick="{{ o.pick }}" style="border:0;background:{{ o.bg }};padding:11px 14px;text-align:left;font-size:16px;color:var(--col-text-primary);cursor:pointer" style-hover="background:#e3f4fb">{{ o.label }}</button></sc-for>
+            <div class="search-results-summary__group-listbox" role="listbox">
+              <sc-for list="{{ ppOpts }}" as="o"><button class="search-results-listbox__button-pick search-results-listbox__button-pick--v1" role="option" aria-selected="{{ o.sel }}" onClick="{{ o.pick }}" style="--dyn-background:{{ o.bg }}">{{ o.label }}</button></sc-for>
             </div>
           </sc-if>
         </div>
     </div>
-    <div style="display:flex;align-items:center;justify-content:flex-end;gap:14px 20px;flex-wrap:wrap;flex:1 1 auto;min-width:0">
-      <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;min-width:0">
+    <div class="search-results-summary__group search-results-summary__group--v3">
+      <div class="search-results-summary__group search-results-summary__group--v1">
         <sc-for list="{{ switches }}" as="sw" hint-placeholder-count="2">
-          <button onClick="{{ sw.toggle }}" role="switch" aria-checked="{{ sw.on }}" style="display:flex;align-items:center;gap:10px;border:0;background:none;padding:0;cursor:pointer;font-size:14px;font-weight:600;color:var(--col-bg-primary)">
-            <span style="width:38px;height:22px;border-radius:999px;border:1px solid var(--col-bg-primary);background:{{ sw.trackBg }};flex:none;position:relative;transition:background .15s"><span style="position:absolute;top:1px;left:{{ sw.knobLeft }};width:16px;height:16px;border-radius:50%;background:#fff;transition:left .15s"></span></span>{{ sw.label }}
+          <button class="search-results-summary__button-toggle" onClick="{{ sw.toggle }}" role="switch" aria-checked="{{ sw.on }}">
+            <span class="search-results-summary__button-text" style="--dyn-background:{{ sw.trackBg }}"><span class="search-results-summary__text search-results-summary__text--v1" style="--dyn-left:{{ sw.knobLeft }}"></span></span>{{ sw.label }}
           </button>
         </sc-for>
       </div>
-      <div role="group" aria-label="View" style="display:flex;border:1px solid var(--col-bg-primary)">
-        <button onClick="{{ setGrid }}" aria-pressed="{{ isMasonry }}" aria-label="Grid view" title="Grid view" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;background:{{ gridBg }};color:var(--col-bg-primary);cursor:pointer"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="6.5" height="6.5"></rect><rect x="13.5" y="4" width="6.5" height="6.5"></rect><rect x="4" y="13.5" width="6.5" height="6.5"></rect><rect x="13.5" y="13.5" width="6.5" height="6.5"></rect></svg></button>
-        <button onClick="{{ setList }}" aria-pressed="{{ isListView }}" aria-label="List view" title="List view" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-left:1px solid var(--col-bg-primary);background:{{ listBg }};color:var(--col-bg-primary);cursor:pointer"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="7" x2="20" y2="7"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="17" x2="20" y2="17"></line></svg></button>
+      <div class="search-results-view" role="group" aria-label="View">
+        <button class="search-results-view__button-set-grid" onClick="{{ setGrid }}" aria-pressed="{{ isMasonry }}" aria-label="Grid view" title="Grid view" style="--dyn-background:{{ gridBg }}"><svg class="search-results-view__button-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="6.5" height="6.5"></rect><rect x="13.5" y="4" width="6.5" height="6.5"></rect><rect x="4" y="13.5" width="6.5" height="6.5"></rect><rect x="13.5" y="13.5" width="6.5" height="6.5"></rect></svg></button>
+        <button class="search-results-view__button-set-list" onClick="{{ setList }}" aria-pressed="{{ isListView }}" aria-label="List view" title="List view" style="--dyn-background:{{ listBg }}"><svg class="search-results-view__button-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="7" x2="20" y2="7"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="17" x2="20" y2="17"></line></svg></button>
       </div>
     </div>
   </div>
 </section>
-<div role="region" aria-label="Search tools" style="position:sticky;top:0;z-index:30;background:#fff;border-bottom:1px solid var(--col-border-neutral-mid);box-shadow:none">
-  <div style="max-width:1440px;margin:0 auto;padding:{{ padBar }};display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap">
-    <form role="search" onSubmit="{{ barSubmit }}" style="position:relative;display:flex;flex:1 1 280px;min-width:0;max-width:600px;height:48px;border:1px solid var(--col-bg-primary);background:#fff">
-      <div ref="{{ scopeRef }}" style="position:relative;flex:none;display:flex">
-        <button type="button" onClick="{{ toggleScope }}" aria-haspopup="listbox" aria-expanded="{{ scopeOpen }}" aria-label="Search in" style="height:100%;display:flex;align-items:center;gap:8px;border:0;border-right:1px solid var(--col-border-neutral-mid);background:#f4f5f8;color:var(--col-bg-primary);padding:0 12px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap">{{ scopeLabel }}<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+<div class="search-results-search-tools" role="region" aria-label="Search tools">
+  <div class="search-results-search-tools__group search-results-search-tools__group--v2" style="--dyn-padding:{{ padBar }}">
+    <form class="search-results-search-tools__form-bar-submit" role="search" onSubmit="{{ barSubmit }}">
+      <div class="search-results-form__group-scope" ref="{{ scopeRef }}">
+        <button class="search-results-form__button-toggle-scope" type="button" onClick="{{ toggleScope }}" aria-haspopup="listbox" aria-expanded="{{ scopeOpen }}" aria-label="Search in">{{ scopeLabel }}<svg class="search-results-form__button-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
         <sc-if value="{{ scopeOpen }}">
-          <div role="listbox" aria-label="Search in" style="position:absolute;left:-1px;top:calc(100% + 1px);z-index:40;min-width:170px;background:#fff;border:1px solid var(--col-bg-primary);display:flex;flex-direction:column;box-shadow:none">
-            <sc-for list="{{ scopeOpts }}" as="o"><button type="button" role="option" aria-selected="{{ o.sel }}" onClick="{{ o.pick }}" style="border:0;background:{{ o.bg }};padding:11px 14px;text-align:left;font-size:15px;color:var(--col-text-primary);cursor:pointer" style-hover="background:#e3f4fb">{{ o.label }}</button></sc-for>
+          <div class="search-results-search" role="listbox" aria-label="Search in">
+            <sc-for list="{{ scopeOpts }}" as="o"><button class="search-results-search__button-pick" type="button" role="option" aria-selected="{{ o.sel }}" onClick="{{ o.pick }}" style="--dyn-background:{{ o.bg }}">{{ o.label }}</button></sc-for>
           </div>
         </sc-if>
       </div>
-      <div style="flex:1;min-width:0;display:flex;align-items:center;gap:6px;padding:0 10px">
+      <div class="search-results-form__group">
         <sc-if value="{{ hasQ }}">
-          <button type="button" onClick="{{ clearQ }}" aria-label="Remove search term" style="flex:none;display:flex;align-items:center;gap:6px;border:0;background:var(--col-bg-accent-soft);color:var(--col-bg-primary);padding:4px 8px;font-size:13px;font-weight:700;letter-spacing:.08em;cursor:pointer;max-width:150px" style-hover="background:#cbd7c2"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ qTag }}</span><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.6" style="flex:none"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg></button>
+          <button class="search-results-form__button-clear-q" type="button" onClick="{{ clearQ }}" aria-label="Remove search term"><span class="search-results-form__button-text">{{ qTag }}</span><svg class="search-results-form__button-icon search-results-form__button-icon--styled" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.6"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg></button>
         </sc-if>
-        <input value="{{ sideQ }}" onChange="{{ onSideQ }}" onKeyDown="{{ barKey }}" onFocus="{{ openSug }}" onClick="{{ openSug }}" onBlur="{{ closeSugSoon }}" role="combobox" aria-expanded="{{ sugOpen }}" aria-controls="search-suggestions" aria-autocomplete="list" aria-label="Search the collection" placeholder="{{ barPlaceholder }}" style="flex:1;min-width:40px;border:0;outline:none;font-size:15px;color:var(--col-text-primary);background:none">
+        <input class="search-results-form__input-side-q" value="{{ sideQ }}" onChange="{{ onSideQ }}" onKeyDown="{{ barKey }}" onFocus="{{ openSug }}" onClick="{{ openSug }}" onBlur="{{ closeSugSoon }}" role="combobox" aria-expanded="{{ sugOpen }}" aria-controls="search-suggestions" aria-autocomplete="list" aria-label="Search the collection" placeholder="{{ barPlaceholder }}">
       </div>
-      <button type="submit" aria-label="Search" style="width:46px;border:0;border-left:1px solid var(--col-border-neutral-mid);background:#fff;color:#6b7080;cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="color:var(--col-bg-primary)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.5" y1="15.5" x2="21" y2="21"></line></svg></button>
+      <button class="search-results-form__button search-results-form__button--styled" type="submit" aria-label="Search"><svg class="search-results-form__button-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.5" y1="15.5" x2="21" y2="21"></line></svg></button>
       <sc-if value="{{ sugOpen }}">
-        <div id="search-suggestions" role="listbox" aria-label="Search suggestions and recent history" style="position:absolute;left:-1px;right:-1px;top:calc(100% + 1px);z-index:40;background:#fff;border:1px solid var(--col-bg-primary);box-shadow:0 8px 24px rgba(0,0,0,0.12);display:flex;flex-direction:column;max-height:420px;overflow-y:auto">
+        <div class="search-results-search-suggestions" id="search-suggestions" role="listbox" aria-label="Search suggestions and recent history">
           <sc-if value="{{ hasHistory }}">
-            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px 6px;background:#f8f9fa;border-bottom:1px solid var(--col-border-neutral-mid)">
-              <span style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--col-text-muted);display:flex;align-items:center;gap:6px">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>Recent Searches
+            <div class="search-results-search-suggestions__group search-results-search-suggestions__group--v2">
+              <span class="search-results-search-suggestions__text search-results-search-suggestions__text--v2">
+                <svg class="search-results-search-suggestions__text-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>Recent Searches
               </span>
-              <button type="button" onMouseDown="{{ clearHistory }}" aria-label="Clear all recent searches" style="border:0;background:none;font-size:11px;font-weight:600;color:var(--col-text-muted);cursor:pointer;padding:0" style-hover="color:var(--col-bg-primary);text-decoration:underline">Clear all</button>
+              <button class="search-results-search-suggestions__button-clear-history" type="button" onMouseDown="{{ clearHistory }}" aria-label="Clear all recent searches">Clear all</button>
             </div>
             <sc-for list="{{ historyItems }}" as="h">
-              <div style="display:flex;align-items:center;justify-content:space-between;background:{{ h.bg }};border-bottom:1px solid #f0f2f5" style-hover="background:#e3f4fb">
-                <button type="button" role="option" aria-selected="{{ h.sel }}" onMouseDown="{{ h.pick }}" style="flex:1;min-width:0;border:0;background:none;padding:10px 14px;display:flex;align-items:center;gap:10px;text-align:left;font-size:15px;color:var(--col-text-primary);cursor:pointer">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6b7080" stroke-width="2" style="flex:none"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                  <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ h.text }}</span>
+              <div class="search-results-search-suggestions__group search-results-search-suggestions__group--v1" style="--dyn-background:{{ h.bg }}">
+                <button class="search-results-search-suggestions__button-pick search-results-search-suggestions__button-pick--v2" type="button" role="option" aria-selected="{{ h.sel }}" onMouseDown="{{ h.pick }}">
+                  <svg class="search-results-search-suggestions__button-icon search-results-search-suggestions__button-icon--styled" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6b7080" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                  <span class="search-results-search-suggestions__button-text search-results-search-suggestions__button-text--v2">{{ h.text }}</span>
                 </button>
-                <button type="button" aria-label="Remove '{{ h.text }}' from search history" onMouseDown="{{ h.remove }}" title="Remove from history" style="flex:none;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border:0;background:none;color:#9aa1af;cursor:pointer" style-hover="color:#d32f2f">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                <button class="search-results-search-suggestions__button-remove" type="button" aria-label="Remove '{{ h.text }}' from search history" onMouseDown="{{ h.remove }}" title="Remove from history">
+                  <svg class="search-results-search-suggestions__button-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>
               </div>
             </sc-for>
           </sc-if>
           <sc-if value="{{ hasSugs }}">
-            <div style="padding:10px 14px 6px;background:#f8f9fa;border-bottom:1px solid var(--col-border-neutral-mid);border-top:{{ sugsTopBorder }}">
-              <span style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--col-text-muted)">Suggested Terms</span>
+            <div class="search-results-search-suggestions__group search-results-search-suggestions__group--v3" style="--dyn-border-top:{{ sugsTopBorder }}">
+              <span class="search-results-search-suggestions__text search-results-search-suggestions__text--v1">Suggested Terms</span>
             </div>
             <sc-for list="{{ sugs }}" as="g">
-              <button type="button" role="option" aria-selected="{{ g.sel }}" onMouseDown="{{ g.pick }}" style="border:0;background:{{ g.bg }};padding:10px 14px;display:flex;justify-content:space-between;align-items:center;gap:12px;text-align:left;font-size:15px;color:var(--col-text-primary);cursor:pointer;border-bottom:1px solid #f0f2f5" style-hover="background:#e3f4fb">
-                <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ g.text }}</span>
-                <span style="flex:none;font-size:13px;color:var(--col-text-muted)">{{ g.cat }}</span>
+              <button class="search-results-search-suggestions__button-pick search-results-search-suggestions__button-pick--v1" type="button" role="option" aria-selected="{{ g.sel }}" onMouseDown="{{ g.pick }}" style="--dyn-background:{{ g.bg }}">
+                <span class="search-results-search-suggestions__button-text search-results-search-suggestions__button-text--v2">{{ g.text }}</span>
+                <span class="search-results-search-suggestions__button-text search-results-search-suggestions__button-text--v1">{{ g.cat }}</span>
               </button>
             </sc-for>
           </sc-if>
         </div>
       </sc-if>
     </form>
-    <div style="display:flex;align-items:center;justify-content:flex-end;gap:12px 16px;flex-wrap:wrap;flex:1 1 320px;min-width:0">
-      <div ref="{{ sortRef }}" style="position:relative;flex:1 1 140px;min-width:130px;max-width:204px">
-          <button onClick="{{ toggleSort }}" aria-haspopup="listbox" aria-expanded="{{ sortOpen }}" aria-label="Sort by" style="width:100%;height:48px;display:flex;align-items:stretch;border:1px solid var(--col-bg-primary);background:#fff;padding:0;cursor:pointer;text-align:left;font-size:16px">
-            <span style="flex:1;min-width:0;padding:0 14px;display:flex;align-items:center;color:{{ sortColor }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ sortLabel }}</span>
-            <span style="flex:0 0 44px;border-left:1px solid var(--col-bg-primary);display:flex;align-items:center;justify-content:center;color:var(--col-bg-primary)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" style="transform:{{ sortChev }};transition:transform .15s"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+    <div class="search-results-search-tools__group search-results-search-tools__group--v1">
+      <div class="search-results-search-tools__group-sort" ref="{{ sortRef }}">
+          <button class="search-results-search-tools__button-toggle-sort" onClick="{{ toggleSort }}" aria-haspopup="listbox" aria-expanded="{{ sortOpen }}" aria-label="Sort by">
+            <span class="search-results-search-tools__button-text search-results-search-tools__button-text--v2" style="--dyn-color:{{ sortColor }}">{{ sortLabel }}</span>
+            <span class="search-results-search-tools__button-text search-results-search-tools__button-text--v1"><svg class="search-results-search-tools__text-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" style="--dyn-transform:{{ sortChev }}"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
           </button>
           <sc-if value="{{ sortOpen }}">
-            <div role="listbox" style="position:absolute;left:0;right:0;top:100%;z-index:5;background:#fff;border:1px solid var(--col-bg-primary);border-top:0;display:flex;flex-direction:column;box-shadow:none">
+            <div class="search-results-search-tools__group-listbox" role="listbox">
               <sc-for list="{{ sortOpts }}" as="o">
-                <button role="option" aria-selected="{{ o.sel }}" onClick="{{ o.pick }}" style="border:0;background:{{ o.bg }};padding:12px 14px;text-align:left;font-size:16px;color:var(--col-text-primary);cursor:pointer" style-hover="background:#e3f4fb">{{ o.label }}</button>
+                <button class="search-results-listbox__button-pick search-results-listbox__button-pick--v2" role="option" aria-selected="{{ o.sel }}" onClick="{{ o.pick }}" style="--dyn-background:{{ o.bg }}">{{ o.label }}</button>
               </sc-for>
             </div>
           </sc-if>
         </div>
-      <button ref="{{ filterBtnRef }}" onClick="{{ openModal }}" aria-haspopup="dialog" style="height:48px;display:flex;align-items:center;gap:8px;border:1px solid var(--col-bg-primary);background:#fff;color:var(--col-bg-primary);padding:0 16px;font-size:17px;font-weight:600;cursor:pointer" style-hover="background:#f0f2f7">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="18" x2="20" y2="18"></line><line x1="15" y1="3.5" x2="15" y2="8.5"></line><line x1="9" y1="9.5" x2="9" y2="14.5"></line><line x1="13" y1="15.5" x2="13" y2="20.5"></line></svg>Filters
-        <sc-if value="{{ filterCount }}"><span style="min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:var(--col-bg-primary);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">{{ filterCount }}</span></sc-if>
+      <button class="search-results-search-tools__button-filter-btn" ref="{{ filterBtnRef }}" onClick="{{ openModal }}" aria-haspopup="dialog">
+        <svg class="search-results-search-tools__button-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="18" x2="20" y2="18"></line><line x1="15" y1="3.5" x2="15" y2="8.5"></line><line x1="9" y1="9.5" x2="9" y2="14.5"></line><line x1="13" y1="15.5" x2="13" y2="20.5"></line></svg>Filters
+        <sc-if value="{{ filterCount }}"><span class="search-results-search-tools__button-text search-results-search-tools__button-text--v3">{{ filterCount }}</span></sc-if>
       </button>
-      <a href="{{ advHref }}" style="height:48px;display:flex;align-items:center;gap:8px;white-space:nowrap;border:1px solid var(--col-bg-primary);background:#fff;color:var(--col-bg-primary);padding:0 16px;font-size:17px;font-weight:600;text-decoration:none" style-hover="background:#f0f2f7">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.5" y1="15.5" x2="21" y2="21"></line></svg>Advanced Search</a>
+      <a class="search-results-search-tools__link-advanced-search" href="{{ advHref }}">
+        <svg class="search-results-search-tools__link-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.5" y1="15.5" x2="21" y2="21"></line></svg>Advanced Search</a>
     </div>
   </div>
 </div>
 
-<main id="main-content" ref="{{ mainRef }}" style="flex:1;max-width:1440px;width:100%;margin:0 auto;padding:{{ padMain }};display:flex;flex-direction:column;gap:18px">
+<main class="search-results-main-content" id="main-content" ref="{{ mainRef }}" style="--dyn-padding:{{ padMain }}">
       <sc-if value="{{ hasActive }}">
-          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+          <div class="search-results-main-content__group search-results-main-content__group--v6">
             <sc-for list="{{ chips }}" as="c" hint-placeholder-count="2">
-              <button onClick="{{ c.remove }}" aria-label="Remove filter" style="display:flex;align-items:center;gap:8px;border:1px solid var(--col-bg-primary);background:var(--col-bg-selected);color:var(--col-bg-primary);padding:5px 10px 5px 14px;font-size:14px;cursor:pointer" style-hover="background:#d8e0ef">
-                <span><span style="color:#4a5577">{{ c.group }}:</span> {{ c.label }}</span>
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg>
+              <button class="search-results-main-content__button-remove" onClick="{{ c.remove }}" aria-label="Remove filter">
+                <span class="search-results-main-content__button-text"><span class="search-results-main-content__text search-results-main-content__text--v1">{{ c.group }}:</span> {{ c.label }}</span>
+                <svg class="search-results-main-content__button-icon" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg>
               </button>
             </sc-for>
-            <button onClick="{{ clearAll }}" style="border:0;background:none;color:#0b2a6b;font-size:14px;font-weight:600;text-decoration:underline;cursor:pointer">Clear all</button>
+            <button class="search-results-main-content__button-clear-all search-results-main-content__button-clear-all--v1" onClick="{{ clearAll }}">Clear all</button>
           </div>
         </sc-if>
-  <div style="columns:{{ cols }};column-gap:{{ colGap }}">
-    <div style="display:{{ wrapDisplay }}">
+  <div class="search-results-main-content__group search-results-main-content__group--v2" style="--dyn-columns:{{ cols }};--dyn-column-gap:{{ colGap }}">
+    <div class="search-results-main-content__group search-results-main-content__group--v7" style="--dyn-display:{{ wrapDisplay }}">
       <sc-if value="{{ loading }}">
-        <div aria-busy="true" aria-label="Loading results" style="display:contents">
+        <div class="search-results-loading-results" aria-busy="true" aria-label="Loading results">
           <sc-for list="{{ skeletons }}" as="k">
-            <div style="break-inside:avoid;margin:0 0 20px;background:#fff;border:1px solid #e3e0d9;display:flex;flex-direction:column">
-              <div style="display:{{ k.imgDisplay }};aspect-ratio:{{ k.ar }};background:linear-gradient(90deg,#ecebe7 0,#f6f5f2 40%,#ecebe7 80%);background-size:1200px 100%;animation:shimmer 1.3s linear infinite"></div>
-              <div style="padding:18px 20px 20px;display:flex;flex-direction:column;gap:10px">
-                <span style="height:18px;width:85%;background:linear-gradient(90deg,#ecebe7 0,#f6f5f2 40%,#ecebe7 80%);background-size:1200px 100%;animation:shimmer 1.3s linear infinite"></span>
-                <span style="height:18px;width:55%;background:linear-gradient(90deg,#ecebe7 0,#f6f5f2 40%,#ecebe7 80%);background-size:1200px 100%;animation:shimmer 1.3s linear infinite"></span>
-                <span style="height:12px;width:45%;margin-top:4px;background:linear-gradient(90deg,#ecebe7 0,#f6f5f2 40%,#ecebe7 80%);background-size:1200px 100%;animation:shimmer 1.3s linear infinite"></span>
-                <span style="height:10px;width:30%;background:linear-gradient(90deg,#ecebe7 0,#f6f5f2 40%,#ecebe7 80%);background-size:1200px 100%;animation:shimmer 1.3s linear infinite"></span>
+            <div class="search-results-loading-results__group search-results-loading-results__group--v1">
+              <div class="search-results-loading-results__group search-results-loading-results__group--v2" style="--dyn-display:{{ k.imgDisplay }};--dyn-aspect-ratio:{{ k.ar }}"></div>
+              <div class="search-results-loading-results__group search-results-loading-results__group--v3">
+                <span class="search-results-loading-results__text search-results-loading-results__text--v4"></span>
+                <span class="search-results-loading-results__text search-results-loading-results__text--v3"></span>
+                <span class="search-results-loading-results__text search-results-loading-results__text--v2"></span>
+                <span class="search-results-loading-results__text search-results-loading-results__text--v1"></span>
               </div>
             </div>
           </sc-for>
@@ -454,29 +366,29 @@ button,input,select{font-family:inherit}
       </sc-if>
 
       <sc-if value="{{ isEmpty }}">
-        <div style="background:#fff;border:1px solid #e3e0d9;padding:48px 24px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center">
-          <h3 style="margin:0;font-family:'Fraunces',serif;font-weight:500;font-size:24px">No records match your search</h3>
-          <p style="margin:0;color:var(--col-text-muted);font-size:15px">Try removing a filter or broadening your search terms.</p>
+        <div class="search-results-main-content__group search-results-main-content__group--v1">
+          <h3 class="search-results-main-content__heading-no-records-match">No records match your search</h3>
+          <p class="search-results-main-content__text search-results-main-content__text--v2">Try removing a filter or broadening your search terms.</p>
           <sc-if value="{{ showDidYouMean }}">
-            <p style="margin:0;font-size:15px;color:var(--col-text-primary)">Did you mean: <button onClick="{{ applyDidYouMean }}" style="border:0;background:none;padding:0;font-size:15px;font-weight:600;text-decoration:underline;color:#0b2a6b;cursor:pointer">{{ didYouMeanText }}</button>?</p>
+            <p class="search-results-main-content__text search-results-main-content__text--v3">Did you mean: <button class="search-results-main-content__text-button-apply-did-you" onClick="{{ applyDidYouMean }}">{{ didYouMeanText }}</button>?</p>
           </sc-if>
-          <button onClick="{{ clearAll }}" style="margin-top:8px;border:0;background:var(--col-btn-action-bg);color:var(--col-btn-action-text);padding:10px 18px;font-size:15px;font-weight:600;cursor:pointer">Clear all filters</button>
+          <button class="search-results-main-content__button-clear-all search-results-main-content__button-clear-all--v2" onClick="{{ clearAll }}">Clear all filters</button>
         </div>
       </sc-if>
 
       <sc-if value="{{ isGrid }}" hint-placeholder-val="{{ true }}">
-        <div style="display:contents">
+        <div class="search-results-main-content__group search-results-main-content__group--v3">
           <sc-for list="{{ results }}" as="r" hint-placeholder-count="9">
-            <article style="break-inside:avoid;margin:0 0 20px;position:relative;animation:cardIn .35s ease both;animation-delay:{{ r.delay }};background:#fff;border:1px solid #e3e0d9;display:flex;flex-direction:column;transition:box-shadow .2s" style-hover="">
+            <article class="search-results-main-content__article search-results-main-content__article--v1" style="--dyn-animation-delay:{{ r.delay }}">
               <sc-if value="{{ r.hasImg }}" hint-placeholder-val="{{ false }}">
-                <a href="{{ r.href }}" style="display:block;background:#f4f3f0;line-height:0;aspect-ratio:{{ r.ar }};overflow:hidden"><img src="{{ r.imgSrc }}" alt="{{ r.title }}" decoding="async" style="display:block;width:100%;height:100%;object-fit:cover;animation:imgIn .5s ease both"></a>
+                <a class="search-results-article__link search-results-article__link--v1" href="{{ r.href }}" style="--dyn-aspect-ratio:{{ r.ar }}"><img class="search-results-article__link-image search-results-article__link-image--v1" src="{{ r.imgSrc }}" alt="{{ r.title }}" decoding="async"></a>
               </sc-if>
               
-              <div style="padding:18px 20px 20px;display:flex;flex-direction:column;gap:8px">
-                <a href="{{ r.href }}" style="font-family:'Fraunces',serif;font-weight:600;font-size:19px;line-height:1.3;color:var(--col-text-primary);text-wrap:pretty">{{ r.title }}</a>
-                <a href="/collections/index.html" style="font-size:14px;color:#0b4ea2">{{ r.collection }}</a>
-                <span style="font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--col-bg-primary)">{{ r.type }}</span>
-                <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:4px;padding-top:12px;border-top:1px solid var(--col-border-neutral-soft)">
+              <div class="search-results-article__group search-results-article__group--v4">
+                <a class="search-results-article__link search-results-article__link--v4" href="{{ r.href }}">{{ r.title }}</a>
+                <a class="search-results-article__link search-results-article__link--v5" href="/collections/index.html">{{ r.collection }}</a>
+                <span class="search-results-article__text search-results-article__text--v5">{{ r.type }}</span>
+                <div class="search-results-article__group search-results-article__group--v1">
                   <ccs-licence licence="{{ r.licenceKey }}"></ccs-licence>
                 </div>
               </div>
@@ -486,22 +398,22 @@ button,input,select{font-family:inherit}
       </sc-if>
 
       <sc-if value="{{ isList }}">
-        <div style="display:flex;flex-direction:column;background:#fff;border:1px solid #e3e0d9">
+        <div class="search-results-main-content__group search-results-main-content__group--v5">
           <sc-for list="{{ results }}" as="r" hint-placeholder-count="6">
-            <article style="display:flex;gap:{{ listGap }};padding:16px;border-bottom:1px solid var(--col-border-neutral-soft);align-items:flex-start" style-hover="background:#fcfbf8">
+            <article class="search-results-main-content__article search-results-main-content__article--v2" style="--dyn-gap:{{ listGap }}">
               <sc-if value="{{ r.hasImg }}" hint-placeholder-val="{{ false }}">
-                <a href="{{ r.href }}" style="flex:0 0 {{ listImgSize }};height:{{ listImgSize }};position:relative;background:#f4f3f0;overflow:hidden">
-                  <img src="{{ r.imgSrc }}" alt="{{ r.title }}" style="position:absolute;inset:6px;width:calc(100% - 12px);height:calc(100% - 12px);object-fit:contain;mix-blend-mode:multiply">
+                <a class="search-results-article__link search-results-article__link--v2" href="{{ r.href }}" style="--dyn-flex:{{ listImgSize }};--dyn-height:{{ listImgSize }}">
+                  <img class="search-results-article__link-image search-results-article__link-image--v2" src="{{ r.imgSrc }}" alt="{{ r.title }}">
                 </a>
               </sc-if>
-              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px">
-                <a href="{{ r.href }}" style="font-family:'Fraunces',serif;font-weight:600;font-size:19px;line-height:1.3;color:var(--col-text-primary)">{{ r.title }}</a>
-                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:6px 20px;margin-top:6px;font-size:14px">
-                  <span style="display:flex;flex-direction:column"><span style="color:var(--col-text-muted);font-size:12px">Creator</span>{{ r.creator }}</span>
-                  <span style="display:flex;flex-direction:column"><span style="color:var(--col-text-muted);font-size:12px">Production date</span>{{ r.dateLabel }}</span>
-                  <span style="display:flex;flex-direction:column"><span style="color:var(--col-text-muted);font-size:12px">Collection</span><span style="color:#0b4ea2">{{ r.collection }}</span></span>
-                  <span style="display:flex;flex-direction:column"><span style="color:var(--col-text-muted);font-size:12px">Object type</span>{{ r.type }}</span>
-                  <span style="display:flex;flex-direction:column;align-items:flex-start;gap:2px"><span style="color:var(--col-text-muted);font-size:12px">Licence</span><ccs-licence licence="{{ r.licenceKey }}"></ccs-licence></span>
+              <div class="search-results-article__group search-results-article__group--v3">
+                <a class="search-results-article__link search-results-article__link--v3" href="{{ r.href }}">{{ r.title }}</a>
+                <div class="search-results-article__group search-results-article__group--v2">
+                  <span class="search-results-article__text search-results-article__text--v3"><span class="search-results-article__text search-results-article__text--v2">Creator</span>{{ r.creator }}</span>
+                  <span class="search-results-article__text search-results-article__text--v3"><span class="search-results-article__text search-results-article__text--v2">Production date</span>{{ r.dateLabel }}</span>
+                  <span class="search-results-article__text search-results-article__text--v3"><span class="search-results-article__text search-results-article__text--v2">Collection</span><span class="search-results-article__text search-results-article__text--v1">{{ r.collection }}</span></span>
+                  <span class="search-results-article__text search-results-article__text--v3"><span class="search-results-article__text search-results-article__text--v2">Object type</span>{{ r.type }}</span>
+                  <span class="search-results-article__text search-results-article__text--v4"><span class="search-results-article__text search-results-article__text--v2">Licence</span><ccs-licence licence="{{ r.licenceKey }}"></ccs-licence></span>
                 </div>
               </div>
             </article>
@@ -511,77 +423,77 @@ button,input,select{font-family:inherit}
     </div>
   </div>
   <sc-if value="{{ showPager }}">
-    <div style="display:flex;flex-direction:column;align-items:center;gap:10px;padding-top:8px">
-      <nav aria-label="Pagination" style="display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap">
-        <button onClick="{{ prevPage }}" aria-label="Previous page" disabled="{{ !hasPrev }}" style="width:40px;height:40px;border-radius:0;border:0;background:none;color:{{ prevColor }};cursor:pointer;display:flex;align-items:center;justify-content:center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="15 6 9 12 15 18"></polyline></svg></button>
-        <sc-for list="{{ pages }}" as="pg"><button onClick="{{ pg.go }}" aria-current="{{ pg.current }}" style="min-width:40px;height:40px;padding:0 4px;border-radius:0;border:0;background:{{ pg.bg }};color:{{ pg.color }};font-size:15px;font-weight:600;cursor:{{ pg.cursor }}">{{ pg.n }}</button></sc-for>
-        <button onClick="{{ nextPage }}" aria-label="Next page" disabled="{{ !hasNext }}" style="height:40px;padding:0 18px;border-radius:0;border:0;background:{{ nextBg }};color:{{ nextColor }};font-size:15px;font-weight:600;cursor:{{ nextCursor }};display:flex;align-items:center;gap:6px">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="9 6 15 12 9 18"></polyline></svg></button>
+    <div class="search-results-main-content__group search-results-main-content__group--v4">
+      <nav class="search-results-pagination" aria-label="Pagination">
+        <button class="search-results-pagination__button-prev-page" onClick="{{ prevPage }}" aria-label="Previous page" disabled="{{ !hasPrev }}" style="--dyn-color:{{ prevColor }}"><svg class="search-results-pagination__button-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="15 6 9 12 15 18"></polyline></svg></button>
+        <sc-for list="{{ pages }}" as="pg"><button class="search-results-pagination__button-go" onClick="{{ pg.go }}" aria-current="{{ pg.current }}" style="--dyn-background:{{ pg.bg }};--dyn-color:{{ pg.color }};--dyn-cursor:{{ pg.cursor }}">{{ pg.n }}</button></sc-for>
+        <button class="search-results-pagination__button-next-page" onClick="{{ nextPage }}" aria-label="Next page" disabled="{{ !hasNext }}" style="--dyn-background:{{ nextBg }};--dyn-color:{{ nextColor }};--dyn-cursor:{{ nextCursor }}">Next<svg class="search-results-pagination__button-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="9 6 15 12 9 18"></polyline></svg></button>
       </nav>
-      <button onClick="{{ toTop }}" style="display:flex;align-items:center;gap:6px;border:0;background:none;color:var(--col-bg-primary);font-size:13px;font-weight:600;cursor:pointer"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 15 12 9 18 15"></polyline></svg>Back to top</button>
+      <button class="search-results-main-content__button-top" onClick="{{ toTop }}"><svg class="search-results-main-content__button-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 15 12 9 18 15"></polyline></svg>Back to top</button>
     </div>
   </sc-if>
 </main>
 
 
 <sc-if value="{{ modal }}">
-  <div onClick="{{ closeModal }}" style="position:fixed;inset:0;z-index:100;background:rgba(10,14,25,.55);display:flex;align-items:center;justify-content:center;padding:{{ overlayPad }}">
-    <div ref="{{ dialogRef }}" role="dialog" aria-modal="true" aria-labelledby="filters-title" data-dc-plain-interp onClick="{{ stop }}" onKeyDown="{{ trapKey }}" style="width:100%;max-width:800px;height:100%;max-height:{{ dlgMaxH }};background:#fff;border-radius:0;box-shadow:none;border:1px solid var(--col-bg-primary);display:flex;flex-direction:column;overflow:hidden">
-      <div style="position:relative;flex:none;height:64px;display:flex;align-items:center;justify-content:center;border-bottom:1px solid #ebe8e2">
-        <button onClick="{{ toggleAllSections }}" style="position:absolute;left:20px;top:18px;border:0;background:none;padding:4px;font-size:14px;font-weight:600;color:#0b2a6b;text-decoration:underline;cursor:pointer">{{ allSectionsLabel }}</button>
-        <h2 id="filters-title" style="margin:0;font-size:18px;font-weight:700;color:var(--col-bg-primary)">Filters</h2>
-        <button onClick="{{ closeModal }}" aria-label="Close filters" style="position:absolute;right:16px;top:14px;width:36px;height:36px;border:0;border-radius:0;background:none;color:var(--col-text-primary);cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="background:#f2f1ed">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><line x1="5" y1="5" x2="19" y2="19"></line><line x1="19" y1="5" x2="5" y2="19"></line></svg>
+  <div class="search-results-page__group search-results-page__group--v2" onClick="{{ closeModal }}" style="--dyn-padding:{{ overlayPad }}">
+    <div class="search-results-filters-title" ref="{{ dialogRef }}" role="dialog" aria-modal="true" aria-labelledby="filters-title" data-dc-plain-interp onClick="{{ stop }}" onKeyDown="{{ trapKey }}" style="--dyn-max-height:{{ dlgMaxH }}">
+      <div class="search-results-filters-title__group search-results-filters-title__group--v6">
+        <button class="search-results-filters-title__button-toggle-all-sections" onClick="{{ toggleAllSections }}">{{ allSectionsLabel }}</button>
+        <h2 class="search-results-filters-title__heading" id="filters-title">Filters</h2>
+        <button class="search-results-filters-title__button-close-modal" onClick="{{ closeModal }}" aria-label="Close filters">
+          <svg class="search-results-filters-title__button-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><line x1="5" y1="5" x2="19" y2="19"></line><line x1="19" y1="5" x2="5" y2="19"></line></svg>
         </button>
       </div>
-      <div ref="{{ bodyRef }}" style="flex:1;min-height:0;overflow-y:auto;padding:0 {{ bodyPad }}">
-        <div style="padding:20px 0;border-bottom:1px solid #ebe8e2;display:flex;flex-direction:column;gap:14px">
-          <div style="display:flex;flex-direction:column;gap:10px">
-            <span style="font-size:16px;font-weight:600;color:var(--col-text-primary)">Show only</span>
-            <div style="display:flex;flex-direction:column;gap:14px"><sc-for list="{{ dSwitches }}" as="sw" hint-placeholder-count="2"><button onClick="{{ sw.toggle }}" role="switch" aria-checked="{{ sw.on }}" style="display:flex;align-items:center;gap:10px;border:0;background:none;padding:0;cursor:pointer;font-size:16px;color:var(--col-text-primary)"><span style="width:38px;height:22px;border-radius:999px;border:1px solid var(--col-bg-primary);background:{{ sw.trackBg }};flex:none;position:relative;transition:background .15s"><span style="position:absolute;top:1px;left:{{ sw.knobLeft }};width:16px;height:16px;border-radius:50%;background:#fff;transition:left .15s"></span></span>{{ sw.label }}</button></sc-for></div>
+      <div class="search-results-filters-title__group-body" ref="{{ bodyRef }}" style="--dyn-padding:{{ bodyPad }}">
+        <div class="search-results-filters-title__group search-results-filters-title__group--v5">
+          <div class="search-results-filters-title__group search-results-filters-title__group--v2">
+            <span class="search-results-filters-title__text search-results-filters-title__text--v2">Show only</span>
+            <div class="search-results-filters-title__group search-results-filters-title__group--v3"><sc-for list="{{ dSwitches }}" as="sw" hint-placeholder-count="2"><button class="search-results-filters-title__button-toggle" onClick="{{ sw.toggle }}" role="switch" aria-checked="{{ sw.on }}"><span class="search-results-filters-title__button-text" style="--dyn-background:{{ sw.trackBg }}"><span class="search-results-filters-title__text search-results-filters-title__text--v3" style="--dyn-left:{{ sw.knobLeft }}"></span></span>{{ sw.label }}</button></sc-for></div>
           </div>
         </div>
         <sc-for list="{{ sections }}" as="sec" hint-placeholder-count="8">
-          <section style="border-bottom:1px solid #ebe8e2">
-            <button onClick="{{ sec.toggle }}" aria-expanded="{{ sec.open }}" aria-controls="{{ sec.panelId }}" style="width:100%;border:0;background:none;padding:22px 0;display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;text-align:left">
-              <span style="min-width:0;display:flex;flex-direction:column;gap:4px">
-                <span style="display:flex;align-items:center;gap:10px;font-size:20px;font-weight:600;color:var(--col-text-primary)">{{ sec.title }}<sc-if value="{{ sec.badge }}"><span style="min-width:22px;height:22px;padding:0 7px;border-radius:999px;background:var(--col-bg-primary);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">{{ sec.badge }}</span></sc-if></span>
-                <sc-if value="{{ sec.showSummary }}"><span style="font-size:14px;color:#4a5577;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ sec.summary }}</span></sc-if>
+          <section class="search-results-filters-title__section">
+            <button class="search-results-section__button-toggle search-results-section__button-toggle--v3" onClick="{{ sec.toggle }}" aria-expanded="{{ sec.open }}" aria-controls="{{ sec.panelId }}">
+              <span class="search-results-section__button-text search-results-section__button-text--v3">
+                <span class="search-results-section__text search-results-section__text--v2">{{ sec.title }}<sc-if value="{{ sec.badge }}"><span class="search-results-section__text search-results-section__text--v6">{{ sec.badge }}</span></sc-if></span>
+                <sc-if value="{{ sec.showSummary }}"><span class="search-results-section__text search-results-section__text--v4">{{ sec.summary }}</span></sc-if>
               </span>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--col-text-primary)" stroke-width="2.4" style="flex:none;transform:{{ sec.chev }};transition:transform .2s"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              <svg class="search-results-section__button-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--col-text-primary)" stroke-width="2.4" style="--dyn-transform:{{ sec.chev }}"><polyline points="6 9 12 15 18 9"></polyline></svg>
             </button>
             <sc-if value="{{ sec.open }}">
-              <div id="{{ sec.panelId }}" style="padding:0 0 26px;display:flex;flex-direction:column;gap:6px">
+              <div class="search-results-section__group search-results-section__group--v3" id="{{ sec.panelId }}">
                 <sc-if value="{{ sec.search }}">
-                  <input value="{{ sec.q }}" onChange="{{ sec.onQ }}" aria-label="{{ sec.searchLabel }}" placeholder="{{ sec.searchLabel }}" style="border:1px solid var(--col-border-neutral);border-radius:0;padding:12px 16px;font-size:16px;margin-bottom:6px">
+                  <input class="search-results-section__input-q" value="{{ sec.q }}" onChange="{{ sec.onQ }}" aria-label="{{ sec.searchLabel }}" placeholder="{{ sec.searchLabel }}">
                 </sc-if>
                 <sc-if value="{{ sec.isChips }}">
-                  <div style="display:flex;gap:10px;flex-wrap:wrap">
-                    <sc-for list="{{ sec.options }}" as="o"><button onClick="{{ o.toggle }}" disabled="{{ o.disabled }}" aria-pressed="{{ o.checked }}" style="border:1px solid {{ o.pillBorder }};background:{{ o.pillBg }};color:{{ o.pillColor }};padding:9px 16px;font-size:15px;cursor:{{ o.cursor }};display:flex;gap:6px" style-hover="border-color:var(--col-bg-primary)">{{ o.label }}<span style="opacity:.7">{{ o.count }}</span></button></sc-for>
+                  <div class="search-results-section__group search-results-section__group--v2">
+                    <sc-for list="{{ sec.options }}" as="o"><button class="search-results-section__button-toggle search-results-section__button-toggle--v1" onClick="{{ o.toggle }}" disabled="{{ o.disabled }}" aria-pressed="{{ o.checked }}" style="--dyn-border:{{ o.pillBorder }};--dyn-background:{{ o.pillBg }};--dyn-color:{{ o.pillColor }};--dyn-cursor:{{ o.cursor }}">{{ o.label }}<span class="search-results-section__button-text search-results-section__button-text--v4">{{ o.count }}</span></button></sc-for>
                   </div>
                 </sc-if>
                 <sc-if value="{{ sec.isRows }}">
-                  <sc-for list="{{ sec.options }}" as="o"><button onClick="{{ o.toggle }}" disabled="{{ o.disabled }}" role="checkbox" aria-checked="{{ o.ariaChecked }}" style="display:flex;align-items:center;gap:14px;border:0;background:none;padding:9px 0 9px {{ o.indent }};cursor:{{ o.cursor }};text-align:left;font-size:16px;font-weight:{{ o.weight }};color:{{ o.color }}"><span style="flex:0 0 22px;height:22px;border-radius:0;border:1.5px solid {{ o.boxBorder }};background:{{ o.boxBg }};display:flex;align-items:center;justify-content:center"><sc-if value="{{ o.checked }}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5"><polyline points="4 12 10 18 20 6"></polyline></svg></sc-if><sc-if value="{{ o.partial }}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="4"><line x1="5" y1="12" x2="19" y2="12"></line></svg></sc-if></span><span style="flex:1">{{ o.label }} <span style="color:var(--col-text-muted);font-weight:400">{{ o.countLabel }}</span></span></button></sc-for>
+                  <sc-for list="{{ sec.options }}" as="o"><button class="search-results-section__button-toggle search-results-section__button-toggle--v2" onClick="{{ o.toggle }}" disabled="{{ o.disabled }}" role="checkbox" aria-checked="{{ o.ariaChecked }}" style="--dyn-padding:{{ o.indent }};--dyn-cursor:{{ o.cursor }};--dyn-font-weight:{{ o.weight }};--dyn-color:{{ o.color }}"><span class="search-results-section__button-text search-results-section__button-text--v1" style="--dyn-border:{{ o.boxBorder }};--dyn-background:{{ o.boxBg }}"><sc-if value="{{ o.checked }}"><svg class="search-results-section__text-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5"><polyline points="4 12 10 18 20 6"></polyline></svg></sc-if><sc-if value="{{ o.partial }}"><svg class="search-results-section__text-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="4"><line x1="5" y1="12" x2="19" y2="12"></line></svg></sc-if></span><span class="search-results-section__button-text search-results-section__button-text--v2">{{ o.label }} <span class="search-results-section__text search-results-section__text--v1">{{ o.countLabel }}</span></span></button></sc-for>
                 </sc-if>
-                <sc-if value="{{ sec.empty }}"><span style="font-size:15px;color:var(--col-text-muted);padding:6px 0">No matching options</span></sc-if>
-                <sc-if value="{{ sec.hasMore }}"><button onClick="{{ sec.toggleMore }}" style="align-self:flex-start;margin-top:8px;border:0;background:none;padding:0;font-size:16px;font-weight:600;text-decoration:underline;color:var(--col-text-primary);cursor:pointer">{{ sec.moreLabel }}</button></sc-if>
+                <sc-if value="{{ sec.empty }}"><span class="search-results-section__text search-results-section__text--v5">No matching options</span></sc-if>
+                <sc-if value="{{ sec.hasMore }}"><button class="search-results-section__button-toggle-more" onClick="{{ sec.toggleMore }}">{{ sec.moreLabel }}</button></sc-if>
                 <sc-if value="{{ sec.isDate }}">
                   <div class="date-facet">
                     <span class="date-note">{{ dateNote }}</span>
                     <p class="date-summary" aria-live="polite">{{ dateSummary }}</p>
                     <div class="date-hist" aria-hidden="true">
-                      <sc-for list="{{ bins }}" as="b" hint-placeholder-count="34"><span title="{{ b.title }}" style="height:{{ b.h }};background:{{ b.bg }}"></span></sc-for>
+                      <sc-for list="{{ bins }}" as="b" hint-placeholder-count="34"><span class="date-hist__text" title="{{ b.title }}" style="--dyn-height:{{ b.h }};--dyn-background:{{ b.bg }}"></span></sc-for>
                     </div>
                     <div ref="{{ trackRef }}" class="date-track" onPointerDown="{{ downTrack }}">
                       <div class="date-rail"></div>
-                      <span class="date-fill" style="left:{{ rangeLeft }};width:{{ rangeWidth }}"></span>
-                      <button type="button" class="date-range-handle" onPointerDown="{{ downFrom }}" onKeyDown="{{ fromKey }}" role="slider" aria-orientation="horizontal" aria-valuenow="{{ fromYear }}" aria-valuemin="{{ domLo }}" aria-valuemax="{{ fromMax }}" aria-valuetext="{{ fromText }}" aria-describedby="date-range-hint" aria-label="Earliest year" style="left:{{ rangeLeft }}"></button>
-                      <button type="button" class="date-range-handle" onPointerDown="{{ downTo }}" onKeyDown="{{ toKey }}" role="slider" aria-orientation="horizontal" aria-valuenow="{{ toYear }}" aria-valuemin="{{ toMin }}" aria-valuemax="{{ domHi }}" aria-valuetext="{{ toText }}" aria-describedby="date-range-hint" aria-label="Latest year" style="left:{{ rangeRight }}"></button>
+                      <span class="date-fill date-fill--styled" style="--dyn-left:{{ rangeLeft }};--dyn-width:{{ rangeWidth }}"></span>
+                      <button type="button" class="date-range-handle date-range-handle--styled" onPointerDown="{{ downFrom }}" onKeyDown="{{ fromKey }}" role="slider" aria-orientation="horizontal" aria-valuenow="{{ fromYear }}" aria-valuemin="{{ domLo }}" aria-valuemax="{{ fromMax }}" aria-valuetext="{{ fromText }}" aria-describedby="date-range-hint" aria-label="Earliest year" style="--dyn-left:{{ rangeLeft }}"></button>
+                      <button type="button" class="date-range-handle date-range-handle--styled" onPointerDown="{{ downTo }}" onKeyDown="{{ toKey }}" role="slider" aria-orientation="horizontal" aria-valuenow="{{ toYear }}" aria-valuemin="{{ toMin }}" aria-valuemax="{{ domHi }}" aria-valuetext="{{ toText }}" aria-describedby="date-range-hint" aria-label="Latest year" style="--dyn-left:{{ rangeRight }}"></button>
                     </div>
-                    <div class="date-ends"><span>{{ domLoLabel }}</span><span>{{ domHi }}</span></div>
-                    <span id="date-range-hint" class="sr-only">Arrow keys change this handle by one year, Page Up and Page Down by ten years, Home and End jump to the limits. You can also type years into the Earliest and Latest fields.</span>
+                    <div class="date-ends"><span class="date-ends__text">{{ domLoLabel }}</span><span class="date-ends__text">{{ domHi }}</span></div>
+                    <span id="date-range-hint" class="sr-only search-results-date-range-hint">Arrow keys change this handle by one year, Page Up and Page Down by ten years, Home and End jump to the limits. You can also type years into the Earliest and Latest fields.</span>
                     <div class="date-inputs">
-                      <label class="date-field"><span>Earliest year</span><input inputmode="numeric" value="{{ yInFrom }}" onChange="{{ onYFrom }}" onBlur="{{ commitYears }}" onKeyDown="{{ yKey }}" placeholder="Any" aria-label="Earliest year"></label>
-                      <label class="date-field date-field--end"><span>Latest year</span><input inputmode="numeric" value="{{ yInTo }}" onChange="{{ onYTo }}" onBlur="{{ commitYears }}" onKeyDown="{{ yKey }}" placeholder="Any" aria-label="Latest year"></label>
+                      <label class="date-field"><span class="date-field__text">Earliest year</span><input class="date-field__input-yfrom" inputmode="numeric" value="{{ yInFrom }}" onChange="{{ onYFrom }}" onBlur="{{ commitYears }}" onKeyDown="{{ yKey }}" placeholder="Any" aria-label="Earliest year"></label>
+                      <label class="date-field date-field--end"><span class="date-field__text">Latest year</span><input class="date-field__input-yto" inputmode="numeric" value="{{ yInTo }}" onChange="{{ onYTo }}" onBlur="{{ commitYears }}" onKeyDown="{{ yKey }}" placeholder="Any" aria-label="Latest year"></label>
                     </div>
                     <p class="date-help">Use a minus sign for years BCE, e.g. -400.</p>
                     <sc-if value="{{ yErr }}"><span role="alert" class="date-error">{{ yErr }}</span></sc-if>
@@ -589,27 +501,27 @@ button,input,select{font-family:inherit}
                   </div>
                 </sc-if>
                 <sc-if value="{{ sec.isText }}">
-                  <input value="{{ sec.accessionVal }}" onChange="{{ sec.onAccession }}" aria-label="Accession number" placeholder="e.g. MHM2017.28" style="border:1px solid var(--col-border-neutral);border-radius:0;padding:12px 16px;font-size:16px;max-width:320px">
+                  <input class="search-results-section__input-accession" value="{{ sec.accessionVal }}" onChange="{{ sec.onAccession }}" aria-label="Accession number" placeholder="e.g. MHM2017.28">
                 </sc-if>
                 <sc-if value="{{ sec.isLife }}">
-                  <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap">
-                    <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--col-text-muted)">{{ sec.lifeFromLabel }}<input inputmode="numeric" value="{{ sec.lifeFromVal }}" onChange="{{ sec.onLifeFrom }}" placeholder="{{ sec.lifeFromHint }}" aria-label="{{ sec.lifeFromLabel }}" style="width:130px;border:1px solid var(--col-border-neutral);border-radius:0;padding:11px 14px;font-size:16px;color:var(--col-text-primary)"></label>
-                    <span style="padding-bottom:12px;color:var(--col-text-muted)">to</span>
-                    <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--col-text-muted)">{{ sec.lifeToLabel }}<input inputmode="numeric" value="{{ sec.lifeToVal }}" onChange="{{ sec.onLifeTo }}" placeholder="{{ sec.lifeToHint }}" aria-label="{{ sec.lifeToLabel }}" style="width:130px;border:1px solid var(--col-border-neutral);border-radius:0;padding:11px 14px;font-size:16px;color:var(--col-text-primary)"></label>
+                  <div class="search-results-section__group search-results-section__group--v1">
+                    <label class="search-results-section__label">{{ sec.lifeFromLabel }}<input class="search-results-section__label-input-life-from" inputmode="numeric" value="{{ sec.lifeFromVal }}" onChange="{{ sec.onLifeFrom }}" placeholder="{{ sec.lifeFromHint }}" aria-label="{{ sec.lifeFromLabel }}"></label>
+                    <span class="search-results-section__text search-results-section__text--v7">to</span>
+                    <label class="search-results-section__label">{{ sec.lifeToLabel }}<input class="search-results-section__label-input-life" inputmode="numeric" value="{{ sec.lifeToVal }}" onChange="{{ sec.onLifeTo }}" placeholder="{{ sec.lifeToHint }}" aria-label="{{ sec.lifeToLabel }}"></label>
                   </div>
-                  <span style="font-size:13px;color:var(--col-text-muted)">{{ sec.lifeNote }}</span>
+                  <span class="search-results-section__text search-results-section__text--v3">{{ sec.lifeNote }}</span>
                 </sc-if>
               </div>
             </sc-if>
           </section>
         </sc-for>
       </div>
-      <div style="flex:none;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 24px;border-top:1px solid #ebe8e2">
-        <button onClick="{{ clearDraft }}" style="border:0;background:none;padding:10px 8px;font-size:16px;font-weight:600;text-decoration:underline;color:{{ clearColor }};cursor:pointer">Clear all</button>
-        <div style="display:flex;align-items:center;gap:14px">
-          <sc-if value="{{ zeroDraft }}"><span style="font-size:14px;color:var(--col-text-muted)">Remove a filter to see results</span></sc-if>
-          <button onClick="{{ applyModal }}" disabled="{{ applyDisabled }}" aria-live="polite" style="border:0;background:{{ applyBg }};color:{{ applyColor }};border-radius:0;padding:14px 24px;font-size:16px;font-weight:600;cursor:{{ applyCursor }};min-width:190px;display:flex;align-items:center;justify-content:center;gap:10px">
-            <sc-if value="{{ counting }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="animation:spin .8s linear infinite"><path d="M12 3a9 9 0 1 0 9 9"></path></svg></sc-if>{{ showLabel }}</button>
+      <div class="search-results-filters-title__group search-results-filters-title__group--v4">
+        <button class="search-results-filters-title__button-clear-draft" onClick="{{ clearDraft }}" style="--dyn-color:{{ clearColor }}">Clear all</button>
+        <div class="search-results-filters-title__group search-results-filters-title__group--v1">
+          <sc-if value="{{ zeroDraft }}"><span class="search-results-filters-title__text search-results-filters-title__text--v1">Remove a filter to see results</span></sc-if>
+          <button class="search-results-filters-title__button-apply-modal" onClick="{{ applyModal }}" disabled="{{ applyDisabled }}" aria-live="polite" style="--dyn-background:{{ applyBg }};--dyn-color:{{ applyColor }};--dyn-cursor:{{ applyCursor }}">
+            <sc-if value="{{ counting }}"><svg class="search-results-filters-title__button-icon search-results-filters-title__button-icon--styled" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 3a9 9 0 1 0 9 9"></path></svg></sc-if>{{ showLabel }}</button>
         </div>
       </div>
     </div>
@@ -617,21 +529,21 @@ button,input,select{font-family:inherit}
 </sc-if>
 
 <sc-if value="{{ ackOpen }}">
-  <div onClick="{{ closeAck }}" style="position:fixed;inset:0;z-index:120;background:rgba(10,14,25,.6);display:flex;align-items:center;justify-content:center;padding:24px 16px">
-    <div ref="{{ ackRef }}" role="dialog" aria-modal="true" aria-labelledby="ack-title" onClick="{{ stop }}" onKeyDown="{{ ackTrapKey }}" style="position:relative;width:100%;max-width:620px;max-height:100%;overflow-y:auto;background:#fff;border-radius:0;box-shadow:none;border:1px solid var(--col-bg-primary);display:flex;flex-direction:column">
-      <button onClick="{{ closeAck }}" aria-label="Close notification" style="position:absolute;right:16px;top:16px;width:36px;height:36px;border:0;border-radius:0;background:none;color:var(--col-text-primary);cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="background:#f2f1ed">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><line x1="5" y1="5" x2="19" y2="19"></line><line x1="19" y1="5" x2="5" y2="19"></line></svg>
+  <div class="search-results-page__group search-results-page__group--v3" onClick="{{ closeAck }}">
+    <div class="search-results-ack-title" ref="{{ ackRef }}" role="dialog" aria-modal="true" aria-labelledby="ack-title" onClick="{{ stop }}" onKeyDown="{{ ackTrapKey }}">
+      <button class="search-results-ack-title__button-close-ack" onClick="{{ closeAck }}" aria-label="Close notification">
+        <svg class="search-results-ack-title__button-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><line x1="5" y1="5" x2="19" y2="19"></line><line x1="19" y1="5" x2="5" y2="19"></line></svg>
       </button>
-      <div style="padding:28px 32px 8px;display:flex;flex-direction:column;gap:14px">
-        <span style="font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--col-advisory-text)">Indigenous Cultural Notification</span>
-        <h2 id="ack-title" style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:26px;line-height:1.2;color:var(--col-bg-primary)">Before you explore the collections</h2>
-        <p style="margin:0;font-size:16px;line-height:1.55;color:var(--col-text-primary);text-wrap:pretty">The University of Melbourne acknowledge Aboriginal and Torres Strait Islander people as the Traditional Owners of the unceded lands on which we work, learn and live. We pay respect to Elders past, present and future, and acknowledge the importance of Indigenous knowledge in the Academy.</p>
-        <p style="margin:0;font-size:16px;line-height:1.55;color:var(--col-text-primary);text-wrap:pretty">Aboriginal and Torres Strait Islander people should be aware that the University of Melbourne website and collections contain the names, images and voices of people who have died.</p>
-        <p style="margin:0;font-size:16px;line-height:1.55;color:var(--col-text-primary);text-wrap:pretty">Please be advised that people may be disturbed by the content of some collection items, which may include distressing images and descriptions, and derogatory terms used in their historical context, including for Aboriginal and Torres Strait Islander people. They reflect the period in which they were created and are not the views of the University of Melbourne.</p>
+      <div class="search-results-ack-title__group search-results-ack-title__group--v2">
+        <span class="search-results-ack-title__text search-results-ack-title__text--v1">Indigenous Cultural Notification</span>
+        <h2 class="search-results-ack-title__heading-before-you-explore" id="ack-title">Before you explore the collections</h2>
+        <p class="search-results-ack-title__text search-results-ack-title__text--v2">The University of Melbourne acknowledge Aboriginal and Torres Strait Islander people as the Traditional Owners of the unceded lands on which we work, learn and live. We pay respect to Elders past, present and future, and acknowledge the importance of Indigenous knowledge in the Academy.</p>
+        <p class="search-results-ack-title__text search-results-ack-title__text--v2">Aboriginal and Torres Strait Islander people should be aware that the University of Melbourne website and collections contain the names, images and voices of people who have died.</p>
+        <p class="search-results-ack-title__text search-results-ack-title__text--v2">Please be advised that people may be disturbed by the content of some collection items, which may include distressing images and descriptions, and derogatory terms used in their historical context, including for Aboriginal and Torres Strait Islander people. They reflect the period in which they were created and are not the views of the University of Melbourne.</p>
       </div>
-      <div style="padding:20px 32px 28px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
-        <a href="/help/indigenous-data.html" style="font-size:15px;font-weight:600;text-decoration:underline">Indigenous Cultural Data and Access</a>
-        <button onClick="{{ acceptAck }}" style="border:0;background:var(--col-btn-action-bg);color:var(--col-btn-action-text);border-radius:0;padding:14px 26px;font-size:16px;font-weight:600;cursor:pointer" style-hover="background:var(--col-btn-action-bg-hover)">I understand, continue</button>
+      <div class="search-results-ack-title__group search-results-ack-title__group--v1">
+        <a class="search-results-ack-title__link-indigenous-cultural-data" href="/help/indigenous-data.html">Indigenous Cultural Data and Access</a>
+        <button class="search-results-ack-title__button-accept-ack" onClick="{{ acceptAck }}">I understand, continue</button>
       </div>
     </div>
   </div>
@@ -644,60 +556,60 @@ button,input,select{font-family:inherit}
 <footer class="ccs-nav ccs-nav--footer" aria-label="University of Melbourne footer">
     <div class="ccs-foot__aoc">
       <div class="ccs-nav__inner">
-        <div>
-          <h2>Acknowledgement of Country</h2>
-          <div class="ccs-foot__flags"><img src="/images/home/flag-aboriginal.svg" alt="Aboriginal flag"><img src="/images/home/flag-torres-strait.svg" alt="Torres Strait Islander flag"></div>
+        <div class="ccs-nav__group">
+          <h2 class="ccs-nav__heading-acknowledgement-country">Acknowledgement of Country</h2>
+          <div class="ccs-foot__flags"><img class="ccs-foot__image" src="/images/home/flag-aboriginal.svg" alt="Aboriginal flag"><img class="ccs-foot__image" src="/images/home/flag-torres-strait.svg" alt="Torres Strait Islander flag"></div>
         </div>
-        <div>
-          <p>We acknowledge Aboriginal and Torres Strait Islander people as the Traditional Owners of the unceded lands on which we work, learn and live. We pay respect to Elders past, present and future, and acknowledge the importance of Indigenous knowledge in the Academy.</p>
-          <a class="ccs-link ccs-link--inverse" href="https://www.unimelb.edu.au/reconciliation"><img src="/images/home/icon-arrow-footer.svg" alt="">Read about our Indigenous priorities</a>
+        <div class="ccs-nav__group">
+          <p class="ccs-nav__text">We acknowledge Aboriginal and Torres Strait Islander people as the Traditional Owners of the unceded lands on which we work, learn and live. We pay respect to Elders past, present and future, and acknowledge the importance of Indigenous knowledge in the Academy.</p>
+          <a class="ccs-link ccs-link--inverse" href="https://www.unimelb.edu.au/reconciliation"><img class="ccs-link__image" src="/images/home/icon-arrow-footer.svg" alt="">Read about our Indigenous priorities</a>
         </div>
       </div>
     </div>
     <div class="ccs-foot__main">
       <div class="ccs-nav__inner">
         <ul class="ccs-foot__links">
-            <li><a class="ccs-link ccs-link--inverse" href="https://about.unimelb.edu.au/"><img src="/images/home/icon-arrow-footer.svg" alt="">About us</a></li>
-            <li><a class="ccs-link ccs-link--inverse" href="https://about.unimelb.edu.au/careers"><img src="/images/home/icon-arrow-footer.svg" alt="">Careers at Melbourne</a></li>
-            <li><a class="ccs-link ccs-link--inverse" href="https://www.unimelb.edu.au/respect"><img src="/images/home/icon-arrow-footer.svg" alt="">Safety and respect</a></li>
-            <li><a class="ccs-link ccs-link--inverse" href="https://www.unimelb.edu.au/newsroom"><img src="/images/home/icon-arrow-footer.svg" alt="">Newsroom</a></li>
-            <li><a class="ccs-link ccs-link--inverse" href="https://www.unimelb.edu.au/contact"><img src="/images/home/icon-arrow-footer.svg" alt="">Contact</a></li>
-            <li><a class="ccs-link ccs-link--inverse" href="https://about.unimelb.edu.au/priorities-and-partnerships/campus-development/campus-locations"><img src="/images/home/icon-arrow-footer.svg" alt="">Campus locations</a></li>
+            <li class="ccs-foot__item"><a class="ccs-link ccs-link--inverse" href="https://about.unimelb.edu.au/"><img class="ccs-link__image" src="/images/home/icon-arrow-footer.svg" alt="">About us</a></li>
+            <li class="ccs-foot__item"><a class="ccs-link ccs-link--inverse" href="https://about.unimelb.edu.au/careers"><img class="ccs-link__image" src="/images/home/icon-arrow-footer.svg" alt="">Careers at Melbourne</a></li>
+            <li class="ccs-foot__item"><a class="ccs-link ccs-link--inverse" href="https://www.unimelb.edu.au/respect"><img class="ccs-link__image" src="/images/home/icon-arrow-footer.svg" alt="">Safety and respect</a></li>
+            <li class="ccs-foot__item"><a class="ccs-link ccs-link--inverse" href="https://www.unimelb.edu.au/newsroom"><img class="ccs-link__image" src="/images/home/icon-arrow-footer.svg" alt="">Newsroom</a></li>
+            <li class="ccs-foot__item"><a class="ccs-link ccs-link--inverse" href="https://www.unimelb.edu.au/contact"><img class="ccs-link__image" src="/images/home/icon-arrow-footer.svg" alt="">Contact</a></li>
+            <li class="ccs-foot__item"><a class="ccs-link ccs-link--inverse" href="https://about.unimelb.edu.au/priorities-and-partnerships/campus-development/campus-locations"><img class="ccs-link__image" src="/images/home/icon-arrow-footer.svg" alt="">Campus locations</a></li>
         </ul>
         <div class="ccs-foot__contact">
           <h2 class="ccs-foot__label">Contact details</h2>
-          <p>Phone <a href="tel:136352">13 MELB (13 6352)</a><br>International <a href="tel:+61390355511">+61 3 9035 5511</a></p>
-          <address><strong>Address</strong><br>The University of Melbourne<br>Grattan Street, Parkville<br>Victoria 3010<br>Australia</address>
+          <p class="ccs-foot__text">Phone <a class="ccs-foot__text-link-13-melb-13" href="tel:136352">13 MELB (13 6352)</a><br>International <a class="ccs-foot__text-link-61-3-9035" href="tel:+61390355511">+61 3 9035 5511</a></p>
+          <address class="ccs-foot__address"><strong class="ccs-foot__address-strong">Address</strong><br>The University of Melbourne<br>Grattan Street, Parkville<br>Victoria 3010<br>Australia</address>
         </div>
-        <div>
+        <div class="ccs-nav__group">
           <h2 class="ccs-foot__label">Connect with us</h2>
           <ul class="ccs-foot__social">
-            <li><a href="https://www.facebook.com/unimelb" aria-label="Facebook"><img src="/images/home/social-facebook.svg" alt=""></a></li>
-            <li><a href="https://www.linkedin.com/school/university-of-melbourne" aria-label="LinkedIn"><img src="/images/home/social-linkedin.svg" alt=""></a></li>
-            <li><a href="https://www.instagram.com/unimelb" aria-label="Instagram"><img src="/images/home/social-instagram.svg" alt=""></a></li>
-            <li><a href="https://x.com/unimelb" aria-label="X (Twitter)"><img src="/images/home/social-x.svg" alt=""></a></li>
+            <li class="ccs-foot__item"><a class="ccs-foot__item-link-facebook" href="https://www.facebook.com/unimelb" aria-label="Facebook"><img class="ccs-foot__link-image" src="/images/home/social-facebook.svg" alt=""></a></li>
+            <li class="ccs-foot__item"><a class="ccs-foot__item-link-linkedin" href="https://www.linkedin.com/school/university-of-melbourne" aria-label="LinkedIn"><img class="ccs-foot__link-image" src="/images/home/social-linkedin.svg" alt=""></a></li>
+            <li class="ccs-foot__item"><a class="ccs-foot__item-link-instagram" href="https://www.instagram.com/unimelb" aria-label="Instagram"><img class="ccs-foot__link-image" src="/images/home/social-instagram.svg" alt=""></a></li>
+            <li class="ccs-foot__item"><a class="ccs-foot__item-link-x-twitter" href="https://x.com/unimelb" aria-label="X (Twitter)"><img class="ccs-foot__link-image" src="/images/home/social-x.svg" alt=""></a></li>
           </ul>
         </div>
-        <div class="ccs-foot__brand"><a href="https://www.unimelb.edu.au" aria-label="The University of Melbourne homepage"><img src="/images/home/uom-logo-vert-ondark.svg" alt=""></a></div>
+        <div class="ccs-foot__brand"><a class="ccs-foot__link-university-melbourne-homepage" href="https://www.unimelb.edu.au" aria-label="The University of Melbourne homepage"><img class="ccs-foot__link-image" src="/images/home/uom-logo-vert-ondark.svg" alt=""></a></div>
       </div>
     </div>
     <div class="ccs-foot__last">
       <div class="ccs-nav__inner">
         <ul class="ccs-foot__legal">
-          <li><a href="https://safety.unimelb.edu.au/emergency">Emergency</a></li>
-          <li><a href="https://www.unimelb.edu.au/legal">Terms and privacy</a></li>
-          <li><a href="https://www.unimelb.edu.au/accessibility">Accessibility</a></li>
-          <li><a href="https://about.unimelb.edu.au/strategy/governance/compliance-obligations/privacy">Privacy</a></li>
+          <li class="ccs-foot__item"><a class="ccs-foot__item-link-emergency" href="https://safety.unimelb.edu.au/emergency">Emergency</a></li>
+          <li class="ccs-foot__item"><a class="ccs-foot__item-link-terms-privacy" href="https://www.unimelb.edu.au/legal">Terms and privacy</a></li>
+          <li class="ccs-foot__item"><a class="ccs-foot__item-link-accessibility" href="https://www.unimelb.edu.au/accessibility">Accessibility</a></li>
+          <li class="ccs-foot__item"><a class="ccs-foot__item-link-privacy" href="https://about.unimelb.edu.au/strategy/governance/compliance-obligations/privacy">Privacy</a></li>
         </ul>
         <ul class="ccs-foot__ids">
-          <li>The University of Melbourne (Australian University): <strong>PRV12150</strong></li>
-          <li>CRICOS: <strong>00116K</strong></li>
-          <li>ABN: <strong>84 002 705 224</strong></li>
+          <li class="ccs-foot__item">The University of Melbourne (Australian University): <strong class="ccs-foot__item-strong">PRV12150</strong></li>
+          <li class="ccs-foot__item">CRICOS: <strong class="ccs-foot__item-strong">00116K</strong></li>
+          <li class="ccs-foot__item">ABN: <strong class="ccs-foot__item-strong">84 002 705 224</strong></li>
         </ul>
       </div>
     </div>
   </footer>
-<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+<svg class="search-results-page__icon" xmlns="http://www.w3.org/2000/svg">
   <symbol id="icon-facebook" viewBox="0 0 24 24">
     <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
   </symbol>

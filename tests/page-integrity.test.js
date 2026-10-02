@@ -57,7 +57,11 @@ if (home.includes('class="stats-strip"')) fail('home: stats strip still visible'
 if (collections.includes('id="h-facts"') || collections.includes('id="h-themes"')) fail('collections: stats or object type section still visible');
 if (/data-contact-btn|>Report an issue<|\{\{ shareText \}\}|value="\{\{ hasAdvisory \}\}"/.test(record)) fail('record: removed actions or advisory still visible');
 if (results.includes('Options within a filter are combined with OR.') || results.includes('{{ sec.group }}')) fail('filters: help text or group subheadings still visible');
-if (!results.includes('height:22px;padding:0 6px;border-radius:999px') || !results.includes('width:38px;height:22px;border-radius:999px')) fail('filters: count or toggle track is not rounded');
+// The count badge and toggle track styles live in the page stylesheet (inline styles were moved out of the page).
+const resultsCss = fs.readFileSync(path.join(PUBLIC, 'styles/pages/search-results.css'), 'utf8');
+const cssRules = resultsCss.split('}').map(r => r.replace(/\s+/g, ' '));
+const roundedRule = (...needles) => cssRules.some(r => r.includes('border-radius: 999px') && needles.every(n => r.includes(n)));
+if (!roundedRule('height: 22px', 'padding: 0 6px') || !roundedRule('width: 38px', 'height: 22px')) fail('filters: count or toggle track is not rounded');
 const runtime = fs.readFileSync(path.join(PUBLIC, 'support.js'), 'utf8');
 if (!results.includes('data-dc-plain-interp') || !runtime.includes('return plainInterp ? String(v) : h("span", { key: i, className: "sc-interp" }, String(v));')) fail('filters: modal interpolations still use wrapper spans');
 finish('page-integrity');

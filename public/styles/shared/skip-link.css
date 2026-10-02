@@ -1,0 +1,28 @@
+/* Moved out of an inline <style> block (skip-link). Used by: advanced-filters, collection-landing, collections-browse, contact, indigenous-data, record, search-results. */
+
+.skip-link {
+  position: absolute;
+  top: -120px;
+  left: 16px;
+  background: var(--col-btn-action-bg, #46c8f0);
+  color: var(--col-btn-action-text, #000f46);
+  padding: 12px 18px;
+  z-index: 99999;
+  font-weight: 700;
+  text-decoration: none;
+  border: 2px solid var(--col-bg-primary, #000f46);
+  transition: top 0.2s ease;
+}
+.skip-link:focus {
+  top: 16px;
+}
+@media (max-width:1097.98px){
+  .site-nav{display:none!important}
+  .site-nav.is-open{display:flex!important;position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;background:var(--col-bg-primary);border-top:1px solid var(--col-border-header);z-index:30;padding:8px 0;box-shadow:0 8px 16px rgba(0,0,0,.15)}
+  .site-nav.is-open a{padding:14px 24px!important;font-size:16px!important;width:100%}
+  .site-nav-toggle{display:flex!important}
+}
+@media (max-width:768px){
+  nav[aria-label="Breadcrumb"] > ol:not(.bc-mobile){display:none!important}
+  nav[aria-label="Breadcrumb"] .bc-mobile{display:flex!important}
+}

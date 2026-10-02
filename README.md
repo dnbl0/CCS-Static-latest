@@ -25,6 +25,11 @@ The site is a prototype driven by an in-repo dataset (735 listed records), not a
 
 ## Recent changes
 
+### 2026-10-03
+
+- **No inline styles in pages**: every `style="..."` attribute and `<style>` block was moved into stylesheets (`public/styles/pages/*.css`, `public/styles/shared/*.css`). Runtime values (colours, paddings, positions that the page logic computes) are passed through CSS custom properties, e.g. `style="--dyn-padding:{{ padSum }}"`, and the property that uses them lives in the stylesheet. `tests/no-inline-styles.test.js` (part of `npm test`) fails if a `<style>` block, a `style-hover` attribute or a presentational `style=""` is added to a page.
+- **Semantic class names on every element**: elements in the page body carry `block__element` classes (for example `help-faq__heading`, `search-results-search-tools__button-sort`) so the markup is easy to read in dev tools. These labels have no styling of their own unless a rule exists for them.
+
 ### 2026-10-02
 
 - **Homepage rebuilt from Figma** (`public/index.html`, desktop and mobile frames) using reusable **Navigation** and **Section** components (`public/styles/home.css`, see [Styling](#styling)). The hero uses the Parkville banner photo; collection cards use the collection banner images in `public/images/banners/`.
@@ -224,6 +229,8 @@ Rows combine as: every `must` row matches, at least one `should` row matches (if
 
 - **Bootstrap 5.3.3** is compiled locally from `src/scss/custom-bootstrap.scss` (sharp corners, no shadows, UoM colours) into `public/styles/vendor/bootstrap-uom.min.css`. This file is committed because Vercel runs no build step. Rebuild with `npm run build:css` (`build:css:dev` and `watch:css` write an unminified `bootstrap-uom.css`). Every page links the compiled file; only `index.html` also loads the Bootstrap JS bundle from jsDelivr (version-pinned with an SRI hash).
 - **Live CSS**: `public/components/fig-tokens.css` (Gen 3 design tokens; sizes are unitless numbers, so component CSS writes px values), `fig-assets.css`, `public/styles/home.css`, `advanced-filters.css`, `header.css` and `collection.css` (collection landing pages). Pages also carry page-local `<style>` blocks, including `:root` token overrides, so check the page itself before editing a colour.
+- **Page styles (no inline styles)**: each page links its own `public/styles/pages/<page>.css` (class rules, scoped by the `page-<page>` class on `<body>` so they win over shared component CSS the way the old inline styles did) plus any former `<style>` blocks, now `public/styles/pages/<page>.<role>.css` or, when several pages shared the same block, `public/styles/shared/<role>.css` (skip link, colour tokens, base elements). Do not add `style=""` attributes or `<style>` blocks; add a class and a rule instead. For a value that only the page logic knows, set a custom property inline (`style="--dyn-height:{{ b.h }}"`) and use `var(--dyn-height)` in the stylesheet. The five collection landing pages share `collection-landing*.css`.
+- **Class naming**: `block__element` (BEM style), where the block is the nearest section, form or id and the element describes the thing (`__heading`, `__item-link`, `__button-clear-all`); repeated look-alikes with different styling get `--v1`, `--v2`. Names are labels for humans; do not rely on them from scripts.
 - **Components** (plain CSS classes + static markup, no build step): `home.css` defines **Navigation** (`.ccs-nav--header`, `.ccs-nav--footer`) and **Section** (`.ccs-section--hero | intro | cards | help | faq`, plus the shared `.ccs-link` and `.ccs-acc` accordion). The header/footer markup is repeated in every page (there is no include mechanism), so a change must be made in all of them; `nav.js` provides the dropdown and drawer behaviour. `advanced-filters.css` defines the form components listed under Advanced Search. Hidden/shown state of menus is driven by `aria-expanded` and CSS rather than the `hidden` attribute where the DC template layer could re-render the markup.
 - **Fonts**: Fraunces (headings), Source Sans 3 (body) and Source Code Pro (code) from Google Fonts. The homepage and Advanced Filters pages request Fraunces with its SOFT/WONK axes (the Figma heading settings); the homepage matches the families and weights loaded by unimelb.edu.au.
 - Bootstrap's `!important` utilities can override same-named custom classes; check for collisions when naming new classes.
@@ -250,7 +257,8 @@ Clean URLs (`/search/search-results`, `/collections/record`) only resolve on a h
 3. `tests/blacklight-adapter.test.js` - default mode is `mock`, request-parameter building and document transformation.
 4. `tests/page-integrity.test.js` - every `public/**/*.html` has a `<title>` and `lang`, no merge-conflict markers, and every local `href`/`src` resolves (clean-URL forms like `/search/search-results` resolve to `.html`/`index.html`). Broken css/js/page links fail; broken image links only warn.
 5. `tests/collection-data.test.js` - loads `collection-data.js` in a bare sandbox; checks unique ids, titles, that field labels come from the specification list, and that `/assets` media files exist.
-6. `tests/advanced-filters.test.js` - browser test (playwright-core with a Chromium build) of the Advanced Filters page: responsive layout at 1440 and 390px, dropdown keyboard behaviour and ARIA roles, multi-select and Add filter, row management limits, submission URL, pre-fill and Reset, and date-range validation. It starts its own static server. If no Chromium is found it prints `SKIP` and passes; set `PLAYWRIGHT_CHROMIUM_PATH` or run `npx playwright-core install chromium` to enable it locally.
+6. `tests/no-inline-styles.test.js` - fails if a page contains a `<style>` block, a `style-hover` attribute or a `style` attribute that is not a pure CSS-custom-property pass-through.
+7. `tests/advanced-filters.test.js` - browser test (playwright-core with a Chromium build) of the Advanced Filters page: responsive layout at 1440 and 390px, dropdown keyboard behaviour and ARIA roles, multi-select and Add filter, row management limits, submission URL, pre-fill and Reset, and date-range validation. It starts its own static server. If no Chromium is found it prints `SKIP` and passes; set `PLAYWRIGHT_CHROMIUM_PATH` or run `npx playwright-core install chromium` to enable it locally.
 
 **Warnings policy**: failures exit non-zero and fail CI. Warnings (printed as `WARNING:`) are informational and never fail the build; they track open data/content gaps (see Known issues). Current output: 0 failures, 5 warnings (no `<h1>` in `search.html`; the four unpopulated spec fields).
 
@@ -295,4 +303,4 @@ For Gen 3 guidance see https://designsystem.web.unimelb.edu.au/.
 
 © 2026 The University of Melbourne. All rights reserved.
 
-**Last updated**: 2026-10-02
+**Last updated**: 2026-10-03

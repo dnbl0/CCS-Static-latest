@@ -8,151 +8,101 @@
 <script src="../support.js"></script>
 <script src="../collection-data.js"></script>
 <script src="advanced-search-form.js" defer></script>
-<style>
-.skip-link {
-  position: absolute;
-  top: -120px;
-  left: 16px;
-  background: var(--col-btn-action-bg, #46c8f0);
-  color: var(--col-btn-action-text, #000f46);
-  padding: 12px 18px;
-  z-index: 99999;
-  font-weight: 700;
-  text-decoration: none;
-  border: 2px solid var(--col-bg-primary, #000f46);
-  transition: top 0.2s ease;
-}
-.skip-link:focus {
-  top: 16px;
-}
-@media (max-width:1097.98px){
-  .site-nav{display:none!important}
-  .site-nav.is-open{display:flex!important;position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;background:var(--col-bg-primary);border-top:1px solid var(--col-border-header);z-index:30;padding:8px 0;box-shadow:0 8px 16px rgba(0,0,0,.15)}
-  .site-nav.is-open a{padding:14px 24px!important;font-size:16px!important;width:100%}
-  .site-nav-toggle{display:flex!important}
-}
-@media (max-width:768px){
-  nav[aria-label="Breadcrumb"] > ol:not(.bc-mobile){display:none!important}
-  nav[aria-label="Breadcrumb"] .bc-mobile{display:flex!important}
-}
-</style>
+<link rel="stylesheet" href="/styles/shared/skip-link.css">
   <link rel="stylesheet" href="/styles/home.css">
   <link rel="stylesheet" href="../styles/header.css">
 <link rel="stylesheet" href="/styles/advanced-filters.css">
+  <link rel="stylesheet" href="/styles/pages/advanced-filters.css">
 </head>
-<body>
-<a href="#main-content" class="skip-link">Skip to main content</a>
+<body class="page-advanced-filters">
+<a href="#main-content" class="skip-link advanced-filters-page__link-skip-main-content">Skip to main content</a>
 <x-dc>
-<helmet><style>
-:root{
-  --col-bg-primary:#000f46;
-  --col-bg-primary-dark:#000b34;
-  --col-bg-primary-hover:#213e5d;
-  --col-bg-accent:#abc1a7;
-  --col-btn-action-bg:#46c8f0;
-  --col-btn-action-bg-hover:#29b3d9;
-  --col-btn-action-text:#000f46;
-  --col-bg-selected:#e8edf6;
-  --col-text-primary:#1b1f2a;
-  --col-text-muted:#5b6070;
-  --col-border-header:#b5bac9;
-}</style>
+<helmet><link rel="stylesheet" href="/styles/shared/colour-tokens.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..600,0..100,0..1&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../components/fig-tokens.css">
 <link rel="stylesheet" href="../components/fig-assets.css">
 <!-- Bootstrap 5.3.3 CSS (Custom UoM Gen 3 Build) -->
 <link rel="stylesheet" href="../styles/vendor/bootstrap-uom.min.css">
-<style>
-body{margin:0;background:var(--white-100);color:var(--col-text-primary);font-family:'Source Sans 3',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
-a{color:#0b2a6b;text-decoration:underline;text-underline-offset:2px}a:hover{color:var(--col-bg-primary)}
-*{box-sizing:border-box}
-      .btn{border-radius:0!important}
-/* Gen3-brand overrides on top of Bootstrap defaults */
-.btn-primary{--bs-btn-bg:var(--col-btn-action-bg);--bs-btn-border-color:var(--col-btn-action-bg);--bs-btn-color:var(--col-btn-action-text);--bs-btn-hover-bg:var(--col-btn-action-bg-hover);--bs-btn-hover-border-color:var(--col-btn-action-bg-hover);--bs-btn-hover-color:var(--col-btn-action-text)}
-.btn-outline-primary{--bs-btn-color:var(--col-bg-primary);--bs-btn-border-color:var(--col-bg-primary);--bs-btn-hover-bg:var(--col-bg-primary);--bs-btn-hover-border-color:var(--col-bg-primary)}
-.card{border-color:#e3e0d9;border-radius:0}
-.fw-serif{font-family:'Fraunces',serif}
-[aria-label="University links"] a:hover{color:var(--sage-100);text-decoration:underline}
-</style>
+<link rel="stylesheet" href="/styles/shared/base-elements.css">
 </helmet>
-<div style="min-height:100vh;display:flex;flex-direction:column">
+<div class="advanced-filters-page__group">
 <header class="ccs-nav ccs-nav--header" data-component="Header" aria-label="Site header">
   <div class="ccs-nav__brand">
-    <a href="https://www.unimelb.edu.au" aria-label="The University of Melbourne homepage">
-      <picture><source media="(max-width: 1023px)" srcset="/images/home/logo-header-mobile.svg"><img src="/images/home/logo-header-desktop.svg" alt=""></picture>
+    <a class="ccs-nav__link-university-melbourne-homepage" href="https://www.unimelb.edu.au" aria-label="The University of Melbourne homepage">
+      <picture class="ccs-nav__link-picture"><source media="(max-width: 1023px)" srcset="/images/home/logo-header-mobile.svg"><img class="ccs-nav__picture-image" src="/images/home/logo-header-desktop.svg" alt=""></picture>
     </a>
   </div>
   <div class="ccs-nav__main">
     <div class="ccs-nav__top">
-      <nav aria-label="University of Melbourne">
-        <ul>
-          <li><a href="https://study.unimelb.edu.au">Study</a></li>
-          <li><a href="https://students.unimelb.edu.au">Students</a></li>
-          <li><a href="https://research.unimelb.edu.au">Research</a></li>
-          <li><a href="https://library.unimelb.edu.au">Library</a></li>
-          <li><a href="https://staff.unimelb.edu.au">Staff</a></li>
-          <li><a href="https://www.unimelb.edu.au/alumni">Alumni</a></li>
-          <li><a href="https://giving.unimelb.edu.au">Giving</a></li>
-          <li><a href="https://about.unimelb.edu.au">About</a></li>
-          <li><a href="https://www.unimelb.edu.au/contact">Contact</a></li>
+      <nav class="advanced-filters-university-melbourne" aria-label="University of Melbourne">
+        <ul class="advanced-filters-university-melbourne__list">
+          <li class="advanced-filters-university-melbourne__list-item"><a class="advanced-filters-university-melbourne__item-link-study" href="https://study.unimelb.edu.au">Study</a></li>
+          <li class="advanced-filters-university-melbourne__list-item"><a class="advanced-filters-university-melbourne__item-link-students" href="https://students.unimelb.edu.au">Students</a></li>
+          <li class="advanced-filters-university-melbourne__list-item"><a class="advanced-filters-university-melbourne__item-link-research" href="https://research.unimelb.edu.au">Research</a></li>
+          <li class="advanced-filters-university-melbourne__list-item"><a class="advanced-filters-university-melbourne__item-link-library" href="https://library.unimelb.edu.au">Library</a></li>
+          <li class="advanced-filters-university-melbourne__list-item"><a class="advanced-filters-university-melbourne__item-link-staff" href="https://staff.unimelb.edu.au">Staff</a></li>
+          <li class="advanced-filters-university-melbourne__list-item"><a class="advanced-filters-university-melbourne__item-link-alumni" href="https://www.unimelb.edu.au/alumni">Alumni</a></li>
+          <li class="advanced-filters-university-melbourne__list-item"><a class="advanced-filters-university-melbourne__item-link-giving" href="https://giving.unimelb.edu.au">Giving</a></li>
+          <li class="advanced-filters-university-melbourne__list-item"><a class="advanced-filters-university-melbourne__item-link-about" href="https://about.unimelb.edu.au">About</a></li>
+          <li class="advanced-filters-university-melbourne__list-item"><a class="advanced-filters-university-melbourne__item-link-contact" href="https://www.unimelb.edu.au/contact">Contact</a></li>
         </ul>
       </nav>
       <button type="button" class="ccs-nav__search" popovertarget="uom-search-popover" data-popover-type="search" aria-label="Open search">
-        <img src="/images/home/icon-search-onaccent.svg" alt="">
+        <img class="ccs-nav__image" src="/images/home/icon-search-onaccent.svg" alt="">
       </button>
     </div>
     <div class="ccs-nav__bottom">
       <a class="ccs-nav__title" href="/index.html">Cultural Collections</a>
       <nav id="ccs-primary-nav" class="ccs-nav__primary" aria-label="Primary navigation">
         <div class="ccs-nav__drawer-search">
-          <form role="search" action="/search/search-results.html" method="get">
-            <label for="ccs-drawer-q" class="sr-only">Search Cultural Collections</label>
-            <input id="ccs-drawer-q" name="q" type="text" autocomplete="off" placeholder="Search">
-            <button type="submit" aria-label="Search"><img src="/images/home/icon-search-onaccent.svg" alt=""></button>
+          <form class="ccs-nav__form-search" role="search" action="/search/search-results.html" method="get">
+            <label for="ccs-drawer-q" class="sr-only advanced-filters-form__label-search-cultural-collections">Search Cultural Collections</label>
+            <input class="ccs-drawer-q" id="ccs-drawer-q" name="q" type="text" autocomplete="off" placeholder="Search">
+            <button class="advanced-filters-form__button-search" type="submit" aria-label="Search"><img class="advanced-filters-form__button-image" src="/images/home/icon-search-onaccent.svg" alt=""></button>
           </form>
         </div>
-        <ul>
-          <li><a href="/search/search-results.html">Search all records</a></li>
-          <li>
-            <button type="button" class="ccs-nav__trigger" aria-expanded="false" aria-controls="ccs-dd-collections">Browse collections<img src="/images/home/icon-expand.svg" alt=""></button>
+        <ul class="ccs-nav__list">
+          <li class="ccs-nav__list-item"><a class="ccs-nav__item-link-search-all-records" href="/search/search-results.html">Search all records</a></li>
+          <li class="ccs-nav__list-item">
+            <button type="button" class="ccs-nav__trigger" aria-expanded="false" aria-controls="ccs-dd-collections">Browse collections<img class="ccs-nav__image" src="/images/home/icon-expand.svg" alt=""></button>
             <div id="ccs-dd-collections" class="ccs-nav__panel">
-              <a class="ccs-nav__panel-title" href="/collections/index.html"><img src="/images/home/icon-arrow-footer.svg" alt="">Browse collections</a>
+              <a class="ccs-nav__panel-title" href="/collections/index.html"><img class="ccs-nav__image" src="/images/home/icon-arrow-footer.svg" alt="">Browse collections</a>
               <ul class="ccs-nav__panel-list">
-                <li><a href="/collections/medical-history-museum/"><img src="/images/home/icon-arrow-footer.svg" alt="">Medical History Museum</a></li>
-                <li><a href="/collections/henry-forman-atkinson-dental-museum/"><img src="/images/home/icon-arrow-footer.svg" alt="">Henry Forman Atkinson Dental Museum</a></li>
-                <li><a href="/collections/harry-brookes-allen-museum/"><img src="/images/home/icon-arrow-footer.svg" alt="">Harry Brookes Allen Museum</a></li>
-                <li><a href="/collections/university-art-collection/"><img src="/images/home/icon-arrow-footer.svg" alt="">University Art Collection</a></li>
-                <li><a href="/collections/grainger-museum/"><img src="/images/home/icon-arrow-footer.svg" alt="">Grainger Museum Collection</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-medical-history-museum" href="/collections/medical-history-museum/"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Medical History Museum</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-henry-forman-atkinson" href="/collections/henry-forman-atkinson-dental-museum/"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Henry Forman Atkinson Dental Museum</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-harry-brookes-allen" href="/collections/harry-brookes-allen-museum/"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Harry Brookes Allen Museum</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-university-art-collection" href="/collections/university-art-collection/"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">University Art Collection</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-grainger-museum-collection" href="/collections/grainger-museum/"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Grainger Museum Collection</a></li>
               </ul>
             </div>
           </li>
-          <li>
-            <button type="button" class="ccs-nav__trigger" aria-expanded="false" aria-controls="ccs-dd-help">Help<img src="/images/home/icon-expand.svg" alt=""></button>
+          <li class="ccs-nav__list-item">
+            <button type="button" class="ccs-nav__trigger" aria-expanded="false" aria-controls="ccs-dd-help">Help<img class="ccs-nav__image" src="/images/home/icon-expand.svg" alt=""></button>
             <div id="ccs-dd-help" class="ccs-nav__panel">
-              <a class="ccs-nav__panel-title" href="/help/index.html"><img src="/images/home/icon-arrow-footer.svg" alt="">Help and support</a>
+              <a class="ccs-nav__panel-title" href="/help/index.html"><img class="ccs-nav__image" src="/images/home/icon-arrow-footer.svg" alt="">Help and support</a>
               <ul class="ccs-nav__panel-list">
-                <li><a href="/help?topic=faq"><img src="/images/home/icon-arrow-footer.svg" alt="">Frequently Asked Questions</a></li>
-                <li><a href="/help?topic=search-tips"><img src="/images/home/icon-arrow-footer.svg" alt="">Search tips</a></li>
-                <li><a href="/help?topic=copyright"><img src="/images/home/icon-arrow-footer.svg" alt="">Copyright and terms of use</a></li>
-                <li><a href="/help?topic=access"><img src="/images/home/icon-arrow-footer.svg" alt="">Access and information</a></li>
-                <li><a href="/help?topic=privacy"><img src="/images/home/icon-arrow-footer.svg" alt="">Privacy</a></li>
-                <li><a href="/help/indigenous-data.html"><img src="/images/home/icon-arrow-footer.svg" alt="">Indigenous cultural data and access</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-frequently-asked-questions" href="/help?topic=faq"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Frequently Asked Questions</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-search-tips" href="/help?topic=search-tips"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Search tips</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-copyright-terms-use" href="/help?topic=copyright"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Copyright and terms of use</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-access-information" href="/help?topic=access"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Access and information</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-privacy" href="/help?topic=privacy"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Privacy</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-indigenous-cultural-data" href="/help/indigenous-data.html"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Indigenous cultural data and access</a></li>
               </ul>
             </div>
           </li>
-          <li><a href="/contact.html">Contact</a></li>
+          <li class="ccs-nav__list-item"><a class="ccs-nav__item-link-contact" href="/contact.html">Contact</a></li>
         </ul>
         <ul class="ccs-nav__drawer-top" aria-label="University of Melbourne">
-        <li><a href="https://study.unimelb.edu.au">Study</a></li>
-        <li><a href="https://students.unimelb.edu.au">Students</a></li>
-        <li><a href="https://research.unimelb.edu.au">Research</a></li>
-        <li><a href="https://library.unimelb.edu.au">Library</a></li>
-        <li><a href="https://staff.unimelb.edu.au">Staff</a></li>
-        <li><a href="https://www.unimelb.edu.au/alumni">Alumni</a></li>
-        <li><a href="https://giving.unimelb.edu.au">Giving</a></li>
-        <li><a href="https://about.unimelb.edu.au">About</a></li>
-        <li><a href="https://www.unimelb.edu.au/contact">Contact</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-study" href="https://study.unimelb.edu.au">Study</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-students" href="https://students.unimelb.edu.au">Students</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-research" href="https://research.unimelb.edu.au">Research</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-library" href="https://library.unimelb.edu.au">Library</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-staff" href="https://staff.unimelb.edu.au">Staff</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-alumni" href="https://www.unimelb.edu.au/alumni">Alumni</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-giving" href="https://giving.unimelb.edu.au">Giving</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-about" href="https://about.unimelb.edu.au">About</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-contact" href="https://www.unimelb.edu.au/contact">Contact</a></li>
         </ul>
       </nav>
     </div>
@@ -160,30 +110,30 @@ a{color:#0b2a6b;text-decoration:underline;text-underline-offset:2px}a:hover{colo
   <button type="button" class="ccs-nav__menu" aria-expanded="false" aria-controls="ccs-primary-nav">
     <svg class="ccs-nav__menu-open" viewBox="0 0 24 24" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     <svg class="ccs-nav__menu-close" viewBox="0 0 24 24" aria-hidden="true"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
-    <span>Menu</span>
+    <span class="ccs-nav__text">Menu</span>
   </button>
 </header>
 
 <!-- Full-screen search overlay -->
 <div id="uom-search-popover" class="uom-search-popover" role="dialog" aria-modal="true" aria-labelledby="uom-search-overlay-title">
   <div class="uom-search-popover__inner">
-    <h2 id="uom-search-overlay-title" class="sr-only">Search</h2>
+    <h2 id="uom-search-overlay-title" class="sr-only uom-search-popover__heading">Search</h2>
     <form class="uom-search-popover__form" role="search" action="/search/search-results.html" method="get">
-      <label for="uom-search-overlay-input" class="sr-only">Search Cultural Collections</label>
-      <input id="uom-search-overlay-input" name="q" type="text" placeholder="Search" autocomplete="off">
+      <label for="uom-search-overlay-input" class="sr-only uom-search-popover__label-search-cultural-collections">Search Cultural Collections</label>
+      <input class="uom-search-overlay-input" id="uom-search-overlay-input" name="q" type="text" placeholder="Search" autocomplete="off">
       <button type="submit" class="uom-search-popover__submit" aria-label="Search">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <svg class="uom-search-popover__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="11" cy="11" r="8"></circle>
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
       </button>
     </form>
     <button type="button" class="uom-search-popover__close" id="uom-search-popover-close" aria-label="Close search">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <svg class="uom-search-popover__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <line x1="18" y1="6" x2="6" y2="18"></line>
         <line x1="6" y1="6" x2="18" y2="18"></line>
       </svg>
-      <span>Close</span>
+      <span class="uom-search-popover__text">Close</span>
     </button>
   </div>
 </div>
@@ -261,7 +211,7 @@ a{color:#0b2a6b;text-decoration:underline;text-underline-offset:2px}a:hover{colo
 })();
 </script>
 
-<nav class="page-breadcrumbs" aria-label="Breadcrumb"><ol class="page-local-history" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="root" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="/" itemprop="item" title="Home" aria-label="Home"><img src="../images/home.svg" alt="" width="16" height="16" style="vertical-align:middle"><span itemprop="name" class="sr-only">Home</span></a><meta content="1" itemprop="position"></li><li itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page"><span itemprop="name">Advanced Filters</span><meta content="2" itemprop="position"></li></ol><ol class="bc-mobile" style="display:none;align-items:center;gap:6px;list-style:none;margin:0;font-size:18px;color:#fff"><li style="display:flex;align-items:center"><a href="/index.html" style="display:inline-flex;align-items:center;gap:6px;color:#fff;text-decoration:none;min-height:44px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span>Home</span></a></li></ol></nav>
+<nav class="page-breadcrumbs" aria-label="Breadcrumb"><ol class="page-local-history" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="root" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a class="page-local-history__item-link-home" href="/" itemprop="item" title="Home" aria-label="Home"><img class="page-local-history__link-image" src="../images/home.svg" alt="" width="16" height="16"><span itemprop="name" class="sr-only page-local-history__link-text">Home</span></a><meta content="1" itemprop="position"></li><li class="page-local-history__item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page"><span class="page-local-history__item-text" itemprop="name">Advanced Filters</span><meta content="2" itemprop="position"></li></ol><ol class="bc-mobile bc-mobile--styled"><li class="bc-mobile__item"><a class="bc-mobile__item-link-home" href="/index.html"><svg class="bc-mobile__link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span class="bc-mobile__link-text">Home</span></a></li></ol></nav>
 <section class="ccs-banner" aria-labelledby="adv-title">
   <div class="ccs-banner__inner">
     <h1 id="adv-title" class="ccs-banner__title">Advanced filters</h1>
@@ -271,26 +221,26 @@ a{color:#0b2a6b;text-decoration:underline;text-underline-offset:2px}a:hover{colo
 
 <main id="main-content" class="ccs-page">
   <div class="ccs-page__body">
-    <search aria-label="Advanced search">
+    <search class="ccs-page__search-advanced-search" aria-label="Advanced search">
       <form id="adv-form" class="ccs-adv" action="search-results.html" method="get" novalidate>
         <div id="adv-errors" class="ccs-errors" role="alert" tabindex="-1"></div>
-        <div id="adv-live" class="sr-only" role="status" aria-live="polite"></div>
+        <div id="adv-live" class="sr-only advanced-filters-adv-live" role="status" aria-live="polite"></div>
         <section class="ccs-adv__box" aria-labelledby="adv-terms-h">
           <h2 id="adv-terms-h" class="ccs-adv__heading">Search</h2>
-          <p id="adv-terms-hint" class="sr-only">Choose a field and a match type, then enter your search terms. Use quotation marks for an exact phrase.</p>
+          <p id="adv-terms-hint" class="sr-only advanced-filters-adv-terms-hint">Choose a field and a match type, then enter your search terms. Use quotation marks for an exact phrase.</p>
           <div id="adv-terms" class="ccs-adv__stack"></div>
-          <button type="button" id="adv-add-row" class="ccs-btn ccs-btn--add"><span>Add row</span><img src="/images/advanced/icon-add.svg" alt=""></button>
+          <button type="button" id="adv-add-row" class="ccs-btn ccs-btn--add"><span class="ccs-btn__text">Add row</span><img class="ccs-btn__image" src="/images/advanced/icon-add.svg" alt=""></button>
         </section>
 
         <section class="ccs-adv__box" aria-labelledby="adv-filters-h">
           <h2 id="adv-filters-h" class="ccs-adv__heading">Filters</h2>
           <div id="adv-filters" class="ccs-adv__stack"></div>
-          <div id="adv-add-filter-mount"></div>
+          <div class="advanced-filters-adv-add-filter-mount" id="adv-add-filter-mount"></div>
         </section>
 
         <div class="ccs-adv__sort">
           <span class="ccs-adv__label" aria-hidden="true">Sort results by</span>
-          <div id="adv-sort-mount"></div>
+          <div class="advanced-filters-adv-sort-mount" id="adv-sort-mount"></div>
         </div>
 
         <div class="ccs-adv__actions">
@@ -306,24 +256,24 @@ a{color:#0b2a6b;text-decoration:underline;text-underline-offset:2px}a:hover{colo
         <h3 id="adv-tips-h" class="ccs-instructions__sub">Tips for better results</h3>
         <ul class="ccs-instructions__list">
             <li class="ccs-instructions__item">
-              <span class="ccs-instructions__term"><img src="/images/advanced/icon-arrow.svg" alt="">Rows</span>
+              <span class="ccs-instructions__term"><img class="ccs-instructions__image" src="/images/advanced/icon-arrow.svg" alt="">Rows</span>
               <span class="ccs-instructions__desc">Add rows to expand your search, or delete rows to simplify it.</span>
             </li>
             <li class="ccs-instructions__item">
-              <span class="ccs-instructions__term"><img src="/images/advanced/icon-arrow.svg" alt="">Search fields</span>
+              <span class="ccs-instructions__term"><img class="ccs-instructions__image" src="/images/advanced/icon-arrow.svg" alt="">Search fields</span>
               <span class="ccs-instructions__desc">Search a specific field (Title, Creator, Subject, Description) instead of everywhere.</span>
             </li>
             <li class="ccs-instructions__item">
-              <span class="ccs-instructions__term"><img src="/images/advanced/icon-arrow.svg" alt="">Match type</span>
-              <span class="ccs-instructions__desc">Each row can require its terms (<em>Contains all</em>), allow either (<em>Contains any</em>), or exclude them (<em>Does not contain</em>).</span>
+              <span class="ccs-instructions__term"><img class="ccs-instructions__image" src="/images/advanced/icon-arrow.svg" alt="">Match type</span>
+              <span class="ccs-instructions__desc">Each row can require its terms (<em class="ccs-instructions__emphasis">Contains all</em>), allow either (<em class="ccs-instructions__emphasis">Contains any</em>), or exclude them (<em class="ccs-instructions__emphasis">Does not contain</em>).</span>
             </li>
             <li class="ccs-instructions__item">
-              <span class="ccs-instructions__term"><img src="/images/advanced/icon-arrow.svg" alt="">Filters</span>
-              <span class="ccs-instructions__desc">Narrow by object type, collection, creator, licence, access and production date — each filter has its own <em>Includes all (AND)</em> / <em>Includes any (OR)</em> choice.</span>
+              <span class="ccs-instructions__term"><img class="ccs-instructions__image" src="/images/advanced/icon-arrow.svg" alt="">Filters</span>
+              <span class="ccs-instructions__desc">Narrow by object type, collection, creator, licence, access and production date — each filter has its own <em class="ccs-instructions__emphasis">Includes all (AND)</em> / <em class="ccs-instructions__emphasis">Includes any (OR)</em> choice.</span>
             </li>
             <li class="ccs-instructions__item">
-              <span class="ccs-instructions__term"><img src="/images/advanced/icon-arrow.svg" alt="">Exact phrase</span>
-              <span class="ccs-instructions__desc">Use quotation marks to search for an exact phrase, e.g. <code>"eucalyptus oil"</code>.</span>
+              <span class="ccs-instructions__term"><img class="ccs-instructions__image" src="/images/advanced/icon-arrow.svg" alt="">Exact phrase</span>
+              <span class="ccs-instructions__desc">Use quotation marks to search for an exact phrase, e.g. <code class="ccs-instructions__code">"eucalyptus oil"</code>.</span>
             </li>
         </ul>
       </section>
@@ -331,16 +281,16 @@ a{color:#0b2a6b;text-decoration:underline;text-underline-offset:2px}a:hover{colo
         <h3 id="adv-ex-h" class="ccs-instructions__sub">Search examples</h3>
         <ul class="ccs-instructions__list">
             <li class="ccs-instructions__item">
-              <span class="ccs-instructions__term"><img src="/images/advanced/icon-arrow.svg" alt="">All Fields → Contains all</span>
-              <span class="ccs-instructions__desc"><em>eucalyptus oil bottle</em> will display records with all three terms anywhere in the record.</span>
+              <span class="ccs-instructions__term"><img class="ccs-instructions__image" src="/images/advanced/icon-arrow.svg" alt="">All Fields → Contains all</span>
+              <span class="ccs-instructions__desc"><em class="ccs-instructions__emphasis">eucalyptus oil bottle</em> will display records with all three terms anywhere in the record.</span>
             </li>
             <li class="ccs-instructions__item">
-              <span class="ccs-instructions__term"><img src="/images/advanced/icon-arrow.svg" alt="">Subject → Contains all</span>
-              <span class="ccs-instructions__desc"><em>botanical illustration</em> will display records with <em>botanical</em> AND <em>illustration</em> in the subject field.</span>
+              <span class="ccs-instructions__term"><img class="ccs-instructions__image" src="/images/advanced/icon-arrow.svg" alt="">Subject → Contains all</span>
+              <span class="ccs-instructions__desc"><em class="ccs-instructions__emphasis">botanical illustration</em> will display records with <em class="ccs-instructions__emphasis">botanical</em> AND <em class="ccs-instructions__emphasis">illustration</em> in the subject field.</span>
             </li>
             <li class="ccs-instructions__item">
-              <span class="ccs-instructions__term"><img src="/images/advanced/icon-arrow.svg" alt="">Subject → Contains any</span>
-              <span class="ccs-instructions__desc"><em>botanical illustration</em> will display records with <em>botanical</em> OR <em>illustration</em> in the subject field.</span>
+              <span class="ccs-instructions__term"><img class="ccs-instructions__image" src="/images/advanced/icon-arrow.svg" alt="">Subject → Contains any</span>
+              <span class="ccs-instructions__desc"><em class="ccs-instructions__emphasis">botanical illustration</em> will display records with <em class="ccs-instructions__emphasis">botanical</em> OR <em class="ccs-instructions__emphasis">illustration</em> in the subject field.</span>
             </li>
         </ul>
       </section>
@@ -348,12 +298,12 @@ a{color:#0b2a6b;text-decoration:underline;text-underline-offset:2px}a:hover{colo
         <h3 id="adv-fx-h" class="ccs-instructions__sub">Filter examples</h3>
         <ul class="ccs-instructions__list">
             <li class="ccs-instructions__item">
-              <span class="ccs-instructions__term"><img src="/images/advanced/icon-arrow.svg" alt="">Object Type → Includes all</span>
-              <span class="ccs-instructions__desc"><em>Photograph, Manuscript</em> will display records tagged with both Photograph AND Manuscript.</span>
+              <span class="ccs-instructions__term"><img class="ccs-instructions__image" src="/images/advanced/icon-arrow.svg" alt="">Object Type → Includes all</span>
+              <span class="ccs-instructions__desc"><em class="ccs-instructions__emphasis">Photograph, Manuscript</em> will display records tagged with both Photograph AND Manuscript.</span>
             </li>
             <li class="ccs-instructions__item">
-              <span class="ccs-instructions__term"><img src="/images/advanced/icon-arrow.svg" alt="">Object Type → Includes any</span>
-              <span class="ccs-instructions__desc"><em>Photograph, Manuscript</em> will display records tagged with either Photograph OR Manuscript.</span>
+              <span class="ccs-instructions__term"><img class="ccs-instructions__image" src="/images/advanced/icon-arrow.svg" alt="">Object Type → Includes any</span>
+              <span class="ccs-instructions__desc"><em class="ccs-instructions__emphasis">Photograph, Manuscript</em> will display records tagged with either Photograph OR Manuscript.</span>
             </li>
         </ul>
       </section>
@@ -367,60 +317,60 @@ a{color:#0b2a6b;text-decoration:underline;text-underline-offset:2px}a:hover{colo
 <footer class="ccs-nav ccs-nav--footer" aria-label="University of Melbourne footer">
     <div class="ccs-foot__aoc">
       <div class="ccs-nav__inner">
-        <div>
-          <h2>Acknowledgement of Country</h2>
-          <div class="ccs-foot__flags"><img src="/images/home/flag-aboriginal.svg" alt="Aboriginal flag"><img src="/images/home/flag-torres-strait.svg" alt="Torres Strait Islander flag"></div>
+        <div class="ccs-nav__group">
+          <h2 class="ccs-nav__heading-acknowledgement-country">Acknowledgement of Country</h2>
+          <div class="ccs-foot__flags"><img class="ccs-foot__image" src="/images/home/flag-aboriginal.svg" alt="Aboriginal flag"><img class="ccs-foot__image" src="/images/home/flag-torres-strait.svg" alt="Torres Strait Islander flag"></div>
         </div>
-        <div>
-          <p>We acknowledge Aboriginal and Torres Strait Islander people as the Traditional Owners of the unceded lands on which we work, learn and live. We pay respect to Elders past, present and future, and acknowledge the importance of Indigenous knowledge in the Academy.</p>
-          <a class="ccs-link ccs-link--inverse" href="https://www.unimelb.edu.au/reconciliation"><img src="/images/home/icon-arrow-footer.svg" alt="">Read about our Indigenous priorities</a>
+        <div class="ccs-nav__group">
+          <p class="ccs-nav__text">We acknowledge Aboriginal and Torres Strait Islander people as the Traditional Owners of the unceded lands on which we work, learn and live. We pay respect to Elders past, present and future, and acknowledge the importance of Indigenous knowledge in the Academy.</p>
+          <a class="ccs-link ccs-link--inverse" href="https://www.unimelb.edu.au/reconciliation"><img class="ccs-link__image" src="/images/home/icon-arrow-footer.svg" alt="">Read about our Indigenous priorities</a>
         </div>
       </div>
     </div>
     <div class="ccs-foot__main">
       <div class="ccs-nav__inner">
         <ul class="ccs-foot__links">
-            <li><a class="ccs-link ccs-link--inverse" href="https://about.unimelb.edu.au/"><img src="/images/home/icon-arrow-footer.svg" alt="">About us</a></li>
-            <li><a class="ccs-link ccs-link--inverse" href="https://about.unimelb.edu.au/careers"><img src="/images/home/icon-arrow-footer.svg" alt="">Careers at Melbourne</a></li>
-            <li><a class="ccs-link ccs-link--inverse" href="https://www.unimelb.edu.au/respect"><img src="/images/home/icon-arrow-footer.svg" alt="">Safety and respect</a></li>
-            <li><a class="ccs-link ccs-link--inverse" href="https://www.unimelb.edu.au/newsroom"><img src="/images/home/icon-arrow-footer.svg" alt="">Newsroom</a></li>
-            <li><a class="ccs-link ccs-link--inverse" href="https://www.unimelb.edu.au/contact"><img src="/images/home/icon-arrow-footer.svg" alt="">Contact</a></li>
-            <li><a class="ccs-link ccs-link--inverse" href="https://about.unimelb.edu.au/priorities-and-partnerships/campus-development/campus-locations"><img src="/images/home/icon-arrow-footer.svg" alt="">Campus locations</a></li>
+            <li class="ccs-foot__item"><a class="ccs-link ccs-link--inverse" href="https://about.unimelb.edu.au/"><img class="ccs-link__image" src="/images/home/icon-arrow-footer.svg" alt="">About us</a></li>
+            <li class="ccs-foot__item"><a class="ccs-link ccs-link--inverse" href="https://about.unimelb.edu.au/careers"><img class="ccs-link__image" src="/images/home/icon-arrow-footer.svg" alt="">Careers at Melbourne</a></li>
+            <li class="ccs-foot__item"><a class="ccs-link ccs-link--inverse" href="https://www.unimelb.edu.au/respect"><img class="ccs-link__image" src="/images/home/icon-arrow-footer.svg" alt="">Safety and respect</a></li>
+            <li class="ccs-foot__item"><a class="ccs-link ccs-link--inverse" href="https://www.unimelb.edu.au/newsroom"><img class="ccs-link__image" src="/images/home/icon-arrow-footer.svg" alt="">Newsroom</a></li>
+            <li class="ccs-foot__item"><a class="ccs-link ccs-link--inverse" href="https://www.unimelb.edu.au/contact"><img class="ccs-link__image" src="/images/home/icon-arrow-footer.svg" alt="">Contact</a></li>
+            <li class="ccs-foot__item"><a class="ccs-link ccs-link--inverse" href="https://about.unimelb.edu.au/priorities-and-partnerships/campus-development/campus-locations"><img class="ccs-link__image" src="/images/home/icon-arrow-footer.svg" alt="">Campus locations</a></li>
         </ul>
         <div class="ccs-foot__contact">
           <h2 class="ccs-foot__label">Contact details</h2>
-          <p>Phone <a href="tel:136352">13 MELB (13 6352)</a><br>International <a href="tel:+61390355511">+61 3 9035 5511</a></p>
-          <address><strong>Address</strong><br>The University of Melbourne<br>Grattan Street, Parkville<br>Victoria 3010<br>Australia</address>
+          <p class="ccs-foot__text">Phone <a class="ccs-foot__text-link-13-melb-13" href="tel:136352">13 MELB (13 6352)</a><br>International <a class="ccs-foot__text-link-61-3-9035" href="tel:+61390355511">+61 3 9035 5511</a></p>
+          <address class="ccs-foot__address"><strong class="ccs-foot__address-strong">Address</strong><br>The University of Melbourne<br>Grattan Street, Parkville<br>Victoria 3010<br>Australia</address>
         </div>
-        <div>
+        <div class="ccs-nav__group">
           <h2 class="ccs-foot__label">Connect with us</h2>
           <ul class="ccs-foot__social">
-            <li><a href="https://www.facebook.com/unimelb" aria-label="Facebook"><img src="/images/home/social-facebook.svg" alt=""></a></li>
-            <li><a href="https://www.linkedin.com/school/university-of-melbourne" aria-label="LinkedIn"><img src="/images/home/social-linkedin.svg" alt=""></a></li>
-            <li><a href="https://www.instagram.com/unimelb" aria-label="Instagram"><img src="/images/home/social-instagram.svg" alt=""></a></li>
-            <li><a href="https://x.com/unimelb" aria-label="X (Twitter)"><img src="/images/home/social-x.svg" alt=""></a></li>
+            <li class="ccs-foot__item"><a class="ccs-foot__item-link-facebook" href="https://www.facebook.com/unimelb" aria-label="Facebook"><img class="ccs-foot__link-image" src="/images/home/social-facebook.svg" alt=""></a></li>
+            <li class="ccs-foot__item"><a class="ccs-foot__item-link-linkedin" href="https://www.linkedin.com/school/university-of-melbourne" aria-label="LinkedIn"><img class="ccs-foot__link-image" src="/images/home/social-linkedin.svg" alt=""></a></li>
+            <li class="ccs-foot__item"><a class="ccs-foot__item-link-instagram" href="https://www.instagram.com/unimelb" aria-label="Instagram"><img class="ccs-foot__link-image" src="/images/home/social-instagram.svg" alt=""></a></li>
+            <li class="ccs-foot__item"><a class="ccs-foot__item-link-x-twitter" href="https://x.com/unimelb" aria-label="X (Twitter)"><img class="ccs-foot__link-image" src="/images/home/social-x.svg" alt=""></a></li>
           </ul>
         </div>
-        <div class="ccs-foot__brand"><a href="https://www.unimelb.edu.au" aria-label="The University of Melbourne homepage"><img src="/images/home/uom-logo-vert-ondark.svg" alt=""></a></div>
+        <div class="ccs-foot__brand"><a class="ccs-foot__link-university-melbourne-homepage" href="https://www.unimelb.edu.au" aria-label="The University of Melbourne homepage"><img class="ccs-foot__link-image" src="/images/home/uom-logo-vert-ondark.svg" alt=""></a></div>
       </div>
     </div>
     <div class="ccs-foot__last">
       <div class="ccs-nav__inner">
         <ul class="ccs-foot__legal">
-          <li><a href="https://safety.unimelb.edu.au/emergency">Emergency</a></li>
-          <li><a href="https://www.unimelb.edu.au/legal">Terms and privacy</a></li>
-          <li><a href="https://www.unimelb.edu.au/accessibility">Accessibility</a></li>
-          <li><a href="https://about.unimelb.edu.au/strategy/governance/compliance-obligations/privacy">Privacy</a></li>
+          <li class="ccs-foot__item"><a class="ccs-foot__item-link-emergency" href="https://safety.unimelb.edu.au/emergency">Emergency</a></li>
+          <li class="ccs-foot__item"><a class="ccs-foot__item-link-terms-privacy" href="https://www.unimelb.edu.au/legal">Terms and privacy</a></li>
+          <li class="ccs-foot__item"><a class="ccs-foot__item-link-accessibility" href="https://www.unimelb.edu.au/accessibility">Accessibility</a></li>
+          <li class="ccs-foot__item"><a class="ccs-foot__item-link-privacy" href="https://about.unimelb.edu.au/strategy/governance/compliance-obligations/privacy">Privacy</a></li>
         </ul>
         <ul class="ccs-foot__ids">
-          <li>The University of Melbourne (Australian University): <strong>PRV12150</strong></li>
-          <li>CRICOS: <strong>00116K</strong></li>
-          <li>ABN: <strong>84 002 705 224</strong></li>
+          <li class="ccs-foot__item">The University of Melbourne (Australian University): <strong class="ccs-foot__item-strong">PRV12150</strong></li>
+          <li class="ccs-foot__item">CRICOS: <strong class="ccs-foot__item-strong">00116K</strong></li>
+          <li class="ccs-foot__item">ABN: <strong class="ccs-foot__item-strong">84 002 705 224</strong></li>
         </ul>
       </div>
     </div>
   </footer>
-<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+<svg class="advanced-filters-page__icon" xmlns="http://www.w3.org/2000/svg">
   <symbol id="icon-facebook" viewBox="0 0 24 24">
     <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
   </symbol>

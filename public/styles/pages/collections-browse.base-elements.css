@@ -1,0 +1,52 @@
+/* Moved out of an inline <style> block (base-elements). Used by: collections-browse. */
+
+body{margin:0;background:var(--white-100);color:var(--col-text-primary);font-family:'Source Sans 3',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-decoration:underline}
+*{box-sizing:border-box}
+.breadcrumb-link{color:#fff;text-decoration:none}
+.breadcrumb-link:hover,.breadcrumb-link:focus-visible{text-decoration:underline}
+
+/* Collections landing — Matrix-style content blocks */
+.cl-wrap{max-width:1200px;margin:0 auto;padding:0 32px}
+.cl-section{padding:56px 0}
+.cl-section--tint{background:#f1f0ec}
+.cl-h2{margin:0 0 8px;text-align:center;font-family:'Fraunces',serif;font-weight:500;font-size:clamp(26px,3vw,34px);line-height:1.2;color:var(--col-text-primary)}
+.cl-sub{margin:0 auto 32px;text-align:center;max-width:720px;font-size:17px;line-height:1.55;color:#3b4050;text-wrap:pretty}
+.cl-lead{margin:0 auto;max-width:760px;text-align:center;font-size:20px;line-height:1.55;color:#1b1f2a;text-wrap:pretty}
+.cl-links{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-top:16px;font-size:15px}
+.cl-links a{color:#fff;text-decoration:underline}
+.cl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.cl-card{position:relative;display:flex;flex-direction:column;background:#fff;border:1px solid #e3e0d9;transition:box-shadow .2s ease,border-color .2s ease}
+.cl-card:hover,.cl-card:focus-within{border-color:var(--col-bg-primary);box-shadow:0 6px 18px rgba(0,15,70,.12)}
+.cl-card__media{aspect-ratio:3/2;background:#f4f3f0;overflow:hidden}
+.cl-card__media img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s ease}
+.cl-card:hover .cl-card__media img{transform:scale(1.03)}
+.cl-card__body{display:flex;flex-direction:column;gap:10px;padding:20px 22px 24px;flex:1}
+.cl-card__tag{align-self:flex-start;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#0b4ea2}
+.cl-card__title{margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:22px;line-height:1.25}
+.cl-card__title a{color:var(--col-bg-primary);text-decoration:none}
+.cl-card__title a::after{content:"";position:absolute;inset:0}
+.cl-card__title a:focus-visible{outline:3px solid #0b4ea2;outline-offset:2px}
+.cl-card__desc{margin:0;font-size:16px;line-height:1.5;color:#3b4050;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.cl-card__cta{margin-top:auto;padding-top:6px;display:inline-flex;align-items:center;gap:6px;font-weight:600;font-size:16px;color:var(--col-bg-primary)}
+.cl-card--cta{background:var(--col-bg-primary);border-color:var(--col-bg-primary);color:#fff;justify-content:center}
+.cl-card--cta .cl-card__body{justify-content:center;gap:14px;padding:32px 28px}
+.cl-card--cta .cl-card__title a,.cl-card--cta .cl-card__cta{color:#fff}
+.cl-card--cta .cl-card__desc{color:rgba(255,255,255,.88);-webkit-line-clamp:unset;display:block}
+.cl-card--cta:hover{background:var(--col-bg-primary-hover,#213e5d)}
+.pathfinder-inset__view{margin-top:10px;font-weight:600;font-size:15px;color:var(--col-bg-primary);text-decoration:underline}
+.cl-help{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media (max-width:1000px){.cl-grid,.cl-help{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:640px){
+  .cl-wrap{padding:0 16px}.cl-section{padding:40px 0}
+  .cl-grid,.cl-help{grid-template-columns:1fr}
+  .cl-lead{font-size:18px}
+  }
+@media (prefers-reduced-motion:reduce){.cl-card,.cl-card__media img{transition:none}}
+@media (max-width:640px){
+  .hero-inner{padding:16px 20px 28px!important}
+  .hero-cta a{flex:1 1 100%!important;justify-content:center!important}
+  .collections-grid{grid-template-columns:1fr!important}
+  .footer-cols{flex-direction:column!important}
+}
+[aria-label="University links"] a:hover{color:var(--sage-100);text-decoration:underline}

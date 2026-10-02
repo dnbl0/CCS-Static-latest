@@ -6,41 +6,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="../support.js"></script>
-<style>
-.skip-link {
-  position: absolute;
-  top: -120px;
-  left: 16px;
-  background: var(--col-btn-action-bg, #46c8f0);
-  color: var(--col-btn-action-text, #000f46);
-  padding: 12px 18px;
-  z-index: 99999;
-  font-weight: 700;
-  text-decoration: none;
-  border: 2px solid var(--col-bg-primary, #000f46);
-  transition: top 0.2s ease;
-}
-.skip-link:focus {
-  top: 16px;
-}
-@media (max-width:1097.98px){
-  .site-nav{display:none!important}
-  .site-nav.is-open{display:flex!important;position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;background:var(--col-bg-primary);border-top:1px solid var(--col-border-header);z-index:30;padding:8px 0;box-shadow:0 8px 16px rgba(0,0,0,.15)}
-  .site-nav.is-open a{padding:14px 24px!important;font-size:16px!important;width:100%}
-  .site-nav-toggle{display:flex!important}
-}
-@media (max-width:768px){
-  nav[aria-label="Breadcrumb"] > ol:not(.bc-mobile){display:none!important}
-  nav[aria-label="Breadcrumb"] .bc-mobile{display:flex!important}
-}
-</style>
+<link rel="stylesheet" href="/styles/shared/skip-link.css">
   <link rel="stylesheet" href="../styles/vendor/bootstrap-uom.min.css">
   <link rel="stylesheet" href="/styles/home.css">
   <link rel="stylesheet" href="../styles/header.css">
   <script src="../blacklight-adapter.js"></script>
+  <link rel="stylesheet" href="/styles/pages/record.css">
 </head>
-<body>
-<a href="#main-content" class="skip-link">Skip to main content</a>
+<body class="page-record">
+<a href="#main-content" class="skip-link record-page__link-skip-main-content">Skip to main content</a>
 <script>
 // Keeps --header-total-height in sync so the media viewer can size itself to the viewport.
 (function() {
@@ -65,175 +39,93 @@
 })();
 </script>
 <x-dc>
-<helmet><style>
-:root{
-  --header-total-height: 212px;
-  --col-bg-primary:#000f46;
-  --col-bg-primary-dark:#000b34;
-  --col-bg-primary-hover:#213e5d;
-  --col-bg-surface:#fff;
-  --col-bg-accent:#abc1a7;
-  --col-bg-accent-soft:#dde5d6;
-  --col-bg-selected:#e8edf6;
-  --col-btn-primary-bg:#000f46;
-  --col-btn-primary-bg-hover:#213e5d;
-  --col-btn-primary-text:#fff;
-  --col-btn-action-bg:#46c8f0;
-  --col-btn-action-bg-hover:#29b3d9;
-  --col-btn-action-text:#000f46;
-  --col-btn-outline:#000f46;
-  --col-text-primary:#1b1f2a;
-  --col-text-onbrand:#fff;
-  --col-text-muted:#5b6070;
-  --col-border-brand:#000f46;
-  --col-border-neutral:#cfcac0;
-  --col-border-neutral-soft:#ece9e3;
-  --col-border-neutral-mid:#d9d6cf;
-  --col-border-header:#b5bac9;
-  --col-advisory-bg:#fdf6d8;
-  --col-advisory-border:#efdc8e;
-  --col-advisory-text:#8a6200;
-}</style>
+<helmet><link rel="stylesheet" href="/styles/pages/record.colour-tokens.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../components/fig-tokens.css">
 <link rel="stylesheet" href="../components/fig-assets.css">
 <script src="../collection-data.js"></script>
 <script src="../licence-badge.js"></script>
-<style>
-body{margin:0;background:var(--white-100);color:var(--col-text-primary);font-family:'Source Sans 3',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
-a{color:#0b2a6b;text-decoration:none}a:hover{color:#0b2a6b;text-decoration:underline}
-*{box-sizing:border-box}
-button,input{font-family:inherit}
-
-/* Item media viewer */
-.item-media{position:relative;display:flex;width:100%;height:clamp(420px,calc(100vh - 96px),780px);background:#1a1a1a;border-bottom:1px solid #e7e7e9;overflow:hidden}
-.item-media:focus{outline:none}
-.item-media:focus-visible{outline:3px solid #46c8f0;outline-offset:-3px}
-.item-media:fullscreen{height:100vh;width:100vw}
-.im-stage{overflow:hidden}
-.im-sidebar{position:absolute;top:0;right:0;bottom:0;z-index:10;width:min(340px,100%);background:#fff;display:flex;flex-direction:column;transform:translateX(100%);visibility:hidden;box-shadow:-6px 0 18px rgba(0,0,0,.28);transition:transform .25s ease,visibility 0s linear .25s}
-.im-sidebar.open{transform:none;visibility:visible;transition:transform .25s ease}
-.im-sidebar__inner{width:100%;height:100%;display:flex;flex-direction:column;min-height:0}
-.im-sidebar__head{display:flex;align-items:center;justify-content:space-between;padding:12px 12px 12px 20px;border-bottom:1px solid #e7e7e9}
-.im-sidebar__body{flex:1;min-height:0;overflow-y:auto;margin:0;padding:0;list-style:none}
-.im-sidebar__body li{padding:14px 20px;border-bottom:1px solid #f0f0f0;display:flex;flex-direction:column;gap:4px}
-.im-sidebar__body .k{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:#5b6070}
-.im-sidebar__body .v{font-size:14px;line-height:1.5;color:#1a1a1a;text-wrap:pretty;word-break:break-word;white-space:pre-line}
-.im-main{flex:1;min-width:0;display:flex;flex-direction:column;background:#1a1a1a}
-.im-stage{position:relative;flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:16px}
-.im-img{display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain}
-.im-video{display:block;width:100%;height:100%;max-height:100%;background:#000;object-fit:contain}
-.im-audio{width:min(560px,100%);display:flex;flex-direction:column;align-items:center;gap:20px;color:#fff;text-align:center}
-.im-audio svg{opacity:.85}
-.im-audio audio{width:100%}
-.im-msg{color:#fff;font-size:16px;text-align:center;max-width:420px;line-height:1.5}
-.im-bar{flex:none;display:flex;align-items:center;gap:4px;min-height:56px;padding:8px 12px;background:#fff;border-top:1px solid #e7e7e9}
-.im-bar__spacer{flex:1}
-.im-count{font-size:14px;color:#3b4050;padding:0 8px;white-space:nowrap;font-variant-numeric:tabular-nums}
-.im-btn{width:40px;height:40px;min-width:40px;min-height:40px;display:inline-flex;align-items:center;justify-content:center;padding:0;border:0;border-radius:0;background:none;color:var(--col-bg-primary);cursor:pointer;transition:background-color .15s ease,color .15s ease}
-.im-btn:hover{background:#eef1f7}
-.im-btn:focus-visible{outline:3px solid #0b4ea2;outline-offset:-3px}
-.im-btn:disabled{color:#a6a6a6;cursor:not-allowed;background:none}
-.im-btn[aria-pressed="true"],.im-btn[aria-expanded="true"]{background:#e8edf6}
-.im-thumbs{flex:none;display:flex;gap:8px;overflow-x:auto;padding:10px 12px;background:#fff;border-top:1px solid #e7e7e9}
-.im-thumb{flex:none;width:56px;height:56px;padding:0;border:2px solid transparent;background:#f4f3f0;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--col-bg-primary);overflow:hidden}
-.im-thumb:hover{border-color:#9aa3b8}
-.im-thumb:focus-visible{outline:3px solid #0b4ea2;outline-offset:1px}
-.im-thumb[aria-current="true"]{border-color:#0b4ea2}
-.im-thumb img{width:100%;height:100%;object-fit:cover;display:block}
-.sr-live{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-@media(max-width:768px){
-  .item-media{flex-direction:column;height:auto}
-  .im-stage{height:min(62vh,440px);flex:none}
-  .item-media:fullscreen .im-stage{height:auto;flex:1}
-  .im-sidebar{top:auto;left:0;right:0;width:100%;max-height:60%;transform:translateY(100%);box-shadow:0 -6px 18px rgba(0,0,0,.28)}
-  .im-sidebar.open{transform:none}
-  .item-media:fullscreen{height:100vh}
-}
-@media(prefers-reduced-motion:reduce){.im-sidebar,.im-sidebar.open,.im-btn{transition:none}}
-@media print{.item-media{display:none}}
-[aria-label="University links"] a:hover{color:var(--sage-100);text-decoration:underline}
-</style>
+<link rel="stylesheet" href="/styles/pages/record.base-elements.css">
 </helmet>
-<div style="min-height:100vh;display:flex;flex-direction:column">
+<div class="record-page__group record-page__group--v1">
 
 <header class="ccs-nav ccs-nav--header" data-component="Header" aria-label="Site header">
   <div class="ccs-nav__brand">
-    <a href="https://www.unimelb.edu.au" aria-label="The University of Melbourne homepage">
-      <picture><source media="(max-width: 1023px)" srcset="/images/home/logo-header-mobile.svg"><img src="/images/home/logo-header-desktop.svg" alt=""></picture>
+    <a class="ccs-nav__link-university-melbourne-homepage" href="https://www.unimelb.edu.au" aria-label="The University of Melbourne homepage">
+      <picture class="ccs-nav__link-picture"><source media="(max-width: 1023px)" srcset="/images/home/logo-header-mobile.svg"><img class="ccs-nav__picture-image" src="/images/home/logo-header-desktop.svg" alt=""></picture>
     </a>
   </div>
   <div class="ccs-nav__main">
     <div class="ccs-nav__top">
-      <nav aria-label="University of Melbourne">
-        <ul>
-          <li><a href="https://study.unimelb.edu.au">Study</a></li>
-          <li><a href="https://students.unimelb.edu.au">Students</a></li>
-          <li><a href="https://research.unimelb.edu.au">Research</a></li>
-          <li><a href="https://library.unimelb.edu.au">Library</a></li>
-          <li><a href="https://staff.unimelb.edu.au">Staff</a></li>
-          <li><a href="https://www.unimelb.edu.au/alumni">Alumni</a></li>
-          <li><a href="https://giving.unimelb.edu.au">Giving</a></li>
-          <li><a href="https://about.unimelb.edu.au">About</a></li>
-          <li><a href="https://www.unimelb.edu.au/contact">Contact</a></li>
+      <nav class="record-university-melbourne" aria-label="University of Melbourne">
+        <ul class="record-university-melbourne__list">
+          <li class="record-university-melbourne__list-item"><a class="record-university-melbourne__item-link-study" href="https://study.unimelb.edu.au">Study</a></li>
+          <li class="record-university-melbourne__list-item"><a class="record-university-melbourne__item-link-students" href="https://students.unimelb.edu.au">Students</a></li>
+          <li class="record-university-melbourne__list-item"><a class="record-university-melbourne__item-link-research" href="https://research.unimelb.edu.au">Research</a></li>
+          <li class="record-university-melbourne__list-item"><a class="record-university-melbourne__item-link-library" href="https://library.unimelb.edu.au">Library</a></li>
+          <li class="record-university-melbourne__list-item"><a class="record-university-melbourne__item-link-staff" href="https://staff.unimelb.edu.au">Staff</a></li>
+          <li class="record-university-melbourne__list-item"><a class="record-university-melbourne__item-link-alumni" href="https://www.unimelb.edu.au/alumni">Alumni</a></li>
+          <li class="record-university-melbourne__list-item"><a class="record-university-melbourne__item-link-giving" href="https://giving.unimelb.edu.au">Giving</a></li>
+          <li class="record-university-melbourne__list-item"><a class="record-university-melbourne__item-link-about" href="https://about.unimelb.edu.au">About</a></li>
+          <li class="record-university-melbourne__list-item"><a class="record-university-melbourne__item-link-contact" href="https://www.unimelb.edu.au/contact">Contact</a></li>
         </ul>
       </nav>
       <button type="button" class="ccs-nav__search" popovertarget="uom-search-popover" data-popover-type="search" aria-label="Open search">
-        <img src="/images/home/icon-search-onaccent.svg" alt="">
+        <img class="ccs-nav__image" src="/images/home/icon-search-onaccent.svg" alt="">
       </button>
     </div>
     <div class="ccs-nav__bottom">
       <a class="ccs-nav__title" href="/index.html">Cultural Collections</a>
       <nav id="ccs-primary-nav" class="ccs-nav__primary" aria-label="Primary navigation">
         <div class="ccs-nav__drawer-search">
-          <form role="search" action="/search/search-results.html" method="get">
-            <label for="ccs-drawer-q" class="sr-only">Search Cultural Collections</label>
-            <input id="ccs-drawer-q" name="q" type="text" autocomplete="off" placeholder="Search">
-            <button type="submit" aria-label="Search"><img src="/images/home/icon-search-onaccent.svg" alt=""></button>
+          <form class="ccs-nav__form-search" role="search" action="/search/search-results.html" method="get">
+            <label for="ccs-drawer-q" class="sr-only record-form__label-search-cultural-collections">Search Cultural Collections</label>
+            <input class="ccs-drawer-q" id="ccs-drawer-q" name="q" type="text" autocomplete="off" placeholder="Search">
+            <button class="record-form__button-search" type="submit" aria-label="Search"><img class="record-form__button-image" src="/images/home/icon-search-onaccent.svg" alt=""></button>
           </form>
         </div>
-        <ul>
-          <li><a href="/search/search-results.html" aria-current="page">Search all records</a></li>
-          <li>
-            <button type="button" class="ccs-nav__trigger" aria-expanded="false" aria-controls="ccs-dd-collections">Browse collections<img src="/images/home/icon-expand.svg" alt=""></button>
+        <ul class="ccs-nav__list">
+          <li class="ccs-nav__list-item"><a class="ccs-nav__item-link-search-all-records" href="/search/search-results.html" aria-current="page">Search all records</a></li>
+          <li class="ccs-nav__list-item">
+            <button type="button" class="ccs-nav__trigger" aria-expanded="false" aria-controls="ccs-dd-collections">Browse collections<img class="ccs-nav__image" src="/images/home/icon-expand.svg" alt=""></button>
             <div id="ccs-dd-collections" class="ccs-nav__panel">
-              <a class="ccs-nav__panel-title" href="/collections/index.html"><img src="/images/home/icon-arrow-footer.svg" alt="">Browse collections</a>
+              <a class="ccs-nav__panel-title" href="/collections/index.html"><img class="ccs-nav__image" src="/images/home/icon-arrow-footer.svg" alt="">Browse collections</a>
               <ul class="ccs-nav__panel-list">
-                <li><a href="/collections/medical-history-museum/"><img src="/images/home/icon-arrow-footer.svg" alt="">Medical History Museum</a></li>
-                <li><a href="/collections/henry-forman-atkinson-dental-museum/"><img src="/images/home/icon-arrow-footer.svg" alt="">Henry Forman Atkinson Dental Museum</a></li>
-                <li><a href="/collections/harry-brookes-allen-museum/"><img src="/images/home/icon-arrow-footer.svg" alt="">Harry Brookes Allen Museum</a></li>
-                <li><a href="/collections/university-art-collection/"><img src="/images/home/icon-arrow-footer.svg" alt="">University Art Collection</a></li>
-                <li><a href="/collections/grainger-museum/"><img src="/images/home/icon-arrow-footer.svg" alt="">Grainger Museum Collection</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-medical-history-museum" href="/collections/medical-history-museum/"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Medical History Museum</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-henry-forman-atkinson" href="/collections/henry-forman-atkinson-dental-museum/"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Henry Forman Atkinson Dental Museum</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-harry-brookes-allen" href="/collections/harry-brookes-allen-museum/"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Harry Brookes Allen Museum</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-university-art-collection" href="/collections/university-art-collection/"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">University Art Collection</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-grainger-museum-collection" href="/collections/grainger-museum/"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Grainger Museum Collection</a></li>
               </ul>
             </div>
           </li>
-          <li>
-            <button type="button" class="ccs-nav__trigger" aria-expanded="false" aria-controls="ccs-dd-help">Help<img src="/images/home/icon-expand.svg" alt=""></button>
+          <li class="ccs-nav__list-item">
+            <button type="button" class="ccs-nav__trigger" aria-expanded="false" aria-controls="ccs-dd-help">Help<img class="ccs-nav__image" src="/images/home/icon-expand.svg" alt=""></button>
             <div id="ccs-dd-help" class="ccs-nav__panel">
-              <a class="ccs-nav__panel-title" href="/help/index.html"><img src="/images/home/icon-arrow-footer.svg" alt="">Help and support</a>
+              <a class="ccs-nav__panel-title" href="/help/index.html"><img class="ccs-nav__image" src="/images/home/icon-arrow-footer.svg" alt="">Help and support</a>
               <ul class="ccs-nav__panel-list">
-                <li><a href="/help?topic=faq"><img src="/images/home/icon-arrow-footer.svg" alt="">Frequently Asked Questions</a></li>
-                <li><a href="/help?topic=search-tips"><img src="/images/home/icon-arrow-footer.svg" alt="">Search tips</a></li>
-                <li><a href="/help?topic=copyright"><img src="/images/home/icon-arrow-footer.svg" alt="">Copyright and terms of use</a></li>
-                <li><a href="/help?topic=access"><img src="/images/home/icon-arrow-footer.svg" alt="">Access and information</a></li>
-                <li><a href="/help?topic=privacy"><img src="/images/home/icon-arrow-footer.svg" alt="">Privacy</a></li>
-                <li><a href="/help/indigenous-data.html"><img src="/images/home/icon-arrow-footer.svg" alt="">Indigenous cultural data and access</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-frequently-asked-questions" href="/help?topic=faq"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Frequently Asked Questions</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-search-tips" href="/help?topic=search-tips"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Search tips</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-copyright-terms-use" href="/help?topic=copyright"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Copyright and terms of use</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-access-information" href="/help?topic=access"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Access and information</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-privacy" href="/help?topic=privacy"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Privacy</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-indigenous-cultural-data" href="/help/indigenous-data.html"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Indigenous cultural data and access</a></li>
               </ul>
             </div>
           </li>
-          <li><a href="/contact.html">Contact</a></li>
+          <li class="ccs-nav__list-item"><a class="ccs-nav__item-link-contact" href="/contact.html">Contact</a></li>
         </ul>
         <ul class="ccs-nav__drawer-top" aria-label="University of Melbourne">
-        <li><a href="https://study.unimelb.edu.au">Study</a></li>
-        <li><a href="https://students.unimelb.edu.au">Students</a></li>
-        <li><a href="https://research.unimelb.edu.au">Research</a></li>
-        <li><a href="https://library.unimelb.edu.au">Library</a></li>
-        <li><a href="https://staff.unimelb.edu.au">Staff</a></li>
-        <li><a href="https://www.unimelb.edu.au/alumni">Alumni</a></li>
-        <li><a href="https://giving.unimelb.edu.au">Giving</a></li>
-        <li><a href="https://about.unimelb.edu.au">About</a></li>
-        <li><a href="https://www.unimelb.edu.au/contact">Contact</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-study" href="https://study.unimelb.edu.au">Study</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-students" href="https://students.unimelb.edu.au">Students</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-research" href="https://research.unimelb.edu.au">Research</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-library" href="https://library.unimelb.edu.au">Library</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-staff" href="https://staff.unimelb.edu.au">Staff</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-alumni" href="https://www.unimelb.edu.au/alumni">Alumni</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-giving" href="https://giving.unimelb.edu.au">Giving</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-about" href="https://about.unimelb.edu.au">About</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-contact" href="https://www.unimelb.edu.au/contact">Contact</a></li>
         </ul>
       </nav>
     </div>
@@ -241,30 +133,30 @@ button,input{font-family:inherit}
   <button type="button" class="ccs-nav__menu" aria-expanded="false" aria-controls="ccs-primary-nav">
     <svg class="ccs-nav__menu-open" viewBox="0 0 24 24" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     <svg class="ccs-nav__menu-close" viewBox="0 0 24 24" aria-hidden="true"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
-    <span>Menu</span>
+    <span class="ccs-nav__text">Menu</span>
   </button>
 </header>
 
 <!-- Full-screen search overlay -->
 <div id="uom-search-popover" class="uom-search-popover" role="dialog" aria-modal="true" aria-labelledby="uom-search-overlay-title">
   <div class="uom-search-popover__inner">
-    <h2 id="uom-search-overlay-title" class="sr-only">Search</h2>
+    <h2 id="uom-search-overlay-title" class="sr-only uom-search-popover__heading">Search</h2>
     <form class="uom-search-popover__form" role="search" action="/search/search-results.html" method="get">
-      <label for="uom-search-overlay-input" class="sr-only">Search Cultural Collections</label>
-      <input id="uom-search-overlay-input" name="q" type="text" placeholder="Search" autocomplete="off">
+      <label for="uom-search-overlay-input" class="sr-only uom-search-popover__label-search-cultural-collections">Search Cultural Collections</label>
+      <input class="uom-search-overlay-input" id="uom-search-overlay-input" name="q" type="text" placeholder="Search" autocomplete="off">
       <button type="submit" class="uom-search-popover__submit" aria-label="Search">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <svg class="uom-search-popover__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="11" cy="11" r="8"></circle>
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
       </button>
     </form>
     <button type="button" class="uom-search-popover__close" id="uom-search-popover-close" aria-label="Close search">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <svg class="uom-search-popover__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <line x1="18" y1="6" x2="6" y2="18"></line>
         <line x1="6" y1="6" x2="18" y2="18"></line>
       </svg>
-      <span>Close</span>
+      <span class="uom-search-popover__text">Close</span>
     </button>
   </div>
 </div>
@@ -342,13 +234,13 @@ button,input{font-family:inherit}
 })();
 </script>
 
-<section style="width:100%;background:#00354c;height:40px;display:flex;align-items:center">
-  <nav class="page-breadcrumbs" aria-label="Breadcrumb"><ol class="page-local-history" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="root" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="/" itemprop="item" title="Home" aria-label="Home"><img src="../images/home.svg" alt="" width="16" height="16" style="vertical-align:middle"><span itemprop="name" class="sr-only">Home</span></a><meta content="1" itemprop="position"></li><li class="" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="/search/search-results.html" itemprop="item" title="Search results"><span itemprop="name">Search results</span></a><meta content="2" itemprop="position"></li><li itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page"><span itemprop="name">{{ pageTitle }}</span><meta content="3" itemprop="position"></li></ol><ol class="bc-mobile" style="display:none;align-items:center;gap:6px;list-style:none;margin:0;font-size:18px;color:#fff"><li style="display:flex;align-items:center"><a href="/search/search-results.html" style="display:inline-flex;align-items:center;gap:6px;color:#fff;text-decoration:none;min-height:44px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span>Search results</span></a></li></ol></nav>
+<section class="record-page__section">
+  <nav class="page-breadcrumbs" aria-label="Breadcrumb"><ol class="page-local-history" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="root" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a class="page-local-history__item-link-home" href="/" itemprop="item" title="Home" aria-label="Home"><img class="page-local-history__link-image" src="../images/home.svg" alt="" width="16" height="16"><span itemprop="name" class="sr-only page-local-history__link-text">Home</span></a><meta content="1" itemprop="position"></li><li class="page-local-history__item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a class="page-local-history__item-link-search-results" href="/search/search-results.html" itemprop="item" title="Search results"><span class="page-local-history__link-text" itemprop="name">Search results</span></a><meta content="2" itemprop="position"></li><li class="page-local-history__item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page"><span class="page-local-history__item-text" itemprop="name">{{ pageTitle }}</span><meta content="3" itemprop="position"></li></ol><ol class="bc-mobile bc-mobile--styled"><li class="bc-mobile__item"><a class="bc-mobile__item-link-search-results" href="/search/search-results.html"><svg class="bc-mobile__link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span class="bc-mobile__link-text">Search results</span></a></li></ol></nav>
 </section>
 
 <section class="page-banner page-banner--compact" aria-label="Page banner">
   <div class="page-banner__inner">
-    <h1 style="text-wrap:balance">{{ pageTitle }}</h1>
+    <h1 class="page-banner__heading">{{ pageTitle }}</h1>
   </div>
 </section>
 
@@ -360,22 +252,22 @@ button,input{font-family:inherit}
       <sc-if value="{{ isVideo }}" hint-placeholder-val="{{ false }}"><video class="im-video" src="{{ cur.src }}" controls="{{ yes }}" preload="metadata" playsinline="{{ yes }}" aria-label="{{ curAlt }}" onLoadedMetadata="{{ onMeta }}"></video></sc-if>
       <sc-if value="{{ isAudio }}" hint-placeholder-val="{{ false }}">
         <div class="im-audio">
-          <svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
-          <span style="font-size:16px">{{ cur.label }}</span>
-          <audio src="{{ cur.src }}" controls="{{ yes }}" preload="metadata" aria-label="{{ curAlt }}" onLoadedMetadata="{{ onMeta }}"></audio>
+          <svg class="im-audio__icon" width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
+          <span class="im-audio__text">{{ cur.label }}</span>
+          <audio class="im-audio__audio-meta" src="{{ cur.src }}" controls="{{ yes }}" preload="metadata" aria-label="{{ curAlt }}" onLoadedMetadata="{{ onMeta }}"></audio>
         </div>
       </sc-if>
-      <sc-if value="{{ curBroken }}" hint-placeholder-val="{{ false }}"><p class="im-msg" role="alert" style="position:absolute;inset:16px;display:flex;align-items:center;justify-content:center;background:#1a1a1a;margin:0">This media could not be loaded. Please try again later or contact the collection.</p></sc-if>
+      <sc-if value="{{ curBroken }}" hint-placeholder-val="{{ false }}"><p class="im-msg im-msg--styled" role="alert">This media could not be loaded. Please try again later or contact the collection.</p></sc-if>
       <!-- Metadata panel (closed by default; overlays the asset; toggled with the info button or I) -->
       <aside id="item-media-sidebar" class="{{ sidebarCls }}" aria-label="Media metadata">
         <div class="im-sidebar__inner">
           <div class="im-sidebar__head">
-            <h3 style="margin:0;font-size:16px;font-weight:600;color:#1a1a1a">Media metadata</h3>
-            <button type="button" class="im-btn" onClick="{{ closeSidebar }}" aria-label="Close media metadata" title="Close (Esc)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+            <h3 class="im-sidebar__heading-media-metadata">Media metadata</h3>
+            <button type="button" class="im-btn" onClick="{{ closeSidebar }}" aria-label="Close media metadata" title="Close (Esc)"><svg class="im-btn__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
           </div>
           <ul class="im-sidebar__body" tabindex="-1">
             <sc-for list="{{ mediaRows }}" as="m" hint-placeholder-count="7">
-              <li><span class="k">{{ m.label }}</span><span class="v">{{ m.value }}</span></li>
+              <li class="im-sidebar__item"><span class="k">{{ m.label }}</span><span class="v">{{ m.value }}</span></li>
             </sc-for>
           </ul>
         </div>
@@ -384,22 +276,22 @@ button,input{font-family:inherit}
 
     <div class="im-bar" role="toolbar" aria-label="Media controls">
       <sc-if value="{{ multi }}" hint-placeholder-val="{{ false }}">
-        <button type="button" class="im-btn" onClick="{{ prevImg }}" disabled="{{ atFirst }}" aria-label="Previous" title="Previous (←)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+        <button type="button" class="im-btn" onClick="{{ prevImg }}" disabled="{{ atFirst }}" aria-label="Previous" title="Previous (←)"><svg class="im-btn__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
         <span class="im-count" aria-hidden="true">{{ imgCount }}</span>
-        <button type="button" class="im-btn" onClick="{{ nextImg }}" disabled="{{ atLast }}" aria-label="Next" title="Next (→)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+        <button type="button" class="im-btn" onClick="{{ nextImg }}" disabled="{{ atLast }}" aria-label="Next" title="Next (→)"><svg class="im-btn__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
       </sc-if>
       <span class="im-bar__spacer"></span>
-      <button type="button" id="toggle-media-sidebar" class="im-btn" onClick="{{ toggleSidebar }}" aria-label="Media metadata" aria-expanded="{{ sidebarOpen }}" aria-controls="item-media-sidebar" title="{{ sidebarLabel }} (I)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
-      <button type="button" class="im-btn" onClick="{{ toggleFull }}" aria-label="{{ fullLabel }}" title="{{ fullLabel }} (F)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><polyline points="4 9 4 4 9 4"></polyline><polyline points="15 4 20 4 20 9"></polyline><polyline points="20 15 20 20 15 20"></polyline><polyline points="9 20 4 20 4 15"></polyline></svg></button>
+      <button type="button" id="toggle-media-sidebar" class="im-btn" onClick="{{ toggleSidebar }}" aria-label="Media metadata" aria-expanded="{{ sidebarOpen }}" aria-controls="item-media-sidebar" title="{{ sidebarLabel }} (I)"><svg class="im-btn__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+      <button type="button" class="im-btn" onClick="{{ toggleFull }}" aria-label="{{ fullLabel }}" title="{{ fullLabel }} (F)"><svg class="im-btn__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><polyline points="4 9 4 4 9 4"></polyline><polyline points="15 4 20 4 20 9"></polyline><polyline points="20 15 20 20 15 20"></polyline><polyline points="9 20 4 20 4 15"></polyline></svg></button>
     </div>
 
     <sc-if value="{{ multi }}" hint-placeholder-val="{{ false }}">
       <div class="im-thumbs" role="group" aria-label="Media thumbnails">
         <sc-for list="{{ thumbs }}" as="th" hint-placeholder-count="2">
           <button type="button" class="im-thumb" onClick="{{ th.go }}" aria-label="{{ th.label }}" aria-current="{{ th.current }}" title="{{ th.label }}">
-            <sc-if value="{{ th.isImage }}"><img src="{{ th.src }}" alt="" loading="lazy"></sc-if>
-            <sc-if value="{{ th.isVideo }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><polygon points="6 4 20 12 6 20 6 4"></polygon></svg></sc-if>
-            <sc-if value="{{ th.isAudio }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg></sc-if>
+            <sc-if value="{{ th.isImage }}"><img class="im-thumb__image" src="{{ th.src }}" alt="" loading="lazy"></sc-if>
+            <sc-if value="{{ th.isVideo }}"><svg class="im-thumb__icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><polygon points="6 4 20 12 6 20 6 4"></polygon></svg></sc-if>
+            <sc-if value="{{ th.isAudio }}"><svg class="im-thumb__icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg></sc-if>
           </button>
         </sc-for>
       </div>
@@ -411,117 +303,117 @@ button,input{font-family:inherit}
 </sc-if>
 
 <sc-if value="{{ notFound }}">
-<main id="main-content" style="flex:1;background:#f1f0ec">
-  <div style="max-width:1200px;margin:0 auto;padding:56px 32px 72px">
-    <section aria-labelledby="nf-title" style="background:#fff;border:1px solid #e3e0d9;padding:32px 28px;max-width:720px;display:flex;flex-direction:column;gap:16px">
-      <h2 id="nf-title" style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:34px;line-height:1.2;color:var(--col-bg-primary)">No record matches this link</h2>
-      <p style="margin:0;font-size:17px;line-height:1.55;color:var(--col-text-primary)">We could not find a record with that identifier. It may have been moved or removed, or the link may be incorrect.</p>
-      <div style="display:flex;gap:18px;flex-wrap:wrap;font-size:17px;font-weight:600"><a href="/search/search-results.html" style="color:var(--col-text-primary);text-decoration:underline">Search the collections</a><a href="/collections/index.html" style="color:var(--col-text-primary);text-decoration:underline">Browse collections</a></div>
+<main class="record-main-content" id="main-content">
+  <div class="record-main-content__group record-main-content__group--v3">
+    <section class="record-nf-title" aria-labelledby="nf-title">
+      <h2 class="record-nf-title__heading-no-record-matches" id="nf-title">No record matches this link</h2>
+      <p class="record-nf-title__text">We could not find a record with that identifier. It may have been moved or removed, or the link may be incorrect.</p>
+      <div class="record-nf-title__group"><a class="record-nf-title__link-search-collections" href="/search/search-results.html">Search the collections</a><a class="record-nf-title__link-browse-collections" href="/collections/index.html">Browse collections</a></div>
     </section>
   </div>
 </main>
 </sc-if>
 <sc-if value="{{ found }}">
-<section aria-label="Record summary" style="background:#fff;border-bottom:1px solid #e3e0d9">
-  <div style="max-width:1200px;margin:0 auto;padding:40px 32px 28px;display:flex;flex-direction:column;gap:24px">
-    <div style="display:flex;flex-direction:column;gap:12px;max-width:920px">
-      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase">
-        <a href="{{ typeHref }}" style="color:#0b4ea2;text-decoration:none" style-hover="text-decoration:underline">{{ rec.type }}</a>
-        <span aria-hidden="true" style="width:4px;height:4px;background:#9a9ea8"></span>
-        <a href="{{ collectionHref }}" style="color:#0b4ea2;text-decoration:none" style-hover="text-decoration:underline">{{ rec.collection }}</a>
+<section class="record-summary" aria-label="Record summary">
+  <div class="record-summary__group record-summary__group--v4">
+    <div class="record-summary__group record-summary__group--v3">
+      <div class="record-summary__group record-summary__group--v1">
+        <a class="record-summary__link" href="{{ typeHref }}">{{ rec.type }}</a>
+        <span class="record-summary__text record-summary__text--v3" aria-hidden="true"></span>
+        <a class="record-summary__link" href="{{ collectionHref }}">{{ rec.collection }}</a>
       </div>
-      <sc-if value="{{ rec.altTitle }}"><p style="margin:0;font-size:18px;font-style:italic;color:#3b4050">{{ rec.altTitle }}</p></sc-if>
-      <sc-if value="{{ rec.byline }}"><p style="margin:0;font-size:18px;color:#3b4050">{{ rec.byline }}</p></sc-if>
+      <sc-if value="{{ rec.altTitle }}"><p class="record-summary__text record-summary__text--v2">{{ rec.altTitle }}</p></sc-if>
+      <sc-if value="{{ rec.byline }}"><p class="record-summary__text record-summary__text--v1">{{ rec.byline }}</p></sc-if>
     </div>
-    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding-top:20px;border-top:1px solid var(--col-border-neutral-soft)">
-      <ccs-licence licence="{{ licKey }}" style="margin-right:auto"></ccs-licence>
+    <div class="record-summary__group record-summary__group--v2">
+      <ccs-licence licence="{{ licKey }}"></ccs-licence>
     </div>
   </div>
 </section>
 
-<main id="main-content" style="flex:1;background:#f1f0ec">
-  <div style="max-width:1200px;margin:0 auto;padding:40px 32px 56px;display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start">
-    <div style="flex:999 1 560px;min-width:0;display:flex;flex-direction:column;gap:24px">
-      <section style="background:#fff;border:1px solid #e3e0d9">
-        <dl style="margin:0;padding:8px 24px 12px">
-          <div style="display:grid;grid-template-columns:minmax(120px,200px) minmax(0,1fr);gap:4px 24px;padding:12px 0;border-bottom:1px solid #f1efea">
-            <dt style="font-size:15px;font-weight:700;color:var(--col-text-primary)">Title</dt>
-            <dd style="margin:0;font-size:15px;line-height:1.55;color:var(--col-text-primary);display:flex;flex-direction:column"><span>{{ rec.title }}</span><sc-if value="{{ rec.altTitle }}"><span style="color:var(--col-text-muted)">{{ rec.altTitle }}</span></sc-if></dd>
+<main class="record-main-content" id="main-content">
+  <div class="record-main-content__group record-main-content__group--v2">
+    <div class="record-main-content__group record-main-content__group--v1">
+      <section class="record-main-content__section record-main-content__section--v1">
+        <dl class="record-section__definition-list">
+          <div class="record-section__definition-list-group">
+            <dt class="record-section__term-title">Title</dt>
+            <dd class="record-section__definition record-section__definition--v2"><span class="record-section__definition-text">{{ rec.title }}</span><sc-if value="{{ rec.altTitle }}"><span class="record-section__definition-text record-section__definition-text--v1">{{ rec.altTitle }}</span></sc-if></dd>
           </div>
           <sc-for list="{{ fields }}" as="r" hint-placeholder-count="8">
-            <div style="display:grid;grid-template-columns:minmax(120px,200px) minmax(0,1fr);gap:4px 24px;padding:12px 0;border-bottom:1px solid #f1efea">
-              <dt style="font-size:15px;font-weight:700;color:var(--col-text-primary)">{{ r.label }}</dt>
-              <dd style="margin:0;font-size:15px;line-height:1.55;color:var(--col-text-primary);text-wrap:pretty;display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap">
-                <span style="display:flex;flex-direction:column;min-width:0;overflow-wrap:anywhere">
+            <div class="record-section__definition-list-group">
+              <dt class="record-section__term">{{ r.label }}</dt>
+              <dd class="record-section__definition record-section__definition--v3">
+                <span class="record-section__definition-text record-section__definition-text--v2">
                   <sc-for list="{{ r.lines }}" as="l">
-                    <span style="color:{{ l.color }}">{{ l.text }}</span>
+                    <span class="record-section__text record-section__text--v2" style="--dyn-color:{{ l.color }}">{{ l.text }}</span>
                   </sc-for>
                 </span>
-                <sc-if value="{{ r.copy }}"><button onClick="{{ r.onCopy }}" aria-label="Copy accession number" title="Copy" style="display:flex;align-items:center;gap:4px;border:0;background:none;padding:2px 4px;color:#4a5577;font-size:13px;cursor:pointer" style-hover="color:var(--col-bg-primary)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="12"></rect><path d="M16 8V4H4v12h4"></path></svg>{{ r.copyText }}</button></sc-if>
+                <sc-if value="{{ r.copy }}"><button class="record-section__definition-button-copy" onClick="{{ r.onCopy }}" aria-label="Copy accession number" title="Copy"><svg class="record-section__button-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="12"></rect><path d="M16 8V4H4v12h4"></path></svg>{{ r.copyText }}</button></sc-if>
               </dd>
             </div>
           </sc-for>
           <sc-if value="{{ hasSubjects }}">
-            <div style="display:grid;grid-template-columns:minmax(120px,200px) minmax(0,1fr);gap:4px 24px;padding:12px 0;border-bottom:1px solid #f1efea">
-              <dt style="font-size:15px;font-weight:700;color:var(--col-text-primary)">{{ subjLabel }}</dt>
-              <dd style="margin:0;display:flex;gap:8px;flex-wrap:wrap;min-width:0">
-                <sc-for list="{{ rec.subjects }}" as="sj"><span style="max-width:100%;overflow-wrap:anywhere;background:var(--col-bg-accent-soft);color:var(--col-bg-primary);padding:5px 10px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase">{{ sj }}</span></sc-for>
+            <div class="record-section__definition-list-group">
+              <dt class="record-section__term">{{ subjLabel }}</dt>
+              <dd class="record-section__definition record-section__definition--v1">
+                <sc-for list="{{ rec.subjects }}" as="sj"><span class="record-section__definition-text record-section__definition-text--v3">{{ sj }}</span></sc-for>
               </dd>
             </div>
           </sc-if>
         </dl>
       </section>
       <sc-if value="{{ showCitation }}" hint-placeholder-val="{{ false }}">
-      <section style="background:#fff;border:1px solid #e3e0d9;display:flex;flex-direction:column">
-        <h2 style="margin:0;padding:20px 24px;border-bottom:1px solid var(--col-border-neutral-soft);font-family:'Fraunces',serif;font-weight:600;font-size:22px;color:var(--col-bg-primary)">Cite this item</h2>
-        <div style="padding:18px 24px 22px;display:flex;flex-direction:column;gap:14px">
-          <div style="display:flex;gap:8px;flex-wrap:wrap">
-            <sc-for list="{{ citeStyles }}" as="cs"><button onClick="{{ cs.pick }}" style="border:1px solid {{ cs.border }};background:{{ cs.bg }};color:{{ cs.color }};padding:6px 13px;font-size:13px;font-weight:600;cursor:pointer">{{ cs.label }}</button></sc-for>
+      <section class="record-main-content__section record-main-content__section--v2">
+        <h2 class="record-section__heading-cite-this-item">Cite this item</h2>
+        <div class="record-section__group record-section__group--v8">
+          <div class="record-section__group record-section__group--v5">
+            <sc-for list="{{ citeStyles }}" as="cs"><button class="record-section__button-pick" onClick="{{ cs.pick }}" style="--dyn-border:{{ cs.border }};--dyn-background:{{ cs.bg }};--dyn-color:{{ cs.color }}">{{ cs.label }}</button></sc-for>
           </div>
-          <p style="margin:0;padding:14px 16px;background:#f7f6f2;border:1px solid var(--col-border-neutral-soft);font-size:14px;line-height:1.55;color:var(--col-text-primary);text-wrap:pretty">{{ citation }}</p>
-          <button onClick="{{ copyCite }}" style="align-self:flex-start;height:40px;display:flex;align-items:center;gap:8px;border:1px solid var(--col-bg-primary);background:#fff;color:var(--col-bg-primary);padding:0 14px;font-size:15px;font-weight:600;cursor:pointer" style-hover="background:#f0f2f7"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="12"></rect><path d="M16 8V4H4v12h4"></path></svg>{{ citeText }}</button>
+          <p class="record-section__text record-section__text--v9">{{ citation }}</p>
+          <button class="record-section__button-copy-cite" onClick="{{ copyCite }}"><svg class="record-section__button-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="12"></rect><path d="M16 8V4H4v12h4"></path></svg>{{ citeText }}</button>
         </div>
       </section>
       </sc-if>
-      <section style="background:#fff;border:1px solid #e3e0d9;display:flex;flex-direction:column">
-          <div style="padding:20px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
-            <span style="flex:none;width:40px;height:40px;border-radius:0;background:var(--col-bg-selected);color:var(--col-bg-primary);display:flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"></path><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"></path></svg></span>
-            <div style="flex:1 1 220px;min-width:0;display:flex;flex-direction:column;gap:2px">
-              <span style="font-size:13px;font-weight:700;color:var(--col-text-primary)">Persistent link</span>
-              <span title="{{ permalink }}" style="font-size:15px;color:#0b2a6b;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ permalinkShort }}</span>
+      <section class="record-main-content__section record-main-content__section--v2">
+          <div class="record-section__group record-section__group--v9">
+            <span class="record-section__text record-section__text--v4"><svg class="record-section__text-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"></path><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"></path></svg></span>
+            <div class="record-section__group record-section__group--v6">
+              <span class="record-section__text record-section__text--v5">Persistent link</span>
+              <span class="record-section__text record-section__text--v8" title="{{ permalink }}">{{ permalinkShort }}</span>
             </div>
-            <button onClick="{{ copyLink }}" aria-label="Copy persistent link" style="flex:none;height:40px;display:flex;align-items:center;gap:8px;border:1px solid var(--col-bg-primary);background:#fff;color:var(--col-bg-primary);padding:0 14px;font-size:15px;font-weight:600;cursor:pointer" style-hover="background:#f0f2f7"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="12"></rect><path d="M16 8V4H4v12h4"></path></svg>{{ linkText }}</button>
+            <button class="record-section__button-copy-link" onClick="{{ copyLink }}" aria-label="Copy persistent link"><svg class="record-section__button-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="12"></rect><path d="M16 8V4H4v12h4"></path></svg>{{ linkText }}</button>
           </div>
-          <div style="padding:14px 24px 20px;border-top:1px solid var(--col-border-neutral-soft);display:flex;justify-content:space-between;align-items:center;gap:10px 20px;flex-wrap:wrap;font-size:14px">
-            <span style="color:var(--col-text-muted)">Quote this link when contacting the collection team.</span>
-            <div style="display:flex;gap:18px;flex-wrap:wrap;align-items:center">
-              <a href="/collections/index.html" style="color:var(--col-text-primary);font-weight:600;text-decoration:underline">View in collection browser</a>
+          <div class="record-section__group record-section__group--v7">
+            <span class="record-section__text record-section__text--v1">Quote this link when contacting the collection team.</span>
+            <div class="record-section__group record-section__group--v4">
+              <a class="record-section__link-view-collection-browser" href="/collections/index.html">View in collection browser</a>
             </div>
           </div>
       </section>
     </div>
 
-    <aside style="flex:1 1 320px;min-width:0;display:flex;flex-direction:column;gap:24px;position:sticky;top:24px">
-      <section style="background:#fff;border:1px solid #e3e0d9;display:flex;flex-direction:column">
-        <h2 style="margin:0;padding:20px 24px;border-bottom:1px solid var(--col-border-neutral-soft);font-family:'Fraunces',serif;font-weight:600;font-size:22px;color:var(--col-bg-primary)">Copyright</h2>
-        <div style="padding:18px 24px 22px;display:flex;flex-direction:column;gap:14px">
+    <aside class="record-main-content__aside">
+      <section class="record-aside__section">
+        <h2 class="record-section__heading-copyright">Copyright</h2>
+        <div class="record-section__group record-section__group--v8">
           <sc-if value="{{ hasClass }}">
-            <div style="display:flex;align-items:flex-start;gap:10px">
-              <span style="flex:none;min-width:30px;height:30px;padding:0 5px;background:{{ clsBg }};color:{{ clsFg }};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800">{{ clsCode }}</span>
-              <div style="display:flex;flex-direction:column;gap:2px"><strong style="font-size:15px;color:var(--col-bg-primary)">{{ clsName }}</strong><span style="font-size:14px;line-height:1.45;color:#3b4050">{{ clsText }}</span></div>
+            <div class="record-section__group record-section__group--v1">
+              <span class="record-section__text record-section__text--v3" style="--dyn-background:{{ clsBg }};--dyn-color:{{ clsFg }}">{{ clsCode }}</span>
+              <div class="record-section__group record-section__group--v2"><strong class="record-section__strong">{{ clsName }}</strong><span class="record-section__text record-section__text--v6">{{ clsText }}</span></div>
             </div>
           </sc-if>
           <sc-for list="{{ rec.rights }}" as="rt">
-            <div style="display:flex;flex-direction:column;gap:3px;padding-top:12px;border-top:1px solid #f1efea">
-              <span style="font-size:13px;font-weight:700;color:var(--col-text-primary)">{{ rt.label }}</span>
-              <span style="font-size:14px;line-height:1.5;color:#3b4050;text-wrap:pretty;overflow-wrap:anywhere">{{ rt.value }}</span>
+            <div class="record-section__group record-section__group--v3">
+              <span class="record-section__text record-section__text--v5">{{ rt.label }}</span>
+              <span class="record-section__text record-section__text--v7">{{ rt.value }}</span>
             </div>
           </sc-for>
-          <div style="display:flex;flex-direction:column;gap:3px;padding-top:12px;border-top:1px solid #f1efea">
-            <span style="font-size:13px;font-weight:700;color:var(--col-text-primary)">Responsible collection</span>
-            <a href="#" style="font-size:14px;text-decoration:underline">{{ rec.unit }}</a>
+          <div class="record-section__group record-section__group--v3">
+            <span class="record-section__text record-section__text--v5">Responsible collection</span>
+            <a class="record-section__link" href="#">{{ rec.unit }}</a>
           </div>
-          <a href="/help/index.html?topic=copyright" style="font-size:15px;font-weight:600;text-decoration:underline">About copyright and terms of use</a>
+          <a class="record-section__link-about-copyright-terms" href="/help/index.html?topic=copyright">About copyright and terms of use</a>
         </div>
       </section>
     </aside>
@@ -530,23 +422,23 @@ button,input{font-family:inherit}
 </sc-if>
 
 <sc-if value="{{ showRelated }}" hint-placeholder-val="{{ true }}">
-  <section aria-label="Related items" style="background:var(--white-100)">
-    <div style="max-width:1200px;margin:0 auto;padding:48px 32px 72px;display:flex;flex-direction:column;gap:20px">
-      <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap">
-        <h2 style="margin:0;font-family:'Fraunces',serif;font-weight:500;font-size:34px;color:var(--col-text-primary)">Related items</h2>
-        <a href="/search/search-results.html" style="font-size:17px;font-weight:600;text-decoration:underline">{{ viewAll }}</a>
+  <section class="record-related-items" aria-label="Related items">
+    <div class="record-related-items__group record-related-items__group--v3">
+      <div class="record-related-items__group record-related-items__group--v2">
+        <h2 class="record-related-items__heading">Related items</h2>
+        <a class="record-related-items__link" href="/search/search-results.html">{{ viewAll }}</a>
       </div>
-      <div style="column-width:260px;column-gap:20px">
+      <div class="record-related-items__group record-related-items__group--v1">
         <sc-for list="{{ related }}" as="r" hint-placeholder-count="4">
-          <article style="break-inside:avoid;margin:0 0 20px;background:#fff;border:1px solid #e3e0d9;display:flex;flex-direction:column;transition:box-shadow .2s" style-hover="">
+          <article class="record-related-items__article">
             <sc-if value="{{ r.hasImg }}" hint-placeholder-val="{{ false }}">
-              <a href="{{ r.href }}" style="display:block;background:#f4f3f0;aspect-ratio:4 / 3;overflow:hidden;position:relative"><img src="{{ r.img }}" alt="{{ r.title }}" style="position:absolute;inset:12px;width:calc(100% - 24px);height:calc(100% - 24px);object-fit:contain"></a>
+              <a class="record-article__link record-article__link--v1" href="{{ r.href }}"><img class="record-article__link-image" src="{{ r.img }}" alt="{{ r.title }}"></a>
             </sc-if>
-            <div style="padding:18px 20px 20px;display:flex;flex-direction:column;gap:8px">
-              <a href="{{ r.href }}" style="font-family:'Fraunces',serif;font-weight:600;font-size:19px;line-height:1.3;color:var(--col-text-primary);text-wrap:pretty">{{ r.title }}</a>
-              <span style="font-size:14px;color:#0b4ea2">{{ r.collection }}</span>
-              <span style="font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--col-bg-primary)">{{ r.type }}</span>
-              <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:4px;padding-top:12px;border-top:1px solid var(--col-border-neutral-soft)">
+            <div class="record-article__group record-article__group--v2">
+              <a class="record-article__link record-article__link--v2" href="{{ r.href }}">{{ r.title }}</a>
+              <span class="record-article__text record-article__text--v2">{{ r.collection }}</span>
+              <span class="record-article__text record-article__text--v1">{{ r.type }}</span>
+              <div class="record-article__group record-article__group--v1">
                 <ccs-licence licence="{{ r.licenceKey }}"></ccs-licence>
               </div>
             </div>
@@ -557,30 +449,30 @@ button,input{font-family:inherit}
   </section>
 </sc-if>
 <sc-if value="{{ reqOpen }}">
-  <div onClick="{{ closeReq }}" style="position:fixed;inset:0;z-index:100;background:rgba(10,14,25,.55);display:flex;align-items:center;justify-content:center;padding:24px 16px">
-    <div ref="{{ dialogRef }}" role="dialog" aria-modal="true" aria-labelledby="req-title" onClick="{{ stopProp }}" onKeyDown="{{ reqKey }}" style="width:100%;max-width:560px;max-height:100%;overflow-y:auto;background:#fff;border:1px solid var(--col-bg-primary);border-radius:0;box-shadow:none;display:flex;flex-direction:column">
-      <div style="padding:22px 28px;border-bottom:1px solid #ebe8e2;display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
-        <div style="display:flex;flex-direction:column;gap:4px"><h2 id="req-title" tabindex="-1" style="margin:0;outline:none;font-size:20px;font-weight:700;color:var(--col-bg-primary)">{{ reqTitle }}</h2><span style="font-size:14px;color:var(--col-text-muted)">{{ rec.title }} · {{ rec.unit }}</span></div>
-        <button onClick="{{ closeReq }}" aria-label="Close" style="width:36px;height:36px;border:0;border-radius:0;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="background:#f2f1ed"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--col-text-primary)" stroke-width="2.6"><line x1="5" y1="5" x2="19" y2="19"></line><line x1="19" y1="5" x2="5" y2="19"></line></svg></button>
+  <div class="record-page__group record-page__group--v2" onClick="{{ closeReq }}">
+    <div class="record-req-title" ref="{{ dialogRef }}" role="dialog" aria-modal="true" aria-labelledby="req-title" onClick="{{ stopProp }}" onKeyDown="{{ reqKey }}">
+      <div class="record-req-title__group record-req-title__group--v2">
+        <div class="record-req-title__group record-req-title__group--v1"><h2 class="record-req-title__heading" id="req-title" tabindex="-1">{{ reqTitle }}</h2><span class="record-req-title__text record-req-title__text--v1">{{ rec.title }} · {{ rec.unit }}</span></div>
+        <button class="record-req-title__button-close-req record-req-title__button-close-req--v2" onClick="{{ closeReq }}" aria-label="Close"><svg class="record-req-title__button-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--col-text-primary)" stroke-width="2.6"><line x1="5" y1="5" x2="19" y2="19"></line><line x1="19" y1="5" x2="5" y2="19"></line></svg></button>
       </div>
       <sc-if value="{{ reqForm }}">
-        <form onSubmit="{{ submitReq }}" style="padding:20px 28px 26px;display:flex;flex-direction:column;gap:16px">
-          <div role="radiogroup" aria-label="Request type" style="display:flex;gap:8px;flex-wrap:wrap">
-            <sc-for list="{{ reqTypes }}" as="t"><button type="button" role="radio" aria-checked="{{ t.sel }}" onClick="{{ t.pick }}" style="border:1px solid {{ t.border }};background:{{ t.bg }};color:{{ t.color }};padding:8px 14px;font-size:14px;font-weight:600;cursor:pointer">{{ t.label }}</button></sc-for>
+        <form class="record-req-title__form-submit-req" onSubmit="{{ submitReq }}">
+          <div class="record-request-type" role="radiogroup" aria-label="Request type">
+            <sc-for list="{{ reqTypes }}" as="t"><button class="record-request-type__button-pick" type="button" role="radio" aria-checked="{{ t.sel }}" onClick="{{ t.pick }}" style="--dyn-border:{{ t.border }};--dyn-background:{{ t.bg }};--dyn-color:{{ t.color }}">{{ t.label }}</button></sc-for>
           </div>
-          <p style="margin:0;font-size:14px;line-height:1.5;color:#3b4050">{{ reqHint }}</p>
-          <label style="display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600;color:var(--col-text-primary)">Name<input name="requesterName" autocomplete="name" aria-label="Full name" required="" style="border:1px solid var(--col-border-neutral);border-radius:0;padding:11px 14px;font-size:16px"></label>
-          <label style="display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600;color:var(--col-text-primary)">Email<input name="email" autocomplete="email" aria-label="Email address" type="email" required="" style="border:1px solid var(--col-border-neutral);border-radius:0;padding:11px 14px;font-size:16px"></label>
-          <label style="display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600;color:var(--col-text-primary)">{{ msgLabel }}<textarea name="message" aria-label="Message" required="" rows="4" style="border:1px solid var(--col-border-neutral);border-radius:0;padding:11px 14px;font-size:16px;font-family:inherit;resize:vertical"></textarea></label>
-          <span style="font-size:13px;color:var(--col-text-muted)">Record link included automatically: {{ permalinkShort }}. We aim to respond within 5 business days.</span>
-          <button type="submit" style="align-self:flex-end;border:0;background:var(--col-bg-primary);color:#fff;border-radius:0;padding:13px 22px;font-size:16px;font-weight:600;cursor:pointer" style-hover="background:var(--col-bg-primary-hover)">Send request</button>
+          <p class="record-form__text record-form__text--v2">{{ reqHint }}</p>
+          <label class="record-form__label-name">Name<input class="record-form__label-input-full-name" name="requesterName" autocomplete="name" aria-label="Full name" required=""></label>
+          <label class="record-form__label-email">Email<input class="record-form__label-input-email-address" name="email" autocomplete="email" aria-label="Email address" type="email" required=""></label>
+          <label class="record-form__label">{{ msgLabel }}<textarea class="record-form__label-textarea-message" name="message" aria-label="Message" required="" rows="4"></textarea></label>
+          <span class="record-form__text record-form__text--v1">Record link included automatically: {{ permalinkShort }}. We aim to respond within 5 business days.</span>
+          <button class="record-form__button-send-request" type="submit">Send request</button>
         </form>
       </sc-if>
       <sc-if value="{{ reqSent }}">
-        <div role="status" style="padding:28px;display:flex;flex-direction:column;gap:12px">
-          <strong style="font-size:18px;color:var(--col-bg-primary)">Thanks – your request has been sent</strong>
-          <p style="margin:0;font-size:15px;line-height:1.5;color:#3b4050">{{ rec.unit }} will reply by email, usually within 5 business days.</p>
-          <button onClick="{{ closeReq }}" style="align-self:flex-start;border:1px solid var(--col-bg-primary);background:#fff;color:var(--col-bg-primary);border-radius:0;padding:11px 18px;font-size:15px;font-weight:600;cursor:pointer">Close</button>
+        <div class="record-req-title__group-status" role="status">
+          <strong class="record-req-title__strong">Thanks – your request has been sent</strong>
+          <p class="record-req-title__text record-req-title__text--v2">{{ rec.unit }} will reply by email, usually within 5 business days.</p>
+          <button class="record-req-title__button-close-req record-req-title__button-close-req--v1" onClick="{{ closeReq }}">Close</button>
         </div>
       </sc-if>
     </div>
@@ -594,60 +486,60 @@ button,input{font-family:inherit}
 <footer class="ccs-nav ccs-nav--footer" aria-label="University of Melbourne footer">
     <div class="ccs-foot__aoc">
       <div class="ccs-nav__inner">
-        <div>
-          <h2>Acknowledgement of Country</h2>
-          <div class="ccs-foot__flags"><img src="/images/home/flag-aboriginal.svg" alt="Aboriginal flag"><img src="/images/home/flag-torres-strait.svg" alt="Torres Strait Islander flag"></div>
+        <div class="ccs-nav__group">
+          <h2 class="ccs-nav__heading-acknowledgement-country">Acknowledgement of Country</h2>
+          <div class="ccs-foot__flags"><img class="ccs-foot__image" src="/images/home/flag-aboriginal.svg" alt="Aboriginal flag"><img class="ccs-foot__image" src="/images/home/flag-torres-strait.svg" alt="Torres Strait Islander flag"></div>
         </div>
-        <div>
-          <p>We acknowledge Aboriginal and Torres Strait Islander people as the Traditional Owners of the unceded lands on which we work, learn and live. We pay respect to Elders past, present and future, and acknowledge the importance of Indigenous knowledge in the Academy.</p>
-          <a class="ccs-link ccs-link--inverse" href="https://www.unimelb.edu.au/reconciliation"><img src="/images/home/icon-arrow-footer.svg" alt="">Read about our Indigenous priorities</a>
+        <div class="ccs-nav__group">
+          <p class="ccs-nav__text">We acknowledge Aboriginal and Torres Strait Islander people as the Traditional Owners of the unceded lands on which we work, learn and live. We pay respect to Elders past, present and future, and acknowledge the importance of Indigenous knowledge in the Academy.</p>
+          <a class="ccs-link ccs-link--inverse" href="https://www.unimelb.edu.au/reconciliation"><img class="ccs-link__image" src="/images/home/icon-arrow-footer.svg" alt="">Read about our Indigenous priorities</a>
         </div>
       </div>
     </div>
     <div class="ccs-foot__main">
       <div class="ccs-nav__inner">
         <ul class="ccs-foot__links">
-            <li><a class="ccs-link ccs-link--inverse" href="https://about.unimelb.edu.au/"><img src="/images/home/icon-arrow-footer.svg" alt="">About us</a></li>
-            <li><a class="ccs-link ccs-link--inverse" href="https://about.unimelb.edu.au/careers"><img src="/images/home/icon-arrow-footer.svg" alt="">Careers at Melbourne</a></li>
-            <li><a class="ccs-link ccs-link--inverse" href="https://www.unimelb.edu.au/respect"><img src="/images/home/icon-arrow-footer.svg" alt="">Safety and respect</a></li>
-            <li><a class="ccs-link ccs-link--inverse" href="https://www.unimelb.edu.au/newsroom"><img src="/images/home/icon-arrow-footer.svg" alt="">Newsroom</a></li>
-            <li><a class="ccs-link ccs-link--inverse" href="https://www.unimelb.edu.au/contact"><img src="/images/home/icon-arrow-footer.svg" alt="">Contact</a></li>
-            <li><a class="ccs-link ccs-link--inverse" href="https://about.unimelb.edu.au/priorities-and-partnerships/campus-development/campus-locations"><img src="/images/home/icon-arrow-footer.svg" alt="">Campus locations</a></li>
+            <li class="ccs-foot__item"><a class="ccs-link ccs-link--inverse" href="https://about.unimelb.edu.au/"><img class="ccs-link__image" src="/images/home/icon-arrow-footer.svg" alt="">About us</a></li>
+            <li class="ccs-foot__item"><a class="ccs-link ccs-link--inverse" href="https://about.unimelb.edu.au/careers"><img class="ccs-link__image" src="/images/home/icon-arrow-footer.svg" alt="">Careers at Melbourne</a></li>
+            <li class="ccs-foot__item"><a class="ccs-link ccs-link--inverse" href="https://www.unimelb.edu.au/respect"><img class="ccs-link__image" src="/images/home/icon-arrow-footer.svg" alt="">Safety and respect</a></li>
+            <li class="ccs-foot__item"><a class="ccs-link ccs-link--inverse" href="https://www.unimelb.edu.au/newsroom"><img class="ccs-link__image" src="/images/home/icon-arrow-footer.svg" alt="">Newsroom</a></li>
+            <li class="ccs-foot__item"><a class="ccs-link ccs-link--inverse" href="https://www.unimelb.edu.au/contact"><img class="ccs-link__image" src="/images/home/icon-arrow-footer.svg" alt="">Contact</a></li>
+            <li class="ccs-foot__item"><a class="ccs-link ccs-link--inverse" href="https://about.unimelb.edu.au/priorities-and-partnerships/campus-development/campus-locations"><img class="ccs-link__image" src="/images/home/icon-arrow-footer.svg" alt="">Campus locations</a></li>
         </ul>
         <div class="ccs-foot__contact">
           <h2 class="ccs-foot__label">Contact details</h2>
-          <p>Phone <a href="tel:136352">13 MELB (13 6352)</a><br>International <a href="tel:+61390355511">+61 3 9035 5511</a></p>
-          <address><strong>Address</strong><br>The University of Melbourne<br>Grattan Street, Parkville<br>Victoria 3010<br>Australia</address>
+          <p class="ccs-foot__text">Phone <a class="ccs-foot__text-link-13-melb-13" href="tel:136352">13 MELB (13 6352)</a><br>International <a class="ccs-foot__text-link-61-3-9035" href="tel:+61390355511">+61 3 9035 5511</a></p>
+          <address class="ccs-foot__address"><strong class="ccs-foot__address-strong">Address</strong><br>The University of Melbourne<br>Grattan Street, Parkville<br>Victoria 3010<br>Australia</address>
         </div>
-        <div>
+        <div class="ccs-nav__group">
           <h2 class="ccs-foot__label">Connect with us</h2>
           <ul class="ccs-foot__social">
-            <li><a href="https://www.facebook.com/unimelb" aria-label="Facebook"><img src="/images/home/social-facebook.svg" alt=""></a></li>
-            <li><a href="https://www.linkedin.com/school/university-of-melbourne" aria-label="LinkedIn"><img src="/images/home/social-linkedin.svg" alt=""></a></li>
-            <li><a href="https://www.instagram.com/unimelb" aria-label="Instagram"><img src="/images/home/social-instagram.svg" alt=""></a></li>
-            <li><a href="https://x.com/unimelb" aria-label="X (Twitter)"><img src="/images/home/social-x.svg" alt=""></a></li>
+            <li class="ccs-foot__item"><a class="ccs-foot__item-link-facebook" href="https://www.facebook.com/unimelb" aria-label="Facebook"><img class="ccs-foot__link-image" src="/images/home/social-facebook.svg" alt=""></a></li>
+            <li class="ccs-foot__item"><a class="ccs-foot__item-link-linkedin" href="https://www.linkedin.com/school/university-of-melbourne" aria-label="LinkedIn"><img class="ccs-foot__link-image" src="/images/home/social-linkedin.svg" alt=""></a></li>
+            <li class="ccs-foot__item"><a class="ccs-foot__item-link-instagram" href="https://www.instagram.com/unimelb" aria-label="Instagram"><img class="ccs-foot__link-image" src="/images/home/social-instagram.svg" alt=""></a></li>
+            <li class="ccs-foot__item"><a class="ccs-foot__item-link-x-twitter" href="https://x.com/unimelb" aria-label="X (Twitter)"><img class="ccs-foot__link-image" src="/images/home/social-x.svg" alt=""></a></li>
           </ul>
         </div>
-        <div class="ccs-foot__brand"><a href="https://www.unimelb.edu.au" aria-label="The University of Melbourne homepage"><img src="/images/home/uom-logo-vert-ondark.svg" alt=""></a></div>
+        <div class="ccs-foot__brand"><a class="ccs-foot__link-university-melbourne-homepage" href="https://www.unimelb.edu.au" aria-label="The University of Melbourne homepage"><img class="ccs-foot__link-image" src="/images/home/uom-logo-vert-ondark.svg" alt=""></a></div>
       </div>
     </div>
     <div class="ccs-foot__last">
       <div class="ccs-nav__inner">
         <ul class="ccs-foot__legal">
-          <li><a href="https://safety.unimelb.edu.au/emergency">Emergency</a></li>
-          <li><a href="https://www.unimelb.edu.au/legal">Terms and privacy</a></li>
-          <li><a href="https://www.unimelb.edu.au/accessibility">Accessibility</a></li>
-          <li><a href="https://about.unimelb.edu.au/strategy/governance/compliance-obligations/privacy">Privacy</a></li>
+          <li class="ccs-foot__item"><a class="ccs-foot__item-link-emergency" href="https://safety.unimelb.edu.au/emergency">Emergency</a></li>
+          <li class="ccs-foot__item"><a class="ccs-foot__item-link-terms-privacy" href="https://www.unimelb.edu.au/legal">Terms and privacy</a></li>
+          <li class="ccs-foot__item"><a class="ccs-foot__item-link-accessibility" href="https://www.unimelb.edu.au/accessibility">Accessibility</a></li>
+          <li class="ccs-foot__item"><a class="ccs-foot__item-link-privacy" href="https://about.unimelb.edu.au/strategy/governance/compliance-obligations/privacy">Privacy</a></li>
         </ul>
         <ul class="ccs-foot__ids">
-          <li>The University of Melbourne (Australian University): <strong>PRV12150</strong></li>
-          <li>CRICOS: <strong>00116K</strong></li>
-          <li>ABN: <strong>84 002 705 224</strong></li>
+          <li class="ccs-foot__item">The University of Melbourne (Australian University): <strong class="ccs-foot__item-strong">PRV12150</strong></li>
+          <li class="ccs-foot__item">CRICOS: <strong class="ccs-foot__item-strong">00116K</strong></li>
+          <li class="ccs-foot__item">ABN: <strong class="ccs-foot__item-strong">84 002 705 224</strong></li>
         </ul>
       </div>
     </div>
   </footer>
-<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+<svg class="record-page__icon" xmlns="http://www.w3.org/2000/svg">
   <symbol id="icon-facebook" viewBox="0 0 24 24">
     <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
   </symbol>

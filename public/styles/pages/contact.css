@@ -1,0 +1,164 @@
+/* contact: styles moved out of inline style="" attributes. Class names are semantic (block__element) and scoped by the page class on <body> (page-contact), which gives them the precedence the inline styles had over shared component CSS. Do not reintroduce inline styles. */
+
+body.page-contact .bc-mobile--styled {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  list-style: none;
+  margin: 0;
+  font-size: 18px;
+  color: #fff;
+}
+
+body.page-contact .bc-mobile__item {
+  display: flex;
+  align-items: center;
+}
+
+body.page-contact .bc-mobile__item-link-cultural-collections {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #fff;
+  text-decoration: none;
+  min-height: 44px;
+}
+
+body.page-contact .contact-aside__card--styled {
+  background: var(--col-bg-selected);
+  border: 0;
+}
+
+body.page-contact .contact-aside__card-link-access-information {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+body.page-contact .contact-aside__card-strong {
+  font-size: 17px;
+  color: var(--col-text-primary);
+}
+
+body.page-contact .contact-aside__card-text {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #3b4050;
+}
+
+body.page-contact .contact-aside__link-faqs {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+body.page-contact .contact-aside__link-search-tips {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+body.page-contact .contact-general__column-link-13-melb-13 {
+  font-size: 16px;
+}
+
+body.page-contact .contact-general__column-link-ccs-feedback-unimelb {
+  font-size: 14px;
+}
+
+body.page-contact .contact-general__column-link-international-61-3 {
+  font-size: 14px;
+}
+
+body.page-contact .contact-general__column-text--v1 {
+  font-size: 11px;
+  letter-spacing: .05em;
+}
+
+body.page-contact .contact-general__column-text--v2 {
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--col-text-primary);
+}
+
+body.page-contact .contact-general__heading-general-enquiries {
+  font-size: 22px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--col-bg-primary);
+  color: var(--col-bg-primary);
+}
+
+body.page-contact .contact-main-content {
+  flex: 1;
+  max-width: 1200px;
+  padding: 40px 32px 80px;
+}
+
+body.page-contact .contact-mc__card-body-link-open-form {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 18px;
+}
+
+body.page-contact .contact-mc__card-body-strong {
+  font-size: 16px;
+  color: var(--col-text-primary);
+}
+
+body.page-contact .contact-mc__card-body-text {
+  font-size: 11px;
+  letter-spacing: .05em;
+}
+
+body.page-contact .contact-mc__heading-museums-collections-m {
+  font-size: 22px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--col-bg-primary);
+  color: var(--col-bg-primary);
+}
+
+body.page-contact .contact-mdhs__card-body-link {
+  font-size: 15px;
+  word-break: break-word;
+}
+
+body.page-contact .contact-mdhs__card-body-strong {
+  font-size: 16px;
+  color: var(--col-text-primary);
+}
+
+body.page-contact .contact-mdhs__card-body-text {
+  font-size: 11px;
+  letter-spacing: .05em;
+}
+
+body.page-contact .contact-mdhs__heading-mdhs-vernon-collections {
+  font-size: 22px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--col-bg-primary);
+  color: var(--col-bg-primary);
+}
+
+body.page-contact .contact-mdhs__heading-text {
+  font-size: 14px;
+}
+
+body.page-contact .contact-page__group--v1 {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+body.page-contact .contact-page__group--v2 {
+  width: 100%;
+  background: #00354c;
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+body.page-contact .contact-page__icon {
+  display: none;
+}
+
+body.page-contact .page-local-history__link-image {
+  vertical-align: middle;
+}
