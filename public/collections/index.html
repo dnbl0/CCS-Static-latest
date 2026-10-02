@@ -221,42 +221,55 @@
 <main class="collections-browse-main-content" id="main-content">
   
 
-  <section class="cl-section" aria-labelledby="h-coll">
-    <div class="cl-wrap">
-      <h2 id="h-coll" class="cl-h2">Our collections</h2>
-      <p class="cl-sub">{{ collectionsCount }} held by museums, archives and faculties across the University. Choose a collection to see its story, highlights and how to visit.</p>
-      <div class="cl-grid">
+  <section class="ct-listing" aria-labelledby="h-coll">
+    <div class="ct-listing__inner">
+      <h2 id="h-coll" class="ct-listing__title">Our collections</h2>
+      <p class="ct-listing__lead">{{ collectionsCount }} held by museums, archives and faculties across the University. Choose a collection to see its story, highlights and how to visit.</p>
+      <ul class="ct-listing__list ct-listing__list--image">
         <sc-for list="{{ collections }}" as="c" hint-placeholder-count="5">
-          <article class="cl-card">
-            <sc-if value="{{ c.hasImg }}" hint-placeholder-val="{{ false }}"><div class="cl-card__media"><img class="cl-card__image" src="{{ c.imgSrc }}" alt="" loading="lazy"></div></sc-if>
-            <div class="cl-card__body">
-              <span class="cl-card__tag">{{ c.count }}</span>
-              <h3 class="cl-card__title"><a class="cl-card__link" href="{{ c.href }}">{{ c.name }}</a></h3>
-              <p class="cl-card__desc">{{ c.blurb }}</p>
-              <span class="cl-card__cta" aria-hidden="true">View collection <svg class="cl-card__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="13 6 19 12 13 18"></polyline></svg></span>
-            </div>
-          </article>
+          <li class="ct-listing__item">
+            <sc-if value="{{ c.hasImg }}" hint-placeholder-val="{{ false }}"><img class="ct-listing__image" src="{{ c.imgSrc }}" alt="" loading="lazy"></sc-if>
+            <a class="ct-listing__link" href="{{ c.href }}"><h3 class="ct-listing__heading">{{ c.name }}</h3></a>
+            <p class="ct-listing__count">{{ c.count }}</p>
+            <p class="ct-listing__excerpt">{{ c.blurb }}</p>
+          </li>
         </sc-for>
-        <article class="cl-card cl-card--cta">
-          <div class="cl-card__body">
-            <h3 class="cl-card__title"><a class="cl-card__link-search-all-records" href="/search/search-results.html">Search all records</a></h3>
-            <p class="cl-card__desc">Looking for something specific? Search and filter every record across all of the collections at once.</p>
-            <span class="cl-card__cta" aria-hidden="true">Start searching <svg class="cl-card__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="13 6 19 12 13 18"></polyline></svg></span>
-          </div>
-        </article>
-      </div>
+        <li class="ct-listing__item ct-listing__item--search">
+          <a class="pathfinder-alt__link" href="/search/search-results.html">
+            <span class="pathfinder-alt__content">
+              <span class="pathfinder-alt__title">Search all records</span>
+              <span class="pathfinder-alt__summary">Looking for something specific? Search and filter every record across all of the collections at once.</span>
+            </span>
+          </a>
+        </li>
+      </ul>
     </div>
   </section>
 
-  <section class="cl-section cl-section--tint" aria-labelledby="h-help">
-    <div class="cl-wrap">
-      <h2 id="h-help" class="cl-h2">Help and guidance</h2>
-      <p class="cl-sub">Information on searching, accessing and respectfully using the collections.</p>
-      <div class="cl-help">
-        <a class="pathfinder-inset" href="/help/index.html"><span class="pathfinder-inset__heading">Help and support</span><span class="pathfinder-inset__desc">Searching, using and requesting items from the collections.</span><span class="pathfinder-inset__view">View</span></a>
-        <a class="pathfinder-inset" href="/help/indigenous-data.html"><span class="pathfinder-inset__heading">Indigenous cultural data and access</span><span class="pathfinder-inset__desc">How Aboriginal and Torres Strait Islander material is cared for and shared.</span><span class="pathfinder-inset__view">View</span></a>
-        <a class="pathfinder-inset" href="/contact.html"><span class="pathfinder-inset__heading">Contact the collections team</span><span class="pathfinder-inset__desc">Ask a question or request access to an item.</span><span class="pathfinder-inset__view">View</span></a>
-      </div>
+  <section class="ct-listing ct-listing--alt" aria-labelledby="h-sub">
+    <div class="ct-listing__inner">
+      <h2 id="h-sub" class="ct-listing__title">Browse by sub-collection</h2>
+      <p class="ct-listing__lead">Named collections and bequests held within the museums, with the number of records in each.</p>
+      <ul class="ct-listing__list ct-listing__list--text">
+        <sc-for list="{{ subCollections }}" as="n">
+          <li class="ct-listing__item">
+            <a class="ct-listing__link" href="{{ n.href }}"><h3 class="ct-listing__heading">{{ n.name }}</h3></a>
+            <p class="ct-listing__excerpt">{{ n.meta }}</p>
+          </li>
+        </sc-for>
+      </ul>
+    </div>
+  </section>
+
+  <section class="ct-listing" aria-labelledby="h-help">
+    <div class="ct-listing__inner">
+      <h2 id="h-help" class="ct-listing__title">Help and guidance</h2>
+      <p class="ct-listing__lead">Information on searching, accessing and respectfully using the collections.</p>
+      <ul class="ct-listing__list ct-listing__list--pathfinder">
+        <li class="ct-listing__item"><a class="pathfinder-alt__link" href="/help/index.html"><span class="pathfinder-alt__content"><span class="pathfinder-alt__title">Help and support</span><span class="pathfinder-alt__summary">Searching, using and requesting items from the collections.</span></span></a></li>
+        <li class="ct-listing__item"><a class="pathfinder-alt__link" href="/help/indigenous-data.html"><span class="pathfinder-alt__content"><span class="pathfinder-alt__title">Indigenous cultural data and access</span><span class="pathfinder-alt__summary">How Aboriginal and Torres Strait Islander cultural material is described, protected and accessed.</span></span></a></li>
+        <li class="ct-listing__item"><a class="pathfinder-alt__link" href="/contact.html"><span class="pathfinder-alt__content"><span class="pathfinder-alt__title">Contact the collections team</span><span class="pathfinder-alt__summary">Ask a question or request access to a collection item.</span></span></a></li>
+      </ul>
     </div>
   </section>
 </main>
@@ -360,6 +373,14 @@ class Component extends DCLogic {
     const countOf = name => all.filter(r => r.collection === name).length;
     return {
       collections: COLLS.map(([name, img]) => { const n = countOf(name); return { name, imgSrc: img || '', hasImg: !!img, count: n ? n.toLocaleString('en-AU') + ' records' : 'Coming soon', blurb: BLURBS[KEY[name]] || '', href: SLUG[KEY[name]] ? '/collections/' + SLUG[KEY[name]] : '/collections' }; }),
+      subCollections: (() => {
+        const tally = {};
+        all.forEach(r => { if (r.named) { const k = r.collection + '|' + r.named; tally[k] = (tally[k] || 0) + 1; } });
+        return Object.entries(tally).sort((a, b) => b[1] - a[1]).slice(0, 12).map(([k, n]) => {
+          const [coll, name] = k.split('|');
+          return { name, meta: coll + ' · ' + n.toLocaleString('en-AU') + (n === 1 ? ' record' : ' records'), href: '/search/search-results.html?collection=' + encodeURIComponent(coll) + '&named=' + encodeURIComponent(name) };
+        });
+      })(),
       collectionsCount: COLLS.length + ' collections'
     };
   }
