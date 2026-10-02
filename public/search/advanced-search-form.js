@@ -41,20 +41,15 @@
     (children || []).forEach(function (c) { if (c) n.appendChild(c); });
     return n;
   }
-  function select(name, options, label, cls) {
-    var s = el('select', { name: name || false, 'class': 'adv-select ' + (cls || ''), 'aria-label': label });
+  function srLabel(id, text) { return el('label', { 'for': id, 'class': 'sr-only', text: text }); }
+  function selectField(id, options, cls) {
+    var s = el('select', { id: id, 'class': 'ccs-select ' + (cls || '') });
     options.forEach(function (o) { s.appendChild(el('option', { value: o[0], text: o[1] })); });
-    return s;
+    return el('div', { 'class': 'ccs-select-wrap' }, [s]);
   }
-  function icon(path) {
-    var ns = 'http://www.w3.org/2000/svg';
-    var svg = document.createElementNS(ns, 'svg');
-    svg.setAttribute('viewBox', '0 0 24 24'); svg.setAttribute('width', '16'); svg.setAttribute('height', '16');
-    svg.setAttribute('aria-hidden', 'true'); svg.setAttribute('fill', 'currentColor');
-    var p = document.createElementNS(ns, 'path'); p.setAttribute('d', path); svg.appendChild(p);
-    return svg;
-  }
-  var CHEVRON = 'M12 15.4L6 9.4L7.4 8L12 12.6L16.6 8L18 9.4L12 15.4Z';
+  function img(src) { return el('img', { src: src, alt: '' }); }
+  var ICON_CHEVRON = '/images/advanced/icon-chevron-down.svg';
+  var ICON_DELETE = '/images/advanced/icon-delete.svg';
 
   /* ---- option lists from the shared dataset -------------------------------------------------- */
   var optionCache = {};
@@ -77,35 +72,37 @@
   function renumberTerms() {
     $$('.adv-term', termsList()).forEach(function (row, i) {
       var n = i + 1;
-      $('[data-role=field]', row).name = 'clause[' + i + '][field]';
-      $('[data-role=op]', row).name = 'clause[' + i + '][op]';
-      $('[data-role=query]', row).name = 'clause[' + i + '][query]';
-      $('[data-role=field]', row).setAttribute('aria-label', 'Search field for row ' + n);
-      $('[data-role=op]', row).setAttribute('aria-label', 'Match type for row ' + n);
-      $('[data-role=query]', row).setAttribute('aria-label', 'Search terms for row ' + n);
-      $('.adv-delete', row).setAttribute('aria-label', 'Delete search row ' + n);
+      row.setAttribute('aria-label', 'Search row ' + n);
+      var f = $('[data-role=field]', row), o = $('[data-role=op]', row), q = $('[data-role=query]', row);
+      f.name = 'clause[' + i + '][field]'; o.name = 'clause[' + i + '][op]'; q.name = 'clause[' + i + '][query]';
+      f.id = 'adv-t' + n + '-field'; o.id = 'adv-t' + n + '-op'; q.id = 'adv-t' + n + '-q';
+      $$('label.sr-only', row).forEach(function (l) { l.parentNode.removeChild(l); });
+      f.parentNode.insertBefore(srLabel(f.id, 'Search field, row ' + n), f.parentNode.firstChild);
+      o.parentNode.insertBefore(srLabel(o.id, 'Match type, row ' + n), o.parentNode.firstChild);
+      q.parentNode.insertBefore(srLabel(q.id, 'Search terms, row ' + n), q);
+      $('.ccs-delete', row).setAttribute('aria-label', 'Delete row ' + n + ' (search)');
     });
     var add = $('#adv-add-row');
     if (add) add.disabled = $$('.adv-term', termsList()).length >= MAX_ROWS;
   }
 
   function addTerm(values) {
-    var row = el('div', { 'class': 'adv-row adv-term' });
-    var f = select('', FIELDS, 'Search field'); f.setAttribute('data-role', 'field');
-    var o = select('', OPS, 'Match type'); o.setAttribute('data-role', 'op');
-    var q = el('input', { type: 'text', 'class': 'adv-input', placeholder: 'Enter search terms…', 'data-role': 'query', autocomplete: 'off' });
+    var row = el('div', { 'class': 'ccs-field-row adv-term', role: 'group' });
+    var controls = el('div', { 'class': 'ccs-field-row__controls' });
+    var fw = selectField('', FIELDS), ow = selectField('', OPS);
+    var f = $('select', fw), o = $('select', ow);
+    f.setAttribute('data-role', 'field'); o.setAttribute('data-role', 'op');
+    var q = el('input', { type: 'text', 'class': 'ccs-input', placeholder: 'Enter search terms', 'data-role': 'query', autocomplete: 'off', 'aria-describedby': 'adv-terms-hint' });
     if (values) { f.value = values.field || 'all_fields'; o.value = values.op || 'must'; q.value = values.query || ''; }
-    row.appendChild(f); row.appendChild(o); row.appendChild(q); row.appendChild(deleteButton('Delete search row'));
+    controls.appendChild(fw); controls.appendChild(ow); controls.appendChild(el('div', {}, [q]));
+    row.appendChild(controls); row.appendChild(deleteButton());
     termsList().appendChild(row);
     renumberTerms();
     return row;
   }
 
-  function deleteButton(label) {
-    return el('button', { type: 'button', 'class': 'adv-delete', 'aria-label': label }, [
-      el('span', { 'class': 'adv-delete-icon', 'aria-hidden': 'true', text: '−' }),
-      document.createTextNode(' Delete row')
-    ]);
+  function deleteButton() {
+    return el('button', { type: 'button', 'class': 'ccs-delete' }, [img(ICON_DELETE), document.createTextNode('Delete row')]);
   }
 
   /* ---- filter rows --------------------------------------------------------------------------- */
@@ -117,7 +114,7 @@
     var menu = $('#adv-add-filter');
     $$('option', menu).forEach(function (o) { if (o.value) o.hidden = !!filterRow(o.value); });
     var anyLeft = $$('option', menu).some(function (o) { return o.value && !o.hidden; });
-    menu.closest('label').hidden = !anyLeft;
+    menu.closest('.ccs-btn--add').hidden = !anyLeft;
     menu.value = '';
   }
 
@@ -127,9 +124,9 @@
     return picked.length <= 2 ? picked.join(', ') : picked.length + ' selected';
   }
   function updateSummary(row) {
-    var s = summaryText(row), span = $('.adv-trigger-text', row);
+    var s = summaryText(row), span = $('.ccs-multi__text', row);
     span.textContent = s || 'Select values';
-    span.classList.toggle('adv-placeholder', !s);
+    span.classList.toggle('is-placeholder', !s);
   }
   function applyMatchMode(row) {
     var mode = $('.adv-match', row).value; // 'or' | 'and'
@@ -138,29 +135,39 @@
     $$('input[type=checkbox]', row).forEach(function (c) { c.name = name; });
   }
   function closePanels(except) {
-    $$('.adv-panel').forEach(function (p) {
+    $$('.ccs-multi__panel').forEach(function (p) {
       if (p === except) return;
       p.hidden = true;
-      var btn = p.parentNode.querySelector('.adv-trigger');
+      var btn = p.parentNode.querySelector('.ccs-multi__trigger');
       if (btn) btn.setAttribute('aria-expanded', 'false');
     });
   }
 
+  function filterShell(def) {
+    var row = el('fieldset', { 'class': 'ccs-field-row ccs-field-row--filter adv-filter', 'data-key': def.key });
+    row.appendChild(el('legend', { text: def.label }));
+    return row;
+  }
+
   function buildMulti(def, preset) {
     var id = 'adv-f-' + def.key + '-' + (++uid);
-    var row = el('div', { 'class': 'adv-row adv-filter', 'data-key': def.key });
-    row.appendChild(el('span', { 'class': 'adv-row-label', text: def.label }));
-    var match = select('', [['or', 'Includes any (OR)'], ['and', 'Includes all (AND)']], 'Match type for ' + def.label + ' filter', 'adv-match');
+    var row = filterShell(def);
+    var controls = el('div', { 'class': 'ccs-field-row__controls' });
+    var mw = selectField(id + '-match', [['or', 'Includes any (OR)'], ['and', 'Includes all (AND)']], 'adv-match');
+    var match = $('select', mw);
     if (preset && preset.and) match.value = 'and';
-    row.appendChild(match);
+    mw.insertBefore(srLabel(match.id, def.label + ' match type'), mw.firstChild);
 
-    var wrap = el('div', { 'class': 'adv-multi' });
-    var trigger = el('button', { type: 'button', 'class': 'adv-trigger', 'aria-haspopup': 'true', 'aria-expanded': 'false', 'aria-controls': id }, [
-      el('span', { 'class': 'adv-trigger-text adv-placeholder', text: 'Select values' }), icon(CHEVRON)
+    var wrap = el('div', { 'class': 'ccs-multi' });
+    var triggerId = id + '-trigger';
+    var trigger = el('button', { type: 'button', id: triggerId, 'class': 'ccs-multi__trigger', 'aria-haspopup': 'true', 'aria-expanded': 'false', 'aria-controls': id + '-panel', 'aria-labelledby': id + '-lbl ' + triggerId }, [
+      el('span', { 'class': 'ccs-multi__text is-placeholder', text: 'Select values' }),
+      el('span', { 'class': 'ccs-multi__chev' }, [img(ICON_CHEVRON)])
     ]);
-    var panel = el('div', { 'class': 'adv-panel', id: id, hidden: true });
-    var search = el('input', { type: 'search', 'class': 'adv-input adv-panel-search', placeholder: 'Search ' + def.label.toLowerCase() + '…', 'aria-label': 'Search within ' + def.label + ' values', autocomplete: 'off' });
-    var ul = el('ul', { 'class': 'adv-options' });
+    var panel = el('div', { 'class': 'ccs-multi__panel', id: id + '-panel', role: 'group', 'aria-label': def.label + ' values', hidden: true });
+    var searchId = id + '-search';
+    var search = el('input', { type: 'search', id: searchId, 'class': 'ccs-input ccs-multi__search', placeholder: 'Search ' + def.label.toLowerCase(), autocomplete: 'off' });
+    var ul = el('ul', { 'class': 'ccs-multi__options' });
     var chosen = (preset && preset.values) || [];
     var opts = optionsFor(def);
     // Keep pre-selected values even if the dataset has none (e.g. an old shared link).
@@ -169,28 +176,41 @@
       var cid = id + '-' + i;
       var cb = el('input', { type: 'checkbox', id: cid, value: o.value, 'class': 'adv-check' });
       if (chosen.indexOf(o.value) > -1) cb.checked = true;
-      ul.appendChild(el('li', { 'class': 'adv-option', 'data-label': o.value.toLowerCase() }, [
-        el('span', { 'class': 'adv-option-main' }, [cb, el('label', { 'for': cid, text: o.value })]),
-        el('span', { 'class': 'adv-count', text: String(o.count) })
+      ul.appendChild(el('li', { 'class': 'ccs-multi__option', 'data-label': o.value.toLowerCase() }, [
+        el('label', { 'for': cid }, [cb, document.createTextNode(o.value)]),
+        el('span', { 'class': 'ccs-multi__count', text: String(o.count) })
       ]));
     });
-    var none = el('p', { 'class': 'adv-none', hidden: true, text: 'No matching values' });
+    var none = el('p', { 'class': 'ccs-multi__none', hidden: true, role: 'status', text: 'No matching values' });
+    panel.appendChild(srLabel(searchId, 'Search within ' + def.label + ' values'));
     panel.appendChild(search); panel.appendChild(ul); panel.appendChild(none);
+    wrap.appendChild(el('span', { id: id + '-lbl', 'class': 'sr-only', text: def.label + ' values:' }));
     wrap.appendChild(trigger); wrap.appendChild(panel);
-    row.appendChild(wrap);
-    row.appendChild(deleteButton('Remove ' + def.label + ' filter'));
+    controls.appendChild(mw); controls.appendChild(wrap);
+    row.appendChild(controls);
+    row.appendChild(deleteButton());
+    $('.ccs-delete', row).setAttribute('aria-label', 'Delete ' + def.label + ' filter row');
     applyMatchMode(row); updateSummary(row);
     return row;
   }
 
   function buildRange(def, preset) {
-    var row = el('div', { 'class': 'adv-row adv-filter adv-filter--range', 'data-key': def.key });
-    row.appendChild(el('span', { 'class': 'adv-row-label', text: def.label }));
-    var from = el('input', { type: 'number', name: 'range[' + def.key + '][begin]', 'class': 'adv-input adv-input--narrow', placeholder: 'From year', 'aria-label': def.label + ' from year', inputmode: 'numeric', min: '0', max: '2100' });
-    var to = el('input', { type: 'number', name: 'range[' + def.key + '][end]', 'class': 'adv-input adv-input--narrow', placeholder: 'To year', 'aria-label': def.label + ' to year', inputmode: 'numeric', min: '0', max: '2100' });
-    if (preset) { from.value = preset.begin || ''; to.value = preset.end || ''; }
-    row.appendChild(from); row.appendChild(to);
-    row.appendChild(deleteButton('Remove ' + def.label + ' filter'));
+    var id = 'adv-f-' + def.key + '-' + (++uid);
+    var row = filterShell(def);
+    row.classList.add('adv-filter--range');
+    var controls = el('div', { 'class': 'ccs-field-row__controls' });
+    var errId = id + '-err';
+    function yearInput(suffix, label, ph) {
+      var inp = el('input', { type: 'number', id: id + '-' + suffix, name: 'range[' + def.key + '][' + suffix + ']', 'class': 'ccs-input', placeholder: ph, inputmode: 'numeric', min: '0', max: '2100', 'data-role': suffix });
+      return el('div', {}, [srLabel(inp.id, def.label + ' ' + label), inp]);
+    }
+    var from = yearInput('begin', 'from year', 'From year'), to = yearInput('end', 'to year', 'To year');
+    if (preset) { $('input', from).value = preset.begin || ''; $('input', to).value = preset.end || ''; }
+    controls.appendChild(from); controls.appendChild(to);
+    controls.appendChild(el('p', { id: errId, 'class': 'ccs-error', role: 'alert', hidden: true, text: 'The start year must be earlier than or equal to the end year.', style: 'grid-column: 1 / -1; margin: 0' }));
+    row.appendChild(controls);
+    row.appendChild(deleteButton());
+    $('.ccs-delete', row).setAttribute('aria-label', 'Delete ' + def.label + ' filter row');
     return row;
   }
 
@@ -244,9 +264,9 @@
   function onClick(e) {
     var t = e.target;
     if (t.closest('#adv-add-row')) { var r = addTerm(); $('[data-role=query]', r).focus(); return; }
-    var del = t.closest('.adv-delete');
+    var del = t.closest('.ccs-delete');
     if (del) {
-      var row = del.closest('.adv-row');
+      var row = del.closest('.ccs-field-row');
       if (row.classList.contains('adv-term')) {
         var rows = $$('.adv-term', termsList());
         if (rows.length <= 1) { $('[data-role=query]', row).value = ''; $('[data-role=query]', row).focus(); return; }
@@ -254,24 +274,25 @@
         row.remove(); renumberTerms();
         var nq = next && $('[data-role=query]', next); if (nq) nq.focus();
       } else {
-        row.remove(); syncAddFilterMenu(); $('#adv-add-filter').focus();
+        row.remove(); syncAddFilterMenu();
+        var add = $('#adv-add-filter'); if (add && !add.closest('.ccs-btn--add').hidden) add.focus(); else $('#adv-add-row').focus();
       }
       return;
     }
-    var trig = t.closest('.adv-trigger');
+    var trig = t.closest('.ccs-multi__trigger');
     if (trig) {
-      var panel = trig.parentNode.querySelector('.adv-panel'), open = panel.hidden;
+      var panel = trig.parentNode.querySelector('.ccs-multi__panel'), open = panel.hidden;
       closePanels(open ? panel : null);
       panel.hidden = !open; trig.setAttribute('aria-expanded', String(open));
-      if (open) { var s = $('.adv-panel-search', panel); if (s) s.focus(); }
+      if (open) { var s = $('.ccs-multi__search', panel); if (s) s.focus(); }
       return;
     }
-    if (!t.closest('.adv-panel')) closePanels();
+    if (!t.closest('.ccs-multi__panel')) closePanels();
   }
 
   function onChange(e) {
     var t = e.target, row = t.closest('.adv-filter');
-    if (t.id === 'adv-add-filter') { var k = t.value; if (k) { var r = addFilter(k); var f = r && $('.adv-trigger, .adv-input', r); if (f) f.focus(); } return; }
+    if (t.id === 'adv-add-filter') { var k = t.value; if (k) { var r = addFilter(k); var f = r && $('.ccs-multi__trigger, .ccs-input', r); if (f) f.focus(); } return; }
     if (!row) return;
     if (t.classList.contains('adv-match')) applyMatchMode(row);
     if (t.classList.contains('adv-check')) updateSummary(row);
@@ -279,27 +300,51 @@
 
   function onInput(e) {
     var t = e.target;
-    if (!t.classList.contains('adv-panel-search')) return;
-    var q = t.value.trim().toLowerCase(), panel = t.closest('.adv-panel'), shown = 0;
-    $$('.adv-option', panel).forEach(function (li) {
+    if (t.closest && t.closest('.adv-filter--range')) { clearRangeError(t.closest('.adv-filter--range')); return; }
+    if (!t.classList.contains('ccs-multi__search')) return;
+    var q = t.value.trim().toLowerCase(), panel = t.closest('.ccs-multi__panel'), shown = 0;
+    $$('.ccs-multi__option', panel).forEach(function (li) {
       var hit = !q || li.getAttribute('data-label').indexOf(q) > -1;
       li.hidden = !hit; if (hit) shown++;
     });
-    $('.adv-none', panel).hidden = shown > 0;
+    $('.ccs-multi__none', panel).hidden = shown > 0;
   }
 
   function onKeydown(e) {
     if (e.key !== 'Escape') return;
-    var open = $$('.adv-panel').filter(function (p) { return !p.hidden; })[0];
+    var open = $$('.ccs-multi__panel').filter(function (p) { return !p.hidden; })[0];
     if (!open) return;
-    var btn = open.parentNode.querySelector('.adv-trigger');
+    var btn = open.parentNode.querySelector('.ccs-multi__trigger');
     closePanels(); if (btn) btn.focus();
     e.preventDefault();
   }
 
+  /* ---- validation: production date range ---------------------------------------------------- */
+  function clearRangeError(row) {
+    var err = $('.ccs-error', row);
+    if (err) err.hidden = true;
+    $$('input', row).forEach(function (i) { i.removeAttribute('aria-invalid'); i.removeAttribute('aria-describedby'); });
+  }
+  function validateRanges() {
+    var firstBad = null;
+    $$('.adv-filter--range').forEach(function (row) {
+      clearRangeError(row);
+      var from = $('[data-role=begin]', row), to = $('[data-role=end]', row);
+      if (from.value && to.value && Number(from.value) > Number(to.value)) {
+        var err = $('.ccs-error', row);
+        err.hidden = false;
+        [from, to].forEach(function (i) { i.setAttribute('aria-invalid', 'true'); i.setAttribute('aria-describedby', err.id); });
+        firstBad = firstBad || from;
+      }
+    });
+    return firstBad;
+  }
+
   // Keep the GET URL short: don't send empty rows / empty ranges / default sort.
   var disabledForSubmit = [];
-  function onSubmit() {
+  function onSubmit(e) {
+    var bad = validateRanges();
+    if (bad) { e.preventDefault(); bad.focus(); return; }
     disabledForSubmit = [];
     function off(n) { if (!n.disabled) { n.disabled = true; disabledForSubmit.push(n); } }
     $$('.adv-term', termsList()).forEach(function (row) {

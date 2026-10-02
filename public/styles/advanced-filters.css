@@ -1,0 +1,118 @@
+/* ==========================================================================
+   Advanced Filters page — reusable components (Figma YfHNpNSYnl3T3by65Sikv3, 168:4014)
+
+   .ccs-page          page composition: banner + two-column content (form | instructions)
+   .ccs-fields        form fields: .ccs-select, .ccs-input, .ccs-multi (multi-select), .ccs-field-row
+   .ccs-btn           buttons: --primary, --secondary, --add
+   .ccs-delete        "Delete row" link-button
+   .ccs-instructions  guidance panel
+   (The page banner is the existing .page-banner component from components/fig-tokens.css.)
+
+   Colours/typography come from the Gen 3 tokens in components/fig-tokens.css; sizes are px values
+   from the Figma frames. Desktop is the base, <=1023px stacks the columns, <=767px stacks the fields.
+   ========================================================================== */
+
+.ccs-page { display: flex; flex-direction: column; flex: 1; font-family: "Source Sans 3", sans-serif; color: var(--neutral-1000, #222); }
+.ccs-page *, .ccs-page *::before, .ccs-page *::after { box-sizing: border-box; }
+.ccs-page__body { display: grid; grid-template-columns: minmax(0, 1fr) 305px; gap: 40px; align-items: start; width: 100%; max-width: 1440px; margin: 0 auto; padding: 64px 128px; }
+@media (max-width: 1279px) { .ccs-page__body { padding-left: 64px; padding-right: 64px; } }
+@media (max-width: 1023px) { .ccs-page__body { grid-template-columns: minmax(0, 1fr); gap: 40px; padding: 48px 24px; } }
+
+/* ---- Form layout ---------------------------------------------------------------------------- */
+.ccs-adv { display: flex; flex-direction: column; gap: 40px; margin: 0; }
+.ccs-adv__box { display: flex; flex-direction: column; gap: 24px; margin: 0; padding: 0; border: 0; min-width: 0; }
+.ccs-adv__heading { margin: 0; font-family: "Fraunces", serif; font-size: 26px; font-weight: 600; line-height: 1.2; color: var(--brand-1100, #000f46); font-variation-settings: "SOFT" 0, "WONK" 1; }
+.ccs-adv__stack { display: flex; flex-direction: column; gap: 24px; }
+.ccs-adv__sort { display: flex; flex-direction: column; gap: 8px; max-width: 320px; }
+.ccs-adv__actions { display: flex; flex-wrap: wrap; gap: 16px; width: 100%; max-width: 320px; margin-left: auto; }
+.ccs-adv__actions > * { flex: 1 1 0; min-width: 0; }
+
+/* A row of fields + the delete link. Groups use <fieldset>/<div role=group>; no visible chrome. */
+.ccs-field-row { display: flex; align-items: center; gap: 24px; margin: 0; padding: 0; border: 0; min-width: 0; }
+.ccs-field-row__controls { flex: 1; min-width: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.ccs-field-row legend { float: left; width: 100%; padding: 0; margin: 0 0 8px; font-size: 16px; font-weight: 600; line-height: 1.5; color: var(--brand-1100, #000f46); }
+.ccs-field-row legend + * { clear: both; }
+.ccs-field-row--filter { flex-wrap: wrap; row-gap: 0; }
+.ccs-field-row--filter .ccs-field-row__controls { flex-basis: 0; }
+.ccs-field-row .ccs-delete { flex: none; }
+@media (max-width: 767px) {
+  .ccs-field-row { flex-direction: column; align-items: stretch; gap: 16px; }
+  .ccs-field-row__controls { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .ccs-field-row .ccs-delete { align-self: flex-start; }
+}
+
+/* ---- Controls ------------------------------------------------------------------------------- */
+.ccs-select, .ccs-input, .ccs-multi__trigger { display: block; width: 100%; height: 48px; margin: 0; border: 1px solid var(--brand-1100, #000f46); border-radius: 0; background: #fff; color: var(--neutral-1000, #222); font: inherit; font-size: 18px; line-height: 24px; }
+.ccs-select-wrap { position: relative; min-width: 0; }
+.ccs-select { appearance: none; -webkit-appearance: none; padding: 11px 60px 11px 12px; text-overflow: ellipsis; cursor: pointer; }
+.ccs-select-wrap::after { content: ""; position: absolute; top: 0; right: 0; width: 48px; height: 100%; border-left: 1px solid var(--brand-1100, #000f46); background: url("/images/advanced/icon-chevron-down.svg") center / 24px 24px no-repeat; pointer-events: none; }
+.ccs-input { padding: 11px 12px; }
+.ccs-input::placeholder { color: var(--text-tertiary, #707070); opacity: 1; }
+.ccs-select:focus-visible, .ccs-input:focus-visible, .ccs-multi__trigger:focus-visible, .ccs-btn:focus-visible, .ccs-delete:focus-visible, .ccs-add-select:focus-visible + .ccs-btn__face, .ccs-instructions a:focus-visible {
+  outline: 3px solid var(--brand-1100, #000f46); outline-offset: 2px; box-shadow: 0 0 0 2px var(--blue-400, #47c8f0);
+}
+.ccs-input[aria-invalid="true"], .ccs-select[aria-invalid="true"] { border-color: #b42318; border-width: 2px; padding: 10px 11px; }
+.ccs-error { margin: 8px 0 0; font-size: 16px; font-weight: 600; color: #b42318; }
+.ccs-error[hidden] { display: none; }
+
+/* Multi-select (filter values): a button that opens a checklist panel */
+.ccs-multi { position: relative; min-width: 0; }
+.ccs-multi__trigger { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 0 0 12px; text-align: left; cursor: pointer; }
+.ccs-multi__text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ccs-multi__text.is-placeholder { color: var(--text-tertiary, #707070); }
+.ccs-multi__chev { flex: none; display: flex; align-items: center; justify-content: center; width: 48px; height: 46px; border-left: 1px solid var(--brand-1100, #000f46); }
+.ccs-multi__chev img { width: 24px; height: 24px; }
+.ccs-multi__panel { position: absolute; z-index: 20; left: 0; right: 0; top: calc(100% + 4px); min-width: 260px; padding: 12px; background: #fff; border: 1px solid var(--brand-1100, #000f46); box-shadow: 0 8px 24px rgba(0, 11, 52, 0.18); }
+.ccs-multi__panel[hidden], .ccs-multi__none[hidden], .ccs-multi__option[hidden] { display: none; }
+.ccs-multi__search { margin: 0 0 8px; height: 40px; }
+.ccs-multi__options { margin: 0; padding: 0; list-style: none; max-height: 260px; overflow-y: auto; }
+.ccs-multi__option { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; padding: 4px 6px; }
+.ccs-multi__option:hover { background: var(--brand-200, #dddfe7); background: rgba(221, 223, 231, 0.45); }
+.ccs-multi__option label { display: flex; align-items: flex-start; gap: 10px; flex: 1; min-height: 36px; padding: 6px 0; font-size: 16px; line-height: 1.35; cursor: pointer; overflow-wrap: anywhere; }
+.ccs-multi__option input { flex: none; width: 20px; height: 20px; margin: 1px 0 0; accent-color: var(--brand-1100, #000f46); }
+.ccs-multi__count { flex: none; font-size: 14px; color: var(--text-secondary, #414141); background: var(--neutral-100, #f4f4f4); padding: 1px 8px; }
+.ccs-multi__none { margin: 8px 6px 0; font-size: 16px; color: var(--text-secondary, #414141); }
+
+/* ---- Buttons / links ------------------------------------------------------------------------ */
+.ccs-btn { display: inline-flex; align-items: center; justify-content: center; gap: 0; min-height: 48px; padding: 12px; border: 2px solid transparent; border-radius: 0; font: inherit; font-size: 18px; font-weight: 600; line-height: 24px; color: var(--brand-1100, #000f46); text-decoration: none; cursor: pointer; }
+.ccs-btn__face { display: inline-flex; align-items: center; gap: 0; padding: 0 4px; }
+.ccs-btn--primary { background: var(--blue-400, #47c8f0); border-color: var(--blue-400, #47c8f0); }
+.ccs-btn--primary:hover { background: #a3e4f7; border-color: #a3e4f7; }
+.ccs-btn--primary:active { background: #d1f1fb; border-color: #d1f1fb; }
+.ccs-btn--secondary { background: transparent; border-color: var(--brand-1100, #000f46); }
+.ccs-btn--secondary:hover { background: rgba(0, 15, 70, 0.08); }
+.ccs-btn--secondary:active { background: rgba(0, 15, 70, 0.16); }
+.ccs-btn--add { position: relative; align-self: flex-start; background: var(--sage-400, #abc1a7); border-color: var(--sage-400, #abc1a7); border-width: 0; padding: 14px; }
+.ccs-btn--add:hover { background: var(--sage-300, #c3d2c0); }
+.ccs-btn--add:active { background: var(--sage-200, #d9e3d8); }
+.ccs-btn--add img { width: 24px; height: 24px; }
+.ccs-btn--add:disabled, .ccs-btn--add[aria-disabled="true"] { opacity: 0.5; cursor: not-allowed; }
+.ccs-btn--add[hidden] { display: none; }
+/* "Add filter" is a real <select> laid invisibly over the button face so it keeps native keyboard/mobile behaviour */
+.ccs-add-select { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; font-size: 18px; }
+.ccs-add-select:focus-visible + .ccs-btn__face { outline: 3px solid var(--brand-1100, #000f46); outline-offset: 2px; }
+
+.ccs-delete { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0; border: 0; background: none; font: inherit; font-size: 24px; font-weight: 600; line-height: 32px; color: var(--interactive-800, #003f8b); cursor: pointer; white-space: nowrap; }
+.ccs-delete img { width: 32px; height: 32px; flex: none; }
+.ccs-delete:hover { color: var(--interactive-700, #00539c); text-decoration: underline; }
+.ccs-delete:active { color: var(--interactive-900, #002a5e); }
+@media (max-width: 767px) { .ccs-btn--add { align-self: stretch; justify-content: flex-start; } .ccs-delete { font-size: 24px; } }
+
+/* ---- Instructions panel --------------------------------------------------------------------- */
+.ccs-instructions { display: flex; flex-direction: column; gap: 24px; width: 100%; max-width: 400px; padding: 24px; background: #f1f1f1; }
+.ccs-instructions__title { margin: 0; font-family: "Fraunces", serif; font-size: 36px; font-weight: 400; line-height: 1.2; letter-spacing: -0.36px; color: #2d2d2d; font-variation-settings: "SOFT" 50, "WONK" 0, "opsz" 72; }
+.ccs-instructions__group { display: flex; flex-direction: column; gap: 12px; margin: 0; }
+.ccs-instructions__group + .ccs-instructions__group { padding-top: 24px; border-top: 1px solid #cdcdcd; }
+.ccs-instructions__sub { margin: 0; font-family: "Fraunces", serif; font-size: 24px; font-weight: 400; line-height: 1.2; letter-spacing: -0.24px; color: #2d2d2d; font-variation-settings: "SOFT" 0, "WONK" 1; }
+.ccs-instructions__list { display: flex; flex-direction: column; gap: 24px; margin: 0; padding: 0; list-style: none; }
+.ccs-instructions__item { display: flex; flex-direction: column; margin: 0; }
+.ccs-instructions__term { display: flex; gap: 4px; align-items: flex-start; font-size: 18px; font-weight: 600; line-height: 24px; color: var(--brand-1100, #000f46); }
+.ccs-instructions__term img { flex: none; width: 24px; height: 24px; }
+.ccs-instructions__desc { padding-left: 28px; font-size: 18px; line-height: 1.5; color: var(--neutral-1000, #222); }
+.ccs-instructions code { font-family: "Source Code Pro", ui-monospace, Menlo, monospace; font-size: 0.9em; color: var(--brand-1100, #000f46); background: rgba(0, 15, 70, 0.06); padding: 0 4px; }
+@media (max-width: 1023px) { .ccs-instructions { max-width: none; } }
+@media (max-width: 767px) { .ccs-instructions__title { font-size: 36px; } }
+
+/* Search rows: field | match type | terms (match labels such as "Contains all (AND)" need a little more room) */
+.adv-term .ccs-field-row__controls { grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr) minmax(0, 1.25fr); }
+@media (max-width: 767px) { .adv-term .ccs-field-row__controls { grid-template-columns: minmax(0, 1fr); } }
