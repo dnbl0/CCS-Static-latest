@@ -936,7 +936,7 @@
     const producerVal = it.imageProducer || it.producer;
     const media = hasDA ? [
       { label: 'Licence type', value: lic.label },
-      ...(advisories.length ? [{ label: 'Advisory', value: advisories.map(a => a.type).join(', ') }] : []),
+      ...(advisories.length ? [{ label: 'Advisory', value: advisories.map(a => a.text).join('\n\n') }] : []),
       { label: 'Terms of use', value: it.terms || lic.terms },
       ...(producerVal ? [{ label: 'Producer', value: producerVal }] : [])
     ] : [];
