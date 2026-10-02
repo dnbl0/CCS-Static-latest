@@ -884,12 +884,7 @@ class Component extends DCLogic {
     const curAlt = slides.length > 1 ? `${R.title} — ${kindWord.toLowerCase()} ${idx + 1} of ${slides.length}` : R.title;
     const media = R.media || [];
     const fileName = decodeURIComponent((cur.src || '').split('/').pop());
-    const mediaRows = !R.hasDA ? [] : [
-      media[0], { label: 'Format', value: cur.type || (media[1] && media[1].value) },
-      ...(dim ? [{ label: 'Dimensions', value: `${dim.w} × ${dim.h} pixels` }] : []),
-      ...(dur ? [{ label: 'Duration', value: fmtDur(dur) }] : []),
-      { label: 'File name', value: fileName }, ...media.slice(2)
-    ].filter(Boolean);
+    const mediaRows = !R.hasDA ? [] : media.filter(m => m && m.value);
     const W = '#fff', DIM = 'rgba(255,255,255,.35)';
     const fields = R.fields.map(f => ({ ...f, lines: f.lines.map(l => ({ text: l.text, color: l.muted ? 'var(--col-text-muted)' : 'var(--col-text-primary)' })),
       copyText: s.copied === 'acc' ? 'Copied' : 'Copy', onCopy: () => this.flash('acc', f.value) }));

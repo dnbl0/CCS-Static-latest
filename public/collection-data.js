@@ -923,8 +923,7 @@
     ].filter(r => r[2]).map(([seq, label, lines, copy]) => ({ seq, label, lines, copy: !!copy, value: lines[0].text }));
     const rights = [
       { seq: 16, label: 'Copyright', value: copyrightHolder },
-      { seq: 17, label: 'Credit line', value: creditLine },
-      ...(hasDA ? [{ seq: 29, label: 'Terms of use', value: it.terms || lic.terms }] : [])
+      { seq: 17, label: 'Credit line', value: creditLine }
     ];
     const advisories = (it.advisories || []).map(a => ADVISORY[a]).filter(Boolean);
     const byline = [(!it.creator || UNKNOWN.test(it.creator)) ? null : nameOnly(it.creator), date].filter(Boolean).join(' · ');
@@ -932,14 +931,14 @@
     const citations = buildCitations(it, date, coll, creditLine, it.accession);
     
     // Digital Asset Media metadata mapped according to CCS Field labels and filters Final PRG schema
+    // Media metadata sidebar: DAM fields only (CCS Field labels sheet rows 28-31: Licence Type, Advisory,
+    // Terms of Use, Producer). A field with no data is omitted entirely, label included.
+    const producerVal = it.imageProducer || it.producer;
     const media = hasDA ? [
-      { label: 'Title', value: it.title },
-      { label: 'Format', value: it.mediaFormat || (slides[0] && slides[0].type) || 'image/jpeg' },
-      ...(it.imageProducer || it.producer ? [{ label: 'Producer', value: it.imageProducer || it.producer }] : []),
-      ...(it.imageDate ? [{ label: 'Production date', value: it.imageDate }] : []),
-      // Licence and terms of use are shown once on the record page (licence badge + Rights and use panel), not repeated here.
-      { label: 'Advisory', value: advisories.length ? advisories.map(a => a.type).join(', ') : 'No advisory' },
-      ...(filmCls ? [{ label: 'Advisory classification', value: filmCls.name }] : [])
+      { label: 'Licence type', value: lic.label },
+      ...(advisories.length ? [{ label: 'Advisory', value: advisories.map(a => a.type).join(', ') }] : []),
+      { label: 'Terms of use', value: it.terms || lic.terms },
+      ...(producerVal ? [{ label: 'Producer', value: producerVal }] : [])
     ] : [];
 
     return {
