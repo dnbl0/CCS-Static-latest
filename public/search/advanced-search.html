@@ -38,72 +38,7 @@
 </style>
   <link rel="stylesheet" href="/styles/home.css">
   <link rel="stylesheet" href="../styles/header.css">
-<style>
-/* Advanced Search form */
-.adv-wrap{flex:1;max-width:1200px;width:100%;margin:0 auto;padding:48px 32px 96px;box-sizing:border-box}
-.adv-grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:48px;align-items:start}
-.adv h2{margin:0 0 20px;font-family:'Fraunces',serif;font-weight:600;font-size:26px;line-height:1.2;color:var(--col-bg-primary)}
-.adv section{padding:0 0 32px;margin:0 0 32px;border-bottom:1px solid var(--col-border-header)}
-.adv-row{display:flex;align-items:center;gap:12px;margin:0 0 16px}
-.adv-row-label{flex:0 0 125px;font-size:16px;font-weight:600;color:var(--col-bg-primary)}
-.adv-select,.adv-input,.adv-trigger{box-sizing:border-box;height:48px;border:1px solid var(--col-border-header);border-radius:0;background:#fff;color:var(--col-text-primary);font:inherit;font-size:16px;padding:0 12px;min-width:0}
-.adv-select{flex:0 0 auto;max-width:100%;appearance:none;-webkit-appearance:none;padding-right:36px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23000f46'%3E%3Cpath d='M12 15.4L6 9.4L7.4 8L12 12.6L16.6 8L18 9.4L12 15.4Z'/%3E%3C/svg%3E") no-repeat right 10px center/16px}
-.adv-term .adv-select:first-child{width:170px}
-.adv-term .adv-select:nth-child(2){width:210px}
-.adv-term .adv-input{flex:1 1 auto}
-.adv-input::placeholder{color:var(--col-text-muted)}
-.adv-input--narrow{width:130px;flex:0 0 auto}
-.adv-match{width:190px}
-.adv-select:focus-visible,.adv-input:focus-visible,.adv-trigger:focus-visible,.adv-delete:focus-visible,.adv-add:focus-visible,.adv-submit:focus-visible,.adv-reset:focus-visible,.adv-check:focus-visible{outline:3px solid #46c8f0;outline-offset:2px}
-.adv-delete{display:inline-flex;align-items:center;gap:6px;flex:none;border:0;background:none;padding:6px 4px;font:inherit;font-size:13px;font-weight:600;color:var(--col-text-muted);cursor:pointer}
-.adv-delete:hover{color:var(--col-text-primary);text-decoration:underline}
-.adv-delete-icon,.adv-add-icon{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;color:#fff;font-size:16px;font-weight:700;line-height:1}
-.adv-delete-icon{background:#b42318}
-.adv-add{display:inline-flex;align-items:center;gap:8px;border:0;background:none;padding:6px 0;font:inherit;font-size:16px;font-weight:600;color:var(--col-bg-primary);cursor:pointer}
-.adv-add:disabled{opacity:.5;cursor:not-allowed}
-.adv-add-icon{background:var(--col-bg-primary)}
-.adv-add-filter{display:inline-flex;align-items:center;gap:8px;margin-top:4px}
-.adv-add-filter .adv-select{width:190px;font-weight:600;color:var(--col-bg-primary)}
-.adv-add-filter[hidden]{display:none}
-.adv-multi{position:relative;flex:1 1 auto;min-width:0}
-.adv-trigger{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;text-align:left;cursor:pointer}
-.adv-trigger-text{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.adv-placeholder{color:var(--col-text-muted)}
-.adv-panel{position:absolute;z-index:20;left:0;right:0;top:calc(100% + 4px);background:#fff;border:1px solid var(--col-bg-primary);padding:12px}
-.adv-panel[hidden],.adv-none[hidden],.adv-option[hidden]{display:none}
-.adv-panel-search{width:100%;margin:0 0 8px;height:40px}
-.adv-options{list-style:none;margin:0;padding:0;max-height:260px;overflow-y:auto}
-.adv-option{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 6px}
-.adv-option:hover{background:var(--col-bg-selected)}
-.adv-option-main{display:flex;align-items:flex-start;gap:10px;min-width:0}
-.adv-option-main label{cursor:pointer;font-size:16px;line-height:1.35;overflow-wrap:anywhere}
-.adv-check{flex:none;width:18px;height:18px;margin:2px 0 0;accent-color:var(--col-bg-primary)}
-.adv-count{flex:none;font-size:13px;color:var(--col-text-muted);background:#f1f0ec;padding:1px 8px}
-.adv-none{margin:8px 6px 0;color:var(--col-text-muted);font-size:15px}
-.adv-sort-row{margin:0 0 24px}
-.adv-actions{display:flex;align-items:center;gap:24px}
-.adv-reset{font-size:16px;font-weight:600;color:var(--col-bg-primary);text-decoration:underline}
-.adv-submit{height:48px;border:0;border-radius:0;background:var(--col-bg-primary);color:#fff;font:inherit;font-size:17px;font-weight:600;padding:0 28px;cursor:pointer}
-.adv-submit:hover{background:var(--col-bg-primary-hover)}
-.adv-help{box-sizing:border-box;border:1px solid var(--col-border-header);background:#f1f0ec;padding:24px;display:flex;flex-direction:column;gap:24px;position:sticky;top:24px}
-.adv-help h2{font-size:21px;margin:0 0 12px;display:flex;align-items:center;gap:8px}
-.adv-help h2 svg{flex:none}
-.adv-help ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:10px;font-size:16px;line-height:1.5}
-.adv-help section{padding:0;margin:0;border:0}
-.adv-help section+section{border-top:1px solid var(--col-border-header);padding-top:24px}
-.adv-help code{font-family:ui-monospace,Menlo,monospace;font-size:14px;color:var(--col-text-primary)}
-@media (max-width:980px){.adv-grid{grid-template-columns:minmax(0,1fr);gap:40px}.adv-help{position:static}}
-@media (max-width:640px){
-  .adv-wrap{padding:32px 16px 64px}
-  .adv-row{flex-wrap:wrap;gap:8px 12px}
-  .adv-row-label{flex:1 0 100%}
-  .adv-term .adv-select:first-child,.adv-term .adv-select:nth-child(2),.adv-match{flex:1 1 100%;width:100%}
-  .adv-term .adv-input,.adv-multi{flex:1 1 100%}
-  .adv-input--narrow{flex:1 1 40%;width:auto}
-  .adv-delete{margin-left:auto}
-  .adv-add-filter .adv-select{width:100%}
-}
-</style>
+<link rel="stylesheet" href="/styles/advanced-filters.css">
 </head>
 <body>
 <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -123,7 +58,7 @@
   --col-border-header:#b5bac9;
 }</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../components/fig-tokens.css">
 <link rel="stylesheet" href="../components/fig-assets.css">
 <!-- Bootstrap 5.3.3 CSS (Custom UoM Gen 3 Build) -->
@@ -327,82 +262,99 @@ a{color:#0b2a6b;text-decoration:underline;text-underline-offset:2px}a:hover{colo
 </script>
 
 <nav class="page-breadcrumbs" aria-label="Breadcrumb"><ol class="page-local-history" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="root" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="/" itemprop="item" title="Home" aria-label="Home"><img src="../images/home.svg" alt="" width="16" height="16" style="vertical-align:middle"><span itemprop="name" class="sr-only">Home</span></a><meta content="1" itemprop="position"></li><li itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page"><span itemprop="name">Advanced Search</span><meta content="2" itemprop="position"></li></ol><ol class="bc-mobile" style="display:none;align-items:center;gap:6px;list-style:none;margin:0;font-size:18px;color:#fff"><li style="display:flex;align-items:center"><a href="/index.html" style="display:inline-flex;align-items:center;gap:6px;color:#fff;text-decoration:none;min-height:44px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span>Home</span></a></li></ol></nav>
-<section class="page-banner" aria-label="Page banner">
-  <div class="page-banner__inner">
-    <h1>Advanced Search</h1>
-    <p class="page-banner__desc">Combine fields and filters to find exactly what you're looking for across every collection.</p>
+<section class="ccs-banner" aria-labelledby="adv-title">
+  <div class="ccs-banner__inner">
+    <h1 id="adv-title" class="ccs-banner__title">Advanced filters</h1>
+    <p class="ccs-banner__desc">Combine fields and filters to find exactly what you're looking for across every collection.</p>
   </div>
 </section>
 
-<main id="main-content" class="adv-wrap">
-  <div class="adv-grid">
-    <div>
-      <search aria-label="Advanced search">
-        <form id="adv-form" class="adv" action="search-results.html" method="get">
-          <section aria-labelledby="adv-terms-h">
-            <h2 id="adv-terms-h">Search</h2>
-            <div id="adv-terms"></div>
-            <button type="button" id="adv-add-row" class="adv-add"><span class="adv-add-icon" aria-hidden="true">+</span> Add row</button>
-          </section>
+<main id="main-content" class="ccs-page">
+  <div class="ccs-page__body">
+    <search aria-label="Advanced search">
+      <form id="adv-form" class="ccs-adv" action="search-results.html" method="get" novalidate>
+        <div id="adv-errors" class="ccs-errors" role="alert" tabindex="-1"></div>
+        <div id="adv-live" class="sr-only" role="status" aria-live="polite"></div>
+        <section class="ccs-adv__box" aria-labelledby="adv-terms-h">
+          <h2 id="adv-terms-h" class="ccs-adv__heading">Search</h2>
+          <p id="adv-terms-hint" class="sr-only">Choose a field and a match type, then enter your search terms. Use quotation marks for an exact phrase.</p>
+          <div id="adv-terms" class="ccs-adv__stack"></div>
+          <button type="button" id="adv-add-row" class="ccs-btn ccs-btn--add"><span>Add row</span><img src="/images/advanced/icon-add.svg" alt=""></button>
+        </section>
 
-          <section aria-labelledby="adv-filters-h">
-            <h2 id="adv-filters-h">Filters</h2>
-            <div id="adv-filters"></div>
-            <label class="adv-add-filter">
-              <span class="adv-add-icon" aria-hidden="true">+</span>
-              <select id="adv-add-filter" class="adv-select" aria-label="Add filter">
-                <option value="">Add filter…</option>
-                <option value="collection">Collection Title</option>
-                <option value="creator">Creator Name</option>
-                <option value="type">Object Type</option>
-                <option value="licence">Licence Type</option>
-                <option value="access">Object Access Condition</option>
-                <option value="year">Production Date</option>
-              </select>
-            </label>
-          </section>
+        <section class="ccs-adv__box" aria-labelledby="adv-filters-h">
+          <h2 id="adv-filters-h" class="ccs-adv__heading">Filters</h2>
+          <div id="adv-filters" class="ccs-adv__stack"></div>
+          <div id="adv-add-filter-mount"></div>
+        </section>
 
-          <div class="adv-row adv-sort-row">
-            <label for="adv-sort" class="adv-row-label">Sort results by</label>
-            <select id="adv-sort" name="sort" class="adv-select" style="width:210px">
-              <option value="relevance">Relevance</option>
-              <option value="year-desc">Date (Newest)</option>
-              <option value="year-asc">Date (Oldest)</option>
-              <option value="az">Title (A–Z)</option>
-            </select>
-          </div>
-          <div class="adv-actions">
-            <a class="adv-reset" href="advanced-search.html">Reset</a>
-            <button type="submit" class="adv-submit">Search</button>
-          </div>
-        </form>
-      </search>
-    </div>
+        <div class="ccs-adv__sort">
+          <span class="ccs-adv__label" aria-hidden="true">Sort results by</span>
+          <div id="adv-sort-mount"></div>
+        </div>
 
-    <aside class="adv-help" aria-label="Search help">
-      <section aria-labelledby="adv-tips-h">
-        <h2 id="adv-tips-h">Tips for better results</h2>
-        <ul>
-          <li><strong>Rows:</strong> add rows to expand your search, or delete rows to simplify it.</li>
-          <li><strong>Search fields:</strong> search a specific field (Title, Creator, Subject, Description) instead of everywhere.</li>
-          <li><strong>Match type:</strong> each row can require its terms (<em>Contains all</em>), allow either (<em>Contains any</em>), or exclude them (<em>Does not contain</em>).</li>
-          <li><strong>Filters:</strong> narrow by object type, collection, creator, licence, access and production date — each filter has its own <em>Includes all (AND)</em> / <em>Includes any (OR)</em> choice.</li>
-          <li>Use quotation marks to search for an exact phrase, e.g. <code>"eucalyptus oil"</code>.</li>
+        <div class="ccs-adv__actions">
+          <a class="ccs-btn ccs-btn--secondary" href="advanced-search.html">Reset</a>
+          <button type="submit" class="ccs-btn ccs-btn--primary">Search</button>
+        </div>
+      </form>
+    </search>
+
+    <aside class="ccs-instructions" aria-labelledby="adv-help-h">
+      <h2 id="adv-help-h" class="ccs-instructions__title">Search help</h2>
+      <section class="ccs-instructions__group" aria-labelledby="adv-tips-h">
+        <h3 id="adv-tips-h" class="ccs-instructions__sub">Tips for better results</h3>
+        <ul class="ccs-instructions__list">
+            <li class="ccs-instructions__item">
+              <span class="ccs-instructions__term"><img src="/images/advanced/icon-arrow.svg" alt="">Rows</span>
+              <span class="ccs-instructions__desc">Add rows to expand your search, or delete rows to simplify it.</span>
+            </li>
+            <li class="ccs-instructions__item">
+              <span class="ccs-instructions__term"><img src="/images/advanced/icon-arrow.svg" alt="">Search fields</span>
+              <span class="ccs-instructions__desc">Search a specific field (Title, Creator, Subject, Description) instead of everywhere.</span>
+            </li>
+            <li class="ccs-instructions__item">
+              <span class="ccs-instructions__term"><img src="/images/advanced/icon-arrow.svg" alt="">Match type</span>
+              <span class="ccs-instructions__desc">Each row can require its terms (<em>Contains all</em>), allow either (<em>Contains any</em>), or exclude them (<em>Does not contain</em>).</span>
+            </li>
+            <li class="ccs-instructions__item">
+              <span class="ccs-instructions__term"><img src="/images/advanced/icon-arrow.svg" alt="">Filters</span>
+              <span class="ccs-instructions__desc">Narrow by object type, collection, creator, licence, access and production date — each filter has its own <em>Includes all (AND)</em> / <em>Includes any (OR)</em> choice.</span>
+            </li>
+            <li class="ccs-instructions__item">
+              <span class="ccs-instructions__term"><img src="/images/advanced/icon-arrow.svg" alt="">Exact phrase</span>
+              <span class="ccs-instructions__desc">Use quotation marks to search for an exact phrase, e.g. <code>"eucalyptus oil"</code>.</span>
+            </li>
         </ul>
       </section>
-      <section aria-labelledby="adv-ex-h">
-        <h2 id="adv-ex-h">Search examples</h2>
-        <ul>
-          <li>All Fields → Contains all → <em>eucalyptus oil bottle</em> will display records with all three terms anywhere in the record.</li>
-          <li>Subject field → Contains all → <em>botanical illustration</em> will display records with <em>botanical</em> AND <em>illustration</em> in the subject field.</li>
-          <li>Subject field → Contains any → <em>botanical illustration</em> will display records with <em>botanical</em> OR <em>illustration</em> in the subject field.</li>
+      <section class="ccs-instructions__group" aria-labelledby="adv-ex-h">
+        <h3 id="adv-ex-h" class="ccs-instructions__sub">Search examples</h3>
+        <ul class="ccs-instructions__list">
+            <li class="ccs-instructions__item">
+              <span class="ccs-instructions__term"><img src="/images/advanced/icon-arrow.svg" alt="">All Fields → Contains all</span>
+              <span class="ccs-instructions__desc"><em>eucalyptus oil bottle</em> will display records with all three terms anywhere in the record.</span>
+            </li>
+            <li class="ccs-instructions__item">
+              <span class="ccs-instructions__term"><img src="/images/advanced/icon-arrow.svg" alt="">Subject → Contains all</span>
+              <span class="ccs-instructions__desc"><em>botanical illustration</em> will display records with <em>botanical</em> AND <em>illustration</em> in the subject field.</span>
+            </li>
+            <li class="ccs-instructions__item">
+              <span class="ccs-instructions__term"><img src="/images/advanced/icon-arrow.svg" alt="">Subject → Contains any</span>
+              <span class="ccs-instructions__desc"><em>botanical illustration</em> will display records with <em>botanical</em> OR <em>illustration</em> in the subject field.</span>
+            </li>
         </ul>
       </section>
-      <section aria-labelledby="adv-fx-h">
-        <h2 id="adv-fx-h">Filter examples</h2>
-        <ul>
-          <li>Object Type → Includes all → <em>Photograph, Manuscript</em> will display records tagged with both Photograph AND Manuscript.</li>
-          <li>Object Type → Includes any → <em>Photograph, Manuscript</em> will display records tagged with either Photograph OR Manuscript.</li>
+      <section class="ccs-instructions__group" aria-labelledby="adv-fx-h">
+        <h3 id="adv-fx-h" class="ccs-instructions__sub">Filter examples</h3>
+        <ul class="ccs-instructions__list">
+            <li class="ccs-instructions__item">
+              <span class="ccs-instructions__term"><img src="/images/advanced/icon-arrow.svg" alt="">Object Type → Includes all</span>
+              <span class="ccs-instructions__desc"><em>Photograph, Manuscript</em> will display records tagged with both Photograph AND Manuscript.</span>
+            </li>
+            <li class="ccs-instructions__item">
+              <span class="ccs-instructions__term"><img src="/images/advanced/icon-arrow.svg" alt="">Object Type → Includes any</span>
+              <span class="ccs-instructions__desc"><em>Photograph, Manuscript</em> will display records tagged with either Photograph OR Manuscript.</span>
+            </li>
         </ul>
       </section>
     </aside>
