@@ -826,7 +826,8 @@
     10113: ['1973_0004_000_000_1.jpg'],
     10114: ['1973_0071_000_000.jpg'],
     10115: ['1973_0084_000_000.jpg'],
-    10116: ['1973_0870_000_A_000_F-MF.jpg'],
+    // group photograph of the six studies, then each study (A-F)
+    10116: ['1973_0870_000_A_000_F-MF.jpg', '1973_0870_000_000A-MF.jpg', '1973_0870_000_000B-MF.jpg', '1973_0870_000_000C-MF.jpg', '1973_0870_000_000D-MF.jpg', '1973_0870_000_000E-MF.jpg', '1973_0870_000_000F-MF.jpg'],
     20001: ['MHM00048.jpg', 'MHM00048_2.jpg', 'MHM00048_3.jpg', 'MHM00048_4.jpg', 'MHM00048_5.jpg'],
     20002: ['MHM2014.57.jpg'],
     20003: ['MHM03589.jpg', 'MHM03589_1.jpg', 'MHM03589_2.jpg', 'MHM03589_3.jpg', 'MHM03589_4.jpg', 'MHM03589_7.jpg', 'MHM03589_9.jpg'],
@@ -953,7 +954,7 @@
   // Early prototype stubs that duplicate a fuller record for the same object (same accession number or
   // same title with no accession). They are folded into the fuller record: the old id still resolves
   // (records[oldId] is the canonical record) but is no longer listed or searchable twice.
-  const SUPERSEDED = { 14: 60001, 12: 20008, 149: 20004, 169: 20018, 3: 60002, 4: 60003, 7: 10114, 8: 20001, 2: 20003 };
+  const SUPERSEDED = { 11: 10116, 14: 60001, 12: 20008, 149: 20004, 169: 20018, 3: 60002, 4: 60003, 7: 10114, 8: 20001, 2: 20003 };
   const ACTIVE = ITEMS.filter(it => !SUPERSEDED[it.id]);
   const records = {};
   ACTIVE.forEach(it => { records[it.id] = build(it); });
