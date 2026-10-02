@@ -126,7 +126,7 @@
 /* ==========================================================================
    Navigation — footer
    ========================================================================== */
-.ccs-nav--footer { background: var(--brand-1100, #000f46); color: var(--neutral-100, #f4f4f4); }
+.ccs-nav--footer { padding-top: 0; background: var(--brand-1100, #000f46); color: var(--neutral-100, #f4f4f4); }
 .ccs-nav--footer a { color: #fff; }
 .ccs-nav--footer .ccs-nav__inner { width: 100%; max-width: 1224px; margin: 0 auto; }
 .ccs-foot__aoc { background: var(--brand-800, #333f6a); padding: 40px 32px; }
