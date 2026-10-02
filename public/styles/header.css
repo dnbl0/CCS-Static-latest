@@ -748,254 +748,7 @@
   --i-padding-y-md: var(--uom-ds-dimension-space-025);
   --i-padding-x-lg: var(--uom-ds-dimension-space-300);
   --i-padding-y-lg: 0.875rem;
-  --nav-height: 6.875rem;
   --uom-ds-responsive-custom-viewport-mega-menu-inline: 1098px;
-}
-
-/* Base header styles */
-header.uom-page-header,
-header[data-component="Header"],
-.uom-page-header {
-  position: sticky;
-  top: 0;
-  display: flex;
-  height: var(--nav-height);
-  background-color: var(--col-bg-primary, rgb(0 15 70));
-  z-index: 1000;
-  align-items: center;
-  transition-property: height, background-color, border-color;
-  transition-duration: 300ms;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  box-sizing: border-box;
-  width: 100%;
-  border-bottom: 0;
-}
-
-/* University Logo Section */
-.uom-page-header .uom-logo-section,
-.uom-page-header > div:first-child {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  height: 100%;
-  flex-basis: auto;
-  border-right: 1px solid var(--uom-ds-color-brand-900, #212e5d);
-  flex-shrink: 0;
-}
-
-.uom-page-header .logo {
-  align-self: center;
-  display: flex;
-  align-items: center;
-  width: auto;
-  position: relative;
-  height: var(--nav-height);
-  flex-shrink: 0;
-  outline: none;
-}
-
-.uom-page-header .logo img {
-  width: auto;
-  height: 100%;
-  outline: none;
-  display: block;
-  object-fit: contain;
-}
-
-/* Focus on dark styles */
-.udds-focus-on-dark-inset {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.logo:focus-visible .udds-focus-on-dark-inset,
-.udds-focus-on-dark:focus-visible {
-  outline: 2px solid var(--col-blue-light-100, #47c8f0);
-  outline-offset: -2px;
-}
-
-.udds-focus:focus-visible {
-  outline: 2px solid var(--col-blue-light-100, #47c8f0);
-  outline-offset: 2px;
-}
-
-/* Main Content Area */
-.uom-page-header .uom-header-content,
-.uom-page-header > div:nth-child(2) {
-  flex-shrink: 1;
-  flex: 33 1 fit-content;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-content: space-between;
-  height: 100%;
-  max-width: 100%;
-  overflow-x: visible;
-  scroll-behavior: smooth;
-}
-
-/* Top Navigation Tier */
-.uom-page-header .uom-nav-top-tier {
-  border-bottom: 1px solid var(--uom-ds-color-brand-900, #212e5d);
-  background-color: var(--col-heritage-dark-100, #000b34);
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  min-height: 2.25rem;
-}
-
-.uom-page-header .uom-nav-top-tier .uom-search-btn,
-.uom-page-header .uom-nav-top-tier button[data-popover-type="search"] {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.625rem;
-  height: 100%;
-  background-color: var(--uom-ds-color-background-button-secondary, #abc1a7);
-  color: var(--uom-ds-color-text-brand, #000f46);
-  fill: var(--uom-ds-color-white-100, #ffffff);
-  border: none;
-  cursor: pointer;
-  outline: none;
-  box-sizing: border-box;
-  text-decoration: none;
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-.uom-page-header .uom-nav-top-tier .uom-search-btn:hover,
-.uom-page-header .uom-nav-top-tier button[data-popover-type="search"]:hover {
-  background-color: var(--uom-ds-color-background-button-secondary-hover, #c3d2c0);
-  color: var(--uom-ds-color-text-brand, #000f46);
-}
-
-.uom-page-header .uom-nav-top-tier .uom-search-btn:active,
-.uom-page-header .uom-nav-top-tier button[data-popover-type="search"]:active {
-  background-color: var(--uom-ds-color-background-button-secondary-active, #81927c);
-}
-
-.uom-page-header .uom-nav-top-tier .uom-search-btn svg,
-.uom-page-header .uom-nav-top-tier button[data-popover-type="search"] svg,
-.uom-page-header .uom-nav-top-tier .uom-search-btn uom-ds-icon,
-.uom-page-header .uom-nav-top-tier button[data-popover-type="search"] uom-ds-icon,
-uom-ds-icon.size-150,
-uom-ds-icon[iconid="search"] {
-  display: inline-block;
-  width: 1.5rem;
-  height: 1.5rem;
-  min-width: 1.5rem;
-  min-height: 1.5rem;
-  color: var(--uom-ds-color-text-brand, #000f46);
-  mask: url("/images/search.svg") no-repeat center / contain;
-  -webkit-mask: url("/images/search.svg") no-repeat center / contain;
-  background-color: currentColor;
-}
-
-/* Bottom Navigation Tier */
-.uom-page-header .uom-nav-bottom-tier {
-  display: flex;
-  height: 100%;
-  margin: 0.25rem 0.5rem;
-  justify-content: space-between;
-  align-items: stretch;
-  column-gap: 1.25rem;
-}
-
-.uom-page-header .uom-site-title {
-  color: var(--uom-ds-color-text-brand-inverse, #ffffff);
-  font-family: var(--uom-ds-typography-font-family-200, "Source Sans 3", sans-serif);
-  font-size: 0.875rem;
-  line-height: 1;
-  font-weight: 600;
-  margin-right: 1.25rem;
-  text-wrap: wrap;
-  white-space: normal;
-  display: inline-flex;
-  align-items: center;
-  padding: 0 0.25rem;
-  text-decoration: none;
-}
-
-.uom-page-header .uom-site-title:hover {
-  text-decoration: underline;
-  color: var(--uom-ds-color-text-link-hover-inverse, #47c8f0);
-}
-
-.uom-page-header .uom-primary-nav {
-  display: flex;
-  align-items: stretch;
-  height: 100%;
-  gap: 0.5rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.uom-page-header .uom-primary-nav a {
-  color: var(--uom-ds-color-text-brand-inverse, #ffffff);
-  font-family: var(--uom-ds-typography-font-family-200, "Source Sans 3", sans-serif);
-  font-size: 1rem;
-  font-weight: 600;
-  padding: 0.5rem 0.875rem;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  height: 100%;
-  box-sizing: border-box;
-  transition: background-color 0.15s ease, color 0.15s ease;
-}
-
-.uom-page-header .uom-primary-nav a:hover,
-.uom-page-header .uom-primary-nav a:focus-visible {
-  background-color: var(--uom-ds-color-blue-200, #b1e8f8);
-  color: var(--uom-ds-color-text-brand, #000f46);
-}
-
-/* Utilities for UnoCSS / Tailwind classes in Header.
-   Prefixed with uom- because bare .bg-primary/.bg-secondary collide with
-   Bootstrap's !important utilities of the same name (Bootstrap wins on
-   !important regardless of specificity, which was silently breaking the
-   header's top nav tier background). Do not rename these back. */
-.uom-bg-primary { background-color: var(--col-bg-primary, rgb(0 15 70)); }
-.uom-bg-secondary { background-color: var(--col-heritage-dark-100, #000b34); }
-.border-r-brand-900 { border-right: 1px solid var(--uom-ds-color-brand-900, #212e5d); }
-.border-b-brand-900 { border-bottom: 1px solid var(--uom-ds-color-brand-900, #212e5d); }
-.text-brand-inverse { color: var(--uom-ds-color-text-brand-inverse, #ffffff); }
-.hover\:text-link-hover-inverse:hover { color: var(--uom-ds-color-text-link-hover-inverse, #47c8f0); }
-.bg-background-button-secondary { background-color: var(--uom-ds-color-background-button-secondary, #abc1a7); }
-.active\:bg-background-button-secondary-active:active { background-color: var(--uom-ds-color-background-button-secondary-active, #81927c); }
-.hover\:bg-background-button-secondary-hover:hover { background-color: var(--uom-ds-color-background-button-secondary-hover, #c3d2c0); }
-.color-text-brand { color: var(--uom-ds-color-text-brand, #000f46); }
-.hover\:color-text-brand:hover { color: var(--uom-ds-color-text-brand, #000f46); }
-.fill-white-100 { fill: var(--uom-ds-color-white-100, #ffffff); }
-.gap-050 { gap: 0.5rem; }
-.size-150 { width: 1.5rem; height: 1.5rem; }
-.p-\[0\.625rem\] { padding: 0.625rem; }
-.ring-inset { --un-ring-inset: inset; }
-
-/* Mobile menu toggle (hamburger + label), shown only under the mega-menu breakpoint */
-.uom-page-header .uom-menu-toggle {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  background: none;
-  border: 0;
-  color: var(--uom-ds-color-text-brand-inverse, #ffffff);
-  cursor: pointer;
-  padding: 0.375rem 0.625rem;
-  min-width: 44px;
-  min-height: 44px;
-  flex-shrink: 0;
-}
-
-.uom-page-header .uom-menu-toggle .uom-menu-label {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  line-height: 1;
 }
 
 /* Full-screen search overlay, modelled on the Gen 3 Design System's
@@ -1099,51 +852,34 @@ uom-ds-icon[iconid="search"] {
   border-width: 0;
 }
 
-/* Responsive adjustments */
-@media (min-width: 1098px) {
-  .uom-page-header .uom-site-title {
-    font-size: 1rem;
-    line-height: 1.2em;
-  }
-  .uom-page-header .uom-nav-bottom-tier {
-    margin: 0.375rem 0.75rem;
-  }
-}
-
-@media (max-width: 768px) {
-  :root {
-    --nav-height: 5rem;
-  }
-  .uom-page-header .logo {
-    height: var(--nav-height);
-  }
-  .uom-page-header .uom-nav-top-tier {
-    display: none;
-  }
-  .uom-page-header .uom-menu-toggle {
-    display: flex;
-  }
-  .uom-page-header .uom-primary-nav {
-    display: none;
-    position: absolute;
-    top: var(--nav-height);
-    left: 0;
-    right: 0;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0;
-    background-color: var(--col-bg-primary, rgb(0 15 70));
-    border-top: 1px solid var(--uom-ds-color-brand-900, #212e5d);
-    padding: 0.5rem 0;
-    z-index: 30;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-  }
-  .uom-page-header .uom-primary-nav.is-open {
-    display: flex;
-  }
-  .uom-page-header .uom-primary-nav a {
-    width: 100%;
-    padding: 0.875rem 1.5rem;
-    font-size: 1rem;
-  }
+/* Colour variables carried over from the retired footer stylesheet (still referenced by other styles) */
+:root {
+  tab-size: 4;
+  -webkit-text-size-adjust: 100%;
+  --base-heritage: 0 15 70;
+  --col-heritage-100: rgb(var(--base-heritage));
+  --col-heritage-75: rgb(64 75 116);
+  --col-heritage-50: rgb(128 135 162);
+  --col-heritage-25: rgb(191 195 209);
+  --base-heritage-dark: 0 11 52;
+  --col-heritage-dark-100: rgb(var(--base-heritage-dark));
+  --col-blue-light-100: rgb(70 200 240);
+  --col-blue-light-75: rgb(116 214 244);
+  --col-blue-light-50: rgb(163 228 247);
+  --col-blue-light-25: rgb(209 241 251);
+  --col-blue-dark-100: rgb(0 60 85);
+  --base-white: 255 255 255;
+  --col-white-100: rgb(var(--base-white));
+  --base-black: 0 0 0;
+  --col-black-100: rgb(var(--base-black));
+  --col-sage-light-100: rgb(171 193 167);
+  --col-grey-light-100: rgb(200 200 200);
+  --col-grey-dark-100: rgb(45 45 45);
+  --col-bg-primary: var(--col-heritage-100);
+  --col-bg-primary-75: var(--col-heritage-75);
+  --col-bg-secondary: var(--col-heritage-dark-100);
+  --col-text-light: var(--col-white-100);
+  --col-link-default: #003f8b;
+  --col-link-hover: #47c8f0;
+  --ff-normal: 'Source Sans 3', system-ui, -apple-system, sans-serif;
 }
