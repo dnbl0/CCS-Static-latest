@@ -755,15 +755,15 @@
   ];
 
   const LIC = {
-    'Public Domain': { label: 'Public Domain', icon: 'cc', icons: ['/images/cc/pd.svg'], url: 'https://creativecommons.org/publicdomain/mark/1.0/', group: 'open', download: true, terms: 'Copyright in this material has expired. The work is in the public domain and can be used for any purpose. Please acknowledge the creator and the University of Melbourne.' },
-    'CC0': { label: 'CC0', icon: 'cc', icons: ['/images/cc/zero.svg'], url: 'https://creativecommons.org/publicdomain/zero/1.0/', group: 'open', download: true, terms: 'Released under CC0: the creator has waived their rights and the work can be used for any purpose.' },
-    'CC BY': { label: 'CC BY', icon: 'cc', icons: ['/images/cc/cc.svg', '/images/cc/by.svg'], url: 'https://creativecommons.org/licenses/by/4.0/', group: 'open', download: true, terms: 'Licensed under Creative Commons Attribution (CC BY). You may reuse this image with attribution to the creator and the University of Melbourne.' },
-    'CC BY-SA': { label: 'CC BY-SA', icon: 'cc', icons: ['/images/cc/cc.svg', '/images/cc/by.svg', '/images/cc/sa.svg'], url: 'https://creativecommons.org/licenses/by-sa/4.0/', group: 'open', download: true, terms: 'Licensed under Creative Commons Attribution-ShareAlike (CC BY-SA). Reuse with attribution; adaptations must be shared under the same licence.' },
-    'CC BY-NC': { label: 'CC BY-NC', icon: 'cc', icons: ['/images/cc/cc.svg', '/images/cc/by.svg', '/images/cc/nc.svg'], url: 'https://creativecommons.org/licenses/by-nc/4.0/', group: 'restricted', download: true, terms: 'Licensed under Creative Commons Attribution-NonCommercial (CC BY-NC). Reuse with attribution for non-commercial purposes only.' },
-    'CC BY-ND': { label: 'CC BY-ND', icon: 'cc', icons: ['/images/cc/cc.svg', '/images/cc/by.svg', '/images/cc/nd.svg'], url: 'https://creativecommons.org/licenses/by-nd/4.0/', group: 'restricted', download: true, terms: 'Licensed under Creative Commons Attribution-NoDerivatives (CC BY-ND). Reuse with attribution; no adaptations.' },
-    'CC BY-NC-SA': { label: 'CC BY-NC-SA', icon: 'cc', icons: ['/images/cc/cc.svg', '/images/cc/by.svg', '/images/cc/nc.svg', '/images/cc/sa.svg'], url: 'https://creativecommons.org/licenses/by-nc-sa/4.0/', group: 'restricted', download: true, terms: 'Licensed under Creative Commons Attribution-NonCommercial-ShareAlike (CC BY-NC-SA).' },
-    'CC BY-NC-ND': { label: 'CC BY-NC-ND', icon: 'cc', icons: ['/images/cc/cc.svg', '/images/cc/by.svg', '/images/cc/nc.svg', '/images/cc/nd.svg'], url: 'https://creativecommons.org/licenses/by-nc-nd/4.0/', group: 'restricted', download: true, terms: 'Licensed under Creative Commons Attribution-NonCommercial-NoDerivatives (CC BY-NC-ND).' },
-    'Rights Reserved': { label: 'In copyright', icon: 'cc', icons: ['/images/cc/in-copyright.svg'], url: '/help/index.html?topic=copyright', group: 'permission', download: false, terms: 'This material is protected by copyright. Contact the Collection to request permission before reproducing it in publications, online or for commercial use.' }
+    'Public Domain': { label: 'Public Domain', icon: 'cc', icons: ['/images/cc/pd.svg'], url: 'https://creativecommons.org/publicdomain/mark/1.0/', group: 'open', download: true, terms: 'The period of copyright protection has now expired under Australian Copyright Law, or copyright protection does not apply to this type of item, or the object was created before Australian Copyright Law was enacted. Please acknowledge the creator/s (if known) and the University of Melbourne.' },
+    'CC0': { label: 'CC0', icon: 'cc', icons: ['/images/cc/zero.svg'], url: 'https://creativecommons.org/publicdomain/zero/1.0/', group: 'open', download: true, terms: 'The creator/s associated with this work has dedicated it to the public domain by waiving all their rights to the work worldwide under copyright law, including all related and neighbouring rights, to the extent allowed by law. You can copy, modify, distribute and perform the work, even for commercial purposes, without asking permission.' },
+    'CC BY': { label: 'CC BY', icon: 'cc', icons: ['/images/cc/cc.svg', '/images/cc/by.svg'], url: 'https://creativecommons.org/licenses/by/4.0/', group: 'open', download: true, terms: 'This material is licensed under a Creative Commons Attribution 4.0 licence. The Attribution licence allows others to copy, distribute and remix the material in any medium or format, even commercially, as long as the creator/s and University of Melbourne are attributed and any changes are indicated.' },
+    'CC BY-SA': { label: 'CC BY-SA', icon: 'cc', icons: ['/images/cc/cc.svg', '/images/cc/by.svg', '/images/cc/sa.svg'], url: 'https://creativecommons.org/licenses/by-sa/4.0/', group: 'open', download: true, terms: 'This material is licensed under a Creative Commons Attribution, Share Alike 4.0 licence. Others may copy, distribute and remix the material in any medium or format, even commercially, as long as the creator/s and University of Melbourne are attributed. Where a user makes a derivative of the material, the derivative must be released under the same type of licence.' },
+    'CC BY-NC': { label: 'CC BY-NC', icon: 'cc', icons: ['/images/cc/cc.svg', '/images/cc/by.svg', '/images/cc/nc.svg'], url: 'https://creativecommons.org/licenses/by-nc/4.0/', group: 'restricted', download: true, terms: 'This material is licensed under a Creative Commons Non-Commercial Attribution 4.0 licence. The Attribution-NonCommercial licence does not permit commercial uses. You are free to copy, distribute and remix the material in any medium or format for non-commercial purposes only, as long as the creator/s and University of Melbourne are attributed and any changes are indicated.' },
+    'CC BY-ND': { label: 'CC BY-ND', icon: 'cc', icons: ['/images/cc/cc.svg', '/images/cc/by.svg', '/images/cc/nd.svg'], url: 'https://creativecommons.org/licenses/by-nd/4.0/', group: 'restricted', download: true, terms: 'This material is licensed under a Creative Commons Attribution No Derivatives 4.0 licence. The Attribution-NoDerivatives licence allows others to copy and distribute the material in any medium or format, even commercially, as long as the material is not adapted and the creator/s and University of Melbourne are attributed, and any changes are indicated.' },
+    'CC BY-NC-SA': { label: 'CC BY-NC-SA', icon: 'cc', icons: ['/images/cc/cc.svg', '/images/cc/by.svg', '/images/cc/nc.svg', '/images/cc/sa.svg'], url: 'https://creativecommons.org/licenses/by-nc-sa/4.0/', group: 'restricted', download: true, terms: 'This material is licensed under a Creative Commons Attribution Non-Commercial, Share Alike 4.0 licence. Others may copy, distribute and remix the material in any medium or format for non-commercial purposes only, as long as the creator/s and University of Melbourne are attributed. Where a user makes a derivative of the material, the derivative must be released under the same type of licence and changes indicated.' },
+    'CC BY-NC-ND': { label: 'CC BY-NC-ND', icon: 'cc', icons: ['/images/cc/cc.svg', '/images/cc/by.svg', '/images/cc/nc.svg', '/images/cc/nd.svg'], url: 'https://creativecommons.org/licenses/by-nc-nd/4.0/', group: 'restricted', download: true, terms: 'This material is licensed under a Creative Commons Attribution Non-Commercial, No Derivatives 4.0 licence. Others can copy and distribute the material in any medium or format for non-commercial purposes only, as long as the material is not adapted and the creator/s and the University of Melbourne are attributed.' },
+    'Rights Reserved': { label: 'In copyright', icon: 'cc', icons: ['/images/cc/in-copyright.svg'], url: '/help/index.html?topic=copyright', group: 'permission', download: false, terms: 'WARNING This material is All Rights Reserved. © {holder}{date}. Please contact {unit} if further access is required.' }
   };
 
   const ADVISORY = {
@@ -771,11 +771,13 @@
     language: { type: 'Language', title: 'Advisory: language', text: 'Some collection items include terms and views that are not appropriate today. They reflect the period in which they were created and are not the views of the University of Melbourne.' }
   };
   const CLASSIFICATION = {
-    G: { name: 'General (G)', bg: '#00a651', fg: '#fff', text: 'This film or computer game is classified General (G) and is suitable for everyone. It can have content that may scare very young children.' },
-    PG: { name: 'Parental Guidance (PG)', bg: '#fcd116', fg: '#000', text: 'This film or computer game is classified Parental Guidance (PG). It is not recommended for viewing by children under the age of 15 without guidance of a parent or guardian.' },
-    M: { name: 'Mature (M)', bg: '#00aeef', fg: '#fff', text: 'This film or computer game is classified Mature (M) and not recommended for children under the age of 15. It can have content such as violence and themes that requires a mature outlook.' },
-    'MA15+': { name: 'Mature Accompanied (MA 15+)', bg: '#e2231a', fg: '#fff', text: 'This film or computer game is classified Mature Accompanied (MA 15+) and legally restricted to people aged 15 and over. It can contain content such as sex scenes and drug use that may have a strong impact on the viewer.' },
-    CTC: { name: 'Unclassified (CTC)', bg: '#767676', fg: '#fff', text: 'This film or computer game is unclassified. Please check with the Collection on suitability and impact on audiences.' }
+    G: { logo: '/images/classification/classification-g-square.png', name: 'General (G)', bg: '#00a651', fg: '#fff', text: 'This film or computer game is classified General (G) and is suitable for everyone. It can have content that may scare very young children.' },
+    PG: { logo: '/images/classification/classification-pg-square.png', name: 'Parental Guidance (PG)', bg: '#fcd116', fg: '#000', text: 'This film or computer game is classified Parental Guidance (PG). It is not recommended for viewing by children under the age of 15 without guidance of a parent or guardian.' },
+    M: { logo: '/images/classification/classification-m-square.png', name: 'Mature (M)', bg: '#00aeef', fg: '#fff', text: 'This film or computer game is classified Mature (M) and not recommended for children under the age of 15. It can have content such as violence and themes that requires a mature outlook.' },
+    'MA15+': { logo: '/images/classification/classification-ma15-square.png', name: 'Mature Accompanied (MA 15+)', bg: '#e2231a', fg: '#fff', text: 'This film or computer game is classified Mature Accompanied (MA 15+) and legally restricted to people aged 15 and over. It can contain content such as sex scenes and drug use that may have a strong impact on the viewer.' },
+    'R18+': { logo: '/images/classification/classification-r18-square.png', name: 'Restricted (R 18+)', bg: '#000', fg: '#fff', text: 'This film or computer game is classified Restricted (R 18+) and is legally restricted to adults.' },
+    'X18+': { logo: '/images/classification/classification-x18-square.png', name: 'Restricted (X 18+)', bg: '#000', fg: '#fff', text: 'This film is classified Restricted (X 18+) and is legally restricted to adults.' },
+    CTC: { logo: '/images/classification/classification-ctc-square.png', name: 'Unclassified (CTC)', bg: '#767676', fg: '#fff', text: 'This film or computer game is unclassified. Please check with the Collection on suitability and impact on audiences.' }
   };
   const UNIT = {
     [MHM]: 'Medical, Dental and Health Sciences Museums', [DENT]: 'Medical, Dental and Health Sciences Museums',
@@ -895,7 +897,7 @@
     const creatorLines = creatorText ? [L(creatorText, !UNKNOWN.test(it.creator))] : [];
     
     // Film and gaming classification vs Museum Subject Classification
-    const isFilmRating = it.classification && ['G', 'PG', 'M', 'MA15+', 'CTC'].includes(it.classification);
+    const isFilmRating = it.classification && ['G', 'PG', 'M', 'MA15+', 'R18+', 'X18+', 'CTC'].includes(it.classification);
     // Moving-image records with no recorded rating show "Unclassified (CTC)" rather than silently looking unrestricted.
     const isMovingImage = /moving image|video|audiovisual|^film$/i.test(objType || '');
     const filmCls = isFilmRating ? CLASSIFICATION[it.classification] : (it.advisoryClassification ? CLASSIFICATION[it.advisoryClassification] : (isMovingImage ? CLASSIFICATION.CTC : null));
@@ -941,16 +943,19 @@
     // Media metadata sidebar: DAM fields only (CCS Field labels sheet rows 28-31: Licence Type, Advisory,
     // Terms of Use, Producer). A field with no data is omitted entirely, label included.
     const producerVal = it.imageProducer || it.producer;
+    const termsText = it.terms || lic.terms.replace('{holder}', copyrightHolder.replace(/^©\s*/, '')).replace('{date}', date ? ', ' + date : '').replace('{unit}', UNIT[it.collection] || 'the Responsible Collection');
+    // DA Web Access Status (Nexus DAM): open licences = View + Download; other licensed or in-copyright assets that are shown = View only. Records with no digital asset have no status.
+    const webAccess = !hasDA ? null : (lic.download && lic.group === 'open' ? 'View + Download' : 'View only');
     const media = hasDA ? [
       { label: 'Licence type', value: lic.label },
       ...(advisories.length ? [{ label: 'Advisory', value: advisories.map(a => a.text).join('\n\n') }] : []),
-      { label: 'Terms of use', value: it.terms || lic.terms },
+      { label: 'Terms of use', value: termsText },
       ...(producerVal ? [{ label: 'Producer', value: producerVal }] : [])
     ] : [];
 
     return {
       id: it.id, title: it.title, altTitle: it.altTitle || null, type: objType, byline, images, slides, hasDA, fields: f, rights, media,
-      licence: hasDA ? { ...lic, key: it.licence } : null, licenceKey: LIC[it.licence] ? it.licence : 'Rights Reserved', classification: filmCls, advisories, indigenous: !!it.indigenous,
+      licence: hasDA ? { ...lic, key: it.licence } : null, terms: hasDA ? termsText : null, webAccess, licenceKey: LIC[it.licence] ? it.licence : 'Rights Reserved', classification: filmCls, advisories, indigenous: !!it.indigenous,
       subjects: it.subjects || (it.subject ? [it.subject] : []), citation, citations, unit: UNIT[it.collection] || 'Museums and Collections',
       assetId: `CA-${String(it.id).padStart(6, '0')}`, collection: coll, named: it.named, subject: it.subject,
       card: { id: it.id, title: it.title, img: images[0] || null, collection: coll, type: objType, lic: lic.label, licenceKey: LIC[it.licence] ? it.licence : 'Rights Reserved', licIcon: lic.icon, licIcons: lic.icons || [], hasLicIcons: !!(lic.icons && lic.icons.length), indigenous: !!it.indigenous }
@@ -990,7 +995,8 @@
   const items = ACTIVE.map(it => {
     const base = { ...it, objectType: it.objectType || it.type, culture: it.culture || it.culturalAffiliation, img: it.img || (records[it.id].images[0] || null) };
     const kinds = uniqList(records[it.id].slides.map(sl => ({ image: 'Image', audio: 'Audio', video: 'Video' })[sl.kind]).filter(Boolean));
-    return { ...base, types: typesOf(base), classes: classesOf(base), ratings: ratingsOf(base), formats: kinds };
+    const rc = records[it.id].classification;
+    return { ...base, types: typesOf(base), classes: classesOf(base), ratings: ratingsOf(base), formats: kinds, webAccess: records[it.id].webAccess, ratingLogo: rc && rc.logo ? rc.logo : null, ratingName: rc ? rc.name : null };
   });
   function related(id, n = 4) {
     const r = records[id]; if (!r) return [];

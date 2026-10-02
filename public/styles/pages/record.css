@@ -873,3 +873,9 @@ body.page-record .record-summary__text--v3 {
   height: 4px;
   background: #9a9ea8;
 }
+
+body.page-record .record-section__image-classification {
+  flex: none;
+  width: 48px;
+  height: 48px;
+}

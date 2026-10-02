@@ -399,7 +399,8 @@
         <div class="record-section__group record-section__group--v8">
           <sc-if value="{{ hasClass }}">
             <div class="record-section__group record-section__group--v1">
-              <span class="record-section__text record-section__text--v3" style="--dyn-background:{{ clsBg }};--dyn-color:{{ clsFg }}">{{ clsCode }}</span>
+              <sc-if value="{{ clsLogo }}"><img class="record-section__image-classification" src="{{ clsLogo }}" alt="Classification marking: {{ clsName }}" width="48" height="48"></sc-if>
+              <sc-if value="{{ !clsLogo }}"><span class="record-section__text record-section__text--v3" style="--dyn-background:{{ clsBg }};--dyn-color:{{ clsFg }}">{{ clsCode }}</span></sc-if>
               <div class="record-section__group record-section__group--v2"><strong class="record-section__strong">{{ clsName }}</strong><span class="record-section__text record-section__text--v6">{{ clsText }}</span></div>
             </div>
           </sc-if>
@@ -409,6 +410,16 @@
               <span class="record-section__text record-section__text--v7">{{ rt.value }}</span>
             </div>
           </sc-for>
+          <sc-if value="{{ rec.hasDA }}">
+            <div class="record-section__group record-section__group--v3">
+              <span class="record-section__text record-section__text--v5">Web access</span>
+              <span class="record-section__text record-section__text--v7">{{ rec.webAccess }}</span>
+            </div>
+            <div class="record-section__group record-section__group--v3">
+              <span class="record-section__text record-section__text--v5">Terms of use</span>
+              <span class="record-section__text record-section__text--v7">{{ rec.terms }}</span>
+            </div>
+          </sc-if>
           <div class="record-section__group record-section__group--v3">
             <span class="record-section__text record-section__text--v5">Responsible collection</span>
             <a class="record-section__link" href="#">{{ rec.unit }}</a>
@@ -700,7 +711,7 @@ class Component extends DCLogic {
       typeHref: `/search/search-results.html?type=${encodeURIComponent(R.type)}`, collectionHref: `/search/search-results.html?collection=${encodeURIComponent(R.collection)}`,
       hasAdvisory: R.advisories.length > 0, hasSubjects,
       licKey: R.licenceKey,
-      hasClass: !!cls, clsBg: cls ? cls.bg : '', clsFg: cls ? cls.fg : '', clsName: cls ? cls.name : '', clsText: cls ? cls.text : '', clsCode: cls ? (cls.name.match(/\(([^)]+)\)/) ? cls.name.match(/\(([^)]+)\)/)[1].replace(' ', '') : cls.name) : '',
+      hasClass: !!cls, clsBg: cls ? cls.bg : '', clsFg: cls ? cls.fg : '', clsName: cls ? cls.name : '', clsText: cls ? cls.text : '', clsLogo: cls && cls.logo ? cls.logo : '', clsCode: cls ? (cls.name.match(/\(([^)]+)\)/) ? cls.name.match(/\(([^)]+)\)/)[1].replace(' ', '') : cls.name) : '',
       viewerRef: this.viewerRef, yes: true, cur, curAlt, isImage: cur.kind === 'image', isVideo: cur.kind === 'video', isAudio: cur.kind === 'audio',
       curBroken: !!s.broken[cur.src],
       onImgLoad: e => { const im = e.target, k = cur.src; if (k && !s.dims[k]) this.setState(st => ({ dims: { ...st.dims, [k]: { w: im.naturalWidth, h: im.naturalHeight } } })); },
