@@ -9,7 +9,7 @@
 ## Quick Reference
 
 **Files Location**: See `README.md` (Repository layout)  
-**Styles**: `public/components/fig-tokens.css`, `public/components/fig-assets.css`, `public/styles/header.css`, `footer.css`, `collection.css`, plus page-local `<style>` blocks  
+**Styles**: `public/components/fig-tokens.css`, `public/components/fig-assets.css`, `public/styles/home.css` (Navigation + Section components), `advanced-filters.css` (form components), `header.css` (search overlay + colour variables), `collection.css`, plus page-local `<style>` blocks  
 **Bootstrap**: `public/styles/vendor/bootstrap-uom.min.css` (5.3.3, built locally from `src/scss/custom-bootstrap.scss` with `npm run build:css`)
 
 ---
@@ -301,70 +301,36 @@ Mobile (<768px):   1 column, gap 16px
 
 ### Navigation Header
 
-**Height**: 64px (sticky)
+Defined in `public/styles/home.css` as `.ccs-nav--header` (behaviour in `public/nav.js`). The markup is repeated on every page.
 
-**Structure**:
 ```
-┌─────────────────────────────────────┐
-│ [Logo] [Title]    [Search]  [Menu] │
-└─────────────────────────────────────┘
+Desktop: [UoM logo 110px] | top row (UniMelb links, search button)
+                          | Cultural Collections         Search all records  Browse collections v  Help v  Contact
+Mobile:  [logo 80px] | search button                                       [Menu]
+                     | Cultural Collections
 ```
 
-**Specifications**:
-
-| Element | Size | Details |
-|---------|------|---------|
-| Background | Full width | #000f46 (navy) |
-| Height | 64px | Fixed height |
-| Logo | 100px width | Aspect ratio 1:1.4 |
-| Title | 17px | White, #ffffff |
-| Title Weight | 600 | Semibold |
-| Search Form | 360px max-width | See Search Form spec |
-| Nav Links | 16px | White, 600 weight |
-| Link Spacing | 14px | Padding left/right |
-| Link Hover | #001a66 | Navy hover state |
-
-**Responsive**:
-```
-Desktop (1200px+): Full horizontal layout
-Tablet (768px):    Logo + Title, search stacked
-Mobile (<768px):   Hamburger menu, search below
-```
+| Element | Spec |
+|---|---|
+| Height | 110px desktop (44px top row + 65px main row), 88px mobile; not sticky |
+| Colours | Navy `#000f46`; top row `#000b34` with sage `#abc1a7` links |
+| Top row links | 14px, 400, uppercase, 1.12px tracking (UniMelb style); hover `#eaefe9` + underline |
+| Primary links | 16px, 400, white; hover `#a3e4f7` background with navy text; pressed `#d1f1fb`; focus is a 2px inset light-blue outline |
+| Dropdowns | Browse collections (the five collections) and Help (FAQ, Search tips, Copyright, Access, Privacy, Indigenous data). Panel: `#000b34`, 2px `#46c8f0` top rule, Fraunces 30px heading link, two-column list of 16px/600 links with arrow icons. `aria-expanded` + `aria-controls`; Esc, outside click and Tab-out close it |
+| Mobile (<=1023px) | "Menu" button (icon over label); drawer opens to the right of the logo with a search box, the primary links (Browse collections and Help expand in place) and the UniMelb links |
+| Current page | `aria-current` on the matching link; shown as a light-blue underline (desktop) or left bar (mobile) |
 
 ### Footer
 
-**Structure**: 4-column footer, full width
+Defined in `public/styles/home.css` as `.ccs-nav--footer` (Figma footer): Acknowledgement of Country band (`#333f6a`), main band (links, contact details, social links, UoM logo) on `#000f46`, and a legal strip on `#000b34`. Three columns collapse to one at 1023px; links are at least 44px tall on mobile.
 
-```
-┌──────────────────────────────────────────┐
-│ Browse | Help & Info | About | Connect  │
-│ Link   | Link        | Link  | Link     │
-│ Link   | Link        | Link  | Link     │
-├──────────────────────────────────────────┤
-│ Copyright © 2026                        │
-└──────────────────────────────────────────┘
-```
+### Section components (homepage)
 
-**Specifications**:
+`.ccs-section--hero | intro | cards | help | faq` in `home.css`. Shared pieces: `.ccs-link` (inline link with arrow) and `.ccs-acc` (accordion built on `<details>`; also used by the Help FAQ topic page). Padding is 64px 128px desktop, 48px 24px mobile (hero and help/FAQ use their own rules).
 
-| Property | Value | Notes |
-|----------|-------|-------|
-| Background | #000f46 | Navy primary |
-| Text Color | #ffffff | White |
-| Padding | 80px 32px 32px | Top spacing |
-| Column Gap | 32px | Between sections |
-| Link Font Size | 14px | Standard size |
-| Link Weight | 400 | Regular |
-| Link Hover | #dde5d6 (light sage) | Accent on hover |
-| Copyright | 12px | Bottom text |
-| Border Top | 1px solid rgba(255,255,255,.1) | Subtle divider |
+### Form components (Advanced Filters)
 
-**Responsive**:
-```
-Desktop (1200px+): 4 columns
-Tablet (768px):    2 columns
-Mobile (<768px):   1 column (stacked)
-```
+`public/styles/advanced-filters.css`: `.ccs-banner` (page banner: one h1 + optional description, 64/128px desktop, 48/24px mobile), `.ccs-combo` (single and multi-select with closed/open/hover/selected/completed/pressed/disabled states using the `input-fill-*` tokens), `.ccs-input`, `.ccs-date` + `.ccs-cal` (date field and calendar), `.ccs-btn`, `.ccs-delete`, `.ccs-instructions` and `.ccs-errors`. Behaviour is in `public/search/advanced-search-form.js`.
 
 ### Media Viewer Component
 
@@ -817,15 +783,15 @@ public/                              # Deployed web root
 │   └── <slug>/index.html            # 5 collection landing pages
 ├── help/{index.html, indigenous-data.html}
 ├── collection-data.js               # Record data -> window.CCS
+├── nav.js                           # header dropdowns + mobile drawer
 ├── blacklight-adapter.js, support.js, image-slot.js
 ├── components/                      # fig-tokens.css, fig-assets.css (+ exported .jsx/.d.ts)
-├── styles/                          # header.css, footer.css, collection.css, vendor/bootstrap-uom.min.css
+├── styles/                          # home.css, advanced-filters.css, header.css, collection.css, vendor/bootstrap-uom.min.css
 ├── assets/                          # images/collections, data (audio/video, metadata), documents
 ├── images/                          # optimised web images and icons
 └── .htaccess                        # Apache redirects/rewrites
 
 src/scss/custom-bootstrap.scss       # Bootstrap theme source
-src/js/utils/                        # helpers.js, image-handler.js (not loaded by pages)
 tests/                               # Node test scripts (npm test)
 config/redirects.json                # documentation-only
 vercel.json                          # clean URLs + legacy redirects
@@ -837,8 +803,9 @@ vercel.json                          # clean URLs + legacy redirects
 |------|---------|
 | `public/components/fig-tokens.css` | Gen 3 design tokens (colour, type, spacing) and global focus styles |
 | `public/components/fig-assets.css` | Asset/component styles from the design export |
-| `public/styles/header.css` | Site header and search overlay |
-| `public/styles/footer.css` | UoM footer |
+| `public/styles/home.css` | Navigation (header/footer) and Section components, accordion, links |
+| `public/styles/advanced-filters.css` | Advanced Filters form components |
+| `public/styles/header.css` | Search overlay, `.sr-only` and shared colour variables |
 | `public/styles/collection.css` | Collection landing pages |
 | `public/styles/vendor/bootstrap-uom.min.css` | Bootstrap 5.3.3, compiled locally |
 
@@ -851,7 +818,7 @@ vercel.json                          # clean URLs + legacy redirects
 <link rel="stylesheet" href="components/fig-tokens.css">
 <link rel="stylesheet" href="components/fig-assets.css">
 <link rel="stylesheet" href="styles/header.css">
-<link rel="stylesheet" href="styles/footer.css">
+<link rel="stylesheet" href="styles/home.css">
 ```
 
 Paths are relative to the page (`../` prefixes on pages in subfolders).

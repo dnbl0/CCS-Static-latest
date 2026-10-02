@@ -23,7 +23,7 @@ This revision was produced by fetching the live Jira issues directly (see audit 
 - **Legacy files**: the old root-level `*.dc.html` files and root `index.html` / `collection-data.js` no longer exist. The legacy `.dc.html` filenames survive only as 301-redirect sources in `vercel.json` and `public/.htaccess`.
 - **`config/redirects.json`**: documentation-only (nothing reads it at runtime). `vercel.json` and `public/.htaccess` are authoritative; the JSON file does not list the `/search` redirects.
 - **Shared data source**: `public/collection-data.js` defines `window.CCS` (`records`, `items`, `ids`, `related()`); `search/search-results.html` and `collections/record.html` both read it. 735 records are listed. See README.md.
-- **Live stylesheets**: `public/components/fig-tokens.css`, `fig-assets.css`, `public/styles/header.css`, `footer.css`, `collection.css`, and the locally built `public/styles/vendor/bootstrap-uom.min.css`. The dead duplicates `variables.css` / `components.css` have been deleted.
+- **Live stylesheets**: `public/components/fig-tokens.css`, `fig-assets.css`, `public/styles/home.css`, `advanced-filters.css`, `header.css`, `collection.css`, and the locally built `public/styles/vendor/bootstrap-uom.min.css`. The dead duplicates `variables.css` / `components.css` have been deleted.
 
 ---
 
