@@ -50,6 +50,8 @@ button,input{font-family:inherit}
   .im-sidebar.open{transform:none}
   .item-media:fullscreen{height:100vh}
 }
-@media(prefers-reduced-motion:reduce){.im-sidebar,.im-sidebar.open,.im-btn{transition:none}}
-@media print{.item-media{display:none}}
+@media(prefers-reduced-motion:reduce){.im-sidebar,.im-sidebar.open,.im-btn{transition:none}
+}
+@media print{.item-media{display:none}
+}
 [aria-label="University links"] a:hover{color:var(--sage-100);text-decoration:underline}

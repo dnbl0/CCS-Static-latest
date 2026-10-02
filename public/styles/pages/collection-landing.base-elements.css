@@ -3,14 +3,6 @@
 body{margin:0;background:var(--white-100);color:var(--col-text-primary);font-family:'Source Sans 3',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-decoration:underline}
 *{box-sizing:border-box}
-.breadcrumb-link{color:#fff;text-decoration:none}
-.breadcrumb-link:hover,.breadcrumb-link:focus-visible{text-decoration:underline}
-@media (max-width:640px){
-  .hero-inner{padding:16px 20px 28px!important}
-  .hero-cta a{flex:1 1 100%!important;justify-content:center!important}
-  .collections-grid{grid-template-columns:1fr!important}
-  .footer-cols{flex-direction:column!important}
-}
 [aria-label="University links"] a:hover{color:var(--sage-100);text-decoration:underline}
 
 /* Collection landing — styled like the item record page */
@@ -28,4 +20,5 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
 .lp-panel__item{display:flex;flex-direction:column;gap:3px;padding-top:12px;border-top:1px solid #f1efea}.lp-panel__item:first-child{padding-top:0;border-top:0}
 .lp-panel__item .k{font-size:13px;font-weight:700;color:var(--col-text-primary)}
 .lp-panel__item .v{font-size:14px;line-height:1.5;color:#3b4050;text-wrap:pretty;overflow-wrap:anywhere}.lp-panel__item a.v{text-decoration:underline;color:#0b2a6b}
-@media(max-width:640px){.lp-row{grid-template-columns:1fr}}
+@media(max-width:640px){.lp-row{grid-template-columns:1fr}
+}
