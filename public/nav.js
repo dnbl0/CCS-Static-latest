@@ -1,0 +1,52 @@
+// Header navigation behaviour (desktop dropdown panels + mobile drawer), modelled on the UniMelb header.
+// Everything is event-delegated and elements are looked up live, because the template layer used by some
+// pages can re-render the header after this script has run.
+(function () {
+  var NAV = '.ccs-nav--header';
+
+  function closePanels(except) {
+    document.querySelectorAll(NAV + ' .ccs-nav__trigger[aria-expanded="true"]').forEach(function (t) {
+      if (t === except) return;
+      t.setAttribute('aria-expanded', 'false');
+    });
+  }
+
+  function setMenu(open) {
+    var btn = document.querySelector(NAV + ' .ccs-nav__menu');
+    var nav = document.getElementById('ccs-primary-nav');
+    if (!btn || !nav) return;
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    var label = btn.querySelector('span');
+    if (label) label.textContent = open ? 'Close' : 'Menu';
+    nav.classList.toggle('is-open', open);
+    if (!open) closePanels();
+  }
+
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest && e.target.closest(NAV + ' .ccs-nav__trigger');
+    if (t) {
+      var open = t.getAttribute('aria-expanded') === 'true';
+      closePanels(t);
+      t.setAttribute('aria-expanded', open ? 'false' : 'true');
+      return;
+    }
+    var m = e.target.closest && e.target.closest(NAV + ' .ccs-nav__menu');
+    if (m) { setMenu(m.getAttribute('aria-expanded') !== 'true'); return; }
+    // clicking anywhere else closes an open dropdown; clicking outside the header also closes the mobile drawer
+    if (!(e.target.closest && e.target.closest('.ccs-nav__panel'))) closePanels();
+    if (!(e.target.closest && e.target.closest(NAV))) setMenu(false);
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    var open = document.querySelector(NAV + ' .ccs-nav__trigger[aria-expanded="true"]');
+    var menu = document.querySelector(NAV + ' .ccs-nav__menu[aria-expanded="true"]');
+    if (open) { closePanels(); open.focus(); }
+    else if (menu) { setMenu(false); menu.focus(); }
+  });
+
+  // Keyboard users tabbing out of the header close the dropdown
+  document.addEventListener('focusin', function (e) {
+    if (!(e.target.closest && e.target.closest(NAV))) closePanels();
+  });
+})();

@@ -139,17 +139,64 @@ a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-de
     </div>
     <div class="ccs-nav__bottom">
       <a class="ccs-nav__title" href="/index.html">Cultural Collections</a>
-      <button type="button" class="ccs-nav__menu uom-menu-toggle" aria-expanded="false" aria-controls="uom-primary-nav">Menu</button>
-      <nav id="uom-primary-nav" class="ccs-nav__primary uom-primary-nav" aria-label="Primary navigation">
+      <nav id="ccs-primary-nav" class="ccs-nav__primary" aria-label="Primary navigation">
+        <div class="ccs-nav__drawer-search">
+          <form role="search" action="/search/search-results.html" method="get">
+            <label for="ccs-drawer-q" class="sr-only">Search Cultural Collections</label>
+            <input id="ccs-drawer-q" name="q" type="text" autocomplete="off" placeholder="Search">
+            <button type="submit" aria-label="Search"><img src="/images/home/icon-search-onaccent.svg" alt=""></button>
+          </form>
+        </div>
         <ul>
           <li><a href="/search/search-results.html">Search all records</a></li>
-          <li><a href="/collections/index.html" aria-current="page">Browse collections<img src="/images/home/icon-expand.svg" alt=""></a></li>
-          <li><a href="/help/index.html">Help<img src="/images/home/icon-expand.svg" alt=""></a></li>
+          <li>
+            <button type="button" class="ccs-nav__trigger" aria-expanded="false" aria-controls="ccs-dd-collections" aria-current="true">Browse collections<img src="/images/home/icon-expand.svg" alt=""></button>
+            <div id="ccs-dd-collections" class="ccs-nav__panel">
+              <a class="ccs-nav__panel-title" href="/collections/index.html"><img src="/images/home/icon-arrow-footer.svg" alt="">Browse collections</a>
+              <ul class="ccs-nav__panel-list">
+                <li><a href="/collections/medical-history-museum/"><img src="/images/home/icon-arrow-footer.svg" alt="">Medical History Museum</a></li>
+                <li><a href="/collections/henry-forman-atkinson-dental-museum/"><img src="/images/home/icon-arrow-footer.svg" alt="">Henry Forman Atkinson Dental Museum</a></li>
+                <li><a href="/collections/harry-brookes-allen-museum/" aria-current="page"><img src="/images/home/icon-arrow-footer.svg" alt="">Harry Brookes Allen Museum</a></li>
+                <li><a href="/collections/university-art-collection/"><img src="/images/home/icon-arrow-footer.svg" alt="">University Art Collection</a></li>
+                <li><a href="/collections/grainger-museum/"><img src="/images/home/icon-arrow-footer.svg" alt="">Grainger Museum Collection</a></li>
+              </ul>
+            </div>
+          </li>
+          <li>
+            <button type="button" class="ccs-nav__trigger" aria-expanded="false" aria-controls="ccs-dd-help">Help<img src="/images/home/icon-expand.svg" alt=""></button>
+            <div id="ccs-dd-help" class="ccs-nav__panel">
+              <a class="ccs-nav__panel-title" href="/help/index.html"><img src="/images/home/icon-arrow-footer.svg" alt="">Help and support</a>
+              <ul class="ccs-nav__panel-list">
+                <li><a href="/help/index.html#faq"><img src="/images/home/icon-arrow-footer.svg" alt="">Frequently Asked Questions</a></li>
+                <li><a href="/help/index.html#search-tips"><img src="/images/home/icon-arrow-footer.svg" alt="">Search tips</a></li>
+                <li><a href="/help/index.html#copyright"><img src="/images/home/icon-arrow-footer.svg" alt="">Copyright and terms of use</a></li>
+                <li><a href="/help/index.html#access"><img src="/images/home/icon-arrow-footer.svg" alt="">Access and information</a></li>
+                <li><a href="/help/index.html#privacy"><img src="/images/home/icon-arrow-footer.svg" alt="">Privacy</a></li>
+                <li><a href="/help/indigenous-data.html"><img src="/images/home/icon-arrow-footer.svg" alt="">Indigenous cultural data and access</a></li>
+              </ul>
+            </div>
+          </li>
           <li><a href="/contact.html">Contact</a></li>
+        </ul>
+        <ul class="ccs-nav__drawer-top" aria-label="University of Melbourne">
+        <li><a href="https://study.unimelb.edu.au">Study</a></li>
+        <li><a href="https://students.unimelb.edu.au">Students</a></li>
+        <li><a href="https://research.unimelb.edu.au">Research</a></li>
+        <li><a href="https://library.unimelb.edu.au">Library</a></li>
+        <li><a href="https://staff.unimelb.edu.au">Staff</a></li>
+        <li><a href="https://www.unimelb.edu.au/alumni">Alumni</a></li>
+        <li><a href="https://giving.unimelb.edu.au">Giving</a></li>
+        <li><a href="https://about.unimelb.edu.au">About</a></li>
+        <li><a href="https://www.unimelb.edu.au/contact">Contact</a></li>
         </ul>
       </nav>
     </div>
   </div>
+  <button type="button" class="ccs-nav__menu" aria-expanded="false" aria-controls="ccs-primary-nav">
+    <svg class="ccs-nav__menu-open" viewBox="0 0 24 24" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    <svg class="ccs-nav__menu-close" viewBox="0 0 24 24" aria-hidden="true"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
+    <span>Menu</span>
+  </button>
 </header>
 
 <!-- Full-screen search overlay -->
@@ -623,5 +670,6 @@ class Component extends DCLogic {
 
 
 
+  <script src="/nav.js"></script>
 </body>
 </html>

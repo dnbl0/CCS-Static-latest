@@ -41,41 +41,87 @@
 .ccs-nav__brand img { width: 110px; height: 110px; }
 .ccs-nav__main { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: flex-end; height: 110px; }
 .ccs-nav__top { display: flex; justify-content: flex-end; background: var(--brand-1200, #000b34); border-bottom: 1px solid var(--brand-900, #212e5d); }
-.ccs-nav__top ul { display: flex; gap: 16px; margin: 0; padding: 0 12px 0 0; list-style: none; }
-.ccs-nav__top a { display: flex; align-items: center; min-height: 44px; padding: 12px 4px; font-size: 14px; font-weight: 400; line-height: 140%; letter-spacing: 1.12px; text-transform: uppercase; color: var(--sage-400, #abc1a7); text-decoration: none; }
-.ccs-nav__top a:hover { color: #eaefe9; text-decoration: underline; }
+.ccs-nav__top ul, .ccs-nav__drawer-top { display: flex; gap: 16px; margin: 0; padding: 0 12px 0 0; list-style: none; }
+.ccs-nav__top a, .ccs-nav__drawer-top a { display: flex; align-items: center; min-height: 44px; padding: 12px 4px; font-size: 14px; font-weight: 400; line-height: 140%; letter-spacing: 1.12px; text-transform: uppercase; color: var(--sage-400, #abc1a7); text-decoration: none; }
+.ccs-nav__top a:hover, .ccs-nav__drawer-top a:hover { color: #eaefe9; text-decoration: underline; }
 .ccs-nav__search { display: flex; align-items: center; justify-content: center; width: 48px; height: 44px; padding: 0; border: 0; background: var(--sage-400, #abc1a7); cursor: pointer; }
 .ccs-nav__search:hover { background: var(--sage-300, #c3d2c0); }
+.ccs-nav__search:active { background: var(--sage-200, #d9e3d8); }
 .ccs-nav__search img { width: 24px; height: 24px; padding: 3px; }
 .ccs-nav__bottom { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 65px; padding: 8px; }
 .ccs-nav__title { display: flex; align-items: center; min-height: 44px; padding: 0 24px 0 4px; font-size: 20px; font-weight: 600; line-height: 1.2; color: #fff; text-decoration: none; white-space: nowrap; }
 .ccs-nav__title:hover { color: var(--blue-400, #47c8f0); text-decoration: underline; }
+
+/* Primary navigation (links + dropdown triggers share the UniMelb interactive states) */
 .ccs-nav__primary { display: flex; }
-.ccs-nav__primary ul { display: flex; margin: 0; padding: 0; list-style: none; }
-.ccs-nav__primary a { display: flex; align-items: center; gap: 4px; min-height: 49px; padding: 8px 12px; font-size: 16px; font-weight: 400; line-height: 1.5; color: #fff; text-decoration: none; white-space: nowrap; }
-.ccs-nav__primary a:hover { background: #a3e4f7; color: var(--brand-1100, #000f46); }
-.ccs-nav__primary a:active { background: #d1f1fb; color: var(--brand-1100, #000f46); }
-.ccs-nav__primary a:hover img, .ccs-nav__primary a:active img { filter: invert(1); }
-.ccs-nav__primary a[aria-current="page"] { box-shadow: inset 0 -3px 0 var(--blue-400, #47c8f0); }
-.ccs-nav__primary a:focus-visible, .ccs-nav__top a:focus-visible, .ccs-nav__search:focus-visible, .ccs-nav__title:focus-visible, .ccs-nav__brand a:focus-visible { outline: 2px solid var(--blue-400, #47c8f0); outline-offset: -2px; }
-.ccs-nav__search:active { background: var(--sage-200, #d9e3d8); }
-.ccs-nav__primary a img { width: 20px; height: 20px; }
-.ccs-nav__menu { display: none; }
+.ccs-nav__primary > ul { display: flex; margin: 0; padding: 0; list-style: none; }
+.ccs-nav__primary > ul > li { position: static; }
+.ccs-nav__primary > ul > li > a, .ccs-nav__trigger { display: flex; align-items: center; gap: 4px; min-height: 49px; padding: 8px 12px; border: 0; background: none; font: inherit; font-size: 16px; font-weight: 400; line-height: 1.5; color: #fff; text-decoration: none; white-space: nowrap; cursor: pointer; }
+.ccs-nav__primary > ul > li > a:hover, .ccs-nav__trigger:hover, .ccs-nav__trigger[aria-expanded="true"] { background: #a3e4f7; color: var(--brand-1100, #000f46); }
+.ccs-nav__primary > ul > li > a:active, .ccs-nav__trigger:active { background: #d1f1fb; color: var(--brand-1100, #000f46); }
+.ccs-nav__primary [aria-current] { box-shadow: inset 0 -3px 0 var(--blue-400, #47c8f0); }
+.ccs-nav__trigger img { width: 10px; height: 6.17px; margin: 0 5px; transition: transform 0.15s ease; }
+.ccs-nav__trigger:hover img, .ccs-nav__trigger[aria-expanded="true"] img, .ccs-nav__trigger:active img { filter: invert(1); }
+.ccs-nav__trigger[aria-expanded="true"] img { transform: rotate(180deg); }
+.ccs-nav a:focus-visible, .ccs-nav button:focus-visible { outline: 2px solid var(--blue-400, #47c8f0); outline-offset: -2px; }
+.ccs-nav__primary > ul > li > a:focus-visible, .ccs-nav__trigger:focus-visible { background: transparent; color: #fff; }
+
+/* Dropdown panel (modelled on the UniMelb mega-menu panel: dark, 2px light-blue top rule, shadow) */
+.ccs-nav__panel { display: none; }
+.ccs-nav__trigger[aria-expanded="true"] + .ccs-nav__panel { display: block; }
+.ccs-nav__panel { position: absolute; top: 100%; right: 0; width: min(642px, 100%); padding: 32px; background: var(--brand-1200, #000b34); border-top: 2px solid #46c8f0; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35); color: #fff; z-index: 1001; }
+.ccs-nav__panel-title { display: inline-flex; align-items: center; gap: 4px; min-height: 44px; font-family: "Fraunces", serif; font-size: 30px; font-weight: 400; line-height: 1.2; letter-spacing: -0.3px; color: #fff; text-decoration: none; font-variation-settings: "SOFT" 50, "WONK" 0, "opsz" 9; }
+.ccs-nav__panel-title:hover, .ccs-nav__panel-list a:hover { text-decoration: underline; color: var(--blue-400, #47c8f0); }
+.ccs-nav__panel-title img, .ccs-nav__panel-list img { width: 24px; height: 24px; flex: none; }
+.ccs-nav__panel-list { display: grid; grid-template-columns: 1fr 1fr; gap: 0 32px; margin: 16px 0 0; padding: 16px 0 0; border-top: 1px solid #404b74; list-style: none; }
+.ccs-nav__panel-list a { display: flex; align-items: flex-start; gap: 4px; min-height: 44px; padding: 10px 0; font-size: 16px; font-weight: 600; line-height: 1.33; color: #fff; text-decoration: none; }
+.ccs-nav__panel-list a[aria-current] { color: var(--blue-400, #47c8f0); }
+
+/* Mobile-only pieces (Menu button, drawer search, drawer top links) are hidden on desktop */
+.ccs-nav__menu, .ccs-nav__drawer-search, .ccs-nav__primary > ul.ccs-nav__drawer-top { display: none; }
 
 @media (max-width: 1023px) {
-  .ccs-nav--header { flex-wrap: wrap; }
   .ccs-nav__brand { height: 88px; width: 80px; }
   .ccs-nav__brand a, .ccs-nav__brand img { width: 80px; height: 80px; margin: 4px 0 0; }
   .ccs-nav__main { height: 88px; }
   .ccs-nav__top ul { display: none; }
   .ccs-nav__bottom { height: 44px; padding: 0 12px; }
-  .ccs-nav__title { font-size: 20px; padding-right: 8px; overflow: hidden; }
-  .ccs-nav__menu { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; min-width: 44px; padding: 0 8px; border: 0; background: none; color: #fff; font: inherit; font-size: 16px; font-weight: 600; cursor: pointer; }
-  .ccs-nav__primary { display: none; position: absolute; left: 0; right: 0; top: 100%; background: var(--brand-1200, #000b34); border-top: 1px solid var(--brand-900, #212e5d); }
+  .ccs-nav__title { padding-right: 8px; overflow: hidden; }
+
+  /* Menu button: icon over label, like the UniMelb mobile header */
+  .ccs-nav__menu { display: flex; flex: none; flex-direction: column; align-items: center; justify-content: center; gap: 4px; width: 74px; height: 88px; padding: 0; border: 0; background: none; color: #fff; font: inherit; font-size: 14px; line-height: 1; cursor: pointer; }
+  .ccs-nav__menu svg { width: 32px; height: 32px; fill: none; stroke: currentColor; stroke-width: 2; }
+  .ccs-nav__menu .ccs-nav__menu-close { display: none; }
+  .ccs-nav__menu[aria-expanded="true"] { color: var(--blue-400, #47c8f0); }
+  .ccs-nav__menu[aria-expanded="true"] .ccs-nav__menu-open { display: none; }
+  .ccs-nav__menu[aria-expanded="true"] .ccs-nav__menu-close { display: block; }
+  .ccs-nav__menu:hover { color: var(--blue-400, #47c8f0); }
+  .ccs-nav__menu:hover span { text-decoration: underline; }
+
+  /* Drawer */
+  .ccs-nav__primary { display: none; position: absolute; top: 100%; left: 80px; right: 0; min-height: calc(100vh - 88px); overflow-y: auto; background: var(--brand-1200, #000b34); box-shadow: -8px 8px 24px rgba(0, 0, 0, 0.35); z-index: 1002; }
   .ccs-nav__primary.is-open { display: block; }
-  .ccs-nav__primary ul { flex-direction: column; }
-  .ccs-nav__primary a { min-height: 48px; padding: 8px 24px; }
+  .ccs-nav__drawer-search { display: block; padding: 16px; }
+  .ccs-nav__drawer-search form { display: flex; height: 48px; margin: 0; }
+  .ccs-nav__drawer-search input { flex: 1; min-width: 0; padding: 12px; border: 0; background: #fff; color: var(--neutral-1000, #222); font: inherit; font-size: 18px; }
+  .ccs-nav__drawer-search button { flex: none; width: 48px; border: 0; background: var(--sage-400, #abc1a7); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .ccs-nav__drawer-search button img { width: 24px; height: 24px; }
+  .ccs-nav__primary > ul { flex-direction: column; border-top: 1px solid #404b74; }
+  .ccs-nav__primary > ul > li { border-bottom: 1px solid #404b74; }
+  .ccs-nav__primary > ul > li > a, .ccs-nav__trigger { width: 100%; justify-content: space-between; min-height: 56px; padding: 16px; font-size: 18px; font-weight: 600; letter-spacing: -0.18px; line-height: 1.33; }
+  .ccs-nav__primary > ul > li > a:hover, .ccs-nav__trigger:hover, .ccs-nav__trigger[aria-expanded="true"] { background: none; color: #fff; text-decoration: underline; }
+  .ccs-nav__primary > ul > li > a:active, .ccs-nav__trigger:active { background: none; color: #fff; }
+  .ccs-nav__trigger:hover img, .ccs-nav__trigger[aria-expanded="true"] img, .ccs-nav__trigger:active img { filter: none; }
+  .ccs-nav__trigger img { margin: 0 7px; }
+  .ccs-nav__primary [aria-current] { box-shadow: inset 4px 0 0 var(--blue-400, #47c8f0); }
+  .ccs-nav__panel { position: static; width: auto; padding: 0 16px 16px; border-top: 0; box-shadow: none; }
+  .ccs-nav__panel-title { font-size: 20px; min-height: 44px; }
+  .ccs-nav__panel-list { grid-template-columns: 1fr; margin-top: 8px; padding-top: 8px; }
+  .ccs-nav__primary > ul.ccs-nav__drawer-top { display: flex; flex-direction: column; gap: 0; padding: 16px; border-top: 0; }
+  .ccs-nav__primary > ul.ccs-nav__drawer-top > li { border-bottom: 0; }
+  .ccs-nav__drawer-top a { font-weight: 600; padding: 8px 4px; }
 }
+@media (prefers-reduced-motion: reduce) { .ccs-nav__trigger img { transition: none; } }
 
 /* ==========================================================================
    Navigation — footer
