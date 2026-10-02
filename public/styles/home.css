@@ -243,7 +243,7 @@
 .ccs-acc summary > span { flex: 1; min-width: 0; }
 .ccs-acc summary img { width: 24px; height: 24px; flex: none; transition: transform 0.2s ease; }
 .ccs-acc[open] summary img { transform: rotate(180deg); }
-.ccs-acc__panel { padding: 0 16px 16px; }
+.ccs-acc__panel { padding: 16px 16px 16px; }
 .ccs-acc__panel p { margin: 0; max-width: 760px; }
 @media (prefers-reduced-motion: reduce) { .ccs-acc summary img { transition: none; } }
 @media (max-width: 1023px) {
