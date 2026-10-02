@@ -1,0 +1,36 @@
+/* Moved out of an inline <style> block (base-elements). Used by: search-results. */
+
+body{margin:0;background:var(--white-100);color:var(--col-text-primary);font-family:'Source Sans 3',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#0b2a6b;text-decoration:none}a:hover{color:#0b2a6b;text-decoration:underline}
+*{box-sizing:border-box}
+button,input,select{font-family:inherit}
+@keyframes imgIn{from{opacity:0}to{opacity:1}}
+@keyframes cardIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes shimmer{0%{background-position:-600px 0}100%{background-position:600px 0}}
+/* Production date facet: histogram + dual-handle slider + labelled year fields */
+.date-facet{display:flex;flex-direction:column;gap:0}
+.date-note{font-size:15px;color:var(--col-text-muted)}
+.date-summary{margin:14px 0 0;font-size:16px;font-weight:600;color:var(--col-text-primary);min-height:24px}
+.date-hist{display:flex;align-items:flex-end;gap:2px;height:84px;margin:12px 16px 0}
+.date-hist span{flex:1 1 0;min-width:2px;transition:background .15s,height .15s}
+.date-track{position:relative;margin:0 16px;height:36px;touch-action:none;cursor:pointer}
+.date-rail{position:absolute;top:50%;left:0;right:0;height:2px;background:#c3c6cd;transform:translateY(-50%)}
+.date-fill{position:absolute;top:50%;height:2px;background:var(--col-bg-primary);transform:translateY(-50%)}
+.date-range-handle{position:absolute;top:50%;width:28px;height:28px;margin:-14px 0 0 -14px;border-radius:50%;border:2px solid var(--col-bg-primary);background:#fff;cursor:grab;touch-action:none;padding:0}
+.date-range-handle::after{content:"";position:absolute;inset:-8px}
+.date-range-handle:hover{background:#e8edf6}
+.date-range-handle:active{cursor:grabbing;background:#d6e0f0}
+.date-range-handle:focus-visible{outline:3px solid #46c8f0;outline-offset:2px}
+.date-ends{display:flex;justify-content:space-between;margin:2px 16px 0;font-size:13px;color:var(--col-text-muted)}
+.date-inputs{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-top:16px}
+.date-field{display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--col-text-muted)}
+.date-field--end{align-items:flex-end}
+.date-field input{box-sizing:border-box;width:140px;height:48px;border:1px solid var(--col-border-neutral);border-radius:0;padding:0 14px;font:inherit;font-size:17px;color:var(--col-text-primary);text-align:center;background:#fff}
+.date-field input::placeholder{color:var(--col-text-muted)}
+.date-field input:focus-visible{outline:3px solid #46c8f0;outline-offset:2px;border-color:var(--col-bg-primary)}
+.date-help{margin:10px 0 0;font-size:13px;color:var(--col-text-muted)}
+.date-error{margin-top:6px;font-size:14px;color:#b3261e}
+.date-reset{align-self:flex-start;margin-top:10px;border:0;background:none;padding:0;font:inherit;font-size:15px;font-weight:600;text-decoration:underline;color:var(--col-text-primary);cursor:pointer}
+@media (max-width:480px){.date-field input{width:112px}}
+[aria-label="University links"] a:hover{color:var(--sage-100);text-decoration:underline}

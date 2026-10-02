@@ -6,165 +6,99 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="../support.js"></script>
-<style>
-.skip-link {
-  position: absolute;
-  top: -120px;
-  left: 16px;
-  background: var(--col-btn-action-bg, #46c8f0);
-  color: var(--col-btn-action-text, #000f46);
-  padding: 12px 18px;
-  z-index: 99999;
-  font-weight: 700;
-  text-decoration: none;
-  border: 2px solid var(--col-bg-primary, #000f46);
-  transition: top 0.2s ease;
-}
-.skip-link:focus {
-  top: 16px;
-}
-@media (max-width:1097.98px){
-  .site-nav{display:none!important}
-  .site-nav.is-open{display:flex!important;position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;background:var(--col-bg-primary);border-top:1px solid var(--col-border-header);z-index:30;padding:8px 0;box-shadow:0 8px 16px rgba(0,0,0,.15)}
-  .site-nav.is-open a{padding:14px 24px!important;font-size:16px!important;width:100%}
-  .site-nav-toggle{display:flex!important}
-}
-@media (max-width:768px){
-  nav[aria-label="Breadcrumb"] > ol:not(.bc-mobile){display:none!important}
-  nav[aria-label="Breadcrumb"] .bc-mobile{display:flex!important}
-}
-.help-topics-grid{grid-template-columns:repeat(3,1fr)}
-@media (max-width:900px){
-  .help-topics-grid{grid-template-columns:repeat(2,1fr)}
-}
-@media (max-width:560px){
-  .help-topics-grid{grid-template-columns:1fr}
-}
-</style>
+<link rel="stylesheet" href="/styles/pages/help.skip-link.css">
   <link rel="stylesheet" href="../styles/vendor/bootstrap-uom.min.css">
   <link rel="stylesheet" href="/styles/home.css">
   <link rel="stylesheet" href="../styles/header.css">
+  <link rel="stylesheet" href="/styles/pages/help.css">
 </head>
-<body>
-<a href="#main-content" class="skip-link">Skip to main content</a>
+<body class="page-help">
+<a href="#main-content" class="skip-link help-page__link-skip-main-content">Skip to main content</a>
 <x-dc>
-<helmet><style>
-:root{
-  --col-bg-primary:#000f46;
-  --col-bg-primary-dark:#000b34;
-  --col-bg-primary-hover:#213e5d;
-  --col-bg-surface:#fff;
-  --col-bg-accent:#abc1a7;
-  --col-bg-accent-soft:#dde5d6;
-  --col-bg-selected:#e8edf6;
-  --col-btn-primary-bg:#000f46;
-  --col-btn-primary-bg-hover:#213e5d;
-  --col-btn-primary-text:#fff;
-  --col-btn-action-bg:#46c8f0;
-  --col-btn-action-bg-hover:#29b3d9;
-  --col-btn-action-text:#000f46;
-  --col-btn-outline:#000f46;
-  --col-text-primary:#1b1f2a;
-  --col-text-onbrand:#fff;
-  --col-text-muted:#5b6070;
-  --col-border-brand:#000f46;
-  --col-border-neutral:#cfcac0;
-  --col-border-neutral-soft:#ece9e3;
-  --col-border-neutral-mid:#d9d6cf;
-  --col-border-header:#b5bac9;
-  --col-advisory-bg:#fdf6d8;
-  --col-advisory-border:#efdc8e;
-  --col-advisory-text:#8a6200;
-}</style>
+<helmet><link rel="stylesheet" href="/styles/shared/colour-tokens-v2.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../components/fig-tokens.css">
 <link rel="stylesheet" href="../components/fig-assets.css">
-<style>
-body{margin:0;background:var(--white-100);color:var(--col-text-primary);font-family:'Source Sans 3',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
-a{color:#0b2a6b;text-decoration:underline;text-underline-offset:2px}a:hover{color:var(--col-bg-primary)}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-[aria-label="University links"] a:hover{color:var(--sage-100);text-decoration:underline}
-</style>
+<link rel="stylesheet" href="/styles/pages/help.base-elements.css">
 </helmet>
-<div style="min-height:100vh;display:flex;flex-direction:column">
+<div class="help-page__group">
 <header class="ccs-nav ccs-nav--header" data-component="Header" aria-label="Site header">
   <div class="ccs-nav__brand">
-    <a href="https://www.unimelb.edu.au" aria-label="The University of Melbourne homepage">
-      <picture><source media="(max-width: 1023px)" srcset="/images/home/logo-header-mobile.svg"><img src="/images/home/logo-header-desktop.svg" alt=""></picture>
+    <a class="ccs-nav__link-university-melbourne-homepage" href="https://www.unimelb.edu.au" aria-label="The University of Melbourne homepage">
+      <picture class="ccs-nav__link-picture"><source media="(max-width: 1023px)" srcset="/images/home/logo-header-mobile.svg"><img class="ccs-nav__picture-image" src="/images/home/logo-header-desktop.svg" alt=""></picture>
     </a>
   </div>
   <div class="ccs-nav__main">
     <div class="ccs-nav__top">
-      <nav aria-label="University of Melbourne">
-        <ul>
-          <li><a href="https://study.unimelb.edu.au">Study</a></li>
-          <li><a href="https://students.unimelb.edu.au">Students</a></li>
-          <li><a href="https://research.unimelb.edu.au">Research</a></li>
-          <li><a href="https://library.unimelb.edu.au">Library</a></li>
-          <li><a href="https://staff.unimelb.edu.au">Staff</a></li>
-          <li><a href="https://www.unimelb.edu.au/alumni">Alumni</a></li>
-          <li><a href="https://giving.unimelb.edu.au">Giving</a></li>
-          <li><a href="https://about.unimelb.edu.au">About</a></li>
-          <li><a href="https://www.unimelb.edu.au/contact">Contact</a></li>
+      <nav class="help-university-melbourne" aria-label="University of Melbourne">
+        <ul class="help-university-melbourne__list">
+          <li class="help-university-melbourne__list-item"><a class="help-university-melbourne__item-link-study" href="https://study.unimelb.edu.au">Study</a></li>
+          <li class="help-university-melbourne__list-item"><a class="help-university-melbourne__item-link-students" href="https://students.unimelb.edu.au">Students</a></li>
+          <li class="help-university-melbourne__list-item"><a class="help-university-melbourne__item-link-research" href="https://research.unimelb.edu.au">Research</a></li>
+          <li class="help-university-melbourne__list-item"><a class="help-university-melbourne__item-link-library" href="https://library.unimelb.edu.au">Library</a></li>
+          <li class="help-university-melbourne__list-item"><a class="help-university-melbourne__item-link-staff" href="https://staff.unimelb.edu.au">Staff</a></li>
+          <li class="help-university-melbourne__list-item"><a class="help-university-melbourne__item-link-alumni" href="https://www.unimelb.edu.au/alumni">Alumni</a></li>
+          <li class="help-university-melbourne__list-item"><a class="help-university-melbourne__item-link-giving" href="https://giving.unimelb.edu.au">Giving</a></li>
+          <li class="help-university-melbourne__list-item"><a class="help-university-melbourne__item-link-about" href="https://about.unimelb.edu.au">About</a></li>
+          <li class="help-university-melbourne__list-item"><a class="help-university-melbourne__item-link-contact" href="https://www.unimelb.edu.au/contact">Contact</a></li>
         </ul>
       </nav>
       <button type="button" class="ccs-nav__search" popovertarget="uom-search-popover" data-popover-type="search" aria-label="Open search">
-        <img src="/images/home/icon-search-onaccent.svg" alt="">
+        <img class="ccs-nav__image" src="/images/home/icon-search-onaccent.svg" alt="">
       </button>
     </div>
     <div class="ccs-nav__bottom">
       <a class="ccs-nav__title" href="/index.html">Cultural Collections</a>
       <nav id="ccs-primary-nav" class="ccs-nav__primary" aria-label="Primary navigation">
         <div class="ccs-nav__drawer-search">
-          <form role="search" action="/search/search-results.html" method="get">
-            <label for="ccs-drawer-q" class="sr-only">Search Cultural Collections</label>
-            <input id="ccs-drawer-q" name="q" type="text" autocomplete="off" placeholder="Search">
-            <button type="submit" aria-label="Search"><img src="/images/home/icon-search-onaccent.svg" alt=""></button>
+          <form class="ccs-nav__form-search" role="search" action="/search/search-results.html" method="get">
+            <label for="ccs-drawer-q" class="sr-only help-form__label-search-cultural-collections">Search Cultural Collections</label>
+            <input class="ccs-drawer-q" id="ccs-drawer-q" name="q" type="text" autocomplete="off" placeholder="Search">
+            <button class="help-form__button-search" type="submit" aria-label="Search"><img class="help-form__button-image" src="/images/home/icon-search-onaccent.svg" alt=""></button>
           </form>
         </div>
-        <ul>
-          <li><a href="/search/search-results.html">Search all records</a></li>
-          <li>
-            <button type="button" class="ccs-nav__trigger" aria-expanded="false" aria-controls="ccs-dd-collections">Browse collections<img src="/images/home/icon-expand.svg" alt=""></button>
+        <ul class="ccs-nav__list">
+          <li class="ccs-nav__list-item"><a class="ccs-nav__item-link-search-all-records" href="/search/search-results.html">Search all records</a></li>
+          <li class="ccs-nav__list-item">
+            <button type="button" class="ccs-nav__trigger" aria-expanded="false" aria-controls="ccs-dd-collections">Browse collections<img class="ccs-nav__image" src="/images/home/icon-expand.svg" alt=""></button>
             <div id="ccs-dd-collections" class="ccs-nav__panel">
-              <a class="ccs-nav__panel-title" href="/collections/index.html"><img src="/images/home/icon-arrow-footer.svg" alt="">Browse collections</a>
+              <a class="ccs-nav__panel-title" href="/collections/index.html"><img class="ccs-nav__image" src="/images/home/icon-arrow-footer.svg" alt="">Browse collections</a>
               <ul class="ccs-nav__panel-list">
-                <li><a href="/collections/medical-history-museum/"><img src="/images/home/icon-arrow-footer.svg" alt="">Medical History Museum</a></li>
-                <li><a href="/collections/henry-forman-atkinson-dental-museum/"><img src="/images/home/icon-arrow-footer.svg" alt="">Henry Forman Atkinson Dental Museum</a></li>
-                <li><a href="/collections/harry-brookes-allen-museum/"><img src="/images/home/icon-arrow-footer.svg" alt="">Harry Brookes Allen Museum</a></li>
-                <li><a href="/collections/university-art-collection/"><img src="/images/home/icon-arrow-footer.svg" alt="">University Art Collection</a></li>
-                <li><a href="/collections/grainger-museum/"><img src="/images/home/icon-arrow-footer.svg" alt="">Grainger Museum Collection</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-medical-history-museum" href="/collections/medical-history-museum/"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Medical History Museum</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-henry-forman-atkinson" href="/collections/henry-forman-atkinson-dental-museum/"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Henry Forman Atkinson Dental Museum</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-harry-brookes-allen" href="/collections/harry-brookes-allen-museum/"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Harry Brookes Allen Museum</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-university-art-collection" href="/collections/university-art-collection/"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">University Art Collection</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-grainger-museum-collection" href="/collections/grainger-museum/"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Grainger Museum Collection</a></li>
               </ul>
             </div>
           </li>
-          <li>
-            <button type="button" class="ccs-nav__trigger" aria-expanded="false" aria-controls="ccs-dd-help" aria-current="true">Help<img src="/images/home/icon-expand.svg" alt=""></button>
+          <li class="ccs-nav__list-item">
+            <button type="button" class="ccs-nav__trigger" aria-expanded="false" aria-controls="ccs-dd-help" aria-current="true">Help<img class="ccs-nav__image" src="/images/home/icon-expand.svg" alt=""></button>
             <div id="ccs-dd-help" class="ccs-nav__panel">
-              <a class="ccs-nav__panel-title" href="/help/index.html"><img src="/images/home/icon-arrow-footer.svg" alt="">Help and support</a>
+              <a class="ccs-nav__panel-title" href="/help/index.html"><img class="ccs-nav__image" src="/images/home/icon-arrow-footer.svg" alt="">Help and support</a>
               <ul class="ccs-nav__panel-list">
-                <li><a href="/help?topic=faq"><img src="/images/home/icon-arrow-footer.svg" alt="">Frequently Asked Questions</a></li>
-                <li><a href="/help?topic=search-tips"><img src="/images/home/icon-arrow-footer.svg" alt="">Search tips</a></li>
-                <li><a href="/help?topic=copyright"><img src="/images/home/icon-arrow-footer.svg" alt="">Copyright and terms of use</a></li>
-                <li><a href="/help?topic=access"><img src="/images/home/icon-arrow-footer.svg" alt="">Access and information</a></li>
-                <li><a href="/help?topic=privacy"><img src="/images/home/icon-arrow-footer.svg" alt="">Privacy</a></li>
-                <li><a href="/help/indigenous-data.html"><img src="/images/home/icon-arrow-footer.svg" alt="">Indigenous cultural data and access</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-frequently-asked-questions" href="/help?topic=faq"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Frequently Asked Questions</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-search-tips" href="/help?topic=search-tips"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Search tips</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-copyright-terms-use" href="/help?topic=copyright"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Copyright and terms of use</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-access-information" href="/help?topic=access"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Access and information</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-privacy" href="/help?topic=privacy"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Privacy</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-indigenous-cultural-data" href="/help/indigenous-data.html"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Indigenous cultural data and access</a></li>
               </ul>
             </div>
           </li>
-          <li><a href="/contact.html">Contact</a></li>
+          <li class="ccs-nav__list-item"><a class="ccs-nav__item-link-contact" href="/contact.html">Contact</a></li>
         </ul>
         <ul class="ccs-nav__drawer-top" aria-label="University of Melbourne">
-        <li><a href="https://study.unimelb.edu.au">Study</a></li>
-        <li><a href="https://students.unimelb.edu.au">Students</a></li>
-        <li><a href="https://research.unimelb.edu.au">Research</a></li>
-        <li><a href="https://library.unimelb.edu.au">Library</a></li>
-        <li><a href="https://staff.unimelb.edu.au">Staff</a></li>
-        <li><a href="https://www.unimelb.edu.au/alumni">Alumni</a></li>
-        <li><a href="https://giving.unimelb.edu.au">Giving</a></li>
-        <li><a href="https://about.unimelb.edu.au">About</a></li>
-        <li><a href="https://www.unimelb.edu.au/contact">Contact</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-study" href="https://study.unimelb.edu.au">Study</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-students" href="https://students.unimelb.edu.au">Students</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-research" href="https://research.unimelb.edu.au">Research</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-library" href="https://library.unimelb.edu.au">Library</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-staff" href="https://staff.unimelb.edu.au">Staff</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-alumni" href="https://www.unimelb.edu.au/alumni">Alumni</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-giving" href="https://giving.unimelb.edu.au">Giving</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-about" href="https://about.unimelb.edu.au">About</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-contact" href="https://www.unimelb.edu.au/contact">Contact</a></li>
         </ul>
       </nav>
     </div>
@@ -172,30 +106,30 @@ html{scroll-behavior:smooth}
   <button type="button" class="ccs-nav__menu" aria-expanded="false" aria-controls="ccs-primary-nav">
     <svg class="ccs-nav__menu-open" viewBox="0 0 24 24" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     <svg class="ccs-nav__menu-close" viewBox="0 0 24 24" aria-hidden="true"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
-    <span>Menu</span>
+    <span class="ccs-nav__text">Menu</span>
   </button>
 </header>
 
 <!-- Full-screen search overlay -->
 <div id="uom-search-popover" class="uom-search-popover" role="dialog" aria-modal="true" aria-labelledby="uom-search-overlay-title">
   <div class="uom-search-popover__inner">
-    <h2 id="uom-search-overlay-title" class="sr-only">Search</h2>
+    <h2 id="uom-search-overlay-title" class="sr-only uom-search-popover__heading">Search</h2>
     <form class="uom-search-popover__form" role="search" action="/search/search-results.html" method="get">
-      <label for="uom-search-overlay-input" class="sr-only">Search Cultural Collections</label>
-      <input id="uom-search-overlay-input" name="q" type="text" placeholder="Search" autocomplete="off">
+      <label for="uom-search-overlay-input" class="sr-only uom-search-popover__label-search-cultural-collections">Search Cultural Collections</label>
+      <input class="uom-search-overlay-input" id="uom-search-overlay-input" name="q" type="text" placeholder="Search" autocomplete="off">
       <button type="submit" class="uom-search-popover__submit" aria-label="Search">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <svg class="uom-search-popover__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="11" cy="11" r="8"></circle>
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
       </button>
     </form>
     <button type="button" class="uom-search-popover__close" id="uom-search-popover-close" aria-label="Close search">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <svg class="uom-search-popover__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <line x1="18" y1="6" x2="6" y2="18"></line>
         <line x1="6" y1="6" x2="18" y2="18"></line>
       </svg>
-      <span>Close</span>
+      <span class="uom-search-popover__text">Close</span>
     </button>
   </div>
 </div>
@@ -273,25 +207,25 @@ html{scroll-behavior:smooth}
 })();
 </script>
 
-<nav class="page-breadcrumbs" aria-label="Breadcrumb"><ol class="page-local-history" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="root" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="/" itemprop="item" title="Home" aria-label="Home"><img src="../images/home.svg" alt="" width="16" height="16" style="vertical-align:middle"><span itemprop="name" class="sr-only">Home</span></a><meta content="1" itemprop="position"></li><sc-if value="{{ topic }}" hint-placeholder-val="{{ false }}"><li class="" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="/help/index.html" itemprop="item" title="Help and support"><span itemprop="name">Help and support</span></a><meta content="2" itemprop="position"></li><li itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page"><span itemprop="name">{{ topic.title }}</span><meta content="3" itemprop="position"></li></sc-if><sc-if value="{{ notTopic }}" hint-placeholder-val="{{ true }}"><li itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page"><span itemprop="name">Help and support</span><meta content="2" itemprop="position"></li></sc-if></ol><sc-if value="{{ topic }}" hint-placeholder-val="{{ false }}"><ol class="bc-mobile" style="display:none;align-items:center;gap:6px;list-style:none;margin:0;font-size:18px;color:#fff"><li style="display:flex;align-items:center"><a href="/help/index.html" style="display:inline-flex;align-items:center;gap:6px;color:#fff;text-decoration:none;min-height:44px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span>Help and support</span></a></li></ol></sc-if><sc-if value="{{ notTopic }}" hint-placeholder-val="{{ true }}"><ol class="bc-mobile" style="display:none;align-items:center;gap:6px;list-style:none;margin:0;font-size:18px;color:#fff"><li style="display:flex;align-items:center"><a href="/" style="display:inline-flex;align-items:center;gap:6px;color:#fff;text-decoration:none;min-height:44px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span>Cultural Collections</span></a></li></ol></sc-if></nav>
+<nav class="page-breadcrumbs" aria-label="Breadcrumb"><ol class="page-local-history" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="root" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a class="page-local-history__item-link-home" href="/" itemprop="item" title="Home" aria-label="Home"><img class="page-local-history__link-image" src="../images/home.svg" alt="" width="16" height="16"><span itemprop="name" class="sr-only page-local-history__link-text">Home</span></a><meta content="1" itemprop="position"></li><sc-if value="{{ topic }}" hint-placeholder-val="{{ false }}"><li class="page-local-history__item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a class="page-local-history__item-link-help-support" href="/help/index.html" itemprop="item" title="Help and support"><span class="page-local-history__link-text" itemprop="name">Help and support</span></a><meta content="2" itemprop="position"></li><li class="page-local-history__item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page"><span class="page-local-history__item-text" itemprop="name">{{ topic.title }}</span><meta content="3" itemprop="position"></li></sc-if><sc-if value="{{ notTopic }}" hint-placeholder-val="{{ true }}"><li class="page-local-history__item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page"><span class="page-local-history__item-text" itemprop="name">Help and support</span><meta content="2" itemprop="position"></li></sc-if></ol><sc-if value="{{ topic }}" hint-placeholder-val="{{ false }}"><ol class="bc-mobile bc-mobile--styled"><li class="bc-mobile__item"><a class="bc-mobile__item-link-help-support" href="/help/index.html"><svg class="bc-mobile__link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span class="bc-mobile__link-text">Help and support</span></a></li></ol></sc-if><sc-if value="{{ notTopic }}" hint-placeholder-val="{{ true }}"><ol class="bc-mobile bc-mobile--styled"><li class="bc-mobile__item"><a class="bc-mobile__item-link-cultural-collections" href="/"><svg class="bc-mobile__link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span class="bc-mobile__link-text">Cultural Collections</span></a></li></ol></sc-if></nav>
 <section class="page-banner" aria-label="Page banner">
   <div class="page-banner__inner">
-    <h1><sc-if value="{{ topic }}">{{ topic.title }}</sc-if><sc-if value="{{ notTopic }}">Help and support</sc-if></h1>
+    <h1 class="page-banner__heading"><sc-if value="{{ topic }}">{{ topic.title }}</sc-if><sc-if value="{{ notTopic }}">Help and support</sc-if></h1>
     <p class="page-banner__desc"><sc-if value="{{ topic }}">{{ topic.blurb }}</sc-if><sc-if value="{{ notTopic }}">Guidance on searching, using and requesting items from the University's cultural collections.</sc-if></p>
   </div>
 </section>
 
 
 <sc-if value="{{ notTopic }}" hint-placeholder-val="{{ true }}">
-<section aria-label="Help topics" style="background:#fff;border-bottom:1px solid #e3e0d9">
-  <div style="max-width:1200px;margin:0 auto;padding:40px 32px 48px">
-    <div class="help-topics-grid" style="display:grid;border-top:1px solid #e3e0d9;border-left:1px solid #e3e0d9">
+<section class="help-topics" aria-label="Help topics">
+  <div class="help-topics__group">
+    <div class="help-topics-grid help-topics-grid--styled">
       <sc-for list="{{ topics }}" as="t" hint-placeholder-count="6">
-        <a href="{{ t.href }}" style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px;padding:36px 28px;border-right:1px solid #e3e0d9;border-bottom:1px solid #e3e0d9;background:#fff;text-decoration:none;color:var(--col-text-primary);transition:background-color .15s" style-hover="background-color:#fafaf8">
-          <strong style="font-family:'Fraunces',serif;font-weight:600;font-size:22px;line-height:1.3;color:var(--col-bg-primary)">{{ t.title }}</strong>
-          <span style="font-size:15px;line-height:1.6;color:#3b4050;max-width:320px;margin-bottom:8px">{{ t.blurb }}</span>
-          <span style="display:inline-flex;align-items:center;gap:8px;margin-top:auto;padding:12px 22px;background:var(--col-bg-accent, #abc1a7);color:var(--col-bg-primary);font-size:15px;font-weight:700;white-space:nowrap">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" style="flex:none"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="13 6 19 12 13 18"></polyline></svg>
+        <a class="help-topics-grid__link" href="{{ t.href }}">
+          <strong class="help-topics-grid__link-strong">{{ t.title }}</strong>
+          <span class="help-topics-grid__link-text help-topics-grid__link-text--v2">{{ t.blurb }}</span>
+          <span class="help-topics-grid__link-text help-topics-grid__link-text--v1">
+            <svg class="help-topics-grid__text-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="13 6 19 12 13 18"></polyline></svg>
             Read more
           </span>
         </a>
@@ -301,19 +235,19 @@ html{scroll-behavior:smooth}
 </section>
 </sc-if>
 
-<main id="main-content" style="{{ mainStyle }}">
+<main class="help-main-content {{ mainClass }}" id="main-content">
 
-<sc-if value="{{ topic }}" hint-placeholder-val="{{ false }}"><a href="/help/index.html" style="align-self:flex-start;font-size:15px;font-weight:600">‹ All help topics</a></sc-if>
+<sc-if value="{{ topic }}" hint-placeholder-val="{{ false }}"><a class="help-main-content__link-all-help-topics" href="/help/index.html">‹ All help topics</a></sc-if>
 
 <sc-if value="{{ showFaq }}" hint-placeholder-val="{{ true }}">
-  <div id="faq" style="scroll-margin-top:20px;display:flex;flex-direction:column;gap:14px">
-  <h2 style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:28px;color:var(--col-bg-primary)">Frequently Asked Questions</h2>
-  <p style="margin:0 0 6px;font-size:16px;line-height:1.6;color:#3b4050;max-width:760px">Having problems when searching for items across the cultural collections? Here are some frequently asked questions to help.</p>
-  <div class="ccs-faq__list" style="max-width:880px;padding-bottom:0">
+  <div class="help-faq" id="faq">
+  <h2 class="help-faq__heading-frequently-asked-questions">Frequently Asked Questions</h2>
+  <p class="help-faq__text">Having problems when searching for items across the cultural collections? Here are some frequently asked questions to help.</p>
+  <div class="ccs-faq__list ccs-faq__list--styled">
     <sc-for list="{{ faqs }}" as="q" hint-placeholder-count="6">
       <details class="ccs-acc">
-        <summary><span>{{ q.q }}</span><img src="/images/home/icon-chevron.svg" alt=""></summary>
-        <div class="ccs-acc__panel"><p>{{ q.a }}</p></div>
+        <summary class="ccs-acc__summary"><span class="ccs-acc__summary-text">{{ q.q }}</span><img class="ccs-acc__summary-image" src="/images/home/icon-chevron.svg" alt=""></summary>
+        <div class="ccs-acc__panel"><p class="ccs-acc__text">{{ q.a }}</p></div>
       </details>
     </sc-for>
   </div>
@@ -321,94 +255,94 @@ html{scroll-behavior:smooth}
 </sc-if>
 
 <sc-if value="{{ showSearchTips }}" hint-placeholder-val="{{ true }}">
-<section id="search-tips" aria-labelledby="h-search-tips" style="display:flex;flex-direction:column;gap:14px;scroll-margin-top:20px;font-size:16px;line-height:1.6;color:#3b4050">
-  <h2 id="h-search-tips" style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:28px;color:var(--col-bg-primary)">Search Tips</h2>
-  <p style="margin:0;max-width:760px">Here are some tips to help you to easily find collection items.</p>
-  <h3 style="margin:8px 0 0;font-size:18px;color:var(--col-text-primary)">Basic Search</h3>
-  <p style="margin:0;max-width:760px">The search box searches everything. This is the best place to start.</p>
-  <p style="margin:0;max-width:760px">Start with a basic keyword search using two or three keywords. Search failures can result from over-specifying the search.</p>
-  <p style="margin:0;max-width:760px">Things to try when you're getting irrelevant or too many results</p>
-  <ul style="margin:0;padding-left:22px;max-width:760px">
-    <li>Add more words.</li>
-    <li>Use the dropdown when a common word is pulling in results you don't want.</li>
+<section class="help-search-tips" id="search-tips" aria-labelledby="h-search-tips">
+  <h2 class="help-search-tips__heading" id="h-search-tips">Search Tips</h2>
+  <p class="help-search-tips__text help-search-tips__text--v1">Here are some tips to help you to easily find collection items.</p>
+  <h3 class="help-search-tips__heading-basic-search">Basic Search</h3>
+  <p class="help-search-tips__text help-search-tips__text--v1">The search box searches everything. This is the best place to start.</p>
+  <p class="help-search-tips__text help-search-tips__text--v1">Start with a basic keyword search using two or three keywords. Search failures can result from over-specifying the search.</p>
+  <p class="help-search-tips__text help-search-tips__text--v1">Things to try when you're getting irrelevant or too many results</p>
+  <ul class="help-search-tips__list">
+    <li class="help-search-tips__list-item">Add more words.</li>
+    <li class="help-search-tips__list-item">Use the dropdown when a common word is pulling in results you don't want.</li>
   </ul>
-  <p style="margin:0;max-width:760px">The dropdown beside the search box lets you restrict your search to a single part of the record:</p>
-  <div style="display:grid;grid-template-columns:minmax(120px,200px) 1fr;border:1px solid #e3e0d9;max-width:560px;font-size:15px">
-    <strong style="padding:10px 14px;background:#f4f5f8;color:var(--col-text-primary)">Dropdown option</strong><span style="padding:10px 14px;background:#f4f5f8">Searches</span>
-    <strong style="padding:10px 14px;color:var(--col-text-primary)">All Fields</strong><span style="padding:10px 14px">The whole record</span>
-    <strong style="padding:10px 14px;background:#f4f5f8;color:var(--col-text-primary)">Title</strong><span style="padding:10px 14px;background:#f4f5f8">Title only</span>
-    <strong style="padding:10px 14px;color:var(--col-text-primary)">Creator</strong><span style="padding:10px 14px">Creator names only</span>
-    <strong style="padding:10px 14px;background:#f4f5f8;color:var(--col-text-primary)">Subject</strong><span style="padding:10px 14px;background:#f4f5f8">Subject headings only</span>
+  <p class="help-search-tips__text help-search-tips__text--v1">The dropdown beside the search box lets you restrict your search to a single part of the record:</p>
+  <div class="help-search-tips__group help-search-tips__group--v2">
+    <strong class="help-search-tips__strong help-search-tips__strong--v1">Dropdown option</strong><span class="help-search-tips__text help-search-tips__text--v3">Searches</span>
+    <strong class="help-search-tips__strong help-search-tips__strong--v2">All Fields</strong><span class="help-search-tips__text help-search-tips__text--v4">The whole record</span>
+    <strong class="help-search-tips__strong help-search-tips__strong--v1">Title</strong><span class="help-search-tips__text help-search-tips__text--v3">Title only</span>
+    <strong class="help-search-tips__strong help-search-tips__strong--v2">Creator</strong><span class="help-search-tips__text help-search-tips__text--v4">Creator names only</span>
+    <strong class="help-search-tips__strong help-search-tips__strong--v1">Subject</strong><span class="help-search-tips__text help-search-tips__text--v3">Subject headings only</span>
   </div>
-  <p style="margin:0;max-width:760px">For example, searching `Melbourne` in All Fields returns anything mentioning Melbourne anywhere; searching it under Title returns only items with Melbourne in the title.</p>
-  <p style="margin:0;max-width:760px">Suggestions appear as you type. These are drawn from terms that exist in the catalogue, so picking one guarantees you'll get results.</p>
-  <p style="margin:0;max-width:760px">Type any combination of title, creator, date, place, or subject terms. All your keywords will appear in a record. This is an AND search.</p>
-  <p style="margin:0;max-width:760px">The best matches will be in the first two pages of the search results.</p>
-  <p style="margin:0;max-width:760px">Results are ranked by their relevance to your search terms, based on:</p>
-  <ul style="margin:0;padding-left:22px;max-width:760px">
-    <li>where the words appear in the record (words in the title, or creator are ranked the highest)</li>
-    <li>number of occurrences of the term within the record</li>
+  <p class="help-search-tips__text help-search-tips__text--v1">For example, searching `Melbourne` in All Fields returns anything mentioning Melbourne anywhere; searching it under Title returns only items with Melbourne in the title.</p>
+  <p class="help-search-tips__text help-search-tips__text--v1">Suggestions appear as you type. These are drawn from terms that exist in the catalogue, so picking one guarantees you'll get results.</p>
+  <p class="help-search-tips__text help-search-tips__text--v1">Type any combination of title, creator, date, place, or subject terms. All your keywords will appear in a record. This is an AND search.</p>
+  <p class="help-search-tips__text help-search-tips__text--v1">The best matches will be in the first two pages of the search results.</p>
+  <p class="help-search-tips__text help-search-tips__text--v1">Results are ranked by their relevance to your search terms, based on:</p>
+  <ul class="help-search-tips__list">
+    <li class="help-search-tips__list-item">where the words appear in the record (words in the title, or creator are ranked the highest)</li>
+    <li class="help-search-tips__list-item">number of occurrences of the term within the record</li>
   </ul>
-  <h3 style="margin:8px 0 0;font-size:18px;color:var(--col-text-primary)">Faceted Search</h3>
-  <p style="margin:0;max-width:760px">The filter terms in Faceted Search allow you to refine your search results by presenting structured and extended data (format type, collection, date ranges, and subject) and the number of results per field grouping (images – 2,000). If your result set is large, review the filters to see what Format, Creators, or Subjects are represented. Select appropriate filters to view only the most relevant to your query.</p>
-  <p style="margin:0;max-width:760px">Because filters depend on the item metadata, they might not be a complete representation of all the collection items available. These are under continuous review and update to provide the more powerful filters.</p>
-  <p style="margin:0;max-width:760px">Once you select a field limit, it remains in effect until you remove it. That is, if you enter a new search using the Basic Search box the results will be limited by the selected values.</p>
-  <h3 style="margin:8px 0 0;font-size:18px;color:var(--col-text-primary)">Refining results</h3>
-  <p style="margin:0;max-width:760px">Active filters appear as chips above the results. Remove a chip to drop that filter or choose Clear all to start again. Sort by relevance, date or title, and switch between grid and list views.</p>
-  <div style="display:flex;flex-direction:column;gap:10px;max-width:760px">
-    <p style="margin:0"><strong style="color:var(--col-text-primary)">Collection.</strong> Limit the list of results to include only the holdings of a specific collection. New collections and items are increasingly being made available.</p>
-    <p style="margin:0"><strong style="color:var(--col-text-primary)">Date.</strong> A histogram shows the distribution of your results by year, decade, or century, depending on the size of the range. To narrow the date range of your results, use the slider, or enter a start and end year, and click Apply.</p>
-    <p style="margin:0"><strong style="color:var(--col-text-primary)">Creator.</strong> Artists, Authors, Collectors, Designers, Manufacturers, and contributors to works in your results. Disambiguating a creator's name from hundreds of results by using the filter and select from among the list - full name or birth/death dates - to only see the one/s you want.</p>
-    <p style="margin:0"><strong style="color:var(--col-text-primary)">Organization (as Creator).</strong> Corporate or government entities that are identified as creator or are otherwise responsible for content.</p>
-    <p style="margin:0"><strong style="color:var(--col-text-primary)">Accession Number.</strong> Shows how your results are distributed across major disciplines. There are several standards used. Most common is uses a prefix acronym of the collection followed by the year of acquisition.</p>
-    <p style="margin:0"><strong style="color:var(--col-text-primary)">Object type.</strong> This is the category or physical format of the collection item. Use the search option to find all results for a particular type - for example, book, photograph, musical instrument, scientific equipment, or specimen.</p>
-    <p style="margin:0"><strong style="color:var(--col-text-primary)">Language.</strong> Select results created in or translated to a specific language.</p>
-    <p style="margin:0"><strong style="color:var(--col-text-primary)">Format.</strong> The digital format of works in your list of results – for example, image, pdf, audio, and video.</p>
-    <p style="margin:0"><strong style="color:var(--col-text-primary)">Access.</strong> Limit by works available online with a "Digital Asset", or physically 'On Access' or "On Display".</p>
+  <h3 class="help-search-tips__heading-faceted-search">Faceted Search</h3>
+  <p class="help-search-tips__text help-search-tips__text--v1">The filter terms in Faceted Search allow you to refine your search results by presenting structured and extended data (format type, collection, date ranges, and subject) and the number of results per field grouping (images – 2,000). If your result set is large, review the filters to see what Format, Creators, or Subjects are represented. Select appropriate filters to view only the most relevant to your query.</p>
+  <p class="help-search-tips__text help-search-tips__text--v1">Because filters depend on the item metadata, they might not be a complete representation of all the collection items available. These are under continuous review and update to provide the more powerful filters.</p>
+  <p class="help-search-tips__text help-search-tips__text--v1">Once you select a field limit, it remains in effect until you remove it. That is, if you enter a new search using the Basic Search box the results will be limited by the selected values.</p>
+  <h3 class="help-search-tips__heading-refining-results">Refining results</h3>
+  <p class="help-search-tips__text help-search-tips__text--v1">Active filters appear as chips above the results. Remove a chip to drop that filter or choose Clear all to start again. Sort by relevance, date or title, and switch between grid and list views.</p>
+  <div class="help-search-tips__group help-search-tips__group--v1">
+    <p class="help-search-tips__text help-search-tips__text--v2"><strong class="help-search-tips__text-strong">Collection.</strong> Limit the list of results to include only the holdings of a specific collection. New collections and items are increasingly being made available.</p>
+    <p class="help-search-tips__text help-search-tips__text--v2"><strong class="help-search-tips__text-strong">Date.</strong> A histogram shows the distribution of your results by year, decade, or century, depending on the size of the range. To narrow the date range of your results, use the slider, or enter a start and end year, and click Apply.</p>
+    <p class="help-search-tips__text help-search-tips__text--v2"><strong class="help-search-tips__text-strong">Creator.</strong> Artists, Authors, Collectors, Designers, Manufacturers, and contributors to works in your results. Disambiguating a creator's name from hundreds of results by using the filter and select from among the list - full name or birth/death dates - to only see the one/s you want.</p>
+    <p class="help-search-tips__text help-search-tips__text--v2"><strong class="help-search-tips__text-strong">Organization (as Creator).</strong> Corporate or government entities that are identified as creator or are otherwise responsible for content.</p>
+    <p class="help-search-tips__text help-search-tips__text--v2"><strong class="help-search-tips__text-strong">Accession Number.</strong> Shows how your results are distributed across major disciplines. There are several standards used. Most common is uses a prefix acronym of the collection followed by the year of acquisition.</p>
+    <p class="help-search-tips__text help-search-tips__text--v2"><strong class="help-search-tips__text-strong">Object type.</strong> This is the category or physical format of the collection item. Use the search option to find all results for a particular type - for example, book, photograph, musical instrument, scientific equipment, or specimen.</p>
+    <p class="help-search-tips__text help-search-tips__text--v2"><strong class="help-search-tips__text-strong">Language.</strong> Select results created in or translated to a specific language.</p>
+    <p class="help-search-tips__text help-search-tips__text--v2"><strong class="help-search-tips__text-strong">Format.</strong> The digital format of works in your list of results – for example, image, pdf, audio, and video.</p>
+    <p class="help-search-tips__text help-search-tips__text--v2"><strong class="help-search-tips__text-strong">Access.</strong> Limit by works available online with a "Digital Asset", or physically 'On Access' or "On Display".</p>
   </div>
-  <h3 style="margin:8px 0 0;font-size:18px;color:var(--col-text-primary)">Automatic stemming</h3>
-  <p style="margin:0;max-width:760px">Your search automatically includes plural and singular forms of your search terms, as well as common suffix and tense variations.</p>
-  <p style="margin:0;max-width:760px">For example: 'broad' will match records with the term 'broader' or 'broadest' but not 'broadly'</p>
-  <p style="margin:0;max-width:760px">Stemming applies within phrase searches as well as keyword searches.</p>
-  <h3 style="margin:8px 0 0;font-size:18px;color:var(--col-text-primary)">Truncation and wildcards</h3>
-  <p style="margin:0;max-width:760px">Use an asterisk to truncate terms that aren't handled by stemming.</p>
-  <p style="margin:0;max-width:760px">For example, non-English variations - créat* will find création(s), créateur(s), créatrice(s), etc.</p>
-  <p style="margin:0;max-width:760px">You can truncate from the beginning as well - *science finds science, conscience, geoscience, omniscience.</p>
-  <p style="margin:0;max-width:760px">Use a question mark [?] to find variations of a single letter in a word - kvet?h will find kvetch or kvetsh.</p>
-  <h3 style="margin:8px 0 0;font-size:18px;color:var(--col-text-primary)">Exact phrase</h3>
-  <p style="margin:0;max-width:760px">Use double quotation marks around your terms to match words in the exact order you typed them. For example, "architectural plan".</p>
-  <h3 style="margin:8px 0 0;font-size:18px;color:var(--col-text-primary)">Advanced Search</h3>
-  <p style="margin:0;max-width:760px">Want to search a single field — Title, Creator, Subject or Date range?</p>
-  <p style="margin:0;max-width:760px">Or to combine several fields use Contains all (AND), Contains any (OR) or Does not contain (NOT).</p>
-  <p style="margin:0;max-width:760px">Use advanced search when you need to:</p>
-  <ul style="margin:0;padding-left:22px;max-width:760px">
-    <li>combine two or more specific fields</li>
-    <li>combine two or more values of a limit</li>
-    <li>items in two select collections</li>
+  <h3 class="help-search-tips__heading-automatic-stemming">Automatic stemming</h3>
+  <p class="help-search-tips__text help-search-tips__text--v1">Your search automatically includes plural and singular forms of your search terms, as well as common suffix and tense variations.</p>
+  <p class="help-search-tips__text help-search-tips__text--v1">For example: 'broad' will match records with the term 'broader' or 'broadest' but not 'broadly'</p>
+  <p class="help-search-tips__text help-search-tips__text--v1">Stemming applies within phrase searches as well as keyword searches.</p>
+  <h3 class="help-search-tips__heading-truncation-wildcards">Truncation and wildcards</h3>
+  <p class="help-search-tips__text help-search-tips__text--v1">Use an asterisk to truncate terms that aren't handled by stemming.</p>
+  <p class="help-search-tips__text help-search-tips__text--v1">For example, non-English variations - créat* will find création(s), créateur(s), créatrice(s), etc.</p>
+  <p class="help-search-tips__text help-search-tips__text--v1">You can truncate from the beginning as well - *science finds science, conscience, geoscience, omniscience.</p>
+  <p class="help-search-tips__text help-search-tips__text--v1">Use a question mark [?] to find variations of a single letter in a word - kvet?h will find kvetch or kvetsh.</p>
+  <h3 class="help-search-tips__heading-exact-phrase">Exact phrase</h3>
+  <p class="help-search-tips__text help-search-tips__text--v1">Use double quotation marks around your terms to match words in the exact order you typed them. For example, "architectural plan".</p>
+  <h3 class="help-search-tips__heading-advanced-search">Advanced Search</h3>
+  <p class="help-search-tips__text help-search-tips__text--v1">Want to search a single field — Title, Creator, Subject or Date range?</p>
+  <p class="help-search-tips__text help-search-tips__text--v1">Or to combine several fields use Contains all (AND), Contains any (OR) or Does not contain (NOT).</p>
+  <p class="help-search-tips__text help-search-tips__text--v1">Use advanced search when you need to:</p>
+  <ul class="help-search-tips__list">
+    <li class="help-search-tips__list-item">combine two or more specific fields</li>
+    <li class="help-search-tips__list-item">combine two or more values of a limit</li>
+    <li class="help-search-tips__list-item">items in two select collections</li>
   </ul>
-  <p style="margin:0;max-width:760px">The results will not include the term if they appear in unselected fields. Basic search will return results across all fields but the items you are looking for may not be ranked highly.</p>
-  <h3 style="margin:8px 0 0;font-size:18px;color:var(--col-text-primary)">Boolean</h3>
-  <p style="margin:0;max-width:760px">You can create complex Boolean logic using AND, OR, and NOT (all in upper-case) and parentheses for nesting.</p>
+  <p class="help-search-tips__text help-search-tips__text--v1">The results will not include the term if they appear in unselected fields. Basic search will return results across all fields but the items you are looking for may not be ranked highly.</p>
+  <h3 class="help-search-tips__heading-boolean">Boolean</h3>
+  <p class="help-search-tips__text help-search-tips__text--v1">You can create complex Boolean logic using AND, OR, and NOT (all in upper-case) and parentheses for nesting.</p>
 </section>
 </sc-if>
 
 <sc-if value="{{ showCopyright }}" hint-placeholder-val="{{ true }}">
-<section id="copyright" aria-labelledby="h-copyright" style="display:flex;flex-direction:column;gap:14px;scroll-margin-top:20px;font-size:16px;line-height:1.6;color:#3b4050">
-  <h2 id="h-copyright" style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:28px;color:var(--col-bg-primary)">Copyright and Terms of Use</h2>
-  <p style="margin:0;max-width:760px">How a collection item can be used varies depending on the conditions of its copyright license, intellectual property or cultural advice. Please check the License type and Terms of Use on individual record for further information.</p>
-  <ol style="margin:0;padding-left:22px;display:flex;flex-direction:column;gap:10px;max-width:760px">
-    <li><strong style="color:var(--col-text-primary)">Free Access.</strong> Collection items available to download may be reused for personal, research, educational or non-commercial purposes. Attribution to the creator and acknowledgement of University of Melbourne is requested.</li>
-    <li><strong style="color:var(--col-text-primary)">Licensed.</strong> Some collection items are available for use under Creative Commons or other licence types. Please follow the specific licence terms shown on the individual record.</li>
-    <li><strong style="color:var(--col-text-primary)">Cultural Conditions.</strong> Where collection items carrying a cultural or advisory notice, engage respectfully with the content. For more information see <a href="/help/indigenous-data.html">Indigenous Cultural Data and Access</a>.</li>
-    <li><strong style="color:var(--col-text-primary)">Contact the Collection</strong> when copyright terms are unclear, or when seeking permission to use collection items in publications, online, and commercial use. To assist in the query, note the information in Cite this item and prepare a description of your intended use.</li>
-    <li><strong style="color:var(--col-text-primary)">University Copyright Office.</strong> To learn more about copyright and licensing, see the University Copyright Office website, including information on:
-      <ul style="margin:6px 0 0;padding-left:20px">
-        <li>Basic principles of copyright</li>
-        <li>Understanding publishing agreements</li>
-        <li>Licences and contracts</li>
-        <li>Protecting your work</li>
-        <li>Using copyright material</li>
-        <li>Copyright and research</li>
+<section class="help-copyright" id="copyright" aria-labelledby="h-copyright">
+  <h2 class="help-copyright__heading-copyright-terms-use" id="h-copyright">Copyright and Terms of Use</h2>
+  <p class="help-copyright__text">How a collection item can be used varies depending on the conditions of its copyright license, intellectual property or cultural advice. Please check the License type and Terms of Use on individual record for further information.</p>
+  <ol class="help-copyright__list">
+    <li class="help-copyright__list-item"><strong class="help-copyright__item-strong">Free Access.</strong> Collection items available to download may be reused for personal, research, educational or non-commercial purposes. Attribution to the creator and acknowledgement of University of Melbourne is requested.</li>
+    <li class="help-copyright__list-item"><strong class="help-copyright__item-strong">Licensed.</strong> Some collection items are available for use under Creative Commons or other licence types. Please follow the specific licence terms shown on the individual record.</li>
+    <li class="help-copyright__list-item"><strong class="help-copyright__item-strong">Cultural Conditions.</strong> Where collection items carrying a cultural or advisory notice, engage respectfully with the content. For more information see <a class="help-copyright__item-link-indigenous-cultural-data" href="/help/indigenous-data.html">Indigenous Cultural Data and Access</a>.</li>
+    <li class="help-copyright__list-item"><strong class="help-copyright__item-strong">Contact the Collection</strong> when copyright terms are unclear, or when seeking permission to use collection items in publications, online, and commercial use. To assist in the query, note the information in Cite this item and prepare a description of your intended use.</li>
+    <li class="help-copyright__list-item"><strong class="help-copyright__item-strong">University Copyright Office.</strong> To learn more about copyright and licensing, see the University Copyright Office website, including information on:
+      <ul class="help-copyright__item-list">
+        <li class="help-copyright__list-item">Basic principles of copyright</li>
+        <li class="help-copyright__list-item">Understanding publishing agreements</li>
+        <li class="help-copyright__list-item">Licences and contracts</li>
+        <li class="help-copyright__list-item">Protecting your work</li>
+        <li class="help-copyright__list-item">Using copyright material</li>
+        <li class="help-copyright__list-item">Copyright and research</li>
       </ul>
     </li>
   </ol>
@@ -416,33 +350,33 @@ html{scroll-behavior:smooth}
 </sc-if>
 
 <sc-if value="{{ showAccess }}" hint-placeholder-val="{{ true }}">
-<section id="access" aria-labelledby="h-access" style="display:flex;flex-direction:column;gap:14px;scroll-margin-top:20px;font-size:16px;line-height:1.6;color:#3b4050">
-  <h2 id="h-access" style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:28px;color:var(--col-bg-primary)">Access and Information</h2>
-  <p style="margin:0;max-width:760px">Do you need to request access or further information on a collection item?</p>
-  <p style="margin:0;max-width:760px">Do you want to access and use an image, audio or video?</p>
-  <p style="margin:0;max-width:760px">Contact the relevant collection and include the information from Cite this Item.</p>
-  <p style="margin:0;max-width:760px">We will aim to respond to your enquiries within 5 business days.</p>
-  <p style="margin:0;max-width:760px">Please note, more complex requests may take additional time.</p>
-  <p style="margin:0;max-width:760px">We also welcome feedback on how to improve our user experience.</p>
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px">
-    <div style="border:1px solid #e3e0d9;padding:18px 20px;display:flex;flex-direction:column;gap:6px">
-      <span style="font-size:15px">Harry Brookes Allen Museum of Anatomy and Pathology (HBA)<br>Henry Forman Atkinson Dental Museum (HFA)<br>Medical History Museum (MHM)</span>
-      <span style="font-size:15px">Email: <a href="mailto:MDHS-museum@unimelb.edu.au">MDHS-museum@unimelb.edu.au</a></span>
+<section class="help-access" id="access" aria-labelledby="h-access">
+  <h2 class="help-access__heading-access-information" id="h-access">Access and Information</h2>
+  <p class="help-access__text help-access__text--v2">Do you need to request access or further information on a collection item?</p>
+  <p class="help-access__text help-access__text--v2">Do you want to access and use an image, audio or video?</p>
+  <p class="help-access__text help-access__text--v2">Contact the relevant collection and include the information from Cite this Item.</p>
+  <p class="help-access__text help-access__text--v2">We will aim to respond to your enquiries within 5 business days.</p>
+  <p class="help-access__text help-access__text--v2">Please note, more complex requests may take additional time.</p>
+  <p class="help-access__text help-access__text--v2">We also welcome feedback on how to improve our user experience.</p>
+  <div class="help-access__group help-access__group--v2">
+    <div class="help-access__group help-access__group--v1">
+      <span class="help-access__text help-access__text--v1">Harry Brookes Allen Museum of Anatomy and Pathology (HBA)<br>Henry Forman Atkinson Dental Museum (HFA)<br>Medical History Museum (MHM)</span>
+      <span class="help-access__text help-access__text--v1">Email: <a class="help-access__text-link-mdhs-museum-unimelb" href="mailto:MDHS-museum@unimelb.edu.au">MDHS-museum@unimelb.edu.au</a></span>
     </div>
-    <div style="border:1px solid #e3e0d9;padding:18px 20px;display:flex;flex-direction:column;gap:6px">
-      <span style="font-size:15px">Grainger Museum Collection (GMC)<br>University Art Collection (UAC)</span>
-      <span style="font-size:15px">Request Form: <a href="#">Open form</a></span>
+    <div class="help-access__group help-access__group--v1">
+      <span class="help-access__text help-access__text--v1">Grainger Museum Collection (GMC)<br>University Art Collection (UAC)</span>
+      <span class="help-access__text help-access__text--v1">Request Form: <a class="help-access__text-link-open-form" href="#">Open form</a></span>
     </div>
   </div>
 </section>
 </sc-if>
 
 <sc-if value="{{ showPrivacy }}" hint-placeholder-val="{{ true }}">
-<section id="privacy" aria-labelledby="h-privacy" style="display:flex;flex-direction:column;gap:14px;scroll-margin-top:20px;font-size:16px;line-height:1.6;color:#3b4050">
-  <h2 id="h-privacy" style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:28px;color:var(--col-bg-primary)">Privacy</h2>
-  <p style="margin:0;max-width:760px">The University respects the privacy of anyone who interacts with us and is committed to protecting and managing personal and health information fairly and lawfully.</p>
-  <p style="margin:0;max-width:760px">University of Melbourne (University) is governed by the Privacy and Data Protection Act 2014 (Vic) and Health Records Act 2000 (Vic) (together, Privacy Laws). The University is also considered to be a data controller for the purposes of the EU General Data Protection Regulation 2016/679 (GDPR) in relation to the collection of personal information from individuals located in the EU.</p>
-  <p style="margin:0;max-width:760px">The University is committed to protecting your privacy and processing your personal information fairly and lawfully in compliance with the Privacy Laws and the GDPR, as applicable. Please refer to our <a href="https://policy.unimelb.edu.au/MPF1104/">Privacy Policy</a> and our <a href="https://about.unimelb.edu.au/strategy/governance/compliance-obligations/privacy">Privacy webpage</a> for information about how we handle personal information.</p>
+<section class="help-privacy" id="privacy" aria-labelledby="h-privacy">
+  <h2 class="help-privacy__heading" id="h-privacy">Privacy</h2>
+  <p class="help-privacy__text">The University respects the privacy of anyone who interacts with us and is committed to protecting and managing personal and health information fairly and lawfully.</p>
+  <p class="help-privacy__text">University of Melbourne (University) is governed by the Privacy and Data Protection Act 2014 (Vic) and Health Records Act 2000 (Vic) (together, Privacy Laws). The University is also considered to be a data controller for the purposes of the EU General Data Protection Regulation 2016/679 (GDPR) in relation to the collection of personal information from individuals located in the EU.</p>
+  <p class="help-privacy__text">The University is committed to protecting your privacy and processing your personal information fairly and lawfully in compliance with the Privacy Laws and the GDPR, as applicable. Please refer to our <a class="help-privacy__text-link-privacy-policy" href="https://policy.unimelb.edu.au/MPF1104/">Privacy Policy</a> and our <a class="help-privacy__text-link-privacy-webpage" href="https://about.unimelb.edu.au/strategy/governance/compliance-obligations/privacy">Privacy webpage</a> for information about how we handle personal information.</p>
 </section>
 </sc-if>
 </main>
@@ -454,60 +388,60 @@ html{scroll-behavior:smooth}
 <footer class="ccs-nav ccs-nav--footer" aria-label="University of Melbourne footer">
     <div class="ccs-foot__aoc">
       <div class="ccs-nav__inner">
-        <div>
-          <h2>Acknowledgement of Country</h2>
-          <div class="ccs-foot__flags"><img src="/images/home/flag-aboriginal.svg" alt="Aboriginal flag"><img src="/images/home/flag-torres-strait.svg" alt="Torres Strait Islander flag"></div>
+        <div class="ccs-nav__group">
+          <h2 class="ccs-nav__heading-acknowledgement-country">Acknowledgement of Country</h2>
+          <div class="ccs-foot__flags"><img class="ccs-foot__image" src="/images/home/flag-aboriginal.svg" alt="Aboriginal flag"><img class="ccs-foot__image" src="/images/home/flag-torres-strait.svg" alt="Torres Strait Islander flag"></div>
         </div>
-        <div>
-          <p>We acknowledge Aboriginal and Torres Strait Islander people as the Traditional Owners of the unceded lands on which we work, learn and live. We pay respect to Elders past, present and future, and acknowledge the importance of Indigenous knowledge in the Academy.</p>
-          <a class="ccs-link ccs-link--inverse" href="https://www.unimelb.edu.au/reconciliation"><img src="/images/home/icon-arrow-footer.svg" alt="">Read about our Indigenous priorities</a>
+        <div class="ccs-nav__group">
+          <p class="ccs-nav__text">We acknowledge Aboriginal and Torres Strait Islander people as the Traditional Owners of the unceded lands on which we work, learn and live. We pay respect to Elders past, present and future, and acknowledge the importance of Indigenous knowledge in the Academy.</p>
+          <a class="ccs-link ccs-link--inverse" href="https://www.unimelb.edu.au/reconciliation"><img class="ccs-link__image" src="/images/home/icon-arrow-footer.svg" alt="">Read about our Indigenous priorities</a>
         </div>
       </div>
     </div>
     <div class="ccs-foot__main">
       <div class="ccs-nav__inner">
         <ul class="ccs-foot__links">
-            <li><a class="ccs-link ccs-link--inverse" href="https://about.unimelb.edu.au/"><img src="/images/home/icon-arrow-footer.svg" alt="">About us</a></li>
-            <li><a class="ccs-link ccs-link--inverse" href="https://about.unimelb.edu.au/careers"><img src="/images/home/icon-arrow-footer.svg" alt="">Careers at Melbourne</a></li>
-            <li><a class="ccs-link ccs-link--inverse" href="https://www.unimelb.edu.au/respect"><img src="/images/home/icon-arrow-footer.svg" alt="">Safety and respect</a></li>
-            <li><a class="ccs-link ccs-link--inverse" href="https://www.unimelb.edu.au/newsroom"><img src="/images/home/icon-arrow-footer.svg" alt="">Newsroom</a></li>
-            <li><a class="ccs-link ccs-link--inverse" href="https://www.unimelb.edu.au/contact"><img src="/images/home/icon-arrow-footer.svg" alt="">Contact</a></li>
-            <li><a class="ccs-link ccs-link--inverse" href="https://about.unimelb.edu.au/priorities-and-partnerships/campus-development/campus-locations"><img src="/images/home/icon-arrow-footer.svg" alt="">Campus locations</a></li>
+            <li class="ccs-foot__item"><a class="ccs-link ccs-link--inverse" href="https://about.unimelb.edu.au/"><img class="ccs-link__image" src="/images/home/icon-arrow-footer.svg" alt="">About us</a></li>
+            <li class="ccs-foot__item"><a class="ccs-link ccs-link--inverse" href="https://about.unimelb.edu.au/careers"><img class="ccs-link__image" src="/images/home/icon-arrow-footer.svg" alt="">Careers at Melbourne</a></li>
+            <li class="ccs-foot__item"><a class="ccs-link ccs-link--inverse" href="https://www.unimelb.edu.au/respect"><img class="ccs-link__image" src="/images/home/icon-arrow-footer.svg" alt="">Safety and respect</a></li>
+            <li class="ccs-foot__item"><a class="ccs-link ccs-link--inverse" href="https://www.unimelb.edu.au/newsroom"><img class="ccs-link__image" src="/images/home/icon-arrow-footer.svg" alt="">Newsroom</a></li>
+            <li class="ccs-foot__item"><a class="ccs-link ccs-link--inverse" href="https://www.unimelb.edu.au/contact"><img class="ccs-link__image" src="/images/home/icon-arrow-footer.svg" alt="">Contact</a></li>
+            <li class="ccs-foot__item"><a class="ccs-link ccs-link--inverse" href="https://about.unimelb.edu.au/priorities-and-partnerships/campus-development/campus-locations"><img class="ccs-link__image" src="/images/home/icon-arrow-footer.svg" alt="">Campus locations</a></li>
         </ul>
         <div class="ccs-foot__contact">
           <h2 class="ccs-foot__label">Contact details</h2>
-          <p>Phone <a href="tel:136352">13 MELB (13 6352)</a><br>International <a href="tel:+61390355511">+61 3 9035 5511</a></p>
-          <address><strong>Address</strong><br>The University of Melbourne<br>Grattan Street, Parkville<br>Victoria 3010<br>Australia</address>
+          <p class="ccs-foot__text">Phone <a class="ccs-foot__text-link-13-melb-13" href="tel:136352">13 MELB (13 6352)</a><br>International <a class="ccs-foot__text-link-61-3-9035" href="tel:+61390355511">+61 3 9035 5511</a></p>
+          <address class="ccs-foot__address"><strong class="ccs-foot__address-strong">Address</strong><br>The University of Melbourne<br>Grattan Street, Parkville<br>Victoria 3010<br>Australia</address>
         </div>
-        <div>
+        <div class="ccs-nav__group">
           <h2 class="ccs-foot__label">Connect with us</h2>
           <ul class="ccs-foot__social">
-            <li><a href="https://www.facebook.com/unimelb" aria-label="Facebook"><img src="/images/home/social-facebook.svg" alt=""></a></li>
-            <li><a href="https://www.linkedin.com/school/university-of-melbourne" aria-label="LinkedIn"><img src="/images/home/social-linkedin.svg" alt=""></a></li>
-            <li><a href="https://www.instagram.com/unimelb" aria-label="Instagram"><img src="/images/home/social-instagram.svg" alt=""></a></li>
-            <li><a href="https://x.com/unimelb" aria-label="X (Twitter)"><img src="/images/home/social-x.svg" alt=""></a></li>
+            <li class="ccs-foot__item"><a class="ccs-foot__item-link-facebook" href="https://www.facebook.com/unimelb" aria-label="Facebook"><img class="ccs-foot__link-image" src="/images/home/social-facebook.svg" alt=""></a></li>
+            <li class="ccs-foot__item"><a class="ccs-foot__item-link-linkedin" href="https://www.linkedin.com/school/university-of-melbourne" aria-label="LinkedIn"><img class="ccs-foot__link-image" src="/images/home/social-linkedin.svg" alt=""></a></li>
+            <li class="ccs-foot__item"><a class="ccs-foot__item-link-instagram" href="https://www.instagram.com/unimelb" aria-label="Instagram"><img class="ccs-foot__link-image" src="/images/home/social-instagram.svg" alt=""></a></li>
+            <li class="ccs-foot__item"><a class="ccs-foot__item-link-x-twitter" href="https://x.com/unimelb" aria-label="X (Twitter)"><img class="ccs-foot__link-image" src="/images/home/social-x.svg" alt=""></a></li>
           </ul>
         </div>
-        <div class="ccs-foot__brand"><a href="https://www.unimelb.edu.au" aria-label="The University of Melbourne homepage"><img src="/images/home/uom-logo-vert-ondark.svg" alt=""></a></div>
+        <div class="ccs-foot__brand"><a class="ccs-foot__link-university-melbourne-homepage" href="https://www.unimelb.edu.au" aria-label="The University of Melbourne homepage"><img class="ccs-foot__link-image" src="/images/home/uom-logo-vert-ondark.svg" alt=""></a></div>
       </div>
     </div>
     <div class="ccs-foot__last">
       <div class="ccs-nav__inner">
         <ul class="ccs-foot__legal">
-          <li><a href="https://safety.unimelb.edu.au/emergency">Emergency</a></li>
-          <li><a href="https://www.unimelb.edu.au/legal">Terms and privacy</a></li>
-          <li><a href="https://www.unimelb.edu.au/accessibility">Accessibility</a></li>
-          <li><a href="https://about.unimelb.edu.au/strategy/governance/compliance-obligations/privacy">Privacy</a></li>
+          <li class="ccs-foot__item"><a class="ccs-foot__item-link-emergency" href="https://safety.unimelb.edu.au/emergency">Emergency</a></li>
+          <li class="ccs-foot__item"><a class="ccs-foot__item-link-terms-privacy" href="https://www.unimelb.edu.au/legal">Terms and privacy</a></li>
+          <li class="ccs-foot__item"><a class="ccs-foot__item-link-accessibility" href="https://www.unimelb.edu.au/accessibility">Accessibility</a></li>
+          <li class="ccs-foot__item"><a class="ccs-foot__item-link-privacy" href="https://about.unimelb.edu.au/strategy/governance/compliance-obligations/privacy">Privacy</a></li>
         </ul>
         <ul class="ccs-foot__ids">
-          <li>The University of Melbourne (Australian University): <strong>PRV12150</strong></li>
-          <li>CRICOS: <strong>00116K</strong></li>
-          <li>ABN: <strong>84 002 705 224</strong></li>
+          <li class="ccs-foot__item">The University of Melbourne (Australian University): <strong class="ccs-foot__item-strong">PRV12150</strong></li>
+          <li class="ccs-foot__item">CRICOS: <strong class="ccs-foot__item-strong">00116K</strong></li>
+          <li class="ccs-foot__item">ABN: <strong class="ccs-foot__item-strong">84 002 705 224</strong></li>
         </ul>
       </div>
     </div>
   </footer>
-<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+<svg class="help-page__icon" xmlns="http://www.w3.org/2000/svg">
   <symbol id="icon-facebook" viewBox="0 0 24 24">
     <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
   </symbol>
@@ -554,7 +488,7 @@ class Component extends DCLogic {
     const topic = found ? { key: found[0], title: found[1], blurb: found[2] } : null;
     return {
       topic, notTopic: !topic,
-      mainStyle: topic ? 'flex:1;max-width:1200px;width:100%;margin:0 auto;padding:40px 32px 80px;display:flex;flex-direction:column;gap:28px' : 'flex:1;max-width:1200px;width:100%;margin:0 auto;padding:0;display:flex;flex-direction:column;gap:0',
+      mainClass: topic ? 'help-main-content--topic' : 'help-main-content--index',
       showFaq: !!topic && topic.key === 'faq', showSearchTips: !!topic && topic.key === 'search-tips',
       showCopyright: !!topic && topic.key === 'copyright',
       showAccess: !!topic && topic.key === 'access', showPrivacy: !!topic && topic.key === 'privacy',

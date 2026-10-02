@@ -1,0 +1,55 @@
+/* Moved out of an inline <style> block (base-elements). Used by: record. */
+
+body{margin:0;background:var(--white-100);color:var(--col-text-primary);font-family:'Source Sans 3',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#0b2a6b;text-decoration:none}a:hover{color:#0b2a6b;text-decoration:underline}
+*{box-sizing:border-box}
+button,input{font-family:inherit}
+
+/* Item media viewer */
+.item-media{position:relative;display:flex;width:100%;height:clamp(420px,calc(100vh - 96px),780px);background:#1a1a1a;border-bottom:1px solid #e7e7e9;overflow:hidden}
+.item-media:focus{outline:none}
+.item-media:focus-visible{outline:3px solid #46c8f0;outline-offset:-3px}
+.item-media:fullscreen{height:100vh;width:100vw}
+.im-stage{overflow:hidden}
+.im-sidebar{position:absolute;top:0;right:0;bottom:0;z-index:10;width:min(340px,100%);background:#fff;display:flex;flex-direction:column;transform:translateX(100%);visibility:hidden;box-shadow:-6px 0 18px rgba(0,0,0,.28);transition:transform .25s ease,visibility 0s linear .25s}
+.im-sidebar.open{transform:none;visibility:visible;transition:transform .25s ease}
+.im-sidebar__inner{width:100%;height:100%;display:flex;flex-direction:column;min-height:0}
+.im-sidebar__head{display:flex;align-items:center;justify-content:space-between;padding:12px 12px 12px 20px;border-bottom:1px solid #e7e7e9}
+.im-sidebar__body{flex:1;min-height:0;overflow-y:auto;margin:0;padding:0;list-style:none}
+.im-sidebar__body li{padding:14px 20px;border-bottom:1px solid #f0f0f0;display:flex;flex-direction:column;gap:4px}
+.im-sidebar__body .k{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:#5b6070}
+.im-sidebar__body .v{font-size:14px;line-height:1.5;color:#1a1a1a;text-wrap:pretty;word-break:break-word;white-space:pre-line}
+.im-main{flex:1;min-width:0;display:flex;flex-direction:column;background:#1a1a1a}
+.im-stage{position:relative;flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:16px}
+.im-img{display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain}
+.im-video{display:block;width:100%;height:100%;max-height:100%;background:#000;object-fit:contain}
+.im-audio{width:min(560px,100%);display:flex;flex-direction:column;align-items:center;gap:20px;color:#fff;text-align:center}
+.im-audio svg{opacity:.85}
+.im-audio audio{width:100%}
+.im-msg{color:#fff;font-size:16px;text-align:center;max-width:420px;line-height:1.5}
+.im-bar{flex:none;display:flex;align-items:center;gap:4px;min-height:56px;padding:8px 12px;background:#fff;border-top:1px solid #e7e7e9}
+.im-bar__spacer{flex:1}
+.im-count{font-size:14px;color:#3b4050;padding:0 8px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.im-btn{width:40px;height:40px;min-width:40px;min-height:40px;display:inline-flex;align-items:center;justify-content:center;padding:0;border:0;border-radius:0;background:none;color:var(--col-bg-primary);cursor:pointer;transition:background-color .15s ease,color .15s ease}
+.im-btn:hover{background:#eef1f7}
+.im-btn:focus-visible{outline:3px solid #0b4ea2;outline-offset:-3px}
+.im-btn:disabled{color:#a6a6a6;cursor:not-allowed;background:none}
+.im-btn[aria-pressed="true"],.im-btn[aria-expanded="true"]{background:#e8edf6}
+.im-thumbs{flex:none;display:flex;gap:8px;overflow-x:auto;padding:10px 12px;background:#fff;border-top:1px solid #e7e7e9}
+.im-thumb{flex:none;width:56px;height:56px;padding:0;border:2px solid transparent;background:#f4f3f0;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--col-bg-primary);overflow:hidden}
+.im-thumb:hover{border-color:#9aa3b8}
+.im-thumb:focus-visible{outline:3px solid #0b4ea2;outline-offset:1px}
+.im-thumb[aria-current="true"]{border-color:#0b4ea2}
+.im-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.sr-live{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media(max-width:768px){
+  .item-media{flex-direction:column;height:auto}
+  .im-stage{height:min(62vh,440px);flex:none}
+  .item-media:fullscreen .im-stage{height:auto;flex:1}
+  .im-sidebar{top:auto;left:0;right:0;width:100%;max-height:60%;transform:translateY(100%);box-shadow:0 -6px 18px rgba(0,0,0,.28)}
+  .im-sidebar.open{transform:none}
+  .item-media:fullscreen{height:100vh}
+}
+@media(prefers-reduced-motion:reduce){.im-sidebar,.im-sidebar.open,.im-btn{transition:none}}
+@media print{.item-media{display:none}}
+[aria-label="University links"] a:hover{color:var(--sage-100);text-decoration:underline}

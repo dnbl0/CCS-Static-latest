@@ -787,6 +787,8 @@ public/                              # Deployed web root
 ├── blacklight-adapter.js, support.js, image-slot.js
 ├── components/                      # fig-tokens.css, fig-assets.css (+ exported .jsx/.d.ts)
 ├── styles/                          # home.css, advanced-filters.css, header.css, collection.css, vendor/bootstrap-uom.min.css
+│   ├── pages/                       # <page>.css (classes moved out of inline styles) + <page>.<role>.css (former <style> blocks)
+│   └── shared/                      # skip-link.css, colour-tokens*.css, base-elements.css (blocks shared by several pages)
 ├── assets/                          # images/collections, data (audio/video, metadata), documents
 ├── images/                          # optimised web images and icons
 └── .htaccess                        # Apache redirects/rewrites
@@ -806,6 +808,8 @@ vercel.json                          # clean URLs + legacy redirects
 | `public/styles/home.css` | Navigation (header/footer) and Section components, accordion, links |
 | `public/styles/advanced-filters.css` | Advanced Filters form components |
 | `public/styles/header.css` | Search overlay, `.sr-only` and shared colour variables |
+| `public/styles/pages/*.css` | Per-page rules (scoped by `body.page-<page>`); includes the former inline styles and `<style>` blocks |
+| `public/styles/shared/*.css` | Former `<style>` blocks that several pages shared |
 | `public/styles/collection.css` | Collection landing pages |
 | `public/styles/vendor/bootstrap-uom.min.css` | Bootstrap 5.3.3, compiled locally |
 
@@ -821,7 +825,7 @@ vercel.json                          # clean URLs + legacy redirects
 <link rel="stylesheet" href="styles/home.css">
 ```
 
-Paths are relative to the page (`../` prefixes on pages in subfolders).
+Paths are relative to the page (`../` prefixes on pages in subfolders). Page-specific stylesheets are linked with absolute paths (`/styles/pages/<page>.css`) after the shared sheets. Pages contain no inline `style` attributes or `<style>` blocks (see `tests/no-inline-styles.test.js`).
 
 ### Bootstrap Details
 

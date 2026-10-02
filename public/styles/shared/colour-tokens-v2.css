@@ -1,0 +1,29 @@
+/* Moved out of an inline <style> block (colour-tokens). Used by: collection-landing, collections-browse, help, search-results. */
+
+:root{
+  --col-bg-primary:#000f46;
+  --col-bg-primary-dark:#000b34;
+  --col-bg-primary-hover:#213e5d;
+  --col-bg-surface:#fff;
+  --col-bg-accent:#abc1a7;
+  --col-bg-accent-soft:#dde5d6;
+  --col-bg-selected:#e8edf6;
+  --col-btn-primary-bg:#000f46;
+  --col-btn-primary-bg-hover:#213e5d;
+  --col-btn-primary-text:#fff;
+  --col-btn-action-bg:#46c8f0;
+  --col-btn-action-bg-hover:#29b3d9;
+  --col-btn-action-text:#000f46;
+  --col-btn-outline:#000f46;
+  --col-text-primary:#1b1f2a;
+  --col-text-onbrand:#fff;
+  --col-text-muted:#5b6070;
+  --col-border-brand:#000f46;
+  --col-border-neutral:#cfcac0;
+  --col-border-neutral-soft:#ece9e3;
+  --col-border-neutral-mid:#d9d6cf;
+  --col-border-header:#b5bac9;
+  --col-advisory-bg:#fdf6d8;
+  --col-advisory-border:#efdc8e;
+  --col-advisory-text:#8a6200;
+}
