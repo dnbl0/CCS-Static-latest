@@ -11,12 +11,20 @@
  *   sort              relevance | year-desc | year-asc | az
  * Option lists and counts come from window.CCS.items (public/collection-data.js).
  * The same parameters are read back from the URL to pre-fill the form ("Edit advanced search").
+ *
+ * Reusable components in this file (styled by styles/advanced-filters.css):
+ *   Select      single-select combobox + listbox (field, match type, sort). closed / open / hover / selected / completed.
+ *   Multi       multi-select checkbox menu (filter values, "Add filter"). Options keep their checked state when reopened.
+ *   DateField   text date input + calendar popover (month navigation, keyboard date selection, clear, min/max).
+ * Keyboard (Select / Multi): Arrow Up/Down, Home, End, Enter, Space, Escape, Tab, type-ahead.
  */
 (function () {
   'use strict';
 
   var FIELDS = [['all_fields', 'All Fields'], ['title', 'Title'], ['creator', 'Creator'], ['subject', 'Subject'], ['description', 'Description']];
   var OPS = [['must', 'Contains all (AND)'], ['should', 'Contains any (OR)'], ['must_not', 'Does not contain (NOT)']];
+  var MODES = [['or', 'Includes any (OR)'], ['and', 'Includes all (AND)']];
+  var SORTS = [['relevance', 'Relevance'], ['year-desc', 'Date (Newest)'], ['year-asc', 'Date (Oldest)'], ['az', 'Title (A–Z)']];
   var FILTERS = [
     { key: 'collection', label: 'Collection Title', get: function (it) { return [it.collection]; }, on: true },
     { key: 'creator', label: 'Creator Name', get: function (it) { return [it.creator]; } },
@@ -26,6 +34,7 @@
     { key: 'year', label: 'Production Date', range: true, on: true }
   ];
   var MAX_ROWS = 8;
+  var IMG = '/images/advanced/';
   var uid = 0;
 
   function $(sel, root) { return (root || document).querySelector(sel); }
@@ -41,15 +50,380 @@
     (children || []).forEach(function (c) { if (c) n.appendChild(c); });
     return n;
   }
-  function srLabel(id, text) { return el('label', { 'for': id, 'class': 'sr-only', text: text }); }
-  function selectField(id, options, cls) {
-    var s = el('select', { id: id, 'class': 'ccs-select ' + (cls || '') });
-    options.forEach(function (o) { s.appendChild(el('option', { value: o[0], text: o[1] })); });
-    return el('div', { 'class': 'ccs-select-wrap' }, [s]);
-  }
   function img(src) { return el('img', { src: src, alt: '' }); }
-  var ICON_CHEVRON = '/images/advanced/icon-chevron-down.svg';
-  var ICON_DELETE = '/images/advanced/icon-delete.svg';
+  function nextId(p) { return p + '-' + (++uid); }
+
+  /* ---- live region ------------------------------------------------------------------------- */
+  function announce(msg) {
+    var r = $('#adv-live');
+    if (!r) return;
+    r.textContent = '';
+    setTimeout(function () { r.textContent = msg; }, 30);
+  }
+
+  /* ---- open-menu registry (one open at a time; outside click / Escape / Tab close) ---------- */
+  var openMenu = null;
+  function setOpen(menu) {
+    if (openMenu && openMenu !== menu) openMenu.close();
+    openMenu = menu;
+  }
+  document.addEventListener('mousedown', function (e) {
+    if (openMenu && !openMenu.root.contains(e.target)) openMenu.close();
+  });
+  document.addEventListener('focusin', function (e) {
+    if (openMenu && !openMenu.root.contains(e.target)) openMenu.close();
+  });
+
+  /* =============================================================================================
+   * Select — single-select combobox. Focus stays on the combobox button; the highlighted option is
+   * exposed with aria-activedescendant. Value is mirrored into a hidden input for form submission.
+   * ========================================================================================== */
+  function Select(o) {
+    var id = o.id || nextId('adv-sel');
+    var self = { root: null, value: '', open: false };
+    var opts = o.options.map(function (p, i) { return { value: p[0], label: p[1], id: id + '-opt-' + i }; });
+    var lblId = id + '-lbl', listId = id + '-list';
+    var valueSpan = el('span', { 'class': 'ccs-combo__value is-placeholder', text: o.placeholder || 'Select' });
+    var iconImg = img(IMG + 'icon-select-closed.svg');
+    var btn = el('button', {
+      type: 'button', id: id, 'class': 'ccs-combo__field', role: 'combobox', 'aria-haspopup': 'listbox', 'aria-expanded': 'false',
+      'aria-controls': listId, 'aria-labelledby': lblId + ' ' + id
+    }, [valueSpan, el('span', { 'class': 'ccs-combo__icon' }, [iconImg])]);
+    var list = el('ul', { id: listId, 'class': 'ccs-combo__menu', role: 'listbox', tabindex: '-1', 'aria-labelledby': lblId, hidden: true });
+    var lis = opts.map(function (p) {
+      var li = el('li', { id: p.id, 'class': 'ccs-combo__option', role: 'option', 'aria-selected': 'false', 'data-value': p.value, text: p.label });
+      list.appendChild(li); return li;
+    });
+    var hidden = o.name ? el('input', { type: 'hidden', name: o.name }) : null;
+    var label = el('span', { id: lblId, 'class': 'sr-only', text: o.label });
+    var root = el('div', { 'class': 'ccs-combo' + (o.className ? ' ' + o.className : '') }, [label, btn, list, hidden]);
+    self.root = root; self.button = btn; self.hidden = hidden;
+    var active = -1, typed = '', typedAt = 0;
+
+    function indexOfValue(v) { for (var i = 0; i < opts.length; i++) if (opts[i].value === v) return i; return -1; }
+    function paint() {
+      var i = indexOfValue(self.value);
+      valueSpan.textContent = i > -1 ? opts[i].label : (o.placeholder || 'Select');
+      valueSpan.classList.toggle('is-placeholder', i < 0);
+      root.classList.toggle('is-complete', i > -1 && !!o.completeStyle);
+      lis.forEach(function (li, k) { li.setAttribute('aria-selected', k === i ? 'true' : 'false'); });
+      if (hidden) hidden.value = self.value;
+    }
+    function setActive(i) {
+      active = Math.max(0, Math.min(opts.length - 1, i));
+      lis.forEach(function (li, k) { li.classList.toggle('is-active', k === active); });
+      btn.setAttribute('aria-activedescendant', opts[active].id);
+      if (lis[active].scrollIntoView) lis[active].scrollIntoView({ block: 'nearest' });
+    }
+    self.set = function (v, silent) {
+      self.value = v; paint();
+      if (!silent && o.onChange) o.onChange(v, self);
+    };
+    self.get = function () { return self.value; };
+    self.close = function (refocus) {
+      if (!self.open) return;
+      self.open = false; list.hidden = true; btn.setAttribute('aria-expanded', 'false'); btn.removeAttribute('aria-activedescendant');
+      iconImg.src = IMG + 'icon-select-closed.svg'; root.classList.remove('is-open');
+      if (openMenu === self) openMenu = null;
+      if (refocus) btn.focus();
+    };
+    self.show = function () {
+      if (self.open) return;
+      setOpen(self);
+      self.open = true; list.hidden = false; btn.setAttribute('aria-expanded', 'true');
+      iconImg.src = IMG + 'icon-select-open.svg'; root.classList.add('is-open');
+      var i = indexOfValue(self.value); setActive(i > -1 ? i : 0);
+    };
+    function choose(i) { self.set(opts[i].value); self.close(true); }
+
+    btn.addEventListener('click', function () { if (self.open) self.close(true); else self.show(); });
+    lis.forEach(function (li, k) {
+      li.addEventListener('mousemove', function () { if (active !== k) setActive(k); });
+      li.addEventListener('mousedown', function (e) { e.preventDefault(); });   // keep focus on the button
+      li.addEventListener('click', function () { choose(k); });
+    });
+    btn.addEventListener('keydown', function (e) {
+      var k = e.key;
+      if (!self.open) {
+        if (k === 'ArrowDown' || k === 'ArrowUp' || k === 'Enter' || k === ' ') { e.preventDefault(); self.show(); }
+        else if (k === 'Home' || k === 'End') { e.preventDefault(); self.show(); setActive(k === 'Home' ? 0 : opts.length - 1); }
+        return;
+      }
+      if (k === 'ArrowDown') { e.preventDefault(); setActive(active + 1); }
+      else if (k === 'ArrowUp') { e.preventDefault(); setActive(active - 1); }
+      else if (k === 'Home') { e.preventDefault(); setActive(0); }
+      else if (k === 'End') { e.preventDefault(); setActive(opts.length - 1); }
+      else if (k === 'Enter' || k === ' ') { e.preventDefault(); choose(active); }
+      else if (k === 'Escape') { e.preventDefault(); e.stopPropagation(); self.close(true); }
+      else if (k === 'Tab') { self.close(false); }
+      else if (k.length === 1 && !e.ctrlKey && !e.metaKey) {      // type-ahead
+        var now = Date.now(); typed = (now - typedAt > 700 ? '' : typed) + k.toLowerCase(); typedAt = now;
+        for (var i = 0; i < opts.length; i++) { if (opts[i].label.toLowerCase().indexOf(typed) === 0) { setActive(i); break; } }
+      }
+    });
+    self.set(o.value != null ? o.value : '', true);
+    return self;
+  }
+
+  /* =============================================================================================
+   * Multi — multi-select checkbox menu. The trigger is a disclosure button (aria-expanded /
+   * aria-controls); the menu is a group of real checkboxes with roving arrow-key focus. Checked state
+   * is kept in the checkboxes, so it is still visible when the menu is reopened.
+   * ========================================================================================== */
+  function Multi(o) {
+    var id = o.id || nextId('adv-multi');
+    var self = { root: null, open: false };
+    var panelId = id + '-menu', lblId = id + '-lbl';
+    var valueSpan = el('span', { 'class': 'ccs-combo__value is-placeholder', text: o.placeholder });
+    var iconImg = img(IMG + 'icon-select-closed.svg');
+    var btn = el('button', { type: 'button', id: id, 'class': 'ccs-combo__field', 'aria-haspopup': 'true', 'aria-expanded': 'false', 'aria-controls': panelId, 'aria-labelledby': lblId + ' ' + id },
+      [valueSpan, el('span', { 'class': 'ccs-combo__icon' }, [iconImg])]);
+    var menu = el('div', { id: panelId, 'class': 'ccs-combo__menu', role: 'group', 'aria-labelledby': lblId, hidden: true });
+    var search = null;
+    if (o.searchable) {
+      var sid = id + '-search';
+      search = el('input', { type: 'search', id: sid, 'class': 'ccs-input ccs-combo__search', placeholder: 'Search ' + o.label.toLowerCase(), autocomplete: 'off' });
+      menu.appendChild(el('label', { 'for': sid, 'class': 'sr-only', text: 'Search within ' + o.label }));
+      menu.appendChild(search);
+    }
+    var ul = el('ul', { 'class': 'ccs-combo__list' });
+    var boxes = [];
+    function addOption(p, i) {
+      var cid = id + '-opt-' + i;
+      var cb = el('input', { type: 'checkbox', id: cid, value: p.value, 'class': 'ccs-check' });
+      var children = [cb, el('span', { 'class': 'ccs-combo__option-text', text: p.label })];
+      if (p.count != null) children.push(el('span', { 'class': 'ccs-combo__count', text: String(p.count) }));
+      ul.appendChild(el('li', { 'class': 'ccs-combo__item', 'data-label': p.label.toLowerCase() }, [el('label', { 'for': cid, 'class': 'ccs-combo__option' }, children)]));
+      boxes.push(cb);
+    }
+    o.options.forEach(addOption);
+    menu.appendChild(ul);
+    var none = el('p', { 'class': 'ccs-combo__none', role: 'status', hidden: true, text: 'No matching values' });
+    menu.appendChild(none);
+    var label = el('span', { id: lblId, 'class': 'sr-only', text: o.label });
+    var root = el('div', { 'class': 'ccs-combo ccs-combo--multi' + (o.className ? ' ' + o.className : '') }, [label, btn, menu]);
+    self.root = root; self.button = btn; self.boxes = boxes;
+
+    function visible() { return boxes.filter(function (b) { return !b.closest('li').hidden; }); }
+    self.checked = function () { return boxes.filter(function (b) { return b.checked; }).map(function (b) { return b.value; }); };
+    self.setChecked = function (vals, silent) {
+      vals.forEach(function (v) { if (!boxes.some(function (b) { return b.value === v; })) addOption({ value: v, label: v, count: 0 }, boxes.length); });   // keep values the dataset lacks (old shared links)
+      boxes.forEach(function (b) { b.checked = vals.indexOf(b.value) > -1; });
+      self.refresh(silent);
+    };
+    self.refresh = function (silent) {
+      var c = self.checked();
+      var text = o.summary ? o.summary(c) : (c.length <= 2 ? c.join(', ') : c.length + ' selected');
+      valueSpan.textContent = text || o.placeholder;
+      valueSpan.classList.toggle('is-placeholder', !text);
+      root.classList.toggle('is-complete', c.length > 0);
+      if (!silent && o.onChange) o.onChange(c, self);
+    };
+    self.close = function (refocus) {
+      if (!self.open) return;
+      self.open = false; menu.hidden = true; btn.setAttribute('aria-expanded', 'false');
+      iconImg.src = IMG + 'icon-select-closed.svg'; root.classList.remove('is-open');
+      if (openMenu === self) openMenu = null;
+      if (refocus) btn.focus();
+    };
+    self.show = function () {
+      if (self.open) return;
+      setOpen(self);
+      self.open = true; menu.hidden = false; btn.setAttribute('aria-expanded', 'true');
+      iconImg.src = IMG + 'icon-select-open.svg'; root.classList.add('is-open');
+      var first = search || visible()[0];
+      if (first) first.focus();
+    };
+    btn.addEventListener('click', function () { if (self.open) self.close(true); else self.show(); });
+    btn.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault(); self.show();
+        var v = visible(), t = search || (e.key === 'ArrowUp' ? v[v.length - 1] : v[0]); if (t) t.focus();
+      } else if (e.key === 'Escape' && self.open) { e.preventDefault(); e.stopPropagation(); self.close(true); }
+    });
+    menu.addEventListener('change', function (e) { if (e.target.classList.contains('ccs-check')) self.refresh(); });
+    menu.addEventListener('keydown', function (e) {
+      var k = e.key, v = visible(), cur = v.indexOf(document.activeElement), t;
+      if (k === 'Escape') { e.preventDefault(); e.stopPropagation(); self.close(true); return; }
+      if (k === 'Tab') { self.close(false); return; }
+      if (k === 'ArrowDown') { e.preventDefault(); t = v[cur + 1] || v[v.length - 1]; if (t) t.focus(); }
+      else if (k === 'ArrowUp') { e.preventDefault(); if (cur <= 0 && search) search.focus(); else if (v[cur - 1]) v[cur - 1].focus(); }
+      else if (k === 'Home' && document.activeElement !== search) { e.preventDefault(); if (v[0]) v[0].focus(); }
+      else if (k === 'End' && document.activeElement !== search) { e.preventDefault(); if (v.length) v[v.length - 1].focus(); }
+      else if (k === 'Enter' && document.activeElement.classList.contains('ccs-check')) { e.preventDefault(); document.activeElement.click(); }
+    });
+    if (search) search.addEventListener('input', function () {
+      var q = search.value.trim().toLowerCase(), shown = 0;
+      $$('.ccs-combo__item', ul).forEach(function (li) { var hit = !q || li.getAttribute('data-label').indexOf(q) > -1; li.hidden = !hit; if (hit) shown++; });
+      none.hidden = shown > 0;
+    });
+    self.refresh(true);
+    return self;
+  }
+
+  /* =============================================================================================
+   * DateField — text input (dd/mm/yyyy or just a year) + calendar popover.
+   * Dates are plain {y,m,d} objects (m is 1-12) so there are no time-zone surprises.
+   * ========================================================================================== */
+  var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  var DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  function dim(y, m) { return new Date(y, m, 0).getDate(); }
+  function toKey(d) { return d.y * 10000 + d.m * 100 + d.d; }
+  function fmt(d) { return pad(d.d) + '/' + pad(d.m) + '/' + d.y; }
+  function longFmt(d) { return d.d + ' ' + MONTHS[d.m - 1] + ' ' + d.y; }
+  function addDays(d, n) { var t = new Date(d.y, d.m - 1, d.d + n); return { y: t.getFullYear(), m: t.getMonth() + 1, d: t.getDate() }; }
+  function addMonths(d, n) { var t = new Date(d.y, d.m - 1 + n, 1); var y = t.getFullYear(), m = t.getMonth() + 1; return { y: y, m: m, d: Math.min(d.d, dim(y, m)) }; }
+  function weekday(d) { return (new Date(d.y, d.m - 1, d.d).getDay() + 6) % 7; }   // Monday = 0
+  // "1950" | "d/m/yyyy" | "yyyy-mm-dd".  A bare year means 1 Jan (edge 'begin') or 31 Dec (edge 'end').
+  function parseDate(text, edge) {
+    var s = (text || '').trim(); if (!s) return { empty: true };
+    var m, dd, mm, yy;
+    if ((m = s.match(/^(\d{1,4})$/))) {
+      var y = Number(m[1]); if (y < 1 || y > 2100) return { error: true };
+      return { date: edge === 'end' ? { y: y, m: 12, d: 31 } : { y: y, m: 1, d: 1 }, yearOnly: true };
+    }
+    if ((m = s.match(/^(\d{1,2})[\/.\-](\d{1,2})[\/.\-](\d{4})$/))) { dd = +m[1]; mm = +m[2]; yy = +m[3]; }
+    else if ((m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/))) { yy = +m[1]; mm = +m[2]; dd = +m[3]; }
+    else return { error: true };
+    if (yy < 1 || yy > 2100 || mm < 1 || mm > 12 || dd < 1 || dd > dim(yy, mm)) return { error: true };
+    return { date: { y: yy, m: mm, d: dd } };
+  }
+
+  function DateField(o) {
+    var id = o.id || nextId('adv-date');
+    var self = { root: null, open: false, date: null, min: null, max: null, edge: o.edge };
+    var calId = id + '-cal', errId = id + '-err', hintId = id + '-hint', titleId = id + '-cal-title';
+    var label = el('label', { 'for': id, 'class': 'sr-only', text: o.label });
+    var input = el('input', { type: 'text', id: id, 'class': 'ccs-input ccs-date__input', placeholder: o.placeholder, autocomplete: 'off', inputmode: 'numeric', 'aria-describedby': hintId });
+    var toggle = el('button', { type: 'button', 'class': 'ccs-date__toggle', 'aria-haspopup': 'dialog', 'aria-expanded': 'false', 'aria-controls': calId, 'aria-label': 'Choose ' + o.label.toLowerCase() }, [img(IMG + 'icon-calendar.svg')]);
+    var field = el('div', { 'class': 'ccs-date__field' }, [input, toggle]);
+    var hint = el('span', { id: hintId, 'class': 'sr-only', text: 'Enter a date as dd/mm/yyyy, or just a year. Use the calendar button to pick a date.' });
+    var cal = el('div', { id: calId, 'class': 'ccs-cal', role: 'dialog', 'aria-label': 'Choose ' + o.label.toLowerCase(), hidden: true });
+    var title = el('h3', { id: titleId, 'class': 'ccs-cal__title', 'aria-live': 'polite' });
+    var prev = el('button', { type: 'button', 'class': 'ccs-cal__nav', 'aria-label': 'Previous month' }, [img(IMG + 'icon-chevron-left.svg')]);
+    var next = el('button', { type: 'button', 'class': 'ccs-cal__nav', 'aria-label': 'Next month' }, [img(IMG + 'icon-chevron-right.svg')]);
+    var head = el('div', { 'class': 'ccs-cal__head' }, [prev, title, next]);
+    var grid = el('table', { 'class': 'ccs-cal__grid', role: 'grid', 'aria-labelledby': titleId });
+    var clear = el('button', { type: 'button', 'class': 'ccs-cal__action', text: 'Clear' });
+    var close = el('button', { type: 'button', 'class': 'ccs-cal__action', text: 'Close' });
+    cal.appendChild(head); cal.appendChild(grid); cal.appendChild(el('div', { 'class': 'ccs-cal__foot' }, [clear, close]));
+    var err = el('p', { id: errId, 'class': 'ccs-error', hidden: true });
+    var status = el('span', { 'class': 'sr-only', role: 'status' });
+    var root = el('div', { 'class': 'ccs-date' }, [label, field, hint, cal, err, status]);
+    self.root = root; self.input = input; self.errorEl = err;
+    var view = null, focusDate = null;   // month shown + date focused in the grid
+
+    function today() { var t = new Date(); return { y: t.getFullYear(), m: t.getMonth() + 1, d: t.getDate() }; }
+    function disabled(d) { return (self.min && toKey(d) < toKey(self.min)) || (self.max && toKey(d) > toKey(self.max)); }
+    function say(msg) { status.textContent = ''; setTimeout(function () { status.textContent = msg; }, 30); }
+
+    self.setError = function (msg) {
+      err.hidden = !msg; err.textContent = msg || '';
+      if (msg) { input.setAttribute('aria-invalid', 'true'); input.setAttribute('aria-describedby', hintId + ' ' + errId); }
+      else { input.removeAttribute('aria-invalid'); input.setAttribute('aria-describedby', hintId); }
+    };
+    // Parse the text box into self.date; returns an error message ('' when fine / empty)
+    self.read = function () {
+      var r = parseDate(input.value, self.edge);
+      if (r.empty) { self.date = null; return ''; }
+      if (r.error) { self.date = null; return o.label + ' is not a valid date. Enter dd/mm/yyyy or a year.'; }
+      self.date = r.date; return '';
+    };
+    self.set = function (d, silent) {
+      self.date = d; input.value = d ? fmt(d) : '';
+      self.setError('');
+      if (!silent && o.onChange) o.onChange(self);
+    };
+    self.yearValue = function () { return self.date ? String(self.date.y) : ''; };
+
+    function render() {
+      title.textContent = MONTHS[view.m - 1] + ' ' + view.y;
+      var first = { y: view.y, m: view.m, d: 1 }, lead = weekday(first), n = dim(view.y, view.m);
+      var h = '<thead><tr>' + DAYS.map(function (d) { return '<th scope="col" abbr="' + d + '">' + d.slice(0, 2) + '</th>'; }).join('') + '</tr></thead><tbody>';
+      var day = 1 - lead;
+      for (var w = 0; w < 6 && day <= n; w++) {
+        h += '<tr>';
+        for (var c = 0; c < 7; c++, day++) {
+          if (day < 1 || day > n) { h += '<td></td>'; continue; }
+          var d = { y: view.y, m: view.m, d: day }, sel = self.date && toKey(self.date) === toKey(d), dis = disabled(d), isFocus = focusDate && toKey(focusDate) === toKey(d), tdy = toKey(today()) === toKey(d);
+          h += '<td><button type="button" class="ccs-cal__day' + (sel ? ' is-selected' : '') + (tdy ? ' is-today' : '') + '" data-d="' + day + '" tabindex="' + (isFocus ? '0' : '-1') + '"' +
+            (sel ? ' aria-selected="true"' : '') + (tdy ? ' aria-current="date"' : '') + (dis ? ' disabled' : '') + ' aria-label="' + longFmt(d) + (sel ? ', selected' : '') + '">' + day + '</button></td>';
+        }
+        h += '</tr>';
+      }
+      grid.innerHTML = h + '</tbody>';
+    }
+    function focusDay() { var b = $('.ccs-cal__day[data-d="' + focusDate.d + '"]', grid); if (b) b.focus(); }
+    function go(d) {
+      if (self.min && toKey(d) < toKey(self.min)) d = self.min;      // never move onto a day that would invert the range
+      else if (self.max && toKey(d) > toKey(self.max)) d = self.max;
+      focusDate = d; view = { y: d.y, m: d.m, d: 1 }; render(); focusDay();
+    }
+    function showMonth(d) { focusDate = d; view = { y: d.y, m: d.m, d: 1 }; render(); }
+    function choose(d) {
+      if (disabled(d)) return;
+      self.set(d); say(o.label + ' set to ' + longFmt(d));
+      self.close(true);
+    }
+    self.show = function () {
+      if (self.open) return;
+      setOpen(self);
+      self.read();
+      var t = today();
+      var start = self.date || t;
+      if (!self.date) { if (self.min && toKey(start) < toKey(self.min)) start = self.min; if (self.max && toKey(start) > toKey(self.max)) start = self.max; }
+      focusDate = start; view = { y: start.y, m: start.m, d: 1 };
+      self.open = true; cal.hidden = false; toggle.setAttribute('aria-expanded', 'true'); root.classList.add('is-open');
+      render(); focusDay();
+    };
+    self.close = function (refocus) {
+      if (!self.open) return;
+      self.open = false; cal.hidden = true; toggle.setAttribute('aria-expanded', 'false'); root.classList.remove('is-open');
+      if (openMenu === self) openMenu = null;
+      if (refocus) toggle.focus();
+    };
+    toggle.addEventListener('click', function () { if (self.open) self.close(true); else self.show(); });
+    prev.addEventListener('click', function () { showMonth(addMonths(focusDate, -1)); });
+    next.addEventListener('click', function () { showMonth(addMonths(focusDate, 1)); });
+    grid.addEventListener('click', function (e) {
+      var b = e.target.closest('.ccs-cal__day'); if (!b || b.disabled) return;
+      choose({ y: view.y, m: view.m, d: Number(b.getAttribute('data-d')) });
+    });
+    clear.addEventListener('click', function () { self.set(null); say(o.label + ' cleared'); self.close(true); });
+    close.addEventListener('click', function () { self.close(true); });
+    cal.addEventListener('keydown', function (e) {
+      var k = e.key, onDay = e.target.classList && e.target.classList.contains('ccs-cal__day');
+      if (k === 'Escape') { e.preventDefault(); e.stopPropagation(); self.close(true); return; }
+      if (k === 'Tab') {   // keep Tab inside the dialog
+        var f = $$('.ccs-cal__nav, .ccs-cal__day[tabindex="0"], .ccs-cal__action', cal);
+        var i = f.indexOf(document.activeElement);
+        if (e.shiftKey && i <= 0) { e.preventDefault(); f[f.length - 1].focus(); }
+        else if (!e.shiftKey && i === f.length - 1) { e.preventDefault(); f[0].focus(); }
+        return;
+      }
+      if (!onDay) return;
+      var d = focusDate, handled = true;
+      if (k === 'ArrowLeft') go(addDays(d, -1));
+      else if (k === 'ArrowRight') go(addDays(d, 1));
+      else if (k === 'ArrowUp') go(addDays(d, -7));
+      else if (k === 'ArrowDown') go(addDays(d, 7));
+      else if (k === 'Home') go(addDays(d, -weekday(d)));
+      else if (k === 'End') go(addDays(d, 6 - weekday(d)));
+      else if (k === 'PageUp') go(e.shiftKey ? addMonths(d, -12) : addMonths(d, -1));
+      else if (k === 'PageDown') go(e.shiftKey ? addMonths(d, 12) : addMonths(d, 1));
+      else if (k === 'Enter' || k === ' ') choose(d);
+      else handled = false;
+      if (handled) e.preventDefault();
+    });
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowDown' && e.altKey) { e.preventDefault(); self.show(); }
+      else if (e.key === 'Escape' && self.open) { e.stopPropagation(); self.close(false); }
+    });
+    input.addEventListener('input', function () { self.setError(''); });
+    input.addEventListener('change', function () { self.setError(self.read()); if (o.onChange) o.onChange(self); });
+    return self;
+  }
 
   /* ---- option lists from the shared dataset -------------------------------------------------- */
   var optionCache = {};
@@ -60,89 +434,63 @@
     items.forEach(function (it) {
       def.get(it).forEach(function (v) { if (v) counts[v] = (counts[v] || 0) + 1; });
     });
-    var list = Object.keys(counts).map(function (v) { return { value: v, count: counts[v] }; });
-    list.sort(function (a, b) { return b.count - a.count || a.value.localeCompare(b.value); });
+    var list = Object.keys(counts).map(function (v) { return { value: v, label: v, count: counts[v] }; });
+    list.sort(function (a, b) { return b.count - a.count || a.label.localeCompare(b.label); });
     optionCache[def.key] = list;
     return list;
   }
+  function defOf(key) { return FILTERS.filter(function (d) { return d.key === key; })[0]; }
 
-  /* ---- search term rows ----------------------------------------------------------------------- */
+  /* ---- form state ----------------------------------------------------------------------------- */
+  var addFilterMulti = null, sortSelect = null;
   function termsList() { return $('#adv-terms'); }
+  function filtersList() { return $('#adv-filters'); }
+  function filterRow(key) { return $('.adv-filter[data-key="' + key + '"]', filtersList()); }
+  function deleteButton() {
+    return el('button', { type: 'button', 'class': 'ccs-delete' }, [img(IMG + 'icon-delete.svg'), document.createTextNode('Delete row')]);
+  }
 
+  /* ---- search rows ---------------------------------------------------------------------------- */
   function renumberTerms() {
-    $$('.adv-term', termsList()).forEach(function (row, i) {
+    var rows = $$('.adv-term', termsList());
+    rows.forEach(function (row, i) {
       var n = i + 1;
       row.setAttribute('aria-label', 'Search row ' + n);
-      var f = $('[data-role=field]', row), o = $('[data-role=op]', row), q = $('[data-role=query]', row);
-      f.name = 'clause[' + i + '][field]'; o.name = 'clause[' + i + '][op]'; q.name = 'clause[' + i + '][query]';
-      f.id = 'adv-t' + n + '-field'; o.id = 'adv-t' + n + '-op'; q.id = 'adv-t' + n + '-q';
-      $$('label.sr-only', row).forEach(function (l) { l.parentNode.removeChild(l); });
-      f.parentNode.insertBefore(srLabel(f.id, 'Search field, row ' + n), f.parentNode.firstChild);
-      o.parentNode.insertBefore(srLabel(o.id, 'Match type, row ' + n), o.parentNode.firstChild);
-      q.parentNode.insertBefore(srLabel(q.id, 'Search terms, row ' + n), q);
-      $('.ccs-delete', row).setAttribute('aria-label', 'Delete row ' + n + ' (search)');
+      var sels = row.__selects;
+      sels[0].hidden.name = 'clause[' + i + '][field]'; sels[1].hidden.name = 'clause[' + i + '][op]';
+      $('#' + sels[0].button.id + '-lbl').textContent = 'Search field, row ' + n;
+      $('#' + sels[1].button.id + '-lbl').textContent = 'Match type, row ' + n;
+      var q = $('[data-role=query]', row); q.name = 'clause[' + i + '][query]';
+      $('label.sr-only[for="' + q.id + '"]', row).textContent = 'Search terms, row ' + n;
+      var del = $('.ccs-delete', row); del.setAttribute('aria-label', 'Delete search row ' + n);
+      del.disabled = rows.length <= 1;      // the form always keeps at least one search row
     });
     var add = $('#adv-add-row');
-    if (add) add.disabled = $$('.adv-term', termsList()).length >= MAX_ROWS;
+    if (add) add.disabled = rows.length >= MAX_ROWS;
   }
 
   function addTerm(values) {
     var row = el('div', { 'class': 'ccs-field-row adv-term', role: 'group' });
     var controls = el('div', { 'class': 'ccs-field-row__controls' });
-    var fw = selectField('', FIELDS), ow = selectField('', OPS);
-    var f = $('select', fw), o = $('select', ow);
-    f.setAttribute('data-role', 'field'); o.setAttribute('data-role', 'op');
-    var q = el('input', { type: 'text', 'class': 'ccs-input', placeholder: 'Enter search terms', 'data-role': 'query', autocomplete: 'off', 'aria-describedby': 'adv-terms-hint' });
-    if (values) { f.value = values.field || 'all_fields'; o.value = values.op || 'must'; q.value = values.query || ''; }
-    controls.appendChild(fw); controls.appendChild(ow); controls.appendChild(el('div', {}, [q]));
+    var f = Select({ label: 'Search field', name: 'x', options: FIELDS, value: (values && values.field) || 'all_fields', completeStyle: true });
+    var o = Select({ label: 'Match type', name: 'x', options: OPS, value: (values && values.op) || 'must', completeStyle: true });
+    var qid = nextId('adv-q');
+    var q = el('input', { type: 'text', id: qid, 'class': 'ccs-input', placeholder: 'Enter search terms', 'data-role': 'query', autocomplete: 'off', 'aria-describedby': 'adv-terms-hint' });
+    if (values && values.query) q.value = values.query;
+    controls.appendChild(f.root); controls.appendChild(o.root);
+    controls.appendChild(el('div', {}, [el('label', { 'for': qid, 'class': 'sr-only', text: 'Search terms' }), q]));
     row.appendChild(controls); row.appendChild(deleteButton());
+    row.__selects = [f, o];
     termsList().appendChild(row);
     renumberTerms();
     return row;
   }
 
-  function deleteButton() {
-    return el('button', { type: 'button', 'class': 'ccs-delete' }, [img(ICON_DELETE), document.createTextNode('Delete row')]);
-  }
-
-  /* ---- filter rows --------------------------------------------------------------------------- */
-  function filtersList() { return $('#adv-filters'); }
-  function filterRow(key) { return $('.adv-filter[data-key="' + key + '"]', filtersList()); }
-  function defOf(key) { return FILTERS.filter(function (d) { return d.key === key; })[0]; }
-
-  function syncAddFilterMenu() {
-    var menu = $('#adv-add-filter');
-    $$('option', menu).forEach(function (o) { if (o.value) o.hidden = !!filterRow(o.value); });
-    var anyLeft = $$('option', menu).some(function (o) { return o.value && !o.hidden; });
-    menu.closest('.ccs-btn--add').hidden = !anyLeft;
-    menu.value = '';
-  }
-
-  function summaryText(row) {
-    var picked = $$('input[type=checkbox]:checked', row).map(function (c) { return c.value; });
-    if (!picked.length) return '';
-    return picked.length <= 2 ? picked.join(', ') : picked.length + ' selected';
-  }
-  function updateSummary(row) {
-    var s = summaryText(row), span = $('.ccs-multi__text', row);
-    span.textContent = s || 'Select values';
-    span.classList.toggle('is-placeholder', !s);
-  }
+  /* ---- filter rows ---------------------------------------------------------------------------- */
   function applyMatchMode(row) {
-    var mode = $('.adv-match', row).value; // 'or' | 'and'
-    var key = row.getAttribute('data-key');
-    var name = (mode === 'and' ? 'f[' : 'f_inclusive[') + key + '][]';
-    $$('input[type=checkbox]', row).forEach(function (c) { c.name = name; });
+    var name = (row.__mode.get() === 'and' ? 'f[' : 'f_inclusive[') + row.getAttribute('data-key') + '][]';
+    row.__multi.boxes.forEach(function (c) { c.name = name; });
   }
-  function closePanels(except) {
-    $$('.ccs-multi__panel').forEach(function (p) {
-      if (p === except) return;
-      p.hidden = true;
-      var btn = p.parentNode.querySelector('.ccs-multi__trigger');
-      if (btn) btn.setAttribute('aria-expanded', 'false');
-    });
-  }
-
   function filterShell(def) {
     var row = el('fieldset', { 'class': 'ccs-field-row ccs-field-row--filter adv-filter', 'data-key': def.key });
     row.appendChild(el('legend', { text: def.label }));
@@ -150,80 +498,70 @@
   }
 
   function buildMulti(def, preset) {
-    var id = 'adv-f-' + def.key + '-' + (++uid);
     var row = filterShell(def);
     var controls = el('div', { 'class': 'ccs-field-row__controls' });
-    var mw = selectField(id + '-match', [['or', 'Includes any (OR)'], ['and', 'Includes all (AND)']], 'adv-match');
-    var match = $('select', mw);
-    if (preset && preset.and) match.value = 'and';
-    mw.insertBefore(srLabel(match.id, def.label + ' match type'), mw.firstChild);
-
-    var wrap = el('div', { 'class': 'ccs-multi' });
-    var triggerId = id + '-trigger';
-    var trigger = el('button', { type: 'button', id: triggerId, 'class': 'ccs-multi__trigger', 'aria-haspopup': 'true', 'aria-expanded': 'false', 'aria-controls': id + '-panel', 'aria-labelledby': id + '-lbl ' + triggerId }, [
-      el('span', { 'class': 'ccs-multi__text is-placeholder', text: 'Select values' }),
-      el('span', { 'class': 'ccs-multi__chev' }, [img(ICON_CHEVRON)])
-    ]);
-    var panel = el('div', { 'class': 'ccs-multi__panel', id: id + '-panel', role: 'group', 'aria-label': def.label + ' values', hidden: true });
-    var searchId = id + '-search';
-    var search = el('input', { type: 'search', id: searchId, 'class': 'ccs-input ccs-multi__search', placeholder: 'Search ' + def.label.toLowerCase(), autocomplete: 'off' });
-    var ul = el('ul', { 'class': 'ccs-multi__options' });
-    var chosen = (preset && preset.values) || [];
-    var opts = optionsFor(def);
-    // Keep pre-selected values even if the dataset has none (e.g. an old shared link).
-    chosen.forEach(function (v) { if (!opts.some(function (o) { return o.value === v; })) opts = opts.concat([{ value: v, count: 0 }]); });
-    opts.forEach(function (o, i) {
-      var cid = id + '-' + i;
-      var cb = el('input', { type: 'checkbox', id: cid, value: o.value, 'class': 'adv-check' });
-      if (chosen.indexOf(o.value) > -1) cb.checked = true;
-      ul.appendChild(el('li', { 'class': 'ccs-multi__option', 'data-label': o.value.toLowerCase() }, [
-        el('label', { 'for': cid }, [cb, document.createTextNode(o.value)]),
-        el('span', { 'class': 'ccs-multi__count', text: String(o.count) })
-      ]));
-    });
-    var none = el('p', { 'class': 'ccs-multi__none', hidden: true, role: 'status', text: 'No matching values' });
-    panel.appendChild(srLabel(searchId, 'Search within ' + def.label + ' values'));
-    panel.appendChild(search); panel.appendChild(ul); panel.appendChild(none);
-    wrap.appendChild(el('span', { id: id + '-lbl', 'class': 'sr-only', text: def.label + ' values:' }));
-    wrap.appendChild(trigger); wrap.appendChild(panel);
-    controls.appendChild(mw); controls.appendChild(wrap);
-    row.appendChild(controls);
-    row.appendChild(deleteButton());
+    var mode = Select({ label: def.label + ' match type', options: MODES, value: preset && preset.and ? 'and' : 'or', completeStyle: true, onChange: function () { applyMatchMode(row); } });
+    var multi = Multi({ label: def.label + ' values', placeholder: 'Select values', searchable: true, options: optionsFor(def), className: 'ccs-combo--values' });
+    row.__mode = mode; row.__multi = multi;
+    multi.setChecked((preset && preset.values) || [], true);
+    controls.appendChild(mode.root); controls.appendChild(multi.root);
+    row.appendChild(controls); row.appendChild(deleteButton());
     $('.ccs-delete', row).setAttribute('aria-label', 'Delete ' + def.label + ' filter row');
-    applyMatchMode(row); updateSummary(row);
+    multi.root.addEventListener('change', function () { applyMatchMode(row); });
+    applyMatchMode(row);
     return row;
   }
 
   function buildRange(def, preset) {
-    var id = 'adv-f-' + def.key + '-' + (++uid);
-    var row = filterShell(def);
-    row.classList.add('adv-filter--range');
+    var row = filterShell(def); row.classList.add('adv-filter--range');
     var controls = el('div', { 'class': 'ccs-field-row__controls' });
-    var errId = id + '-err';
-    function yearInput(suffix, label, ph) {
-      var inp = el('input', { type: 'number', id: id + '-' + suffix, name: 'range[' + def.key + '][' + suffix + ']', 'class': 'ccs-input', placeholder: ph, inputmode: 'numeric', min: '0', max: '2100', 'data-role': suffix });
-      return el('div', {}, [srLabel(inp.id, def.label + ' ' + label), inp]);
+    var from = DateField({ label: 'Production date from', placeholder: 'From', edge: 'begin', onChange: function () { sync(); validate(); } });
+    var to = DateField({ label: 'Production date to', placeholder: 'To', edge: 'end', onChange: function () { sync(); validate(); } });
+    var hb = el('input', { type: 'hidden', name: 'range[' + def.key + '][begin]' });
+    var he = el('input', { type: 'hidden', name: 'range[' + def.key + '][end]' });
+    function sync() {
+      from.read(); to.read();
+      from.max = to.date; to.min = from.date;     // the calendars disable days that would invert the range
+      hb.value = from.yearValue(); he.value = to.yearValue();
     }
-    var from = yearInput('begin', 'from year', 'From year'), to = yearInput('end', 'to year', 'To year');
-    if (preset) { $('input', from).value = preset.begin || ''; $('input', to).value = preset.end || ''; }
-    controls.appendChild(from); controls.appendChild(to);
-    controls.appendChild(el('p', { id: errId, 'class': 'ccs-error', role: 'alert', hidden: true, text: 'The start year must be earlier than or equal to the end year.', style: 'grid-column: 1 / -1; margin: 0' }));
-    row.appendChild(controls);
-    row.appendChild(deleteButton());
+    function validate() {      // returns true when valid; shows messages next to the fields
+      var m1 = from.read(), m2 = to.read();
+      from.setError(m1); to.setError(m2);
+      var bad = !!(m1 || m2);
+      if (!bad && from.date && to.date && toKey(from.date) > toKey(to.date)) { to.setError('Production date to must be on or after the from date (' + fmt(from.date) + ').'); bad = true; }
+      return !bad;
+    }
+    row.__range = { from: from, to: to, sync: sync, validate: validate };
+    if (preset) {
+      var a = preset.begin && parseDate(preset.begin, 'begin'); if (a && a.date) from.set(a.date, true);
+      var b = preset.end && parseDate(preset.end, 'end'); if (b && b.date) to.set(b.date, true);
+    }
+    sync();
+    controls.appendChild(from.root); controls.appendChild(to.root);
+    row.appendChild(controls); row.appendChild(hb); row.appendChild(he); row.appendChild(deleteButton());
     $('.ccs-delete', row).setAttribute('aria-label', 'Delete ' + def.label + ' filter row');
     return row;
   }
 
-  function addFilter(key, preset) {
+  function syncAddFilter() {
+    if (!addFilterMulti) return;
+    addFilterMulti.setChecked(FILTERS.filter(function (d) { return filterRow(d.key); }).map(function (d) { return d.key; }), true);
+  }
+  function addFilter(key, preset, quiet) {
     if (filterRow(key)) return filterRow(key);
     var def = defOf(key); if (!def) return null;
     var row = def.range ? buildRange(def, preset) : buildMulti(def, preset);
-    // keep the declared order of filters
     var order = FILTERS.map(function (d) { return d.key; });
     var before = $$('.adv-filter', filtersList()).filter(function (r) { return order.indexOf(r.getAttribute('data-key')) > order.indexOf(key); })[0];
     filtersList().insertBefore(row, before || null);
-    syncAddFilterMenu();
+    syncAddFilter();
+    if (!quiet) announce(def.label + ' filter added');
     return row;
+  }
+  function removeFilter(key) {
+    var row = filterRow(key); if (!row) return;
+    row.remove(); syncAddFilter();
+    announce(defOf(key).label + ' filter removed');
   }
 
   /* ---- URL <-> form -------------------------------------------------------------------------- */
@@ -243,133 +581,110 @@
     });
     return out;
   }
-
   function prefill() {
     var p = readParams();
-    var clauseKeys = Object.keys(p.clauses).sort(function (a, b) { return a - b; });
-    clauseKeys.forEach(function (k) { addTerm(p.clauses[k]); });
+    Object.keys(p.clauses).sort(function (a, b) { return a - b; }).forEach(function (k) { addTerm(p.clauses[k]); });
     while ($$('.adv-term', termsList()).length < 2) addTerm();
     var active = {};
     FILTERS.forEach(function (d) { if (d.on) active[d.key] = true; });
     Object.keys(p.filters).forEach(function (k) { if (defOf(k)) active[k] = true; });
     Object.keys(p.range).forEach(function (k) { if (defOf(k)) active[k] = true; });
-    FILTERS.forEach(function (d) {
-      if (!active[d.key]) return;
-      addFilter(d.key, d.range ? p.range[d.key] : p.filters[d.key]);
-    });
-    if (p.sort) $('#adv-sort').value = p.sort;
+    FILTERS.forEach(function (d) { if (active[d.key]) addFilter(d.key, d.range ? p.range[d.key] : p.filters[d.key], true); });
+    if (p.sort && SORTS.some(function (s) { return s[0] === p.sort; })) sortSelect.set(p.sort, true);
+    syncAddFilter();
   }
+
+  /* ---- validation + submit -------------------------------------------------------------------- */
+  function collectErrors() {
+    var errs = [];
+    $$('.adv-filter--range').forEach(function (row) {
+      var r = row.__range; r.sync(); r.validate();
+      [r.from, r.to].forEach(function (f) { if (!f.errorEl.hidden) errs.push({ msg: f.errorEl.textContent, target: f.input }); });
+    });
+    return errs;
+  }
+  function showErrorSummary(errs) {
+    var box = $('#adv-errors'); if (!box) return;
+    box.innerHTML = '';
+    if (!errs.length) return;
+    box.appendChild(el('h2', { 'class': 'ccs-errors__title', text: 'There is a problem' }));
+    var ul = el('ul', { 'class': 'ccs-errors__list' });
+    errs.forEach(function (e) {
+      var a = el('a', { href: '#' + e.target.id, text: e.msg });
+      a.addEventListener('click', function (ev) { ev.preventDefault(); e.target.focus(); });
+      ul.appendChild(el('li', {}, [a]));
+    });
+    box.appendChild(ul);
+  }
+
+  // Keep the GET URL short: don't send empty rows / empty ranges / default sort / unticked options.
+  var disabledForSubmit = [];
+  function onSubmit(e) {
+    var errs = collectErrors();
+    showErrorSummary(errs);
+    if (errs.length) { e.preventDefault(); $('#adv-errors').focus(); return; }
+    disabledForSubmit = [];
+    function off(n) { if (n && !n.disabled) { n.disabled = true; disabledForSubmit.push(n); } }
+    $$('.adv-term', termsList()).forEach(function (row) {
+      if (!$('[data-role=query]', row).value.trim()) $$('input', row).forEach(off);
+    });
+    $$('.adv-filter--range input[type=hidden]').forEach(function (i) { if (!i.value) off(i); });
+    $$('.ccs-combo__search, .ccs-date__input').forEach(off);          // UI-only inputs are never submitted
+    $$('.adv-filter .ccs-check:not(:checked)').forEach(off);
+    $$('#adv-add-filter-mount .ccs-check').forEach(off);               // the "Add filter" ticks only control which rows exist
+    if (sortSelect.get() === 'relevance') off(sortSelect.hidden);
+  }
+  function restoreAfterSubmit() { disabledForSubmit.forEach(function (n) { n.disabled = false; }); disabledForSubmit = []; }
 
   /* ---- events ------------------------------------------------------------------------------- */
   function onClick(e) {
     var t = e.target;
-    if (t.closest('#adv-add-row')) { var r = addTerm(); $('[data-role=query]', r).focus(); return; }
+    if (t.closest('#adv-add-row')) { var r = addTerm(); $('[data-role=query]', r).focus(); announce('Search row added'); return; }
     var del = t.closest('.ccs-delete');
-    if (del) {
+    if (del && !del.disabled) {
       var row = del.closest('.ccs-field-row');
       if (row.classList.contains('adv-term')) {
         var rows = $$('.adv-term', termsList());
-        if (rows.length <= 1) { $('[data-role=query]', row).value = ''; $('[data-role=query]', row).focus(); return; }
+        if (rows.length <= 1) return;
         var next = row.nextElementSibling || row.previousElementSibling;
-        row.remove(); renumberTerms();
+        row.remove(); renumberTerms(); announce('Search row removed');
         var nq = next && $('[data-role=query]', next); if (nq) nq.focus();
       } else {
-        row.remove(); syncAddFilterMenu();
-        var add = $('#adv-add-filter'); if (add && !add.closest('.ccs-btn--add').hidden) add.focus(); else $('#adv-add-row').focus();
+        removeFilter(row.getAttribute('data-key'));
+        if (addFilterMulti) addFilterMulti.button.focus();
       }
-      return;
     }
-    var trig = t.closest('.ccs-multi__trigger');
-    if (trig) {
-      var panel = trig.parentNode.querySelector('.ccs-multi__panel'), open = panel.hidden;
-      closePanels(open ? panel : null);
-      panel.hidden = !open; trig.setAttribute('aria-expanded', String(open));
-      if (open) { var s = $('.ccs-multi__search', panel); if (s) s.focus(); }
-      return;
-    }
-    if (!t.closest('.ccs-multi__panel')) closePanels();
   }
-
-  function onChange(e) {
-    var t = e.target, row = t.closest('.adv-filter');
-    if (t.id === 'adv-add-filter') { var k = t.value; if (k) { var r = addFilter(k); var f = r && $('.ccs-multi__trigger, .ccs-input', r); if (f) f.focus(); } return; }
-    if (!row) return;
-    if (t.classList.contains('adv-match')) applyMatchMode(row);
-    if (t.classList.contains('adv-check')) updateSummary(row);
+  function onKeydownDoc(e) {
+    if (e.key === 'Escape' && openMenu) { openMenu.close(true); e.preventDefault(); }
   }
-
-  function onInput(e) {
-    var t = e.target;
-    if (t.closest && t.closest('.adv-filter--range')) { clearRangeError(t.closest('.adv-filter--range')); return; }
-    if (!t.classList.contains('ccs-multi__search')) return;
-    var q = t.value.trim().toLowerCase(), panel = t.closest('.ccs-multi__panel'), shown = 0;
-    $$('.ccs-multi__option', panel).forEach(function (li) {
-      var hit = !q || li.getAttribute('data-label').indexOf(q) > -1;
-      li.hidden = !hit; if (hit) shown++;
-    });
-    $('.ccs-multi__none', panel).hidden = shown > 0;
-  }
-
-  function onKeydown(e) {
-    if (e.key !== 'Escape') return;
-    var open = $$('.ccs-multi__panel').filter(function (p) { return !p.hidden; })[0];
-    if (!open) return;
-    var btn = open.parentNode.querySelector('.ccs-multi__trigger');
-    closePanels(); if (btn) btn.focus();
-    e.preventDefault();
-  }
-
-  /* ---- validation: production date range ---------------------------------------------------- */
-  function clearRangeError(row) {
-    var err = $('.ccs-error', row);
-    if (err) err.hidden = true;
-    $$('input', row).forEach(function (i) { i.removeAttribute('aria-invalid'); i.removeAttribute('aria-describedby'); });
-  }
-  function validateRanges() {
-    var firstBad = null;
-    $$('.adv-filter--range').forEach(function (row) {
-      clearRangeError(row);
-      var from = $('[data-role=begin]', row), to = $('[data-role=end]', row);
-      if (from.value && to.value && Number(from.value) > Number(to.value)) {
-        var err = $('.ccs-error', row);
-        err.hidden = false;
-        [from, to].forEach(function (i) { i.setAttribute('aria-invalid', 'true'); i.setAttribute('aria-describedby', err.id); });
-        firstBad = firstBad || from;
-      }
-    });
-    return firstBad;
-  }
-
-  // Keep the GET URL short: don't send empty rows / empty ranges / default sort.
-  var disabledForSubmit = [];
-  function onSubmit(e) {
-    var bad = validateRanges();
-    if (bad) { e.preventDefault(); bad.focus(); return; }
-    disabledForSubmit = [];
-    function off(n) { if (!n.disabled) { n.disabled = true; disabledForSubmit.push(n); } }
-    $$('.adv-term', termsList()).forEach(function (row) {
-      if (!$('[data-role=query]', row).value.trim()) $$('select, input', row).forEach(off);
-    });
-    $$('.adv-filter--range input').forEach(function (i) { if (!i.value) off(i); });
-    var sort = $('#adv-sort'); if (sort.value === 'relevance') off(sort);
-    // The panel search boxes have no name, so they are never submitted.
-  }
-  function restoreAfterSubmit() { disabledForSubmit.forEach(function (n) { n.disabled = false; }); disabledForSubmit = []; }
 
   var bound = false;
   function ensure() {
     var form = document.getElementById('adv-form');
     if (!form || form.getAttribute('data-ready')) return;
     form.setAttribute('data-ready', '1');
+    var sortMount = $('#adv-sort-mount'), addMount = $('#adv-add-filter-mount');
+    sortSelect = Select({ id: 'adv-sort', label: 'Sort results by', name: 'sort', options: SORTS, value: 'relevance', completeStyle: true });
+    if (sortMount) sortMount.appendChild(sortSelect.root);
+    addFilterMulti = Multi({
+      id: 'adv-add-filter', label: 'Add filter', placeholder: 'Add filter', className: 'ccs-combo--add',
+      summary: function () { return ''; },
+      options: FILTERS.map(function (d) { return { value: d.key, label: d.label }; }),
+      onChange: function (c) {
+        FILTERS.forEach(function (d) {
+          var on = c.indexOf(d.key) > -1, has = !!filterRow(d.key);
+          if (on && !has) addFilter(d.key); else if (!on && has) removeFilter(d.key);
+        });
+      }
+    });
+    if (addMount) addMount.appendChild(addFilterMulti.root);
     prefill();
-    syncAddFilterMenu();
     form.addEventListener('submit', onSubmit);
     if (!bound) {
       bound = true;
       document.addEventListener('click', onClick);
-      document.addEventListener('change', onChange);
-      document.addEventListener('input', onInput);
-      document.addEventListener('keydown', onKeydown);
+      document.addEventListener('keydown', onKeydownDoc);
       window.addEventListener('pageshow', restoreAfterSubmit);
     }
   }

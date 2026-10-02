@@ -22,5 +22,8 @@ jobs:
         run: |
           if [ -f package-lock.json ]; then npm ci; else npm install; fi
 
+      - name: Install Chromium for browser tests
+        run: npx playwright-core install --with-deps chromium
+
       - name: Run tests
         run: npm test

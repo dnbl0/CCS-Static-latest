@@ -262,51 +262,35 @@ a{color:#0b2a6b;text-decoration:underline;text-underline-offset:2px}a:hover{colo
 </script>
 
 <nav class="page-breadcrumbs" aria-label="Breadcrumb"><ol class="page-local-history" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="root" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="/" itemprop="item" title="Home" aria-label="Home"><img src="../images/home.svg" alt="" width="16" height="16" style="vertical-align:middle"><span itemprop="name" class="sr-only">Home</span></a><meta content="1" itemprop="position"></li><li itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page"><span itemprop="name">Advanced Search</span><meta content="2" itemprop="position"></li></ol><ol class="bc-mobile" style="display:none;align-items:center;gap:6px;list-style:none;margin:0;font-size:18px;color:#fff"><li style="display:flex;align-items:center"><a href="/index.html" style="display:inline-flex;align-items:center;gap:6px;color:#fff;text-decoration:none;min-height:44px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span>Home</span></a></li></ol></nav>
-<section class="page-banner" aria-label="Page banner">
-  <div class="page-banner__inner">
-    <h1>Advanced Search</h1>
-    <p class="page-banner__desc">Combine fields and filters to find exactly what you're looking for across every collection.</p>
+<section class="ccs-banner" aria-labelledby="adv-title">
+  <div class="ccs-banner__inner">
+    <h1 id="adv-title" class="ccs-banner__title">Advanced filters</h1>
+    <p class="ccs-banner__desc">Combine fields and filters to find exactly what you're looking for across every collection.</p>
   </div>
 </section>
 
 <main id="main-content" class="ccs-page">
   <div class="ccs-page__body">
     <search aria-label="Advanced search">
-      <form id="adv-form" class="ccs-adv" action="search-results.html" method="get">
+      <form id="adv-form" class="ccs-adv" action="search-results.html" method="get" novalidate>
+        <div id="adv-errors" class="ccs-errors" role="alert" tabindex="-1"></div>
+        <div id="adv-live" class="sr-only" role="status" aria-live="polite"></div>
         <section class="ccs-adv__box" aria-labelledby="adv-terms-h">
           <h2 id="adv-terms-h" class="ccs-adv__heading">Search</h2>
           <p id="adv-terms-hint" class="sr-only">Choose a field and a match type, then enter your search terms. Use quotation marks for an exact phrase.</p>
           <div id="adv-terms" class="ccs-adv__stack"></div>
-          <button type="button" id="adv-add-row" class="ccs-btn ccs-btn--add"><span class="ccs-btn__face">Add row</span><img src="/images/advanced/icon-add.svg" alt=""></button>
+          <button type="button" id="adv-add-row" class="ccs-btn ccs-btn--add"><span>Add row</span><img src="/images/advanced/icon-add.svg" alt=""></button>
         </section>
 
         <section class="ccs-adv__box" aria-labelledby="adv-filters-h">
           <h2 id="adv-filters-h" class="ccs-adv__heading">Filters</h2>
           <div id="adv-filters" class="ccs-adv__stack"></div>
-          <div class="ccs-btn ccs-btn--add">
-            <select id="adv-add-filter" class="ccs-add-select" aria-label="Add filter">
-              <option value="">Add filter</option>
-              <option value="collection">Collection Title</option>
-              <option value="creator">Creator Name</option>
-              <option value="type">Object Type</option>
-              <option value="licence">Licence Type</option>
-              <option value="access">Object Access Condition</option>
-              <option value="year">Production Date</option>
-            </select>
-            <span class="ccs-btn__face" aria-hidden="true">Add filter</span><img src="/images/advanced/icon-add-filter.svg" alt="">
-          </div>
+          <div id="adv-add-filter-mount"></div>
         </section>
 
         <div class="ccs-adv__sort">
-          <label for="adv-sort" class="ccs-field-label" style="font-size:16px;font-weight:600;color:var(--brand-1100,#000f46)">Sort results by</label>
-          <div class="ccs-select-wrap">
-            <select id="adv-sort" name="sort" class="ccs-select">
-              <option value="relevance">Relevance</option>
-              <option value="year-desc">Date (Newest)</option>
-              <option value="year-asc">Date (Oldest)</option>
-              <option value="az">Title (A–Z)</option>
-            </select>
-          </div>
+          <span class="ccs-adv__label" aria-hidden="true">Sort results by</span>
+          <div id="adv-sort-mount"></div>
         </div>
 
         <div class="ccs-adv__actions">
