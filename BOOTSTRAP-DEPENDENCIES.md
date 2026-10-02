@@ -93,3 +93,8 @@ Not Bootstrap: the media viewer, record request dialog, search/facet logic (page
 |---|---|---|---|
 | 2.0 | 2026-10-01 | 5.3.3 | Rewritten for the local Sass build; removed stale CDN/version-matrix content |
 | 1.0 | 2026-09-29 | 5.3.3 | Initial documentation (CDN-based) |
+
+
+## Purged build
+
+`npm run build:css` compiles `src/scss/custom-bootstrap.scss` and then runs `scripts/purge-css.js`, which drops rules for classes that are not used in any `public/**/*.html` or `public/**/*.js` file (words ending in `-` in scripts keep every class with that prefix; `:root`, tag and attribute rules are always kept). Bootstrap JavaScript components are not used, so no classes are added at runtime. If a Bootstrap class is added to a page, rebuild and commit `public/styles/vendor/bootstrap-uom.min.css`.
