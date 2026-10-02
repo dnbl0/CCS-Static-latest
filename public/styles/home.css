@@ -208,3 +208,8 @@
 
 /* Card/help/footer headings use the body face (global h2/h3 rules default to Fraunces) */
 .ccs-card__title, .ccs-help__title, .ccs-foot__label { font-family: "Source Sans 3", sans-serif; letter-spacing: 0; }
+
+/* Header/footer are used on every page, not just the homepage */
+.ccs-nav, .ccs-nav *, .ccs-nav *::before, .ccs-nav *::after { box-sizing: border-box; }
+.ccs-nav img { display: block; max-width: 100%; }
+.ccs-nav ul { list-style: none; }

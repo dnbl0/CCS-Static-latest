@@ -35,6 +35,7 @@
 }
 </style>
   <link rel="stylesheet" href="styles/footer.css">
+  <link rel="stylesheet" href="/styles/home.css">
   <link rel="stylesheet" href="styles/header.css">
 </head>
 <body>
@@ -74,51 +75,42 @@ a{color:#0b2a6b;text-decoration:underline;text-underline-offset:2px}a:hover{colo
 </style>
 </helmet>
 <div style="min-height:100vh;display:flex;flex-direction:column">
-<header class="uom-page-header top-0 flex h-[var(--nav-height)] z-1000 items-center transition-height transition-colors transition-300 ease-in-out" data-component="Header" aria-label="Site header">
-  <!-- University logo section -->
-  <div class="uom-logo-section flex items-center gap-050 h-full basis-auto border-r border-r-brand-900 shrink-0">
-    <a class="logo self-center flex items-center w-auto relative h-[var(--nav-height)] shrink-0 group outline-none" href="https://www.unimelb.edu.au" aria-label="The University of Melbourne homepage">
-      <div class="udds-focus-on-dark-inset size-full absolute inset-0"></div>
-      <img class="w-auto h-full outline-none" alt="The University of Melbourne" src="/images/UoM_Logo_Vert_Housed.svg">
+<header class="ccs-nav ccs-nav--header" data-component="Header" aria-label="Site header">
+  <div class="ccs-nav__brand">
+    <a href="https://www.unimelb.edu.au" aria-label="The University of Melbourne homepage">
+      <picture><source media="(max-width: 1023px)" srcset="/images/home/logo-header-mobile.svg"><img src="/images/home/logo-header-desktop.svg" alt=""></picture>
     </a>
   </div>
-
-  <!-- Main content area with responsive flex layout -->
-  <div class="uom-header-content shrink-1 flex-[33_1_fit-content] flex flex-col justify-end content-between h-full max-w-full overflow-x-visible scroll-smooth">
-    <!-- Top navigation tier (search, hidden on mobile in favour of the menu toggle) -->
-    <div class="uom-nav-top-tier border-b border-b-brand-900 flex justify-end">
-      <button data-popover-type="search" type="button" class="udds-focus items-center justify-center ring-inset text-brand-inverse fill-white-100 flex h-full p-[0.625rem] bg-background-button-secondary active:bg-background-button-secondary-active hover:bg-background-button-secondary-hover color-text-brand hover:color-text-brand" popovertarget="uom-search-popover">
-        <uom-ds-icon class="size-150" iconid="search" iconset="functional" isdecorative="" isfluid="" islabelhidden="" label="Search" sizevariant="prominent" data-testid="uom-ds-icon"></uom-ds-icon>
-        <span class="sr-only">
-          open search
-        </span>
+  <div class="ccs-nav__main">
+    <div class="ccs-nav__top">
+      <nav aria-label="University of Melbourne">
+        <ul>
+          <li><a href="https://study.unimelb.edu.au">Study</a></li>
+          <li><a href="https://students.unimelb.edu.au">Students</a></li>
+          <li><a href="https://research.unimelb.edu.au">Research</a></li>
+          <li><a href="https://library.unimelb.edu.au">Library</a></li>
+          <li><a href="https://staff.unimelb.edu.au">Staff</a></li>
+          <li><a href="https://www.unimelb.edu.au/alumni">Alumni</a></li>
+          <li><a href="https://giving.unimelb.edu.au">Giving</a></li>
+          <li><a href="https://about.unimelb.edu.au">About</a></li>
+          <li><a href="https://www.unimelb.edu.au/contact" aria-current="page">Contact</a></li>
+        </ul>
+      </nav>
+      <button type="button" class="ccs-nav__search" popovertarget="uom-search-popover" data-popover-type="search" aria-label="Open search">
+        <img src="/images/home/icon-search-onaccent.svg" alt="">
       </button>
     </div>
-
-    <!-- Bottom navigation tier with site name, primary nav, and mobile menu toggle -->
-    <div class="uom-nav-bottom-tier flex h-full m-025 justify-between items-stretch gap-x-125">
-      <!-- Site name/faculty link -->
-      <a class="uom-site-title text-brand-inverse hover:text-link-hover-inverse udds-focus-on-dark" href="/index.html">
-        Cultural Collections Search
-      </a>
-
-      <!-- Primary navigation -->
-      <nav id="uom-primary-nav" class="uom-primary-nav" aria-label="Primary navigation">
-        <a href="/search/search-results.html">Search all records</a>
-        <a href="/collections/index.html">Browse collections</a>
-        <a href="/help/index.html">Help</a>
-        <a href="/contact.html">Contact</a>
+    <div class="ccs-nav__bottom">
+      <a class="ccs-nav__title" href="/index.html">Cultural Collections</a>
+      <button type="button" class="ccs-nav__menu uom-menu-toggle" aria-expanded="false" aria-controls="uom-primary-nav">Menu</button>
+      <nav id="uom-primary-nav" class="ccs-nav__primary uom-primary-nav" aria-label="Primary navigation">
+        <ul>
+          <li><a href="/search/search-results.html">Search all records</a></li>
+          <li><a href="/collections/index.html">Browse collections<img src="/images/home/icon-expand.svg" alt=""></a></li>
+          <li><a href="/help/index.html">Help<img src="/images/home/icon-expand.svg" alt=""></a></li>
+          <li><a href="/contact.html">Contact</a></li>
+        </ul>
       </nav>
-
-      <!-- Mobile menu toggle -->
-      <button type="button" class="uom-menu-toggle" aria-expanded="false" aria-controls="uom-primary-nav" aria-label="Toggle menu">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
-          <line x1="3" y1="6" x2="21" y2="6"></line>
-          <line x1="3" y1="12" x2="21" y2="12"></line>
-          <line x1="3" y1="18" x2="21" y2="18"></line>
-        </svg>
-        <span class="uom-menu-label">Menu</span>
-      </button>
     </div>
   </div>
 </header>
@@ -309,199 +301,62 @@ a{color:#0b2a6b;text-decoration:underline;text-underline-offset:2px}a:hover{colo
 
 
 <!-- UoM Footer -->
-<footer aria-label="University of Melbourne footer" class="page-footer">
-  <div class="page-footer__acknowledgement bg-primary-75" data-bound-textcenter="true">
-    <div class="page-footer__inner" data-bound-textcenter="true">
-      <div class="grid" data-bound-textcenter="true">
-        <div class="grid__col-sm-4 grid__col-md-3" data-bound-textcenter="true">
-          <p class="page-footer__acknowledgement-title" data-bound-textcenter="true">
-            Acknowledgement of Country
-          </p>
-          <div class="page-footer__flags" data-bound-textcenter="true">
-            <div class="logo-indigenous" role="img" aria-label="Aboriginal flag" data-bound-textcenter="true"></div>
-            <div class="logo-torres" role="img" aria-label="Torres Strait Islander flag" data-bound-textcenter="true"></div>
-          </div>
+<footer class="ccs-nav ccs-nav--footer" aria-label="University of Melbourne footer">
+    <div class="ccs-foot__aoc">
+      <div class="ccs-nav__inner">
+        <div>
+          <h2>Acknowledgement of Country</h2>
+          <div class="ccs-foot__flags"><img src="/images/home/flag-aboriginal.svg" alt="Aboriginal flag"><img src="/images/home/flag-torres-strait.svg" alt="Torres Strait Islander flag"></div>
         </div>
-        <div class="grid__col-sm-8 grid__col-md-9" data-bound-textcenter="true">
-          <p data-bound-textcenter="true">
-            We acknowledge Aboriginal and Torres Strait Islander people as the
-            Traditional Owners of the unceded lands on which we work, learn and
-            live. We pay respect to Elders past, present and future, and
-            acknowledge the importance of Indigenous knowledge in the Academy.
-          </p>
-          <a class="button button--text" href="https://www.unimelb.edu.au/reconciliation">
-            Read about our Indigenous priorities
-          </a>
+        <div>
+          <p>We acknowledge Aboriginal and Torres Strait Islander people as the Traditional Owners of the unceded lands on which we work, learn and live. We pay respect to Elders past, present and future, and acknowledge the importance of Indigenous knowledge in the Academy.</p>
+          <a class="ccs-link ccs-link--inverse" href="https://www.unimelb.edu.au/reconciliation"><img src="/images/home/icon-arrow-footer.svg" alt="">Read about our Indigenous priorities</a>
         </div>
       </div>
     </div>
-  </div>
-  <div class="page-footer__content bg-primary" data-bound-textcenter="true">
-    <div class="page-footer__inner" data-bound-textcenter="true">
-      <h2 class="screenreaders-only" data-bound-textcenter="true">Site footer</h2>
-      <div class="grid" data-bound-textcenter="true">
-        <div class="grid__col-sm-4 grid__col-md-3" data-bound-textcenter="true">
-          <ul class="page-footer__links" data-bound-textcenter="true">
-            <li class="page-footer__links-item" data-bound-textcenter="true">
-              <a class="button button--text" href="https://about.unimelb.edu.au/">
-                About us
-              </a>
-            </li>
-            <li class="page-footer__links-item" data-bound-textcenter="true">
-              <a class="button button--text" href="https://about.unimelb.edu.au/careers">
-                Careers at Melbourne
-              </a>
-            </li>
-            <li class="page-footer__links-item" data-bound-textcenter="true">
-              <a class="button button--text" href="https://www.unimelb.edu.au/respect">
-                Safety and respect
-              </a>
-            </li>
-            <li class="page-footer__links-item" data-bound-textcenter="true">
-              <a class="button button--text" href="https://www.unimelb.edu.au/newsroom">
-                Newsroom
-              </a>
-            </li>
-            <li class="page-footer__links-item" data-bound-textcenter="true">
-              <a class="button button--text" href="https://www.unimelb.edu.au/contact">
-                Contact
-              </a>
-            </li>
-            <li class="page-footer__links-item" data-bound-textcenter="true">
-              <a class="button button--text" href="https://about.unimelb.edu.au/priorities-and-partnerships/campus-development/campus-locations">
-                Campus locations
-              </a>
-            </li>
+    <div class="ccs-foot__main">
+      <div class="ccs-nav__inner">
+        <ul class="ccs-foot__links">
+            <li><a class="ccs-link ccs-link--inverse" href="https://about.unimelb.edu.au/"><img src="/images/home/icon-arrow-footer.svg" alt="">About us</a></li>
+            <li><a class="ccs-link ccs-link--inverse" href="https://about.unimelb.edu.au/careers"><img src="/images/home/icon-arrow-footer.svg" alt="">Careers at Melbourne</a></li>
+            <li><a class="ccs-link ccs-link--inverse" href="https://www.unimelb.edu.au/respect"><img src="/images/home/icon-arrow-footer.svg" alt="">Safety and respect</a></li>
+            <li><a class="ccs-link ccs-link--inverse" href="https://www.unimelb.edu.au/newsroom"><img src="/images/home/icon-arrow-footer.svg" alt="">Newsroom</a></li>
+            <li><a class="ccs-link ccs-link--inverse" href="https://www.unimelb.edu.au/contact"><img src="/images/home/icon-arrow-footer.svg" alt="">Contact</a></li>
+            <li><a class="ccs-link ccs-link--inverse" href="https://about.unimelb.edu.au/priorities-and-partnerships/campus-development/campus-locations"><img src="/images/home/icon-arrow-footer.svg" alt="">Campus locations</a></li>
+        </ul>
+        <div class="ccs-foot__contact">
+          <h2 class="ccs-foot__label">Contact details</h2>
+          <p>Phone <a href="tel:136352">13 MELB (13 6352)</a><br>International <a href="tel:+61390355511">+61 3 9035 5511</a></p>
+          <address><strong>Address</strong><br>The University of Melbourne<br>Grattan Street, Parkville<br>Victoria 3010<br>Australia</address>
+        </div>
+        <div>
+          <h2 class="ccs-foot__label">Connect with us</h2>
+          <ul class="ccs-foot__social">
+            <li><a href="https://www.facebook.com/unimelb" aria-label="Facebook"><img src="/images/home/social-facebook.svg" alt=""></a></li>
+            <li><a href="https://www.linkedin.com/school/university-of-melbourne" aria-label="LinkedIn"><img src="/images/home/social-linkedin.svg" alt=""></a></li>
+            <li><a href="https://www.instagram.com/unimelb" aria-label="Instagram"><img src="/images/home/social-instagram.svg" alt=""></a></li>
+            <li><a href="https://x.com/unimelb" aria-label="X (Twitter)"><img src="/images/home/social-x.svg" alt=""></a></li>
           </ul>
         </div>
-        <div class="grid__col-sm-4 grid__col-md-3" data-bound-textcenter="true">
-          <div class="page-footer__contact" data-bound-textcenter="true">
-            <p class="page-footer__contact-heading" data-bound-textcenter="true">Contact details</p>
-            <div class="page-footer__contact-details" data-bound-textcenter="true">
-              <div data-bound-textcenter="true">
-                <strong>Phone</strong>
-                <a href="tel:13 6352">13 MELB (13 6352)</a>
-                <br>
-              </div>
-              <div data-bound-textcenter="true">
-                <strong>International</strong>
-                <a href="tel:+61 3 9035 5511">+61 3 9035 5511</a>
-              </div>
-            </div>
-            <div data-bound-textcenter="true">
-              <p data-bound-textcenter="true">
-                <strong>Address</strong>
-                <br>
-                The University of Melbourne
-                <br>
-                Grattan Street, Parkville
-                <br>
-                Victoria 3010
-                <br>
-                Australia
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="grid__col-sm-4 grid__col-md-6" data-bound-textcenter="true">
-          <div class="grid" data-bound-textcenter="true">
-            <div class="grid__col-10 grid__col-md-6" data-bound-textcenter="true">
-              <div class="page-footer__contact" data-bound-textcenter="true">
-                <p class="page-footer__contact-heading" id="footer-connect-heading" data-bound-textcenter="true">
-                  Connect with us
-                </p>
-                <ul class="page-footer__social" aria-labelledby="footer-connect-heading" data-bound-textcenter="true">
-                  <li class="page-footer__social-item" data-bound-textcenter="true">
-                    <a href="https://www.facebook.com/unimelb" target="_blank" aria-label="Facebook">
-                      <span data-icon="facebook" data-size="md" data-bound-iconhelper="true"><svg class="icon" role="img" aria-label="Facebook">
-      <use xlink:href="#icon-facebook"></use>
-    </svg></span>
-                    </a>
-                  </li>
-                  <li class="page-footer__social-item" data-bound-textcenter="true">
-                    <a href="https://www.linkedin.com/school/university-of-melbourne" target="_blank" aria-label="Linkedin">
-                      <span data-icon="linkedin" data-size="md" data-bound-iconhelper="true"><svg class="icon" role="img" aria-label="Linkedin">
-      <use xlink:href="#icon-linkedin"></use>
-    </svg></span>
-                    </a>
-                  </li>
-                  <li class="page-footer__social-item" data-bound-textcenter="true">
-                    <a href="https://www.instagram.com/unimelb" target="_blank" aria-label="Instagram">
-                      <span data-icon="instagram" data-size="md" data-bound-iconhelper="true"><svg class="icon" role="img" aria-label="Instagram">
-      <use xlink:href="#icon-instagram"></use>
-    </svg></span>
-                    </a>
-                  </li>
-                  <li class="page-footer__social-item" data-bound-textcenter="true">
-                    <a href="https://www.unimelb.edu.au/alumni/support-resources/contact-us/wechat" target="_blank" aria-label="Wechat">
-                      <span data-icon="wechat" data-size="md" data-bound-iconhelper="true"><svg class="icon" role="img" aria-label="Wechat">
-      <use xlink:href="#icon-wechat"></use>
-    </svg></span>
-                    </a>
-                  </li>
-                  <li class="page-footer__social-item" data-bound-textcenter="true">
-                    <a href="https://www.tiktok.com/@unimelb" target="_blank" aria-label="Tiktok">
-                      <span data-icon="tiktok" data-size="md" data-bound-iconhelper="true"><svg class="icon" role="img" aria-label="Tiktok">
-      <use xlink:href="#icon-tiktok"></use>
-    </svg></span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class="grid__col-10 grid__col-md-6" data-bound-textcenter="true">
-              <div class="page-footer__logo" data-bound-textcenter="true">
-                <a href="https://www.unimelb.edu.au" class="logo logo--unhoused logo--xl" aria-label="The University of Melbourne homepage"></a>
-              </div>
-            </div>
-          </div>
-        </div>
+        <div class="ccs-foot__brand"><a href="https://www.unimelb.edu.au" aria-label="The University of Melbourne homepage"><img src="/images/home/uom-logo-vert-ondark.svg" alt=""></a></div>
       </div>
     </div>
-  </div>
-  <div class="page-footer__disclaimer bg-secondary" data-bound-textcenter="true">
-    <div class="page-footer__inner" data-bound-textcenter="true">
-      <div class="grid" data-bound-textcenter="true">
-        <div class="grid__col-md-4" data-bound-textcenter="true">
-          <ul class="page-footer__legal" data-bound-textcenter="true">
-            <li class="page-footer__legal-item" data-bound-textcenter="true">
-              <a href="https://safety.unimelb.edu.au/emergency">Emergency</a>
-            </li>
-            <li class="page-footer__legal-item" data-bound-textcenter="true">
-              <a href="https://www.unimelb.edu.au/legal">Terms &amp; privacy</a>
-            </li>
-            <li class="page-footer__legal-item" data-bound-textcenter="true">
-              <a href="https://www.unimelb.edu.au/accessibility">
-                Accessibility
-              </a>
-            </li>
-            <li class="page-footer__legal-item" data-bound-textcenter="true">
-              <a href="https://about.unimelb.edu.au/strategy/governance/compliance-obligations/privacy">
-                Privacy
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div class="grid__col-md-8" data-bound-textcenter="true">
-          <ul class="page-footer__important" data-bound-textcenter="true">
-            <li class="page-footer__important-item" data-bound-textcenter="true">
-              The University of Melbourne (Australian University):
-              <strong>PRV12150</strong>
-            </li>
-            <li class="page-footer__important-item" data-bound-textcenter="true">
-              CRICOS number:
-              <strong>00116K</strong>
-            </li>
-            <li class="page-footer__important-item" data-bound-textcenter="true">
-              ABN:
-              <strong>84 002 705 224</strong>
-            </li>
-          </ul>
-        </div>
+    <div class="ccs-foot__last">
+      <div class="ccs-nav__inner">
+        <ul class="ccs-foot__legal">
+          <li><a href="https://safety.unimelb.edu.au/emergency">Emergency</a></li>
+          <li><a href="https://www.unimelb.edu.au/legal">Terms and privacy</a></li>
+          <li><a href="https://www.unimelb.edu.au/accessibility">Accessibility</a></li>
+          <li><a href="https://about.unimelb.edu.au/strategy/governance/compliance-obligations/privacy">Privacy</a></li>
+        </ul>
+        <ul class="ccs-foot__ids">
+          <li>The University of Melbourne (Australian University): <strong>PRV12150</strong></li>
+          <li>CRICOS: <strong>00116K</strong></li>
+          <li>ABN: <strong>84 002 705 224</strong></li>
+        </ul>
       </div>
     </div>
-  </div>
-</footer>
+  </footer>
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
   <symbol id="icon-facebook" viewBox="0 0 24 24">
     <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
