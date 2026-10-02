@@ -8,7 +8,7 @@
     "test": "tests"
   },
   "scripts": {
-    "build:css": "sass --quiet-deps --silence-deprecation=import --load-path=node_modules src/scss/custom-bootstrap.scss:public/styles/vendor/bootstrap-uom.min.css --style=compressed --no-source-map",
+    "build:css": "sass --quiet-deps --silence-deprecation=import --load-path=node_modules src/scss/custom-bootstrap.scss:public/styles/vendor/bootstrap-uom.min.css --style=compressed --no-source-map && node scripts/purge-css.js public/styles/vendor/bootstrap-uom.min.css",
     "build:css:dev": "sass --quiet-deps --silence-deprecation=import --load-path=node_modules src/scss/custom-bootstrap.scss:public/styles/vendor/bootstrap-uom.css",
     "watch:css": "sass --quiet-deps --silence-deprecation=import --load-path=node_modules --watch src/scss/custom-bootstrap.scss:public/styles/vendor/bootstrap-uom.css",
     "verify:bootstrap": "bash verify-bootstrap.sh",
