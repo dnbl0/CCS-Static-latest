@@ -573,10 +573,19 @@ class Component extends DCLogic {
       m.setAttribute('content', (BLURBS[key] || '').slice(0, 160));
     } catch (e) {}
     const cp = COPY[key];
+    const inColl = ((window.CCS && window.CCS.items) || []).filter(i => i.collection === COLL_KEYS[key]);
+    const browse = (label, param, get) => {
+      const tally = {};
+      inColl.forEach(i => [].concat(get(i) || []).forEach(v => { if (v) tally[v] = (tally[v] || 0) + 1; }));
+      const links = Object.entries(tally).sort((a, b) => b[1] - a[1]).slice(0, 12)
+        .map(([v, n]) => ({ text: v, n, href: '/search/search-results.html?collection=' + encodeURIComponent(COLL_KEYS[key]) + '&' + param + '=' + encodeURIComponent(v) }));
+      return links.length ? [{ label, isLinks: true, links }] : [];
+    };
     return {
       coll: { name: COLL_KEYS[key], blurb: cp.summary, externalUrl: cp.external, banner: BANNERS[key], searchHref: '/search/search-results.html?collection=' + encodeURIComponent(COLL_KEYS[key]) },
       about: cp.about,
-      details: [...cp.details.filter(([label]) => label !== 'Total items' && label !== 'Date range').map(([label, value]) => label === 'Physical location' && ADDRESS[key] ? { label, isAddress: true, lines: ADDRESS[key].lines, note: ADDRESS[key].note } : { label, isText: true, value }), ...(cp.advisory ? [{ label: 'Rights / Advisory language', isText: true, value: cp.advisory }] : [])],
+      details: [...cp.details.filter(([label]) => label !== 'Total items' && label !== 'Date range').map(([label, value]) => label === 'Physical location' && ADDRESS[key] ? { label, isAddress: true, lines: ADDRESS[key].lines, note: ADDRESS[key].note } : { label, isText: true, value }), ...(cp.advisory ? [{ label: 'Rights / Advisory language', isText: true, value: cp.advisory }] : []),
+        ...browse('Browse by sub-collection', 'named', i => i.named), ...browse('Browse by classification', 'classification', i => i.classes)],
       visit: { hours: cp.hours, email: cp.email, phone: cp.phone, phoneHref: cp.phone.replace(/[^+\d]/g, '') }
     };
   }
