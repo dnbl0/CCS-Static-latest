@@ -811,7 +811,7 @@ body.page-search-results .search-results-page__group--v1 {
 body.page-search-results .search-results-page__group--v2 {
   position: fixed;
   inset: 0;
-  z-index: 100;
+  z-index: 1050; /* above the site header (z-index 1000) */
   background: rgba(10,14,25,.55);
   display: flex;
   align-items: center;
@@ -822,7 +822,7 @@ body.page-search-results .search-results-page__group--v2 {
 body.page-search-results .search-results-page__group--v3 {
   position: fixed;
   inset: 0;
-  z-index: 120;
+  z-index: 1070; /* above the filters dialog and the site header */
   background: rgba(10,14,25,.6);
   display: flex;
   align-items: center;

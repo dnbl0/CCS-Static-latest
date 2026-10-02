@@ -301,7 +301,7 @@ body.page-record .record-page__group--v1 {
 body.page-record .record-page__group--v2 {
   position: fixed;
   inset: 0;
-  z-index: 100;
+  z-index: 1050; /* above the site header (z-index 1000) */
   background: rgba(10,14,25,.55);
   display: flex;
   align-items: center;
