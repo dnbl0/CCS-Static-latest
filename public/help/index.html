@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="../styles/vendor/bootstrap-uom.min.css">
   <link rel="stylesheet" href="/styles/home.css">
   <link rel="stylesheet" href="../styles/header.css">
+  <link rel="stylesheet" href="/styles/shared/content-templates.css">
   <link rel="stylesheet" href="/styles/pages/help.css">
 </head>
 <body class="page-help">
@@ -217,27 +218,41 @@
 
 
 <sc-if value="{{ notTopic }}" hint-placeholder-val="{{ true }}">
-<section class="help-topics" aria-label="Help topics">
-  <div class="help-topics__group">
-    <div class="help-topics-grid help-topics-grid--styled">
+<section class="ct-listing" aria-labelledby="h-topics">
+  <div class="ct-listing__inner">
+    <h2 class="ct-listing__title" id="h-topics">Help topics</h2>
+    <p class="ct-listing__lead">Choose a topic to find guidance on searching, accessing and using the University's cultural collections.</p>
+    <ul class="ct-listing__list ct-listing__list--text">
       <sc-for list="{{ topics }}" as="t" hint-placeholder-count="6">
-        <a class="help-topics-grid__link" href="{{ t.href }}">
-          <strong class="help-topics-grid__link-strong">{{ t.title }}</strong>
-          <span class="help-topics-grid__link-text help-topics-grid__link-text--v2">{{ t.blurb }}</span>
-          <span class="help-topics-grid__link-text help-topics-grid__link-text--v1">
-            <svg class="help-topics-grid__text-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="13 6 19 12 13 18"></polyline></svg>
-            Read more
-          </span>
-        </a>
+        <li class="ct-listing__item">
+          <a class="ct-listing__link" href="{{ t.href }}"><h3 class="ct-listing__heading">{{ t.title }}</h3></a>
+          <p class="ct-listing__excerpt">{{ t.blurb }}</p>
+        </li>
       </sc-for>
-    </div>
+    </ul>
+    <aside class="contact-box" aria-labelledby="h-contact-box">
+      <h2 class="contact-box__title" id="h-contact-box">Still need help?</h2>
+      <p class="contact-box__text">Contact the collections team. We aim to respond to enquiries within 5 business days.</p>
+      <a class="contact-box__link" href="/contact.html">Contact the collections team</a>
+    </aside>
   </div>
 </section>
 </sc-if>
 
 <main class="help-main-content {{ mainClass }}" id="main-content">
 
-<sc-if value="{{ topic }}" hint-placeholder-val="{{ false }}"><a class="help-main-content__link-all-help-topics" href="/help/index.html">‹ All help topics</a></sc-if>
+<sc-if value="{{ topic }}" hint-placeholder-val="{{ false }}">
+<div class="help-layout">
+<nav class="side-nav" aria-label="Help topics">
+  <h2 class="side-nav__title">Help topics</h2>
+  <ul class="side-nav__list">
+    <li class="side-nav__item"><a class="side-nav__link" href="/help/index.html">All help topics</a></li>
+    <sc-for list="{{ sideNav }}" as="n">
+      <li class="side-nav__item"><a class="side-nav__link" href="{{ n.href }}" aria-current="{{ n.current }}">{{ n.title }}</a></li>
+    </sc-for>
+  </ul>
+</nav>
+<div class="help-layout__content">
 
 <sc-if value="{{ showFaq }}" hint-placeholder-val="{{ true }}">
   <div class="help-faq" id="faq">
@@ -355,8 +370,7 @@
   <p class="help-access__text help-access__text--v2">Do you need to request access or further information on a collection item?</p>
   <p class="help-access__text help-access__text--v2">Do you want to access and use an image, audio or video?</p>
   <p class="help-access__text help-access__text--v2">Contact the relevant collection and include the information from Cite this Item.</p>
-  <p class="help-access__text help-access__text--v2">We will aim to respond to your enquiries within 5 business days.</p>
-  <p class="help-access__text help-access__text--v2">Please note, more complex requests may take additional time.</p>
+  <p class="notice help-access__notice">We will aim to respond to your enquiries within 5 business days. Please note, more complex requests may take additional time.</p>
   <p class="help-access__text help-access__text--v2">We also welcome feedback on how to improve our user experience.</p>
   <div class="help-access__group help-access__group--v2">
     <div class="help-access__group help-access__group--v1">
@@ -378,6 +392,14 @@
   <p class="help-privacy__text">University of Melbourne (University) is governed by the Privacy and Data Protection Act 2014 (Vic) and Health Records Act 2000 (Vic) (together, Privacy Laws). The University is also considered to be a data controller for the purposes of the EU General Data Protection Regulation 2016/679 (GDPR) in relation to the collection of personal information from individuals located in the EU.</p>
   <p class="help-privacy__text">The University is committed to protecting your privacy and processing your personal information fairly and lawfully in compliance with the Privacy Laws and the GDPR, as applicable. Please refer to our <a class="help-privacy__text-link-privacy-policy" href="https://policy.unimelb.edu.au/MPF1104/">Privacy Policy</a> and our <a class="help-privacy__text-link-privacy-webpage" href="https://about.unimelb.edu.au/strategy/governance/compliance-obligations/privacy">Privacy webpage</a> for information about how we handle personal information.</p>
 </section>
+</sc-if>
+<aside class="contact-box" aria-labelledby="h-contact-box-topic">
+  <h2 class="contact-box__title" id="h-contact-box-topic">Still need help?</h2>
+  <p class="contact-box__text">Contact the collections team. We aim to respond to enquiries within 5 business days.</p>
+  <a class="contact-box__link" href="/contact.html">Contact the collections team</a>
+</aside>
+</div>
+</div>
 </sc-if>
 </main>
 
@@ -492,6 +514,7 @@ class Component extends DCLogic {
       showFaq: !!topic && topic.key === 'faq', showSearchTips: !!topic && topic.key === 'search-tips',
       showCopyright: !!topic && topic.key === 'copyright',
       showAccess: !!topic && topic.key === 'access', showPrivacy: !!topic && topic.key === 'privacy',
+      sideNav: TOPICS.map(([key, title]) => ({ href: key === 'indigenous' ? '/help/indigenous-data.html' : '/help?topic=' + key, title, current: topic && topic.key === key ? 'page' : 'false' })),
       topics: TOPICS.map(([key, title, blurb, d]) => ({ href: key === 'indigenous' ? '/help/indigenous-data.html' : '/help?topic=' + key, title, blurb, icon: iconEl(d) })),
       faqs: FAQS.map(([q, a], i) => ({ q, a, open: this.state.open === i, chev: this.state.open === i ? 'rotate(180deg)' : 'none', toggle: () => this.setState(s => ({ open: s.open === i ? -1 : i })), btnId: 'faq-btn-' + i, panelId: 'faq-panel-' + i }))
     };

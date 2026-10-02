@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="/styles/shared/skip-link.css">
   <link rel="stylesheet" href="/styles/home.css">
   <link rel="stylesheet" href="../styles/header.css">
+  <link rel="stylesheet" href="/styles/shared/content-templates.css">
   <link rel="stylesheet" href="/styles/pages/indigenous-data.css">
 </head>
 <body class="page-indigenous-data">
@@ -218,8 +219,20 @@
 
 
 <main class="indigenous-data-main-content" id="main-content">
-  <a class="indigenous-data-main-content__link-all-help-topics" href="/help/index.html">‹ All help topics</a>
-
+<div class="help-layout">
+<nav class="side-nav" aria-label="Help topics">
+  <h2 class="side-nav__title">Help topics</h2>
+  <ul class="side-nav__list">
+    <li class="side-nav__item"><a class="side-nav__link" href="/help/index.html">All help topics</a></li>
+    <li class="side-nav__item"><a class="side-nav__link" href="/help?topic=faq">Frequently Asked Questions</a></li>
+    <li class="side-nav__item"><a class="side-nav__link" href="/help?topic=search-tips">Search Tips</a></li>
+    <li class="side-nav__item"><a class="side-nav__link" href="/help/indigenous-data.html" aria-current="page">Indigenous Cultural Data and Access</a></li>
+    <li class="side-nav__item"><a class="side-nav__link" href="/help?topic=copyright">Copyright and Terms of Use</a></li>
+    <li class="side-nav__item"><a class="side-nav__link" href="/help?topic=access">Access and Information</a></li>
+    <li class="side-nav__item"><a class="side-nav__link" href="/help?topic=privacy">Privacy</a></li>
+  </ul>
+</nav>
+<div class="help-layout__content">
   <p class="indigenous-data-main-content__text">
     <a class="indigenous-data-main-content__text-link-read-about-indigenous" href="/help?topic=access">Read about our Indigenous priorities</a>
     <a class="indigenous-data-main-content__text-link-read-full-acknowledgement" href="https://www.unimelb.edu.au/indigenous/acknowledgement-of-country">Read our full Acknowledgement of Country</a>
@@ -227,7 +240,7 @@
 
   <section class="indigenous-data-images-voices" aria-labelledby="h-images-voices">
     <h2 class="indigenous-data-images-voices__heading-note-images-voices" id="h-images-voices">Note on images and voices</h2>
-    <p class="indigenous-data-images-voices__text">Aboriginal and Torres Strait Islander people should be aware that the University of Melbourne website and collections contain the names, images and voices of people who have died.</p>
+    <p class="notice notice--warning indigenous-data-images-voices__notice">Aboriginal and Torres Strait Islander people should be aware that the University of Melbourne website and collections contain the names, images and voices of people who have died.</p>
   </section>
 
   <section class="indigenous-data-language" aria-labelledby="h-language">
@@ -244,6 +257,8 @@
     <h2 class="indigenous-data-contact__heading" id="h-contact">Contact</h2>
     <p class="indigenous-data-contact__text">If you have questions about Indigenous cultural materials, cultural protocols or access conditions, or wish to provide feedback about a record, please contact the relevant <a class="indigenous-data-contact__text-link-collection-team" href="/help?topic=access">collection team</a>.</p>
   </section>
+</div>
+</div>
 </main>
 
 
