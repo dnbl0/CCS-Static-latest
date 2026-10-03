@@ -231,14 +231,6 @@
 </header>
 
 <main class="collection-landing-main-content" id="main-content">
-  <section class="facts-card" aria-label="Collection at a glance">
-    <ul class="facts-card__list">
-      <sc-for list="{{ facts }}" as="f">
-        <li class="facts-card__item"><span class="facts-card__value">{{ f.value }}</span><span class="facts-card__label">{{ f.label }}</span></li>
-      </sc-for>
-    </ul>
-  </section>
-
   <div class="collection-layout">
     <div class="collection-layout__content">
       <section class="collection-section" aria-labelledby="h-about">
@@ -267,50 +259,37 @@
         <div class="contact-box__item"><dt class="contact-box__term">Opening hours</dt><dd class="contact-box__definition">{{ visit.hours }}</dd></div>
         <div class="contact-box__item"><dt class="contact-box__term">Email</dt><dd class="contact-box__definition"><a class="contact-box__link" href="mailto:{{ visit.email }}">{{ visit.email }}</a></dd></div>
         <div class="contact-box__item"><dt class="contact-box__term">Phone</dt><dd class="contact-box__definition"><a class="contact-box__link" href="tel:{{ visit.phoneHref }}">{{ visit.phone }}</a></dd></div>
-        <div class="contact-box__item"><dt class="contact-box__term">Website</dt><dd class="contact-box__definition"><a class="contact-box__link" href="{{ coll.externalUrl }}" target="_blank" rel="noopener">Visit the museum website<span class="sr-only"> (opens in a new tab)</span></a></dd></div>
       </dl>
     </aside>
   </div>
 
-  <sc-if value="{{ hasHighlights }}" hint-placeholder-val="{{ true }}">
-  <section class="ct-listing" aria-labelledby="h-highlights">
-    <div class="ct-listing__inner">
-      <h2 class="ct-listing__title" id="h-highlights">Highlights from the collection</h2>
-      <ul class="ct-listing__list ct-listing__list--image">
-        <sc-for list="{{ highlights }}" as="h">
-          <li class="ct-listing__item">
-            <img class="ct-listing__image" src="{{ h.img }}" alt="" loading="lazy">
-            <a class="ct-listing__link" href="{{ h.href }}"><h3 class="ct-listing__heading">{{ h.title }}</h3></a>
-            <p class="ct-listing__count">{{ h.type }}</p>
-          </li>
-        </sc-for>
-      </ul>
-    </div>
-  </section>
-  </sc-if>
-
-  <sc-if value="{{ hasSub }}" hint-placeholder-val="{{ true }}">
-  <section class="ct-listing ct-listing--alt" aria-labelledby="h-sub">
-    <div class="ct-listing__inner">
-      <h2 class="ct-listing__title" id="h-sub">Browse by sub-collection</h2>
-      <ul class="ct-listing__list ct-listing__list--text">
-        <sc-for list="{{ subCollections }}" as="n">
-          <li class="ct-listing__item"><a class="ct-listing__link" href="{{ n.href }}"><h3 class="ct-listing__heading">{{ n.text }}</h3></a><p class="ct-listing__excerpt">{{ n.meta }}</p></li>
-        </sc-for>
-      </ul>
-    </div>
-  </section>
-  </sc-if>
-
-  <sc-if value="{{ hasClasses }}" hint-placeholder-val="{{ true }}">
-  <section class="ct-listing" aria-labelledby="h-classes">
-    <div class="ct-listing__inner">
-      <h2 class="ct-listing__title" id="h-classes">Browse by classification</h2>
-      <ul class="ct-listing__list ct-listing__list--text">
-        <sc-for list="{{ classifications }}" as="n">
-          <li class="ct-listing__item"><a class="ct-listing__link" href="{{ n.href }}"><h3 class="ct-listing__heading">{{ n.text }}</h3></a><p class="ct-listing__excerpt">{{ n.meta }}</p></li>
-        </sc-for>
-      </ul>
+  <sc-if value="{{ hasBrowse }}" hint-placeholder-val="{{ true }}">
+  <section class="browse-lists" aria-labelledby="h-browse">
+    <div class="browse-lists__inner">
+      <h2 class="browse-lists__title" id="h-browse">Browse this collection</h2>
+      <p class="browse-lists__lead">Jump straight to a group of records. Each link opens search already filtered, with the number of records shown alongside.</p>
+      <div class="browse-lists__columns">
+        <sc-if value="{{ hasSub }}">
+        <nav class="browse-list" aria-labelledby="h-sub">
+          <h3 class="browse-list__heading" id="h-sub">Sub-collections</h3>
+          <ul class="browse-list__list">
+            <sc-for list="{{ subCollections }}" as="n">
+              <li class="browse-list__item"><a class="browse-list__link" href="{{ n.href }}"><span class="browse-list__name">{{ n.text }}</span><span class="browse-list__count">{{ n.count }}</span></a></li>
+            </sc-for>
+          </ul>
+        </nav>
+        </sc-if>
+        <sc-if value="{{ hasClasses }}">
+        <nav class="browse-list" aria-labelledby="h-classes">
+          <h3 class="browse-list__heading" id="h-classes">Classifications</h3>
+          <ul class="browse-list__list">
+            <sc-for list="{{ classifications }}" as="n">
+              <li class="browse-list__item"><a class="browse-list__link" href="{{ n.href }}"><span class="browse-list__name">{{ n.text }}</span><span class="browse-list__count">{{ n.count }}</span></a></li>
+            </sc-for>
+          </ul>
+        </nav>
+        </sc-if>
+      </div>
     </div>
   </section>
   </sc-if>
@@ -318,10 +297,11 @@
   <section class="ct-listing ct-listing--alt" aria-labelledby="h-explore">
     <div class="ct-listing__inner">
       <h2 class="ct-listing__title" id="h-explore">Explore further</h2>
-      <ul class="ct-listing__list ct-listing__list--pathfinder">
+      <ul class="ct-listing__list ct-listing__list--pathfinder ct-listing__list--four">
         <li class="ct-listing__item"><a class="pathfinder-alt__link" href="{{ coll.searchHref }}"><span class="pathfinder-alt__content"><span class="pathfinder-alt__title">Search this collection</span><span class="pathfinder-alt__summary">Search and filter every record in the {{ coll.name }}.</span></span></a></li>
         <li class="ct-listing__item"><a class="pathfinder-alt__link" href="/collections"><span class="pathfinder-alt__content"><span class="pathfinder-alt__title">Browse all collections</span><span class="pathfinder-alt__summary">Return to the five University cultural collections.</span></span></a></li>
         <li class="ct-listing__item"><a class="pathfinder-alt__link" href="/help"><span class="pathfinder-alt__content"><span class="pathfinder-alt__title">Help and support</span><span class="pathfinder-alt__summary">Searching, using and requesting items from the collections.</span></span></a></li>
+        <li class="ct-listing__item"><a class="pathfinder-alt__link" href="{{ coll.externalUrl }}" target="_blank" rel="noopener"><span class="pathfinder-alt__content"><span class="pathfinder-alt__title">Visit the museum website<span class="sr-only"> (opens in a new tab)</span></span><span class="pathfinder-alt__summary">Opening hours, exhibitions, events and visitor information.</span></span></a></li>
       </ul>
     </div>
   </section>
@@ -643,22 +623,15 @@ class Component extends DCLogic {
     const browse = (param, get, unit) => {
       const tally = {};
       inColl.forEach(i => [].concat(get(i) || []).forEach(v => { if (v) tally[v] = (tally[v] || 0) + 1; }));
-      return Object.entries(tally).sort((a, b) => b[1] - a[1]).slice(0, 12)
-        .map(([v, n]) => ({ text: v, meta: n.toLocaleString('en-AU') + (n === 1 ? ' record' : ' records'), href: searchBase + '&' + param + '=' + encodeURIComponent(v) }));
+      return Object.entries(tally).sort((a, b) => b[1] - a[1]).slice(0, 10)
+        .map(([v, n]) => ({ text: v, count: n.toLocaleString('en-AU'), href: searchBase + '&' + param + '=' + encodeURIComponent(v) }));
     };
     const subCollections = browse('named', i => i.named), classifications = browse('classification', i => i.classes);
-    const highlights = records.filter(r => r.card && r.card.img).slice(0, 3).map(r => ({ title: r.title, img: r.card.img, type: r.type, href: '/collections/record.html?id=' + r.id }));
-    const years = inColl.map(i => i.dateStart).filter(y => typeof y === 'number'), yearsEnd = inColl.map(i => i.dateEnd).filter(y => typeof y === 'number');
-    const facts = [
-      { value: records.length.toLocaleString('en-AU'), label: 'records in CCS' },
-      { value: records.filter(r => r.hasDA).length.toLocaleString('en-AU'), label: 'with digital assets' },
-      ...(years.length ? [{ value: Math.min(...years) + '–' + Math.max(...yearsEnd, ...years), label: 'date range' }] : [])
-    ];
     return {
       coll: { name: collName, blurb: cp.summary, externalUrl: cp.external, banner: BANNERS[key], searchHref: searchBase },
-      about: cp.about, advisory: cp.advisory || '', facts,
+      about: cp.about, advisory: cp.advisory || '',
       details: cp.details.filter(([label]) => label !== 'Total items' && label !== 'Date range').map(([label, value]) => label === 'Physical location' && ADDRESS[key] ? { label, isAddress: true, lines: ADDRESS[key].lines, note: ADDRESS[key].note } : { label, isText: true, value }),
-      highlights, hasHighlights: highlights.length > 1, subCollections, hasSub: subCollections.length > 0, classifications, hasClasses: classifications.length > 0,
+      subCollections, hasSub: subCollections.length > 0, classifications, hasClasses: classifications.length > 0, hasBrowse: subCollections.length + classifications.length > 0,
       visit: { hours: cp.hours, email: cp.email, phone: cp.phone, phoneHref: cp.phone.replace(/[^+\d]/g, '') }
     };
   }
