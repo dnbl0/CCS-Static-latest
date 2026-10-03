@@ -8,11 +8,13 @@
 <script src="../support.js"></script>
 <script src="../blacklight-adapter.js"></script>
 <script src="../collection-data.js"></script>
+<script src="/search/smart-search.js"></script>
 <script src="../licence-badge.js"></script>
 <link rel="stylesheet" href="/styles/shared/skip-link.css">
   <link rel="stylesheet" href="../styles/vendor/bootstrap-uom.min.css">
   <link rel="stylesheet" href="/styles/home.css">
   <link rel="stylesheet" href="../styles/header.css">
+  <link rel="stylesheet" href="/styles/shared/content-templates.css">
   <link rel="stylesheet" href="/styles/pages/search-results.css">
 </head>
 <body class="page-search-results">
@@ -365,6 +367,19 @@
         </div>
       </sc-if>
 
+      <sc-if value="{{ showSmartNotice }}">
+        <div class="search-results-smart notice" role="status">
+          <p class="search-results-smart__text">{{ smartNoticeText }}</p>
+          <ul class="search-results-smart__list"><sc-for list="{{ smartDetails }}" as="d"><li class="search-results-smart__item"><strong class="search-results-smart__term">{{ d.k }}:</strong> {{ d.v }}</li></sc-for></ul>
+          <button type="button" class="search-results-smart__button" onClick="{{ exactOnly }}">Show exact matches only</button>
+        </div>
+      </sc-if>
+      <sc-if value="{{ showExactNotice }}">
+        <div class="search-results-smart notice" role="status">
+          <p class="search-results-smart__text">Showing exact matches only.</p>
+          <button type="button" class="search-results-smart__button" onClick="{{ relatedAgain }}">Include close spellings and related meanings</button>
+        </div>
+      </sc-if>
       <sc-if value="{{ isEmpty }}">
         <div class="search-results-main-content__group search-results-main-content__group--v1">
           <h3 class="search-results-main-content__heading-no-records-match">No records match your search</h3>
@@ -388,6 +403,7 @@
                 <a class="search-results-article__link search-results-article__link--v4" href="{{ r.href }}">{{ r.title }}</a>
                 <a class="search-results-article__link search-results-article__link--v5" href="/collections/index.html">{{ r.collection }}</a>
                 <span class="search-results-article__text search-results-article__text--v5">{{ r.type }}</span>
+                <sc-if value="{{ r.matchLabel }}"><span class="search-results-article__text search-results-article__text--match">{{ r.matchLabel }}</span></sc-if>
                 <div class="search-results-article__group search-results-article__group--v1">
                   <ccs-licence licence="{{ r.licenceKey }}"></ccs-licence>
                   <sc-if value="{{ r.webAccess }}"><span class="search-results-article__text search-results-article__text--web-access">{{ r.webAccess }}</span></sc-if>
@@ -636,6 +652,8 @@ const BUSH = 'Bush Medicine collection', BUSHA = 'Bush Medicine collection/Abori
 const HBA = 'Harry Brookes Allen Museum of Anatomy and Pathology';
 // Record data is shared with the record pages: see /collection-data.js (window.CCS)
 const ITEMS = window.CCS.items;
+// CCS-116 / CCS-123: fuzzy and semantic matching in the browser (see smart-search.js)
+const SMART = window.SmartSearch.create(ITEMS);
 const HIER = [
  {name:MHM,children:['Roseby Collection',BUSH,BUSHA,'Frederic Wood Jones Collection']},
  {name:UAC,children:['Russell and Mab Grimwade Bequest','Michael Buxton Collection']},
@@ -693,7 +711,7 @@ const SORTS = [['rel','Relevance'],['new','Date (newest)'],['old','Date (oldest)
 const RATIO = {kangaroo:[676,762],cary:[676,816],goodenia:[680,426],grandfather:[680,547],heavy:[680,497],bottle:[676,944],vase:[676,948],compound:[676,944],inro1:[680,830],bottle2:[676,952],eucalypt:[590,157],dimalan:[676,429],inro2:[680,826],cabinet:[680,490],dimalan2:[676,436],piano:[680,347],inro3:[680,830],eucryphia:[676,719],electrometer:[789,592],carbsoda:[1333,2000],toiletjar:[1333,2000],filmposter:[1522,2000],crookes:[250,376],pipes:[768,513],necklace:[2000,1328]};
 const SKEL = [300,200,340,240,280,190,320,230,260];
 const uniq = k => [...new Set(ITEMS.flatMap(i => vals(i, k)))];
-const EMPTYF = () => { const f = {digital:false,downloadable:false,sort:'',q:'',scope:'all',collection:[],yFrom:null,yTo:null,accession:'',birthFrom:null,birthTo:null,deathFrom:null,deathTo:null,clauses:[],fAll:{}}; KEYS.forEach(k => f[k] = []); return f; };
+const EMPTYF = () => { const f = {exact:false,digital:false,downloadable:false,sort:'',q:'',scope:'all',collection:[],yFrom:null,yTo:null,accession:'',birthFrom:null,birthTo:null,deathFrom:null,deathTo:null,clauses:[],fAll:{}}; KEYS.forEach(k => f[k] = []); return f; };
 // Production-date slider: a fixed 1700-2030 scale (earlier records are grouped into the first bar) keeps the
 // handles stable as other filters change and stops the few BCE records from squashing everything else.
 const DATE_LO = 1700, DATE_HI = 2030, DATE_BIN = 10, YEAR_MIN = -5000, YEAR_MAX = 2100;
@@ -934,14 +952,15 @@ class Component extends DCLogic {
     window.addEventListener('pointerup', this.onUp); window.addEventListener('keydown', this.onKey); window.addEventListener('resize', this.onResize);
     try { if (!localStorage.getItem('ccs-cultural-ack')) { this.setState({ ackOpen: true }); setTimeout(() => { const el = this.ackRef.current && this.ackRef.current.querySelector(FOCUSABLE); el && el.focus(); }, 30); } } catch (e) {}
     const qs = new URLSearchParams(location.search);
-    const pc = qs.get('collection'), pt = qs.get('type'), pq = qs.get('q'), psc = qs.get('scope'), pn = qs.get('named'), pcl = qs.get('classification');
+    const pc = qs.get('collection'), pt = qs.get('type'), pq = qs.get('q'), psc = qs.get('scope'), pn = qs.get('named'), pcl = qs.get('classification'), pex = qs.get('exact');
     let initF = null;
     const advF = parseAdvancedParams(qs);
     if (advF) { initF = advF; this.setState({ f: advF }); }
-    else if (pc || pt || pq || psc || pn || pcl) {
+    else if (pc || pt || pq || psc || pn || pcl || pex) {
       if (pq) saveSearchHistory(pq);
       initF = clone(this.state.f);
       if (pc) initF.collection = [pc];
+      if (pex === '1') initF.exact = true;
       if (pn) initF.named = [pn];
       if (pcl) initF.classification = [pcl];
       if (pt) initF.type = pt.split(';').map(t => window.CCS.canonType(t)).filter((t, i, a) => t && a.indexOf(t) === i);
@@ -981,7 +1000,14 @@ class Component extends DCLogic {
       if (f.yFrom != null && it.dateStart < f.yFrom) return false;
       if (f.yTo != null && it.dateStart > f.yTo) return false;
     }
-    if (f.q) { const txt = scopeText(it, f.scope).toLowerCase(); if (!matchesQuery(txt, f.q)) return false; }
+    if (f.q) {
+      const txt = scopeText(it, f.scope).toLowerCase();
+      if (!matchesQuery(txt, f.q)) {
+        if (f.exact) return false;
+        const a = SMART.analyse(f.q);
+        if (!a || !SMART.match(it, a, f.scope, txt).ok) return false;
+      }
+    }
     if (f.clauses && f.clauses.length && !matchClauses(it, f.clauses)) return false;
     return true;
   }
@@ -1167,11 +1193,19 @@ class Component extends DCLogic {
     const apiBtnText = isLive ? (s.liveError ? '● API: Fallback (Offline)' : '● API: Live Blacklight') : '○ API: Mock Data';
     const apiBtnBg = isLive ? (s.liveError ? '#fff3cd' : '#e8edf6') : '#f4f5f8';
     const apiBtnColor = isLive ? (s.liveError ? '#856404' : 'var(--col-bg-primary)') : 'var(--col-text-muted)';
-    let list;
+    let list, smartKinds = null;
     if (isLive && s.liveItems) {
       list = s.liveItems;
     } else {
       list = ITEMS.filter(it => this.matchF(it, f));
+      if (f.q && !f.sort && !f.exact) {
+        const a = SMART.analyse(f.q);
+        if (a) {
+          const info = new Map(list.map(it => [it, SMART.match(it, a, f.scope, scopeText(it, f.scope).toLowerCase())]));
+          list = [...list].sort((x, y) => info.get(y).score - info.get(x).score);
+          smartKinds = info;
+        }
+      }
       const tt = t => t.replace(/^\W+/, '');
       if (f.sort === 'az') list = [...list].sort((a, b) => tt(a.title).localeCompare(tt(b.title)));
       if (f.sort === 'new') list = [...list].sort((a, b) => (b.dateStart ?? -1e9) - (a.dateStart ?? -1e9));
@@ -1181,8 +1215,12 @@ class Component extends DCLogic {
       const licenceKey = window.CCS.licences[it.licence] ? it.licence : 'Rights Reserved';
       const imgPath = it.img ? (it.img.startsWith('http') || it.img.startsWith('/') ? it.img : '../images/' + it.img + '.jpg') : null;
       return { ...it, href: '/collections/record.html?id=' + it.id, img: imgPath, imgSrc: imgPath || '', ar: it.img && RATIO[it.img] ? RATIO[it.img].join(' / ') : 'auto', delay: Math.min(idx, 12) * 35 + 'ms', hasImg: !!it.img, noImg: !it.img,
-        type: capType(it.objectType), dateLabel: it.date || (it.dateStart ? 'c. ' + it.dateStart : 'Undated'), licenceKey };
+        type: capType(it.objectType), dateLabel: it.date || (it.dateStart ? 'c. ' + it.dateStart : 'Undated'), licenceKey,
+        matchLabel: smartKinds && smartKinds.get(it) && smartKinds.get(it).kind === 'fuzzy' ? 'Close spelling' : smartKinds && smartKinds.get(it) && smartKinds.get(it).kind === 'semantic' ? 'Related meaning' : '' };
     });
+    const exactCount = smartKinds ? [...smartKinds.values()].filter(m => m.kind === 'exact').length : 0;
+    const smartDesc = smartKinds ? SMART.describe(SMART.analyse(f.q)) : null;
+    const relatedCount = smartKinds ? smartKinds.size - exactCount : 0;
     const totalCount = (isLive && s.liveTotal != null) ? s.liveTotal : (isLive && s.liveItems ? s.liveItems.length : list.length);
     const n = totalCount, pageCount = Math.max(1, Math.ceil(n / s.perPage)), page = Math.min(s.page, pageCount);
     // Windowed pagination: current page +/- 2, always show first/last, with an
@@ -1336,6 +1374,11 @@ class Component extends DCLogic {
       clearAll: () => this.apply(ff => ({ ...EMPTYF(), sort: ff.sort })),
       skeletons: (n ? results.slice(0, 12).map(r => ({ ar: r.hasImg ? r.ar : 'auto', imgDisplay: r.hasImg ? 'block' : 'none' })) : SKEL.slice(0, 6).map(x => ({ ar: '1 / ' + (x / 300), imgDisplay: 'block' }))),
       results: (isLive && s.liveItems) ? results : results.slice((page - 1) * s.perPage, page * s.perPage), isGrid: !s.loading && view === 'masonry' && n > 0, isList: !s.loading && view === 'list' && n > 0, isEmpty: !s.loading && n === 0,
+      showSmartNotice: !!smartKinds && relatedCount > 0 && !isLive,
+      smartNoticeText: smartKinds ? (exactCount === 0 ? `No records match your words exactly. Showing ${relatedCount} ${relatedCount === 1 ? 'related result' : 'related results'} instead.` : `${exactCount} ${exactCount === 1 ? 'record matches' : 'records match'} your words exactly. ${relatedCount} ${relatedCount === 1 ? 'related result follows' : 'related results follow'} them.`) : '',
+      smartDetails: smartDesc ? [...smartDesc.fuzzy.map(x => ({ k: 'Close spellings', v: `${x.from} → ${x.to.join(', ')}` })), ...smartDesc.semantic.map(x => ({ k: 'Related terms', v: `${x.from} → ${x.to.join(', ')}` }))] : [],
+      exactOnly: () => this.apply(ff => ({ ...ff, exact: true })),
+      showExactNotice: !!f.exact && !!f.q, relatedAgain: () => this.apply(ff => ({ ...ff, exact: false })),
       showDidYouMean: !!didYouMeanText, didYouMeanText, applyDidYouMean: () => runQ(didYouMeanText),
       modal: s.modal, closeModal: () => this.closeModal(), stop: e => e.stopPropagation(),
       bodyRef: this.bodyRef, trackRef: this.trackRef, dialogRef: this.dialogRef,
