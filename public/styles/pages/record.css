@@ -879,3 +879,96 @@ body.page-record .record-section__image-classification {
   width: 48px;
   height: 48px;
 }
+
+body.page-record .im-gate {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 48px 32px;
+  color: var(--col-text-primary, #2d2d2d);
+}
+
+body.page-record .im-gate__title {
+  margin: 0 0 16px;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 36px;
+  color: #000f46;
+}
+
+body.page-record .im-gate__text {
+  margin: 0 0 16px;
+  padding: 16px;
+  border: 1px solid #ac5907;
+  background: #fff5cb;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+body.page-record .im-gate__button {
+  min-height: 44px;
+  padding: 10px 24px;
+  border: 0;
+  background: #000f46;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+body.page-record .im-gate__button:hover {
+  background: #213e5d;
+}
+
+body.page-record .im-caption {
+  margin: 0;
+  padding: 8px 16px;
+  background: #fff;
+  border-top: 1px solid #e7e7e9;
+  font-size: 14px;
+  line-height: 20px;
+  color: #3b4050;
+}
+
+body.page-record .im-access {
+  margin: 0;
+  padding: 8px 16px;
+  background: #e3f6fd;
+  border-top: 1px solid #1f7593;
+  font-size: 14px;
+  line-height: 20px;
+  color: #222;
+}
+
+body.page-record .im-access__link {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-weight: 600;
+  color: #003f8b;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+body.page-record .im-btn--text {
+  width: auto;
+  padding: 0 10px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+body.page-record .im-jump {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+}
+
+body.page-record .im-jump__select {
+  min-height: 36px;
+  padding: 0 8px;
+  border: 1px solid #c8c8c8;
+  background: #fff;
+  font-size: 14px;
+}
