@@ -133,7 +133,7 @@ Specs referenced but not machine-readable from this repo: `public/assets/data/me
 
 | Issue | Requirement (verbatim intent) | Prototype status | Gap |
 |---|---|---|---|
-| CCS-19 | Browse collections, sub-collections or hierarchies from source systems | Landing pages now list "Browse by sub-collection" (named collections, with counts) and "Browse by classification"; each link opens search pre-filtered (`?collection=&named=` / `&classification=`) | **Partial**: one level of hierarchy (collection > named collection); deeper source-system hierarchies (series, parent/child) are not navigable |
+| CCS-19 | Browse collections, sub-collections or hierarchies from source systems | The Browse collections page lists "Browse by sub-collection" (named collections, with counts); each link opens search pre-filtered (`?collection=&named=` / `&classification=`) | **Partial**: one level of hierarchy (collection > named collection); deeper source-system hierarchies (series, parent/child) are not navigable |
 | CCS-20 | Filter by theme, date, type, format incl. DA metadata; Indigenous "subject area" from CMS | Type, date, format, collection filters on search; Advanced Filters | **Gap**: Indigenous subject-area is a data-layer item; no theme facet |
 | CCS-21 | Notify users of sensitive material + usage guidance | Advisory banner on record | **Data gap**: only 2 records tagged |
 | CCS-22 | Visible stable identifier for citation/reuse | UoM ID + accession shown, copyable | Done |
@@ -147,6 +147,10 @@ Specs referenced but not machine-readable from this repo: `public/assets/data/me
 ## DA Licence Type, Terms of Use and Web Access (2026-10-03)
 
 Source: Nexus DAM Knowledge Hub pages "License Type & Terms of Use" and "Cross Collection Search (Web) Readiness". The record page now shows the standard Terms of Use statement for the licence type (with copyright holder, date and responsible collection filled in), a Web access status, and the official Australian Classification marking for rated records. Web access is derived (open licence with a digital asset = View + Download, otherwise View only; no digital asset = no status) until the real DA Web Access Status field is supplied by the DAM integration. Search cards show the same status and marking.
+
+## Page redesigns on Matrix content templates (2026-10-03)
+
+Browse collections, the five collection pages (about + advisory notice, details table, visit and enquiries contact box with address, opening hours and contact details, four explore-further pathfinder tiles), Help (landing, topic pages, Indigenous data) now use the shared components in `styles/shared/content-templates.css`. Sub-collection browse (CCS-19) now lives on the Browse collections page only; the individual collection pages no longer list sub-collections or classifications; no requirement text changed.
 
 ## Open Items For Follow-Up
 

@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="/styles/home.css">
   <link rel="stylesheet" href="../../styles/header.css">
   <link rel="stylesheet" href="../../styles/collection.css">
+  <link rel="stylesheet" href="/styles/shared/content-templates.css">
   <link rel="stylesheet" href="/styles/pages/collection-landing.css">
 </head>
 <body class="page-collection-landing">
@@ -230,38 +231,49 @@
 </header>
 
 <main class="collection-landing-main-content" id="main-content">
-  <div class="collection-landing-main-content__group collection-landing-main-content__group--v2">
-    <div class="collection-landing-main-content__group collection-landing-main-content__group--v1">
-      <section aria-labelledby="h-about" class="lp-panel">
-        <h2 class="lp-panel__heading-about-this-collection" id="h-about">About this collection</h2>
-        <div class="lp-panel__body"><p class="lp-panel__text lp-panel__text--styled">{{ about }}</p></div>
+  <div class="collection-layout">
+    <div class="collection-layout__content">
+      <section class="collection-section" aria-labelledby="h-about">
+        <h2 class="collection-section__heading-about-this-collection" id="h-about">About this collection</h2>
+        <p class="collection-section__text">{{ about }}</p>
+        <sc-if value="{{ advisory }}" hint-placeholder-val="{{ false }}"><p class="notice notice--warning collection-section__notice">{{ advisory }}</p></sc-if>
       </section>
-      <section aria-labelledby="h-details" class="lp-panel">
-        <h2 class="lp-panel__heading-collection-details" id="h-details">Collection details</h2>
-        <dl class="lp-panel__definition-list">
+      <section class="collection-section" aria-labelledby="h-details">
+        <h2 class="collection-section__heading-collection-details" id="h-details">Collection details</h2>
+        <dl class="def-table">
           <sc-for list="{{ details }}" as="d">
-            <div class="lp-row">
-              <dt class="lp-row__term">{{ d.label }}</dt>
-              <dd class="lp-row__definition">
-                <sc-if value="{{ d.isLinks }}"><span class="lp-links"><sc-for list="{{ d.links }}" as="l"><a class="lp-links__link" href="{{ l.href }}">{{ l.text }} <span class="lp-n">{{ l.n }}</span></a></sc-for></span></sc-if>
-                <sc-if value="{{ d.isText }}"><span class="lp-row__definition-text">{{ d.value }}</span></sc-if>
-                <sc-if value="{{ d.isAddress }}"><address class="lp-address"><sc-for list="{{ d.lines }}" as="ln"><span class="lp-address__text">{{ ln }}</span></sc-for></address><sc-if value="{{ d.note }}"><p class="lp-address-note">{{ d.note }}</p></sc-if></sc-if>
+            <div class="def-table__row">
+              <dt class="def-table__term">{{ d.label }}</dt>
+              <dd class="def-table__definition">
+                <sc-if value="{{ d.isText }}"><span class="def-table__text">{{ d.value }}</span></sc-if>
               </dd>
             </div>
           </sc-for>
         </dl>
       </section>
     </div>
-    <aside class="collection-landing-visit-details" aria-label="Visit details">
-      <section class="lp-panel">
-        <h2 class="lp-panel__heading-visit-details">Visit details</h2>
-        <div class="lp-panel__body">
-          <div class="lp-panel__item"><span class="k">Opening hours</span><span class="v">{{ visit.hours }}</span></div>
-          <div class="lp-panel__item"><span class="k">Enquiries</span><a class="v" href="mailto:{{ visit.email }}">{{ visit.email }}</a><a class="v" href="tel:{{ visit.phoneHref }}">{{ visit.phone }}</a><a class="v" href="{{ coll.externalUrl }}" target="_blank" rel="noopener">View this collections website <span class="sr-only lp-panel__link-text">(opens in new window)</span><span class="lp-panel__link-text" aria-hidden="true">↗</span></a></div>
-        </div>
-      </section>
+    <aside class="contact-box collection-layout__aside" aria-labelledby="h-visit">
+      <h2 class="contact-box__title" id="h-visit">Visit and enquiries</h2>
+      <dl class="contact-box__list">
+        <sc-if value="{{ visit.hasAddress }}"><div class="contact-box__item"><dt class="contact-box__term">Address</dt><dd class="contact-box__definition"><address class="contact-box__address"><sc-for list="{{ visit.addressLines }}" as="ln"><span class="contact-box__address-line">{{ ln }}</span></sc-for></address><sc-if value="{{ visit.addressNote }}"><p class="contact-box__note">{{ visit.addressNote }}</p></sc-if></dd></div></sc-if>
+        <div class="contact-box__item"><dt class="contact-box__term">Opening hours</dt><dd class="contact-box__definition">{{ visit.hours }}</dd></div>
+        <div class="contact-box__item"><dt class="contact-box__term">Email</dt><dd class="contact-box__definition"><a class="contact-box__link" href="mailto:{{ visit.email }}">{{ visit.email }}</a></dd></div>
+        <div class="contact-box__item"><dt class="contact-box__term">Phone</dt><dd class="contact-box__definition"><a class="contact-box__link" href="tel:{{ visit.phoneHref }}">{{ visit.phone }}</a></dd></div>
+      </dl>
     </aside>
   </div>
+
+  <section class="ct-listing ct-listing--alt" aria-labelledby="h-explore">
+    <div class="ct-listing__inner">
+      <h2 class="ct-listing__title" id="h-explore">Explore further</h2>
+      <ul class="ct-listing__list ct-listing__list--pathfinder ct-listing__list--four">
+        <li class="ct-listing__item"><a class="pathfinder-alt__link" href="{{ coll.searchHref }}"><span class="pathfinder-alt__content"><span class="pathfinder-alt__title">Search this collection</span><span class="pathfinder-alt__summary">Search and filter every record in the {{ coll.name }}.</span></span></a></li>
+        <li class="ct-listing__item"><a class="pathfinder-alt__link" href="/collections"><span class="pathfinder-alt__content"><span class="pathfinder-alt__title">Browse all collections</span><span class="pathfinder-alt__summary">Return to the five University cultural collections.</span></span></a></li>
+        <li class="ct-listing__item"><a class="pathfinder-alt__link" href="/help"><span class="pathfinder-alt__content"><span class="pathfinder-alt__title">Help and support</span><span class="pathfinder-alt__summary">Searching, using and requesting items from the collections.</span></span></a></li>
+        <li class="ct-listing__item"><a class="pathfinder-alt__link" href="{{ coll.externalUrl }}" target="_blank" rel="noopener"><span class="pathfinder-alt__content"><span class="pathfinder-alt__title">Visit the museum website<span class="sr-only"> (opens in a new tab)</span></span><span class="pathfinder-alt__summary">Opening hours, exhibitions, events and visitor information.</span></span></a></li>
+      </ul>
+    </div>
+  </section>
 </main>
 
 <!-- UoM Footer -->
@@ -573,20 +585,13 @@ class Component extends DCLogic {
       m.setAttribute('content', (BLURBS[key] || '').slice(0, 160));
     } catch (e) {}
     const cp = COPY[key];
-    const inColl = ((window.CCS && window.CCS.items) || []).filter(i => i.collection === COLL_KEYS[key]);
-    const browse = (label, param, get) => {
-      const tally = {};
-      inColl.forEach(i => [].concat(get(i) || []).forEach(v => { if (v) tally[v] = (tally[v] || 0) + 1; }));
-      const links = Object.entries(tally).sort((a, b) => b[1] - a[1]).slice(0, 12)
-        .map(([v, n]) => ({ text: v, n, href: '/search/search-results.html?collection=' + encodeURIComponent(COLL_KEYS[key]) + '&' + param + '=' + encodeURIComponent(v) }));
-      return links.length ? [{ label, isLinks: true, links }] : [];
-    };
+    const collName = COLL_KEYS[key];
+    const searchBase = '/search/search-results.html?collection=' + encodeURIComponent(collName);
     return {
-      coll: { name: COLL_KEYS[key], blurb: cp.summary, externalUrl: cp.external, banner: BANNERS[key], searchHref: '/search/search-results.html?collection=' + encodeURIComponent(COLL_KEYS[key]) },
-      about: cp.about,
-      details: [...cp.details.filter(([label]) => label !== 'Total items' && label !== 'Date range').map(([label, value]) => label === 'Physical location' && ADDRESS[key] ? { label, isAddress: true, lines: ADDRESS[key].lines, note: ADDRESS[key].note } : { label, isText: true, value }), ...(cp.advisory ? [{ label: 'Rights / Advisory language', isText: true, value: cp.advisory }] : []),
-        ...browse('Browse by sub-collection', 'named', i => i.named), ...browse('Browse by classification', 'classification', i => i.classes)],
-      visit: { hours: cp.hours, email: cp.email, phone: cp.phone, phoneHref: cp.phone.replace(/[^+\d]/g, '') }
+      coll: { name: collName, blurb: cp.summary, externalUrl: cp.external, banner: BANNERS[key], searchHref: searchBase },
+      about: cp.about, advisory: cp.advisory || '',
+      details: cp.details.filter(([label]) => label !== 'Total items' && label !== 'Date range' && label !== 'Physical location').map(([label, value]) => ({ label, isText: true, value })),
+      visit: { hasAddress: !!ADDRESS[key], addressLines: ADDRESS[key] ? ADDRESS[key].lines : [], addressNote: ADDRESS[key] ? ADDRESS[key].note : '', hours: cp.hours, email: cp.email, phone: cp.phone, phoneHref: cp.phone.replace(/[^+\d]/g, '') }
     };
   }
 }

@@ -356,3 +356,139 @@
   font-weight: 600;
   line-height: 28.8px;
 }
+
+/* Collection page: content column + contact box */
+.collection-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 48px;
+  max-width: 1224px;
+  margin: 0 auto;
+  padding: 48px 32px 56px;
+  align-items: start;
+}
+
+.collection-layout__content {
+  max-width: 800px;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--col-text-primary, #2d2d2d);
+}
+
+.collection-section + .collection-section {
+  margin-top: 48px;
+}
+
+.collection-section h2 {
+  margin: 0 0 20px;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 36px;
+  color: #000f46;
+}
+
+.collection-section__text {
+  margin: 0 0 16px;
+  font-size: 18px;
+  line-height: 28px;
+}
+
+.collection-section .notice {
+  margin: 24px 0 0;
+}
+
+.collection-layout__aside {
+  margin: 0;
+}
+
+/* Definition table — Matrix "Tables" styling for key/value details */
+.def-table {
+  margin: 0;
+  border-top: 1px solid #c8c8c8;
+}
+
+.def-table__row {
+  display: grid;
+  grid-template-columns: minmax(120px, 200px) minmax(0, 1fr);
+  gap: 4px 24px;
+  padding: 12px 0;
+  border-bottom: 1px solid #c8c8c8;
+}
+
+.def-table__term {
+  font-weight: 600;
+  color: #000f46;
+}
+
+.def-table__definition {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.contact-box__list {
+  display: grid;
+  gap: 16px;
+  margin: 16px 0 0;
+}
+
+.contact-box__item {
+  display: grid;
+  gap: 2px;
+}
+
+.contact-box__term {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 20px;
+  text-transform: uppercase;
+  color: #5b6070;
+}
+
+.contact-box__definition {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 900px) {
+  .collection-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+    padding: 32px 16px 40px;
+  }
+
+  .def-table__row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.ct-listing__list--four {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+}
+
+@media (max-width: 1000px) {
+  .ct-listing__list--four {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+
+@media (max-width: 640px) {
+  .ct-listing__list--four {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.contact-box__address {
+  display: flex;
+  flex-direction: column;
+  font-style: normal;
+}
+
+.contact-box__note {
+  margin: 8px 0 0;
+  font-size: 14px;
+  line-height: 20px;
+}

@@ -4,21 +4,4 @@ body{margin:0;background:var(--white-100);color:var(--col-text-primary);font-fam
 a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-decoration:underline}
 *{box-sizing:border-box}
 [aria-label="University links"] a:hover{color:var(--sage-100);text-decoration:underline}
-
-/* Collection landing — styled like the item record page */
 .sr-live{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-.lp-row{display:grid;grid-template-columns:minmax(120px,200px) minmax(0,1fr);gap:4px 24px;padding:12px 0;border-bottom:1px solid #f1efea}
-.lp-row:last-child{border-bottom:0}
-.lp-row dt{font-size:15px;font-weight:700;color:var(--col-text-primary)}
-.lp-address{font-style:normal;display:flex;flex-direction:column;letter-spacing:.02em}
-.lp-address-note{margin:8px 0 0;color:#3b4050}
-.lp-row dd{margin:0;font-size:15px;line-height:1.55;color:var(--col-text-primary);overflow-wrap:anywhere}
-.lp-links{display:flex;flex-wrap:wrap;gap:6px 14px}.lp-links a{text-decoration:underline}.lp-n{color:var(--col-text-muted);font-size:13px}
-.lp-panel{background:#fff;border:1px solid #e3e0d9;display:flex;flex-direction:column}
-.lp-panel h2{margin:0;padding:20px 24px;border-bottom:1px solid var(--col-border-neutral-soft);font-family:'Fraunces',serif;font-weight:600;font-size:22px;color:var(--col-bg-primary)}
-.lp-panel__body{padding:18px 24px 22px;display:flex;flex-direction:column;gap:14px}
-.lp-panel__item{display:flex;flex-direction:column;gap:3px;padding-top:12px;border-top:1px solid #f1efea}.lp-panel__item:first-child{padding-top:0;border-top:0}
-.lp-panel__item .k{font-size:13px;font-weight:700;color:var(--col-text-primary)}
-.lp-panel__item .v{font-size:14px;line-height:1.5;color:#3b4050;text-wrap:pretty;overflow-wrap:anywhere}.lp-panel__item a.v{text-decoration:underline;color:#0b2a6b}
-@media(max-width:640px){.lp-row{grid-template-columns:1fr}
-}
