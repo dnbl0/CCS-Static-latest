@@ -113,7 +113,7 @@ These match between Jira and code — no discrepancy:
 | Issue | Title |
 |---|---|
 | CCS-46 | Create favorites (personal) lists |
-| CCS-143 | Save search history |
+| CCS-143 | Save search history (recent searches exist in suggestions; see alignment list) |
 | CCS-206 | Search history display (daily grouping) |
 | CCS-157 | Display hero image functionality |
 | CCS-55 | Search filter for 'Indigenous data' |
@@ -152,41 +152,48 @@ Source: Nexus DAM Knowledge Hub pages "License Type & Terms of Use" and "Cross C
 
 Contact (collection contact cards, general enquiries table, numbered steps), Browse collections, the five collection pages (about + advisory notice, details table, visit and enquiries contact box with address, opening hours and contact details, four explore-further pathfinder tiles), Help (landing, topic pages, Indigenous data) now use the shared components in `styles/shared/content-templates.css`. Sub-collection browse (CCS-19) now lives on the Browse collections page only; the individual collection pages no longer list sub-collections or classifications; no requirement text changed.
 
-## Prototype vs Jira alignment: stories not aligned or missing (2026-10-03)
+## Prototype vs Jira alignment: stories not aligned or missing (re-read from Jira 2026-10-03)
+
+Every user-facing story description in the CCS-2026 label (49 stories; integration, cyber, UX-task and hiring issues excluded) was re-read from Jira and compared with the prototype.
 
 **Missing entirely**
 
 | Story | Requirement | Note |
 |---|---|---|
-| CCS-46 | Favourites / personal lists | Needs login (BR-09); no UI |
-| CCS-143, 206 | Save and display search history | Search history is only used for suggestions |
-| CCS-62 | Assistive-technology compatibility | No screen-reader testing recorded |
-| CCS-65 (part) | PDF handling in the viewer | Images, audio and video only |
-| CCS-55 | Search filter for Indigenous data | Not built; needs cultural approval and data |
-| CCS-8 (epic) | High-fidelity viewing and comparison (IIIF viewer, due 2027) | No deep-zoom or side-by-side compare |
-| CCS-9 / 14 (epics) | Authenticated users, authorisation and permissions | No login; no gated content |
+| CCS-46 | Favourites and personal lists | Needs login; CCS-70's guest security model lists "create/add/edit/delete lists" as guest actions, so lists are expected without a login |
+| CCS-206 | Search history grouped by day | Recent searches exist but are not grouped by day |
+| CCS-62 | Assistive-technology compatibility | No screen-reader or voice-control testing recorded |
+| CCS-55 | Search filter for Indigenous data (on/off toggle) | Not built; needs cultural approval and data |
+| CCS-65 (part) | PDF in the viewer (2026 priority: images, audio, video, PDF) | Images, audio and video only |
+| CCS-27 (part) | DA caption in rights information | No caption field in the data or record page; accession, credit line, copyright, terms of use and contact are present |
+| CCS-116 | Semantic search (Jira: Done) | No frontend trace |
 
 **Partly aligned**
 
 | Story | Gap |
 |---|---|
-| CCS-19 | One level of hierarchy only (collection, then named collection); series and parent/child records are not navigable |
-| CCS-20, 38 | No theme filter; Indigenous labels (Indigeneity, country, language, family group, region) are not offered |
-| CCS-21 | Banner works, but only 2 of 728 records carry an advisory |
-| CCS-25 | Source (IMu/Vernon) link only where the data supplies one |
-| CCS-44, 66, 166 | Rating badge works, but only 4 records show a classification and there is no authorised-user gating; "Request to view" is a front-end-only form |
-| CCS-47, 68, 69 | Use, view and contact requests exist; digitisation, physical access and contribute-information request types are missing, and no form sends anything |
-| CCS-123 | Fuzzy matching is only the spelling suggestion ("did you mean"); results are not fuzzy-ranked |
-| CCS-64 | Image aspect-ratio handling not re-verified |
-| CCS-51 | WCAG 2.1 AA scanned with axe only; no formal audit |
-| CCS-294 to 299, 83 | No requirement text in Jira, so page content cannot be checked against an approved spec |
+| CCS-19 | One level only (collection > named collection); no series or parent/child navigation |
+| CCS-20, 38 | No theme filter; Indigenous labels (Indigeneity, research/non-research, region, country, family group, language, issue) not offered |
+| CCS-21 | Banner works; only 2 of 728 records carry an advisory |
+| CCS-25 | Link to the museum's own site only where the data supplies one |
+| CCS-45 | Jira means navigating multi-page assets (folios, books). The record page has previous/next with an "n of N" count, but no page-sequence navigation or thumbnails for books |
+| CCS-50 | Jira (Done) asks for a usage notice users must accept before viewing certain items. The prototype has a one-time cultural acknowledgement on the search page only; none on record pages or per item |
+| CCS-44, 66, 166 | Rating badge works but only 4 records show a classification; no authorised-user gating; no View + Download (the record page has no download) |
+| CCS-68 | Licensed items should be view-only with a message that download is on request and approval only. Web access shows "View only" but the message is not shown |
+| CCS-69 | Not-licensed assets should not be viewable, with a message that access is on request and approval. The prototype shows images for all in-copyright records and has no such message or hidden state |
+| CCS-47 | Use, view and contact requests exist; digitisation, physical access and contribute-information are missing, and no form sends anything |
+| CCS-123, 158 | Typos and partial phrases: spelling suggestion covers "did you mean"; results are not fuzzy-ranked |
+| CCS-143 | "Know and access past few search terms": recent searches show in the suggestions list with a clear option, so this is mostly met (earlier note listing it as out of scope was wrong) |
+| CCS-64 | Image aspect ratio kept via object-fit; not systematically verified |
+| CCS-51 | axe scans only; no formal WCAG 2.1 AA audit |
+| CCS-294 to 299, 83 | No requirement text in Jira |
 
-**Status mismatches to raise in Jira** (prototype does not match the Jira status)
+**Aligned (verified in prototype):** CCS-22, 25, 33, 34, 37, 41, 52, 124, 157, 217, 233, 288, 292, 293.
 
-- CCS-116 Semantic search is marked Done but there is no frontend trace.
-- CCS-123 Fuzzy search is In Testing, but only spelling suggestion exists.
-- CCS-25 Persistent URL and CCS-22 UoM ID are New in Jira but are now built in the prototype.
-- CCS-41, 124 and 217 are New in Jira but are built.
+**Jira status vs prototype**
+
+- Marked Done but not met: CCS-50 (usage notice), CCS-68 (download message), CCS-70 (list actions), CCS-116 (semantic search), CCS-123 (fuzzy search, In Testing).
+- Marked New but built: CCS-22, 25, 41, 124, 157, 217.
 
 ## Open Items For Follow-Up
 
