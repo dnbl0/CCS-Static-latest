@@ -246,7 +246,6 @@
               <dt class="def-table__term">{{ d.label }}</dt>
               <dd class="def-table__definition">
                 <sc-if value="{{ d.isText }}"><span class="def-table__text">{{ d.value }}</span></sc-if>
-                <sc-if value="{{ d.isAddress }}"><address class="def-table__address"><sc-for list="{{ d.lines }}" as="ln"><span class="def-table__address-line">{{ ln }}</span></sc-for></address><sc-if value="{{ d.note }}"><p class="def-table__note">{{ d.note }}</p></sc-if></sc-if>
               </dd>
             </div>
           </sc-for>
@@ -256,43 +255,13 @@
     <aside class="contact-box collection-layout__aside" aria-labelledby="h-visit">
       <h2 class="contact-box__title" id="h-visit">Visit and enquiries</h2>
       <dl class="contact-box__list">
+        <sc-if value="{{ visit.hasAddress }}"><div class="contact-box__item"><dt class="contact-box__term">Address</dt><dd class="contact-box__definition"><address class="contact-box__address"><sc-for list="{{ visit.addressLines }}" as="ln"><span class="contact-box__address-line">{{ ln }}</span></sc-for></address><sc-if value="{{ visit.addressNote }}"><p class="contact-box__note">{{ visit.addressNote }}</p></sc-if></dd></div></sc-if>
         <div class="contact-box__item"><dt class="contact-box__term">Opening hours</dt><dd class="contact-box__definition">{{ visit.hours }}</dd></div>
         <div class="contact-box__item"><dt class="contact-box__term">Email</dt><dd class="contact-box__definition"><a class="contact-box__link" href="mailto:{{ visit.email }}">{{ visit.email }}</a></dd></div>
         <div class="contact-box__item"><dt class="contact-box__term">Phone</dt><dd class="contact-box__definition"><a class="contact-box__link" href="tel:{{ visit.phoneHref }}">{{ visit.phone }}</a></dd></div>
       </dl>
     </aside>
   </div>
-
-  <sc-if value="{{ hasBrowse }}" hint-placeholder-val="{{ true }}">
-  <section class="browse-lists" aria-labelledby="h-browse">
-    <div class="browse-lists__inner">
-      <h2 class="browse-lists__title" id="h-browse">Browse this collection</h2>
-      <p class="browse-lists__lead">Jump straight to a group of records. Each link opens search already filtered, with the number of records shown alongside.</p>
-      <div class="browse-lists__columns">
-        <sc-if value="{{ hasSub }}">
-        <nav class="browse-list" aria-labelledby="h-sub">
-          <h3 class="browse-list__heading" id="h-sub">Sub-collections</h3>
-          <ul class="browse-list__list">
-            <sc-for list="{{ subCollections }}" as="n">
-              <li class="browse-list__item"><a class="browse-list__link" href="{{ n.href }}"><span class="browse-list__name">{{ n.text }}</span><span class="browse-list__count">{{ n.count }}</span></a></li>
-            </sc-for>
-          </ul>
-        </nav>
-        </sc-if>
-        <sc-if value="{{ hasClasses }}">
-        <nav class="browse-list" aria-labelledby="h-classes">
-          <h3 class="browse-list__heading" id="h-classes">Classifications</h3>
-          <ul class="browse-list__list">
-            <sc-for list="{{ classifications }}" as="n">
-              <li class="browse-list__item"><a class="browse-list__link" href="{{ n.href }}"><span class="browse-list__name">{{ n.text }}</span><span class="browse-list__count">{{ n.count }}</span></a></li>
-            </sc-for>
-          </ul>
-        </nav>
-        </sc-if>
-      </div>
-    </div>
-  </section>
-  </sc-if>
 
   <section class="ct-listing ct-listing--alt" aria-labelledby="h-explore">
     <div class="ct-listing__inner">
@@ -618,21 +587,11 @@ class Component extends DCLogic {
     const cp = COPY[key];
     const collName = COLL_KEYS[key];
     const searchBase = '/search/search-results.html?collection=' + encodeURIComponent(collName);
-    const inColl = ((window.CCS && window.CCS.items) || []).filter(i => i.collection === collName);
-    const records = window.CCS ? Object.values(window.CCS.records).filter(r => r.collection === collName) : [];
-    const browse = (param, get, unit) => {
-      const tally = {};
-      inColl.forEach(i => [].concat(get(i) || []).forEach(v => { if (v) tally[v] = (tally[v] || 0) + 1; }));
-      return Object.entries(tally).sort((a, b) => b[1] - a[1]).slice(0, 10)
-        .map(([v, n]) => ({ text: v, count: n.toLocaleString('en-AU'), href: searchBase + '&' + param + '=' + encodeURIComponent(v) }));
-    };
-    const subCollections = browse('named', i => i.named), classifications = browse('classification', i => i.classes);
     return {
       coll: { name: collName, blurb: cp.summary, externalUrl: cp.external, banner: BANNERS[key], searchHref: searchBase },
       about: cp.about, advisory: cp.advisory || '',
-      details: cp.details.filter(([label]) => label !== 'Total items' && label !== 'Date range').map(([label, value]) => label === 'Physical location' && ADDRESS[key] ? { label, isAddress: true, lines: ADDRESS[key].lines, note: ADDRESS[key].note } : { label, isText: true, value }),
-      subCollections, hasSub: subCollections.length > 0, classifications, hasClasses: classifications.length > 0, hasBrowse: subCollections.length + classifications.length > 0,
-      visit: { hours: cp.hours, email: cp.email, phone: cp.phone, phoneHref: cp.phone.replace(/[^+\d]/g, '') }
+      details: cp.details.filter(([label]) => label !== 'Total items' && label !== 'Date range' && label !== 'Physical location').map(([label, value]) => ({ label, isText: true, value })),
+      visit: { hasAddress: !!ADDRESS[key], addressLines: ADDRESS[key] ? ADDRESS[key].lines : [], addressNote: ADDRESS[key] ? ADDRESS[key].note : '', hours: cp.hours, email: cp.email, phone: cp.phone, phoneHref: cp.phone.replace(/[^+\d]/g, '') }
     };
   }
 }
