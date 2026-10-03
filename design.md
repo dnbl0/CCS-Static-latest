@@ -810,7 +810,7 @@ vercel.json                          # clean URLs + legacy redirects
 | `public/styles/header.css` | Search overlay, `.sr-only` and shared colour variables |
 | `public/styles/pages/*.css` | Per-page rules (scoped by `body.page-<page>`); includes the former inline styles and `<style>` blocks |
 | `public/styles/shared/*.css` | Former `<style>` blocks that several pages shared |
-| `public/styles/shared/content-templates.css` | Matrix content-template components (listing, pathfinder, contact box, notice, side nav, definition table); see README |
+| `public/styles/shared/content-templates.css` | Matrix content-template components (listing, pathfinder, contact box, notice, side nav, definition table, contact cards, numbered steps); see README |
 | `public/styles/collection.css` | Collection landing pages |
 | `public/styles/vendor/bootstrap-uom.min.css` | Bootstrap 5.3.3, compiled locally |
 
