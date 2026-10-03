@@ -13,7 +13,7 @@
     "build:css:dev": "sass --quiet-deps --silence-deprecation=import --load-path=node_modules src/scss/custom-bootstrap.scss:public/styles/vendor/bootstrap-uom.css",
     "watch:css": "sass --quiet-deps --silence-deprecation=import --load-path=node_modules --watch src/scss/custom-bootstrap.scss:public/styles/vendor/bootstrap-uom.css",
     "verify:bootstrap": "bash verify-bootstrap.sh",
-    "test": "npm run build:css && npm run verify:bootstrap && node tests/blacklight-adapter.test.js && node tests/page-integrity.test.js && node tests/collection-data.test.js && node tests/no-inline-styles.test.js && node tests/advanced-filters.test.js && node tests/image-aspect.test.js"
+    "test": "npm run build:css && npm run verify:bootstrap && node tests/blacklight-adapter.test.js && node tests/page-integrity.test.js && node tests/collection-data.test.js && node tests/no-inline-styles.test.js && node tests/advanced-filters.test.js && node tests/image-aspect.test.js && node tests/accessibility.test.js"
   },
   "repository": {
     "type": "git",
@@ -28,6 +28,7 @@
   },
   "homepage": "https://github.com/dnbl0/CCS-Static-latest#readme",
   "devDependencies": {
+    "axe-core": "^4.13.0",
     "bootstrap": "^5.3.3",
     "playwright-core": "^1.63.0",
     "sass": "^1.105.1"
