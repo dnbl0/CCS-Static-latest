@@ -356,3 +356,163 @@
   font-weight: 600;
   line-height: 28.8px;
 }
+
+/* Facts card — Matrix "Facts card": a panel of key figures */
+.facts-card {
+  max-width: 1224px;
+  margin: 0 auto;
+  padding: 32px 32px 0;
+}
+
+.facts-card__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px 48px;
+  margin: 0;
+  padding: 24px 32px;
+  list-style: none;
+  border-top: 4px solid #000f46;
+  background: #f1f1f1;
+}
+
+.facts-card__item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.facts-card__value {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 36px;
+  line-height: 43.2px;
+  color: #000f46;
+}
+
+.facts-card__label {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 20px;
+  text-transform: uppercase;
+  color: #5b6070;
+}
+
+/* Collection page: content column + contact box */
+.collection-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 48px;
+  max-width: 1224px;
+  margin: 0 auto;
+  padding: 48px 32px 56px;
+  align-items: start;
+}
+
+.collection-layout__content {
+  max-width: 800px;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--col-text-primary, #2d2d2d);
+}
+
+.collection-section + .collection-section {
+  margin-top: 48px;
+}
+
+.collection-section h2 {
+  margin: 0 0 20px;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 36px;
+  color: #000f46;
+}
+
+.collection-section__text {
+  margin: 0 0 16px;
+  font-size: 18px;
+  line-height: 28px;
+}
+
+.collection-section .notice {
+  margin: 24px 0 0;
+}
+
+.collection-layout__aside {
+  margin: 0;
+}
+
+/* Definition table — Matrix "Tables" styling for key/value details */
+.def-table {
+  margin: 0;
+  border-top: 1px solid #c8c8c8;
+}
+
+.def-table__row {
+  display: grid;
+  grid-template-columns: minmax(120px, 200px) minmax(0, 1fr);
+  gap: 4px 24px;
+  padding: 12px 0;
+  border-bottom: 1px solid #c8c8c8;
+}
+
+.def-table__term {
+  font-weight: 600;
+  color: #000f46;
+}
+
+.def-table__definition {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.def-table__address {
+  display: flex;
+  flex-direction: column;
+  font-style: normal;
+}
+
+.def-table__note {
+  margin: 8px 0 0;
+}
+
+.contact-box__list {
+  display: grid;
+  gap: 16px;
+  margin: 16px 0 0;
+}
+
+.contact-box__item {
+  display: grid;
+  gap: 2px;
+}
+
+.contact-box__term {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 20px;
+  text-transform: uppercase;
+  color: #5b6070;
+}
+
+.contact-box__definition {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 900px) {
+  .collection-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+    padding: 32px 16px 40px;
+  }
+
+  .facts-card {
+    padding: 24px 16px 0;
+  }
+
+  .def-table__row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

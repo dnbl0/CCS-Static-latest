@@ -148,6 +148,10 @@ Specs referenced but not machine-readable from this repo: `public/assets/data/me
 
 Source: Nexus DAM Knowledge Hub pages "License Type & Terms of Use" and "Cross Collection Search (Web) Readiness". The record page now shows the standard Terms of Use statement for the licence type (with copyright holder, date and responsible collection filled in), a Web access status, and the official Australian Classification marking for rated records. Web access is derived (open licence with a digital asset = View + Download, otherwise View only; no digital asset = no status) until the real DA Web Access Status field is supplied by the DAM integration. Search cards show the same status and marking.
 
+## Page redesigns on Matrix content templates (2026-10-03)
+
+Browse collections, the five collection pages (facts card, about + advisory notice, details table, visit contact box, highlights, browse by sub-collection and classification, explore-further pathfinder tiles), Help (landing, topic pages, Indigenous data) now use the shared components in `styles/shared/content-templates.css`. Supports CCS-19 (sub-collection browse) and the collection landing/help stories; no requirement text changed.
+
 ## Open Items For Follow-Up
 
 1. **Re-verify, not assumed**: CCS-21 (sensitivity notifications), CCS-47 (contact-us record view), CCS-64 (item 4 — image aspect ratio), CCS-65 (audio/video/PDF format handling), CCS-68/69/166 (request-to-use/view flows) — these were asserted "implemented" in the prior version of this document without the same rigor applied to the items above; they should get the same live-code verification treatment before being marked confirmed.
