@@ -320,7 +320,7 @@
     var calId = id + '-cal', errId = id + '-err', hintId = id + '-hint', titleId = id + '-cal-title';
     var b = bounds();
     var label = el('label', { 'for': id, 'class': 'sr-only', text: o.label });
-    var input = el('input', { type: 'text', id: id, 'class': 'ccs-input ccs-date__input', placeholder: o.placeholder, autocomplete: 'off', inputmode: 'numeric', maxlength: '10', 'aria-haspopup': 'dialog', 'aria-expanded': 'false', 'aria-controls': calId, 'aria-describedby': hintId });
+    var input = el('input', { type: 'text', id: id, 'class': 'ccs-input ccs-date__input', placeholder: o.placeholder, autocomplete: 'off', inputmode: 'numeric', maxlength: '10', role: 'combobox', 'aria-haspopup': 'dialog', 'aria-expanded': 'false', 'aria-controls': calId, 'aria-describedby': hintId });
     var hint = el('span', { id: hintId, 'class': 'sr-only', text: 'Numbers only. Enter a date as dd/mm/yyyy, or just a year between ' + yearLabel(b.min) + ' and ' + yearLabel(b.max) + '. Press Arrow Down to open the calendar.' });
     var cal = el('div', { id: calId, 'class': 'ccs-cal', role: 'dialog', 'aria-label': 'Choose ' + o.label.toLowerCase(), hidden: true });
     var title = el('h3', { id: titleId, 'class': 'ccs-cal__title', 'aria-live': 'polite' });

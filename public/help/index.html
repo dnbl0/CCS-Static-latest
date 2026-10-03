@@ -507,6 +507,7 @@ class Component extends DCLogic {
   renderVals() {
     const key = new URLSearchParams(location.search).get('topic');
     const found = TOPICS.find(([k]) => k === key && k !== 'indigenous');
+    try { if (found) document.title = found[1] + ' — Help — Cultural Collections Search — University of Melbourne'; } catch (e) { /* title only */ }
     const topic = found ? { key: found[0], title: found[1], blurb: found[2] } : null;
     return {
       topic, notTopic: !topic,

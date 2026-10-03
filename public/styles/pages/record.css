@@ -882,8 +882,9 @@ body.page-record .record-section__image-classification {
 
 body.page-record .im-gate {
   max-width: 720px;
-  margin: 0 auto;
+  margin: 32px auto;
   padding: 48px 32px;
+  background: #fff;
   color: var(--col-text-primary, #2d2d2d);
 }
 
@@ -1044,4 +1045,35 @@ body.page-record .record-contact__button {
   text-decoration: underline;
   text-align: left;
   cursor: pointer;
+}
+
+/* WCAG 1.4.10 reflow: the media bar and notice panel must fit a 320px viewport */
+body.page-record .im-bar {
+  flex-wrap: wrap;
+}
+
+body.page-record .im-gate {
+  box-sizing: border-box;
+  max-width: calc(100% - 32px);
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 640px) {
+  body.page-record .im-gate {
+    margin: 16px;
+    padding: 24px 16px;
+  }
+
+  body.page-record .im-gate__title {
+    font-size: 24px;
+    line-height: 28.8px;
+  }
+}
+
+body.page-record .record-section__definition-text,
+body.page-record .record-section__text--v7,
+body.page-record .record-section__text--v8,
+body.page-record .record-section__definition {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
