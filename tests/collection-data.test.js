@@ -78,4 +78,14 @@ for (const r of records) {
 }
 ok(`${checked} media references checked`);
 
+// Access messages (CCS-68/69), usage notice (CCS-50), caption support (CCS-27)
+const withDA = records.filter(r => r.hasDA);
+for (const r of withDA) {
+  if (r.webAccess === 'View only' && !r.accessMessage) fail(`record ${r.id}: View only record has no download message`);
+  if (r.webAccess === 'Request to view' && !r.viewRestricted) fail(`record ${r.id}: Request to view record is not marked restricted`);
+  if ((r.advisories.length || r.classification) && !r.usageNotice.length) fail(`record ${r.id}: advisory or classification without a usage notice`);
+}
+if (!sandbox.window.CCS.licences['Not licensed'] || sandbox.window.CCS.licences['Not licensed'].view !== false) fail('Not licensed licence type must be defined with view: false');
+ok(`${withDA.length} digital-asset records have access messages and usage notices where required`);
+
 finish('collection-data');

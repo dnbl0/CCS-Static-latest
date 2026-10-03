@@ -240,6 +240,13 @@ The CCS 2026 filter holds 82 stories. The Remarks field says "Feasibility 2026: 
 
 **MVP and already met in the prototype:** CCS-22, 25, 33, 34, 37, 41, 124, 157, 217. The remaining MVP stories (EMu, Vernon and DAM loads, indexing, security and firewall) are backend work with no frontend surface here.
 
+## CCS-27, 45, 50, 68, 69 build (2026-10-03)
+
+- **CCS-68 / 69:** records with a digital asset now carry an access message. "View only" (in-copyright) records say that downloading is on request with approval and link to "Request to use"; a new "Not licensed" licence type (`view: false`) shows "Request to view" in place of the media with a button that opens the request dialog. No current record is "Not licensed", so the state is exercised by tests and manual checks only until the DAM supplies that value.
+- **CCS-50:** records with an advisory or a film/game classification show a usage notice in place of the media until the user accepts it ("I understand, view this item"). Acceptance is remembered per item for the browser session (`sessionStorage`).
+- **CCS-27:** `caption` (record) and `captions` (per image) are supported in the data, shown under the media and in the media metadata panel. The current data has no captions, so none appear until the DAM `DA Caption` field is loaded.
+- **CCS-45:** with more than three media items the viewer bar adds First / Last buttons and a "Go to" selector (n of N), and Home / End keys, alongside previous / next and thumbnails.
+
 ## Open Items For Follow-Up
 
 1. **Re-verify, not assumed**: CCS-21 (sensitivity notifications), CCS-47 (contact-us record view), CCS-64 (item 4 — image aspect ratio), CCS-65 (audio/video/PDF format handling), CCS-68/69/166 (request-to-use/view flows) — these were asserted "implemented" in the prior version of this document without the same rigor applied to the items above; they should get the same live-code verification treatment before being marked confirmed.

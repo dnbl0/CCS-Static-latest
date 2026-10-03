@@ -763,6 +763,7 @@
     'CC BY-ND': { label: 'CC BY-ND', icon: 'cc', icons: ['/images/cc/cc.svg', '/images/cc/by.svg', '/images/cc/nd.svg'], url: 'https://creativecommons.org/licenses/by-nd/4.0/', group: 'restricted', download: true, terms: 'This material is licensed under a Creative Commons Attribution No Derivatives 4.0 licence. The Attribution-NoDerivatives licence allows others to copy and distribute the material in any medium or format, even commercially, as long as the material is not adapted and the creator/s and University of Melbourne are attributed, and any changes are indicated.' },
     'CC BY-NC-SA': { label: 'CC BY-NC-SA', icon: 'cc', icons: ['/images/cc/cc.svg', '/images/cc/by.svg', '/images/cc/nc.svg', '/images/cc/sa.svg'], url: 'https://creativecommons.org/licenses/by-nc-sa/4.0/', group: 'restricted', download: true, terms: 'This material is licensed under a Creative Commons Attribution Non-Commercial, Share Alike 4.0 licence. Others may copy, distribute and remix the material in any medium or format for non-commercial purposes only, as long as the creator/s and University of Melbourne are attributed. Where a user makes a derivative of the material, the derivative must be released under the same type of licence and changes indicated.' },
     'CC BY-NC-ND': { label: 'CC BY-NC-ND', icon: 'cc', icons: ['/images/cc/cc.svg', '/images/cc/by.svg', '/images/cc/nc.svg', '/images/cc/nd.svg'], url: 'https://creativecommons.org/licenses/by-nc-nd/4.0/', group: 'restricted', download: true, terms: 'This material is licensed under a Creative Commons Attribution Non-Commercial, No Derivatives 4.0 licence. Others can copy and distribute the material in any medium or format for non-commercial purposes only, as long as the material is not adapted and the creator/s and the University of Melbourne are attributed.' },
+    'Not licensed': { label: 'Not licensed', icon: 'cc', url: '/help/index.html?topic=copyright', group: 'permission', download: false, view: false, terms: 'WARNING This material is All Rights Reserved. © {holder}{date}. Please contact {unit} if further access is required.' },
     'Rights Reserved': { label: 'In copyright', icon: 'cc', icons: ['/images/cc/in-copyright.svg'], url: '/help/index.html?topic=copyright', group: 'permission', download: false, terms: 'WARNING This material is All Rights Reserved. © {holder}{date}. Please contact {unit} if further access is required.' }
   };
 
@@ -875,7 +876,7 @@
     if (!imgList.length) imgList.push(...(it.images || (it.img ? [it.img] : [])));
     const images = imgList.map(k => k.startsWith('/') ? k : k.includes('.') ? `/images/${k}` : `/images/${k}.jpg`);
     const av = ASSET_AV[it.id] || [];
-    const slides = [...images.map(src => ({ kind: 'image', src, type: /\.png$/i.test(src) ? 'image/png' : 'image/jpeg' })), ...av];
+    const slides = [...images.map((src, i) => ({ kind: 'image', src, type: /\.png$/i.test(src) ? 'image/png' : 'image/jpeg', caption: (it.captions || [])[i] || null })), ...av];
     const hasDA = slides.length > 0;
     const date = it.date || it.dateDisplay || (it.year ? String(it.year) : null) || (it.dateStart != null ? String(it.dateStart) : null);
     const coll = COLL_LABEL[it.collection] || it.collection;
@@ -945,9 +946,15 @@
     const producerVal = it.imageProducer || it.producer;
     const termsText = it.terms || lic.terms.replace('{holder}', copyrightHolder.replace(/^©\s*/, '')).replace('{date}', date ? ', ' + date : '').replace('{unit}', UNIT[it.collection] || 'the Responsible Collection');
     // DA Web Access Status (Nexus DAM): open licences = View + Download; other licensed or in-copyright assets that are shown = View only. Records with no digital asset have no status.
-    const webAccess = !hasDA ? null : (lic.download && lic.group === 'open' ? 'View + Download' : 'View only');
+    const webAccess = !hasDA ? null : lic.view === false ? 'Request to view' : (lic.download && lic.group === 'open' ? 'View + Download' : 'View only');
+    // CCS-68 / CCS-69: what the user is told about download and viewing for licensed and not-licensed assets
+    const accessMessage = webAccess === 'View only' ? 'You can view this digital asset online. Downloading is available on request, with approval from the collection.'
+      : webAccess === 'Request to view' ? 'This digital asset cannot be viewed online. Access is available on request, with approval from the collection.' : null;
+    // CCS-50: items with an advisory or a film/game classification show a usage notice that must be accepted before the media is shown
+    const usageNotice = hasDA && (advisories.length > 0 || !!filmCls) ? [...advisories.map(a => a.text), ...(filmCls ? [filmCls.text] : [])] : [];
     const media = hasDA ? [
       { label: 'Licence type', value: lic.label },
+      ...(it.caption ? [{ label: 'Caption', value: it.caption }] : []),
       ...(advisories.length ? [{ label: 'Advisory', value: advisories.map(a => a.text).join('\n\n') }] : []),
       { label: 'Terms of use', value: termsText },
       ...(producerVal ? [{ label: 'Producer', value: producerVal }] : [])
@@ -955,7 +962,7 @@
 
     return {
       id: it.id, title: it.title, altTitle: it.altTitle || null, type: objType, byline, images, slides, hasDA, fields: f, rights, media,
-      licence: hasDA ? { ...lic, key: it.licence } : null, terms: hasDA ? termsText : null, webAccess, licenceKey: LIC[it.licence] ? it.licence : 'Rights Reserved', classification: filmCls, advisories, indigenous: !!it.indigenous,
+      licence: hasDA ? { ...lic, key: it.licence } : null, terms: hasDA ? termsText : null, webAccess, accessMessage, viewRestricted: webAccess === 'Request to view', usageNotice, caption: it.caption || null, licenceKey: LIC[it.licence] ? it.licence : 'Rights Reserved', classification: filmCls, advisories, indigenous: !!it.indigenous,
       subjects: it.subjects || (it.subject ? [it.subject] : []), citation, citations, unit: UNIT[it.collection] || 'Museums and Collections',
       assetId: `CA-${String(it.id).padStart(6, '0')}`, collection: coll, named: it.named, subject: it.subject,
       card: { id: it.id, title: it.title, img: images[0] || null, collection: coll, type: objType, lic: lic.label, licenceKey: LIC[it.licence] ? it.licence : 'Rights Reserved', licIcon: lic.icon, licIcons: lic.icons || [], hasLicIcons: !!(lic.icons && lic.icons.length), indigenous: !!it.indigenous }
