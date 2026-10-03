@@ -88,4 +88,9 @@ for (const r of withDA) {
 if (!sandbox.window.CCS.licences['Not licensed'] || sandbox.window.CCS.licences['Not licensed'].view !== false) fail('Not licensed licence type must be defined with view: false');
 ok(`${withDA.length} digital-asset records have access messages and usage notices where required`);
 
+// Theme filter (CCS-20/38): themes derive from the museum classification; report coverage
+const themed = sandbox.window.CCS.items.filter(i => Array.isArray(i.theme) && i.theme.length).length;
+if (!themed) fail('no item has a theme');
+else ok(`theme present on ${themed}/${sandbox.window.CCS.items.length} items`);
+
 finish('collection-data');

@@ -259,6 +259,12 @@
     <div class="im-stage">
       <sc-if value="{{ isImage }}" hint-placeholder-val="{{ true }}"><img class="im-img" src="{{ cur.src }}" alt="{{ curAlt }}" onLoad="{{ onImgLoad }}"></sc-if>
       <sc-if value="{{ isVideo }}" hint-placeholder-val="{{ false }}"><video class="im-video" src="{{ cur.src }}" controls="{{ yes }}" preload="metadata" playsinline="{{ yes }}" aria-label="{{ curAlt }}" onLoadedMetadata="{{ onMeta }}"></video></sc-if>
+      <sc-if value="{{ isPdf }}" hint-placeholder-val="{{ false }}">
+        <div class="im-pdf">
+          <iframe class="im-pdf__frame" src="{{ cur.src }}" title="{{ curAlt }}"></iframe>
+          <a class="im-pdf__link" href="{{ cur.src }}" target="_blank" rel="noopener">Open the PDF in a new tab<span class="sr-only"> ({{ cur.label }})</span></a>
+        </div>
+      </sc-if>
       <sc-if value="{{ isAudio }}" hint-placeholder-val="{{ false }}">
         <div class="im-audio">
           <svg class="im-audio__icon" width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
@@ -308,6 +314,7 @@
             <sc-if value="{{ th.isImage }}"><img class="im-thumb__image" src="{{ th.src }}" alt="" loading="lazy"></sc-if>
             <sc-if value="{{ th.isVideo }}"><svg class="im-thumb__icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><polygon points="6 4 20 12 6 20 6 4"></polygon></svg></sc-if>
             <sc-if value="{{ th.isAudio }}"><svg class="im-thumb__icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg></sc-if>
+            <sc-if value="{{ th.isPdf }}"><svg class="im-thumb__icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="M6 2h9l5 5v15H6z"></path><path d="M14 2v6h6"></path></svg></sc-if>
           </button>
         </sc-for>
       </div>
@@ -441,6 +448,12 @@
             <span class="record-section__text record-section__text--v5">Responsible collection</span>
             <a class="record-section__link" href="#">{{ rec.unit }}</a>
           </div>
+          <div class="record-section__group record-section__group--v3 record-contact">
+            <span class="record-section__text record-section__text--v5">Contact the collection</span>
+            <ul class="record-contact__list">
+              <sc-for list="{{ reqLinks }}" as="l"><li class="record-contact__item"><button type="button" class="record-contact__button" onClick="{{ l.open }}">{{ l.label }}</button></li></sc-for>
+            </ul>
+          </div>
           <a class="record-section__link-about-copyright-terms" href="/help/index.html?topic=copyright">About copyright and terms of use</a>
         </div>
       </section>
@@ -498,8 +511,11 @@
       </sc-if>
       <sc-if value="{{ reqSent }}">
         <div class="record-req-title__group-status" role="status">
-          <strong class="record-req-title__strong">Thanks – your request has been sent</strong>
-          <p class="record-req-title__text record-req-title__text--v2">{{ rec.unit }} will reply by email, usually within 5 business days.</p>
+          <strong class="record-req-title__strong">Thanks – your request has been recorded</strong>
+          <p class="record-req-title__text record-req-title__text--v2">This is a prototype, so nothing has been emailed. In the live service this request goes to {{ rec.unit }}, who usually reply within 5 business days. This is what would be sent:</p>
+          <dl class="record-req-summary">
+            <sc-for list="{{ reqSummary }}" as="row"><div class="record-req-summary__row"><dt class="record-req-summary__term">{{ row.k }}</dt><dd class="record-req-summary__definition">{{ row.v }}</dd></div></sc-for>
+          </dl>
           <button class="record-req-title__button-close-req record-req-title__button-close-req--v1" onClick="{{ closeReq }}">Close</button>
         </div>
       </sc-if>
@@ -589,7 +605,7 @@
 <script type="text/x-dc" data-dc-script data-props="{&quot;record&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;12&quot;,&quot;24&quot;,&quot;16&quot;,&quot;25&quot;,&quot;23&quot;,&quot;4&quot;,&quot;21&quot;],&quot;default&quot;:&quot;12&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;showRelated&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;showCitation&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
 const ESC = s => s;
 class Component extends DCLogic {
-  state = { idx: 0, sidebar: false, full: false, dims: {}, dur: {}, broken: {}, copied: null, ready: !!window.CCS, noticeOk: null, req: null, reqSent: false, cite: 'apa', exportOpen: false };
+  state = { idx: 0, sidebar: false, full: false, dims: {}, dur: {}, broken: {}, copied: null, ready: !!window.CCS, noticeOk: null, reqData: null, req: null, reqSent: false, cite: 'apa', exportOpen: false };
   viewerRef = React.createRef();
   dialogRef = React.createRef();
 
@@ -651,7 +667,7 @@ class Component extends DCLogic {
   }
   openReq(opener) {
     this.reqOpener = opener || document.activeElement;
-    this.setState({ req: 'contact', reqSent: false }); this.focusReqTitle();
+    this.setState({ req: 'info', reqSent: false }); this.focusReqTitle();
   }
   closeReqDlg() {
     this.setState({ req: null, reqSent: false });
@@ -704,8 +720,8 @@ class Component extends DCLogic {
     try { document.title = R ? `${R.title} — Cultural Collections Search — University of Melbourne` : (notFound ? 'Record not found — Cultural Collections Search — University of Melbourne' : document.title); } catch (e) {}
     if (!R) return { licKey: 'Rights Reserved', notFound, found: false, pageTitle: notFound ? 'Record not found' : '', rec: { title: '', type: '', byline: '', citation: '', unit: '', assetId: '', hasDA: false, images: [], slides: [], subjects: [], advisories: [], rights: [] },
       fields: [], related: [], mediaRows: [], thumbs: [], noDA: false, showRelated: false, viewerRef: this.viewerRef,
-      yes: true, cur: { src: '', label: '' }, curAlt: '', isImage: false, isVideo: false, isAudio: false, curBroken: false, onImgLoad() {}, onMeta() {}, multi: false, imgCount: '', liveText: '',
-      prevImg() {}, nextImg() {}, firstImg() {}, lastImg() {}, jumpTo() {}, openUse() {}, openView() {}, acceptNotice() {}, caption: '', showGate: false, showMedia: true, gateTitle: '', gateTexts: [], gateIsNotice: false, gateIsRestricted: false, manyPages: false, pageNo: 1, pageOptions: [], atFirst: true, atLast: true, sidebarOpen: false, sidebarCls: 'im-sidebar', sidebarLabel: '', toggleSidebar() {}, closeSidebar() {}, fullLabel: '', toggleFull() {},
+      yes: true, cur: { src: '', label: '' }, curAlt: '', isImage: false, isVideo: false, isAudio: false, isPdf: false, curBroken: false, onImgLoad() {}, onMeta() {}, multi: false, imgCount: '', liveText: '',
+      reqLinks: [], prevImg() {}, nextImg() {}, firstImg() {}, lastImg() {}, jumpTo() {}, openUse() {}, openView() {}, acceptNotice() {}, caption: '', showGate: false, showMedia: true, gateTitle: '', gateTexts: [], gateIsNotice: false, gateIsRestricted: false, manyPages: false, pageNo: 1, pageOptions: [], atFirst: true, atLast: true, sidebarOpen: false, sidebarCls: 'im-sidebar', sidebarLabel: '', toggleSidebar() {}, closeSidebar() {}, fullLabel: '', toggleFull() {},
             citeText: 'Copy citation', typeHref: '/search/search-results.html', collectionHref: '/search/search-results.html' };
     const slides = R.slides, idx = Math.min(s.idx, Math.max(0, slides.length - 1));
     const cur = slides[idx] || { kind: 'image', src: '', label: '' };
@@ -715,10 +731,11 @@ class Component extends DCLogic {
     if (!accepted) { try { accepted = sessionStorage.getItem('ccs-notice-' + id) === '1'; } catch (e) { /* ignore */ } }
     const needsNotice = R.usageNotice.length > 0 && !accepted, restricted = R.viewRestricted;
     const showGate = R.hasDA && (restricted || needsNotice);
+    const permalinkShort = location.host + '/item/' + R.assetId;
     const dim = cur.kind === 'image' ? s.dims[cur.src] : null;
     const dur = s.dur[cur.src];
     const fmtDur = t => { t = Math.round(t); const h = Math.floor(t / 3600), m = Math.floor(t % 3600 / 60), sec = t % 60; return (h ? h + ':' + String(m).padStart(2, '0') : m) + ':' + String(sec).padStart(2, '0'); };
-    const kindWord = { image: 'Image', video: 'Video', audio: 'Audio' }[cur.kind];
+    const kindWord = { image: 'Image', video: 'Video', audio: 'Audio', pdf: 'PDF' }[cur.kind];
     const curAlt = slides.length > 1 ? `${R.title} — ${kindWord.toLowerCase()} ${idx + 1} of ${slides.length}` : R.title;
     const media = R.media || [];
     const fileName = decodeURIComponent((cur.src || '').split('/').pop());
@@ -745,12 +762,12 @@ class Component extends DCLogic {
       hasAdvisory: R.advisories.length > 0, hasSubjects,
       licKey: R.licenceKey,
       hasClass: !!cls, clsBg: cls ? cls.bg : '', clsFg: cls ? cls.fg : '', clsName: cls ? cls.name : '', clsText: cls ? cls.text : '', clsLogo: cls && cls.logo ? cls.logo : '', clsCode: cls ? (cls.name.match(/\(([^)]+)\)/) ? cls.name.match(/\(([^)]+)\)/)[1].replace(' ', '') : cls.name) : '',
-      viewerRef: this.viewerRef, yes: true, cur, curAlt, isImage: cur.kind === 'image', isVideo: cur.kind === 'video', isAudio: cur.kind === 'audio',
+      viewerRef: this.viewerRef, yes: true, cur, curAlt, isImage: cur.kind === 'image', isVideo: cur.kind === 'video', isAudio: cur.kind === 'audio', isPdf: cur.kind === 'pdf',
       curBroken: !!s.broken[cur.src],
       onImgLoad: e => { const im = e.target, k = cur.src; if (k && !s.dims[k]) this.setState(st => ({ dims: { ...st.dims, [k]: { w: im.naturalWidth, h: im.naturalHeight } } })); },
       onMeta: e => { const k = cur.src, d = e.target.duration; if (k && isFinite(d) && !s.dur[k]) this.setState(st => ({ dur: { ...st.dur, [k]: d } })); },
       multi: slides.length > 1, imgCount: `${idx + 1} of ${slides.length}`, liveText: slides.length > 1 ? `${kindWord} ${idx + 1} of ${slides.length}` : '',
-      thumbs: slides.map((sl, i) => ({ src: sl.src, isImage: sl.kind === 'image', isVideo: sl.kind === 'video', isAudio: sl.kind === 'audio', go: () => go(i), label: `${{ image: 'Image', video: 'Video', audio: 'Audio' }[sl.kind]} ${i + 1} of ${slides.length}`, current: i === idx ? 'true' : undefined })),
+      thumbs: slides.map((sl, i) => ({ src: sl.src, isImage: sl.kind === 'image', isVideo: sl.kind === 'video', isAudio: sl.kind === 'audio', isPdf: sl.kind === 'pdf', go: () => go(i), label: `${{ image: 'Image', video: 'Video', audio: 'Audio', pdf: 'PDF' }[sl.kind]} ${i + 1} of ${slides.length}`, current: i === idx ? 'true' : undefined })),
       caption: (slides[idx] && slides[idx].caption) || R.caption || '',
       acceptNotice: this.acceptNotice, showGate, showMedia: !showGate, gateIsNotice: !restricted && needsNotice, gateIsRestricted: restricted,
       gateTitle: restricted ? 'This digital asset is available on request' : 'Please read before viewing this item',
@@ -767,14 +784,24 @@ class Component extends DCLogic {
       reqOpen: !!s.req, reqForm: !!s.req && !s.reqSent, reqSent: s.reqSent, stopProp: e => e.stopPropagation(),
       openContact: e => this.openReq(e && e.currentTarget),
       dialogRef: this.dialogRef, reqKey: this.reqKey,
-      closeReq: () => this.closeReqDlg(), submitReq: e => { e.preventDefault(); this.setState({ reqSent: true }); this.focusReqTitle(); },
-      reqTitle: { use: 'Request to use', view: 'Request to view', contact: 'Contact the collection' }[s.req] || '',
-      reqHint: { use: 'Ask permission to reproduce this item in a publication, online or for commercial use. Describe your intended use.', view: 'Ask to view this item in person or to see media that is not shown online. Access may be by appointment or restricted.', contact: 'Ask a question, share knowledge about this item, or report incorrect or missing information.' }[s.req] || '',
-      msgLabel: { use: 'Intended use', view: 'Reason for viewing and preferred dates', contact: 'Message' }[s.req] || 'Message',
-      reqTypes: [['contact', 'General enquiry'], ['use', 'Request to use'], ['view', 'Request to view']].map(([k, label]) => ({ label, sel: s.req === k, pick: () => this.setState({ req: k }), bg: s.req === k ? 'var(--col-bg-primary)' : '#fff', color: s.req === k ? '#fff' : 'var(--col-text-primary)', border: s.req === k ? 'var(--col-bg-primary)' : 'var(--col-border-neutral)' })),
+      closeReq: () => this.closeReqDlg(), submitReq: e => { e.preventDefault(); const fd = new FormData(e.target); this.setState({ reqSent: true, reqData: { type: { use: 'Request to use', view: 'Request to view', info: 'More information', digitise: 'Digitisation', physical: 'Physical access', contribute: 'Contribute information', contact: 'General enquiry' }[s.req] || 'General enquiry', name: String(fd.get('requesterName') || ''), email: String(fd.get('email') || ''), message: String(fd.get('message') || '') } }); this.focusReqTitle(); },
+      reqTitle: { use: 'Request to use', view: 'Request to view', info: 'Ask for more information', digitise: 'Request digitisation', physical: 'Request physical access', contribute: 'Contribute information', contact: 'Contact the collection' }[s.req] || '',
+      reqHint: {
+        use: 'Ask permission to reproduce a digital asset of this item in a publication, online or for commercial use. Describe your intended use.',
+        view: 'Ask to view the digital assets for this item, including media that is not shown online. Access is on request with approval from the collection.',
+        info: 'Ask a question or request more information about this item.',
+        digitise: 'Ask for this item to be digitised, or re-digitised at a higher quality. Digitisation is subject to the condition of the item and the collection\'s priorities.',
+        physical: 'Ask to see the physical item. Access is by appointment and may be restricted for conservation or cultural reasons.',
+        contribute: 'Share knowledge about this item, or report incorrect or missing information, so the collection can update the record.',
+        contact: 'Ask a question, share knowledge about this item, or report incorrect or missing information.'
+      }[s.req] || '',
+      msgLabel: { use: 'Intended use', view: 'Reason for viewing', info: 'Your question', digitise: 'What you need digitised and why', physical: 'Reason for visiting and preferred dates', contribute: 'Information you would like to add or correct', contact: 'Message' }[s.req] || 'Message',
+      reqTypes: [['info', 'More information'], ['use', 'Request to use'], ['view', 'Request to view'], ['digitise', 'Digitisation'], ['physical', 'Physical access'], ['contribute', 'Contribute information']].map(([k, label]) => ({ label, sel: s.req === k, pick: () => this.setState({ req: k }), bg: s.req === k ? 'var(--col-bg-primary)' : '#fff', color: s.req === k ? '#fff' : 'var(--col-text-primary)', border: s.req === k ? 'var(--col-bg-primary)' : 'var(--col-border-neutral)' })),
+      reqLinks: [['info', 'Ask for more information', false], ['use', 'Request to use a digital asset', true], ['view', 'Request to view digital assets', true], ['digitise', 'Request digitisation', false], ['physical', 'Request physical access', false], ['contribute', 'Contribute information', false]].filter(([, , daOnly]) => !daOnly || R.hasDA).map(([k, label]) => ({ label, open: e => this.openReqAs(k, e && e.currentTarget) })),
+      reqSummary: s.reqData ? [['Request type', s.reqData.type], ['Name', s.reqData.name], ['Email', s.reqData.email], ['Record', permalinkShort], ['Message', s.reqData.message]].map(([k, v]) => ({ k, v })) : [],
       citeStyles: [['apa', 'APA 7'], ['mla', 'MLA 9'], ['chicago', 'Chicago 17'], ['harvard', 'Harvard']].map(([k, label]) => ({ label, pick: () => this.setState({ cite: k }), bg: s.cite === k ? 'var(--col-bg-primary)' : '#fff', color: s.cite === k ? '#fff' : 'var(--col-text-primary)', border: s.cite === k ? 'var(--col-bg-primary)' : 'var(--col-border-neutral)' })),
       citation: R.citations[s.cite], copyCite: () => this.flash('cite', R.citations[s.cite]), citeText: s.copied === 'cite' ? 'Copied' : 'Copy citation',
-      permalink: location.origin + '/item/' + R.assetId, permalinkShort: location.host + '/item/' + R.assetId, copyLink: () => this.flash('link', location.origin + '/item/' + R.assetId), linkText: s.copied === 'link' ? 'Copied' : 'Copy link'
+      permalink: location.origin + '/item/' + R.assetId, permalinkShort, copyLink: () => this.flash('link', location.origin + '/item/' + R.assetId), linkText: s.copied === 'link' ? 'Copied' : 'Copy link'
     };
   }
 }

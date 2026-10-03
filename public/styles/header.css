@@ -883,3 +883,33 @@
   --col-link-hover: #47c8f0;
   --ff-normal: 'Source Sans 3', system-ui, -apple-system, sans-serif;
 }
+
+/* Recent searches inside the header search overlay (CCS-143) */
+.uom-search-recent {
+  width: 100%;
+  margin-top: 24px;
+  color: #fff;
+}
+
+.uom-search-recent__heading {
+  margin: 0 0 8px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 20px;
+  text-transform: uppercase;
+}
+
+.uom-search-recent__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.uom-search-recent__link {
+  color: #fff;
+  text-decoration: underline;
+}
