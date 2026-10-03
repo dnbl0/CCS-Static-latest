@@ -152,6 +152,42 @@ Source: Nexus DAM Knowledge Hub pages "License Type & Terms of Use" and "Cross C
 
 Contact (collection contact cards, general enquiries table, numbered steps), Browse collections, the five collection pages (about + advisory notice, details table, visit and enquiries contact box with address, opening hours and contact details, four explore-further pathfinder tiles), Help (landing, topic pages, Indigenous data) now use the shared components in `styles/shared/content-templates.css`. Sub-collection browse (CCS-19) now lives on the Browse collections page only; the individual collection pages no longer list sub-collections or classifications; no requirement text changed.
 
+## Prototype vs Jira alignment: stories not aligned or missing (2026-10-03)
+
+**Missing entirely**
+
+| Story | Requirement | Note |
+|---|---|---|
+| CCS-46 | Favourites / personal lists | Needs login (BR-09); no UI |
+| CCS-143, 206 | Save and display search history | Search history is only used for suggestions |
+| CCS-62 | Assistive-technology compatibility | No screen-reader testing recorded |
+| CCS-65 (part) | PDF handling in the viewer | Images, audio and video only |
+| CCS-55 | Search filter for Indigenous data | Not built; needs cultural approval and data |
+| CCS-8 (epic) | High-fidelity viewing and comparison (IIIF viewer, due 2027) | No deep-zoom or side-by-side compare |
+| CCS-9 / 14 (epics) | Authenticated users, authorisation and permissions | No login; no gated content |
+
+**Partly aligned**
+
+| Story | Gap |
+|---|---|
+| CCS-19 | One level of hierarchy only (collection, then named collection); series and parent/child records are not navigable |
+| CCS-20, 38 | No theme filter; Indigenous labels (Indigeneity, country, language, family group, region) are not offered |
+| CCS-21 | Banner works, but only 2 of 728 records carry an advisory |
+| CCS-25 | Source (IMu/Vernon) link only where the data supplies one |
+| CCS-44, 66, 166 | Rating badge works, but only 4 records show a classification and there is no authorised-user gating; "Request to view" is a front-end-only form |
+| CCS-47, 68, 69 | Use, view and contact requests exist; digitisation, physical access and contribute-information request types are missing, and no form sends anything |
+| CCS-123 | Fuzzy matching is only the spelling suggestion ("did you mean"); results are not fuzzy-ranked |
+| CCS-64 | Image aspect-ratio handling not re-verified |
+| CCS-51 | WCAG 2.1 AA scanned with axe only; no formal audit |
+| CCS-294 to 299, 83 | No requirement text in Jira, so page content cannot be checked against an approved spec |
+
+**Status mismatches to raise in Jira** (prototype does not match the Jira status)
+
+- CCS-116 Semantic search is marked Done but there is no frontend trace.
+- CCS-123 Fuzzy search is In Testing, but only spelling suggestion exists.
+- CCS-25 Persistent URL and CCS-22 UoM ID are New in Jira but are now built in the prototype.
+- CCS-41, 124 and 217 are New in Jira but are built.
+
 ## Open Items For Follow-Up
 
 1. **Re-verify, not assumed**: CCS-21 (sensitivity notifications), CCS-47 (contact-us record view), CCS-64 (item 4 — image aspect ratio), CCS-65 (audio/video/PDF format handling), CCS-68/69/166 (request-to-use/view flows) — these were asserted "implemented" in the prior version of this document without the same rigor applied to the items above; they should get the same live-code verification treatment before being marked confirmed.
