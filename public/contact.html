@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="/styles/shared/skip-link.css">
   <link rel="stylesheet" href="/styles/home.css">
   <link rel="stylesheet" href="styles/header.css">
+  <link rel="stylesheet" href="/styles/shared/content-templates.css">
   <link rel="stylesheet" href="/styles/pages/contact.css">
 </head>
 <body class="page-contact">
@@ -218,80 +219,68 @@
   </div>
 </section>
 
-<main id="main-content" class="container contact-main-content">
-  <div class="row g-5 contact-main-content__row">
-    <div class="col-lg-8 contact-main-content__row-column">
-      <section aria-labelledby="h-mdhs" class="mb-5 contact-mdhs">
-        <h2 id="h-mdhs" class="fw-serif contact-mdhs__heading-mdhs-vernon-collections">MDHS <span class="fw-normal text-muted contact-mdhs__heading-text">Vernon Collections</span></h2>
-        <div class="row g-3 mt-3 contact-mdhs__row">
+<main id="main-content" class="contact-main-content">
+  <div class="collection-layout">
+    <div class="collection-layout__content">
+      <section class="collection-section" aria-labelledby="h-collections">
+        <h2 class="collection-section__heading-contact-a-collection" id="h-collections">Contact a collection</h2>
+        <p class="collection-section__text">Email the team that cares for the collection, or open its external Access Request Form. We aim to respond within 5 business days.</p>
+
+        <h3 class="collection-section__subheading-mdhs-vernon-collections" id="h-mdhs">Medical and dental museums (MDHS Vernon collections)</h3>
+        <ul class="contact-cards" aria-labelledby="h-mdhs">
           <sc-for list="{{ mdhsGroup }}" as="c" hint-placeholder-count="3">
-            <div class="col-md-6 contact-mdhs__row-column">
-              <div class="card h-100 p-3 contact-mdhs__column-card">
-                <div class="card-body p-1 d-flex flex-column gap-2 contact-mdhs__card-body">
-                  <strong class="fw-serif contact-mdhs__card-body-strong">{{ c.name }}</strong>
-                  <span class="text-muted text-uppercase contact-mdhs__card-body-text">Email</span>
-                  <a class="contact-mdhs__card-body-link" href="{{ c.mailto }}">{{ c.email }}</a>
-                </div>
-              </div>
-            </div>
+            <li class="contact-cards__item">
+              <h4 class="contact-cards__title">{{ c.name }}</h4>
+              <p class="contact-cards__label">Email</p>
+              <a class="contact-cards__link" href="{{ c.mailto }}">{{ c.email }}</a>
+            </li>
           </sc-for>
-        </div>
-      </section>
+        </ul>
 
-      <section aria-labelledby="h-mc" class="mb-5 contact-mc">
-        <h2 id="h-mc" class="fw-serif contact-mc__heading-museums-collections-m">Museums &amp; Collections (M&amp;C)</h2>
-        <div class="row g-3 mt-3 contact-mc__row">
+        <h3 class="collection-section__subheading-museums-collections-m" id="h-mc">Museums &amp; Collections (M&amp;C)</h3>
+        <ul class="contact-cards" aria-labelledby="h-mc">
           <sc-for list="{{ mcGroup }}" as="c" hint-placeholder-count="2">
-            <div class="col-md-6 contact-mc__row-column">
-              <div class="card h-100 p-3 contact-mc__column-card">
-                <div class="card-body p-1 d-flex flex-column gap-2 contact-mc__card-body">
-                  <strong class="fw-serif contact-mc__card-body-strong">{{ c.name }}</strong>
-                  <span class="text-muted text-uppercase contact-mc__card-body-text">Access Request Form · External Smartsheet form</span>
-                  <a href="{{ c.formUrl }}" target="_blank" rel="noopener" class="btn btn-primary btn-sm align-self-start mt-1 contact-mc__card-body-link-open-form">Open Form ↗</a>
-                </div>
-              </div>
-            </div>
+            <li class="contact-cards__item">
+              <h4 class="contact-cards__title">{{ c.name }}</h4>
+              <p class="contact-cards__label">Access Request Form</p>
+              <a class="contact-cards__link" href="{{ c.formUrl }}" target="_blank" rel="noopener">Open the form<span class="sr-only"> for {{ c.name }} (external, opens in a new tab)</span></a>
+            </li>
           </sc-for>
-        </div>
+        </ul>
       </section>
 
-      <section class="contact-general" aria-labelledby="h-general">
-        <h2 id="h-general" class="fw-serif contact-general__heading-general-enquiries">General enquiries</h2>
-        <div class="row g-4 mt-3 contact-general__row">
-          <div class="col-sm-6 col-lg-4 contact-general__row-column">
-            <span class="text-muted text-uppercase d-block mb-1 contact-general__column-text contact-general__column-text--v1">Phone</span>
-            <a href="tel:136352" class="d-block fw-semibold contact-general__column-link-13-melb-13">13 MELB (13 6352)</a>
-            <a class="contact-general__column-link-international-61-3" href="tel:+61390355511">International: +61 3 9035 5511</a>
-          </div>
-          <div class="col-sm-6 col-lg-4 contact-general__row-column">
-            <span class="text-muted text-uppercase d-block mb-1 contact-general__column-text contact-general__column-text--v1">Address</span>
-            <span class="contact-general__column-text contact-general__column-text--v2">The University of Melbourne<br>Grattan Street, Parkville<br>Victoria 3010, Australia</span>
-          </div>
-          <div class="col-sm-6 col-lg-4 contact-general__row-column">
-            <span class="text-muted text-uppercase d-block mb-1 contact-general__column-text contact-general__column-text--v1">Site feedback</span>
-            <span class="d-block contact-general__column-text contact-general__column-text--v2">Report a broken link or suggest an improvement.</span>
-            <a class="contact-general__column-link-ccs-feedback-unimelb" href="mailto:ccs-feedback@unimelb.edu.au">ccs-feedback@unimelb.edu.au</a>
-          </div>
-        </div>
+      <section class="collection-section" aria-labelledby="h-general">
+        <h2 class="collection-section__heading-general-enquiries" id="h-general">General enquiries</h2>
+        <dl class="def-table">
+          <div class="def-table__row"><dt class="def-table__term">Phone</dt><dd class="def-table__definition"><a class="def-table__link" href="tel:136352">13 MELB (13 6352)</a><br>International: <a class="def-table__link" href="tel:+61390355511">+61 3 9035 5511</a></dd></div>
+          <div class="def-table__row"><dt class="def-table__term">Address</dt><dd class="def-table__definition">The University of Melbourne<br>Grattan Street, Parkville<br>Victoria 3010, Australia</dd></div>
+          <div class="def-table__row"><dt class="def-table__term">Site feedback</dt><dd class="def-table__definition">Report a broken link or suggest an improvement: <a class="def-table__link" href="mailto:ccs-feedback@unimelb.edu.au">ccs-feedback@unimelb.edu.au</a></dd></div>
+        </dl>
       </section>
     </div>
 
-    <aside class="col-lg-4 contact-main-content__row-aside">
-      <div class="card p-4 contact-aside__card contact-aside__card--styled">
-        <strong class="fw-serif contact-aside__card-strong">Contact the collection</strong>
-        <p class="mt-2 mb-3 contact-aside__card-text">Email the relevant collection team, or open its external Access Request Form, using the details on this page. Include the record's persistent link and a description of your intended use.</p>
-        <a class="contact-aside__card-link-access-information" href="/help?topic=access">Access and information ›</a>
-      </div>
-      <div class="card p-4 mt-3 contact-aside__card">
-        <strong class="fw-serif contact-aside__card-strong">Need help searching?</strong>
-        <p class="mt-2 mb-3 contact-aside__card-text">Read our search tips, or check the FAQs before contacting a collection team.</p>
-        <div class="d-flex flex-column gap-2 contact-aside__card-group">
-          <a class="contact-aside__link-search-tips" href="/help?topic=search-tips">Search tips ›</a>
-          <a class="contact-aside__link-faqs" href="/help?topic=faq">FAQs ›</a>
-        </div>
-      </div>
+    <aside class="contact-box collection-layout__aside" aria-labelledby="h-steps">
+      <h2 class="contact-box__title" id="h-steps">Before you get in touch</h2>
+      <ol class="steps-list">
+        <li class="steps-list__item">Find the record you are asking about.</li>
+        <li class="steps-list__item">Copy its persistent link or UoM ID from the record page.</li>
+        <li class="steps-list__item">Email the collection, or open its form, and describe what you need.</li>
+      </ol>
+      <a class="contact-box__link" href="/help?topic=access">Access and information</a>
     </aside>
   </div>
+
+  <section class="ct-listing ct-listing--alt" aria-labelledby="h-help">
+    <div class="ct-listing__inner">
+      <h2 class="ct-listing__title" id="h-help">Need help searching?</h2>
+      <p class="ct-listing__lead">Read the guidance first. It may answer your question straight away.</p>
+      <ul class="ct-listing__list ct-listing__list--pathfinder">
+        <li class="ct-listing__item"><a class="pathfinder-alt__link" href="/help?topic=search-tips"><span class="pathfinder-alt__content"><span class="pathfinder-alt__title">Search tips</span><span class="pathfinder-alt__summary">How to find information, images, audio and video in the collections.</span></span></a></li>
+        <li class="ct-listing__item"><a class="pathfinder-alt__link" href="/help?topic=faq"><span class="pathfinder-alt__content"><span class="pathfinder-alt__title">Frequently asked questions</span><span class="pathfinder-alt__summary">Answers to common questions about searching and using items.</span></span></a></li>
+        <li class="ct-listing__item"><a class="pathfinder-alt__link" href="/help?topic=copyright"><span class="pathfinder-alt__content"><span class="pathfinder-alt__title">Copyright and terms of use</span><span class="pathfinder-alt__summary">How a collection item can be used.</span></span></a></li>
+      </ul>
+    </div>
+  </section>
 </main>
 
 

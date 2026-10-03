@@ -150,7 +150,7 @@ Source: Nexus DAM Knowledge Hub pages "License Type & Terms of Use" and "Cross C
 
 ## Page redesigns on Matrix content templates (2026-10-03)
 
-Browse collections, the five collection pages (about + advisory notice, details table, visit and enquiries contact box with address, opening hours and contact details, four explore-further pathfinder tiles), Help (landing, topic pages, Indigenous data) now use the shared components in `styles/shared/content-templates.css`. Sub-collection browse (CCS-19) now lives on the Browse collections page only; the individual collection pages no longer list sub-collections or classifications; no requirement text changed.
+Contact (collection contact cards, general enquiries table, numbered steps), Browse collections, the five collection pages (about + advisory notice, details table, visit and enquiries contact box with address, opening hours and contact details, four explore-further pathfinder tiles), Help (landing, topic pages, Indigenous data) now use the shared components in `styles/shared/content-templates.css`. Sub-collection browse (CCS-19) now lives on the Browse collections page only; the individual collection pages no longer list sub-collections or classifications; no requirement text changed.
 
 ## Open Items For Follow-Up
 
