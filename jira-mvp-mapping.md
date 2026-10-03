@@ -255,6 +255,31 @@ The CCS 2026 filter holds 82 stories. The Remarks field says "Feasibility 2026: 
 - **CCS-64 aspect ratio:** `tests/image-aspect.test.js` measures every rendered image on six pages at desktop and phone widths and fails if one is stretched; 357 images pass. Cropping (`object-fit: cover`) is allowed.
 - **CCS-143 recent searches:** the header search overlay on every page lists the last five search terms from the session, as well as the existing suggestions on the search page. History is kept for the browser session only.
 
+## WCAG 2.1 AA pass (CCS-51), 2026-10-03
+
+**Automated (now a test: `tests/accessibility.test.js`)**: axe-core WCAG 2.1 A and AA rules on 14 page states (home, Browse collections, a collection page, search results, Advanced Filters, three record states, four help pages, Indigenous data, contact) at 1440px and 390px, plus content fitting a 320px viewport (1.4.10), one h1 and `lang="en"` per page, and a distinct title per page (2.4.2).
+
+**Found and fixed**
+
+| Finding | WCAG | Fix |
+|---|---|---|
+| Date fields in Advanced Filters used `aria-expanded` on a plain text input | 4.1.2 | Input now has the combobox role (date picker pattern) |
+| Usage-notice heading failed contrast on the dark media panel | 1.4.3 | Notice panel is now white |
+| Record page media bar and notice panel were wider than a 320px screen | 1.4.10 | Bar wraps; panel padding and heading size reduce on phones |
+| "Media metadata" was an h3 directly under the h1 | 1.3.1 / 2.4.6 | Now an h2 |
+| All help topic pages shared one page title | 2.4.2 | Each topic sets its own title |
+
+**Checked by script and passing:** skip link is the first tab stop on every page; every checked page has one h1, a main landmark, labelled navigations, no images without alt text and no buttons or links without a name; the request dialog and Filters modal trap focus, label themselves, close on Escape and return focus; the search overlay focuses its input, closes on Escape and returns focus; focus indicators are visible on every tab stop (card links show the indicator on the card).
+
+**Manual checks still needed before sign-off (cannot be automated)**
+
+1. Screen reader pass (NVDA and VoiceOver) on search, a record with media, the request dialog and the Filters modal. Story CCS-62 (assistive technology) is post-2026; WCAG sign-off still needs a human pass.
+2. Audio and video: no captions, transcripts or audio description exist for the sample media (1.2.1, 1.2.2, 1.2.5). The collection teams must supply them with the files.
+3. Text spacing (1.4.12) and zoom to 200% on the record viewer.
+4. Colour use and contrast of images of text in collection photographs (content, not interface).
+5. Real-content review of alt text: viewer images use the record title; descriptive alt text from the collections would be better.
+6. A formal audit by the University accessibility team, which is the only valid basis for a conformance claim.
+
 ## Open Items For Follow-Up
 
 1. **Re-verify, not assumed**: CCS-21 (sensitivity notifications), CCS-47 (contact-us record view), CCS-64 (item 4 — image aspect ratio), CCS-65 (audio/video/PDF format handling), CCS-68/69/166 (request-to-use/view flows) — these were asserted "implemented" in the prior version of this document without the same rigor applied to the items above; they should get the same live-code verification treatment before being marked confirmed.
