@@ -247,6 +247,14 @@ The CCS 2026 filter holds 82 stories. The Remarks field says "Feasibility 2026: 
 - **CCS-27:** `caption` (record) and `captions` (per image) are supported in the data, shown under the media and in the media metadata panel. The current data has no captions, so none appear until the DAM `DA Caption` field is loaded.
 - **CCS-45:** with more than three media items the viewer bar adds First / Last buttons and a "Go to" selector (n of N), and Home / End keys, alongside previous / next and thumbnails.
 
+## MVP batch: CCS-47, 65, 20/38, 64, 143 (2026-10-03)
+
+- **CCS-47 request types:** the record page's "Contact the collection" list now opens a request dialog with six types: more information, use, view, digitisation, physical access and contribute information (the scenarios in the Jira description). After submitting, the dialog says nothing was emailed (prototype) and lists what would be sent. Previously the dialog could not be opened from the page.
+- **CCS-65 PDF:** the record viewer supports PDFs (embedded frame, "Open in a new tab" link, thumbnail, First/Last/Go to). `ASSET_PDF` in `collection-data.js` is empty: the DAM folder holds `Crossley_GM 06.0026.pdf` and `GraingerTalkOnCrossley_UAC_09.0010.pdf` but no matching record exists in the prototype data, so none are attached.
+- **CCS-20 / 38 Theme filter:** a "Theme" facet (10 themes) in Subject / topic, derived from the museum classification (`THEME_OF` in `collection-data.js`); 482 of 728 records have a theme. Indigenous objects are deliberately not given a theme until the Indigenous labels are approved.
+- **CCS-64 aspect ratio:** `tests/image-aspect.test.js` measures every rendered image on six pages at desktop and phone widths and fails if one is stretched; 357 images pass. Cropping (`object-fit: cover`) is allowed.
+- **CCS-143 recent searches:** the header search overlay on every page lists the last five search terms from the session, as well as the existing suggestions on the search page. History is kept for the browser session only.
+
 ## Open Items For Follow-Up
 
 1. **Re-verify, not assumed**: CCS-21 (sensitivity notifications), CCS-47 (contact-us record view), CCS-64 (item 4 — image aspect ratio), CCS-65 (audio/video/PDF format handling), CCS-68/69/166 (request-to-use/view flows) — these were asserted "implemented" in the prior version of this document without the same rigor applied to the items above; they should get the same live-code verification treatment before being marked confirmed.

@@ -867,6 +867,9 @@
     60008: [{ kind: 'video', src: '/assets/data/MHM2014.137.2_2.mp4', type: 'video/mp4', label: 'McCoy Society expedition film' }]
   };
 
+  // PDF documents (CCS-65). Add { id: [{ kind: 'pdf', src, label }] } when a record has a matched PDF; none are mapped yet.
+  const ASSET_PDF = {};
+
   // Sequence of appearance per CCS Field labels and filters - Final PRG specification
   function build(it) {
     const rawType = it.objectType || it.type || '';
@@ -876,7 +879,7 @@
     if (!imgList.length) imgList.push(...(it.images || (it.img ? [it.img] : [])));
     const images = imgList.map(k => k.startsWith('/') ? k : k.includes('.') ? `/images/${k}` : `/images/${k}.jpg`);
     const av = ASSET_AV[it.id] || [];
-    const slides = [...images.map((src, i) => ({ kind: 'image', src, type: /\.png$/i.test(src) ? 'image/png' : 'image/jpeg', caption: (it.captions || [])[i] || null })), ...av];
+    const slides = [...images.map((src, i) => ({ kind: 'image', src, type: /\.png$/i.test(src) ? 'image/png' : 'image/jpeg', caption: (it.captions || [])[i] || null })), ...av, ...(ASSET_PDF[it.id] || []).map(p => ({ type: 'application/pdf', caption: null, ...p }))];
     const hasDA = slides.length > 0;
     const date = it.date || it.dateDisplay || (it.year ? String(it.year) : null) || (it.dateStart != null ? String(it.dateStart) : null);
     const coll = COLL_LABEL[it.collection] || it.collection;
@@ -999,11 +1002,15 @@
   const typesOf = it => uniqList(rawTypes(it).map(canonType));
   const classesOf = it => terms(it.classification).filter(c => !FILM_RATINGS[c] && c !== 'CTC');
   const ratingsOf = it => uniqList([it.classification, it.advisoryClassification].filter(Boolean).map(c => FILM_RATINGS[c]).filter(Boolean));
+  // Broad themes for the Theme filter (CCS-20/38), derived from the museum Subject Classification. Indigenous objects are deliberately left out of themes until the Indigenous labels are approved.
+  const THEME_OF = {};
+  Object.entries({"Art and design": ["Art and design", "Classics and archaeology", "Artworks and Commemorative Items", "Awards"], "Music and sound": ["Musical instruments", "Music scores", "Audio / visual recordings"], "Medicine and health": ["Medical and Surgical Equipment and Instruments", "Royal Women's Hospital", "Pharmaceutical History", "Medical Specialties", "Melbourne Medical School", "Medicine in Society", "Laboratory Equipment and Materials", "Head", "Abdomen"], "Dentistry": ["Conservative Dentistry", "Clinical Oral Surgery", "Dental Prosthetics", "Dental Health Education", "Dental Graduates", "Dental Care", "Australian Dental Congresses - General Records", "Early Related Dental Organisations"], "Natural history and anatomy": ["Comparative anatomy", "Kangaroos and relatives (Macropodiformes)", "Dogs and relatives (Caniformia)", "Primates", "Even-toed ungulates (Artiodactyla)", "Birds", "Marsupial carnivores (Dasyuromorphia)", "Possums (Phalangeriformes)", "Anthropology casts"], "Science and technology": ["Scientific Equipment", "Technology and equipment", "Research"], "Architecture and furniture": ["Architecture, buildings and furniture"], "Clothing and personal items": ["Textiles, clothing and accessories", "Personal and domestic items"], "Photography and film": ["Photography, Sound and Film", "Photography", "Photographs and Prints", "Photographs and Audiovisual Material"], "Documents and history": ["Documents and Lectures", "Documents and publications", "Books and Catalogues", "Published and Other Materials", "Education Materials", "History"]}).forEach(([theme, classes]) => classes.forEach(c => { THEME_OF[c] = theme; }));
+  const themesOf = it => uniqList(classesOf(it).map(c => THEME_OF[c]).filter(Boolean));
   const items = ACTIVE.map(it => {
     const base = { ...it, objectType: it.objectType || it.type, culture: it.culture || it.culturalAffiliation, img: it.img || (records[it.id].images[0] || null) };
-    const kinds = uniqList(records[it.id].slides.map(sl => ({ image: 'Image', audio: 'Audio', video: 'Video' })[sl.kind]).filter(Boolean));
+    const kinds = uniqList(records[it.id].slides.map(sl => ({ image: 'Image', audio: 'Audio', video: 'Video', pdf: 'PDF' })[sl.kind]).filter(Boolean));
     const rc = records[it.id].classification;
-    return { ...base, types: typesOf(base), classes: classesOf(base), ratings: ratingsOf(base), formats: kinds, webAccess: records[it.id].webAccess, ratingLogo: rc && rc.logo ? rc.logo : null, ratingName: rc ? rc.name : null };
+    return { ...base, types: typesOf(base), classes: classesOf(base), theme: themesOf(base), ratings: ratingsOf(base), formats: kinds, webAccess: records[it.id].webAccess, ratingLogo: rc && rc.logo ? rc.logo : null, ratingName: rc ? rc.name : null };
   });
   function related(id, n = 4) {
     const r = records[id]; if (!r) return [];

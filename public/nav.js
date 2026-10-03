@@ -50,3 +50,33 @@
     if (!(e.target.closest && e.target.closest(NAV))) closePanels();
   });
 })();
+
+/* Recent searches (CCS-143): when the header search overlay opens, list the last few search terms saved this session
+   (the search page stores them under 'ccs-search-history'). Built here so every page gets it without extra markup. */
+(function () {
+  function recent() {
+    try { var l = JSON.parse(sessionStorage.getItem('ccs-search-history') || '[]'); return Array.isArray(l) ? l.slice(0, 5) : []; } catch (e) { return []; }
+  }
+  function render() {
+    var inner = document.querySelector('#uom-search-popover .uom-search-popover__inner');
+    if (!inner) return;
+    var old = inner.querySelector('.uom-search-recent');
+    if (old) old.remove();
+    var terms = recent();
+    if (!terms.length) return;
+    var box = document.createElement('nav');
+    box.className = 'uom-search-recent';
+    box.setAttribute('aria-label', 'Recent searches');
+    var h = document.createElement('h3'); h.className = 'uom-search-recent__heading'; h.textContent = 'Recent searches'; box.appendChild(h);
+    var ul = document.createElement('ul'); ul.className = 'uom-search-recent__list';
+    terms.forEach(function (t) {
+      var li = document.createElement('li'); li.className = 'uom-search-recent__item';
+      var a = document.createElement('a'); a.className = 'uom-search-recent__link'; a.href = '/search/search-results.html?q=' + encodeURIComponent(t); a.textContent = t;
+      li.appendChild(a); ul.appendChild(li);
+    });
+    box.appendChild(ul); inner.appendChild(box);
+  }
+  document.addEventListener('click', function (e) {
+    if (e.target.closest && e.target.closest('[popovertarget="uom-search-popover"]')) setTimeout(render, 0);
+  });
+})();
