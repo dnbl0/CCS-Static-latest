@@ -195,6 +195,51 @@ Every user-facing story description in the CCS-2026 label (49 stories; integrati
 - Marked Done but not met: CCS-50 (usage notice), CCS-68 (download message), CCS-70 (list actions), CCS-116 (semantic search), CCS-123 (fuzzy search, In Testing).
 - Marked New but built: CCS-22, 25, 41, 124, 157, 217.
 
+## 2026 MVP scope from the Jira "Remarks" field (filter 26999, read 2026-10-03)
+
+The CCS 2026 filter holds 82 stories. The Remarks field says "Feasibility 2026: MVP" on 65 of them, "Not considered as core function or feature for the MVP, marked for review in the post-2026 implementation phase" on 8, and is empty on 9. Nothing says "2027" in those words, so the post-2026 remark is treated as the later-phase marker. Empty remarks are treated as 2026, as agreed.
+
+**Post-2026 (not MVP): not counted as gaps**
+
+| Story | Item | Prototype |
+|---|---|---|
+| CCS-19 | Explore collections and hierarchies (remark: not core if it means browsing a series of pages or a sitemap) | Collection pages plus the sub-collection list on Browse collections exist anyway |
+| CCS-46 | Favourites and personal lists | Not built (matches Jira) |
+| CCS-52 | Info page for Indigenous data | Built ahead of scope as `help/indigenous-data.html`; remark says to confirm the approach with the business |
+| CCS-53 | Activity reporting | Not built (matches) |
+| CCS-55 | Indigenous data filter (also "data is not ready") | Not built (matches) |
+| CCS-62 | Assistive-technology compatibility | Not built (matches); CCS-51 WCAG AA stays MVP |
+| CCS-158 | Spelling suggestions | Built ahead of scope, even though Jira status is Done |
+| CCS-206 | Search history grouped by day | Not built (matches) |
+
+**No remarks, treated as 2026**
+
+- CCS-233 Contact us static page: built and redesigned.
+- CCS-294 to 299 Home page and the five museum pages: built and redesigned; Jira has no description to check them against.
+- CCS-272 Specifications for the CCS data inventory: a stub pointing to an attachment.
+- CCS-310 Test Semantic Search story: a test ticket, not a requirement.
+
+**MVP stories that still need work in the prototype**
+
+| Story | What is missing |
+|---|---|
+| CCS-20, 38 | Theme filter; Indigenous labels and subject area |
+| CCS-21 | Advisory data is on 2 of 728 records only (data gap) |
+| CCS-27 | DA caption in rights information |
+| CCS-44, 66, 166 | Ratings on only 4 records; no View + Download; no per-user access |
+| CCS-45 | Page-sequence navigation for multi-page assets (folios, books) |
+| CCS-47 | Digitisation, physical access and contribute-information request types; forms send nothing |
+| CCS-50 | Usage notice accepted before viewing certain items (only a search-page acknowledgement exists) |
+| CCS-51 | Formal WCAG 2.1 AA audit |
+| CCS-65 | PDF viewing |
+| CCS-68, 69 | "Download on request and approval" and "not viewable, request access" messages and states |
+| CCS-116, 123 | Semantic and fuzzy result matching |
+| CCS-143 | Mostly met: recent searches in suggestions |
+| CCS-64 | Image aspect ratio check |
+| CCS-70 | Guest list actions are not needed for 2026 because favourites (CCS-46) are post-2026 |
+
+**MVP and already met in the prototype:** CCS-22, 25, 33, 34, 37, 41, 124, 157, 217. The remaining MVP stories (EMu, Vernon and DAM loads, indexing, security and firewall) are backend work with no frontend surface here.
+
 ## Open Items For Follow-Up
 
 1. **Re-verify, not assumed**: CCS-21 (sensitivity notifications), CCS-47 (contact-us record view), CCS-64 (item 4 — image aspect ratio), CCS-65 (audio/video/PDF format handling), CCS-68/69/166 (request-to-use/view flows) — these were asserted "implemented" in the prior version of this document without the same rigor applied to the items above; they should get the same live-code verification treatment before being marked confirmed.
