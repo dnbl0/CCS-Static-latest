@@ -1070,6 +1070,7 @@ Gen 3's accordion is borderless, shadowless, sharp-cornered, with a hairline top
 - Below it, one sticky `.search-results-bar` holds Sort, Filters, the Digital asset switch, the view toggle and Save this search. An IntersectionObserver sentinel adds `is-stuck` once the banner scrolls away. When stuck, the search box stays visible next to the tools on desktop and tablet.
 - On phones the bar stacks: search, then Sort | Filters, then Digital asset | view | Save (icon only). When stuck it shrinks to the search row plus Sort | Filters | Digital.
 - The per-page selector moved to sit above the pagination. CSS lives in `public/styles/pages/search-results.css`.
+- Follow-up: banner and search strip padding increased; the search form reuses the homepage `ccs-hero__search` wrapper (full width, Advanced Search underneath). When stuck, Advanced Search is hidden, the bar is one row from 1280px and two rows below, and all controls are 48px tall.
 
 ---
 

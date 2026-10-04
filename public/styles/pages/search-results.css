@@ -40,6 +40,8 @@ body.page-search-results .date-range-handle--styled {
 
 body.page-search-results .page-banner__inner--styled {
   max-width: 1440px;
+  padding-top: 56px;
+  padding-bottom: 48px;
 }
 
 body.page-search-results .page-local-history__link-image {
@@ -1777,7 +1779,7 @@ body.page-search-results .search-results-filters-title__group--v4 {
    bar, so the search bar stays available while scrolling (the bar goes white and compact when stuck).
    ========================================================================== */
 body.page-search-results .search-results-banner .page-banner__inner {
-  padding: 32px 32px 16px;
+  padding: 56px 32px 48px;
 }
 
 body.page-search-results .search-results-banner h1 {
@@ -1805,23 +1807,24 @@ body.page-search-results .search-results-bar {
 }
 
 body.page-search-results .search-results-bar__search {
-  padding: 0 32px 24px;
+  padding: 0 32px 48px;
   background: #000b34;
 }
 
 body.page-search-results .search-results-bar__search-inner {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px 24px;
+  /* layout comes from the shared .ccs-hero__search (column, Advanced Search under the form) */
+  width: 100%;
+  max-width: 1376px;
+  margin: 0 auto;
 }
 
 body.page-search-results .search-results-bar .search-results-search-tools__form-bar-submit {
   position: relative;
-  flex: 1 1 520px;
-  max-width: 760px;
+  flex: none;
+  width: 100%;
+  max-width: none;
   min-width: 0;
-  height: 56px;
+  height: 48px;
   background: #fff;
 }
 
@@ -1887,8 +1890,8 @@ body.page-search-results .search-results-bar.is-stuck .search-results-bar__searc
   gap: 8px 16px;
 }
 
-body.page-search-results .search-results-bar.is-stuck .search-results-bar__search .search-results-search-tools__link-advanced-search {
-  color: #003f8b;
+body.page-search-results .search-results-bar.is-stuck .search-results-search-tools__link-advanced-search {
+  display: none;
 }
 
 body.page-search-results .search-results-bar.is-stuck .search-results-bar__count {
@@ -1901,7 +1904,7 @@ body.page-search-results .search-results-bar.is-stuck .search-results-bar__count
   white-space: nowrap;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1280px) {
   body.page-search-results .search-results-bar.is-stuck {
     display: flex;
     align-items: center;
@@ -1912,13 +1915,40 @@ body.page-search-results .search-results-bar.is-stuck .search-results-bar__count
   body.page-search-results .search-results-bar.is-stuck .search-results-bar__search {
     flex: 1 1 auto;
     min-width: 0;
-    padding: 8px 0 8px 32px;
+    padding: 12px 0 12px 32px;
   }
 
   body.page-search-results .search-results-bar.is-stuck .search-results-bar__tools {
     flex: none;
-    padding: 8px 32px 8px 0;
+    padding: 12px 32px 12px 0;
   }
+}
+
+/* Stuck below 1280px: search row, then the tools row with every control the same height */
+body.page-search-results .search-results-bar.is-stuck .search-results-bar__controls {
+  flex-wrap: nowrap;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  body.page-search-results .search-results-bar.is-stuck .search-results-bar__tools {
+    display: block;
+  }
+}
+
+@media (min-width: 1280px) {
+  body.page-search-results .search-results-bar.is-stuck .search-results-bar__controls {
+    width: auto;
+  }
+}
+
+body.page-search-results .search-results-bar__controls .search-results-view {
+  box-sizing: border-box;
+  height: 48px;
+}
+
+body.page-search-results .search-results-bar__controls .search-results-view button {
+  height: 46px;
 }
 
 body.page-search-results .search-results-per-page {
@@ -1935,7 +1965,7 @@ body.page-search-results .search-results-per-page .search-results-summary__group
 /* Tablets and phones */
 @media (max-width: 767px) {
   body.page-search-results .search-results-banner .page-banner__inner {
-    padding: 24px 16px 12px;
+    padding: 32px 16px 28px;
   }
 
   body.page-search-results .search-results-banner .page-banner__desc {
@@ -1944,11 +1974,11 @@ body.page-search-results .search-results-per-page .search-results-summary__group
   }
 
   body.page-search-results .search-results-bar__search {
-    padding: 0 16px 12px;
+    padding: 0 16px 28px;
   }
 
   body.page-search-results .search-results-bar .search-results-search-tools__form-bar-submit {
-    flex: 1 1 100%;
+    flex: none;
     height: auto;
     flex-wrap: wrap;
   }
@@ -2058,15 +2088,16 @@ body.page-search-results .search-results-per-page .search-results-summary__group
   }
 
   body.page-search-results .search-results-bar.is-stuck .search-results-search-tools__group-sort {
-    flex: 1 1 76px;
-    min-width: 76px;
-    max-width: 120px;
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: none;
   }
 
   body.page-search-results .search-results-bar.is-stuck .search-results-search-tools__button-filter-btn {
-    flex: 1 1 90px;
-    min-width: 90px;
+    flex: 1 1 0;
+    min-width: 0;
     padding: 0 8px;
+    justify-content: center;
   }
 
   body.page-search-results .search-results-bar.is-stuck .search-results-summary__group--v1 {
