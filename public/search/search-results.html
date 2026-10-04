@@ -222,10 +222,6 @@
   <div class="page-banner__inner page-banner__inner--styled">
     <h1 class="page-banner__heading-search-collection">Search the Collection</h1>
     <p class="page-banner__desc">{{ bannerLine }}</p>
-  </div>
-</section>
-<div class="search-results-sentinel" ref="{{ sentinelRef }}" aria-hidden="true"></div>
-<div class="search-results-bar {{ barCls }}" role="region" aria-label="Search and results tools">
   <div class="search-results-bar__search">
     <div class="search-results-bar__search-inner ccs-hero__search">
       <form class="search-results-search-tools__form-bar-submit" role="search" onSubmit="{{ barSubmit }}">
@@ -283,7 +279,15 @@
         <svg class="search-results-search-tools__link-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.5" y1="15.5" x2="21" y2="21"></line></svg>Advanced Search</a>
     </div>
   </div>
+  </div>
+</section>
+<div class="search-results-sentinel" ref="{{ sentinelRef }}" aria-hidden="true"></div>
+<div class="search-results-bar {{ barCls }}" role="region" aria-label="Search and results tools">
   <div class="search-results-bar__tools">
+    <form class="search-results-bar__compact" aria-label="Search while scrolling" onSubmit="{{ barSubmit }}">
+      <input class="search-results-bar__compact-input" value="{{ sideQ }}" onChange="{{ onSideQ }}" aria-label="Search the collection" placeholder="{{ barPlaceholder }}">
+      <button class="search-results-bar__compact-button" type="submit" aria-label="Search"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.5" y1="15.5" x2="21" y2="21"></line></svg></button>
+    </form>
     <div class="search-results-bar__count">
       <div class="search-results-summary__group search-results-summary__group--v4">
         <sc-if value="{{ loading }}"><span class="search-results-summary__text search-results-summary__text--v2"></span></sc-if>
@@ -339,6 +343,21 @@
             <button class="search-results-main-content__button-clear-all search-results-main-content__button-clear-all--v1" onClick="{{ clearAll }}">Clear all</button>
           </div>
         </sc-if>
+        <div class="search-results-notices">
+      <sc-if value="{{ showSmartNotice }}">
+        <div class="search-results-smart notice" role="status">
+          <p class="search-results-smart__text">{{ smartNoticeText }}</p>
+          <ul class="search-results-smart__list"><sc-for list="{{ smartDetails }}" as="d"><li class="search-results-smart__item"><strong class="search-results-smart__term">{{ d.k }}:</strong> {{ d.v }}</li></sc-for></ul>
+          <button type="button" class="search-results-smart__button" onClick="{{ exactOnly }}">Show exact matches only</button>
+        </div>
+      </sc-if>
+      <sc-if value="{{ showExactNotice }}">
+        <div class="search-results-smart notice" role="status">
+          <p class="search-results-smart__text">Showing exact matches only.</p>
+          <button type="button" class="search-results-smart__button" onClick="{{ relatedAgain }}">Include close spellings and related meanings</button>
+        </div>
+      </sc-if>
+        </div>
   <div class="search-results-main-content__group search-results-main-content__group--v2" style="--dyn-columns:{{ cols }};--dyn-column-gap:{{ colGap }}">
     <div class="search-results-main-content__group search-results-main-content__group--v7" style="--dyn-display:{{ wrapDisplay }}">
       <sc-if value="{{ loading }}">
@@ -357,19 +376,6 @@
         </div>
       </sc-if>
 
-      <sc-if value="{{ showSmartNotice }}">
-        <div class="search-results-smart notice" role="status">
-          <p class="search-results-smart__text">{{ smartNoticeText }}</p>
-          <ul class="search-results-smart__list"><sc-for list="{{ smartDetails }}" as="d"><li class="search-results-smart__item"><strong class="search-results-smart__term">{{ d.k }}:</strong> {{ d.v }}</li></sc-for></ul>
-          <button type="button" class="search-results-smart__button" onClick="{{ exactOnly }}">Show exact matches only</button>
-        </div>
-      </sc-if>
-      <sc-if value="{{ showExactNotice }}">
-        <div class="search-results-smart notice" role="status">
-          <p class="search-results-smart__text">Showing exact matches only.</p>
-          <button type="button" class="search-results-smart__button" onClick="{{ relatedAgain }}">Include close spellings and related meanings</button>
-        </div>
-      </sc-if>
       <sc-if value="{{ isEmpty }}">
         <div class="search-results-main-content__group search-results-main-content__group--v1">
           <h3 class="search-results-main-content__heading-no-records-match">No records match your search</h3>

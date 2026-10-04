@@ -1774,9 +1774,9 @@ body.page-search-results .search-results-filters-title__group--v4 {
 
 /* ==========================================================================
    Banner, search bar and tools bar
-   The banner is compact; the search bar sits in a navy strip that continues the banner; the tools row
-   (count, Save, Sort, Filters, Digital asset, view) sits under it. The strip and tools row are one sticky
-   bar, so the search bar stays available while scrolling (the bar goes white and compact when stuck).
+   The compact banner holds the title and the full search form (hero-style, Advanced Search underneath).
+   Under it, one sticky tools bar (count, Save, Sort, Filters, Digital asset, view). Its height stays the same
+   when it sticks; a compact search box appears in it so searching is still possible while scrolling.
    ========================================================================== */
 body.page-search-results .search-results-banner .page-banner__inner {
   padding: 56px 32px 48px;
@@ -1793,6 +1793,38 @@ body.page-search-results .search-results-banner .page-banner__desc {
   line-height: 28px;
 }
 
+body.page-search-results .search-results-bar__search {
+  width: 100%;
+  margin-top: 32px;
+  /* layout comes from the shared .ccs-hero__search (column, Advanced Search under the form) */
+}
+
+body.page-search-results .search-results-banner .search-results-search-tools__form-bar-submit {
+  position: relative;
+  flex: none;
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  height: 48px;
+  background: #fff;
+}
+
+body.page-search-results .search-results-banner .search-results-search-tools__link-advanced-search {
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+body.page-search-results .search-results-banner .search-results-search-tools__link-advanced-search:hover {
+  background: none;
+  color: #a3e4f7;
+}
+
 body.page-search-results .search-results-sentinel {
   height: 1px;
   margin-top: -1px;
@@ -1806,42 +1838,8 @@ body.page-search-results .search-results-bar {
   border-bottom: 1px solid #c8c8c8;
 }
 
-body.page-search-results .search-results-bar__search {
-  padding: 0 32px 48px;
-  background: #000b34;
-}
-
-body.page-search-results .search-results-bar__search-inner {
-  /* layout comes from the shared .ccs-hero__search (column, Advanced Search under the form) */
-  width: 100%;
-  max-width: 1376px;
-  margin: 0 auto;
-}
-
-body.page-search-results .search-results-bar .search-results-search-tools__form-bar-submit {
-  position: relative;
-  flex: none;
-  width: 100%;
-  max-width: none;
-  min-width: 0;
-  height: 48px;
-  background: #fff;
-}
-
-body.page-search-results .search-results-bar .search-results-search-tools__link-advanced-search {
-  min-height: 44px;
-  padding: 0;
-  border: 0;
-  background: none;
-  color: #fff;
-  font-size: 16px;
-  font-weight: 600;
-  text-decoration: underline;
-}
-
-body.page-search-results .search-results-bar .search-results-search-tools__link-advanced-search:hover {
-  background: none;
-  color: #a3e4f7;
+body.page-search-results .search-results-bar.is-stuck {
+  box-shadow: 0 2px 8px rgba(0, 11, 52, 0.18);
 }
 
 body.page-search-results .search-results-bar__tools {
@@ -1872,26 +1870,37 @@ body.page-search-results .search-results-bar .search-results-summary__heading {
   line-height: 28.8px;
 }
 
-/* Stuck: compact single row on wide screens, white search strip */
-body.page-search-results .search-results-bar.is-stuck {
-  box-shadow: 0 2px 8px rgba(0, 11, 52, 0.18);
-}
-
-body.page-search-results .search-results-bar.is-stuck .search-results-bar__search {
-  padding: 8px 32px;
+/* Compact search: only shown while the bar is stuck */
+body.page-search-results .search-results-bar__compact {
+  display: none;
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 48px;
+  border: 1px solid var(--brand-1100, #000f46);
   background: #fff;
 }
 
-body.page-search-results .search-results-bar.is-stuck .search-results-bar__tools {
-  padding: 0 32px 8px;
+body.page-search-results .search-results-bar__compact-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0 16px;
+  border: 0;
+  background: transparent;
+  font-size: 16px;
 }
 
-body.page-search-results .search-results-bar.is-stuck .search-results-bar__search-inner {
-  gap: 8px 16px;
+body.page-search-results .search-results-bar__compact-button {
+  flex: none;
+  width: 48px;
+  border: 0;
+  border-left: 1px solid #c8c8c8;
+  background: transparent;
+  color: #5b6070;
+  cursor: pointer;
 }
 
-body.page-search-results .search-results-bar.is-stuck .search-results-search-tools__link-advanced-search {
-  display: none;
+body.page-search-results .search-results-bar.is-stuck .search-results-bar__compact {
+  display: flex;
 }
 
 body.page-search-results .search-results-bar.is-stuck .search-results-bar__count {
@@ -1904,39 +1913,37 @@ body.page-search-results .search-results-bar.is-stuck .search-results-bar__count
   white-space: nowrap;
 }
 
-@media (min-width: 1280px) {
-  body.page-search-results .search-results-bar.is-stuck {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-  }
-
-  body.page-search-results .search-results-bar.is-stuck .search-results-bar__search {
-    flex: 1 1 auto;
-    min-width: 0;
-    padding: 12px 0 12px 32px;
-  }
-
-  body.page-search-results .search-results-bar.is-stuck .search-results-bar__tools {
-    flex: none;
-    padding: 12px 32px 12px 0;
-  }
-}
-
-/* Stuck below 1280px: search row, then the tools row with every control the same height */
-body.page-search-results .search-results-bar.is-stuck .search-results-bar__controls {
-  flex-wrap: nowrap;
-  width: 100%;
-}
-
+/* Tablets stuck: search row, then every control on one row at the same height */
 @media (min-width: 768px) {
-  body.page-search-results .search-results-bar.is-stuck .search-results-bar__tools {
-    display: block;
+  body.page-search-results .search-results-bar__controls {
+    flex-wrap: nowrap;
+  }
+
+  body.page-search-results .search-results-bar .search-results-search-tools__group-sort {
+    flex: none;
+    width: 190px;
+    margin: 0;
+  }
+
+  body.page-search-results .search-results-bar .search-results-search-tools__button-toggle-sort {
+    width: 100%;
+  }
+
+  body.page-search-results .search-results-bar.is-stuck .search-results-bar__compact {
+    flex: 1 1 100%;
+  }
+
+  body.page-search-results .search-results-bar.is-stuck .search-results-bar__controls {
+    width: 100%;
   }
 }
 
+/* Desktop stuck: search and tools share one row, so the bar keeps the same height */
 @media (min-width: 1280px) {
+  body.page-search-results .search-results-bar.is-stuck .search-results-bar__compact {
+    flex: 1 1 auto;
+  }
+
   body.page-search-results .search-results-bar.is-stuck .search-results-bar__controls {
     width: auto;
   }
@@ -1951,6 +1958,18 @@ body.page-search-results .search-results-bar__controls .search-results-view butt
   height: 46px;
 }
 
+body.page-search-results .search-results-notices {
+  margin: 0 0 24px;
+}
+
+body.page-search-results .search-results-notices .search-results-smart {
+  margin: 0;
+}
+
+body.page-search-results .search-results-notices .search-results-smart + .search-results-smart {
+  margin-top: 16px;
+}
+
 body.page-search-results .search-results-per-page {
   display: flex;
   justify-content: flex-end;
@@ -1962,7 +1981,7 @@ body.page-search-results .search-results-per-page .search-results-summary__group
   bottom: 100%;
 }
 
-/* Tablets and phones */
+/* Phones */
 @media (max-width: 767px) {
   body.page-search-results .search-results-banner .page-banner__inner {
     padding: 32px 16px 28px;
@@ -1974,34 +1993,33 @@ body.page-search-results .search-results-per-page .search-results-summary__group
   }
 
   body.page-search-results .search-results-bar__search {
-    padding: 0 16px 28px;
+    margin-top: 24px;
   }
 
-  body.page-search-results .search-results-bar .search-results-search-tools__form-bar-submit {
-    flex: none;
+  body.page-search-results .search-results-banner .search-results-search-tools__form-bar-submit {
     height: auto;
     flex-wrap: wrap;
   }
 
-  body.page-search-results .search-results-bar .search-results-form__group {
+  body.page-search-results .search-results-banner .search-results-form__group {
     flex: 1 1 calc(100% - 48px);
     min-height: 48px;
   }
 
-  body.page-search-results .search-results-bar .search-results-form__button--styled {
+  body.page-search-results .search-results-banner .search-results-form__button--styled {
     order: 2;
     width: 48px;
     min-height: 48px;
   }
 
-  body.page-search-results .search-results-bar .search-results-form__group-scope {
+  body.page-search-results .search-results-banner .search-results-form__group-scope {
     order: 3;
     flex: 1 1 100%;
     max-width: none;
     border-top: 1px solid var(--col-border-neutral-mid, #d9d6cf);
   }
 
-  body.page-search-results .search-results-bar .search-results-form__button-toggle-scope {
+  body.page-search-results .search-results-banner .search-results-form__button-toggle-scope {
     width: 100%;
     min-height: 44px;
     justify-content: space-between;
@@ -2031,13 +2049,19 @@ body.page-search-results .search-results-per-page .search-results-summary__group
 
   body.page-search-results .search-results-bar .search-results-search-tools__group-sort {
     order: 1;
-    flex: 1 1 120px;
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: none;
+    margin: 0;
   }
 
   body.page-search-results .search-results-bar .search-results-search-tools__button-filter-btn {
     order: 2;
-    flex: 1 1 110px;
+    flex: 1 1 0;
+    min-width: 0;
     min-height: 48px;
+    padding: 0 8px;
+    justify-content: center;
   }
 
   body.page-search-results .search-results-bar .search-results-summary__group--v1 {
@@ -2070,34 +2094,19 @@ body.page-search-results .search-results-per-page .search-results-summary__group
     justify-content: center;
   }
 
-  /* Stuck on a phone: search input and button, then Sort, Filters and Digital on one row */
-  body.page-search-results .search-results-bar.is-stuck .search-results-bar__search {
-    padding: 8px 16px 4px;
+  /* Stuck on a phone: search box, then Sort, Filters and Digital on one row */
+  body.page-search-results .search-results-bar.is-stuck .search-results-bar__tools {
+    padding: 8px 16px;
   }
 
-  body.page-search-results .search-results-bar.is-stuck .search-results-form__group-scope,
-  body.page-search-results .search-results-bar.is-stuck .search-results-search-tools__link-advanced-search,
+  body.page-search-results .search-results-bar.is-stuck .search-results-bar__compact {
+    order: 0;
+    flex: 1 1 100%;
+  }
+
   body.page-search-results .search-results-bar.is-stuck .search-results-view,
   body.page-search-results .search-results-bar.is-stuck .search-results-summary__group--v2 {
     display: none;
-  }
-
-  body.page-search-results .search-results-bar.is-stuck .search-results-bar__tools {
-    flex-wrap: nowrap;
-    padding: 0 16px 8px;
-  }
-
-  body.page-search-results .search-results-bar.is-stuck .search-results-search-tools__group-sort {
-    flex: 1 1 0;
-    min-width: 0;
-    max-width: none;
-  }
-
-  body.page-search-results .search-results-bar.is-stuck .search-results-search-tools__button-filter-btn {
-    flex: 1 1 0;
-    min-width: 0;
-    padding: 0 8px;
-    justify-content: center;
   }
 
   body.page-search-results .search-results-bar.is-stuck .search-results-summary__group--v1 {
@@ -2112,23 +2121,4 @@ body.page-search-results .search-results-per-page .search-results-summary__group
   body.page-search-results .search-results-bar.is-stuck .search-results-bar__switch-short {
     display: inline;
   }
-}
-
-@media (min-width: 768px) {
-  body.page-search-results .search-results-bar__controls {
-    flex-wrap: nowrap;
-  }
-
-  body.page-search-results .search-results-bar .search-results-search-tools__group-sort {
-    flex: none;
-    width: 190px;
-  }
-
-  body.page-search-results .search-results-bar .search-results-search-tools__button-toggle-sort {
-    width: 100%;
-  }
-}
-
-body.page-search-results .search-results-bar .search-results-search-tools__group-sort {
-  margin: 0;
 }
