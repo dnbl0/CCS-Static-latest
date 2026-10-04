@@ -29,6 +29,12 @@ for (const [q, want] of [['pottery', 'ceramic'], ['fiddle', 'violin'], ['tooth',
   if (r && r.some(x => x.m.kind === 'semantic' && titles([x], 1).includes(want))) ok(`semantic "${q}" reaches "${want}"`);
   else fail(`semantic "${q}" should reach records mentioning "${want}"`);
 }
+// Whole-phrase meaning (CCS-116): a phrase is understood as one idea, so all of its words need not appear
+for (const [q, want] of [['false teeth', 'denture'], ['sheet music', 'score'], ['x ray', 'radiograph']]) {
+  const r = run(q), d = eng.describe(eng.analyse(q));
+  if (r && r.length && d.semantic.some(x => x.from === q && x.to.some(w => w.indexOf(want.slice(0, 5)) === 0))) ok(`phrase "${q}" is understood as a whole (${r.length} results)`);
+  else fail(`phrase "${q}" should be understood as "${want}"`);
+}
 // Exact matches always rank before related ones
 for (const q of ['doctor', 'tooth', 'harp']) {
   const r = run(q); const order = { exact: 0, fuzzy: 1, semantic: 2 };

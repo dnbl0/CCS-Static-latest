@@ -93,4 +93,12 @@ const themed = sandbox.window.CCS.items.filter(i => Array.isArray(i.theme) && i.
 if (!themed) fail('no item has a theme');
 else ok(`theme present on ${themed}/${sandbox.window.CCS.items.length} items`);
 
+// CCS-27: every record lists its usage rights (accession number, credit, copyright); caption is for digital assets only
+{
+  const R = Object.values(CCS.records);
+  const need = (r, ...labels) => labels.filter(l => !r.rights.some(x => x.label === l));
+  const bad = R.filter(r => need(r, 'Accession number', 'Credit line', 'Copyright').length || (r.hasDA && need(r, 'Caption').length) || (!r.hasDA && !need(r, 'Caption').length));
+  if (bad.length) fail('CCS-27 usage rights are incomplete on ' + bad.length + ' records (for example #' + bad[0].id + ')');
+  else ok('CCS-27 usage rights listed on all ' + R.length + ' records (caption on digital assets only)');
+}
 finish('collection-data');
