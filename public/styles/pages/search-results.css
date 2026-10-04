@@ -1776,9 +1776,17 @@ body.page-search-results .search-results-per-page .search-results-summary__group
     white-space: nowrap;
   }
 
+  /* The results count is visually hidden here; take its wrapper out of the flex row so it adds no gap before Sort */
+  body.page-search-results .search-results-bar .search-results-summary__group--v4 {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
   body.page-search-results .search-results-bar .search-results-search-tools__group-sort {
     order: 1;
-    flex: 1 1 0;
+    flex: 1 1 calc(50% - 4px);
     min-width: 0;
     max-width: none;
     margin: 0;
@@ -1786,7 +1794,7 @@ body.page-search-results .search-results-per-page .search-results-summary__group
 
   body.page-search-results .search-results-bar .search-results-search-tools__button-filter-btn {
     order: 2;
-    flex: 1 1 0;
+    flex: 1 1 calc(50% - 4px);
     min-width: 0;
     min-height: 48px;
     padding: 0 8px;
@@ -1833,6 +1841,11 @@ body.page-search-results .search-results-per-page .search-results-summary__group
     flex: 1 1 100%;
   }
 
+  body.page-search-results .search-results-bar.is-stuck .search-results-search-tools__group-sort,
+  body.page-search-results .search-results-bar.is-stuck .search-results-search-tools__button-filter-btn {
+    flex: 1 1 0;
+  }
+
   body.page-search-results .search-results-bar.is-stuck .search-results-view,
   body.page-search-results .search-results-bar.is-stuck .search-results-summary__group--v2 {
     display: none;
@@ -1849,5 +1862,17 @@ body.page-search-results .search-results-per-page .search-results-summary__group
 
   body.page-search-results .search-results-bar.is-stuck .search-results-bar__switch-short {
     display: inline;
+  }
+}
+
+/* Very narrow phones: stuck, Sort and Filters take a row each half and Digital asset drops to its own row instead of clipping */
+@media (max-width: 359px) {
+  body.page-search-results .search-results-bar.is-stuck .search-results-search-tools__group-sort,
+  body.page-search-results .search-results-bar.is-stuck .search-results-search-tools__button-filter-btn {
+    flex: 1 1 calc(50% - 4px);
+  }
+
+  body.page-search-results .search-results-bar.is-stuck .search-results-summary__group--v1 {
+    flex: 1 1 100%;
   }
 }
