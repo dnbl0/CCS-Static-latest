@@ -239,7 +239,7 @@
           </div>
         </sc-if>
       </div>
-      <button class="search-results-form__button search-results-form__button--styled" type="submit" aria-label="Search"><svg class="search-results-form__button-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.5" y1="15.5" x2="21" y2="21"></line></svg></button>
+      <button class="search-results-form__button search-results-form__button--styled" type="submit" aria-label="Search"><img class="search-results-form__button-image" src="/images/home/icon-search-button.svg" alt="" width="24" height="24"></button>
       <sc-if value="{{ sugOpen }}">
         <div class="search-results-search-suggestions" id="search-suggestions" role="listbox" aria-label="Search suggestions and recent history">
           <sc-if value="{{ hasHistory }}">
@@ -290,7 +290,15 @@
   <div class="search-results-bar__tools">
     <form class="search-results-bar__compact" aria-label="Search while scrolling" onSubmit="{{ barSubmit }}">
       <input class="search-results-bar__compact-input" value="{{ sideQ }}" onChange="{{ onSideQ }}" aria-label="Search the collection" placeholder="{{ barPlaceholder }}">
-      <button class="search-results-bar__compact-button" type="submit" aria-label="Search"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.5" y1="15.5" x2="21" y2="21"></line></svg></button>
+      <div class="search-results-form__group-scope search-results-bar__compact-scope" ref="{{ scopeRef2 }}">
+        <button class="search-results-form__button-toggle-scope" type="button" onClick="{{ toggleScope2 }}" aria-haspopup="listbox" aria-expanded="{{ scopeOpen2 }}" aria-label="Search in collection">{{ scopeLabel }}<svg class="search-results-form__button-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+        <sc-if value="{{ scopeOpen2 }}">
+          <div class="search-results-search" role="listbox" aria-label="Search in collection">
+            <sc-for list="{{ scopeOpts }}" as="o"><button class="search-results-search__button-pick" type="button" role="option" aria-selected="{{ o.sel }}" onClick="{{ o.pick }}" style="--dyn-background:{{ o.bg }}">{{ o.label }}</button></sc-for>
+          </div>
+        </sc-if>
+      </div>
+      <button class="search-results-bar__compact-button" type="submit" aria-label="Search"><img src="/images/home/icon-search-button.svg" alt="" width="24" height="24"></button>
     </form>
     <div class="search-results-bar__count">
       <div class="search-results-summary__group search-results-summary__group--v4">
@@ -959,7 +967,7 @@ function clearSearchHistory() {
 class Component extends DCLogic {
   state = { stuck: false, advOpen: false, advH: '420px', f:EMPTYF(), loading:false, view:null, sideQ:'', modal:false, mFind:'', draft:null, mOpen:{coll:true,type:true,date:true}, fq:{}, more:{}, sortOpen:false, perPage:20, ppOpen:false, page:1, scopeOpen:false, sugOpen:false, sugIdx:-1, yIn:null, yErr:'', counting:false, ackOpen:false, vw: typeof window !== 'undefined' ? window.innerWidth : 1200, liveItems: null, liveTotal: null, liveError: null };
   trackRef = React.createRef(); bodyRef = React.createRef(); sortRef = React.createRef(); ppRef = React.createRef(); mainRef = React.createRef();
-  sentinelRef = React.createRef(); scopeRef = React.createRef(); dialogRef = React.createRef(); filterBtnRef = React.createRef(); ackRef = React.createRef();
+  sentinelRef = React.createRef(); scopeRef = React.createRef(); scopeRef2 = React.createRef(); dialogRef = React.createRef(); filterBtnRef = React.createRef(); ackRef = React.createRef();
   dom = { lo: 1700, hi: 2030 };
 
   async fetchLive(f, page, perPage) {
@@ -996,9 +1004,9 @@ class Component extends DCLogic {
     window.addEventListener('message', this.onAdvMsg);
     this.onMove = e => this.move(e);
     this.onUp = () => { this.drag = null; };
-    this.onKey = e => { if (e.key === 'Escape') { if (this.state.ackOpen) this.closeAck(); else if (this.state.modal) this.closeModal(); this.setState({ sugOpen: false, scopeOpen: false }); } };
+    this.onKey = e => { if (e.key === 'Escape') { if (this.state.ackOpen) this.closeAck(); else if (this.state.modal) this.closeModal(); this.setState({ sugOpen: false, scopeOpen: false, scopeOpen2: false }); } };
     this.onDown = e => { const s = this.state, out = r => r.current && !r.current.contains(e.target);
-      const u = {}; if (s.sortOpen && out(this.sortRef)) u.sortOpen = false; if (s.ppOpen && out(this.ppRef)) u.ppOpen = false; if (s.scopeOpen && out(this.scopeRef)) u.scopeOpen = false; if (Object.keys(u).length) this.setState(u); };
+      const u = {}; if (s.sortOpen && out(this.sortRef)) u.sortOpen = false; if (s.ppOpen && out(this.ppRef)) u.ppOpen = false; if (s.scopeOpen && out(this.scopeRef)) u.scopeOpen = false; if (s.scopeOpen2 && out(this.scopeRef2)) u.scopeOpen2 = false; if (Object.keys(u).length) this.setState(u); };
     this.onResize = () => this.setState({ vw: window.innerWidth });
     window.addEventListener('pointerdown', this.onDown); window.addEventListener('pointermove', this.onMove);
     window.addEventListener('pointerup', this.onUp); window.addEventListener('keydown', this.onKey); window.addEventListener('resize', this.onResize);
@@ -1376,8 +1384,9 @@ class Component extends DCLogic {
       },
       sideQ: s.sideQ, onSideQ: e => this.setState({ sideQ: e.target.value, sugOpen: true, sugIdx: -1 }),
       scopeRef: this.scopeRef, scopeOpen: s.scopeOpen, toggleScope: () => this.setState(st => ({ scopeOpen: !st.scopeOpen })),
+      scopeRef2: this.scopeRef2, scopeOpen2: s.scopeOpen2, toggleScope2: () => this.setState(st => ({ scopeOpen2: !st.scopeOpen2 })),
       scopeLabel: f.collection.length === 1 ? f.collection[0] : f.collection.length > 1 ? f.collection.length + ' collections' : 'All collections',
-      scopeOpts: [['', 'All collections'], ...HIER.map(h => [h.name, h.name])].map(([v, label]) => { const sel = v ? (f.collection.length === 1 && f.collection[0] === v) : !f.collection.length; return { label, sel, bg: sel ? '#b3e5f5' : '#fff', pick: () => { this.setState({ scopeOpen: false }); this.apply(ff => ({ ...ff, collection: v ? [v] : [], named: [] })); } }; }),
+      scopeOpts: [['', 'All collections'], ...HIER.map(h => [h.name, h.name])].map(([v, label]) => { const sel = v ? (f.collection.length === 1 && f.collection[0] === v) : !f.collection.length; return { label, sel, bg: sel ? '#b3e5f5' : '#fff', pick: () => { this.setState({ scopeOpen: false, scopeOpen2: false }); this.apply(ff => ({ ...ff, collection: v ? [v] : [], named: [] })); } }; }),
       sugOpen: s.sugOpen && (hasHistory || hasSugs),
       openSug: () => this.setState({ sugOpen: true, sugIdx: -1 }),
       closeSugSoon: () => { clearTimeout(this.bt); this.bt = setTimeout(() => this.setState({ sugOpen: false, sugIdx: -1 }), 160); },
