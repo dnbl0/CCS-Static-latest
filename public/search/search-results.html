@@ -655,15 +655,16 @@ const formatOf = it => !it.img ? 'None' : /Video/.test(it.objectType) ? 'Video' 
 const lifespanOf = creator => { const m = (creator || '').match(/\(([^)]+)\)\s*$/); if (!m) return {}; const inner = m[1];
   const range = inner.match(/^(\d{4})\s*[–-]\s*(\d{4})$/); if (range) return { birth: +range[1], death: +range[2] };
   const b = inner.match(/b\.\s*(\d{4})/), d = inner.match(/d\.\s*(\d{4})/); return { birth: b ? +b[1] : null, death: d ? +d[1] : null }; };
-const vals = (it, k) => k === 'period' ? [periodOf(it)].filter(Boolean) : k === 'filmClass' ? (it.ratings || []) : k === 'classification' ? (it.classes || []) : k === 'named' ? [].concat(it.named ?? []) : k === 'region' ? [regionOf(it)].filter(Boolean) : k === 'assetFormat' ? (it.formats || []) : k === 'type' ? (it.types || []) : [].concat(it[k] ?? []);
-const KEYS = ['theme','type','period','creator','assoc','culture','place','subject','material','language','licence','access','nationality','classification','named','filmClass','region','assetFormat','subjectPlace','subjectEvent','daAccess'];
-const LABELS = {theme:'Theme',collection:'Collection',named:'Named collection',type:'Object type',period:'Date (era, period, century)',creator:'Creator',assoc:'Subject agent',culture:'Cultural affiliation',place:'Place of production',subject:'Subject',material:'Material',language:'Language',licence:'Licence',access:'Access',nationality:'Nationality',classification:'Classification',filmClass:'Film & gaming classification',region:'Region',assetFormat:'Format type',subjectPlace:'Subject location',subjectEvent:'Subject event'};
+const vals = (it, k) => k === 'period' ? [periodOf(it)].filter(Boolean) : k === 'filmClass' ? (it.ratings || []) : k === 'classification' ? (it.classes || []) : k === 'named' ? [].concat(it.named ?? []) : k === 'region' ? [regionOf(it)].filter(Boolean) : k === 'creatorRole' ? (it.creatorRoles || []) : k === 'assetFormat' ? (it.formats || []) : k === 'type' ? (it.types || []) : [].concat(it[k] ?? []);
+const KEYS = ['theme','type','period','creator','creatorRole','assoc','culture','place','subject','material','language','licence','access','nationality','classification','named','filmClass','region','assetFormat','subjectPlace','subjectEvent','daAccess'];
+const LABELS = {theme:'Theme',collection:'Collection',named:'Named collection',type:'Object type',period:'Date (era, period, century)',creator:'Creator',creatorRole:'Creator role',assoc:'Subject agent',culture:'Cultural affiliation',place:'Place of production',subject:'Subject',material:'Material',language:'Language',licence:'Licence',access:'Access',nationality:'Nationality',classification:'Classification',filmClass:'Film & gaming classification',region:'Region',assetFormat:'Format type',subjectPlace:'Subject location',subjectEvent:'Subject event'};
 const FACETS = [
  {group:'Collection details', key:'coll',title:'Collection title',kind:'tree',search:true},
  {group:'Collection details', key:'named',title:'Named collections',kind:'list',search:true},
  {group:'Creator', key:'creator',title:'Creator name',kind:'list',search:true},
  {group:'Creator', key:'life',title:'Creator date of birth',kind:'life',dk:'birth'},
  {group:'Creator', key:'lifeDeath',title:'Creator date of death',kind:'life',dk:'death'},
+ {group:'Creator', key:'creatorRole',title:'Creator role',kind:'chips',search:true},
  {group:'Creator', key:'nationality',title:'Nationality',kind:'list',search:true},
  {group:'Object', key:'date',title:'Production date',kind:'date'},
  {group:'Object', key:'period',title:'Date (era, period, century)',kind:'chips',search:true},

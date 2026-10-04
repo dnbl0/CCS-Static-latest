@@ -12,7 +12,7 @@
   const MODES = ['auto', 'live', 'mock'];
   // Filters the API can answer. Anything else (advanced clauses, "match all", birth years, accession, downloads, ...) is answered locally.
   const API_KEYS = ['collection', 'type', 'subject', 'culture', 'place', 'theme', 'licence'];
-  const LOCAL_ONLY_KEYS = ['period', 'creator', 'assoc', 'material', 'language', 'access', 'nationality', 'classification', 'named', 'filmClass', 'region', 'assetFormat', 'subjectPlace', 'subjectEvent', 'daAccess'];
+  const LOCAL_ONLY_KEYS = ['period', 'creator', 'creatorRole', 'assoc', 'material', 'language', 'access', 'nationality', 'classification', 'named', 'filmClass', 'region', 'assetFormat', 'subjectPlace', 'subjectEvent', 'daAccess'];
 
   const BlacklightAdapter = {
     // Determine active mode from URL param, localStorage, or default
