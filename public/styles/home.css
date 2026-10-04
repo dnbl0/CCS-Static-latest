@@ -44,12 +44,12 @@
 .ccs-nav__top ul, .ccs-nav__drawer-top { display: flex; gap: 16px; margin: 0; padding: 0 12px 0 0; list-style: none; }
 .ccs-nav__top a, .ccs-nav__drawer-top a { display: flex; align-items: center; min-height: 44px; padding: 12px 4px; font-size: 14px; font-weight: 400; line-height: 140%; letter-spacing: 1.12px; text-transform: uppercase; color: var(--sage-400, #abc1a7); text-decoration: none; }
 .ccs-nav__top a:hover, .ccs-nav__drawer-top a:hover { color: #eaefe9; text-decoration: underline; }
-.ccs-nav__search { display: flex; align-items: center; justify-content: center; width: 48px; height: 44px; padding: 0; border: 0; background: var(--sage-400, #abc1a7); cursor: pointer; }
+.ccs-nav__search { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 10px; border: 0; background: var(--sage-400, #abc1a7); cursor: pointer; }
 .ccs-nav__search:hover { background: var(--sage-300, #c3d2c0); }
 .ccs-nav__search:active { background: var(--sage-200, #d9e3d8); }
-.ccs-nav__search img { width: 24px; height: 24px; padding: 3px; }
+.ccs-nav__search img { width: 24px; height: 24px; padding: 0; }
 .ccs-nav__bottom { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 65px; padding: 8px; }
-.ccs-nav__title { display: flex; align-items: center; min-height: 44px; padding: 0 24px 0 4px; font-size: 20px; font-weight: 600; line-height: 1.2; color: #fff; text-decoration: none; white-space: nowrap; }
+.ccs-nav__title { display: flex; align-items: center; min-height: 44px; padding: 0 24px 0 4px; font-size: 16px; font-weight: 600; line-height: 1.2; color: #fff; text-decoration: none; white-space: nowrap; }
 .ccs-nav__title:hover { color: var(--blue-400, #47c8f0); text-decoration: underline; }
 
 /* Primary navigation (links + dropdown triggers share the UniMelb interactive states) */
@@ -74,52 +74,74 @@
 .ccs-nav__panel-title:hover, .ccs-nav__panel-list a:hover { text-decoration: underline; color: var(--blue-400, #47c8f0); }
 .ccs-nav__panel-title img, .ccs-nav__panel-list img { width: 24px; height: 24px; flex: none; }
 .ccs-nav__panel-list { display: grid; grid-template-columns: 1fr 1fr; gap: 0 32px; margin: 16px 0 0; padding: 16px 0 0; border-top: 1px solid #404b74; list-style: none; }
-.ccs-nav__panel-list a { display: flex; align-items: flex-start; gap: 4px; min-height: 44px; padding: 10px 0; font-size: 16px; font-weight: 600; line-height: 1.33; color: #fff; text-decoration: none; }
+.ccs-nav__panel-list a { display: flex; align-items: flex-start; gap: 4px; min-height: 40px; padding: 8px 0; font-size: 16px; font-weight: 600; line-height: 1.33; color: #fff; text-decoration: none; }
 .ccs-nav__panel-list a[aria-current] { color: var(--blue-400, #47c8f0); }
 
-/* Mobile-only pieces (Menu button, drawer search, drawer top links) are hidden on desktop */
-.ccs-nav__menu, .ccs-nav__drawer-search, .ccs-nav__primary > ul.ccs-nav__drawer-top { display: none; }
+/* Mobile-only pieces (Menu button, drawer search, drawer top links, Back row) are hidden on desktop */
+.ccs-nav__menu, .ccs-nav__drawer-search, .ccs-nav__primary > ul.ccs-nav__drawer-top, .ccs-nav__back { display: none; }
 
+/* Mobile and tablet header, following the UniMelb mobile header: one 96px row (logo block, site name, Menu button),
+   with search, navigation and the UniMelb audience links inside a right-hand drawer. */
 @media (max-width: 1023px) {
-  .ccs-nav__brand { height: 88px; width: 80px; }
-  .ccs-nav__brand a, .ccs-nav__brand img { width: 80px; height: 80px; margin: 4px 0 0; }
-  .ccs-nav__main { height: 88px; }
-  .ccs-nav__top ul { display: none; }
-  .ccs-nav__bottom { height: 44px; padding: 0 12px; }
-  .ccs-nav__title { padding-right: 8px; overflow: hidden; }
+  .ccs-nav--header { height: 96px; }
+  .ccs-nav__brand { height: 96px; width: 97px; }
+  .ccs-nav__brand a, .ccs-nav__brand img { width: 96px; height: 96px; margin: 0; }
+  .ccs-nav__main { height: 96px; justify-content: center; }
+  .ccs-nav__top { display: none; }
+  .ccs-nav__bottom { height: 96px; padding: 0 8px 0 12px; }
+  .ccs-nav__title { padding: 0 8px 0 0; font-size: 14px; line-height: 14px; overflow: hidden; text-overflow: ellipsis; }
 
-  /* Menu button: icon over label, like the UniMelb mobile header */
-  .ccs-nav__menu { display: flex; flex: none; flex-direction: column; align-items: center; justify-content: center; gap: 4px; width: 74px; height: 88px; padding: 0; border: 0; background: none; color: #fff; font: inherit; font-size: 14px; line-height: 1; cursor: pointer; }
+  /* Menu button: 32px icon over a 14px label, like the UniMelb mobile header */
+  .ccs-nav__menu { display: flex; flex: none; flex-direction: column; align-items: center; justify-content: center; gap: 4px; width: 74px; height: 96px; padding: 0; border: 0; background: none; color: #fff; font: inherit; font-size: 14px; line-height: 14px; cursor: pointer; }
   .ccs-nav__menu svg { width: 32px; height: 32px; fill: none; stroke: currentColor; stroke-width: 2; }
   .ccs-nav__menu .ccs-nav__menu-close { display: none; }
-  .ccs-nav__menu[aria-expanded="true"] { color: var(--blue-400, #47c8f0); }
   .ccs-nav__menu[aria-expanded="true"] .ccs-nav__menu-open { display: none; }
   .ccs-nav__menu[aria-expanded="true"] .ccs-nav__menu-close { display: block; }
   .ccs-nav__menu:hover { color: var(--blue-400, #47c8f0); }
   .ccs-nav__menu:hover span { text-decoration: underline; }
 
-  /* Drawer */
-  .ccs-nav__primary { display: none; position: absolute; top: 100%; left: 80px; right: 0; min-height: calc(100vh - 88px); overflow-y: auto; background: var(--brand-1200, #000b34); box-shadow: -8px 8px 24px rgba(0, 0, 0, 0.35); z-index: 1002; }
+  /* Drawer: slides in from the right under the header (390px wide at most), page dimmed behind it */
+  .ccs-nav--header:has(.ccs-nav__menu[aria-expanded="true"])::after { content: ""; position: absolute; top: 100%; left: 0; right: 0; height: 100vh; background: rgba(0, 11, 52, 0.8); z-index: 1; }
+  .ccs-nav__primary { display: none; position: absolute; top: 100%; right: 0; left: auto; z-index: 2; width: min(390px, 100%); height: calc(100vh - 96px); height: calc(100dvh - 96px); overflow-y: auto; background: var(--brand-1200, #000b34); box-shadow: none; flex-direction: column; }
   .ccs-nav__primary.is-open { display: block; }
-  .ccs-nav__drawer-search { display: block; padding: 16px; }
+  .ccs-nav__drawer-search { display: block; padding: 16px; border-bottom: 1px solid #404b74; }
   .ccs-nav__drawer-search form { display: flex; height: 48px; margin: 0; }
   .ccs-nav__drawer-search input { flex: 1; min-width: 0; padding: 12px; border: 0; background: #fff; color: var(--neutral-1000, #222); font: inherit; font-size: 18px; }
   .ccs-nav__drawer-search button { flex: none; width: 48px; border: 0; background: var(--sage-400, #abc1a7); cursor: pointer; display: flex; align-items: center; justify-content: center; }
   .ccs-nav__drawer-search button img { width: 24px; height: 24px; }
-  .ccs-nav__primary > ul { flex-direction: column; border-top: 1px solid #404b74; }
+  .ccs-nav__primary > ul { flex-direction: column; border-top: 0; }
   .ccs-nav__primary > ul > li { border-bottom: 1px solid #404b74; }
-  .ccs-nav__primary > ul > li > a, .ccs-nav__trigger { width: 100%; justify-content: space-between; min-height: 56px; padding: 16px; font-size: 18px; font-weight: 600; letter-spacing: -0.18px; line-height: 1.33; }
+  .ccs-nav__primary > ul > li > a, .ccs-nav__trigger { width: 100%; justify-content: space-between; min-height: 63px; padding: 16px 10px 16px 16px; font-size: 18px; font-weight: 600; letter-spacing: -0.18px; line-height: 24px; color: #fff; text-align: left; }
   .ccs-nav__primary > ul > li > a:hover, .ccs-nav__trigger:hover, .ccs-nav__trigger[aria-expanded="true"] { background: none; color: #fff; text-decoration: underline; }
   .ccs-nav__primary > ul > li > a:active, .ccs-nav__trigger:active { background: none; color: #fff; }
-  .ccs-nav__trigger:hover img, .ccs-nav__trigger[aria-expanded="true"] img, .ccs-nav__trigger:active img { filter: none; }
-  .ccs-nav__trigger img { margin: 0 7px; }
   .ccs-nav__primary [aria-current] { box-shadow: inset 4px 0 0 var(--blue-400, #47c8f0); }
-  .ccs-nav__panel { position: static; width: auto; padding: 0 16px 16px; border-top: 0; box-shadow: none; }
-  .ccs-nav__panel-title { font-size: 20px; min-height: 44px; }
-  .ccs-nav__panel-list { grid-template-columns: 1fr; margin-top: 8px; padding-top: 8px; }
-  .ccs-nav__primary > ul.ccs-nav__drawer-top { display: flex; flex-direction: column; gap: 0; padding: 16px; border-top: 0; }
+
+  /* Items that open a sub-menu show a light-blue right chevron instead of the desktop down arrow */
+  .ccs-nav__primary .ccs-nav__trigger img { display: none; }
+  .ccs-nav__trigger::after { content: ""; flex: none; width: 24px; height: 24px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2347c8f0' stroke-width='2.4' stroke-linecap='square'%3E%3Cpolyline points='9 5 16 12 9 19'/%3E%3C/svg%3E") center / contain no-repeat; }
+
+  /* Drilled-in view: the chosen item replaces the list, with a Back row, its own link, then its children indented */
+  .ccs-nav__primary:has(.ccs-nav__trigger[aria-expanded="true"]) .ccs-nav__drawer-search,
+  .ccs-nav__primary:has(.ccs-nav__trigger[aria-expanded="true"]) .ccs-nav__drawer-top,
+  .ccs-nav__primary > ul > li:not(:has(.ccs-nav__trigger[aria-expanded="true"])):has(~ li .ccs-nav__trigger[aria-expanded="true"]),
+  .ccs-nav__primary:has(.ccs-nav__trigger[aria-expanded="true"]) > ul > li:not(:has(.ccs-nav__trigger[aria-expanded="true"])) { display: none; }
+  .ccs-nav__trigger[aria-expanded="true"] { display: none; }
+  .ccs-nav__back { display: flex; align-items: center; gap: 8px; width: 100%; min-height: 63px; padding: 16px; border: 0; border-bottom: 1px solid #404b74; background: none; font: inherit; font-size: 16px; font-weight: 600; line-height: 24px; color: #fff; text-align: left; cursor: pointer; }
+  .ccs-nav__back:hover { text-decoration: underline; }
+  .ccs-nav__back svg { flex: none; width: 24px; height: 24px; fill: none; stroke: var(--blue-400, #47c8f0); stroke-width: 2.4; stroke-linecap: square; }
+  .ccs-nav__panel { position: static; width: auto; padding: 0; border-top: 0; box-shadow: none; }
+  .ccs-nav__panel-title { display: flex; width: 100%; min-height: 63px; padding: 16px; border-bottom: 1px solid #404b74; font-family: "Source Sans 3", sans-serif; font-size: 18px; font-weight: 600; letter-spacing: -0.18px; line-height: 24px; color: #fff; text-decoration: none; }
+  .ccs-nav__primary .ccs-nav__panel-title img, .ccs-nav__primary .ccs-nav__panel-list img { display: none; }
+  .ccs-nav__panel-list { display: block; margin: 0; padding: 0; border-top: 0; }
+  .ccs-nav__panel-list li { border-bottom: 1px solid #404b74; }
+  .ccs-nav__panel-list a { min-height: 63px; padding: 16px 16px 16px 32px; align-items: center; font-size: 18px; font-weight: 600; letter-spacing: -0.18px; line-height: 24px; }
+  .ccs-nav__panel-list a[aria-current], .ccs-nav__panel-title[aria-current] { box-shadow: inset 4px 0 0 var(--blue-400, #47c8f0); color: #fff; }
+
+  /* UniMelb audience links under the list: 14px, sage, uppercase, letter-spaced */
+  .ccs-nav__primary > ul.ccs-nav__drawer-top { display: flex; flex-direction: column; gap: 12px; padding: 24px 16px; border-top: 0; }
   .ccs-nav__primary > ul.ccs-nav__drawer-top > li { border-bottom: 0; }
-  .ccs-nav__drawer-top a { font-weight: 600; padding: 8px 4px; }
+  .ccs-nav__primary > ul.ccs-nav__drawer-top > li > a { min-height: 20px; padding: 0; font-size: 14px; font-weight: 600; line-height: 1.33; letter-spacing: 1.12px; text-transform: uppercase; color: var(--sage-400, #abc1a7); }
+  .ccs-nav__primary > ul.ccs-nav__drawer-top > li > a:hover { color: #eaefe9; text-decoration: underline; }
 }
 @media (prefers-reduced-motion: reduce) { .ccs-nav__trigger img { transition: none; } }
 

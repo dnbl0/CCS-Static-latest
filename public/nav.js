@@ -11,6 +11,15 @@
     });
   }
 
+  var BACK = '<svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 5 8 12 15 19"/></svg>Back';
+  // Mobile drill-in view: every sub-menu panel gets a Back row (added here so no page markup has to change)
+  function ensureBack(panel) {
+    if (!panel || panel.querySelector('.ccs-nav__back')) return;
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'ccs-nav__back'; b.innerHTML = BACK;
+    panel.insertBefore(b, panel.firstChild);
+  }
+
   function setMenu(open) {
     var btn = document.querySelector(NAV + ' .ccs-nav__menu');
     var nav = document.getElementById('ccs-primary-nav');
@@ -23,8 +32,16 @@
   }
 
   document.addEventListener('click', function (e) {
+    var back = e.target.closest && e.target.closest(NAV + ' .ccs-nav__back');
+    if (back) {
+      var panel = back.closest('.ccs-nav__panel');
+      var trig = panel && panel.previousElementSibling;
+      if (trig) { trig.setAttribute('aria-expanded', 'false'); trig.focus(); }
+      return;
+    }
     var t = e.target.closest && e.target.closest(NAV + ' .ccs-nav__trigger');
     if (t) {
+      ensureBack(document.getElementById(t.getAttribute('aria-controls')));
       var open = t.getAttribute('aria-expanded') === 'true';
       closePanels(t);
       t.setAttribute('aria-expanded', open ? 'false' : 'true');
@@ -32,6 +49,8 @@
     }
     var m = e.target.closest && e.target.closest(NAV + ' .ccs-nav__menu');
     if (m) { setMenu(m.getAttribute('aria-expanded') !== 'true'); return; }
+    // clicking the dimmed page behind the mobile drawer closes it
+    if (e.target === document.querySelector(NAV)) { setMenu(false); return; }
     // clicking anywhere else closes an open dropdown; clicking outside the header also closes the mobile drawer
     if (!(e.target.closest && e.target.closest('.ccs-nav__panel'))) closePanels();
     if (!(e.target.closest && e.target.closest(NAV))) setMenu(false);

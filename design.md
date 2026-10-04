@@ -805,7 +805,7 @@ vercel.json                          # clean URLs + legacy redirects
 |------|---------|
 | `public/components/fig-tokens.css` | Gen 3 design tokens (colour, type, spacing) and global focus styles |
 | `public/components/fig-assets.css` | Asset/component styles from the design export |
-| `public/styles/home.css` | Navigation (header/footer) and Section components, accordion, links |
+| `public/styles/home.css` | Navigation (header/footer, UniMelb-style mobile header and drill-in drawer) and Section components, accordion, links |
 | `public/styles/advanced-filters.css` | Advanced Filters form components |
 | `public/styles/header.css` | Search overlay, `.sr-only` and shared colour variables |
 | `public/styles/pages/*.css` | Per-page rules (scoped by `body.page-<page>`); includes the former inline styles and `<style>` blocks |
