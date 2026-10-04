@@ -303,6 +303,12 @@ The box on each collection page is now "Visitors information" and shows the cont
 2. **Dead code cleanup**: done - `public/styles/variables.css` / `components.css` and the other duplicates were deleted (2026-10-01).
 3. **WCAG AA certification**: no formal WCAG 2.1 AA audit has been run (axe-core scans only) — the prior document's "certified" claim was not backed by an actual audit trail and should not be relied upon.
 
+### Search results banner and sticky tools bar (2026-10-04)
+- The results page banner is now compact (title plus a "N results for “query”" line). The search form sits inside the banner on the navy strip.
+- Below it, one sticky `.search-results-bar` holds Sort, Filters, the Digital asset switch, the view toggle and Save this search. An IntersectionObserver sentinel adds `is-stuck` once the banner scrolls away. When stuck, the search box stays visible next to the tools on desktop and tablet.
+- On phones the bar stacks: search, then Sort | Filters, then Digital asset | view | Save (icon only). When stuck it shrinks to the search row plus Sort | Filters | Digital.
+- The per-page selector moved to sit above the pagination. CSS lives in `public/styles/pages/search-results.css`.
+
 ---
 
 ## Document Information
