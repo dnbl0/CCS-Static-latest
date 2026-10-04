@@ -222,11 +222,19 @@
   <div class="ct-listing__inner">
     <h2 class="ct-listing__title" id="h-topics">Help topics</h2>
     <p class="ct-listing__lead">Choose a topic to find guidance on searching, accessing and using the University's cultural collections.</p>
-    <ul class="ct-listing__list ct-listing__list--text">
+    <ul class="ccs-help ccs-help--topics">
       <sc-for list="{{ topics }}" as="t" hint-placeholder-count="6">
-        <li class="ct-listing__item">
-          <a class="ct-listing__link" href="{{ t.href }}"><h3 class="ct-listing__heading">{{ t.title }}</h3></a>
-          <p class="ct-listing__excerpt">{{ t.blurb }}</p>
+        <li class="ccs-help__item">
+          <div class="ccs-help__card">
+            <div class="ccs-help__icon"><img class="ccs-help__image" src="{{ t.iconSrc }}" alt=""></div>
+            <div class="ccs-help__body">
+              <div class="ccs-help__group">
+                <h3 class="ccs-help__title">{{ t.title }}</h3>
+                <p class="ccs-help__text">{{ t.blurb }}</p>
+              </div>
+              <a class="ccs-link" href="{{ t.href }}">Read guide<span class="sr-only ccs-link__text"> for {{ t.title }}</span><img class="ccs-link__image" src="/images/home/icon-arrow-right.svg" alt=""></a>
+            </div>
+          </div>
         </li>
       </sc-for>
     </ul>
@@ -258,14 +266,10 @@
   <div class="help-faq" id="faq">
   <h2 class="help-faq__heading-frequently-asked-questions">Frequently Asked Questions</h2>
   <p class="help-faq__text">Having problems when searching for items across the cultural collections? Here are some frequently asked questions to help.</p>
-  <div class="ccs-faq__list ccs-faq__list--styled">
-    <sc-for list="{{ faqs }}" as="q" hint-placeholder-count="6">
-      <details class="ccs-acc">
-        <summary class="ccs-acc__summary"><span class="ccs-acc__summary-text">{{ q.q }}</span><img class="ccs-acc__summary-image" src="/images/home/icon-chevron.svg" alt=""></summary>
-        <div class="ccs-acc__panel"><p class="ccs-acc__text">{{ q.a }}</p></div>
-      </details>
-    </sc-for>
-  </div>
+  <sc-for list="{{ faqs }}" as="q" hint-placeholder-count="6">
+    <h3 class="help-faq__question">{{ q.q }}</h3>
+    <p class="help-faq__answer">{{ q.a }}</p>
+  </sc-for>
   </div>
 </sc-if>
 
@@ -516,7 +520,7 @@ class Component extends DCLogic {
       showCopyright: !!topic && topic.key === 'copyright',
       showAccess: !!topic && topic.key === 'access', showPrivacy: !!topic && topic.key === 'privacy',
       sideNav: TOPICS.map(([key, title]) => ({ href: key === 'indigenous' ? '/help/indigenous-data.html' : '/help?topic=' + key, title, current: topic && topic.key === key ? 'page' : 'false' })),
-      topics: TOPICS.map(([key, title, blurb, d]) => ({ href: key === 'indigenous' ? '/help/indigenous-data.html' : '/help?topic=' + key, title, blurb, icon: iconEl(d) })),
+      topics: TOPICS.map(([key, title, blurb, d]) => ({ iconSrc: '/images/home/' + ({ faq: 'help-faq', 'search-tips': 'help-search-tips', indigenous: 'help-indigenous', copyright: 'help-rights', access: 'help-access', privacy: 'help-privacy' })[key] + '.svg', href: key === 'indigenous' ? '/help/indigenous-data.html' : '/help?topic=' + key, title, blurb, icon: iconEl(d) })),
       faqs: FAQS.map(([q, a], i) => ({ q, a, open: this.state.open === i, chev: this.state.open === i ? 'rotate(180deg)' : 'none', toggle: () => this.setState(s => ({ open: s.open === i ? -1 : i })), btnId: 'faq-btn-' + i, panelId: 'faq-panel-' + i }))
     };
   }

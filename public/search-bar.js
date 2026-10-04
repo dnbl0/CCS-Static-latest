@@ -1,10 +1,10 @@
 // CCS search bar enhancement — gives any <form data-ccs-searchbar> the same behaviour as the search bar on the
-// search results page: a "Search in" scope menu (All fields / Title / Creator / Subject), recent searches kept for
+// search results page: an "All collections" menu next to the search button (limits the search to one collection), recent searches kept for
 // the browser session (same sessionStorage key as the results page), suggested terms drawn from the records,
-// arrow-key / Enter / Esc navigation, and a submit that opens the results page with ?q=…&scope=….
+// arrow-key / Enter / Esc navigation, and a submit that opens the results page with ?q=…&collection=….
 // Without JavaScript the form still works as a plain ?q= search.
 (function () {
-  const SCOPES = [['all', 'All fields'], ['title', 'Title'], ['creator', 'Creator'], ['subject', 'Subject']];
+  const SCOPES = [['all', 'All collections'], ['Medical History Museum', 'Medical History Museum'], ['University Art Collection', 'University Art Collection'], ['Grainger Museum Collection', 'Grainger Museum Collection'], ['Henry Forman Atkinson Dental Museum', 'Henry Forman Atkinson Dental Museum'], ['Harry Brookes Allen Museum of Anatomy and Pathology', 'Harry Brookes Allen Museum of Anatomy and Pathology']];
   const HISTORY_KEY = 'ccs-search-history';   // shared with /search/search-results.html
   const RESULTS = '/search/search-results.html';
 
@@ -36,7 +36,7 @@
     if (form.dataset.ready) return; form.dataset.ready = '1';
     const input = form.querySelector('input[name="q"]'); if (!input) return;
     const id = 'ccs-sb-' + (++uid);
-    let scope = new URLSearchParams(location.search).get('scope') || 'all';
+    let scope = new URLSearchParams(location.search).get('collection') || 'all';
     if (!SCOPES.some(s => s[0] === scope)) scope = 'all';
     let items = [], idx = -1;
 
@@ -49,8 +49,8 @@
 
     // scope menu
     const scopeWrap = document.createElement('div'); scopeWrap.className = 'ccs-searchbar__scope';
-    scopeWrap.innerHTML = '<button type="button" class="ccs-searchbar__scope-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Search in"></button>' +
-      '<div class="ccs-searchbar__menu" role="listbox" aria-label="Search in" hidden></div>';
+    scopeWrap.innerHTML = '<button type="button" class="ccs-searchbar__scope-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Search in collection"></button>' +
+      '<div class="ccs-searchbar__menu" role="listbox" aria-label="Search in collection" hidden></div>';
     const scopeBtn = scopeWrap.querySelector('button'), menu = scopeWrap.querySelector('.ccs-searchbar__menu');
     const chev = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>';
     const paintScope = () => {
@@ -61,9 +61,8 @@
     const closeScope = () => { menu.hidden = true; scopeBtn.setAttribute('aria-expanded', 'false'); };
     scopeBtn.addEventListener('click', () => { const open = menu.hidden; menu.hidden = !open; scopeBtn.setAttribute('aria-expanded', String(open)); if (open) closeSug(); });
     menu.addEventListener('click', e => { const b = e.target.closest('button[data-v]'); if (!b) return; scope = b.dataset.v; paintScope(); closeScope(); input.focus(); });
-    form.insertBefore(scopeWrap, form.firstChild);
-
-    const hidden = document.createElement('input'); hidden.type = 'hidden'; hidden.name = 'scope'; form.appendChild(hidden);
+    // the collection menu sits just left of the search button
+    form.insertBefore(scopeWrap, form.querySelector('button[type="submit"]'));
 
     // suggestion panel
     const panel = document.createElement('div'); panel.id = id; panel.className = 'ccs-searchbar__panel'; panel.setAttribute('role', 'listbox');
@@ -74,7 +73,7 @@
     function build() {
       const q = input.value.trim().toLowerCase(), all = history.get();
       const recent = !q ? all.slice(0, 8) : all.filter(t => t.toLowerCase().includes(q)).slice(0, 5);
-      const sugs = q.length >= 2 ? terms().filter(t => (scope === 'all' || t.sc === scope) && t.text.toLowerCase().includes(q)).slice(0, 6) : [];
+      const sugs = q.length >= 2 ? terms().filter(t => t.text.toLowerCase().includes(q)).slice(0, 6) : [];
       items = [...recent.map(t => ({ type: 'history', text: t })), ...sugs.map(t => ({ type: 'sug', text: t.text, cat: t.cat }))];
       let html = '';
       if (recent.length) {
@@ -95,7 +94,7 @@
     function go(term) {
       const q = (term || '').trim(); if (!q) { input.focus(); return; }
       history.save(q);
-      const p = new URLSearchParams({ q }); if (scope !== 'all') p.set('scope', scope);
+      const p = new URLSearchParams({ q }); if (scope !== 'all') p.set('collection', scope);
       location.href = RESULTS + '?' + p.toString();
     }
 
