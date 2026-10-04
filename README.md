@@ -300,6 +300,7 @@ Deployed on Vercel. The project link (`.vercel/`) is local and git-ignored.
 - **Jira mapping**: several requirement rows in `jira-mvp-mapping.md` are marked as not re-verified.
 
 ### Search results banner and sticky tools bar (2026-10-04)
+- The `.ccs-hero__search` layout (form with a link stacked under it) lives in `public/styles/shared/hero-search.css`, loaded by the homepage and the search results page.
 - The results page banner is now compact (title plus a "N results for “query”" line). The search form sits inside the banner on the navy strip.
 - Below it, one sticky `.search-results-bar` holds Sort, Filters, the Digital asset switch, the view toggle and Save this search. An IntersectionObserver sentinel adds `is-stuck` once the banner scrolls away. When stuck, the search box stays visible next to the tools on desktop and tablet.
 - On phones the bar stacks: search, then Sort | Filters, then Digital asset | view | Save (icon only). When stuck it shrinks to the search row plus Sort | Filters | Digital.
