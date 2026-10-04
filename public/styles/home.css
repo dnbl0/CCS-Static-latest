@@ -59,7 +59,6 @@
 .ccs-nav__primary > ul > li > a, .ccs-nav__trigger { display: flex; align-items: center; gap: 4px; min-height: 49px; padding: 8px 12px; border: 0; background: none; font: inherit; font-size: 16px; font-weight: 600; letter-spacing: -0.16px; line-height: 1.5; color: #fff; text-decoration: none; white-space: nowrap; cursor: pointer; }
 .ccs-nav__primary > ul > li > a:hover, .ccs-nav__trigger:hover, .ccs-nav__trigger[aria-expanded="true"] { background: #a3e4f7; color: var(--brand-1100, #000f46); }
 .ccs-nav__primary > ul > li > a:active, .ccs-nav__trigger:active { background: #d1f1fb; color: var(--brand-1100, #000f46); }
-.ccs-nav__primary [aria-current] { box-shadow: inset 0 -3px 0 var(--blue-400, #47c8f0); }
 .ccs-nav__trigger img { width: 10px; height: 6.17px; margin: 0 5px; transition: transform 0.15s ease; }
 .ccs-nav__trigger:hover img, .ccs-nav__trigger[aria-expanded="true"] img, .ccs-nav__trigger:active img { filter: invert(1); }
 .ccs-nav__trigger[aria-expanded="true"] img { transform: rotate(180deg); }

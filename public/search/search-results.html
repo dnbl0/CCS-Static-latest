@@ -234,8 +234,8 @@
       <div class="search-results-form__group-scope" ref="{{ scopeRef }}">
         <button class="search-results-form__button-toggle-scope" type="button" onClick="{{ toggleScope }}" aria-haspopup="listbox" aria-expanded="{{ scopeOpen }}" aria-label="Search in collection">{{ scopeLabel }}<svg class="search-results-form__button-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
         <sc-if value="{{ scopeOpen }}">
-          <div class="search-results-search" role="listbox" aria-label="Search in collection">
-            <sc-for list="{{ scopeOpts }}" as="o"><button class="search-results-search__button-pick" type="button" role="option" aria-selected="{{ o.sel }}" onClick="{{ o.pick }}" style="--dyn-background:{{ o.bg }}">{{ o.label }}</button></sc-for>
+          <div class="search-results-search" role="listbox" aria-multiselectable="true" aria-label="Search in collection">
+            <sc-for list="{{ scopeOpts }}" as="o"><button class="search-results-search__button-pick" type="button" role="option" aria-selected="{{ o.sel }}" onClick="{{ o.pick }}" style="--dyn-background:{{ o.bg }}"><span class="search-results-search__check" aria-hidden="true"></span><span class="search-results-search__label">{{ o.label }}</span></button></sc-for>
           </div>
         </sc-if>
       </div>
@@ -293,8 +293,8 @@
       <div class="search-results-form__group-scope search-results-bar__compact-scope" ref="{{ scopeRef2 }}">
         <button class="search-results-form__button-toggle-scope" type="button" onClick="{{ toggleScope2 }}" aria-haspopup="listbox" aria-expanded="{{ scopeOpen2 }}" aria-label="Search in collection">{{ scopeLabel }}<svg class="search-results-form__button-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
         <sc-if value="{{ scopeOpen2 }}">
-          <div class="search-results-search" role="listbox" aria-label="Search in collection">
-            <sc-for list="{{ scopeOpts }}" as="o"><button class="search-results-search__button-pick" type="button" role="option" aria-selected="{{ o.sel }}" onClick="{{ o.pick }}" style="--dyn-background:{{ o.bg }}">{{ o.label }}</button></sc-for>
+          <div class="search-results-search" role="listbox" aria-multiselectable="true" aria-label="Search in collection">
+            <sc-for list="{{ scopeOpts }}" as="o"><button class="search-results-search__button-pick" type="button" role="option" aria-selected="{{ o.sel }}" onClick="{{ o.pick }}" style="--dyn-background:{{ o.bg }}"><span class="search-results-search__check" aria-hidden="true"></span><span class="search-results-search__label">{{ o.label }}</span></button></sc-for>
           </div>
         </sc-if>
       </div>
@@ -1012,14 +1012,14 @@ class Component extends DCLogic {
     window.addEventListener('pointerup', this.onUp); window.addEventListener('keydown', this.onKey); window.addEventListener('resize', this.onResize);
     try { if (!localStorage.getItem('ccs-cultural-ack')) { this.setState({ ackOpen: true }); setTimeout(() => { const el = this.ackRef.current && this.ackRef.current.querySelector(FOCUSABLE); el && el.focus(); }, 30); } } catch (e) {}
     const qs = new URLSearchParams(location.search);
-    const pc = qs.get('collection'), pt = qs.get('type'), pq = qs.get('q'), psc = qs.get('scope'), pn = qs.get('named'), pcl = qs.get('classification'), pex = qs.get('exact');
+    const pc = qs.getAll('collection').filter(Boolean), pt = qs.get('type'), pq = qs.get('q'), psc = qs.get('scope'), pn = qs.get('named'), pcl = qs.get('classification'), pex = qs.get('exact');
     let initF = null;
     const advF = parseAdvancedParams(qs);
     if (advF) { initF = advF; this.setState({ f: advF }); }
-    else if (pc || pt || pq || psc || pn || pcl || pex) {
+    else if (pc.length || pt || pq || psc || pn || pcl || pex) {
       if (pq) saveSearchHistory(pq);
       initF = clone(this.state.f);
-      if (pc) initF.collection = [pc];
+      if (pc.length) initF.collection = pc;
       if (pex === '1') initF.exact = true;
       if (pn) initF.named = [pn];
       if (pcl) initF.classification = [pcl];
@@ -1386,7 +1386,7 @@ class Component extends DCLogic {
       scopeRef: this.scopeRef, scopeOpen: s.scopeOpen, toggleScope: () => this.setState(st => ({ scopeOpen: !st.scopeOpen })),
       scopeRef2: this.scopeRef2, scopeOpen2: s.scopeOpen2, toggleScope2: () => this.setState(st => ({ scopeOpen2: !st.scopeOpen2 })),
       scopeLabel: f.collection.length === 1 ? f.collection[0] : f.collection.length > 1 ? f.collection.length + ' collections' : 'All collections',
-      scopeOpts: [['', 'All collections'], ...HIER.map(h => [h.name, h.name])].map(([v, label]) => { const sel = v ? (f.collection.length === 1 && f.collection[0] === v) : !f.collection.length; return { label, sel, bg: sel ? '#b3e5f5' : '#fff', pick: () => { this.setState({ scopeOpen: false, scopeOpen2: false }); this.apply(ff => ({ ...ff, collection: v ? [v] : [], named: [] })); } }; }),
+      scopeOpts: [['', 'All collections'], ...HIER.map(h => [h.name, h.name])].map(([v, label]) => { const sel = v ? f.collection.includes(v) : !f.collection.length; return { label, sel, bg: sel ? '#b3e5f5' : '#fff', pick: () => this.apply(ff => ({ ...ff, collection: !v ? [] : ff.collection.includes(v) ? ff.collection.filter(c => c !== v) : [...ff.collection, v], named: [] })) }; }),
       sugOpen: s.sugOpen && (hasHistory || hasSugs),
       openSug: () => this.setState({ sugOpen: true, sugIdx: -1 }),
       closeSugSoon: () => { clearTimeout(this.bt); this.bt = setTimeout(() => this.setState({ sugOpen: false, sugIdx: -1 }), 160); },
