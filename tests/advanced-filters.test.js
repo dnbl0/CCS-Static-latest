@@ -58,7 +58,7 @@ const truthy = (v, msg) => { if (v) ok(msg); else fail(msg); };
   try {
     /* ---- responsive rendering ---------------------------------------------------------------- */
     let p = await open(1440, 900);
-    eq(await p.$eval('h1', e => e.textContent.trim()), 'Advanced filters', 'banner owns the single h1');
+    eq(await p.$eval('h1', e => e.textContent.trim()), 'Advanced Search', 'banner owns the single h1');
     eq(await rows(p, 'h1'), 1, 'exactly one h1');
     eq(await p.$eval('.ccs-banner__desc', e => e.textContent.trim()), "Combine fields and filters to find exactly what you're looking for across every collection.", 'banner description copy');
     let b = await p.$eval('.ccs-banner', e => { const c = getComputedStyle(e); return [c.paddingTop, c.paddingLeft]; });

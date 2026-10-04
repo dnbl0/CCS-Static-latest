@@ -1782,6 +1782,12 @@ body.page-search-results .search-results-banner .page-banner__inner {
   padding: 56px 32px 48px;
 }
 
+/* the banner sits above the sticky bar so the scope menu and suggestions open over it */
+body.page-search-results .search-results-banner {
+  position: relative;
+  z-index: 950;
+}
+
 body.page-search-results .search-results-banner h1 {
   font-size: clamp(28px, 3.2vw, 38px);
 }
@@ -1818,6 +1824,28 @@ body.page-search-results .search-results-banner .search-results-search-tools__li
   font-size: 16px;
   font-weight: 600;
   text-decoration: underline;
+}
+
+body.page-search-results .search-results-banner .search-results-search-tools__link-advanced-search {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+body.page-search-results .search-results-adv-panel {
+  width: 100%;
+  margin-top: 8px;
+  background: #fff;
+  border: 1px solid var(--brand-1100, #000f46);
+}
+
+body.page-search-results .search-results-adv-panel__frame {
+  display: block;
+  width: 100%;
+  height: var(--dyn-height);
+  border: 0;
 }
 
 body.page-search-results .search-results-banner .search-results-search-tools__link-advanced-search:hover {

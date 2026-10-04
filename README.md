@@ -307,6 +307,9 @@ Deployed on Vercel. The project link (`.vercel/`) is local and git-ignored.
 - On phones the bar stacks: search, then Sort | Filters, then Digital asset | view | Save (icon only). When stuck it shrinks to the search row plus Sort | Filters | Digital.
 - The per-page selector moved to sit above the pagination. CSS lives in `public/styles/pages/search-results.css`.
 - Follow-up: banner and search strip padding increased; the search form reuses the homepage `ccs-hero__search` wrapper (full width, Advanced Search underneath). When stuck, Advanced Search is hidden, the bar is one row from 1280px and two rows below, and all controls are 48px tall.
+- Scope menu and suggestions now open over the sticky bar (banner z-index above it).
+- The banner's Advanced Search link is now a toggle ("Advanced Search" / "Hide advanced search") that opens the advanced form inline: an iframe of `/search/advanced-search?embed=1` pre-filled with the current search, auto-sized through a `postMessage` of its height. In `?embed=1` mode the page hides the header, breadcrumbs, banner, help and footer and uses compact spacing (`html.is-embed` rules in `styles/advanced-filters.css`); submitting targets the top window.
+- Advanced Search page: heading renamed "Advanced Search" (banner, breadcrumb, test), "Add filter" label is light on the dark desktop field (dark on the sage phone field), and Reset / Search sit at the right.
 
 ---
 

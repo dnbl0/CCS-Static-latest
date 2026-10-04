@@ -275,8 +275,12 @@
         </div>
       </sc-if>
     </form>
-      <a class="search-results-search-tools__link-advanced-search" href="{{ advHref }}">
-        <svg class="search-results-search-tools__link-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.5" y1="15.5" x2="21" y2="21"></line></svg>Advanced Search</a>
+      <button class="search-results-search-tools__link-advanced-search" type="button" onClick="{{ toggleAdv }}" aria-expanded="{{ advOpen }}" aria-controls="search-advanced-panel"><svg class="search-results-search-tools__link-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.5" y1="15.5" x2="21" y2="21"></line></svg>{{ advToggleLabel }}</button>
+      <sc-if value="{{ advOpen }}">
+        <div class="search-results-adv-panel" id="search-advanced-panel">
+          <iframe class="search-results-adv-panel__frame" title="Advanced search" src="{{ advSrc }}" style="--dyn-height:{{ advH }}"></iframe>
+        </div>
+      </sc-if>
     </div>
   </div>
   </div>
@@ -944,7 +948,7 @@ function clearSearchHistory() {
 }
 
 class Component extends DCLogic {
-  state = { stuck: false, f:EMPTYF(), loading:false, view:null, sideQ:'', modal:false, mFind:'', draft:null, mOpen:{coll:true,type:true,date:true}, fq:{}, more:{}, sortOpen:false, perPage:20, ppOpen:false, page:1, scopeOpen:false, sugOpen:false, sugIdx:-1, yIn:null, yErr:'', counting:false, ackOpen:false, vw: typeof window !== 'undefined' ? window.innerWidth : 1200, liveItems: null, liveTotal: null, liveError: null };
+  state = { stuck: false, advOpen: false, advH: '420px', f:EMPTYF(), loading:false, view:null, sideQ:'', modal:false, mFind:'', draft:null, mOpen:{coll:true,type:true,date:true}, fq:{}, more:{}, sortOpen:false, perPage:20, ppOpen:false, page:1, scopeOpen:false, sugOpen:false, sugIdx:-1, yIn:null, yErr:'', counting:false, ackOpen:false, vw: typeof window !== 'undefined' ? window.innerWidth : 1200, liveItems: null, liveTotal: null, liveError: null };
   trackRef = React.createRef(); bodyRef = React.createRef(); sortRef = React.createRef(); ppRef = React.createRef(); mainRef = React.createRef();
   sentinelRef = React.createRef(); scopeRef = React.createRef(); dialogRef = React.createRef(); filterBtnRef = React.createRef(); ackRef = React.createRef();
   dom = { lo: 1700, hi: 2030 };
@@ -973,6 +977,8 @@ class Component extends DCLogic {
       }
     } catch (e) { /* stays in the roomy layout */ }
     
+    this.onAdvMsg = e => { if (e.origin === location.origin && e.data && e.data.ccsAdvHeight) this.setState({ advH: Math.ceil(e.data.ccsAdvHeight) + 'px' }); };
+    window.addEventListener('message', this.onAdvMsg);
     this.onMove = e => this.move(e);
     this.onUp = () => { this.drag = null; };
     this.onKey = e => { if (e.key === 'Escape') { if (this.state.ackOpen) this.closeAck(); else if (this.state.modal) this.closeModal(); this.setState({ sugOpen: false, scopeOpen: false }); } };
@@ -1377,7 +1383,7 @@ class Component extends DCLogic {
       bannerLine: f.q ? n + (n === 1 ? ' result for ' : ' results for ') + '“' + f.q + '”' : 'Explore artworks, objects, manuscripts, photographs and recordings held across the University of Melbourne\'s cultural collections.',
       titleText: 'Showing ' + n + ' ' + (n === 1 ? 'result' : 'results'), hasQ: !!f.q, qTag: (f.scope !== 'all' ? SCOPES.find(x => x[0] === f.scope)[1] + ': ' : '') + (f.q || '').toUpperCase(),
       clearQ: () => this.apply(ff => ({ ...ff, q: '' })),
-      advHref: advancedFormHref(f), filterCount: (chips.length + (f.digital ? 1 : 0)) || null, filterBtnRef: this.filterBtnRef,
+      advHref: advancedFormHref(f), advOpen: s.advOpen, advSrc: advancedFormHref(f) + (advancedFormHref(f).includes('?') ? '&' : '?') + 'embed=1', advH: s.advH, advToggleLabel: s.advOpen ? 'Hide advanced search' : 'Advanced Search', toggleAdv: () => this.setState(st => ({ advOpen: !st.advOpen })), filterCount: (chips.length + (f.digital ? 1 : 0)) || null, filterBtnRef: this.filterBtnRef,
       ppRef: this.ppRef, ppOpen: s.ppOpen, ppChev: s.ppOpen ? 'rotate(180deg)' : 'none', togglePP: () => this.setState(st => ({ ppOpen: !st.ppOpen })),
       rangeLabel: n ? 'Showing ' + ((page - 1) * s.perPage + 1) + '–' + Math.min(page * s.perPage, n) + ' records' : 'Showing 0 records',
       mainRef: this.mainRef, showPager: n > 0 && !s.loading,

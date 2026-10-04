@@ -15,6 +15,19 @@
   <link rel="stylesheet" href="/styles/pages/advanced-filters.css">
 </head>
 <body class="page-advanced-filters">
+<script>
+/* ?embed=1: the page is shown inside the search results "Advanced Search" panel (compact, no header/footer) */
+(function(){
+  if (!/[?&]embed=1(&|$)/.test(location.search)) return;
+  document.documentElement.classList.add('is-embed');
+  document.addEventListener('DOMContentLoaded', function(){
+    var f = document.getElementById('adv-form'); if (f) f.setAttribute('target', '_top');
+    var r = document.querySelector('.ccs-adv__actions a'); if (r) r.setAttribute('href', 'advanced-search.html?embed=1');
+    function send(){ if (window.parent !== window) window.parent.postMessage({ ccsAdvHeight: document.documentElement.scrollHeight }, location.origin); }
+    if ('ResizeObserver' in window) new ResizeObserver(send).observe(document.body); send();
+  });
+})();
+</script>
 <a href="#main-content" class="skip-link advanced-filters-page__link-skip-main-content">Skip to main content</a>
 <x-dc>
 <helmet><link rel="stylesheet" href="/styles/shared/colour-tokens.css">
@@ -211,10 +224,10 @@
 })();
 </script>
 
-<nav class="page-breadcrumbs" aria-label="Breadcrumb"><ol class="page-local-history" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="root" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a class="page-local-history__item-link-home" href="/" itemprop="item" title="Home" aria-label="Home"><img class="page-local-history__link-image" src="../images/home.svg" alt="" width="16" height="16"><span itemprop="name" class="sr-only page-local-history__link-text">Home</span></a><meta content="1" itemprop="position"></li><li class="page-local-history__item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page"><span class="page-local-history__item-text" itemprop="name">Advanced Filters</span><meta content="2" itemprop="position"></li></ol><ol class="bc-mobile bc-mobile--styled"><li class="bc-mobile__item"><a class="bc-mobile__item-link-home" href="/index.html"><svg class="bc-mobile__link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span class="bc-mobile__link-text">Home</span></a></li></ol></nav>
+<nav class="page-breadcrumbs" aria-label="Breadcrumb"><ol class="page-local-history" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="root" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a class="page-local-history__item-link-home" href="/" itemprop="item" title="Home" aria-label="Home"><img class="page-local-history__link-image" src="../images/home.svg" alt="" width="16" height="16"><span itemprop="name" class="sr-only page-local-history__link-text">Home</span></a><meta content="1" itemprop="position"></li><li class="page-local-history__item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page"><span class="page-local-history__item-text" itemprop="name">Advanced Search</span><meta content="2" itemprop="position"></li></ol><ol class="bc-mobile bc-mobile--styled"><li class="bc-mobile__item"><a class="bc-mobile__item-link-home" href="/index.html"><svg class="bc-mobile__link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span class="bc-mobile__link-text">Home</span></a></li></ol></nav>
 <section class="ccs-banner" aria-labelledby="adv-title">
   <div class="ccs-banner__inner">
-    <h1 id="adv-title" class="ccs-banner__title">Advanced filters</h1>
+    <h1 id="adv-title" class="ccs-banner__title">Advanced Search</h1>
     <p class="ccs-banner__desc">Combine fields and filters to find exactly what you're looking for across every collection.</p>
   </div>
 </section>
