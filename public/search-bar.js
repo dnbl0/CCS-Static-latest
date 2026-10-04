@@ -36,8 +36,7 @@
     if (form.dataset.ready) return; form.dataset.ready = '1';
     const input = form.querySelector('input[name="q"]'); if (!input) return;
     const id = 'ccs-sb-' + (++uid);
-    let scope = new URLSearchParams(location.search).get('collection') || 'all';
-    if (!SCOPES.some(s => s[0] === scope)) scope = 'all';
+    let scope = new URLSearchParams(location.search).getAll('collection').filter(v => SCOPES.some(s => s[0] === v && v !== 'all'));
     let items = [], idx = -1;
 
     form.classList.add('ccs-searchbar');
@@ -50,17 +49,18 @@
     // scope menu
     const scopeWrap = document.createElement('div'); scopeWrap.className = 'ccs-searchbar__scope';
     scopeWrap.innerHTML = '<button type="button" class="ccs-searchbar__scope-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Search in collection"></button>' +
-      '<div class="ccs-searchbar__menu" role="listbox" aria-label="Search in collection" hidden></div>';
+      '<div class="ccs-searchbar__menu" role="listbox" aria-multiselectable="true" aria-label="Search in collection" hidden></div>';
     const scopeBtn = scopeWrap.querySelector('button'), menu = scopeWrap.querySelector('.ccs-searchbar__menu');
     const chev = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>';
     const paintScope = () => {
-      scopeBtn.innerHTML = SCOPES.find(s => s[0] === scope)[1] + chev;
-      menu.innerHTML = SCOPES.map(([v, l]) => `<button type="button" role="option" aria-selected="${v === scope}" data-v="${v}">${l}</button>`).join('');
+      scopeBtn.innerHTML = (scope.length === 1 ? scope[0] : scope.length > 1 ? scope.length + ' collections' : 'All collections') + chev;
+      menu.innerHTML = SCOPES.map(([v, l]) => `<button type="button" role="option" aria-selected="${v === 'all' ? !scope.length : scope.includes(v)}" data-v="${v}"><span class="ccs-searchbar__check" aria-hidden="true"></span><span>${l}</span></button>`).join('');
     };
     paintScope();
     const closeScope = () => { menu.hidden = true; scopeBtn.setAttribute('aria-expanded', 'false'); };
     scopeBtn.addEventListener('click', () => { const open = menu.hidden; menu.hidden = !open; scopeBtn.setAttribute('aria-expanded', String(open)); if (open) closeSug(); });
-    menu.addEventListener('click', e => { const b = e.target.closest('button[data-v]'); if (!b) return; scope = b.dataset.v; paintScope(); closeScope(); input.focus(); });
+    menu.addEventListener('mousedown', e => e.preventDefault());   // keep focus where it is so the menu stays open while ticking
+    menu.addEventListener('click', e => { const b = e.target.closest('button[data-v]'); e.stopPropagation(); if (!b) return; const v = b.dataset.v; scope = v === 'all' ? [] : scope.includes(v) ? scope.filter(x => x !== v) : [...scope, v]; paintScope(); });
     // the collection menu sits just left of the search button
     form.insertBefore(scopeWrap, form.querySelector('button[type="submit"]'));
 
@@ -94,7 +94,7 @@
     function go(term) {
       const q = (term || '').trim(); if (!q) { input.focus(); return; }
       history.save(q);
-      const p = new URLSearchParams({ q }); if (scope !== 'all') p.set('collection', scope);
+      const p = new URLSearchParams({ q }); scope.forEach(c => p.append('collection', c));
       location.href = RESULTS + '?' + p.toString();
     }
 

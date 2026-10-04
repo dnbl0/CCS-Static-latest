@@ -56,10 +56,9 @@
 .ccs-nav__primary { display: flex; }
 .ccs-nav__primary > ul { display: flex; margin: 0; padding: 0; list-style: none; }
 .ccs-nav__primary > ul > li { position: static; }
-.ccs-nav__primary > ul > li > a, .ccs-nav__trigger { display: flex; align-items: center; gap: 4px; min-height: 49px; padding: 8px 12px; border: 0; background: none; font: inherit; font-size: 16px; font-weight: 400; line-height: 1.5; color: #fff; text-decoration: none; white-space: nowrap; cursor: pointer; }
+.ccs-nav__primary > ul > li > a, .ccs-nav__trigger { display: flex; align-items: center; gap: 4px; min-height: 49px; padding: 8px 12px; border: 0; background: none; font: inherit; font-size: 16px; font-weight: 600; letter-spacing: -0.16px; line-height: 1.5; color: #fff; text-decoration: none; white-space: nowrap; cursor: pointer; }
 .ccs-nav__primary > ul > li > a:hover, .ccs-nav__trigger:hover, .ccs-nav__trigger[aria-expanded="true"] { background: #a3e4f7; color: var(--brand-1100, #000f46); }
 .ccs-nav__primary > ul > li > a:active, .ccs-nav__trigger:active { background: #d1f1fb; color: var(--brand-1100, #000f46); }
-.ccs-nav__primary [aria-current] { box-shadow: inset 0 -3px 0 var(--blue-400, #47c8f0); }
 .ccs-nav__trigger img { width: 10px; height: 6.17px; margin: 0 5px; transition: transform 0.15s ease; }
 .ccs-nav__trigger:hover img, .ccs-nav__trigger[aria-expanded="true"] img, .ccs-nav__trigger:active img { filter: invert(1); }
 .ccs-nav__trigger[aria-expanded="true"] img { transform: rotate(180deg); }
@@ -78,7 +77,7 @@
 .ccs-nav__panel-list a[aria-current] { color: var(--blue-400, #47c8f0); }
 
 /* Mobile-only pieces (Menu button, drawer search, drawer top links, Back row) are hidden on desktop */
-.ccs-nav__menu, .ccs-nav__drawer-search, .ccs-nav__primary > ul.ccs-nav__drawer-top, .ccs-nav__back { display: none; }
+.ccs-nav__label-more, .ccs-nav__menu, .ccs-nav__drawer-search, .ccs-nav__primary > ul.ccs-nav__drawer-top, .ccs-nav__back { display: none; }
 
 /* Mobile and tablet header, following the UniMelb mobile header: one 96px row (logo block, site name, Menu button),
    with search, navigation and the UniMelb audience links inside a right-hand drawer. */
@@ -103,7 +102,8 @@
   /* Drawer: slides in from the right under the header (390px wide at most), page dimmed behind it */
   .ccs-nav--header:has(.ccs-nav__menu[aria-expanded="true"])::after { content: ""; position: absolute; top: 100%; left: 0; right: 0; height: 100vh; background: rgba(0, 11, 52, 0.8); z-index: 1; }
   .ccs-nav__primary { display: none; position: absolute; top: 100%; right: 0; left: auto; z-index: 2; width: min(390px, 100%); height: calc(100vh - 96px); height: calc(100dvh - 96px); overflow-y: auto; background: var(--brand-1200, #000b34); box-shadow: none; flex-direction: column; }
-  .ccs-nav__primary.is-open { display: block; }
+  .ccs-nav__primary.is-open { display: block; border-top: 1px solid #404b74; }
+  .ccs-nav__label-more { display: inline; }
   .ccs-nav__drawer-search { display: block; padding: 16px; border-bottom: 1px solid #404b74; }
   .ccs-nav__drawer-search form { display: flex; height: 48px; margin: 0; }
   .ccs-nav__drawer-search input { flex: 1; min-width: 0; padding: 12px; border: 0; background: #fff; color: var(--neutral-1000, #222); font: inherit; font-size: 18px; }
@@ -114,11 +114,10 @@
   .ccs-nav__primary > ul > li > a, .ccs-nav__trigger { width: 100%; justify-content: space-between; min-height: 63px; padding: 16px 10px 16px 16px; font-size: 18px; font-weight: 600; letter-spacing: -0.18px; line-height: 24px; color: #fff; text-align: left; }
   .ccs-nav__primary > ul > li > a:hover, .ccs-nav__trigger:hover, .ccs-nav__trigger[aria-expanded="true"] { background: none; color: #fff; text-decoration: underline; }
   .ccs-nav__primary > ul > li > a:active, .ccs-nav__trigger:active { background: none; color: #fff; }
-  .ccs-nav__primary [aria-current] { box-shadow: inset 4px 0 0 var(--blue-400, #47c8f0); }
 
   /* Items that open a sub-menu show a light-blue right chevron instead of the desktop down arrow */
   .ccs-nav__primary .ccs-nav__trigger img { display: none; }
-  .ccs-nav__trigger::after { content: ""; flex: none; width: 24px; height: 24px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2347c8f0' stroke-width='2.4' stroke-linecap='square'%3E%3Cpolyline points='9 5 16 12 9 19'/%3E%3C/svg%3E") center / contain no-repeat; }
+  .ccs-nav__trigger::after { content: ""; flex: none; width: 24px; height: 24px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2347c8f0' stroke-width='2' stroke-linecap='square'%3E%3Cpolyline points='9 6 15 12 9 18'/%3E%3C/svg%3E") center / contain no-repeat; }
 
   /* Drilled-in view: the chosen item replaces the list, with a Back row, its own link, then its children indented */
   .ccs-nav__primary:has(.ccs-nav__trigger[aria-expanded="true"]) .ccs-nav__drawer-search,
@@ -126,16 +125,16 @@
   .ccs-nav__primary > ul > li:not(:has(.ccs-nav__trigger[aria-expanded="true"])):has(~ li .ccs-nav__trigger[aria-expanded="true"]),
   .ccs-nav__primary:has(.ccs-nav__trigger[aria-expanded="true"]) > ul > li:not(:has(.ccs-nav__trigger[aria-expanded="true"])) { display: none; }
   .ccs-nav__trigger[aria-expanded="true"] { display: none; }
-  .ccs-nav__back { display: flex; align-items: center; gap: 8px; width: 100%; min-height: 63px; padding: 16px; border: 0; border-bottom: 1px solid #404b74; background: none; font: inherit; font-size: 16px; font-weight: 600; line-height: 24px; color: #fff; text-align: left; cursor: pointer; }
+  .ccs-nav__back { display: flex; align-items: center; gap: 8px; width: 100%; min-height: 59px; padding: 16px; border: 0; border-bottom: 1px solid #404b74; background: none; font: inherit; font-size: 16px; font-weight: 600; line-height: 24px; color: #fff; text-align: left; cursor: pointer; }
   .ccs-nav__back:hover { text-decoration: underline; }
-  .ccs-nav__back svg { flex: none; width: 24px; height: 24px; fill: none; stroke: var(--blue-400, #47c8f0); stroke-width: 2.4; stroke-linecap: square; }
+  .ccs-nav__back svg { flex: none; width: 20px; height: 20px; fill: none; stroke: var(--blue-400, #47c8f0); stroke-width: 2.4; stroke-linecap: square; }
   .ccs-nav__panel { position: static; width: auto; padding: 0; border-top: 0; box-shadow: none; }
-  .ccs-nav__panel-title { display: flex; width: 100%; min-height: 63px; padding: 16px; border-bottom: 1px solid #404b74; font-family: "Source Sans 3", sans-serif; font-size: 18px; font-weight: 600; letter-spacing: -0.18px; line-height: 24px; color: #fff; text-decoration: none; }
+  .ccs-nav__panel-title { display: flex; align-items: center; width: 100%; min-height: 57px; padding: 16px 18px; border-bottom: 1px solid #404b74; font-family: "Source Sans 3", sans-serif; font-size: 18px; font-weight: 600; letter-spacing: -0.18px; line-height: 24px; color: #fff; text-decoration: none; }
   .ccs-nav__primary .ccs-nav__panel-title img, .ccs-nav__primary .ccs-nav__panel-list img { display: none; }
   .ccs-nav__panel-list { display: block; margin: 0; padding: 0; border-top: 0; }
   .ccs-nav__panel-list li { border-bottom: 1px solid #404b74; }
-  .ccs-nav__panel-list a { min-height: 63px; padding: 16px 16px 16px 32px; align-items: center; font-size: 18px; font-weight: 600; letter-spacing: -0.18px; line-height: 24px; }
-  .ccs-nav__panel-list a[aria-current], .ccs-nav__panel-title[aria-current] { box-shadow: inset 4px 0 0 var(--blue-400, #47c8f0); color: #fff; }
+  .ccs-nav__panel-list a { min-height: 57px; padding: 16px 16px 16px 34px; align-items: center; font-size: 18px; font-weight: 600; letter-spacing: -0.18px; line-height: 24px; }
+  .ccs-nav__panel-list a[aria-current], .ccs-nav__panel-title[aria-current] { color: #fff; }
 
   /* UniMelb audience links under the list: 14px, sage, uppercase, letter-spaced */
   .ccs-nav__primary > ul.ccs-nav__drawer-top { display: flex; flex-direction: column; gap: 12px; padding: 24px 16px; border-top: 0; }
