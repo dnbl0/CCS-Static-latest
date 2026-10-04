@@ -8,7 +8,11 @@
 
   // Same-origin, free stand-in served by api/catalog.js. Use ?endpoint=<url> (or CCS_CONFIG.apiEndpoint) to point at a real Blacklight server, e.g. https://ead-ccs-test.app.unimelb.edu.au/catalog.json
   const DEFAULT_ENDPOINT = '/catalog.json';
-  const STORAGE_KEY = 'ccs_api_mode'; // 'mock' | 'live'
+  const STORAGE_KEY = 'ccs_api_mode'; // 'auto' | 'live' | 'mock'
+  const MODES = ['auto', 'live', 'mock'];
+  // Filters the API can answer. Anything else (advanced clauses, "match all", birth years, accession, downloads, ...) is answered locally.
+  const API_KEYS = ['collection', 'type', 'subject', 'culture', 'place', 'theme', 'licence'];
+  const LOCAL_ONLY_KEYS = ['period', 'creator', 'assoc', 'material', 'language', 'access', 'nationality', 'classification', 'named', 'filmClass', 'region', 'assetFormat', 'subjectPlace', 'subjectEvent', 'daAccess'];
 
   const BlacklightAdapter = {
     // Determine active mode from URL param, localStorage, or default
@@ -16,19 +20,36 @@
       if (typeof window === 'undefined' || !window.location) return 'mock';
       const params = new URLSearchParams(window.location.search || '');
       const urlMode = params.get('api');
-      if (urlMode === 'live' || urlMode === 'mock') {
+      if (MODES.indexOf(urlMode) !== -1) {
         try { localStorage.setItem(STORAGE_KEY, urlMode); } catch (e) {}
         return urlMode;
       }
       try {
         const stored = localStorage.getItem(STORAGE_KEY);
-        if (stored === 'live' || stored === 'mock') return stored;
+        if (MODES.indexOf(stored) !== -1) return stored;
       } catch (e) {}
-      return window.CCS_CONFIG?.apiMode || 'mock';
+      const cfg = window.CCS_CONFIG?.apiMode;
+      return MODES.indexOf(cfg) !== -1 ? cfg : 'auto';
     },
 
+    // 'auto' (the default) asks the API first and quietly keeps using the local catalogue once it has failed,
+    // so a static host without the function (npm run dev before it learned /catalog.json, a file server) still works.
+    available: null,
+
     isLive() {
-      return this.getMode() === 'live';
+      const mode = this.getMode();
+      return mode === 'live' || (mode === 'auto' && this.available !== false);
+    },
+
+    // True when the API can answer this filter state exactly; otherwise the page filters locally.
+    canServe(f) {
+      if (!f) return true;
+      if (f.clauses && f.clauses.length) return false;
+      if (f.fAll && Object.keys(f.fAll).some(k => f.fAll[k])) return false;
+      if (f.digital || f.downloadable || f.accession) return false;
+      if (f.birthFrom != null || f.birthTo != null || f.deathFrom != null || f.deathTo != null) return false;
+      if (f.scope && f.scope !== 'all') return false;
+      return !LOCAL_ONLY_KEYS.some(k => f[k] && f[k].length);
     },
 
     setMode(mode) {
@@ -42,7 +63,8 @@
     getEndpoint() {
       if (typeof window === 'undefined' || !window.location) return DEFAULT_ENDPOINT;
       const params = new URLSearchParams(window.location.search || '');
-      return params.get('endpoint') || window.CCS_CONFIG?.apiEndpoint || DEFAULT_ENDPOINT;
+      const meta = typeof document !== 'undefined' && document.querySelector ? document.querySelector('meta[name="ccs-api-endpoint"]') : null;
+      return params.get('endpoint') || window.CCS_CONFIG?.apiEndpoint || (meta && meta.content) || DEFAULT_ENDPOINT;
     },
 
     // Convert CCS filter state into Blacklight URL query parameters
@@ -74,6 +96,13 @@
       if (f && f.place && f.place.length) {
         f.place.forEach(p => params.append('f[place_ssim][]', p));
       }
+      if (f && f.theme && f.theme.length) {
+        f.theme.forEach(t => params.append('f[theme_ssim][]', t));
+      }
+      if (f && f.licence && f.licence.length) {
+        f.licence.forEach(l => params.append('f[licence_ssim][]', l));
+      }
+      if (f && f.exact && f.q) params.set('exact', '1');
       if (f && (f.yFrom != null || f.yTo != null)) {
         if (f.yFrom != null) params.set('range[pub_date_isim][begin]', String(f.yFrom));
         if (f.yTo != null) params.set('range[pub_date_isim][end]', String(f.yTo));
@@ -111,7 +140,7 @@
 
     // Execute query with live fetch and automatic fallback to mock ITEMS
     async query(f, page = 1, perPage = 20) {
-      if (!this.isLive()) {
+      if (!this.isLive() || !this.canServe(f)) {
         return { source: 'mock', success: true };
       }
 
@@ -139,6 +168,7 @@
         const total = data.response?.numFound ?? docs.length;
 
         const items = docs.map(d => this.transformDocument(d));
+        this.available = true;
         return {
           source: 'live',
           success: true,
@@ -149,6 +179,7 @@
         };
       } catch (err) {
         console.warn('[BlacklightAdapter] Live API call failed, falling back to local data:', err.message);
+        if (this.getMode() === 'auto') this.available = false;
         return {
           source: 'mock_fallback',
           success: false,

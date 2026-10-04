@@ -964,13 +964,19 @@ class Component extends DCLogic {
 
   async fetchLive(f, page, perPage) {
     if (typeof BlacklightAdapter === 'undefined' || !BlacklightAdapter.isLive()) return;
-    this.setState({ loading: true });
     const targetF = f || this.state.f;
     const targetPage = page || this.state.page;
     const targetPerPage = perPage || this.state.perPage;
+    // filters the API cannot answer (advanced clauses, "match all", ...) stay on the local catalogue
+    if (!BlacklightAdapter.canServe(targetF)) { this.liveSeq = (this.liveSeq || 0) + 1; this.setState({ liveItems: null, liveTotal: null, liveError: null }); return; }
+    const seq = this.liveSeq = (this.liveSeq || 0) + 1;
+    this.setState({ loading: true });
     const res = await BlacklightAdapter.query(targetF, targetPage, targetPerPage);
+    if (seq !== this.liveSeq) return; // a newer search has already replaced this one
     if (res.source === 'live' && res.items) {
-      this.setState({ liveItems: res.items, liveTotal: res.total, loading: false, liveError: null });
+      // the API returns lean documents: show the full local record (image, formats, licence) when we have it
+      const byId = new Map(ITEMS.map(it => [String(it.id), it]));
+      this.setState({ liveItems: res.items.map(d => byId.get(String(d.id)) || d), liveTotal: res.total, loading: false, liveError: null });
     } else {
       this.setState({ liveItems: null, liveTotal: null, loading: false, liveError: res.error || null });
     }
@@ -1250,7 +1256,7 @@ class Component extends DCLogic {
     if (f.deathFrom != null || f.deathTo != null) chips.push({ group: 'Creator death years', label: (f.deathFrom ?? 'Any') + ' – ' + (f.deathTo ?? 'Any'), remove: () => this.apply(ff => ({ ...ff, deathFrom: null, deathTo: null })) });
     if (f.downloadable) chips.push({ group: 'Access', label: 'Only records with downloads', remove: () => this.apply(ff => ({ ...ff, downloadable: false })) });
     const isLive = typeof BlacklightAdapter !== 'undefined' && BlacklightAdapter.isLive();
-    const apiBtnText = isLive ? (s.liveError ? '● API: Fallback (Offline)' : '● API: Live Blacklight') : '○ API: Mock Data';
+    const apiBtnText = isLive ? (s.liveError ? '● API: Fallback (Offline)' : '● API: Live Blacklight') : (typeof BlacklightAdapter !== 'undefined' && BlacklightAdapter.getMode() === 'auto' ? '● API: Unavailable, local data' : '○ API: Mock Data');
     const apiBtnBg = isLive ? (s.liveError ? '#fff3cd' : '#e8edf6') : '#f4f5f8';
     const apiBtnColor = isLive ? (s.liveError ? '#856404' : 'var(--col-bg-primary)') : 'var(--col-text-muted)';
     let list, smartKinds = null;
@@ -1450,7 +1456,7 @@ class Component extends DCLogic {
       apiBtnText, apiBtnBg, apiBtnColor,
       toggleApiMode: () => {
         if (typeof BlacklightAdapter !== 'undefined') {
-          const next = BlacklightAdapter.isLive() ? 'mock' : 'live';
+          const next = BlacklightAdapter.getMode() === 'mock' ? 'auto' : 'mock';
           BlacklightAdapter.setMode(next);
         }
       }

@@ -1089,3 +1089,13 @@ Gen 3's accordion is borderless, shadowless, sharp-cornered, with a hairline top
 
 **Last Updated**: 2026-10-01  
 **Maintained By**: Design Team
+
+## Search backend: /catalog.json with local fallback
+
+The results page (`public/search/search-results.html`) asks the Blacklight-shaped API first and shows its answer; `public/blacklight-adapter.js` owns the request.
+
+- **Modes:** `auto` (default: ask the API, and after one failure quietly use the local catalogue for the rest of the page view), `live` (always ask, report the fallback), `mock` (local only). Set with `?api=`, saved in localStorage; `?dev` shows the toggle.
+- **Endpoint:** `/catalog.json` (the `api/catalog.js` Vercel function; `npm run dev` serves it too). Point the site at another Blacklight server with `?endpoint=<url>`, `window.CCS_CONFIG.apiEndpoint`, or `<meta name="ccs-api-endpoint" content="...">`.
+- **What the API answers:** query (fuzzy, synonym and phrase meaning, or exact), collection / type / subject / culture / place / theme / licence facets, date range, sort, paging. Records returned are matched back to the full local record by id so images and formats still show.
+- **What stays local:** advanced clauses, match-all facets, creator life dates, accession, digital / download switches, scope and the remaining facets (`BlacklightAdapter.canServe`). Sidebar facet counts and "Did you mean" also still come from the local catalogue.
+- **Tests:** `tests/search-live.test.js` (adapter unit checks, plus browser checks with the API present, missing and returning 500).

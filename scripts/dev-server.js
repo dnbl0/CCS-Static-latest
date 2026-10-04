@@ -3,6 +3,7 @@
 const http = require('http'), fs = require('fs'), path = require('path');
 const root = path.join(__dirname, '..', 'public');
 const cfg = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'vercel.json'), 'utf8'));
+const catalog = require('../api/catalog.js');
 const port = +process.argv[2] || +process.env.PORT || 3000;
 const mime = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.svg': 'image/svg+xml', '.mp4': 'video/mp4', '.mp3': 'audio/mpeg', '.json': 'application/json', '.woff2': 'font/woff2' };
 const redirects = (cfg.redirects || []).map(r => [r.source, r.destination, r.statusCode || 308]);
@@ -18,6 +19,7 @@ http.createServer((req, res) => {
     const m = re.exec(url);
     if (m) { const d = dest.replace(/:(\w+)/g, (_, k) => m.groups[k]).split('?'); url = d[0]; query = d[1] || query; break; }
   }
+  if (url === '/api/catalog') return catalog({ url: '/api/catalog?' + query }, { setHeader: (k, v) => res.setHeader(k, v), status(c) { res.statusCode = c; return this; }, json(b) { res.setHeader('Content-Type', 'application/json'); res.end(JSON.stringify(b)); } });
   const f = file(path.join(root, url));
   if (!f || !f.startsWith(root)) { res.writeHead(404); return res.end('Not found'); }
   const st = fs.statSync(f), type = mime[path.extname(f)] || 'application/octet-stream', range = req.headers.range;
