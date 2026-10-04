@@ -44,12 +44,12 @@
 .ccs-nav__top ul, .ccs-nav__drawer-top { display: flex; gap: 16px; margin: 0; padding: 0 12px 0 0; list-style: none; }
 .ccs-nav__top a, .ccs-nav__drawer-top a { display: flex; align-items: center; min-height: 44px; padding: 12px 4px; font-size: 14px; font-weight: 400; line-height: 140%; letter-spacing: 1.12px; text-transform: uppercase; color: var(--sage-400, #abc1a7); text-decoration: none; }
 .ccs-nav__top a:hover, .ccs-nav__drawer-top a:hover { color: #eaefe9; text-decoration: underline; }
-.ccs-nav__search { display: flex; align-items: center; justify-content: center; width: 48px; height: 44px; padding: 0; border: 0; background: var(--sage-400, #abc1a7); cursor: pointer; }
+.ccs-nav__search { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 10px; border: 0; background: var(--sage-400, #abc1a7); cursor: pointer; }
 .ccs-nav__search:hover { background: var(--sage-300, #c3d2c0); }
 .ccs-nav__search:active { background: var(--sage-200, #d9e3d8); }
-.ccs-nav__search img { width: 24px; height: 24px; padding: 3px; }
+.ccs-nav__search img { width: 24px; height: 24px; padding: 0; }
 .ccs-nav__bottom { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 65px; padding: 8px; }
-.ccs-nav__title { display: flex; align-items: center; min-height: 44px; padding: 0 24px 0 4px; font-size: 20px; font-weight: 600; line-height: 1.2; color: #fff; text-decoration: none; white-space: nowrap; }
+.ccs-nav__title { display: flex; align-items: center; min-height: 44px; padding: 0 24px 0 4px; font-size: 16px; font-weight: 600; line-height: 1.2; color: #fff; text-decoration: none; white-space: nowrap; }
 .ccs-nav__title:hover { color: var(--blue-400, #47c8f0); text-decoration: underline; }
 
 /* Primary navigation (links + dropdown triggers share the UniMelb interactive states) */
@@ -74,7 +74,7 @@
 .ccs-nav__panel-title:hover, .ccs-nav__panel-list a:hover { text-decoration: underline; color: var(--blue-400, #47c8f0); }
 .ccs-nav__panel-title img, .ccs-nav__panel-list img { width: 24px; height: 24px; flex: none; }
 .ccs-nav__panel-list { display: grid; grid-template-columns: 1fr 1fr; gap: 0 32px; margin: 16px 0 0; padding: 16px 0 0; border-top: 1px solid #404b74; list-style: none; }
-.ccs-nav__panel-list a { display: flex; align-items: flex-start; gap: 4px; min-height: 44px; padding: 10px 0; font-size: 16px; font-weight: 600; line-height: 1.33; color: #fff; text-decoration: none; }
+.ccs-nav__panel-list a { display: flex; align-items: flex-start; gap: 4px; min-height: 40px; padding: 8px 0; font-size: 16px; font-weight: 600; line-height: 1.33; color: #fff; text-decoration: none; }
 .ccs-nav__panel-list a[aria-current] { color: var(--blue-400, #47c8f0); }
 
 /* Mobile-only pieces (Menu button, drawer search, drawer top links, Back row) are hidden on desktop */
@@ -89,7 +89,7 @@
   .ccs-nav__main { height: 96px; justify-content: center; }
   .ccs-nav__top { display: none; }
   .ccs-nav__bottom { height: 96px; padding: 0 8px 0 12px; }
-  .ccs-nav__title { padding: 0 8px 0 0; overflow: hidden; text-overflow: ellipsis; }
+  .ccs-nav__title { padding: 0 8px 0 0; font-size: 14px; line-height: 14px; overflow: hidden; text-overflow: ellipsis; }
 
   /* Menu button: 32px icon over a 14px label, like the UniMelb mobile header */
   .ccs-nav__menu { display: flex; flex: none; flex-direction: column; align-items: center; justify-content: center; gap: 4px; width: 74px; height: 96px; padding: 0; border: 0; background: none; color: #fff; font: inherit; font-size: 14px; line-height: 14px; cursor: pointer; }
