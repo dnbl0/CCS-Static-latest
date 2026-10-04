@@ -1077,3 +1077,20 @@ body.page-record .record-section__definition {
   min-width: 0;
   overflow-wrap: anywhere;
 }
+
+/* Record data table: on tablets and phones the value stacks under its label instead of sitting beside it */
+@media (max-width: 768px) {
+  body.page-record .record-section__definition-list {
+    padding: 4px 16px 8px;
+  }
+
+  body.page-record .record-section__definition-list-group {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+    padding: 12px 0;
+  }
+
+  body.page-record .record-section__term-title {
+    font-size: 14px;
+  }
+}
