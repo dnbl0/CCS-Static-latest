@@ -217,52 +217,17 @@
   <nav class="page-breadcrumbs" aria-label="Breadcrumb"><ol class="page-local-history" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="root" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a class="page-local-history__item-link-home" href="/" itemprop="item" title="Home" aria-label="Home"><img class="page-local-history__link-image" src="../images/home.svg" alt="" width="16" height="16"><span itemprop="name" class="sr-only page-local-history__link-text">Home</span></a><meta content="1" itemprop="position"></li><li class="page-local-history__item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page"><span class="page-local-history__item-text" itemprop="name">Search results</span><meta content="2" itemprop="position"></li></ol><ol class="bc-mobile bc-mobile--styled"><li class="bc-mobile__item"><a class="bc-mobile__item-link-cultural-collections" href="/"><svg class="bc-mobile__link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span class="bc-mobile__link-text">Cultural Collections</span></a></li></ol></nav>
 </section>
 
-<section class="page-banner" aria-label="Page banner">
+<section class="page-banner page-banner--compact search-results-banner" aria-label="Page banner">
   <div class="page-banner__inner page-banner__inner--styled">
     <h1 class="page-banner__heading-search-collection">Search the Collection</h1>
-    <p class="page-banner__desc">Explore artworks, objects, manuscripts, photographs and recordings held across the University of Melbourne's cultural collections.</p>
+    <p class="page-banner__desc">{{ bannerLine }}</p>
   </div>
 </section>
-
-
-<section class="search-results-summary" aria-label="Search results summary">
-  <div class="search-results-summary__group search-results-summary__group--v6" style="--dyn-padding:{{ padSum }}">
-    <div class="search-results-summary__group search-results-summary__group--v5">
-      <div class="search-results-summary__group search-results-summary__group--v4">
-        <sc-if value="{{ loading }}"><span class="search-results-summary__text search-results-summary__text--v2"></span></sc-if>
-        <sc-if value="{{ notLoading }}" hint-placeholder-val="{{ true }}"><h2 class="search-results-summary__heading" aria-live="polite">{{ titleText }}</h2></sc-if>
-      </div>
-      <div class="search-results-summary__group search-results-summary__group--v2">
-        <button class="search-results-summary__button-save-search" onClick="{{ saveSearch }}"><svg class="search-results-summary__button-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12v18l-6-4.5L6 21z"></path></svg>{{ saveSearchLabel }}</button>
-        <button class="search-results-api-mode-toggle" id="api-mode-toggle" type="button" onClick="{{ toggleApiMode }}" title="Toggle between local mock data and live Blacklight API (/catalog.json)" style="--dyn-display:{{ apiBtnDisplay }};--dyn-background:{{ apiBtnBg }};--dyn-color:{{ apiBtnColor }}">{{ apiBtnText }}</button>
-      </div>
-      <div class="search-results-summary__group-pp" ref="{{ ppRef }}">
-          <button class="search-results-summary__button-toggle-pp" onClick="{{ togglePP }}" aria-haspopup="listbox" aria-expanded="{{ ppOpen }}">{{ rangeLabel }}<svg class="search-results-summary__button-icon search-results-summary__button-icon--styled" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" style="--dyn-transform:{{ ppChev }}"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-          <sc-if value="{{ ppOpen }}">
-            <div class="search-results-summary__group-listbox" role="listbox">
-              <sc-for list="{{ ppOpts }}" as="o"><button class="search-results-listbox__button-pick search-results-listbox__button-pick--v1" role="option" aria-selected="{{ o.sel }}" onClick="{{ o.pick }}" style="--dyn-background:{{ o.bg }}">{{ o.label }}</button></sc-for>
-            </div>
-          </sc-if>
-        </div>
-    </div>
-    <div class="search-results-summary__group search-results-summary__group--v3">
-      <div class="search-results-summary__group search-results-summary__group--v1">
-        <sc-for list="{{ switches }}" as="sw" hint-placeholder-count="2">
-          <button class="search-results-summary__button-toggle" onClick="{{ sw.toggle }}" role="switch" aria-checked="{{ sw.on }}">
-            <span class="search-results-summary__button-text" style="--dyn-background:{{ sw.trackBg }}"><span class="search-results-summary__text search-results-summary__text--v1" style="--dyn-left:{{ sw.knobLeft }}"></span></span>{{ sw.label }}
-          </button>
-        </sc-for>
-      </div>
-      <div class="search-results-view" role="group" aria-label="View">
-        <button class="search-results-view__button-set-grid" onClick="{{ setGrid }}" aria-pressed="{{ isMasonry }}" aria-label="Grid view" title="Grid view" style="--dyn-background:{{ gridBg }}"><svg class="search-results-view__button-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="6.5" height="6.5"></rect><rect x="13.5" y="4" width="6.5" height="6.5"></rect><rect x="4" y="13.5" width="6.5" height="6.5"></rect><rect x="13.5" y="13.5" width="6.5" height="6.5"></rect></svg></button>
-        <button class="search-results-view__button-set-list" onClick="{{ setList }}" aria-pressed="{{ isListView }}" aria-label="List view" title="List view" style="--dyn-background:{{ listBg }}"><svg class="search-results-view__button-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="7" x2="20" y2="7"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="17" x2="20" y2="17"></line></svg></button>
-      </div>
-    </div>
-  </div>
-</section>
-<div class="search-results-search-tools" role="region" aria-label="Search tools">
-  <div class="search-results-search-tools__group search-results-search-tools__group--v2" style="--dyn-padding:{{ padBar }}">
-    <form class="search-results-search-tools__form-bar-submit" role="search" onSubmit="{{ barSubmit }}">
+<div class="search-results-sentinel" ref="{{ sentinelRef }}" aria-hidden="true"></div>
+<div class="search-results-bar {{ barCls }}" role="region" aria-label="Search and results tools">
+  <div class="search-results-bar__search">
+    <div class="search-results-bar__search-inner ccs-hero__search">
+      <form class="search-results-search-tools__form-bar-submit" role="search" onSubmit="{{ barSubmit }}">
       <div class="search-results-form__group">
         <sc-if value="{{ hasQ }}">
           <button class="search-results-form__button-clear-q" type="button" onClick="{{ clearQ }}" aria-label="Remove search term"><span class="search-results-form__button-text">{{ qTag }}</span><svg class="search-results-form__button-icon search-results-form__button-icon--styled" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.6"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg></button>
@@ -313,7 +278,22 @@
         </div>
       </sc-if>
     </form>
-    <div class="search-results-search-tools__group search-results-search-tools__group--v1">
+      <a class="search-results-search-tools__link-advanced-search" href="{{ advHref }}">
+        <svg class="search-results-search-tools__link-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.5" y1="15.5" x2="21" y2="21"></line></svg>Advanced Search</a>
+    </div>
+  </div>
+  <div class="search-results-bar__tools">
+    <div class="search-results-bar__count">
+      <div class="search-results-summary__group search-results-summary__group--v4">
+        <sc-if value="{{ loading }}"><span class="search-results-summary__text search-results-summary__text--v2"></span></sc-if>
+        <sc-if value="{{ notLoading }}" hint-placeholder-val="{{ true }}"><h2 class="search-results-summary__heading" aria-live="polite">{{ titleText }}</h2></sc-if>
+      </div>
+      <div class="search-results-summary__group search-results-summary__group--v2">
+        <button class="search-results-summary__button-save-search" onClick="{{ saveSearch }}"><svg class="search-results-summary__button-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12v18l-6-4.5L6 21z"></path></svg><span class="search-results-bar__save-text">{{ saveSearchLabel }}</span></button>
+        <button class="search-results-api-mode-toggle" id="api-mode-toggle" type="button" onClick="{{ toggleApiMode }}" title="Toggle between local mock data and live Blacklight API (/catalog.json)" style="--dyn-display:{{ apiBtnDisplay }};--dyn-background:{{ apiBtnBg }};--dyn-color:{{ apiBtnColor }}">{{ apiBtnText }}</button>
+      </div>
+    </div>
+    <div class="search-results-bar__controls">
       <div class="search-results-search-tools__group-sort" ref="{{ sortRef }}">
           <button class="search-results-search-tools__button-toggle-sort" onClick="{{ toggleSort }}" aria-haspopup="listbox" aria-expanded="{{ sortOpen }}" aria-label="Sort by">
             <span class="search-results-search-tools__button-text search-results-search-tools__button-text--v2" style="--dyn-color:{{ sortColor }}">{{ sortLabel }}</span>
@@ -331,8 +311,17 @@
         <svg class="search-results-search-tools__button-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="18" x2="20" y2="18"></line><line x1="15" y1="3.5" x2="15" y2="8.5"></line><line x1="9" y1="9.5" x2="9" y2="14.5"></line><line x1="13" y1="15.5" x2="13" y2="20.5"></line></svg>Filters
         <sc-if value="{{ filterCount }}"><span class="search-results-search-tools__button-text search-results-search-tools__button-text--v3">{{ filterCount }}</span></sc-if>
       </button>
-      <a class="search-results-search-tools__link-advanced-search" href="{{ advHref }}">
-        <svg class="search-results-search-tools__link-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.5" y1="15.5" x2="21" y2="21"></line></svg>Advanced Search</a>
+      <div class="search-results-summary__group search-results-summary__group--v1">
+        <sc-for list="{{ switches }}" as="sw" hint-placeholder-count="2">
+          <button class="search-results-summary__button-toggle" onClick="{{ sw.toggle }}" role="switch" aria-checked="{{ sw.on }}">
+            <span class="search-results-summary__button-text" style="--dyn-background:{{ sw.trackBg }}"><span class="search-results-summary__text search-results-summary__text--v1" style="--dyn-left:{{ sw.knobLeft }}"></span></span><span class="search-results-bar__switch-long">{{ sw.label }}</span><span class="search-results-bar__switch-short" aria-hidden="true">Digital</span>
+          </button>
+        </sc-for>
+      </div>
+      <div class="search-results-view" role="group" aria-label="View">
+        <button class="search-results-view__button-set-grid" onClick="{{ setGrid }}" aria-pressed="{{ isMasonry }}" aria-label="Grid view" title="Grid view" style="--dyn-background:{{ gridBg }}"><svg class="search-results-view__button-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="6.5" height="6.5"></rect><rect x="13.5" y="4" width="6.5" height="6.5"></rect><rect x="4" y="13.5" width="6.5" height="6.5"></rect><rect x="13.5" y="13.5" width="6.5" height="6.5"></rect></svg></button>
+        <button class="search-results-view__button-set-list" onClick="{{ setList }}" aria-pressed="{{ isListView }}" aria-label="List view" title="List view" style="--dyn-background:{{ listBg }}"><svg class="search-results-view__button-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="7" x2="20" y2="7"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="17" x2="20" y2="17"></line></svg></button>
+      </div>
     </div>
   </div>
 </div>
@@ -442,6 +431,16 @@
   </div>
   <sc-if value="{{ showPager }}">
     <div class="search-results-main-content__group search-results-main-content__group--v4">
+      <div class="search-results-per-page">
+        <div class="search-results-summary__group-pp" ref="{{ ppRef }}">
+          <button class="search-results-summary__button-toggle-pp" onClick="{{ togglePP }}" aria-haspopup="listbox" aria-expanded="{{ ppOpen }}">{{ rangeLabel }}<svg class="search-results-summary__button-icon search-results-summary__button-icon--styled" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" style="--dyn-transform:{{ ppChev }}"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+          <sc-if value="{{ ppOpen }}">
+            <div class="search-results-summary__group-listbox" role="listbox">
+              <sc-for list="{{ ppOpts }}" as="o"><button class="search-results-listbox__button-pick search-results-listbox__button-pick--v1" role="option" aria-selected="{{ o.sel }}" onClick="{{ o.pick }}" style="--dyn-background:{{ o.bg }}">{{ o.label }}</button></sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </div>
       <nav class="search-results-pagination" aria-label="Pagination">
         <button class="search-results-pagination__button-prev-page" onClick="{{ prevPage }}" aria-label="Previous page" disabled="{{ !hasPrev }}" style="--dyn-color:{{ prevColor }}"><svg class="search-results-pagination__button-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="15 6 9 12 15 18"></polyline></svg></button>
         <sc-for list="{{ pages }}" as="pg"><button class="search-results-pagination__button-go" onClick="{{ pg.go }}" aria-current="{{ pg.current }}" style="--dyn-background:{{ pg.bg }};--dyn-color:{{ pg.color }};--dyn-cursor:{{ pg.cursor }}">{{ pg.n }}</button></sc-for>
@@ -938,9 +937,9 @@ function clearSearchHistory() {
 }
 
 class Component extends DCLogic {
-  state = { f:EMPTYF(), loading:false, view:null, sideQ:'', modal:false, mFind:'', draft:null, mOpen:{coll:true,type:true,date:true}, fq:{}, more:{}, sortOpen:false, perPage:20, ppOpen:false, page:1, scopeOpen:false, sugOpen:false, sugIdx:-1, yIn:null, yErr:'', counting:false, ackOpen:false, vw: typeof window !== 'undefined' ? window.innerWidth : 1200, liveItems: null, liveTotal: null, liveError: null };
+  state = { stuck: false, f:EMPTYF(), loading:false, view:null, sideQ:'', modal:false, mFind:'', draft:null, mOpen:{coll:true,type:true,date:true}, fq:{}, more:{}, sortOpen:false, perPage:20, ppOpen:false, page:1, scopeOpen:false, sugOpen:false, sugIdx:-1, yIn:null, yErr:'', counting:false, ackOpen:false, vw: typeof window !== 'undefined' ? window.innerWidth : 1200, liveItems: null, liveTotal: null, liveError: null };
   trackRef = React.createRef(); bodyRef = React.createRef(); sortRef = React.createRef(); ppRef = React.createRef(); mainRef = React.createRef();
-  scopeRef = React.createRef(); dialogRef = React.createRef(); filterBtnRef = React.createRef(); ackRef = React.createRef();
+  sentinelRef = React.createRef(); scopeRef = React.createRef(); dialogRef = React.createRef(); filterBtnRef = React.createRef(); ackRef = React.createRef();
   dom = { lo: 1700, hi: 2030 };
 
   async fetchLive(f, page, perPage) {
@@ -958,6 +957,15 @@ class Component extends DCLogic {
   }
 
   componentDidMount() {
+    // the search and tools bar is sticky; when it sticks to the top it switches to its compact layout
+    try {
+      const sentinel = this.sentinelRef.current;
+      if (sentinel && 'IntersectionObserver' in window) {
+        this.stuckObserver = new IntersectionObserver(([en]) => this.setState({ stuck: !en.isIntersecting && en.boundingClientRect.top < 0 }), { threshold: 0 });
+        this.stuckObserver.observe(sentinel);
+      }
+    } catch (e) { /* stays in the roomy layout */ }
+    
     this.onMove = e => this.move(e);
     this.onUp = () => { this.drag = null; };
     this.onKey = e => { if (e.key === 'Escape') { if (this.state.ackOpen) this.closeAck(); else if (this.state.modal) this.closeModal(); this.setState({ sugOpen: false, scopeOpen: false }); } };
@@ -1358,6 +1366,8 @@ class Component extends DCLogic {
       sugs,
       setGrid: () => this.setState({ view: 'masonry' }), setList: () => this.setState({ view: 'list' }),
       gridBg: view === 'masonry' ? '#c8d5c0' : '#fff', listBg: view === 'list' ? '#c8d5c0' : '#fff', isMasonry: view === 'masonry', isListView: view === 'list',
+      barCls: s.stuck ? 'is-stuck' : '', sentinelRef: this.sentinelRef,
+      bannerLine: f.q ? n + (n === 1 ? ' result for ' : ' results for ') + '“' + f.q + '”' : 'Explore artworks, objects, manuscripts, photographs and recordings held across the University of Melbourne\'s cultural collections.',
       titleText: 'Showing ' + n + ' ' + (n === 1 ? 'result' : 'results'), hasQ: !!f.q, qTag: (f.scope !== 'all' ? SCOPES.find(x => x[0] === f.scope)[1] + ': ' : '') + (f.q || '').toUpperCase(),
       clearQ: () => this.apply(ff => ({ ...ff, q: '' })),
       advHref: advancedFormHref(f), filterCount: (chips.length + (f.digital ? 1 : 0)) || null, filterBtnRef: this.filterBtnRef,

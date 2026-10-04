@@ -40,6 +40,8 @@ body.page-search-results .date-range-handle--styled {
 
 body.page-search-results .page-banner__inner--styled {
   max-width: 1440px;
+  padding-top: 56px;
+  padding-bottom: 48px;
 }
 
 body.page-search-results .page-local-history__link-image {
@@ -1768,4 +1770,365 @@ body.page-search-results .search-results-filters-title__group--v4 {
   body.page-search-results .search-results-filters-title__group--v4 {
     padding: 12px 16px;
   }
+}
+
+/* ==========================================================================
+   Banner, search bar and tools bar
+   The banner is compact; the search bar sits in a navy strip that continues the banner; the tools row
+   (count, Save, Sort, Filters, Digital asset, view) sits under it. The strip and tools row are one sticky
+   bar, so the search bar stays available while scrolling (the bar goes white and compact when stuck).
+   ========================================================================== */
+body.page-search-results .search-results-banner .page-banner__inner {
+  padding: 56px 32px 48px;
+}
+
+body.page-search-results .search-results-banner h1 {
+  font-size: clamp(28px, 3.2vw, 38px);
+}
+
+body.page-search-results .search-results-banner .page-banner__desc {
+  margin: 8px 0 0;
+  max-width: 760px;
+  font-size: 18px;
+  line-height: 28px;
+}
+
+body.page-search-results .search-results-sentinel {
+  height: 1px;
+  margin-top: -1px;
+}
+
+body.page-search-results .search-results-bar {
+  position: sticky;
+  top: 0;
+  z-index: 900;
+  background: #fff;
+  border-bottom: 1px solid #c8c8c8;
+}
+
+body.page-search-results .search-results-bar__search {
+  padding: 0 32px 48px;
+  background: #000b34;
+}
+
+body.page-search-results .search-results-bar__search-inner {
+  /* layout comes from the shared .ccs-hero__search (column, Advanced Search under the form) */
+  width: 100%;
+  max-width: 1376px;
+  margin: 0 auto;
+}
+
+body.page-search-results .search-results-bar .search-results-search-tools__form-bar-submit {
+  position: relative;
+  flex: none;
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  height: 48px;
+  background: #fff;
+}
+
+body.page-search-results .search-results-bar .search-results-search-tools__link-advanced-search {
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+body.page-search-results .search-results-bar .search-results-search-tools__link-advanced-search:hover {
+  background: none;
+  color: #a3e4f7;
+}
+
+body.page-search-results .search-results-bar__tools {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  padding: 12px 32px;
+}
+
+body.page-search-results .search-results-bar__count,
+body.page-search-results .search-results-bar__controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px 16px;
+  min-width: 0;
+}
+
+body.page-search-results .search-results-bar__switch-short {
+  display: none;
+}
+
+body.page-search-results .search-results-bar .search-results-summary__heading {
+  margin: 0;
+  font-size: 24px;
+  line-height: 28.8px;
+}
+
+/* Stuck: compact single row on wide screens, white search strip */
+body.page-search-results .search-results-bar.is-stuck {
+  box-shadow: 0 2px 8px rgba(0, 11, 52, 0.18);
+}
+
+body.page-search-results .search-results-bar.is-stuck .search-results-bar__search {
+  padding: 8px 32px;
+  background: #fff;
+}
+
+body.page-search-results .search-results-bar.is-stuck .search-results-bar__tools {
+  padding: 0 32px 8px;
+}
+
+body.page-search-results .search-results-bar.is-stuck .search-results-bar__search-inner {
+  gap: 8px 16px;
+}
+
+body.page-search-results .search-results-bar.is-stuck .search-results-search-tools__link-advanced-search {
+  display: none;
+}
+
+body.page-search-results .search-results-bar.is-stuck .search-results-bar__count {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (min-width: 1280px) {
+  body.page-search-results .search-results-bar.is-stuck {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  body.page-search-results .search-results-bar.is-stuck .search-results-bar__search {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 12px 0 12px 32px;
+  }
+
+  body.page-search-results .search-results-bar.is-stuck .search-results-bar__tools {
+    flex: none;
+    padding: 12px 32px 12px 0;
+  }
+}
+
+/* Stuck below 1280px: search row, then the tools row with every control the same height */
+body.page-search-results .search-results-bar.is-stuck .search-results-bar__controls {
+  flex-wrap: nowrap;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  body.page-search-results .search-results-bar.is-stuck .search-results-bar__tools {
+    display: block;
+  }
+}
+
+@media (min-width: 1280px) {
+  body.page-search-results .search-results-bar.is-stuck .search-results-bar__controls {
+    width: auto;
+  }
+}
+
+body.page-search-results .search-results-bar__controls .search-results-view {
+  box-sizing: border-box;
+  height: 48px;
+}
+
+body.page-search-results .search-results-bar__controls .search-results-view button {
+  height: 46px;
+}
+
+body.page-search-results .search-results-per-page {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0 0 16px;
+}
+
+body.page-search-results .search-results-per-page .search-results-summary__group-listbox {
+  top: auto;
+  bottom: 100%;
+}
+
+/* Tablets and phones */
+@media (max-width: 767px) {
+  body.page-search-results .search-results-banner .page-banner__inner {
+    padding: 32px 16px 28px;
+  }
+
+  body.page-search-results .search-results-banner .page-banner__desc {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  body.page-search-results .search-results-bar__search {
+    padding: 0 16px 28px;
+  }
+
+  body.page-search-results .search-results-bar .search-results-search-tools__form-bar-submit {
+    flex: none;
+    height: auto;
+    flex-wrap: wrap;
+  }
+
+  body.page-search-results .search-results-bar .search-results-form__group {
+    flex: 1 1 calc(100% - 48px);
+    min-height: 48px;
+  }
+
+  body.page-search-results .search-results-bar .search-results-form__button--styled {
+    order: 2;
+    width: 48px;
+    min-height: 48px;
+  }
+
+  body.page-search-results .search-results-bar .search-results-form__group-scope {
+    order: 3;
+    flex: 1 1 100%;
+    max-width: none;
+    border-top: 1px solid var(--col-border-neutral-mid, #d9d6cf);
+  }
+
+  body.page-search-results .search-results-bar .search-results-form__button-toggle-scope {
+    width: 100%;
+    min-height: 44px;
+    justify-content: space-between;
+    border-left: 0;
+  }
+
+  /* Tools: Sort and Filters on one row, then Digital asset, the view toggle and an icon-only Save */
+  body.page-search-results .search-results-bar__tools {
+    padding: 12px 16px;
+    gap: 8px;
+  }
+
+  body.page-search-results .search-results-bar__count,
+  body.page-search-results .search-results-bar__controls {
+    display: contents;
+  }
+
+  body.page-search-results .search-results-bar .search-results-summary__heading {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  body.page-search-results .search-results-bar .search-results-search-tools__group-sort {
+    order: 1;
+    flex: 1 1 120px;
+  }
+
+  body.page-search-results .search-results-bar .search-results-search-tools__button-filter-btn {
+    order: 2;
+    flex: 1 1 110px;
+    min-height: 48px;
+  }
+
+  body.page-search-results .search-results-bar .search-results-summary__group--v1 {
+    order: 3;
+    margin-right: auto;
+  }
+
+  body.page-search-results .search-results-bar .search-results-view {
+    order: 4;
+  }
+
+  body.page-search-results .search-results-bar .search-results-summary__group--v2 {
+    order: 5;
+  }
+
+  body.page-search-results .search-results-bar__save-text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  body.page-search-results .search-results-bar .search-results-summary__button-save-search {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    justify-content: center;
+  }
+
+  /* Stuck on a phone: search input and button, then Sort, Filters and Digital on one row */
+  body.page-search-results .search-results-bar.is-stuck .search-results-bar__search {
+    padding: 8px 16px 4px;
+  }
+
+  body.page-search-results .search-results-bar.is-stuck .search-results-form__group-scope,
+  body.page-search-results .search-results-bar.is-stuck .search-results-search-tools__link-advanced-search,
+  body.page-search-results .search-results-bar.is-stuck .search-results-view,
+  body.page-search-results .search-results-bar.is-stuck .search-results-summary__group--v2 {
+    display: none;
+  }
+
+  body.page-search-results .search-results-bar.is-stuck .search-results-bar__tools {
+    flex-wrap: nowrap;
+    padding: 0 16px 8px;
+  }
+
+  body.page-search-results .search-results-bar.is-stuck .search-results-search-tools__group-sort {
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: none;
+  }
+
+  body.page-search-results .search-results-bar.is-stuck .search-results-search-tools__button-filter-btn {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 0 8px;
+    justify-content: center;
+  }
+
+  body.page-search-results .search-results-bar.is-stuck .search-results-summary__group--v1 {
+    margin-right: 0;
+    flex: none;
+  }
+
+  body.page-search-results .search-results-bar.is-stuck .search-results-bar__switch-long {
+    display: none;
+  }
+
+  body.page-search-results .search-results-bar.is-stuck .search-results-bar__switch-short {
+    display: inline;
+  }
+}
+
+@media (min-width: 768px) {
+  body.page-search-results .search-results-bar__controls {
+    flex-wrap: nowrap;
+  }
+
+  body.page-search-results .search-results-bar .search-results-search-tools__group-sort {
+    flex: none;
+    width: 190px;
+  }
+
+  body.page-search-results .search-results-bar .search-results-search-tools__button-toggle-sort {
+    width: 100%;
+  }
+}
+
+body.page-search-results .search-results-bar .search-results-search-tools__group-sort {
+  margin: 0;
 }
