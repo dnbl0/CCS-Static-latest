@@ -293,6 +293,9 @@ Built in the browser in `public/search/smart-search.js` (tests: `tests/smart-sea
 ## Record data table on small screens (2026-10-04)
 
 On screens 768px wide or narrower the record page's data table stacks each value under its label (single column) instead of a fixed 200px label column beside a squeezed value; above 768px it stays two columns.
+## Collection page "Visitors information" (2026-10-04)
+
+The box on each collection page is now "Visitors information" and shows the content of each museum's own visitor page (copied 2026-10-04): Harry Brookes Allen (harrybrookesallenmuseum.mdhs.unimelb.edu.au/about/visitors-info), Medical History Museum (medicalhistorymuseum.mdhs.unimelb.edu.au/about/contact-us), Henry Forman Atkinson Dental Museum (henryformanatkinsondentalmuseum.mdhs.unimelb.edu.au/visitors-info), Grainger Museum (grainger.unimelb.edu.au/visit) and, because it has no visitor page, the University Art Collection's access text from museumsandcollections.unimelb.edu.au. Each box links to its source page. The text lives in `VISITS` in each collection page's script; re-check it against the source pages from time to time (the Medical History Museum's temporary closure notice for 25 Dec 2025 to 1 Jan 2026 was left out because it has passed).
 
 ## Open Items For Follow-Up
 

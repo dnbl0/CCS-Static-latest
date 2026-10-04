@@ -253,13 +253,18 @@
       </section>
     </div>
     <aside class="contact-box collection-layout__aside" aria-labelledby="h-visit">
-      <h2 class="contact-box__title" id="h-visit">Visit and enquiries</h2>
+      <h2 class="contact-box__title" id="h-visit">Visitors information</h2>
       <dl class="contact-box__list">
-        <sc-if value="{{ visit.hasAddress }}"><div class="contact-box__item"><dt class="contact-box__term">Address</dt><dd class="contact-box__definition"><address class="contact-box__address"><sc-for list="{{ visit.addressLines }}" as="ln"><span class="contact-box__address-line">{{ ln }}</span></sc-for></address><sc-if value="{{ visit.addressNote }}"><p class="contact-box__note">{{ visit.addressNote }}</p></sc-if></dd></div></sc-if>
-        <div class="contact-box__item"><dt class="contact-box__term">Opening hours</dt><dd class="contact-box__definition">{{ visit.hours }}</dd></div>
-        <div class="contact-box__item"><dt class="contact-box__term">Email</dt><dd class="contact-box__definition"><a class="contact-box__link" href="mailto:{{ visit.email }}">{{ visit.email }}</a></dd></div>
-        <div class="contact-box__item"><dt class="contact-box__term">Phone</dt><dd class="contact-box__definition"><a class="contact-box__link" href="tel:{{ visit.phoneHref }}">{{ visit.phone }}</a></dd></div>
+        <sc-for list="{{ visitSections }}" as="s">
+          <div class="contact-box__item">
+            <dt class="contact-box__term">{{ s.label }}</dt>
+            <dd class="contact-box__definition">
+              <sc-for list="{{ s.paras }}" as="p"><p class="contact-box__para"><sc-for list="{{ p.parts }}" as="x"><sc-if value="{{ x.link }}"><a class="contact-box__link" href="{{ x.href }}">{{ x.t }}</a></sc-if><sc-if value="{{ x.plain }}">{{ x.t }}</sc-if><sc-if value="{{ x.br }}"><br></sc-if></sc-for></p></sc-for>
+            </dd>
+          </div>
+        </sc-for>
       </dl>
+      <p class="contact-box__source"><a class="contact-box__link" href="{{ visitUrl }}" target="_blank" rel="noopener">Full visitors information<span class="sr-only"> (opens in a new tab)</span></a></p>
     </aside>
   </div>
 
@@ -574,6 +579,164 @@ const COPY = {
   }
 };
 const BLURBS = Object.fromEntries(Object.entries(COPY).map(([k, v]) => [k, v.summary]));
+const VISITS = {
+ "HBA": {
+  "url": "https://harrybrookesallenmuseum.mdhs.unimelb.edu.au/about/visitors-info",
+  "secs": [
+   [
+    "Visitors information",
+    [
+     "The Harry Brookes Allen Museum of Anatomy and Pathology is not open to the general public. Swipe card access is provided to University of Melbourne students enrolled in relevant subjects."
+    ]
+   ],
+   [
+    "Opening hours",
+    [
+     "Monday to Friday: 9:00am to 5:00pm",
+     "Not open on weekends or University holidays."
+    ]
+   ],
+   [
+    "Disability access",
+    [
+     "The Harry Brookes Allen Museum of Anatomy and Pathology is wheelchair accessible and welcomes visitors of all abilities. In some circumstances there are access limitations, please contact staff for more information.",
+     "For all tour and access enquiries, please contact the museum at MDHS-museum@unimelb.edu.au."
+    ]
+   ],
+   [
+    "Location",
+    [
+     "University of Melbourne\nMedical Building\nCorner of Grattan Street and Royal Parade\nParkville 3052, Victoria.",
+     "The Museum is located on Level 3 East of the main Medical Building (Building 181). Wheelchair access, toilets, parking and cafes are available on campus."
+    ]
+   ]
+  ]
+ },
+ "MHM": {
+  "url": "https://medicalhistorymuseum.mdhs.unimelb.edu.au/about/contact-us",
+  "secs": [
+   [
+    "Exhibition tours",
+    [
+     "The Medical History Museum conducts free guided tours of our exhibitions for groups of 15 or more. These tours are for university students, staff, alumni, secondary schools and the community.",
+     "Tours are available by appointment. To inquire or book a tour, please contact: mhm-info@unimelb.edu.au"
+    ]
+   ],
+   [
+    "Opening hours",
+    [
+     "Monday to Friday 10.00am to 5.00pm"
+    ]
+   ],
+   [
+    "Location",
+    [
+     "University of Melbourne\n233 Bouverie St\nCarlton, Victoria",
+     "For all enquiries, please contact the museum on mhm-info@unimelb.edu.au."
+    ]
+   ]
+  ]
+ },
+ "DENT": {
+  "url": "https://henryformanatkinsondentalmuseum.mdhs.unimelb.edu.au/visitors-info",
+  "secs": [
+   [
+    "Visitors information",
+    [
+     "The Henry Forman Atkinson Dental Museum offers FREE admission."
+    ]
+   ],
+   [
+    "Exhibition tours",
+    [
+     "The Henry Forman Atkinson Dental Museum conducts tours of its exhibitions for university students, staff, alumni, secondary schools and the community. These tours are free.",
+     "For all enquiries, please contact the museum on mhm-info@unimelb.edu.au."
+    ]
+   ],
+   [
+    "Opening hours",
+    [
+     "9:00am – 5:00pm Monday to Friday"
+    ]
+   ],
+   [
+    "Disability access",
+    [
+     "The Henry Forman Atkinson Dental Museum is wheelchair accessible and welcomes visitors of all abilities. In some circumstances there are access limitations, please contact staff for more information.",
+     "For all enquiries, please contact the museum on mhm-info@unimelb.edu.au."
+    ]
+   ],
+   [
+    "Location",
+    [
+     "Ground floor of the Royal Dental Hospital,\n720 Swanston St, Carlton.",
+     "Located in the dental hospital surrounded by student classrooms, the museum is available to students, patients, their families, and the general public."
+    ]
+   ]
+  ]
+ },
+ "GMC": {
+  "url": "https://grainger.unimelb.edu.au/visit",
+  "secs": [
+   [
+    "Opening hours",
+    [
+     "Open Monday, 1-4pm"
+    ]
+   ],
+   [
+    "Location",
+    [
+     "Gate 13, Royal Parade\nParkville, Melbourne"
+    ]
+   ],
+   [
+    "Getting here",
+    [
+     "Car: Grainger Museum does not have designated parking. Parking is available at Royal Parade Car Park and you can find metered street parking on Royal Parade.",
+     "Train: The nearest train station is Parkville, exit to Royal Parade East.",
+     "Tram: The nearest tram stops are Stop 10 Royal Melbourne Hospital & Royal Parade and Stop 12 Morrah Street & Royal Parade on route 19.",
+     "Bus: Route 505 stops nearby on Royal Parade.",
+     "Bicycle: Bike parking hoops are available behind Grainger Museum and on Royal Parade.",
+     "Car pick-up and drop-off: cars can stop nearby along Royal Parade. Accessible parking bays are located on Royal Parade, between Genetics Lane and Tin Alley."
+    ]
+   ],
+   [
+    "Accessibility",
+    [
+     "Grainger Museum is step-free and accessible to mobility equipment users.",
+     "Limited bench seating is available in the museum.",
+     "A step-free, self-contained, all-gender toilet stall with baby changing facilities is available. The nearest Changing Places facility is located at Parkville Station."
+    ]
+   ]
+  ]
+ },
+ "UAC": {
+  "url": "https://museumsandcollections.unimelb.edu.au/collections/university-of-melbourne-art-collection",
+  "secs": [
+   [
+    "Visitors information",
+    [
+     "The University Art Collection is not held in a single gallery. It is displayed in curated exhibitions across cultural venues and on campus, and is accessible through teaching and learning programs. The Michael Buxton Collection can be seen at Buxton Contemporary."
+    ]
+   ],
+   [
+    "Collection access",
+    [
+     "If you wish to access the collections, view items, raise a general enquiry, or request an image, please submit a request via the [Access Request Form](/contact).",
+     "Some collection items may not be suitable for digitisation due to factors such as age, fragility, copyright and other considerations. A fee may apply to image requests to recover digitisation costs for publication and commercial use."
+    ]
+   ]
+  ]
+ }
+};
+// Turns a paragraph into text and link parts: [label](url) links and bare email addresses become links.
+const linkParts = text => {
+  const parts = []; const re = /\[([^\]]+)\]\(([^)]+)\)|([\w.+-]+@[\w.-]+\.[a-z]{2,})/gi; let last = 0, m;
+  while ((m = re.exec(text))) { if (m.index > last) parts.push({ t: text.slice(last, m.index), link: false }); parts.push(m[3] ? { t: m[3], link: true, href: 'mailto:' + m[3] } : { t: m[1], link: true, href: m[2] }); last = re.lastIndex; }
+  if (last < text.length) parts.push({ t: text.slice(last), link: false });
+  return parts;
+};
 class Component extends DCLogic {
   renderVals() {
     const qKey = (new URLSearchParams(location.search).get('collection') || '').toUpperCase();
@@ -591,7 +754,8 @@ class Component extends DCLogic {
       coll: { name: collName, blurb: cp.summary, externalUrl: cp.external, banner: BANNERS[key], searchHref: searchBase },
       about: cp.about, advisory: cp.advisory || '',
       details: cp.details.filter(([label]) => label !== 'Total items' && label !== 'Date range' && label !== 'Physical location').map(([label, value]) => ({ label, isText: true, value })),
-      visit: { hasAddress: !!ADDRESS[key], addressLines: ADDRESS[key] ? ADDRESS[key].lines : [], addressNote: ADDRESS[key] ? ADDRESS[key].note : '', hours: cp.hours, email: cp.email, phone: cp.phone, phoneHref: cp.phone.replace(/[^+\d]/g, '') }
+      visitSections: (VISITS[key] ? VISITS[key].secs : []).map(([label, paras]) => ({ label, paras: paras.map(p => ({ parts: p.split('\n').flatMap((line, i) => [...(i ? [{ t: '', link: false, br: true }] : []), ...linkParts(line)]).map(x => ({ ...x, plain: !x.link && !x.br })) })) })),
+      visitUrl: VISITS[key] ? VISITS[key].url : ''
     };
   }
 }

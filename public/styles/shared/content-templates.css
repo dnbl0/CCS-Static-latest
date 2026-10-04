@@ -580,3 +580,15 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+.contact-box__para {
+  margin: 0 0 8px;
+}
+
+.contact-box__para:last-child {
+  margin-bottom: 0;
+}
+
+.contact-box__source {
+  margin: 20px 0 0;
+}
