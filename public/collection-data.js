@@ -934,9 +934,13 @@
       [26, 'Related record', it.relatedRecord && [L(it.relatedRecord, true)]],
       [30, 'Producer', (it.producer || it.imageProducer) && [L(it.producer || it.imageProducer)]]
     ].filter(r => r[2]).map(([seq, label, lines, copy]) => ({ seq, label, lines, copy: !!copy, value: lines[0].text }));
+    // CCS-27 usage rights, in the order of the acceptance criteria: accession number, caption (digital assets only),
+    // credit, copyright. Terms of use (digital assets only) and the contact follow on the record page.
     const rights = [
-      { seq: 16, label: 'Copyright', value: copyrightHolder },
-      { seq: 17, label: 'Credit line', value: creditLine }
+      { seq: 15, label: 'Accession number', value: it.accession || 'Not recorded' },
+      ...(hasDA ? [{ seq: 15.5, label: 'Caption', value: it.caption || 'No caption recorded' }] : []),
+      { seq: 17, label: 'Credit line', value: creditLine },
+      { seq: 16, label: 'Copyright', value: copyrightHolder }
     ];
     const advisories = (it.advisories || []).map(a => ADVISORY[a]).filter(Boolean);
     const byline = [(!it.creator || UNKNOWN.test(it.creator)) ? null : nameOnly(it.creator), date].filter(Boolean).join(' · ');

@@ -52,6 +52,18 @@
     ['museum', 'gallery', 'collection'],
     ['farm', 'agriculture', 'pastoral', 'rural']
   ];
+  // Whole-phrase meanings (CCS-116): a phrase is understood as one idea, not as separate words that must all match.
+  // `say` are the ways a person might phrase it; `means` are the catalogue words that express it.
+  var PHRASES = [
+    { say: ['false teeth', 'artificial teeth', 'dental plate'], means: ['denture', 'dentures'] },
+    { say: ['x ray', 'x rays', 'x-ray', 'x-rays'], means: ['radiograph', 'radiographic', 'xray'] },
+    { say: ['family tree', 'family history'], means: ['genealogy', 'pedigree', 'ancestry'] },
+    { say: ['sheet music', 'musical score'], means: ['score', 'manuscript', 'notation'] },
+    { say: ['baby teeth', 'milk teeth'], means: ['deciduous', 'paediatric'] },
+    { say: ['tooth pulling', 'pulling teeth', 'tooth extraction'], means: ['extraction', 'forceps'] },
+    { say: ['eye glasses', 'reading glasses'], means: ['spectacles', 'ophthalmic'] },
+    { say: ['war memorial'], means: ['commemorative', 'cenotaph'] }
+  ];
   var BROADER = {
     'instrument': ['harp', 'piano', 'violin', 'fiddle', 'flute', 'pipe', 'organ', 'harmonium', 'guitar', 'drum', 'trumpet', 'tone-tool', 'metallophone', 'synthesiser'],
     'musical': ['instrument', 'music', 'score', 'composer'],
@@ -166,7 +178,14 @@
       if (/["]/.test(q) || /(^|\s)(AND|OR|NOT)(\s|$)/.test(q)) return null;
       if (cache[q]) return cache[q];
       var raw = q.split(/\s+/).map(norm).map(function (w) { return w.replace(/[^a-z0-9-]/g, ''); }).filter(Boolean);
-      var list = raw.filter(function (w) { return !STOP.has(w); });
+      var joined = ' ' + raw.join(' ') + ' ', phraseHits = [];
+      PHRASES.forEach(function (ph) {
+        ph.say.forEach(function (s) {
+          var sn = norm(s).replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
+          if (joined.indexOf(' ' + sn + ' ') !== -1) { joined = joined.replace(' ' + sn + ' ', ' '); phraseHits.push({ say: sn, means: ph.means }); }
+        });
+      });
+      var list = joined.trim().split(/\s+/).filter(function (w) { return w && !STOP.has(w); });
       var out = list.map(function (w, i) {
         var s = stem(w), inVocab = !!df[s], isLast = i === list.length - 1;
         var fuzzy = inVocab ? [] : fuzzyCandidates(s, isLast);
@@ -176,6 +195,11 @@
         if (thes[s]) Object.keys(thes[s]).forEach(function (t) { add(t, thes[s][t]); });
         if (inVocab && !thes[s]) cooccurring(s).forEach(function (o) { add(o.t, 0.5); });
         return { w: w, stem: s, soft: SOFT.has(w), inVocab: inVocab, fuzzy: fuzzy, semantic: sem.slice(0, 12) };
+      });
+      phraseHits.forEach(function (h) {
+        var seenP = new Set(), sem = [];
+        h.means.forEach(function (m) { var s = stem(m); if ((df[s] || 0) > 0 && !seenP.has(s)) { seenP.add(s); sem.push({ t: s, w: 1 }); } });
+        out.push({ w: h.say, stem: h.say, soft: false, inVocab: false, fuzzy: [], semantic: sem, phrase: true });
       });
       var res = { words: out, required: out.filter(function (x) { return !x.soft; }).length ? out.filter(function (x) { return !x.soft; }) : out };
       cache[q] = res; return res;

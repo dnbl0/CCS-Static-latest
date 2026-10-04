@@ -353,6 +353,14 @@ Source: filter 26999 (`project = CCS AND type = Story AND labels = CCS-2026`), r
 4. A formal WCAG 2.1 AA audit with a person and assistive technology (CCS-51).
 5. Download and authorised-user access (CCS-44, 66, 166).
 
+## CCS-158, 27 and 116 acceptance criteria (2026-10-04)
+
+**CCS-158 (spelling suggestions, acceptance criteria: a misspelt term or partial phrase gets a suggested correct spelling the user can search with).** Previously "Did you mean" only appeared when a search found nothing, because close spellings were quietly widened. Now a "Did you mean <word>?" notice sits above the results whenever a word is misspelt or only partly typed ("skul" gives "skull", "dent" gives "dental", a typo inside a phrase is corrected word by word), and clicking it runs the corrected search. A partial word is completed to the shortest catalogue word it begins (at most three letters longer); otherwise the closest spelling is offered.
+
+**CCS-27 (usage rights).** The record page's Copyright box now lists, in the order of the acceptance criteria: Accession number, Caption (digital assets only; "No caption recorded" until the DAM caption field is loaded), Credit line, Copyright, then Web access, Terms of use (digital assets only) and the contact. Previously the accession number was not in this box. Records without a digital asset omit Caption and Terms of use, as the story requires. A data test checks every one of the 728 records. Still needed from the data: real captions and the "Pending on Data model and Concatenation discussion" source-field mapping that the story itself lists.
+
+**CCS-116 (semantic search).** The acceptance criteria are: meaning plus exact matches, synonyms, the whole phrase understood as one idea, and useful results for short or vague terms. Done without a backend: exact-first ranking with synonym and broader-term matches; and now whole-phrase meanings ("false teeth" finds dentures, "x ray" finds radiographs, "sheet music" finds scores and manuscripts, "pulling teeth" finds extraction forceps) so every word no longer has to appear. Vague words such as "old" are ignored. What cannot be done in a static site: real language understanding for phrases we have not listed. That needs a search engine with embeddings (for example the Blacklight/Solr backend plus a vector index); the phrase list (`PHRASES` in `smart-search.js`) is the stop-gap and needs the collection teams to add the phrases their users actually type.
+
 ## Open Items For Follow-Up
 
 1. **Re-verify, not assumed**: CCS-21 (sensitivity notifications), CCS-47 (contact-us record view), CCS-64 (item 4 — image aspect ratio), CCS-65 (audio/video/PDF format handling), CCS-68/69/166 (request-to-use/view flows) — these were asserted "implemented" in the prior version of this document without the same rigor applied to the items above; they should get the same live-code verification treatment before being marked confirmed.

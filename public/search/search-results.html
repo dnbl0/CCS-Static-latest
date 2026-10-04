@@ -348,6 +348,11 @@
           </div>
         </sc-if>
         <div class="search-results-notices">
+      <sc-if value="{{ showDidYouMeanTop }}">
+        <div class="search-results-smart notice" role="status">
+          <p class="search-results-smart__text">Did you mean <button type="button" class="search-results-smart__button" onClick="{{ applyDidYouMean }}">{{ didYouMeanText }}</button>?</p>
+        </div>
+      </sc-if>
       <sc-if value="{{ showSmartNotice }}">
         <div class="search-results-smart notice" role="status">
           <p class="search-results-smart__text">{{ smartNoticeText }}</p>
@@ -892,6 +897,10 @@ function closestVocabWord(word) {
     const d = levenshtein(w, v);
     if (d < bestDist) { bestDist = d; best = v; }
   });
+  // partial word (CCS-158): a word that begins a longer vocabulary word is completed to the shortest one
+  let part = null;
+  VOCAB.forEach(v => { if (v.length > w.length && v.length <= w.length + 3 && v.startsWith(w) && (!part || v.length < part.length)) part = v; });
+  if (part) return part;
   return bestDist <= maxDist ? best : null;
 }
 // Builds a "did you mean" correction for a query, per-word, independently
@@ -1341,7 +1350,7 @@ class Component extends DCLogic {
     // CCS-158/288/292/293: only offer a spelling correction once a search has
     // genuinely come back with zero results for a real query (matches the
     // existing isEmpty/no-results threshold below) — never on a healthy result set.
-    const didYouMeanText = (!s.loading && n === 0 && f.q) ? spellingSuggestion(f.q) : null;
+    const didYouMeanText = (!s.loading && f.q && !f.exact) ? spellingSuggestion(f.q) : null;
     const mob = s.vw < 640, sm = s.vw < 420;
     return {
       padHero: mob ? '16px 16px 24px' : '20px 32px 36px', h1Size: sm ? '26px' : mob ? '30px' : '40px',
@@ -1432,7 +1441,7 @@ class Component extends DCLogic {
       smartDetails: smartDesc ? [...smartDesc.fuzzy.map(x => ({ k: 'Close spellings', v: `${x.from} → ${x.to.join(', ')}` })), ...smartDesc.semantic.map(x => ({ k: 'Related terms', v: `${x.from} → ${x.to.join(', ')}` }))] : [],
       exactOnly: () => this.apply(ff => ({ ...ff, exact: true })),
       showExactNotice: !!f.exact && !!f.q, relatedAgain: () => this.apply(ff => ({ ...ff, exact: false })),
-      showDidYouMean: !!didYouMeanText, didYouMeanText, applyDidYouMean: () => runQ(didYouMeanText),
+      showDidYouMean: !!didYouMeanText && n === 0, showDidYouMeanTop: !!didYouMeanText && n > 0, didYouMeanText, applyDidYouMean: () => runQ(didYouMeanText),
       modal: s.modal, closeModal: () => this.closeModal(), stop: e => e.stopPropagation(),
       bodyRef: this.bodyRef, trackRef: this.trackRef, dialogRef: this.dialogRef,
       ackOpen: s.ackOpen, ackRef: this.ackRef, acceptAck: () => this.closeAck(), closeAck: () => this.closeAck(), ackTrapKey: this.makeTrapKey(this.ackRef),

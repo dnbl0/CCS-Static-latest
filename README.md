@@ -299,6 +299,11 @@ Deployed on Vercel. The project link (`.vercel/`) is local and git-ignored.
 - **Data is a prototype snapshot**: records are hand-maintained in `collection-data.js`; the Blacklight adapter's live mode is not part of the tested flow.
 - **Jira mapping**: several requirement rows in `jira-mvp-mapping.md` are marked as not re-verified.
 
+### Search acceptance criteria (2026-10-04)
+- CCS-158: a "Did you mean" notice appears above results for misspelt or partial words and runs the corrected search.
+- CCS-27: the record page Copyright box lists accession number, caption (digital assets only), credit line and copyright.
+- CCS-116: whole-phrase meanings in `smart-search.js` (`PHRASES`).
+
 ### Search results banner and sticky tools bar (2026-10-04)
 - Fix: the search form now lives permanently in the banner. The sticky bar holds only the tools plus a compact search box that appears when stuck, so its height no longer flips between a tall and a short layout while scrolling. The smart-search notices sit in their own full-width row (`.search-results-notices`) above the results grid.
 - The `.ccs-hero__search` layout (form with a link stacked under it) lives in `public/styles/shared/hero-search.css`, loaded by the homepage and the search results page.
