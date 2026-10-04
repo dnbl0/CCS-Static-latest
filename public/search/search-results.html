@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="../styles/vendor/bootstrap-uom.min.css">
   <link rel="stylesheet" href="/styles/home.css">
   <link rel="stylesheet" href="/styles/shared/hero-search.css">
+  <link rel="stylesheet" href="/styles/shared/favourites.css">
   <link rel="stylesheet" href="../styles/header.css">
   <link rel="stylesheet" href="/styles/shared/content-templates.css">
   <link rel="stylesheet" href="/styles/pages/search-results.css">
@@ -96,6 +97,7 @@
             </div>
           </li>
           <li class="ccs-nav__list-item"><a class="ccs-nav__item-link-contact" href="/contact.html">Contact</a></li>
+          <li class="ccs-nav__list-item"><a class="ccs-nav__item-link-lists" href="/lists">Lists<span class="ccs-nav__badge" data-fav-count="" data-count="0"></span></a></li>
         </ul>
         <ul class="ccs-nav__drawer-top" aria-label="University of Melbourne">
         <li class="ccs-nav__item"><a class="ccs-nav__item-link-study" href="https://study.unimelb.edu.au">Study</a></li>
@@ -348,6 +350,7 @@
         <div class="search-results-main-content__group search-results-main-content__group--v3">
           <sc-for list="{{ results }}" as="r" hint-placeholder-count="9">
             <article class="search-results-main-content__article search-results-main-content__article--v1" style="--dyn-animation-delay:{{ r.delay }}">
+              <button type="button" class="fav-heart fav-heart--card" data-fav-id="{{ r.id }}" data-fav-title="{{ r.title }}" aria-haspopup="dialog" aria-label="Add to list"><svg class="fav-heart__icon" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20.5s-7.5-4.6-9.3-9.4C1.6 8 3.4 5 6.5 5c2 0 3.5 1.1 4.5 2.6h2C14 6.1 15.5 5 17.5 5c3.1 0 4.9 3 3.8 6.1-1.8 4.8-9.3 9.4-9.3 9.4z" stroke-width="2" stroke-linejoin="round"/></svg></button>
               <sc-if value="{{ r.hasImg }}" hint-placeholder-val="{{ false }}">
                 <a class="search-results-article__link search-results-article__link--v1" href="{{ r.href }}" style="--dyn-aspect-ratio:{{ r.ar }}"><img class="search-results-article__link-image search-results-article__link-image--v1" src="{{ r.imgSrc }}" alt="{{ r.title }}" decoding="async"></a>
               </sc-if>
@@ -372,6 +375,7 @@
         <div class="search-results-main-content__group search-results-main-content__group--v5">
           <sc-for list="{{ results }}" as="r" hint-placeholder-count="6">
             <article class="search-results-main-content__article search-results-main-content__article--v2" style="--dyn-gap:{{ listGap }}">
+              <button type="button" class="fav-heart fav-heart--card" data-fav-id="{{ r.id }}" data-fav-title="{{ r.title }}" aria-haspopup="dialog" aria-label="Add to list"><svg class="fav-heart__icon" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20.5s-7.5-4.6-9.3-9.4C1.6 8 3.4 5 6.5 5c2 0 3.5 1.1 4.5 2.6h2C14 6.1 15.5 5 17.5 5c3.1 0 4.9 3 3.8 6.1-1.8 4.8-9.3 9.4-9.3 9.4z" stroke-width="2" stroke-linejoin="round"/></svg></button>
               <sc-if value="{{ r.hasImg }}" hint-placeholder-val="{{ false }}">
                 <a class="search-results-article__link search-results-article__link--v2" href="{{ r.href }}" style="--dyn-flex:{{ listImgSize }};--dyn-height:{{ listImgSize }}">
                   <img class="search-results-article__link-image search-results-article__link-image--v2" src="{{ r.imgSrc }}" alt="{{ r.title }}">
@@ -1343,5 +1347,6 @@ class Component extends DCLogic {
 
 
   <script src="/nav.js"></script>
+  <script src="/favourites.js"></script>
 </body>
 </html>
