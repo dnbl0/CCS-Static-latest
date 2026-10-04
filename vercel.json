@@ -3,26 +3,115 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/item/:code", "destination": "/collections/record?item=:code" }
+    {
+      "source": "/catalog.json",
+      "destination": "/api/catalog"
+    },
+    {
+      "source": "/catalog/:id.json",
+      "destination": "/api/catalog?id=:id"
+    },
+    {
+      "source": "/item/:code",
+      "destination": "/collections/record?item=:code"
+    }
   ],
   "redirects": [
-    { "source": "/Contact Us.dc.html", "destination": "/contact", "statusCode": 301 },
-    { "source": "/Contact%20Us.dc.html", "destination": "/contact", "statusCode": 301 },
-    { "source": "/Collection Record.dc.html", "destination": "/collections/record", "statusCode": 301 },
-    { "source": "/Collection%20Record.dc.html", "destination": "/collections/record", "statusCode": 301 },
-    { "source": "/Collection Search v3.dc.html", "destination": "/search/search-results", "statusCode": 301 },
-    { "source": "/Collection%20Search%20v3.dc.html", "destination": "/search/search-results", "statusCode": 301 },
-    { "source": "/Browse Collections.dc.html", "destination": "/collections", "statusCode": 301 },
-    { "source": "/Browse%20Collections.dc.html", "destination": "/collections", "statusCode": 301 },
-    { "source": "/Collection Landing.dc.html", "destination": "/collections", "statusCode": 301 },
-    { "source": "/Collection%20Landing.dc.html", "destination": "/collections", "statusCode": 301 },
-    { "source": "/Help and Support.dc.html", "destination": "/help", "statusCode": 301 },
-    { "source": "/Help%20and%20Support.dc.html", "destination": "/help", "statusCode": 301 },
-    { "source": "/CCS Home page.dc.html", "destination": "/", "statusCode": 301 },
-    { "source": "/CCS%20Home%20page.dc.html", "destination": "/", "statusCode": 301 },
-    { "source": "/search.html", "destination": "/search/search-results", "statusCode": 301 },
-    { "source": "/search", "destination": "/search/search-results", "statusCode": 301 },
-    { "source": "/search/advanced", "destination": "/search/search-results", "statusCode": 301 },
-    { "source": "/search/advanced.html", "destination": "/search/search-results", "statusCode": 301 }
-  ]
+    {
+      "source": "/Contact Us.dc.html",
+      "destination": "/contact",
+      "statusCode": 301
+    },
+    {
+      "source": "/Contact%20Us.dc.html",
+      "destination": "/contact",
+      "statusCode": 301
+    },
+    {
+      "source": "/Collection Record.dc.html",
+      "destination": "/collections/record",
+      "statusCode": 301
+    },
+    {
+      "source": "/Collection%20Record.dc.html",
+      "destination": "/collections/record",
+      "statusCode": 301
+    },
+    {
+      "source": "/Collection Search v3.dc.html",
+      "destination": "/search/search-results",
+      "statusCode": 301
+    },
+    {
+      "source": "/Collection%20Search%20v3.dc.html",
+      "destination": "/search/search-results",
+      "statusCode": 301
+    },
+    {
+      "source": "/Browse Collections.dc.html",
+      "destination": "/collections",
+      "statusCode": 301
+    },
+    {
+      "source": "/Browse%20Collections.dc.html",
+      "destination": "/collections",
+      "statusCode": 301
+    },
+    {
+      "source": "/Collection Landing.dc.html",
+      "destination": "/collections",
+      "statusCode": 301
+    },
+    {
+      "source": "/Collection%20Landing.dc.html",
+      "destination": "/collections",
+      "statusCode": 301
+    },
+    {
+      "source": "/Help and Support.dc.html",
+      "destination": "/help",
+      "statusCode": 301
+    },
+    {
+      "source": "/Help%20and%20Support.dc.html",
+      "destination": "/help",
+      "statusCode": 301
+    },
+    {
+      "source": "/CCS Home page.dc.html",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
+      "source": "/CCS%20Home%20page.dc.html",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
+      "source": "/search.html",
+      "destination": "/search/search-results",
+      "statusCode": 301
+    },
+    {
+      "source": "/search",
+      "destination": "/search/search-results",
+      "statusCode": 301
+    },
+    {
+      "source": "/search/advanced",
+      "destination": "/search/search-results",
+      "statusCode": 301
+    },
+    {
+      "source": "/search/advanced.html",
+      "destination": "/search/search-results",
+      "statusCode": 301
+    }
+  ],
+  "functions": {
+    "api/catalog.js": {
+      "includeFiles": "public/{collection-data.js,search/smart-search.js}",
+      "maxDuration": 10
+    }
+  }
 }

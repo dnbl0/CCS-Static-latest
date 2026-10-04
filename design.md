@@ -1065,6 +1065,9 @@ Gen 3's accordion is borderless, shadowless, sharp-cornered, with a hairline top
 | 2.0 | 2026-09-29 | Updated for reorganized codebase structure |
 | 1.0 | 2026-09-29 | Initial design system documentation |
 
+### Free catalog API (2026-10-04)
+- `api/catalog.js` serves `/catalog.json` and `/catalog/:id.json` in the Blacklight JSON shape from the same Vercel project at no cost (see `jira-mvp-mapping.md`). The adapter defaults to it; `?api=live` switches the results page to it.
+
 ### Search acceptance criteria (2026-10-04)
 - CCS-158: a "Did you mean" notice appears above results for misspelt or partial words and runs the corrected search.
 - CCS-27: the record page Copyright box lists accession number, caption (digital assets only), credit line and copyright.
