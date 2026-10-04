@@ -263,19 +263,19 @@
 <div class="search-results-search-tools" role="region" aria-label="Search tools">
   <div class="search-results-search-tools__group search-results-search-tools__group--v2" style="--dyn-padding:{{ padBar }}">
     <form class="search-results-search-tools__form-bar-submit" role="search" onSubmit="{{ barSubmit }}">
-      <div class="search-results-form__group-scope" ref="{{ scopeRef }}">
-        <button class="search-results-form__button-toggle-scope" type="button" onClick="{{ toggleScope }}" aria-haspopup="listbox" aria-expanded="{{ scopeOpen }}" aria-label="Search in">{{ scopeLabel }}<svg class="search-results-form__button-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-        <sc-if value="{{ scopeOpen }}">
-          <div class="search-results-search" role="listbox" aria-label="Search in">
-            <sc-for list="{{ scopeOpts }}" as="o"><button class="search-results-search__button-pick" type="button" role="option" aria-selected="{{ o.sel }}" onClick="{{ o.pick }}" style="--dyn-background:{{ o.bg }}">{{ o.label }}</button></sc-for>
-          </div>
-        </sc-if>
-      </div>
       <div class="search-results-form__group">
         <sc-if value="{{ hasQ }}">
           <button class="search-results-form__button-clear-q" type="button" onClick="{{ clearQ }}" aria-label="Remove search term"><span class="search-results-form__button-text">{{ qTag }}</span><svg class="search-results-form__button-icon search-results-form__button-icon--styled" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.6"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg></button>
         </sc-if>
         <input class="search-results-form__input-side-q" value="{{ sideQ }}" onChange="{{ onSideQ }}" onKeyDown="{{ barKey }}" onFocus="{{ openSug }}" onClick="{{ openSug }}" onBlur="{{ closeSugSoon }}" role="combobox" aria-expanded="{{ sugOpen }}" aria-controls="search-suggestions" aria-autocomplete="list" aria-label="Search the collection" placeholder="{{ barPlaceholder }}">
+      </div>
+      <div class="search-results-form__group-scope" ref="{{ scopeRef }}">
+        <button class="search-results-form__button-toggle-scope" type="button" onClick="{{ toggleScope }}" aria-haspopup="listbox" aria-expanded="{{ scopeOpen }}" aria-label="Search in collection">{{ scopeLabel }}<svg class="search-results-form__button-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+        <sc-if value="{{ scopeOpen }}">
+          <div class="search-results-search" role="listbox" aria-label="Search in collection">
+            <sc-for list="{{ scopeOpts }}" as="o"><button class="search-results-search__button-pick" type="button" role="option" aria-selected="{{ o.sel }}" onClick="{{ o.pick }}" style="--dyn-background:{{ o.bg }}">{{ o.label }}</button></sc-for>
+          </div>
+        </sc-if>
       </div>
       <button class="search-results-form__button search-results-form__button--styled" type="submit" aria-label="Search"><svg class="search-results-form__button-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.5" y1="15.5" x2="21" y2="21"></line></svg></button>
       <sc-if value="{{ sugOpen }}">
@@ -1340,8 +1340,8 @@ class Component extends DCLogic {
       },
       sideQ: s.sideQ, onSideQ: e => this.setState({ sideQ: e.target.value, sugOpen: true, sugIdx: -1 }),
       scopeRef: this.scopeRef, scopeOpen: s.scopeOpen, toggleScope: () => this.setState(st => ({ scopeOpen: !st.scopeOpen })),
-      scopeLabel: SCOPES.find(x => x[0] === f.scope)[1],
-      scopeOpts: SCOPES.map(([v, label]) => ({ label, sel: f.scope === v, bg: f.scope === v ? '#b3e5f5' : '#fff', pick: () => { this.setState({ scopeOpen: false }); if (f.q) this.apply(ff => ({ ...ff, scope: v })); else this.setState(st => ({ f: { ...st.f, scope: v } })); } })),
+      scopeLabel: f.collection.length === 1 ? f.collection[0] : f.collection.length > 1 ? f.collection.length + ' collections' : 'All collections',
+      scopeOpts: [['', 'All collections'], ...HIER.map(h => [h.name, h.name])].map(([v, label]) => { const sel = v ? (f.collection.length === 1 && f.collection[0] === v) : !f.collection.length; return { label, sel, bg: sel ? '#b3e5f5' : '#fff', pick: () => { this.setState({ scopeOpen: false }); this.apply(ff => ({ ...ff, collection: v ? [v] : [], named: [] })); } }; }),
       sugOpen: s.sugOpen && (hasHistory || hasSugs),
       openSug: () => this.setState({ sugOpen: true, sugIdx: -1 }),
       closeSugSoon: () => { clearTimeout(this.bt); this.bt = setTimeout(() => this.setState({ sugOpen: false, sugIdx: -1 }), 160); },
