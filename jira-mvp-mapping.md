@@ -297,6 +297,62 @@ On screens 768px wide or narrower the record page's data table stacks each value
 
 The box on each collection page is now "Visitors information" and shows the content of each museum's own visitor page (copied 2026-10-04): Harry Brookes Allen (harrybrookesallenmuseum.mdhs.unimelb.edu.au/about/visitors-info), Medical History Museum (medicalhistorymuseum.mdhs.unimelb.edu.au/about/contact-us), Henry Forman Atkinson Dental Museum (henryformanatkinsondentalmuseum.mdhs.unimelb.edu.au/visitors-info), Grainger Museum (grainger.unimelb.edu.au/visit) and, because it has no visitor page, the University Art Collection's access text from museumsandcollections.unimelb.edu.au. Each box links to its source page. The text lives in `VISITS` in each collection page's script; re-check it against the source pages from time to time (the Medical History Museum's temporary closure notice for 25 Dec 2025 to 1 Jan 2026 was left out because it has passed).
 
+## Full cross-check of all 82 CCS-2026 stories against the prototype (2026-10-04)
+
+Source: filter 26999 (`project = CCS AND type = Story AND labels = CCS-2026`), read live through the Jira REST API: 82 stories (19 Done, 3 In Progress, 60 New). Prototype: `main` at #103, tested in Chromium (counts below are from running the site, not from reading code).
+
+**1. Stories with no prototype surface (34): backend, data, security, test.** CCS-48, 49, 118, 159, 160, 169, 170, 172, 183 to 187, 197, 207, 209, 211, 230, 231, 237, 238, 240, 241, 244, 245, 263, 265, 266, 304, 311 to 313 (EMu, Vernon, Nexus DAM loads, indexing, database records, firewall), plus CCS-145 (security), CCS-70 (guest security model), CCS-272 (data inventory spec) and CCS-310 (test ticket). Not testable in a static prototype. Done ones among them (118, 237, 238, 240, 241, 244, 245, 312) are backend work.
+
+**2. Post-2026 per the Remarks field (8).** CCS-19, 46, 52, 53, 55, 62, 206 (and 158 is flagged "Feasib…"). Not counted as gaps. Built ahead of scope: CCS-52 (Indigenous data info page) and CCS-158 (suggestions).
+
+**3. Every Done story checked in the running prototype**
+
+| Story | Jira | Prototype result | Verdict |
+|---|---|---|---|
+| CCS-27 Rights information | Done | Rights, credit line, terms of use and contact on record pages. Caption supported, but no record has a caption (data gap) | Met, caption data missing |
+| CCS-33 Basic search | Done | "harp" returns 3 results | Met |
+| CCS-34 Boolean / exact phrase | Done | Phrase "percy grainger" 19; harp OR violin 3 (2 + 1); harp NOT violin 2; AND/OR/NOT stay exact | Met |
+| CCS-37 Search within a collection | Done | "All collections" menu plus the five collection pages | Met |
+| CCS-45 Pagination | Done | Pager and per-page selector on results; First / Last / Go to on the 47 records with several assets | Met |
+| CCS-50 Usage notice | Done | Shown before media on the 4 records with an advisory or film rating; accepted per session | Met for the data we have |
+| CCS-68 Licensed: view only | Done | 41 records show the "downloading on request" message | Met |
+| CCS-116 Semantic search | Done | "pottery" returns 28 related results, "fiddle" reaches violin, via a thesaurus (not a real semantic engine) | Met as an approximation; real semantic search needs the backend |
+| CCS-123 Fuzzy matching | Done | "skul" finds skull (17), "mediacl instruments" finds medical | Met |
+| CCS-158 Spelling suggestions | Done | Replaced in practice by the "close spellings" notice; the old "Did you mean" link no longer appears for typos like "harpp" | Met in effect; the explicit link was dropped |
+
+**4. User-facing stories not Done: what the prototype does**
+
+| Story | Prototype today | Gap |
+|---|---|---|
+| CCS-20, 38 Filters | 24 facets in the Filters modal including Theme, Licence, Film and gaming classification, Cultural affiliation; digital-only switch (47 records) | Indigenous labels not approved; Jira still says New |
+| CCS-21 Sensitivity notices | Banner and usage notice work | Only 2 records carry an advisory (data) |
+| CCS-22 UoM ID | "UoM ID CA-nnnnnn" on every record page | Met; Jira says New |
+| CCS-25 Persistent URLs | Link to the museum's own record where the data supplies one | Data-dependent |
+| CCS-41 Digital assets only | Switch returns 47 of 728 | Met; Jira says New |
+| CCS-44, 66, 166 Classification / formats | Rating badge (for example "General (G)") on film records | No View + Download, no authorised-user gating, few rated records |
+| CCS-47 Contact us, record view | Six request types in a dialog | Nothing is sent (needs a backend) |
+| CCS-51 WCAG 2.1 AA | Automated axe test on 30 page states plus 320px reflow, all passing | No formal manual audit |
+| CCS-64 Image aspect | 357 images checked by test | Met |
+| CCS-65 Formats | Images and PDF viewer in the code | No audio or video asset present, and no PDF is matched to a record |
+| CCS-69 Not licensed | Hidden-media state exists and is tested | No record is "Not licensed" (data) |
+| CCS-124 No-results message | "No records match your search" with advice | Met; Jira says New |
+| CCS-143 Search history | Recent searches in the overlay, plus Save this search | Met; daily grouping is CCS-206 (post-2026) |
+| CCS-157 Hero image | Hero on home and collection pages | Met; Jira says New |
+| CCS-217 Collection asset details | Record page with grouped metadata | Met; Jira says New |
+| CCS-233 Contact static page | Contact page redesigned, with form | Met |
+| CCS-294 to 299 Home pages | Home plus five museum pages | No requirement text in Jira to check against |
+
+**5. Where Jira status and the prototype disagree**
+- Built but Jira says New: CCS-20, 22, 25, 38, 41, 47 (UI part), 64, 124, 143, 157, 217, 233, 294 to 299.
+- Jira says Done but the real thing is not there: CCS-116 (thesaurus only), CCS-70 (list actions need CCS-46, post-2026).
+
+**6. Remaining real gaps for the 2026 MVP (all need data, approval or a backend, not more front-end work)**
+1. Advisory, rating, caption, Not-licensed and PDF data from the collection teams (CCS-21, 27, 44, 66, 69, 65).
+2. Indigenous labels and subject area, pending cultural approval (CCS-20, 38).
+3. A backend to send requests (CCS-47) and real semantic search (CCS-116).
+4. A formal WCAG 2.1 AA audit with a person and assistive technology (CCS-51).
+5. Download and authorised-user access (CCS-44, 66, 166).
+
 ## Open Items For Follow-Up
 
 1. **Re-verify, not assumed**: CCS-21 (sensitivity notifications), CCS-47 (contact-us record view), CCS-64 (item 4 — image aspect ratio), CCS-65 (audio/video/PDF format handling), CCS-68/69/166 (request-to-use/view flows) — these were asserted "implemented" in the prior version of this document without the same rigor applied to the items above; they should get the same live-code verification treatment before being marked confirmed.
