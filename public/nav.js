@@ -4,11 +4,25 @@
 (function () {
   var NAV = '.ccs-nav--header';
 
+  // Mobile drill-in: the header title becomes the chosen section's name (as on the UniMelb header), restored on Back / Close
+  function syncTitle() {
+    var title = document.querySelector(NAV + ' .ccs-nav__title');
+    if (!title) return;
+    var open = document.querySelector(NAV + ' .ccs-nav__trigger[aria-expanded="true"]');
+    if (open && window.matchMedia('(max-width: 1023px)').matches) {
+      if (!title.hasAttribute('data-home-label')) title.setAttribute('data-home-label', title.textContent);
+      title.textContent = open.textContent.replace(/\s+/g, ' ').trim();
+    } else if (title.hasAttribute('data-home-label')) {
+      title.textContent = title.getAttribute('data-home-label'); title.removeAttribute('data-home-label');
+    }
+  }
+
   function closePanels(except) {
     document.querySelectorAll(NAV + ' .ccs-nav__trigger[aria-expanded="true"]').forEach(function (t) {
       if (t === except) return;
       t.setAttribute('aria-expanded', 'false');
     });
+    syncTitle();
   }
 
   var BACK = '<svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 5 8 12 15 19"/></svg>Back';
@@ -36,7 +50,7 @@
     if (back) {
       var panel = back.closest('.ccs-nav__panel');
       var trig = panel && panel.previousElementSibling;
-      if (trig) { trig.setAttribute('aria-expanded', 'false'); trig.focus(); }
+      if (trig) { trig.setAttribute('aria-expanded', 'false'); syncTitle(); trig.focus(); }
       return;
     }
     var t = e.target.closest && e.target.closest(NAV + ' .ccs-nav__trigger');
@@ -45,6 +59,7 @@
       var open = t.getAttribute('aria-expanded') === 'true';
       closePanels(t);
       t.setAttribute('aria-expanded', open ? 'false' : 'true');
+      syncTitle();
       return;
     }
     var m = e.target.closest && e.target.closest(NAV + ' .ccs-nav__menu');

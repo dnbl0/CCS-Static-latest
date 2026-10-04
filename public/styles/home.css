@@ -125,15 +125,15 @@
   .ccs-nav__primary > ul > li:not(:has(.ccs-nav__trigger[aria-expanded="true"])):has(~ li .ccs-nav__trigger[aria-expanded="true"]),
   .ccs-nav__primary:has(.ccs-nav__trigger[aria-expanded="true"]) > ul > li:not(:has(.ccs-nav__trigger[aria-expanded="true"])) { display: none; }
   .ccs-nav__trigger[aria-expanded="true"] { display: none; }
-  .ccs-nav__back { display: flex; align-items: center; gap: 8px; width: 100%; min-height: 63px; padding: 16px; border: 0; border-bottom: 1px solid #404b74; background: none; font: inherit; font-size: 16px; font-weight: 600; line-height: 24px; color: #fff; text-align: left; cursor: pointer; }
+  .ccs-nav__back { display: flex; align-items: center; gap: 8px; width: 100%; min-height: 59px; padding: 16px; border: 0; border-bottom: 1px solid #404b74; background: none; font: inherit; font-size: 16px; font-weight: 600; line-height: 24px; color: #fff; text-align: left; cursor: pointer; }
   .ccs-nav__back:hover { text-decoration: underline; }
-  .ccs-nav__back svg { flex: none; width: 24px; height: 24px; fill: none; stroke: var(--blue-400, #47c8f0); stroke-width: 2.4; stroke-linecap: square; }
+  .ccs-nav__back svg { flex: none; width: 20px; height: 20px; fill: none; stroke: var(--blue-400, #47c8f0); stroke-width: 2.4; stroke-linecap: square; }
   .ccs-nav__panel { position: static; width: auto; padding: 0; border-top: 0; box-shadow: none; }
-  .ccs-nav__panel-title { display: flex; width: 100%; min-height: 63px; padding: 16px; border-bottom: 1px solid #404b74; font-family: "Source Sans 3", sans-serif; font-size: 18px; font-weight: 600; letter-spacing: -0.18px; line-height: 24px; color: #fff; text-decoration: none; }
+  .ccs-nav__panel-title { display: flex; align-items: center; width: 100%; min-height: 57px; padding: 16px 18px; border-bottom: 1px solid #404b74; font-family: "Source Sans 3", sans-serif; font-size: 18px; font-weight: 600; letter-spacing: -0.18px; line-height: 24px; color: #fff; text-decoration: none; }
   .ccs-nav__primary .ccs-nav__panel-title img, .ccs-nav__primary .ccs-nav__panel-list img { display: none; }
   .ccs-nav__panel-list { display: block; margin: 0; padding: 0; border-top: 0; }
   .ccs-nav__panel-list li { border-bottom: 1px solid #404b74; }
-  .ccs-nav__panel-list a { min-height: 63px; padding: 16px 16px 16px 32px; align-items: center; font-size: 18px; font-weight: 600; letter-spacing: -0.18px; line-height: 24px; }
+  .ccs-nav__panel-list a { min-height: 57px; padding: 16px 16px 16px 34px; align-items: center; font-size: 18px; font-weight: 600; letter-spacing: -0.18px; line-height: 24px; }
   .ccs-nav__panel-list a[aria-current], .ccs-nav__panel-title[aria-current] { color: #fff; }
 
   /* UniMelb audience links under the list: 14px, sage, uppercase, letter-spaced */
