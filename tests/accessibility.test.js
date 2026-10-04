@@ -39,7 +39,7 @@ function serve() {
 
 const PAGES = [
   '/index.html', '/collections/index.html', '/collections/grainger-museum/index.html', '/search/search-results.html?q=kangaroo', '/search/advanced-search.html',
-  '/collections/record.html?id=10116', '/collections/record.html?id=23', '/collections/record.html?id=10004',
+  '/collections/record.html?id=10116', '/lists', '/collections/record.html?id=23', '/collections/record.html?id=10004',
   '/help/index.html', '/help/index.html?topic=faq', '/help/index.html?topic=search-tips', '/help/index.html?topic=copyright', '/help/indigenous-data.html', '/contact.html'
 ];
 
@@ -72,6 +72,16 @@ const PAGES = [
           scanned++;
           await page.keyboard.press('Escape');
           await page.waitForTimeout(400);
+        }
+        if (url === '/collections/record.html?id=10116') {
+          // the "Save to list" dialog (favourites): scan it while open; the saved record then fills the Lists page scanned next
+          await page.click('.fav-heart--labelled');
+          await page.waitForTimeout(400);
+          const dlg = await page.evaluate(async () => (await axe.run(document, { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'] } })).violations.map(v => ({ id: v.id, help: v.help, nodes: v.nodes.slice(0, 3).map(n => n.target.join(' ')) })));
+          for (const v of dlg) fail(`${url} (Save to list dialog open) @${width}px: ${v.id} (${v.help}) at ${v.nodes.join(' | ')}`);
+          scanned++;
+          await page.keyboard.press('Escape');
+          await page.waitForTimeout(200);
         }
         if (width === 1440) {
           const meta = await page.evaluate(() => ({ title: document.title, h1: document.querySelectorAll('h1').length, lang: document.documentElement.lang }));

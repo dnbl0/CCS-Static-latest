@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="/styles/shared/skip-link.css">
   <link rel="stylesheet" href="../styles/vendor/bootstrap-uom.min.css">
   <link rel="stylesheet" href="/styles/home.css">
+  <link rel="stylesheet" href="/styles/shared/favourites.css">
   <link rel="stylesheet" href="../styles/header.css">
   <script src="../blacklight-adapter.js"></script>
   <link rel="stylesheet" href="/styles/pages/record.css">
@@ -115,6 +116,7 @@
             </div>
           </li>
           <li class="ccs-nav__list-item"><a class="ccs-nav__item-link-contact" href="/contact.html">Contact</a></li>
+          <li class="ccs-nav__list-item"><a class="ccs-nav__item-link-lists" href="/lists">Lists<span class="ccs-nav__badge" data-fav-count="" data-count="0"></span></a></li>
         </ul>
         <ul class="ccs-nav__drawer-top" aria-label="University of Melbourne">
         <li class="ccs-nav__item"><a class="ccs-nav__item-link-study" href="https://study.unimelb.edu.au">Study</a></li>
@@ -241,6 +243,7 @@
 <section class="page-banner page-banner--compact" aria-label="Page banner">
   <div class="page-banner__inner">
     <h1 class="page-banner__heading">{{ pageTitle }}</h1>
+    <sc-if value="{{ found }}" hint-placeholder-val="{{ true }}"><button type="button" class="fav-heart fav-heart--labelled" data-fav-id="{{ rec.id }}" data-fav-title="{{ rec.title }}" aria-haspopup="dialog" aria-label="Add to list"><svg class="fav-heart__icon" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20.5s-7.5-4.6-9.3-9.4C1.6 8 3.4 5 6.5 5c2 0 3.5 1.1 4.5 2.6h2C14 6.1 15.5 5 17.5 5c3.1 0 4.9 3 3.8 6.1-1.8 4.8-9.3 9.4-9.3 9.4z" stroke-width="2" stroke-linejoin="round"/></svg><span class="fav-heart__text fav-heart__text--off">Add to list</span><span class="fav-heart__text fav-heart__text--on">Saved</span></button></sc-if>
   </div>
 </section>
 
@@ -472,6 +475,7 @@
       <div class="record-related-items__group record-related-items__group--v1">
         <sc-for list="{{ related }}" as="r" hint-placeholder-count="4">
           <article class="record-related-items__article">
+            <button type="button" class="fav-heart fav-heart--card" data-fav-id="{{ r.id }}" data-fav-title="{{ r.title }}" aria-haspopup="dialog" aria-label="Add to list"><svg class="fav-heart__icon" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20.5s-7.5-4.6-9.3-9.4C1.6 8 3.4 5 6.5 5c2 0 3.5 1.1 4.5 2.6h2C14 6.1 15.5 5 17.5 5c3.1 0 4.9 3 3.8 6.1-1.8 4.8-9.3 9.4-9.3 9.4z" stroke-width="2" stroke-linejoin="round"/></svg></button>
             <sc-if value="{{ r.hasImg }}" hint-placeholder-val="{{ false }}">
               <a class="record-article__link record-article__link--v1" href="{{ r.href }}"><img class="record-article__link-image" src="{{ r.img }}" alt="{{ r.title }}"></a>
             </sc-if>
@@ -810,5 +814,6 @@ class Component extends DCLogic {
 
 
   <script src="/nav.js"></script>
+  <script src="/favourites.js"></script>
 </body>
 </html>
