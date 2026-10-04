@@ -9,6 +9,7 @@
 <script src="../blacklight-adapter.js"></script>
 <script src="../collection-data.js"></script>
 <script src="/search/smart-search.js"></script>
+<script src="/search-bar.js"></script>
 <script src="../licence-badge.js"></script>
 <link rel="stylesheet" href="/styles/shared/skip-link.css">
   <link rel="stylesheet" href="../styles/vendor/bootstrap-uom.min.css">
@@ -224,57 +225,7 @@
     <p class="page-banner__desc">{{ bannerLine }}</p>
   <div class="search-results-bar__search">
     <div class="search-results-bar__search-inner ccs-hero__search">
-      <form class="search-results-search-tools__form-bar-submit" role="search" onSubmit="{{ barSubmit }}">
-      <div class="search-results-form__group">
-        <sc-if value="{{ hasQ }}">
-          <button class="search-results-form__button-clear-q" type="button" onClick="{{ clearQ }}" aria-label="Remove search term"><span class="search-results-form__button-text">{{ qTag }}</span><svg class="search-results-form__button-icon search-results-form__button-icon--styled" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.6"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg></button>
-        </sc-if>
-        <input class="search-results-form__input-side-q" value="{{ sideQ }}" onChange="{{ onSideQ }}" onKeyDown="{{ barKey }}" onFocus="{{ openSug }}" onClick="{{ openSug }}" onBlur="{{ closeSugSoon }}" role="combobox" aria-expanded="{{ sugOpen }}" aria-controls="search-suggestions" aria-autocomplete="list" aria-label="Search the collection" placeholder="{{ barPlaceholder }}">
-      </div>
-      <div class="search-results-form__group-scope" ref="{{ scopeRef }}">
-        <button class="search-results-form__button-toggle-scope" type="button" onClick="{{ toggleScope }}" aria-haspopup="listbox" aria-expanded="{{ scopeOpen }}" aria-label="Search in collection">{{ scopeLabel }}<svg class="search-results-form__button-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-        <sc-if value="{{ scopeOpen }}">
-          <div class="search-results-search" role="listbox" aria-multiselectable="true" aria-label="Search in collection">
-            <sc-for list="{{ scopeOpts }}" as="o"><button class="search-results-search__button-pick" type="button" role="option" aria-selected="{{ o.sel }}" onClick="{{ o.pick }}" style="--dyn-background:{{ o.bg }}"><span class="search-results-search__check" aria-hidden="true"></span><span class="search-results-search__label">{{ o.label }}</span></button></sc-for>
-          </div>
-        </sc-if>
-      </div>
-      <button class="search-results-form__button search-results-form__button--styled" type="submit" aria-label="Search"><img class="search-results-form__button-image" src="/images/home/icon-search-button.svg" alt="" width="24" height="24"></button>
-      <sc-if value="{{ sugOpen }}">
-        <div class="search-results-search-suggestions" id="search-suggestions" role="listbox" aria-label="Search suggestions and recent history">
-          <sc-if value="{{ hasHistory }}">
-            <div class="search-results-search-suggestions__group search-results-search-suggestions__group--v2">
-              <span class="search-results-search-suggestions__text search-results-search-suggestions__text--v2">
-                <svg class="search-results-search-suggestions__text-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>Recent Searches
-              </span>
-              <button class="search-results-search-suggestions__button-clear-history" type="button" onMouseDown="{{ clearHistory }}" aria-label="Clear all recent searches">Clear all</button>
-            </div>
-            <sc-for list="{{ historyItems }}" as="h">
-              <div class="search-results-search-suggestions__group search-results-search-suggestions__group--v1" style="--dyn-background:{{ h.bg }}">
-                <button class="search-results-search-suggestions__button-pick search-results-search-suggestions__button-pick--v2" type="button" role="option" aria-selected="{{ h.sel }}" onMouseDown="{{ h.pick }}">
-                  <svg class="search-results-search-suggestions__button-icon search-results-search-suggestions__button-icon--styled" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6b7080" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                  <span class="search-results-search-suggestions__button-text search-results-search-suggestions__button-text--v2">{{ h.text }}</span>
-                </button>
-                <button class="search-results-search-suggestions__button-remove" type="button" aria-label="Remove '{{ h.text }}' from search history" onMouseDown="{{ h.remove }}" title="Remove from history">
-                  <svg class="search-results-search-suggestions__button-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                </button>
-              </div>
-            </sc-for>
-          </sc-if>
-          <sc-if value="{{ hasSugs }}">
-            <div class="search-results-search-suggestions__group search-results-search-suggestions__group--v3" style="--dyn-border-top:{{ sugsTopBorder }}">
-              <span class="search-results-search-suggestions__text search-results-search-suggestions__text--v1">Suggested Terms</span>
-            </div>
-            <sc-for list="{{ sugs }}" as="g">
-              <button class="search-results-search-suggestions__button-pick search-results-search-suggestions__button-pick--v1" type="button" role="option" aria-selected="{{ g.sel }}" onMouseDown="{{ g.pick }}" style="--dyn-background:{{ g.bg }}">
-                <span class="search-results-search-suggestions__button-text search-results-search-suggestions__button-text--v2">{{ g.text }}</span>
-                <span class="search-results-search-suggestions__button-text search-results-search-suggestions__button-text--v1">{{ g.cat }}</span>
-              </button>
-            </sc-for>
-          </sc-if>
-        </div>
-      </sc-if>
-    </form>
+      <div class="search-results-bar__search-host" ref="{{ bannerHostRef }}"></div>
       <button class="search-results-search-tools__link-advanced-search" type="button" onClick="{{ toggleAdv }}" aria-expanded="{{ advOpen }}" aria-controls="search-advanced-panel"><svg class="search-results-search-tools__link-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.5" y1="15.5" x2="21" y2="21"></line></svg>{{ advToggleLabel }}</button>
       <sc-if value="{{ advOpen }}">
         <div class="search-results-adv-panel" id="search-advanced-panel">
@@ -288,18 +239,7 @@
 <div class="search-results-sentinel" ref="{{ sentinelRef }}" aria-hidden="true"></div>
 <div class="search-results-bar {{ barCls }}" role="region" aria-label="Search and results tools">
   <div class="search-results-bar__tools">
-    <form class="search-results-bar__compact" aria-label="Search while scrolling" onSubmit="{{ barSubmit }}">
-      <input class="search-results-bar__compact-input" value="{{ sideQ }}" onChange="{{ onSideQ }}" aria-label="Search the collection" placeholder="{{ barPlaceholder }}">
-      <div class="search-results-form__group-scope search-results-bar__compact-scope" ref="{{ scopeRef2 }}">
-        <button class="search-results-form__button-toggle-scope" type="button" onClick="{{ toggleScope2 }}" aria-haspopup="listbox" aria-expanded="{{ scopeOpen2 }}" aria-label="Search in collection">{{ scopeLabel }}<svg class="search-results-form__button-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-        <sc-if value="{{ scopeOpen2 }}">
-          <div class="search-results-search" role="listbox" aria-multiselectable="true" aria-label="Search in collection">
-            <sc-for list="{{ scopeOpts }}" as="o"><button class="search-results-search__button-pick" type="button" role="option" aria-selected="{{ o.sel }}" onClick="{{ o.pick }}" style="--dyn-background:{{ o.bg }}"><span class="search-results-search__check" aria-hidden="true"></span><span class="search-results-search__label">{{ o.label }}</span></button></sc-for>
-          </div>
-        </sc-if>
-      </div>
-      <button class="search-results-bar__compact-button" type="submit" aria-label="Search"><img src="/images/home/icon-search-button.svg" alt="" width="24" height="24"></button>
-    </form>
+    <div class="search-results-bar__compact" ref="{{ compactHostRef }}"></div>
     <div class="search-results-bar__count">
       <div class="search-results-summary__group search-results-summary__group--v4">
         <sc-if value="{{ loading }}"><span class="search-results-summary__text search-results-summary__text--v2"></span></sc-if>
@@ -951,23 +891,10 @@ function saveSearchHistory(term) {
     sessionStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(list));
   } catch (e) {}
 }
-function removeSearchHistoryItem(term) {
-  try {
-    let list = getSearchHistory();
-    list = list.filter(item => item.toLowerCase() !== (term || '').toLowerCase());
-    sessionStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(list));
-  } catch (e) {}
-}
-function clearSearchHistory() {
-  try {
-    sessionStorage.removeItem(SEARCH_HISTORY_KEY);
-  } catch (e) {}
-}
-
 class Component extends DCLogic {
-  state = { stuck: false, advOpen: false, advH: '420px', f:EMPTYF(), loading:false, view:null, sideQ:'', modal:false, mFind:'', draft:null, mOpen:{coll:true,type:true,date:true}, fq:{}, more:{}, sortOpen:false, perPage:20, ppOpen:false, page:1, scopeOpen:false, sugOpen:false, sugIdx:-1, yIn:null, yErr:'', counting:false, ackOpen:false, vw: typeof window !== 'undefined' ? window.innerWidth : 1200, liveItems: null, liveTotal: null, liveError: null };
+  state = { stuck: false, advOpen: false, advH: '420px', f:EMPTYF(), loading:false, view:null, modal:false, mFind:'', draft:null, mOpen:{coll:true,type:true,date:true}, fq:{}, more:{}, sortOpen:false, perPage:20, ppOpen:false, page:1, yIn:null, yErr:'', counting:false, ackOpen:false, vw: typeof window !== 'undefined' ? window.innerWidth : 1200, liveItems: null, liveTotal: null, liveError: null };
   trackRef = React.createRef(); bodyRef = React.createRef(); sortRef = React.createRef(); ppRef = React.createRef(); mainRef = React.createRef();
-  sentinelRef = React.createRef(); scopeRef = React.createRef(); scopeRef2 = React.createRef(); dialogRef = React.createRef(); filterBtnRef = React.createRef(); ackRef = React.createRef();
+  sentinelRef = React.createRef(); bannerHostRef = React.createRef(); compactHostRef = React.createRef(); dialogRef = React.createRef(); filterBtnRef = React.createRef(); ackRef = React.createRef();
   dom = { lo: 1700, hi: 2030 };
 
   async fetchLive(f, page, perPage) {
@@ -991,6 +918,7 @@ class Component extends DCLogic {
   }
 
   componentDidMount() {
+    this.syncBars();
     // the search and tools bar is sticky; when it sticks to the top it switches to its compact layout
     try {
       const sentinel = this.sentinelRef.current;
@@ -1004,9 +932,9 @@ class Component extends DCLogic {
     window.addEventListener('message', this.onAdvMsg);
     this.onMove = e => this.move(e);
     this.onUp = () => { this.drag = null; };
-    this.onKey = e => { if (e.key === 'Escape') { if (this.state.ackOpen) this.closeAck(); else if (this.state.modal) this.closeModal(); this.setState({ sugOpen: false, scopeOpen: false, scopeOpen2: false }); } };
+    this.onKey = e => { if (e.key === 'Escape') { if (this.state.ackOpen) this.closeAck(); else if (this.state.modal) this.closeModal(); } };
     this.onDown = e => { const s = this.state, out = r => r.current && !r.current.contains(e.target);
-      const u = {}; if (s.sortOpen && out(this.sortRef)) u.sortOpen = false; if (s.ppOpen && out(this.ppRef)) u.ppOpen = false; if (s.scopeOpen && out(this.scopeRef)) u.scopeOpen = false; if (s.scopeOpen2 && out(this.scopeRef2)) u.scopeOpen2 = false; if (Object.keys(u).length) this.setState(u); };
+      const u = {}; if (s.sortOpen && out(this.sortRef)) u.sortOpen = false; if (s.ppOpen && out(this.ppRef)) u.ppOpen = false; if (Object.keys(u).length) this.setState(u); };
     this.onResize = () => this.setState({ vw: window.innerWidth });
     window.addEventListener('pointerdown', this.onDown); window.addEventListener('pointermove', this.onMove);
     window.addEventListener('pointerup', this.onUp); window.addEventListener('keydown', this.onKey); window.addEventListener('resize', this.onResize);
@@ -1032,6 +960,30 @@ class Component extends DCLogic {
       this.fetchLive(initF || this.state.f, 1, this.state.perPage);
     }
   }
+  // The two search bars (banner and sticky) are the shared search-bar.js component, built into empty host elements so a
+  // re-render of this template never touches them; syncBars() re-creates one if its host was replaced and refreshes
+  // the menu label, active-search chip and placeholder after every state change.
+  runQ = q => { this.apply(ff => ({ ...ff, q })); };
+  mountBars() {
+    const B = window.CCSSearchBar; if (!B) return;
+    if (!this.bars) this.bars = [];
+    [this.bannerHostRef, this.compactHostRef].forEach(ref => {
+      const host = ref.current; if (!host || host._ccsBar) return;
+      this.bars.push(B.create(host, {
+        className: 'ccs-searchbar--hero',
+        scope: { get: () => this.state.f.collection, set: arr => this.apply(ff => ({ ...ff, collection: arr, named: [] })) },
+        onSubmit: q => this.runQ(q),
+        onInput: v => this.bars.forEach(b => b.setValue(v)),
+        filterTerm: t => this.state.f.scope === 'all' || t.sc === this.state.f.scope,
+        placeholder: () => this.state.f.q ? 'Search for something else' : 'Search, or use "quotes" for an exact phrase',
+        chip: host === this.bannerHostRef.current ? () => { const f = this.state.f; return f.q ? (f.scope !== 'all' ? SCOPES.find(x => x[0] === f.scope)[1] + ': ' : '') + f.q.toUpperCase() : ''; } : null,
+        onClearChip: () => this.apply(ff => ({ ...ff, q: '' }))
+      }));
+    });
+  }
+  syncBars() { this.mountBars(); (this.bars || []).forEach(b => b.sync()); }
+  componentDidUpdate() { this.syncBars(); }
+
   componentWillUnmount() {
     window.removeEventListener('pointerdown', this.onDown); window.removeEventListener('pointermove', this.onMove);
     window.removeEventListener('pointerup', this.onUp); window.removeEventListener('keydown', this.onKey); window.removeEventListener('resize', this.onResize);
@@ -1314,52 +1266,6 @@ class Component extends DCLogic {
       const m = this.mainRef.current;
       if (m) window.scrollTo({ top: m.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
     };
-    const q2 = s.sideQ.trim().toLowerCase();
-    const rawHistory = getSearchHistory();
-    const recentList = !q2
-      ? rawHistory.slice(0, 8)
-      : rawHistory.filter(item => item.toLowerCase().includes(q2)).slice(0, 5);
-    const sugList = q2.length >= 2
-      ? TERMS.filter(t => (f.scope === 'all' || t.sc === f.scope) && t.text.toLowerCase().includes(q2)).slice(0, 6)
-      : [];
-
-    const combinedItems = [
-      ...recentList.map(t => ({ type: 'history', text: t })),
-      ...sugList.map(t => ({ type: 'sug', text: t.text, cat: t.cat }))
-    ];
-
-    const runQ = q => {
-      saveSearchHistory(q);
-      this.setState({ sideQ: '', sugOpen: false, sugIdx: -1 });
-      this.apply(ff => ({ ...ff, q }));
-    };
-
-    const historyItems = recentList.map((term, i) => ({
-      text: term,
-      sel: i === s.sugIdx,
-      bg: i === s.sugIdx ? '#e3f4fb' : '#fff',
-      pick: e => { e.preventDefault(); runQ(term); },
-      remove: e => {
-        e.preventDefault();
-        e.stopPropagation();
-        removeSearchHistoryItem(term);
-        this.setState({ sugIdx: -1 });
-      }
-    }));
-
-    const sugs = sugList.map((t, i) => {
-      const idx = recentList.length + i;
-      return {
-        text: t.text,
-        cat: t.cat,
-        sel: idx === s.sugIdx,
-        bg: idx === s.sugIdx ? '#e3f4fb' : '#fff',
-        pick: e => { e.preventDefault(); runQ(t.text); }
-      };
-    });
-
-    const hasHistory = historyItems.length > 0;
-    const hasSugs = sugs.length > 0;
 
     // CCS-158/288/292/293: only offer a spelling correction once a search has
     // genuinely come back with zero results for a real query (matches the
@@ -1382,31 +1288,11 @@ class Component extends DCLogic {
         } catch (e) {}
         this.setState({ savedFlash: true }); clearTimeout(this._sf); this._sf = setTimeout(() => this.setState({ savedFlash: false }), 1800);
       },
-      sideQ: s.sideQ, onSideQ: e => this.setState({ sideQ: e.target.value, sugOpen: true, sugIdx: -1 }),
-      scopeRef: this.scopeRef, scopeOpen: s.scopeOpen, toggleScope: () => this.setState(st => ({ scopeOpen: !st.scopeOpen })),
-      scopeRef2: this.scopeRef2, scopeOpen2: s.scopeOpen2, toggleScope2: () => this.setState(st => ({ scopeOpen2: !st.scopeOpen2 })),
-      scopeLabel: f.collection.length === 1 ? f.collection[0] : f.collection.length > 1 ? f.collection.length + ' collections' : 'All collections',
-      scopeOpts: [['', 'All collections'], ...HIER.map(h => [h.name, h.name])].map(([v, label]) => { const sel = v ? f.collection.includes(v) : !f.collection.length; return { label, sel, bg: sel ? '#b3e5f5' : '#fff', pick: () => this.apply(ff => ({ ...ff, collection: !v ? [] : ff.collection.includes(v) ? ff.collection.filter(c => c !== v) : [...ff.collection, v], named: [] })) }; }),
-      sugOpen: s.sugOpen && (hasHistory || hasSugs),
-      openSug: () => this.setState({ sugOpen: true, sugIdx: -1 }),
-      closeSugSoon: () => { clearTimeout(this.bt); this.bt = setTimeout(() => this.setState({ sugOpen: false, sugIdx: -1 }), 160); },
-      hasHistory,
-      historyItems,
-      clearHistory: e => {
-        e.preventDefault();
-        e.stopPropagation();
-        clearSearchHistory();
-        this.setState({ sugIdx: -1 });
-      },
-      hasSugs,
-      sugsTopBorder: hasHistory ? '1px solid var(--col-border-neutral-mid)' : '0',
-      sugs,
       setGrid: () => this.setState({ view: 'masonry' }), setList: () => this.setState({ view: 'list' }),
       gridBg: view === 'masonry' ? '#c8d5c0' : '#fff', listBg: view === 'list' ? '#c8d5c0' : '#fff', isMasonry: view === 'masonry', isListView: view === 'list',
-      barCls: s.stuck ? 'is-stuck' : '', sentinelRef: this.sentinelRef,
+      barCls: s.stuck ? 'is-stuck' : '', sentinelRef: this.sentinelRef, bannerHostRef: this.bannerHostRef, compactHostRef: this.compactHostRef,
       bannerLine: f.q ? n + (n === 1 ? ' result for ' : ' results for ') + '“' + f.q + '”' : 'Explore artworks, objects, manuscripts, photographs and recordings held across the University of Melbourne\'s cultural collections.',
-      titleText: 'Showing ' + n + ' ' + (n === 1 ? 'result' : 'results'), hasQ: !!f.q, qTag: (f.scope !== 'all' ? SCOPES.find(x => x[0] === f.scope)[1] + ': ' : '') + (f.q || '').toUpperCase(),
-      clearQ: () => this.apply(ff => ({ ...ff, q: '' })),
+      titleText: 'Showing ' + n + ' ' + (n === 1 ? 'result' : 'results'),
       advHref: advancedFormHref(f), advOpen: s.advOpen, advSrc: advancedFormHref(f) + (advancedFormHref(f).includes('?') ? '&' : '?') + 'embed=1', advH: s.advH, advToggleLabel: s.advOpen ? 'Hide advanced search' : 'Advanced Search', toggleAdv: () => this.setState(st => ({ advOpen: !st.advOpen })), filterCount: (chips.length + (f.digital ? 1 : 0)) || null, filterBtnRef: this.filterBtnRef,
       ppRef: this.ppRef, ppOpen: s.ppOpen, ppChev: s.ppOpen ? 'rotate(180deg)' : 'none', togglePP: () => this.setState(st => ({ ppOpen: !st.ppOpen })),
       rangeLabel: n ? 'Showing ' + ((page - 1) * s.perPage + 1) + '–' + Math.min(page * s.perPage, n) + ' records' : 'Showing 0 records',
@@ -1419,26 +1305,6 @@ class Component extends DCLogic {
       prevColor: page > 1 ? 'var(--col-bg-primary)' : '#c3c6cd',
       nextBg: page < pageCount ? '#c8d5c0' : '#e4e7ec', nextColor: page < pageCount ? 'var(--col-bg-primary)' : '#9aa1af', nextCursor: page < pageCount ? 'pointer' : 'default',
       toTop: () => window.scrollTo({ top: 0, behavior: 'smooth' }),
-      barPlaceholder: f.q ? 'Search for something else' : 'Search, or use "quotes" for an exact phrase',
-      barSubmit: e => {
-        e.preventDefault();
-        if (s.sugOpen && s.sugIdx >= 0 && combinedItems[s.sugIdx]) {
-          return runQ(combinedItems[s.sugIdx].text);
-        }
-        const q = s.sideQ.trim();
-        if (q) runQ(q);
-      },
-      barKey: e => {
-        if (e.key === 'ArrowDown' && combinedItems.length) {
-          e.preventDefault();
-          this.setState(st => ({ sugOpen: true, sugIdx: Math.min(combinedItems.length - 1, st.sugIdx + 1) }));
-        } else if (e.key === 'ArrowUp' && combinedItems.length) {
-          e.preventDefault();
-          this.setState(st => ({ sugIdx: Math.max(-1, st.sugIdx - 1) }));
-        } else if (e.key === 'Backspace' && !s.sideQ && f.q) {
-          this.apply(ff => ({ ...ff, q: '' }));
-        }
-      },
       ppOpts: [20, 40, 60].map(v => ({ label: v + ' per page', sel: s.perPage === v, bg: s.perPage === v ? '#b3e5f5' : '#fff', pick: () => { this.setState({ ppOpen: false, perPage: v }); this.apply(ff => ff); } })),
       switches: [['Digital asset', 'digital']].map(([label, k]) => { const on = f[k]; return { label, on, toggle: () => this.apply(ff => ({ ...ff, [k]: !ff[k] })),
         trackBg: on ? 'var(--col-bg-primary)' : '#c3c6cd', knobLeft: on ? '18px' : '2px' }; }),

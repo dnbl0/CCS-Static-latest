@@ -3,6 +3,13 @@
 // the browser session (same sessionStorage key as the results page), suggested terms drawn from the records,
 // arrow-key / Enter / Esc navigation, and a submit that opens the results page with ?q=…&collection=….
 // Without JavaScript the form still works as a plain ?q= search.
+//
+// Pages that run the search themselves (the results page) pass options to mount()/create():
+//   scope:       { get() -> [collection names], set([names]) }  the page owns which collections are selected
+//   onSubmit:    (q, scope) -> run the search in place instead of opening the results page
+//   chip:        () -> text of the active-search chip ('' for none);  onClearChip() removes it (also on Backspace in an empty box)
+//   placeholder: () -> placeholder text;  filterTerm: (term) -> keep this suggestion?;  onInput: (value) -> typed text changed
+// mount() returns { sync(), setValue(v) }: call sync() after the page state changes so the menu label, chip and placeholder follow.
 (function () {
   const SCOPES = [['all', 'All collections'], ['Medical History Museum', 'Medical History Museum'], ['University Art Collection', 'University Art Collection'], ['Grainger Museum Collection', 'Grainger Museum Collection'], ['Henry Forman Atkinson Dental Museum', 'Henry Forman Atkinson Dental Museum'], ['Harry Brookes Allen Museum of Anatomy and Pathology', 'Harry Brookes Allen Museum of Anatomy and Pathology']];
   const HISTORY_KEY = 'ccs-search-history';   // shared with /search/search-results.html
@@ -32,11 +39,13 @@
   }
 
   let uid = 0;
-  function mount(form) {
-    if (form.dataset.ready) return; form.dataset.ready = '1';
+  function mount(form, opts) {
+    if (form.dataset.ready) return form._ccsBar; form.dataset.ready = '1'; opts = opts || {};
     const input = form.querySelector('input[name="q"]'); if (!input) return;
     const id = 'ccs-sb-' + (++uid);
-    let scope = new URLSearchParams(location.search).getAll('collection').filter(v => SCOPES.some(s => s[0] === v && v !== 'all'));
+    let local = new URLSearchParams(location.search).getAll('collection').filter(v => SCOPES.some(s => s[0] === v && v !== 'all'));
+    const getScope = () => (opts.scope ? opts.scope.get() : local) || [];
+    const setScope = a => { if (opts.scope) opts.scope.set(a); else local = a; paintScope(); };
     let items = [], idx = -1;
 
     form.classList.add('ccs-searchbar');
@@ -44,7 +53,17 @@
     form.setAttribute('autocomplete', 'off');
     input.setAttribute('role', 'combobox'); input.setAttribute('aria-expanded', 'false');
     input.setAttribute('aria-controls', id); input.setAttribute('aria-autocomplete', 'list');
-    input.setAttribute('placeholder', 'Search, or use "quotes" for an exact phrase');
+    const DEFAULT_PLACEHOLDER = 'Search, or use "quotes" for an exact phrase';
+    input.setAttribute('placeholder', opts.placeholder ? opts.placeholder() : DEFAULT_PLACEHOLDER);
+
+    // active-search chip (results page): shows what is being searched, click or Backspace in an empty box removes it
+    let chip = null, chipText = null;
+    if (opts.chip) {
+      chip = document.createElement('button'); chip.type = 'button'; chip.className = 'ccs-searchbar__chip'; chip.setAttribute('aria-label', 'Remove search term');
+      chip.innerHTML = '<span class="ccs-searchbar__chip-text"></span><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.6" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg>';
+      chipText = chip.firstChild; chip.hidden = true; form.insertBefore(chip, input);
+      chip.addEventListener('click', () => { if (opts.onClearChip) opts.onClearChip(); input.focus(); });
+    }
 
     // scope menu
     const scopeWrap = document.createElement('div'); scopeWrap.className = 'ccs-searchbar__scope';
@@ -53,6 +72,7 @@
     const scopeBtn = scopeWrap.querySelector('button'), menu = scopeWrap.querySelector('.ccs-searchbar__menu');
     const chev = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>';
     const paintScope = () => {
+      const scope = getScope();
       scopeBtn.innerHTML = (scope.length === 1 ? scope[0] : scope.length > 1 ? scope.length + ' collections' : 'All collections') + chev;
       menu.innerHTML = SCOPES.map(([v, l]) => `<button type="button" role="option" aria-selected="${v === 'all' ? !scope.length : scope.includes(v)}" data-v="${v}"><span class="ccs-searchbar__check" aria-hidden="true"></span><span>${l}</span></button>`).join('');
     };
@@ -60,7 +80,7 @@
     const closeScope = () => { menu.hidden = true; scopeBtn.setAttribute('aria-expanded', 'false'); };
     scopeBtn.addEventListener('click', () => { const open = menu.hidden; menu.hidden = !open; scopeBtn.setAttribute('aria-expanded', String(open)); if (open) closeSug(); });
     menu.addEventListener('mousedown', e => e.preventDefault());   // keep focus where it is so the menu stays open while ticking
-    menu.addEventListener('click', e => { const b = e.target.closest('button[data-v]'); e.stopPropagation(); if (!b) return; const v = b.dataset.v; scope = v === 'all' ? [] : scope.includes(v) ? scope.filter(x => x !== v) : [...scope, v]; paintScope(); });
+    menu.addEventListener('click', e => { const b = e.target.closest('button[data-v]'); e.stopPropagation(); if (!b) return; const v = b.dataset.v, scope = getScope(); setScope(v === 'all' ? [] : scope.includes(v) ? scope.filter(x => x !== v) : [...scope, v]); });
     // the collection menu sits just left of the search button
     form.insertBefore(scopeWrap, form.querySelector('button[type="submit"]'));
 
@@ -73,7 +93,7 @@
     function build() {
       const q = input.value.trim().toLowerCase(), all = history.get();
       const recent = !q ? all.slice(0, 8) : all.filter(t => t.toLowerCase().includes(q)).slice(0, 5);
-      const sugs = q.length >= 2 ? terms().filter(t => t.text.toLowerCase().includes(q)).slice(0, 6) : [];
+      const sugs = q.length >= 2 ? terms().filter(t => (!opts.filterTerm || opts.filterTerm(t)) && t.text.toLowerCase().includes(q)).slice(0, 6) : [];
       items = [...recent.map(t => ({ type: 'history', text: t })), ...sugs.map(t => ({ type: 'sug', text: t.text, cat: t.cat }))];
       let html = '';
       if (recent.length) {
@@ -94,17 +114,19 @@
     function go(term) {
       const q = (term || '').trim(); if (!q) { input.focus(); return; }
       history.save(q);
-      const p = new URLSearchParams({ q }); scope.forEach(c => p.append('collection', c));
+      if (opts.onSubmit) { input.value = ''; if (opts.onInput) opts.onInput(''); closeSug(); opts.onSubmit(q, getScope()); return; }
+      const p = new URLSearchParams({ q }); getScope().forEach(c => p.append('collection', c));
       location.href = RESULTS + '?' + p.toString();
     }
 
     input.addEventListener('focus', () => { closeScope(); build(); });
     input.addEventListener('click', () => { closeScope(); build(); });
-    input.addEventListener('input', () => { idx = -1; build(); });
+    input.addEventListener('input', () => { idx = -1; build(); if (opts.onInput) opts.onInput(input.value); });
     input.addEventListener('keydown', e => {
       if (e.key === 'ArrowDown' && items.length) { e.preventDefault(); idx = Math.min(items.length - 1, idx + 1); build(); }
       else if (e.key === 'ArrowUp' && items.length) { e.preventDefault(); idx = Math.max(-1, idx - 1); build(); }
       else if (e.key === 'Escape') { closeSug(); closeScope(); }
+      else if (e.key === 'Backspace' && !input.value && chip && !chip.hidden && opts.onClearChip) opts.onClearChip();
     });
     // mousedown (not click) so a pick lands before the input loses focus
     panel.addEventListener('mousedown', e => {
@@ -119,9 +141,31 @@
     });
     document.addEventListener('click', e => { if (!form.contains(e.target)) { closeSug(); closeScope(); } });
     form.addEventListener('focusout', e => { if (!form.contains(e.relatedTarget)) { closeSug(); closeScope(); } });
+
+    function sync() {
+      paintScope();
+      if (chip) { const t = opts.chip() || ''; chip.hidden = !t; chipText.textContent = t; }
+      if (opts.placeholder) input.setAttribute('placeholder', opts.placeholder());
+    }
+    sync();
+    return (form._ccsBar = { sync, setValue(v) { if (input.value !== v) input.value = v; } });
+  }
+
+  // Builds the whole search form inside an empty host element, then mounts it. Hosts stay empty in the page's own
+  // template so a re-render by the page never touches (or removes) what is built here.
+  function create(host, opts) {
+    opts = opts || {};
+    if (host._ccsBar) return host._ccsBar;
+    const form = document.createElement('form');
+    form.setAttribute('role', 'search');
+    if (opts.className) form.className = opts.className;
+    form.innerHTML = '<input type="text" name="q" aria-label="Search the collection">' +
+      '<button type="submit" aria-label="Search"><img src="/images/home/icon-search-button.svg" alt="" width="24" height="24"></button>';
+    host.appendChild(form);
+    return (host._ccsBar = mount(form, opts));
   }
 
   function init() { document.querySelectorAll('form[data-ccs-searchbar]').forEach(mount); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
-  window.CCSSearchBar = { mount, history };
+  window.CCSSearchBar = { mount, create, history };
 })();

@@ -1580,6 +1580,12 @@ ccs-licence[data-dismissed] .licence-badge__tip { visibility: hidden; opacity: 0
 /* Search bar enhancement (see /search-bar.js) — same look and behaviour as the search results page bar */
 .ccs-searchbar { position: relative; display: flex; align-items: stretch; width: 100%; max-width: 640px; height: 56px; background: #fff; border: 1px solid #fff; }
 .ccs-searchbar:focus-within { border-color: var(--col-bg-primary, #000f46); box-shadow: 0 0 0 3px rgba(70, 200, 240, 0.45); }
+.ccs-searchbar__chip { flex: none; display: flex; align-items: center; gap: 6px; align-self: center; max-width: 150px; margin-left: 10px; padding: 4px 8px; border: 0; background: var(--col-bg-accent-soft, #e3e9df); color: var(--col-bg-primary, #000f46); font: inherit; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; cursor: pointer; }
+.ccs-searchbar__chip[hidden] { display: none; }
+.ccs-searchbar__chip:hover { background: #cbd7c2; }
+.ccs-searchbar__chip-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ccs-searchbar__chip svg { flex: none; }
+.ccs-searchbar__chip:not([hidden]) + input[name="q"] { padding-left: 10px; }
 .ccs-searchbar__scope { position: relative; flex: none; display: flex; }
 .ccs-searchbar__scope-btn { display: flex; align-items: center; gap: 8px; height: 100%; max-width: 200px; padding: 0 14px; border: 0; border-left: 1px solid var(--col-border-neutral-mid, #d9d6cf); overflow: hidden; text-overflow: ellipsis; background: #f4f5f8; color: var(--col-bg-primary, #000f46); font: inherit; font-size: 14px; font-weight: 600; white-space: nowrap; cursor: pointer; }
 .ccs-searchbar__menu { position: absolute; right: -1px; left: auto; top: calc(100% + 1px); z-index: 60; min-width: 220px; max-width: min(340px, 90vw); display: flex; flex-direction: column; background: #fff; border: 1px solid var(--col-bg-primary, #000f46); }
