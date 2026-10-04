@@ -6,7 +6,8 @@
 (function(window) {
   'use strict';
 
-  const DEFAULT_ENDPOINT = 'https://ead-ccs-test.app.unimelb.edu.au/catalog.json';
+  // Same-origin, free stand-in served by api/catalog.js. Use ?endpoint=<url> (or CCS_CONFIG.apiEndpoint) to point at a real Blacklight server, e.g. https://ead-ccs-test.app.unimelb.edu.au/catalog.json
+  const DEFAULT_ENDPOINT = '/catalog.json';
   const STORAGE_KEY = 'ccs_api_mode'; // 'mock' | 'live'
 
   const BlacklightAdapter = {
