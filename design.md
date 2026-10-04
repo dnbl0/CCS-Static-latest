@@ -1066,11 +1066,16 @@ Gen 3's accordion is borderless, shadowless, sharp-cornered, with a hairline top
 | 1.0 | 2026-09-29 | Initial design system documentation |
 
 ### Search results banner and sticky tools bar (2026-10-04)
+- Fix: the search form now lives permanently in the banner. The sticky bar holds only the tools plus a compact search box that appears when stuck, so its height no longer flips between a tall and a short layout while scrolling. The smart-search notices sit in their own full-width row (`.search-results-notices`) above the results grid.
+- The `.ccs-hero__search` layout (form with a link stacked under it) lives in `public/styles/shared/hero-search.css`, loaded by the homepage and the search results page.
 - The results page banner is now compact (title plus a "N results for “query”" line). The search form sits inside the banner on the navy strip.
 - Below it, one sticky `.search-results-bar` holds Sort, Filters, the Digital asset switch, the view toggle and Save this search. An IntersectionObserver sentinel adds `is-stuck` once the banner scrolls away. When stuck, the search box stays visible next to the tools on desktop and tablet.
 - On phones the bar stacks: search, then Sort | Filters, then Digital asset | view | Save (icon only). When stuck it shrinks to the search row plus Sort | Filters | Digital.
 - The per-page selector moved to sit above the pagination. CSS lives in `public/styles/pages/search-results.css`.
 - Follow-up: banner and search strip padding increased; the search form reuses the homepage `ccs-hero__search` wrapper (full width, Advanced Search underneath). When stuck, Advanced Search is hidden, the bar is one row from 1280px and two rows below, and all controls are 48px tall.
+- Scope menu and suggestions now open over the sticky bar (banner z-index above it).
+- The banner's Advanced Search link is now a toggle ("Advanced Search" / "Hide advanced search") that opens the advanced form inline: an iframe of `/search/advanced-search?embed=1` pre-filled with the current search, auto-sized through a `postMessage` of its height. In `?embed=1` mode the page hides the header, breadcrumbs, banner, help and footer and uses compact spacing (`html.is-embed` rules in `styles/advanced-filters.css`); submitting targets the top window.
+- Advanced Search page: heading renamed "Advanced Search" (banner, breadcrumb, test), "Add filter" label is light on the dark desktop field (dark on the sage phone field), and Reset / Search sit at the right.
 
 ---
 

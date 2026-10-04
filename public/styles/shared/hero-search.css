@@ -1,0 +1,4 @@
+/* Hero search block: a search form with a link (Advanced Search) stacked underneath.
+   Shared by the homepage hero and the search results banner so the two cannot drift. */
+.ccs-hero__search { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+.ccs-hero__search form { width: 100%; margin: 0; }

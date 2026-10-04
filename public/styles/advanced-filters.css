@@ -36,8 +36,8 @@
 .ccs-adv__stack { display: flex; flex-direction: column; gap: 24px; }
 .ccs-adv__sort { display: flex; flex-direction: column; gap: 4px; max-width: 288px; }
 .ccs-adv__label { font-size: 18px; font-weight: 600; line-height: 27px; color: var(--brand-1100, #000f46); }
-.ccs-adv__actions { display: flex; gap: 16px; width: 100%; max-width: 342px; margin-left: auto; }
-.ccs-adv__actions > * { flex: 1 1 0; min-width: 0; }
+.ccs-adv__actions { display: flex; justify-content: flex-end; gap: 16px; width: 100%; }
+.ccs-adv__actions > * { flex: 0 0 auto; min-width: 140px; }
 
 .ccs-field-row { display: flex; align-items: center; gap: 24px; margin: 0; padding: 0; border: 0; min-width: 0; }
 .ccs-field-row__controls { flex: 1; min-width: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-items: start; }
@@ -119,7 +119,7 @@ ul.ccs-combo__menu > .ccs-combo__option { list-style: none; }
 .ccs-combo--add .ccs-combo__field { height: 48px; background: var(--input-fill-down-inverse, #002535); border: 1px solid var(--input-stroke-default, #000f46); color: var(--text-primary-inverse, #f4f4f4); }
 .ccs-combo--add .ccs-combo__field:hover { background: var(--input-fill-hover-inverse, #003b57); }
 .ccs-combo--add .ccs-combo__field:active { background: var(--input-fill-selected-inverse, #004a6b); }
-.ccs-combo--add .ccs-combo__value { color: var(--text-primary-inverse, #f4f4f4); }
+.ccs-combo--add .ccs-combo__value, .ccs-combo--add.is-complete .ccs-combo__value { color: var(--text-primary-inverse, #f4f4f4); }
 .ccs-combo--add .ccs-combo__icon { border-left: 0; width: 48px; }
 .ccs-combo--add .ccs-combo__icon img { filter: brightness(0) invert(1); }
 .ccs-combo--add .ccs-combo__field:focus-visible { outline-color: var(--brand-1100, #000f46); }
@@ -179,7 +179,8 @@ ul.ccs-combo__menu > .ccs-combo__option { list-style: none; }
   .ccs-btn--add:active { background: var(--sage-200, #d9e3d8); }
   .ccs-btn--add span { padding: 0 4px 0 0; }
   .ccs-btn--add img { filter: none; }
-  .ccs-adv__actions { flex-direction: column; max-width: none; }
+  .ccs-adv__actions { flex-direction: column; }
+  .ccs-adv__actions > * { min-width: 0; }
 }
 
 .ccs-delete { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0; border: 0; background: none; font: inherit; font-size: 14px; font-weight: 600; line-height: 20px; color: var(--interactive-800, #003f8b); cursor: pointer; white-space: nowrap; }
@@ -209,3 +210,22 @@ ul.ccs-combo__menu > .ccs-combo__option { list-style: none; }
 .ccs-instructions__desc { padding-left: 28px; font-size: 18px; line-height: 1.5; color: var(--text-primary, #222); }
 .ccs-instructions code { font-family: "Source Code Pro", ui-monospace, Menlo, monospace; font-size: 0.9em; color: var(--brand-1100, #000f46); background: rgba(0, 15, 70, 0.06); padding: 0 4px; }
 @media (max-width: 1023px) { .ccs-instructions { max-width: none; } }
+
+/* ---- Embedded in the search results page (?embed=1): compact, no site chrome ---------------------- */
+html.is-embed body { background: #fff; }
+html.is-embed .skip-link, html.is-embed .ccs-nav--header, html.is-embed .uom-search-popover, html.is-embed .page-breadcrumbs,
+html.is-embed .ccs-banner, html.is-embed .ccs-instructions, html.is-embed .ccs-nav--footer { display: none; }
+html.is-embed .advanced-filters-page__group { min-height: 0; }
+html.is-embed .ccs-page__body { display: block; padding: 24px; }
+html.is-embed .ccs-adv { gap: 24px; }
+html.is-embed .ccs-adv__box, html.is-embed .ccs-adv__stack { gap: 16px; }
+html.is-embed .ccs-adv__heading { font-size: 20px; }
+@media (min-width: 900px) {
+  html.is-embed .adv-term { flex-direction: row; align-items: center; gap: 24px; }
+  html.is-embed .adv-term .ccs-field-row__controls { grid-template-columns: 1fr 1fr 2fr; }
+  html.is-embed .adv-term .ccs-field-row__controls > :nth-child(3) { grid-column: auto; }
+}
+/* "Add filter" is sage on phones, so its label stays dark there (light only on the dark desktop field) */
+@media (max-width: 767px) {
+  .ccs-combo--add .ccs-combo__value, .ccs-combo--add.is-complete .ccs-combo__value { color: var(--brand-1100, #000f46); }
+}
