@@ -1616,3 +1616,33 @@ body.page-search-results .search-results-article__image-classification {
   width: 28px;
   height: 28px;
 }
+
+body.page-search-results .search-results-smart {
+  margin: 0 0 24px;
+}
+
+body.page-search-results .search-results-smart__text {
+  margin: 0 0 8px;
+}
+
+body.page-search-results .search-results-smart__list {
+  margin: 0 0 12px;
+  padding-left: 20px;
+}
+
+body.page-search-results .search-results-smart__button {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-weight: 600;
+  color: #003f8b;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+body.page-search-results .search-results-article__text--match {
+  font-size: 13px;
+  font-weight: 600;
+  color: #5b6070;
+}

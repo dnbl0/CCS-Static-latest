@@ -280,6 +280,16 @@ The CCS 2026 filter holds 82 stories. The Remarks field says "Feasibility 2026: 
 5. Real-content review of alt text: viewer images use the record title; descriptive alt text from the collections would be better.
 6. A formal audit by the University accessibility team, which is the only valid basis for a conformance claim.
 
+## CCS-116 semantic and CCS-123 fuzzy search without a backend (2026-10-03)
+
+Built in the browser in `public/search/smart-search.js` (tests: `tests/smart-search.test.js`). It is a prototype approximation, not the production search service.
+
+- **Fuzzy (CCS-123):** a word that is not in the catalogue vocabulary (4,400 words) is matched to close words using edit distance with transpositions (one edit up to 8 letters, two beyond; the first letter must match), and the last word also matches as a prefix, so partial phrases work. "kangeroo" finds kangaroo records; "mediacl instruments" finds medical instruments.
+- **Semantic (CCS-116):** everyday words are expanded through a curated vocabulary (about 30 synonym groups and 20 broad-to-specific groups: "tooth" reaches dental, "pottery" reaches ceramic and porcelain, "fiddle" reaches violin, "xray" reaches radiograph, "instrument" reaches harp and piano) and, for words with no curated entry, terms that strongly co-occur with them in the records. Specific words are not widened to their siblings: a harp search does not return violins.
+- **Ranking and transparency:** exact matches (title first) rank before close spellings, then related meanings; each non-exact card is labelled "Close spelling" or "Related meaning"; a notice explains what was widened and offers "Show exact matches only" (also `?exact=1`).
+- **Never widened:** quoted phrases and AND / OR / NOT queries stay exact.
+- **Limits:** this is vocabulary-and-statistics based, not a language model. It cannot answer questions ("who treats babies"), understand context or rank by meaning. The curated vocabulary is small and should be extended by the collection teams; the real service (CCS-116 backend) should replace it. Jira still marks CCS-116 as Done, which the production search must back up.
+
 ## Open Items For Follow-Up
 
 1. **Re-verify, not assumed**: CCS-21 (sensitivity notifications), CCS-47 (contact-us record view), CCS-64 (item 4 — image aspect ratio), CCS-65 (audio/video/PDF format handling), CCS-68/69/166 (request-to-use/view flows) — these were asserted "implemented" in the prior version of this document without the same rigor applied to the items above; they should get the same live-code verification treatment before being marked confirmed.
