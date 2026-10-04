@@ -63,6 +63,16 @@ const PAGES = [
         const violations = await page.evaluate(async () => (await axe.run(document, { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'] } })).violations.map(v => ({ id: v.id, help: v.help, nodes: v.nodes.slice(0, 3).map(n => n.target.join(' ')) })));
         scanned++;
         for (const v of violations) fail(`${url} @${width}px: ${v.id} (${v.help}) at ${v.nodes.join(' | ')}`);
+        if (url.indexOf('/search/search-results') === 0) {
+          // the Filters modal is part of this page: scan it while open too
+          await page.click('.search-results-search-tools__button-filter-btn');
+          await page.waitForTimeout(700);
+          const open = await page.evaluate(async () => (await axe.run(document, { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'] } })).violations.map(v => ({ id: v.id, help: v.help, nodes: v.nodes.slice(0, 3).map(n => n.target.join(' ')) })));
+          for (const v of open) fail(`${url} (Filters modal open) @${width}px: ${v.id} (${v.help}) at ${v.nodes.join(' | ')}`);
+          scanned++;
+          await page.keyboard.press('Escape');
+          await page.waitForTimeout(400);
+        }
         if (width === 1440) {
           const meta = await page.evaluate(() => ({ title: document.title, h1: document.querySelectorAll('h1').length, lang: document.documentElement.lang }));
           if (meta.h1 !== 1) fail(`${url}: expected one h1, found ${meta.h1}`);

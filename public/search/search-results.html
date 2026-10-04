@@ -456,20 +456,36 @@
 <sc-if value="{{ modal }}">
   <div class="search-results-page__group search-results-page__group--v2" onClick="{{ closeModal }}" style="--dyn-padding:{{ overlayPad }}">
     <div class="search-results-filters-title" ref="{{ dialogRef }}" role="dialog" aria-modal="true" aria-labelledby="filters-title" data-dc-plain-interp onClick="{{ stop }}" onKeyDown="{{ trapKey }}" style="--dyn-max-height:{{ dlgMaxH }}">
-      <div class="search-results-filters-title__group search-results-filters-title__group--v6">
-        <button class="search-results-filters-title__button-toggle-all-sections" onClick="{{ toggleAllSections }}">{{ allSectionsLabel }}</button>
+      <div class="search-results-filters-title__header">
         <h2 class="search-results-filters-title__heading" id="filters-title">Filters</h2>
-        <button class="search-results-filters-title__button-close-modal" onClick="{{ closeModal }}" aria-label="Close filters">
-          <svg class="search-results-filters-title__button-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><line x1="5" y1="5" x2="19" y2="19"></line><line x1="19" y1="5" x2="5" y2="19"></line></svg>
+        <button class="search-results-filters-title__button-close-modal" onClick="{{ closeModal }}">
+          <svg class="search-results-filters-title__button-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><line x1="4" y1="4" x2="20" y2="20"></line><line x1="20" y1="4" x2="4" y2="20"></line></svg>
+          <span class="search-results-filters-title__button-label">Close</span>
         </button>
       </div>
+      <div class="search-results-filters-title__toolbar">
+        <label class="search-results-filters-title__find">
+          <span class="sr-only">Find a filter</span>
+          <input class="search-results-filters-title__find-input" type="search" placeholder="Find a filter, for example date or material" value="{{ findText }}" onChange="{{ onFind }}" autocomplete="off">
+        </label>
+        <button class="search-results-filters-title__button-toggle-all-sections" onClick="{{ toggleAllSections }}">{{ allSectionsLabel }}</button>
+      </div>
       <div class="search-results-filters-title__group-body" ref="{{ bodyRef }}" style="--dyn-padding:{{ bodyPad }}">
+        <sc-if value="{{ hasDraftChips }}">
+          <div class="filters-selected" role="group" aria-label="Selected filters">
+            <h3 class="filters-selected__title">Selected ({{ draftChipCount }})</h3>
+            <ul class="filters-selected__list">
+              <sc-for list="{{ draftChips }}" as="c"><li class="filters-selected__item"><button type="button" class="filters-selected__chip" onClick="{{ c.remove }}" aria-label="Remove {{ c.group }}: {{ c.label }}"><span class="filters-selected__group">{{ c.group }}:</span> {{ c.label }} <span aria-hidden="true">×</span></button></li></sc-for>
+            </ul>
+          </div>
+        </sc-if>
         <div class="search-results-filters-title__group search-results-filters-title__group--v5">
           <div class="search-results-filters-title__group search-results-filters-title__group--v2">
             <span class="search-results-filters-title__text search-results-filters-title__text--v2">Show only</span>
             <div class="search-results-filters-title__group search-results-filters-title__group--v3"><sc-for list="{{ dSwitches }}" as="sw" hint-placeholder-count="2"><button class="search-results-filters-title__button-toggle" onClick="{{ sw.toggle }}" role="switch" aria-checked="{{ sw.on }}"><span class="search-results-filters-title__button-text" style="--dyn-background:{{ sw.trackBg }}"><span class="search-results-filters-title__text search-results-filters-title__text--v3" style="--dyn-left:{{ sw.knobLeft }}"></span></span>{{ sw.label }}</button></sc-for></div>
           </div>
         </div>
+        <sc-if value="{{ noSections }}"><p class="filters-empty" role="status">No filters match “{{ findText }}”. <button type="button" class="filters-empty__button" onClick="{{ clearFind }}">Clear search</button></p></sc-if>
         <sc-for list="{{ sections }}" as="sec" hint-placeholder-count="8">
           <section class="search-results-filters-title__section">
             <button class="search-results-section__button-toggle search-results-section__button-toggle--v3" onClick="{{ sec.toggle }}" aria-expanded="{{ sec.open }}" aria-controls="{{ sec.panelId }}">
@@ -922,7 +938,7 @@ function clearSearchHistory() {
 }
 
 class Component extends DCLogic {
-  state = { f:EMPTYF(), loading:false, view:null, sideQ:'', modal:false, draft:null, mOpen:{coll:true,type:true,date:true}, fq:{}, more:{}, sortOpen:false, perPage:20, ppOpen:false, page:1, scopeOpen:false, sugOpen:false, sugIdx:-1, yIn:null, yErr:'', counting:false, ackOpen:false, vw: typeof window !== 'undefined' ? window.innerWidth : 1200, liveItems: null, liveTotal: null, liveError: null };
+  state = { f:EMPTYF(), loading:false, view:null, sideQ:'', modal:false, mFind:'', draft:null, mOpen:{coll:true,type:true,date:true}, fq:{}, more:{}, sortOpen:false, perPage:20, ppOpen:false, page:1, scopeOpen:false, sugOpen:false, sugIdx:-1, yIn:null, yErr:'', counting:false, ackOpen:false, vw: typeof window !== 'undefined' ? window.innerWidth : 1200, liveItems: null, liveTotal: null, liveError: null };
   trackRef = React.createRef(); bodyRef = React.createRef(); sortRef = React.createRef(); ppRef = React.createRef(); mainRef = React.createRef();
   scopeRef = React.createRef(); dialogRef = React.createRef(); filterBtnRef = React.createRef(); ackRef = React.createRef();
   dom = { lo: 1700, hi: 2030 };
@@ -1077,8 +1093,9 @@ class Component extends DCLogic {
     const d = s.draft || s.f;
     const dN = ITEMS.filter(it => this.matchF(it, d)).length;
     const cc = this.cnt(d, 'coll', 'collection'), cn = this.cnt(d, 'coll', 'named');
+    const find = (s.mFind || '').trim().toLowerCase();
     const sections = FACETS.map((F, fi) => {
-      const k = F.key, open = !!s.mOpen[k], q = (s.fq[k] || '').toLowerCase(), more = !!s.more[k];
+      const k = F.key, open = !!s.mOpen[k] || !!find, q = (s.fq[k] || '').toLowerCase(), more = !!s.more[k];
       let options = [], selected = [];
       if (F.kind === 'tree') {
         HIER.forEach(hh => {
@@ -1105,6 +1122,7 @@ class Component extends DCLogic {
         chev: open ? 'rotate(180deg)' : 'none', toggle: () => this.setState(st => ({ mOpen: { ...st.mOpen, [k]: !st.mOpen[k] } })),
         isChips: false, isRows: F.kind === 'list' || F.kind === 'tree' || F.kind === 'chips', isDate: F.kind === 'date', isText: F.kind === 'text', isLife: F.kind === 'life',
         search: !!F.search, q: s.fq[k] || '', onQ: e => { const v = e.target.value; this.setState(st => ({ fq: { ...st.fq, [k]: v } })); }, searchLabel: 'Search ' + F.title.toLowerCase() + '…',
+        matchText: find ? (F.title + ' ' + F.group + ' ' + options.map(o => o.label).join(' ')).toLowerCase() : '',
         options: more ? options : options.slice(0, limit), empty: F.kind !== 'date' && F.kind !== 'text' && F.kind !== 'life' && options.length === 0,
         hasMore: options.length > limit, moreLabel: more ? 'Show fewer' : 'Show all ' + options.length, toggleMore: () => this.setState(st => ({ more: { ...st.more, [k]: !st.more[k] } })),
         accessionVal: d.accession || '', onAccession: e => { const v = e.target.value; this.setDraft(dd => ({ ...dd, accession: v })); },
@@ -1117,7 +1135,17 @@ class Component extends DCLogic {
     });
     // Hide facets that have no values at all in the dataset (e.g. digital-asset access, still 'tbd' in the CCS Filters sheet) instead of showing an empty section.
     const sectionsVisible = sections.filter(sec => !(sec.empty && !sec.search && !sec.isDate && !sec.isText && !sec.isLife) || sec.badge);
-    sectionsVisible.forEach((sec, i) => { sec.groupStart = i === 0 || sectionsVisible[i - 1].group !== sec.group; });
+    const sectionsShown = find ? sectionsVisible.filter(sec => sec.matchText.includes(find)) : sectionsVisible;
+    sectionsShown.forEach((sec, i) => { sec.groupStart = i === 0 || sectionsShown[i - 1].group !== sec.group; });
+    // Selected filters inside the panel (the draft), each removable without leaving the panel
+    const dChips = [];
+    ['collection', ...KEYS].forEach(k => (d[k] || []).forEach(v => dChips.push({ group: k === 'collection' ? 'Collection' : LABELS[k], label: v, remove: () => this.setDraft(dd => this.tog(dd, k, v)) })));
+    if (d.digital) dChips.push({ group: 'Show only', label: 'Has digital asset', remove: () => this.setDraft(dd => ({ ...dd, digital: false })) });
+    if (d.downloadable) dChips.push({ group: 'Show only', label: 'Only records with downloads', remove: () => this.setDraft(dd => ({ ...dd, downloadable: false })) });
+    if (d.yFrom != null || d.yTo != null) dChips.push({ group: 'Production date', label: (d.yFrom ?? 'Any') + ' – ' + (d.yTo ?? 'Present'), remove: () => this.setDraft(dd => ({ ...dd, yFrom: null, yTo: null })) });
+    if (d.accession) dChips.push({ group: 'Accession number', label: d.accession, remove: () => this.setDraft(dd => ({ ...dd, accession: '' })) });
+    if (d.birthFrom != null || d.birthTo != null) dChips.push({ group: 'Creator birth years', label: (d.birthFrom ?? 'Any') + ' – ' + (d.birthTo ?? 'Any'), remove: () => this.setDraft(dd => ({ ...dd, birthFrom: null, birthTo: null })) });
+    if (d.deathFrom != null || d.deathTo != null) dChips.push({ group: 'Creator death years', label: (d.deathFrom ?? 'Any') + ' – ' + (d.deathTo ?? 'Any'), remove: () => this.setDraft(dd => ({ ...dd, deathFrom: null, deathTo: null })) });
     // production-date slider: fixed scale, 10-year bars (first bar = "before 1710", last = 2020+)
     const LO = DATE_LO, HI = DATE_HI, span = HI - LO, nBins = Math.ceil(span / DATE_BIN);
     this.dom = { lo: LO, hi: HI };
@@ -1151,7 +1179,9 @@ class Component extends DCLogic {
       this.setState({ yIn: null, yErr: '' }); this.setDraft(dd => ({ ...dd, yFrom: f1, yTo: t1 })); };
     const sheet = s.vw < 640, allOpen = FACETS.every(F => s.mOpen[F.key]);
     return {
-      sections: sectionsVisible, dSwitches: [sw('Has digital asset', 'digital'), sw('Only records with downloads', 'downloadable')],
+      sections: sectionsShown, noSections: sectionsShown.length === 0, findText: s.mFind || '', onFind: e => { const v = e.target.value; this.setState({ mFind: v }); },
+      clearFind: () => this.setState({ mFind: '' }), hasFind: !!find, draftChips: dChips, hasDraftChips: dChips.length > 0, draftChipCount: dChips.length,
+      dSwitches: [sw('Has digital asset', 'digital'), sw('Only records with downloads', 'downloadable')],
       dateNote: undated ? undated + ' record' + (undated === 1 ? ' has' : 's have') + ' no production date and ' + (undated === 1 ? 'is' : 'are') + ' left out when a range is set.' : 'Records without a production date are left out when a range is set.',
       dateSummary, bins,
       rangeLeft: pct(from), rangeRight: pct(to), rangeWidth: ((to - from) / span) * 100 + '%', domLo: String(LO), domHi: String(HI), domLoLabel: LO + ' or earlier', fromYear: String(from), toYear: String(to),
@@ -1169,9 +1199,9 @@ class Component extends DCLogic {
       hasDateRange: hasRange, clearYears: () => { this.setState({ yIn: null, yErr: '' }); this.setDraft(dd => ({ ...dd, yFrom: null, yTo: null })); },
       overlayPad: sheet ? '0' : '32px 16px', dlgRadius: '0', dlgMaxH: sheet ? 'none' : '860px', bodyPad: sheet ? '20px' : '32px',
       allSectionsLabel: allOpen ? 'Collapse all' : 'Expand all',
-      toggleAllSections: () => this.setState({ mOpen: Object.fromEntries(FACETS.map(F => [F.key, !allOpen])) }),
+      toggleAllSections: () => this.setState({ mFind: '', mOpen: Object.fromEntries(FACETS.map(F => [F.key, !allOpen])) }),
       trapKey: this.makeTrapKey(this.dialogRef),
-      clearColor: draftActive ? 'var(--col-text-primary)' : '#a3a7b0', counting: s.counting, zeroDraft: !s.counting && dN === 0,
+      clearColor: draftActive ? 'var(--col-text-primary)' : '#5b6070', counting: s.counting, zeroDraft: !s.counting && dN === 0,
       clearDraft: () => this.setDraft(dd => ({ ...EMPTYF(), sort: dd.sort, q: dd.q, scope: dd.scope })),
       showLabel: s.counting ? 'Updating…' : dN ? 'Show ' + dN + ' ' + (dN === 1 ? 'record' : 'records') : 'No records match',
       applyDisabled: s.counting || dN === 0, applyBg: (s.counting || dN === 0) ? '#8a93a8' : 'var(--col-btn-action-bg)', applyColor: (s.counting || dN === 0) ? '#fff' : 'var(--col-btn-action-text)', applyCursor: (s.counting || dN === 0) ? 'default' : 'pointer',
