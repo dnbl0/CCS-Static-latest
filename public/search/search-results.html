@@ -10,7 +10,6 @@
 <script src="../collection-data.js"></script>
 <script src="/search/smart-search.js"></script>
 <script src="/search-bar.js"></script>
-<script src="../licence-badge.js"></script>
 <link rel="stylesheet" href="/styles/vendor/bootstrap-uom.min.css">
 <link rel="stylesheet" href="/styles/tokens/figma.css">
 <link rel="stylesheet" href="/styles/tokens/uom-ds.css">
@@ -22,9 +21,7 @@
 <link rel="stylesheet" href="/styles/components/page-banner.css">
 <link rel="stylesheet" href="/styles/components/search-bar.css">
 <link rel="stylesheet" href="/styles/components/hero-search.css">
-<link rel="stylesheet" href="/styles/components/licence-badge.css">
 <link rel="stylesheet" href="/styles/components/content-templates.css">
-<link rel="stylesheet" href="/styles/components/favourites.css">
 <link rel="stylesheet" href="/styles/pages/search-results.css">
 </head>
 <body class="page-search-results">
@@ -100,7 +97,6 @@
             </div>
           </li>
           <li class="ccs-nav__list-item"><a class="ccs-nav__item-link-contact" href="/contact.html">Contact</a></li>
-          <li class="ccs-nav__list-item"><a class="ccs-nav__item-link-lists" href="/lists">Lists<span class="ccs-nav__badge" data-fav-count="" data-count="0"></span></a></li>
         </ul>
         <ul class="ccs-nav__drawer-top" aria-label="University of Melbourne">
         <li class="ccs-nav__item"><a class="ccs-nav__item-link-study" href="https://study.unimelb.edu.au">Study</a></li>
@@ -348,7 +344,7 @@
         <div class="search-results-main-content__group search-results-main-content__group--v3">
           <sc-for list="{{ results }}" as="r" hint-placeholder-count="9">
             <article class="search-results-main-content__article search-results-main-content__article--v1" style="--dyn-animation-delay:{{ r.delay }}">
-              <button type="button" class="fav-heart fav-heart--card" data-fav-id="{{ r.id }}" data-fav-title="{{ r.title }}" aria-haspopup="dialog" aria-label="Add to list"><svg class="fav-heart__icon" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20.5s-7.5-4.6-9.3-9.4C1.6 8 3.4 5 6.5 5c2 0 3.5 1.1 4.5 2.6h2C14 6.1 15.5 5 17.5 5c3.1 0 4.9 3 3.8 6.1-1.8 4.8-9.3 9.4-9.3 9.4z" stroke-width="2" stroke-linejoin="round"/></svg></button>
+              
               <sc-if value="{{ r.hasImg }}" hint-placeholder-val="{{ false }}">
                 <a class="search-results-article__link search-results-article__link--v1" href="{{ r.href }}" style="--dyn-aspect-ratio:{{ r.ar }}"><img class="search-results-article__link-image search-results-article__link-image--v1" src="{{ r.imgSrc }}" alt="{{ r.title }}" decoding="async"></a>
               </sc-if>
@@ -359,7 +355,6 @@
                 <span class="search-results-article__text search-results-article__text--v5">{{ r.type }}</span>
                 <sc-if value="{{ r.matchLabel }}"><span class="search-results-article__text search-results-article__text--match">{{ r.matchLabel }}</span></sc-if>
                 <div class="search-results-article__group search-results-article__group--v1">
-                  <ccs-licence licence="{{ r.licenceKey }}"></ccs-licence>
                   <sc-if value="{{ r.webAccess }}"><span class="search-results-article__text search-results-article__text--web-access">{{ r.webAccess }}</span></sc-if>
                   <sc-if value="{{ r.ratingLogo }}"><img class="search-results-article__image-classification" src="{{ r.ratingLogo }}" alt="Classification marking: {{ r.ratingName }}" width="28" height="28"></sc-if>
                 </div>
@@ -373,7 +368,7 @@
         <div class="search-results-main-content__group search-results-main-content__group--v5">
           <sc-for list="{{ results }}" as="r" hint-placeholder-count="6">
             <article class="search-results-main-content__article search-results-main-content__article--v2" style="--dyn-gap:{{ listGap }}">
-              <button type="button" class="fav-heart fav-heart--card" data-fav-id="{{ r.id }}" data-fav-title="{{ r.title }}" aria-haspopup="dialog" aria-label="Add to list"><svg class="fav-heart__icon" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20.5s-7.5-4.6-9.3-9.4C1.6 8 3.4 5 6.5 5c2 0 3.5 1.1 4.5 2.6h2C14 6.1 15.5 5 17.5 5c3.1 0 4.9 3 3.8 6.1-1.8 4.8-9.3 9.4-9.3 9.4z" stroke-width="2" stroke-linejoin="round"/></svg></button>
+              
               <sc-if value="{{ r.hasImg }}" hint-placeholder-val="{{ false }}">
                 <a class="search-results-article__link search-results-article__link--v2" href="{{ r.href }}" style="--dyn-flex:{{ listImgSize }};--dyn-height:{{ listImgSize }}">
                   <img class="search-results-article__link-image search-results-article__link-image--v2" src="{{ r.imgSrc }}" alt="{{ r.title }}">
@@ -386,7 +381,6 @@
                   <span class="search-results-article__text search-results-article__text--v3"><span class="search-results-article__text search-results-article__text--v2">Production date</span>{{ r.dateLabel }}</span>
                   <span class="search-results-article__text search-results-article__text--v3"><span class="search-results-article__text search-results-article__text--v2">Collection</span><span class="search-results-article__text search-results-article__text--v1">{{ r.collection }}</span></span>
                   <span class="search-results-article__text search-results-article__text--v3"><span class="search-results-article__text search-results-article__text--v2">Object type</span>{{ r.type }}</span>
-                  <span class="search-results-article__text search-results-article__text--v4"><span class="search-results-article__text search-results-article__text--v2">Licence</span><ccs-licence licence="{{ r.licenceKey }}"></ccs-licence></span>
                 </div>
               </div>
             </article>
@@ -1261,10 +1255,9 @@ class Component extends DCLogic {
       if (f.sort === 'old') list = [...list].sort((a, b) => (a.dateStart ?? 1e9) - (b.dateStart ?? 1e9));
     }
     const results = list.map((it, idx) => {
-      const licenceKey = window.CCS.licences[it.licence] ? it.licence : 'Rights Reserved';
       const imgPath = it.img ? (it.img.startsWith('http') || it.img.startsWith('/') ? it.img : '../images/' + it.img + '.jpg') : null;
       return { ...it, href: '/collections/record.html?id=' + it.id, img: imgPath, imgSrc: imgPath || '', ar: it.img && RATIO[it.img] ? RATIO[it.img].join(' / ') : 'auto', delay: Math.min(idx, 12) * 35 + 'ms', hasImg: !!it.img, noImg: !it.img,
-        type: capType(it.objectType), dateLabel: it.date || (it.dateStart ? 'c. ' + it.dateStart : 'Undated'), licenceKey,
+        type: capType(it.objectType), dateLabel: it.date || (it.dateStart ? 'c. ' + it.dateStart : 'Undated'),
         matchLabel: smartKinds && smartKinds.get(it) && smartKinds.get(it).kind === 'fuzzy' ? 'Close spelling' : smartKinds && smartKinds.get(it) && smartKinds.get(it).kind === 'semantic' ? 'Related meaning' : '' };
     });
     const exactCount = smartKinds ? [...smartKinds.values()].filter(m => m.kind === 'exact').length : 0;
@@ -1366,6 +1359,5 @@ class Component extends DCLogic {
 
 
   <script src="/nav.js"></script>
-  <script src="/favourites.js"></script>
 </body>
 </html>

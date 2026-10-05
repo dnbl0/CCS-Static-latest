@@ -807,7 +807,7 @@ public/styles/
   tokens/semantic.css            --col-* semantic colours (the only place they are defined)
   base.css                       reset, body, links, skip link, focus ring, .sr-live
   components/                    ccs (nav/section/card/hero), header, breadcrumbs, page-banner, search-bar, hero-search,
-                                 campaign-banner, licence-badge, collection, content-templates, favourites
+                                 campaign-banner, licence-badge, collection, content-templates
   pages/<page>.css               per-page rules, scoped by body.page-<page>
 ```
 
