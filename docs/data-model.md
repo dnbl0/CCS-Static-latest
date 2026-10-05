@@ -25,6 +25,9 @@ Regenerate after a workbook changes: `pip install openpyxl && python3 scripts/ex
 `data-model/extensions.json` lists what the site shows beyond the workbooks, each with a reason. They need sign-off from the data owners or removal:
 filters Creator role, Object's place of production, Accession number, Theme, Cultural affiliation; record labels UoM ID (the inventory says Collection Asset ID does not display) and Caption (comes from the Complex fields sheet).
 
+## Media metadata sidebar (Field labels rows 27-30)
+Rows 27 to 30 of the Field labels sheet (Licence Type, Advisory, Terms of Use, Producer; all DAM fields) are the **media metadata sidebar / flyout** for digital assets, opened with the info button on the media viewer. They appear there only, in that order, and are omitted when empty (Licence Type and Terms of Use are always present on a digital asset). They are not in the details list or the page body: Producer was removed from the details list and Terms of use from the usage-rights block. Web access (a Nexus DAM status that is not in the Field labels sheet) stays in the usage-rights block. `tests/data-model.test.js` enforces all of this.
+
 ## Digital asset caption
 The Complex fields sheet gives the recipe for the Image Caption (DA Caption):
 `[DA Title]. [CA Date]. [CA Creator] [DOB-DOD]. [Role]. [Affiliation]. [CA Material]. [Copyright holder]. [Collection title]. [Credit line]. Image: [DA Creator]. [DA date].`
