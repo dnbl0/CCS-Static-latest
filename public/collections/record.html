@@ -251,7 +251,6 @@
   <div class="im-gate" role="region" aria-labelledby="im-gate-title">
     <h2 class="im-gate__title" id="im-gate-title">{{ gateTitle }}</h2>
     <sc-for list="{{ gateTexts }}" as="g"><p class="im-gate__text">{{ g }}</p></sc-for>
-    <sc-if value="{{ gateIsNotice }}"><button type="button" class="im-gate__button" onClick="{{ acceptNotice }}">I understand, view this item</button></sc-if>
     <sc-if value="{{ gateIsRestricted }}"><button type="button" class="im-gate__button" onClick="{{ openView }}">Request to view</button></sc-if>
   </div>
   </sc-if>
@@ -601,7 +600,7 @@
 <script type="text/x-dc" data-dc-script data-props="{&quot;record&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;12&quot;,&quot;24&quot;,&quot;16&quot;,&quot;25&quot;,&quot;23&quot;,&quot;4&quot;,&quot;21&quot;],&quot;default&quot;:&quot;12&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;showRelated&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;showCitation&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
 const ESC = s => s;
 class Component extends DCLogic {
-  state = { idx: 0, sidebar: false, full: false, dims: {}, dur: {}, broken: {}, copied: null, ready: !!window.CCS, noticeOk: null, reqData: null, req: null, reqSent: false, cite: 'apa', exportOpen: false };
+  state = { idx: 0, sidebar: false, full: false, dims: {}, dur: {}, broken: {}, copied: null, ready: !!window.CCS, reqData: null, req: null, reqSent: false, cite: 'apa', exportOpen: false };
   viewerRef = React.createRef();
   dialogRef = React.createRef();
 
@@ -652,11 +651,6 @@ class Component extends DCLogic {
   }
   componentDidUpdate(pp) { if (pp.record !== this.props.record) this.setState({ idx: 0 }); }
   focusReqTitle() { setTimeout(() => { const d = this.dialogRef.current, t = d && d.querySelector('#req-title'); if (t) t.focus(); }, 30); }
-  acceptNotice = () => {
-    const id = this.currentId;
-    try { sessionStorage.setItem('ccs-notice-' + id, '1'); } catch (e) { /* storage unavailable: acceptance lasts for this view only */ }
-    this.setState({ noticeOk: id });
-  };
   openReqAs(type, opener) {
     this.reqOpener = opener || document.activeElement;
     this.setState({ req: type, reqSent: false }); this.focusReqTitle();
@@ -717,16 +711,14 @@ class Component extends DCLogic {
     if (!R) return { licKey: 'Rights Reserved', notFound, found: false, pageTitle: notFound ? 'Record not found' : '', rec: { title: '', type: '', byline: '', citation: '', unit: '', assetId: '', hasDA: false, images: [], slides: [], subjects: [], advisories: [], rights: [] },
       fields: [], related: [], mediaRows: [], thumbs: [], noDA: false, showRelated: false, viewerRef: this.viewerRef,
       yes: true, cur: { src: '', label: '' }, curAlt: '', isImage: false, isVideo: false, isAudio: false, isPdf: false, curBroken: false, onImgLoad() {}, onMeta() {}, multi: false, imgCount: '', liveText: '',
-      prevImg() {}, nextImg() {}, firstImg() {}, lastImg() {}, jumpTo() {}, openUse() {}, openView() {}, acceptNotice() {}, caption: '', showGate: false, showMedia: true, gateTitle: '', gateTexts: [], gateIsNotice: false, gateIsRestricted: false, manyPages: false, pageNo: 1, pageOptions: [], atFirst: true, atLast: true, sidebarOpen: false, sidebarCls: 'im-sidebar', sidebarLabel: '', toggleSidebar() {}, closeSidebar() {}, fullLabel: '', toggleFull() {},
+      prevImg() {}, nextImg() {}, firstImg() {}, lastImg() {}, jumpTo() {}, openUse() {}, openView() {}, caption: '', showGate: false, showMedia: true, gateTitle: '', gateTexts: [], gateIsRestricted: false, manyPages: false, pageNo: 1, pageOptions: [], atFirst: true, atLast: true, sidebarOpen: false, sidebarCls: 'im-sidebar', sidebarLabel: '', toggleSidebar() {}, closeSidebar() {}, fullLabel: '', toggleFull() {},
             citeText: 'Copy citation', typeHref: '/search/search-results.html', collectionHref: '/search/search-results.html' };
     const slides = R.slides, idx = Math.min(s.idx, Math.max(0, slides.length - 1));
     const cur = slides[idx] || { kind: 'image', src: '', label: '' };
     const go = i => { if (i >= 0 && i < slides.length) this.setState({ idx: i }); };
     this.currentId = id;
-    let accepted = s.noticeOk === id;
-    if (!accepted) { try { accepted = sessionStorage.getItem('ccs-notice-' + id) === '1'; } catch (e) { /* ignore */ } }
-    const needsNotice = R.usageNotice.length > 0 && !accepted, restricted = R.viewRestricted;
-    const showGate = R.hasDA && (restricted || needsNotice);
+    const restricted = R.viewRestricted;
+    const showGate = R.hasDA && restricted;
     const permalinkShort = location.host + '/item/' + R.assetId;
     const dim = cur.kind === 'image' ? s.dims[cur.src] : null;
     const dur = s.dur[cur.src];
@@ -765,9 +757,9 @@ class Component extends DCLogic {
       multi: slides.length > 1, imgCount: `${idx + 1} of ${slides.length}`, liveText: slides.length > 1 ? `${kindWord} ${idx + 1} of ${slides.length}` : '',
       thumbs: slides.map((sl, i) => ({ src: sl.src, isImage: sl.kind === 'image', isVideo: sl.kind === 'video', isAudio: sl.kind === 'audio', isPdf: sl.kind === 'pdf', go: () => go(i), label: `${{ image: 'Image', video: 'Video', audio: 'Audio', pdf: 'PDF' }[sl.kind]} ${i + 1} of ${slides.length}`, current: i === idx ? 'true' : undefined })),
       caption: (slides[idx] && slides[idx].caption) || R.caption || '',
-      acceptNotice: this.acceptNotice, showGate, showMedia: !showGate, gateIsNotice: !restricted && needsNotice, gateIsRestricted: restricted,
-      gateTitle: restricted ? 'This digital asset is available on request' : 'Please read before viewing this item',
-      gateTexts: restricted ? [R.accessMessage] : R.usageNotice.concat(['By continuing you confirm that you have read this notice and will use the item respectfully.']),
+      showGate, showMedia: !showGate, gateIsRestricted: restricted,
+      gateTitle: 'This digital asset is available on request',
+      gateTexts: [R.accessMessage],
       openUse: e => this.openReqAs('use', e && e.currentTarget), openView: e => this.openReqAs('view', e && e.currentTarget),
       manyPages: slides.length > 3, pageNo: idx + 1, pageOptions: slides.map((_, i) => ({ n: i + 1, label: `${i + 1} of ${slides.length}` })),
       jumpTo: e => go(Number(e.target.value) - 1), firstImg: () => go(0), lastImg: () => go(slides.length - 1),
