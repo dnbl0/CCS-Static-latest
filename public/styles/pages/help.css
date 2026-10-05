@@ -121,3 +121,12 @@ body.page-help .ccs-help--topics .ccs-help__item:nth-child(n + 4) .ccs-help__car
     margin-top: 0;
   }
 }
+
+html{scroll-behavior:smooth}
+.help-topics-grid{grid-template-columns:repeat(3,1fr)}
+@media (max-width:900px){
+  .help-topics-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:560px){
+  .help-topics-grid{grid-template-columns:1fr}
+}

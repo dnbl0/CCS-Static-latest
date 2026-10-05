@@ -1,11 +1,21 @@
-/* Moved out of an inline <style> block (base-elements). Used by: advanced-filters, contact, indigenous-data. */
+/* Shared base elements: one copy for every page (was a separate base-elements file per page). Link it last on a page, after the token files.
+   Links are underlined by default. Pages that use plain links (underline on hover only) are listed in the :where() variants at the end,
+   which keep the specificity of a plain `a` selector so the cascade order is unchanged. */
 
 body{margin:0;background:var(--white-100);color:var(--col-text-primary);font-family:'Source Sans 3',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 a{color:#0b2a6b;text-decoration:underline;text-underline-offset:2px}a:hover{color:var(--col-bg-primary)}
 *{box-sizing:border-box}
+button,input,select{font-family:inherit}
+.sr-live{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
       .btn{border-radius:0!important}
 /* Gen3-brand overrides on top of Bootstrap defaults */
 .btn-primary{--bs-btn-bg:var(--col-btn-action-bg);--bs-btn-border-color:var(--col-btn-action-bg);--bs-btn-color:var(--col-btn-action-text);--bs-btn-hover-bg:var(--col-btn-action-bg-hover);--bs-btn-hover-border-color:var(--col-btn-action-bg-hover);--bs-btn-hover-color:var(--col-btn-action-text)}
 .card{border-color:#e3e0d9;border-radius:0}
 .fw-serif{font-family:'Fraunces',serif}
 [aria-label="University links"] a:hover{color:var(--sage-100);text-decoration:underline}
+/* Link variants. Plain links, hover colour = brand navy */
+:where(.page-collection-landing,.page-collections-browse,.page-home) a{text-decoration:none;text-underline-offset:auto}
+:where(.page-collection-landing,.page-collections-browse,.page-home) a:hover{text-decoration:underline}
+/* Plain links, hover colour = link blue */
+:where(.page-record,.page-search-results) a{text-decoration:none;text-underline-offset:auto}
+:where(.page-record,.page-search-results) a:hover{color:#0b2a6b;text-decoration:underline}

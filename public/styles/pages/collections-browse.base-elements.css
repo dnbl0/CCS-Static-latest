@@ -1,5 +1,0 @@
-/* Moved out of an inline <style> block (base-elements). Used by: collections-browse. */
-
-body{margin:0;background:var(--white-100);color:var(--col-text-primary);font-family:'Source Sans 3',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
-a{color:#0b2a6b;text-decoration:none}a:hover{color:var(--col-bg-primary);text-decoration:underline}
-*{box-sizing:border-box}
