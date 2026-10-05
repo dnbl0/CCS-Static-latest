@@ -205,12 +205,13 @@
 
 /* Section — hero banner */
 .ccs-section--hero { padding: 0; background: var(--brand-1200, #000b34); color: #fff; }
-.ccs-hero { display: flex; gap: 40px; min-height: 543px; overflow: hidden; }
-.ccs-hero__content { flex: none; display: flex; align-items: center; padding: 72px 0 96px 32px; }
+.ccs-hero { display: flex; gap: 40px; min-height: 543px; }
+/* No overflow:hidden on the hero: it clipped the search bar's collections dropdown. The image is clipped by its own box instead. */
+.ccs-hero__content { position: relative; z-index: 1; flex: none; display: flex; align-items: center; padding: 72px 0 96px 32px; }
 .ccs-hero__content > div { width: 620px; max-width: 100%; display: flex; flex-direction: column; gap: 32px; }
 .ccs-hero__title { margin: 0 0 12px; font-family: "Fraunces", serif; font-size: 48px; font-weight: 400; line-height: 1.2; letter-spacing: -0.48px; color: #fff; font-variation-settings: "SOFT" 50, "WONK" 0, "opsz" 9; }
 .ccs-hero__text { margin: 0; font-size: 18px; color: #fff; }
-.ccs-hero__media { flex: 1; min-width: 0; position: relative; }
+.ccs-hero__media { flex: 1; min-width: 0; position: relative; overflow: hidden; }
 .ccs-hero__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 @media (max-width: 1023px) {
   .ccs-hero { flex-direction: column; gap: 0; min-height: 0; }
