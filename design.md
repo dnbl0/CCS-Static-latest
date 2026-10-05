@@ -9,7 +9,7 @@
 ## Quick Reference
 
 **Files Location**: See `README.md` (Repository layout)  
-**Styles**: `public/components/fig-tokens.css`, `public/components/fig-assets.css`, `public/styles/home.css` (Navigation + Section components), `advanced-filters.css` (form components), `header.css` (search overlay + colour variables), `collection.css`, plus page-local `<style>` blocks  
+**Styles**: `public/styles/` (tokens, base, components, pages; see "CSS Files Location")  
 **Bootstrap**: `public/styles/vendor/bootstrap-uom.min.css` (5.3.3, built locally from `src/scss/custom-bootstrap.scss` with `npm run build:css`)
 
 ---
@@ -35,7 +35,7 @@
 
 All colors follow the University of Melbourne Gen 3 Design System official palette.
 
-**Where tokens live**: `public/components/fig-tokens.css` carries the Gen 3 tokens (for example `--col-heritage-100` = `rgb(0 15 70)` = #000f46, `--col-btn-action-bg: #46c8f0`). Each page also declares its own `:root` overrides in an inline `<style>` block (`--col-bg-primary`, `--col-bg-accent`, `--col-text-muted`, ...), and values differ slightly between the tables below and those blocks (for example `index.html` sets `--col-bg-primary-dark: #000b34` and `--col-bg-primary-hover: #213e5d`). Treat the page-local `:root` block as authoritative for that page. In `fig-tokens.css`, `--col-bg-accent` is a blue-dark token, whereas the pages' local `--col-bg-accent` is the sage `#abc1a7`.
+**Where tokens live**: `public/styles/tokens/figma.css` carries the Gen 3 tokens (for example `--col-heritage-100` = `rgb(0 15 70)` = #000f46, `--col-btn-action-bg: #46c8f0`). The semantic `--col-*` colours (`--col-bg-primary`, `--col-bg-accent`, `--col-text-muted`, ...) are defined once in `public/styles/tokens/semantic.css`, which loads after `figma.css` and overrides the few names both define (`--col-bg-accent` is the sage `#abc1a7` here, a blue-dark token in `figma.css`).
 
 #### Primary Colors
 
@@ -785,10 +785,8 @@ public/                              # Deployed web root
 ├── collection-data.js               # Record data -> window.CCS
 ├── nav.js                           # header dropdowns + mobile drawer
 ├── blacklight-adapter.js, support.js, image-slot.js
-├── components/                      # fig-tokens.css, fig-assets.css (+ exported .jsx/.d.ts)
-├── styles/                          # home.css, advanced-filters.css, header.css, collection.css, vendor/bootstrap-uom.min.css
-│   ├── pages/                       # <page>.css (classes moved out of inline styles) + <page>.<role>.css (former <style> blocks)
-│   └── shared/                      # skip-link.css, colour-tokens*.css, base-elements.css (blocks shared by several pages)
+├── components/                      # Figma-exported .jsx/.d.ts (reference only, not loaded)
+├── styles/                          # tokens/, base.css, components/, pages/, vendor/ (see CSS Files Location)
 ├── assets/                          # images/collections, data (audio/video, metadata), documents
 ├── images/                          # optimised web images and icons
 └── .htaccess                        # Apache redirects/rewrites
@@ -801,32 +799,44 @@ vercel.json                          # clean URLs + legacy redirects
 
 ### CSS Files Location
 
-| File | Purpose |
-|------|---------|
-| `public/components/fig-tokens.css` | Gen 3 design tokens (colour, type, spacing) and global focus styles |
-| `public/components/fig-assets.css` | Asset/component styles from the design export |
-| `public/styles/home.css` | Navigation (header/footer, UniMelb-style mobile header and drill-in drawer) and Section components, accordion, links |
-| `public/styles/advanced-filters.css` | Advanced Filters form components |
-| `public/styles/header.css` | Search overlay, `.sr-only` and shared colour variables |
-| `public/styles/pages/*.css` | Per-page rules (scoped by `body.page-<page>`); includes the former inline styles and `<style>` blocks |
-| `public/styles/shared/*.css` | Former `<style>` blocks that several pages shared |
-| `public/styles/shared/content-templates.css` | Matrix content-template components (listing, pathfinder, contact box, notice, side nav, definition table, contact cards, numbered steps); see README |
-| `public/styles/collection.css` | Collection landing pages |
-| `public/styles/vendor/bootstrap-uom.min.css` | Bootstrap 5.3.3, compiled locally |
+```
+public/styles/
+  vendor/bootstrap-uom.min.css   Bootstrap 5.3.3 compiled from src/scss (committed)
+  tokens/figma.css               GENERATED from Figma Variables: palette, type, spacing (do not hand-edit)
+  tokens/uom-ds.css              UoM Design System token defaults the header and figma.css need
+  tokens/semantic.css            --col-* semantic colours (the only place they are defined)
+  base.css                       reset, body, links, skip link, focus ring, .sr-live
+  components/                    ccs (nav/section/card/hero), header, breadcrumbs, page-banner, search-bar, hero-search,
+                                 campaign-banner, licence-badge, collection, content-templates, favourites
+  pages/<page>.css               per-page rules, scoped by body.page-<page>
+```
 
-`variables.css`, `typography.css` and `components.css` (and the top-level `styles/` and `images/` folders) were dead duplicates and have been deleted.
+| Layer | Files | Rule |
+|-------|-------|------|
+| Tokens | `tokens/figma.css` (generated), `tokens/uom-ds.css`, `tokens/semantic.css` | Colours/spacing are defined once here. Use `var(--brand-1100)`, `var(--blue-400)`, `var(--white-100)` or `var(--col-*)`; do not paste hex values that already exist as tokens. `semantic.css` loads after `figma.css` and deliberately overrides its `--col-text-primary`/`--col-bg-primary`/`--col-bg-accent`. |
+| Base | `base.css` | Element defaults only. Page-specific link treatment sits at the bottom in `:where(body.page-x)` selectors so specificity stays at element level. |
+| Components | `components/*.css` | Reusable pieces shared by pages. A page links only the components it uses. |
+| Pages | `pages/<page>.css` | Rules scoped by `body.page-<page>`. |
+| Vendor | `vendor/bootstrap-uom.min.css` | Compiled; never hand-edit. |
+
+`tests/stylesheet-structure.test.js` enforces this layout (every sheet linked, tokens/base on every page, load order tokens -> components -> pages, no colour tokens outside `tokens/`).
 
 ### Styles Import
 
+Every page links, in this order (absolute paths), then the components it needs, then its page sheet:
+
 ```html
-<link rel="stylesheet" href="styles/vendor/bootstrap-uom.min.css">
-<link rel="stylesheet" href="components/fig-tokens.css">
-<link rel="stylesheet" href="components/fig-assets.css">
-<link rel="stylesheet" href="styles/header.css">
-<link rel="stylesheet" href="styles/home.css">
+<link rel="stylesheet" href="/styles/vendor/bootstrap-uom.min.css">
+<link rel="stylesheet" href="/styles/tokens/figma.css">
+<link rel="stylesheet" href="/styles/tokens/uom-ds.css">
+<link rel="stylesheet" href="/styles/tokens/semantic.css">
+<link rel="stylesheet" href="/styles/base.css">
+<link rel="stylesheet" href="/styles/components/ccs.css">
+<link rel="stylesheet" href="/styles/components/header.css">
+<!-- ...other components... -->
+<link rel="stylesheet" href="/styles/pages/<page>.css">
 ```
 
-Paths are relative to the page (`../` prefixes on pages in subfolders). Page-specific stylesheets are linked with absolute paths (`/styles/pages/<page>.css`) after the shared sheets. Pages contain no inline `style` attributes or `<style>` blocks (see `tests/no-inline-styles.test.js`).
 
 ### Bootstrap Details
 
@@ -1075,7 +1085,7 @@ Gen 3's accordion is borderless, shadowless, sharp-cornered, with a hairline top
 
 ### Search results banner and sticky tools bar (2026-10-04)
 - Fix: the search form now lives permanently in the banner. The sticky bar holds only the tools plus a compact search box that appears when stuck, so its height no longer flips between a tall and a short layout while scrolling. The smart-search notices sit in their own full-width row (`.search-results-notices`) above the results grid.
-- The `.ccs-hero__search` layout (form with a link stacked under it) lives in `public/styles/shared/hero-search.css`, loaded by the homepage and the search results page.
+- The `.ccs-hero__search` layout (form with a link stacked under it) lives in `public/styles/components/hero-search.css`, loaded by the homepage and the search results page.
 - The results page banner is now compact (title plus a "N results for “query”" line). The search form sits inside the banner on the navy strip.
 - Below it, one sticky `.search-results-bar` holds Sort, Filters, the Digital asset switch, the view toggle and Save this search. An IntersectionObserver sentinel adds `is-stuck` once the banner scrolls away. When stuck, the search box stays visible next to the tools on desktop and tablet.
 - On phones the bar stacks: search, then Sort | Filters, then Digital asset | view | Save (icon only). When stuck it shrinks to the search row plus Sort | Filters | Digital.

@@ -1,0 +1,30 @@
+/* Semantic colour tokens (--col-*) built on the brand palette. One definition for every page.
+   Primitive palette tokens (--brand-*, --blue-*, --neutral-* ...) live in figma.css, which is generated from Figma variables. */
+
+:root{
+  --col-bg-primary:var(--brand-1100);
+  --col-bg-primary-dark:var(--brand-1200);
+  --col-bg-primary-hover:#213e5d;
+  --col-bg-surface:var(--white-100);
+  --col-bg-accent:var(--sage-400);
+  --col-bg-accent-soft:#dde5d6;
+  --col-bg-selected:#e8edf6;
+  --col-btn-primary-bg:var(--brand-1100);
+  --col-btn-primary-bg-hover:#213e5d;
+  --col-btn-primary-text:var(--white-100);
+  --col-btn-action-bg:var(--blue-400);
+  --col-btn-action-bg-hover:#29b3d9;
+  --col-btn-action-text:var(--brand-1100);
+  --col-btn-outline:var(--brand-1100);
+  --col-text-primary:#1b1f2a;
+  --col-text-onbrand:var(--white-100);
+  --col-text-muted:#5b6070;
+  --col-border-brand:var(--brand-1100);
+  --col-border-neutral:#cfcac0;
+  --col-border-neutral-soft:#ece9e3;
+  --col-border-neutral-mid:#d9d6cf;
+  --col-border-header:#b5bac9;
+  --col-advisory-bg:#fdf6d8;
+  --col-advisory-border:#efdc8e;
+  --col-advisory-text:#8a6200;
+}
