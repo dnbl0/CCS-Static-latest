@@ -16,7 +16,6 @@
 <link rel="stylesheet" href="/styles/components/breadcrumbs.css">
 <link rel="stylesheet" href="/styles/components/page-banner.css">
 <link rel="stylesheet" href="/styles/components/licence-badge.css">
-<link rel="stylesheet" href="/styles/components/favourites.css">
 <link rel="stylesheet" href="/styles/pages/record.css">
   <script src="../blacklight-adapter.js"></script>
 </head>
@@ -118,7 +117,6 @@
             </div>
           </li>
           <li class="ccs-nav__list-item"><a class="ccs-nav__item-link-contact" href="/contact.html">Contact</a></li>
-          <li class="ccs-nav__list-item"><a class="ccs-nav__item-link-lists" href="/lists">Lists<span class="ccs-nav__badge" data-fav-count="" data-count="0"></span></a></li>
         </ul>
         <ul class="ccs-nav__drawer-top" aria-label="University of Melbourne">
         <li class="ccs-nav__item"><a class="ccs-nav__item-link-study" href="https://study.unimelb.edu.au">Study</a></li>
@@ -245,7 +243,7 @@
 <section class="page-banner page-banner--compact" aria-label="Page banner">
   <div class="page-banner__inner">
     <h1 class="page-banner__heading">{{ pageTitle }}</h1>
-    <sc-if value="{{ found }}" hint-placeholder-val="{{ true }}"><button type="button" class="fav-heart fav-heart--labelled" data-fav-id="{{ rec.id }}" data-fav-title="{{ rec.title }}" aria-haspopup="dialog" aria-label="Add to list"><svg class="fav-heart__icon" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20.5s-7.5-4.6-9.3-9.4C1.6 8 3.4 5 6.5 5c2 0 3.5 1.1 4.5 2.6h2C14 6.1 15.5 5 17.5 5c3.1 0 4.9 3 3.8 6.1-1.8 4.8-9.3 9.4-9.3 9.4z" stroke-width="2" stroke-linejoin="round"/></svg><span class="fav-heart__text fav-heart__text--off">Add to list</span><span class="fav-heart__text fav-heart__text--on">Saved</span></button></sc-if>
+    <sc-if value="{{ found }}" hint-placeholder-val="{{ true }}"></sc-if>
   </div>
 </section>
 
@@ -453,12 +451,6 @@
             <span class="record-section__text record-section__text--v5">Responsible collection</span>
             <a class="record-section__link" href="#">{{ rec.unit }}</a>
           </div>
-          <div class="record-section__group record-section__group--v3 record-contact">
-            <span class="record-section__text record-section__text--v5">Contact the collection</span>
-            <ul class="record-contact__list">
-              <sc-for list="{{ reqLinks }}" as="l"><li class="record-contact__item"><button type="button" class="record-contact__button" onClick="{{ l.open }}">{{ l.label }}</button></li></sc-for>
-            </ul>
-          </div>
           <a class="record-section__link-about-copyright-terms" href="/help/index.html?topic=copyright">About copyright and terms of use</a>
         </div>
       </section>
@@ -477,7 +469,7 @@
       <div class="record-related-items__group record-related-items__group--v1">
         <sc-for list="{{ related }}" as="r" hint-placeholder-count="4">
           <article class="record-related-items__article">
-            <button type="button" class="fav-heart fav-heart--card" data-fav-id="{{ r.id }}" data-fav-title="{{ r.title }}" aria-haspopup="dialog" aria-label="Add to list"><svg class="fav-heart__icon" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20.5s-7.5-4.6-9.3-9.4C1.6 8 3.4 5 6.5 5c2 0 3.5 1.1 4.5 2.6h2C14 6.1 15.5 5 17.5 5c3.1 0 4.9 3 3.8 6.1-1.8 4.8-9.3 9.4-9.3 9.4z" stroke-width="2" stroke-linejoin="round"/></svg></button>
+            
             <sc-if value="{{ r.hasImg }}" hint-placeholder-val="{{ false }}">
               <a class="record-article__link record-article__link--v1" href="{{ r.href }}"><img class="record-article__link-image" src="{{ r.img }}" alt="{{ r.title }}"></a>
             </sc-if>
@@ -727,7 +719,7 @@ class Component extends DCLogic {
     if (!R) return { licKey: 'Rights Reserved', notFound, found: false, pageTitle: notFound ? 'Record not found' : '', rec: { title: '', type: '', byline: '', citation: '', unit: '', assetId: '', hasDA: false, images: [], slides: [], subjects: [], advisories: [], rights: [] },
       fields: [], related: [], mediaRows: [], thumbs: [], noDA: false, showRelated: false, viewerRef: this.viewerRef,
       yes: true, cur: { src: '', label: '' }, curAlt: '', isImage: false, isVideo: false, isAudio: false, isPdf: false, curBroken: false, onImgLoad() {}, onMeta() {}, multi: false, imgCount: '', liveText: '',
-      reqLinks: [], prevImg() {}, nextImg() {}, firstImg() {}, lastImg() {}, jumpTo() {}, openUse() {}, openView() {}, acceptNotice() {}, caption: '', showGate: false, showMedia: true, gateTitle: '', gateTexts: [], gateIsNotice: false, gateIsRestricted: false, manyPages: false, pageNo: 1, pageOptions: [], atFirst: true, atLast: true, sidebarOpen: false, sidebarCls: 'im-sidebar', sidebarLabel: '', toggleSidebar() {}, closeSidebar() {}, fullLabel: '', toggleFull() {},
+      prevImg() {}, nextImg() {}, firstImg() {}, lastImg() {}, jumpTo() {}, openUse() {}, openView() {}, acceptNotice() {}, caption: '', showGate: false, showMedia: true, gateTitle: '', gateTexts: [], gateIsNotice: false, gateIsRestricted: false, manyPages: false, pageNo: 1, pageOptions: [], atFirst: true, atLast: true, sidebarOpen: false, sidebarCls: 'im-sidebar', sidebarLabel: '', toggleSidebar() {}, closeSidebar() {}, fullLabel: '', toggleFull() {},
             citeText: 'Copy citation', typeHref: '/search/search-results.html', collectionHref: '/search/search-results.html' };
     const slides = R.slides, idx = Math.min(s.idx, Math.max(0, slides.length - 1));
     const cur = slides[idx] || { kind: 'image', src: '', label: '' };
@@ -803,7 +795,6 @@ class Component extends DCLogic {
       }[s.req] || '',
       msgLabel: { use: 'Intended use', view: 'Reason for viewing', info: 'Your question', digitise: 'What you need digitised and why', physical: 'Reason for visiting and preferred dates', contribute: 'Information you would like to add or correct', contact: 'Message' }[s.req] || 'Message',
       reqTypes: [['info', 'More information'], ['use', 'Request to use'], ['view', 'Request to view'], ['digitise', 'Digitisation'], ['physical', 'Physical access'], ['contribute', 'Contribute information']].map(([k, label]) => ({ label, sel: s.req === k, pick: () => this.setState({ req: k }), bg: s.req === k ? 'var(--col-bg-primary)' : '#fff', color: s.req === k ? '#fff' : 'var(--col-text-primary)', border: s.req === k ? 'var(--col-bg-primary)' : 'var(--col-border-neutral)' })),
-      reqLinks: [['info', 'Ask for more information', false], ['use', 'Request to use a digital asset', true], ['view', 'Request to view digital assets', true], ['digitise', 'Request digitisation', false], ['physical', 'Request physical access', false], ['contribute', 'Contribute information', false]].filter(([, , daOnly]) => !daOnly || R.hasDA).map(([k, label]) => ({ label, open: e => this.openReqAs(k, e && e.currentTarget) })),
       reqSummary: s.reqData ? [['Request type', s.reqData.type], ['Name', s.reqData.name], ['Email', s.reqData.email], ['Record', permalinkShort], ['Message', s.reqData.message]].map(([k, v]) => ({ k, v })) : [],
       citeStyles: [['apa', 'APA 7'], ['mla', 'MLA 9'], ['chicago', 'Chicago 17'], ['harvard', 'Harvard']].map(([k, label]) => ({ label, pick: () => this.setState({ cite: k }), bg: s.cite === k ? 'var(--col-bg-primary)' : '#fff', color: s.cite === k ? '#fff' : 'var(--col-text-primary)', border: s.cite === k ? 'var(--col-bg-primary)' : 'var(--col-border-neutral)' })),
       citation: R.citations[s.cite], copyCite: () => this.flash('cite', R.citations[s.cite]), citeText: s.copied === 'cite' ? 'Copied' : 'Copy citation',
@@ -816,6 +807,5 @@ class Component extends DCLogic {
 
 
   <script src="/nav.js"></script>
-  <script src="/favourites.js"></script>
 </body>
 </html>

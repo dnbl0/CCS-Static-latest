@@ -29,8 +29,8 @@ a:hover{color:#0b2a6b;text-decoration:underline}
 }
 
 /* Pages whose body links are always underlined */
-:where(body.page-help, body.page-contact, body.page-advanced-filters, body.page-indigenous-data, body.page-lists) a{text-decoration:underline;text-underline-offset:2px}
-:where(body.page-help, body.page-contact, body.page-advanced-filters, body.page-indigenous-data, body.page-lists) a:hover{color:var(--col-bg-primary)}
+:where(body.page-help, body.page-contact, body.page-advanced-filters, body.page-indigenous-data) a{text-decoration:underline;text-underline-offset:2px}
+:where(body.page-help, body.page-contact, body.page-advanced-filters, body.page-indigenous-data) a:hover{color:var(--col-bg-primary)}
 /* Home and collection pages: navy on hover */
 :where(body.page-home, body.page-collection-landing, body.page-collections-browse) a:hover{color:var(--col-bg-primary)}
 

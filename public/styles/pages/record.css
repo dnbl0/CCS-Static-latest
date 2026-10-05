@@ -1027,28 +1027,6 @@ body.page-record .im-pdf__link {
   text-decoration: underline;
 }
 
-body.page-record .record-contact__list {
-  margin: 4px 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-body.page-record .record-contact__item {
-  margin: 0 0 6px;
-}
-
-body.page-record .record-contact__button {
-  padding: 0;
-  border: 0;
-  background: none;
-  font: inherit;
-  font-size: 14px;
-  color: #003f8b;
-  text-decoration: underline;
-  text-align: left;
-  cursor: pointer;
-}
-
 /* WCAG 1.4.10 reflow: the media bar and notice panel must fit a 320px viewport */
 body.page-record .im-bar {
   flex-wrap: wrap;
