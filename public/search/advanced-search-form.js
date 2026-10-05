@@ -319,7 +319,7 @@
     var self = { root: null, open: false, date: null, min: null, max: null, edge: o.edge };
     var calId = id + '-cal', errId = id + '-err', hintId = id + '-hint', titleId = id + '-cal-title';
     var b = bounds();
-    var label = el('label', { 'for': id, 'class': 'sr-only ccs-date__label', text: o.label });
+    var label = el('label', { 'for': id, 'class': 'sr-only ccs-date__label', text: o.shortLabel || o.label });
     var input = el('input', { type: 'text', id: id, 'class': 'ccs-input ccs-date__input', placeholder: o.placeholder, autocomplete: 'off', inputmode: 'numeric', maxlength: '10', role: 'combobox', 'aria-haspopup': 'dialog', 'aria-expanded': 'false', 'aria-controls': calId, 'aria-describedby': hintId });
     var hint = el('span', { id: hintId, 'class': 'sr-only', text: 'Numbers only. Enter a date as dd/mm/yyyy, or just a year between ' + yearLabel(b.min) + ' and ' + yearLabel(b.max) + '. Press Arrow Down to open the calendar.' });
     var cal = el('div', { id: calId, 'class': 'ccs-cal', role: 'dialog', 'aria-label': 'Choose ' + o.label.toLowerCase(), hidden: true });
@@ -548,8 +548,8 @@
   function buildRange(def, preset) {
     var row = filterShell(def); row.classList.add('adv-filter--range');
     var controls = el('div', { 'class': 'ccs-field-row__controls' });
-    var from = DateField({ label: 'Production date from', placeholder: 'From', edge: 'begin', onChange: function () { sync(); validate(); } });
-    var to = DateField({ label: 'Production date to', placeholder: 'To', edge: 'end', onChange: function () { sync(); validate(); } });
+    var from = DateField({ shortLabel: 'From', label: 'Production date from', placeholder: 'From', edge: 'begin', onChange: function () { sync(); validate(); } });
+    var to = DateField({ shortLabel: 'To', label: 'Production date to', placeholder: 'To', edge: 'end', onChange: function () { sync(); validate(); } });
     var hb = el('input', { type: 'hidden', name: 'range[' + def.key + '][begin]' });
     var he = el('input', { type: 'hidden', name: 'range[' + def.key + '][end]' });
     function sync() {
