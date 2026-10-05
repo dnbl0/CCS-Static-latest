@@ -59,7 +59,8 @@ if (/data-contact-btn|>Report an issue<|\{\{ shareText \}\}|value="\{\{ hasAdvis
 if (results.includes('Options within a filter are combined with OR.') || results.includes('{{ sec.group }}')) fail('filters: help text or group subheadings still visible');
 // The count badge and toggle track styles live in the page stylesheet (inline styles were moved out of the page).
 const resultsCss = fs.readFileSync(path.join(PUBLIC, 'styles/pages/search-results.css'), 'utf8');
-const cssRules = resultsCss.split('}').map(r => r.replace(/\s+/g, ' '));
+// literal values may be written as tokens (var(--radius-pill) = 999px, var(--space-6) = 6px): compare on the resolved text
+const cssRules = resultsCss.split('}').map(r => r.replace(/\s+/g, ' ').replace(/var\(--radius-pill\)/g, '999px').replace(/var\(--space-(\d+)\)/g, '$1px'));
 const roundedRule = (...needles) => cssRules.some(r => r.includes('border-radius: 999px') && needles.every(n => r.includes(n)));
 if (!roundedRule('height: 22px', 'padding: 0 6px') || !roundedRule('width: 38px', 'height: 22px')) fail('filters: count or toggle track is not rounded');
 const runtime = fs.readFileSync(path.join(PUBLIC, 'support.js'), 'utf8');

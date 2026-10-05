@@ -1,63 +1,46 @@
 /* Moved out of an inline <style> block (page-styles). Used by: home. */
 
-    :root {
-      --col-bg-primary: #000f46;
-      --col-bg-primary-dark: #000b34;
-      --col-bg-primary-hover: #213e5d;
-      --col-bg-accent: #abc1a7;
-      --col-bg-accent-soft: #dde5d6;
-      --col-bg-selected: #e8edf6;
-      --col-btn-action-bg: #46c8f0;
-      --col-btn-action-bg-hover: #29b3d9;
-      --col-btn-action-text: #000f46;
-      --col-text-primary: #1b1f2a;
-      --col-text-muted: #5b6070;
-      --col-border-neutral: #cfcac0;
-      --col-border-neutral-soft: #ece9e3;
-      --col-border-neutral-mid: #d9d6cf;
-      --col-advisory-text: #8a6200;
-    }
 
     .hero {
       background: linear-gradient(135deg, var(--col-bg-primary) 0%, var(--col-bg-primary-dark) 100%);
-      color: #fff;
+      color: var(--color-text-inverse);
       padding: 88px 32px 72px;
     }
 
     .hero h1 {
-      color: #fff;
+      color: var(--color-text-inverse);
       font-family: 'Fraunces', serif;
-      font-weight: 500;
+      font-weight: var(--font-weight-medium);
       font-size: clamp(40px, 6vw, 64px);
       line-height: 1.05;
-      margin-bottom: 20px;
+      margin-bottom: var(--space-20);
     }
 
     .hero p {
-      font-size: 18px;
-      line-height: 1.55;
-      color: rgba(255, 255, 255, .85);
-      max-width: 720px;
-      margin-bottom: 12px;
+      font-size: var(--font-size-body-lg);
+      line-height: var(--line-height-relaxed);
+      color: var(--color-text-inverse-muted);
+      max-width: var(--layout-search);
+      margin-bottom: var(--space-12);
     }.button.button--secondary {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       font-family: 'Source Sans 3', system-ui, sans-serif;
-      font-weight: 600;
-      font-size: 15px;
-      line-height: 1.4;
+      font-weight: var(--font-weight-semibold);
+      font-size: var(--font-size-15);
+      line-height: var(--line-height-compact);
       padding: 12px 22px;
       background-color: var(--col-bg-accent, #abc1a7);
       color: var(--col-text-primary, #000f46);
       text-decoration: none;
       cursor: pointer;
       border: 0;
-      border-radius: 0;
-      transition: background-color 0.2s ease, color 0.2s ease;
+      border-radius: var(--radius-none);
+      transition: background-color var(--duration-base) ease, color var(--duration-base) ease;
       width: fit-content;
     }.button.button--secondary:hover {
-      background-color: #9ab998;
+      background-color: var(--color-bg-sage-66);
       color: var(--col-text-primary, #000f46);
       text-decoration: none;
     }.button.button--secondary:focus-visible {
@@ -71,7 +54,7 @@
       display: inline-block;
       width: 18px;
       height: 18px;
-      margin-right: 8px;
+      margin-right: var(--space-8);
       background-color: currentColor;
       -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Cpath d='m40.003 66.665-3.5-3.583 20.583-20.583h-43.75v-5h43.75L36.503 16.915l3.5-3.583 26.666 26.667z'/%3E%3C/svg%3E") no-repeat center / contain;
       mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Cpath d='m40.003 66.665-3.5-3.583 20.583-20.583h-43.75v-5h43.75L36.503 16.915l3.5-3.583 26.666 26.667z'/%3E%3C/svg%3E") no-repeat center / contain;
@@ -79,29 +62,29 @@
 
     footer {
       background: var(--col-bg-primary);
-      color: #fff;
+      color: var(--color-text-inverse);
       margin-top: auto;
-      padding-top: 48px;
+      padding-top: var(--space-48);
     }
 
     footer a {
-      color: rgba(255, 255, 255, .85);
+      color: var(--color-text-inverse-muted);
     }
 
     footer a:hover {
-      color: #fff;
+      color: var(--color-text-inverse);
     }
 @media (max-width: 768px) {
 
       .hero {
-        padding: 40px 16px 48px;
+        padding: var(--space-40) var(--space-16) var(--space-48);
       }
 
       .hero h1 {
-        font-size: 28px;
+        font-size: var(--font-size-28);
       }
 
       .hero p {
-        font-size: 16px;
+        font-size: var(--font-size-body);
       }
 }

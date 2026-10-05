@@ -14,7 +14,7 @@ const G = 'Grainger Museum Collection', U = 'University Art Collection', M = 'Me
 
 // A bare page that loads the component the way the real pages do, with two empty hosts for create()
 const HARNESS = `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>search bar harness</title>
-<link rel="stylesheet" href="/components/fig-tokens.css"><link rel="stylesheet" href="/styles/components/breadcrumbs.css"><link rel="stylesheet" href="/styles/components/focus.css"><link rel="stylesheet" href="/styles/components/page-banner.css"><link rel="stylesheet" href="/styles/components/licence-badge.css"><link rel="stylesheet" href="/styles/components/search-bar.css"><link rel="stylesheet" href="/styles/components/collection-hero.css"></head><body>
+<link rel="stylesheet" href="/styles/tokens.css"><link rel="stylesheet" href="/styles/components/breadcrumbs.css"><link rel="stylesheet" href="/styles/components/focus.css"><link rel="stylesheet" href="/styles/components/page-banner.css"><link rel="stylesheet" href="/styles/components/licence-badge.css"><link rel="stylesheet" href="/styles/components/search-bar.css"><link rel="stylesheet" href="/styles/components/collection-hero.css"></head><body>
 <div id="host-a"></div><div id="host-b"></div>
 <script src="/collection-data.js"></script><script src="/search-bar.js"></script></body></html>`;
 
