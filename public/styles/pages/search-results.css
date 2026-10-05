@@ -1526,37 +1526,70 @@ body.page-search-results .search-results-bar__search-host {
   max-width: 720px;
 }
 
+/* Fly-out trigger: label, then a right chevron */
 body.page-search-results .search-results-banner .search-results-search-tools__link-advanced-search {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   min-height: 44px;
   padding: 0;
   border: 0;
   background: none;
   color: var(--white-100);
+  font-family: inherit;
   font-size: 16px;
   font-weight: 600;
-  text-decoration: underline;
-}
-
-body.page-search-results .search-results-banner .search-results-search-tools__link-advanced-search {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-family: inherit;
   cursor: pointer;
 }
 
-body.page-search-results .search-results-adv-panel {
-  width: 100%;
-  margin-top: 8px;
-  background: var(--white-100);
-  border: 1px solid var(--brand-1100);
+body.page-search-results .search-results-banner .search-results-search-tools__link-advanced-search .search-results-search-tools__link-icon {
+  flex: none;
 }
 
-body.page-search-results .search-results-adv-panel__frame {
-  display: block;
+body.page-search-results .search-results-banner .search-results-search-tools__link-advanced-search:focus-visible {
+  outline: 3px solid #a3e4f7;
+  outline-offset: 2px;
+}
+
+/* Advanced search fly-out (Gen 3 modal pattern, anchored right): navy 80% blanket, white full-height panel that slides in,
+   header with Fraunces heading + labelled Close button (shared with the Filters modal), the form scrolls inside. */
+body.page-search-results .search-results-flyout {
+  position: fixed;
+  inset: 0;
+  z-index: 1050; /* above the site header (z-index 1000) */
+  display: flex;
+  justify-content: flex-end;
+  background: rgba(0, 11, 52, 0.8);
+}
+
+body.page-search-results .search-results-flyout__panel {
+  display: flex;
+  flex-direction: column;
+  width: min(760px, 100%);
+  height: 100%;
+  background: #fff;
+  box-shadow: -8px 0 24px rgba(0, 11, 52, 0.3);
+  animation: search-results-flyout-in 0.25s ease-out;
+}
+
+body.page-search-results .search-results-flyout__frame {
+  flex: 1 1 auto;
   width: 100%;
-  height: var(--dyn-height);
+  min-height: 0;
   border: 0;
+}
+
+@media (max-width: 800px) {
+  body.page-search-results .search-results-flyout__panel { width: 100%; }
+}
+
+@keyframes search-results-flyout-in {
+  from { transform: translateX(100%); }
+  to { transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.page-search-results .search-results-flyout__panel { animation: none; }
 }
 
 body.page-search-results .search-results-banner .search-results-search-tools__link-advanced-search:hover {

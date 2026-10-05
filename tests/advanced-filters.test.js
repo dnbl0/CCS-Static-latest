@@ -112,15 +112,18 @@ const truthy = (v, msg) => { if (v) ok(msg); else fail(msg); };
     await p.click(fld); await p.keyboard.press('Tab');
     eq(await p.getAttribute(fld, 'aria-expanded'), 'false', 'Tab closes the menu');
 
+    const addFilterRow = async (pg, key) => { await pg.click('#adv-add-filter'); await pg.check('#adv-add-filter-menu input[value=' + key + ']'); await pg.keyboard.press('Escape'); };
     /* ---- multi-select: Add filter + filter values -------------------------------------------- */
     const add = '#adv-add-filter';
-    eq(await rows(p, '.adv-filter'), 3, 'three filters shown by default');
+    eq(await rows(p, '.adv-term'), 1, 'one search row shown by default');
+    eq(await rows(p, '.adv-filter'), 1, 'one filter row shown by default');
+    truthy((await p.$$eval('.ccs-adv__desc', e => e.map(x => x.textContent.trim()))).filter(Boolean).length === 2, 'Search and Filters each have a short description');
     await p.click(add);
     eq(await p.getAttribute(add, 'aria-expanded'), 'true', 'Add filter opens');
     eq(await p.$$eval('#adv-add-filter-menu input[type=checkbox]', e => e.length), 6, 'Add filter lists six checkboxes');
     await p.check('#adv-add-filter-menu input[value=licence]');
     await p.check('#adv-add-filter-menu input[value=creator]');
-    eq(await rows(p, '.adv-filter'), 5, 'ticking options adds filter rows (multi-select)');
+    eq(await rows(p, '.adv-filter'), 3, 'ticking options adds filter rows (multi-select)');
     eq(await p.getAttribute(add, 'aria-expanded'), 'true', 'menu stays open while multi-selecting');
     await p.click('#adv-add-filter-menu .ccs-combo__option-text >> text=Access');
     eq(await p.getAttribute(add, 'aria-expanded'), 'true', 'menu stays open after clicking an option label with the mouse');
@@ -130,6 +133,7 @@ const truthy = (v, msg) => { if (v) ok(msg); else fail(msg); };
     eq(await rows(p, '.adv-filter[data-key=licence]'), 0, 'unticking removes the filter row');
     await p.keyboard.press('Escape');
 
+    await addFilterRow(p, 'type');
     const typeVals = '.adv-filter[data-key=type] .ccs-combo--values';
     await p.click(typeVals + ' .ccs-combo__field');
     await p.check(typeVals + ' .ccs-check >> nth=0'); await p.check(typeVals + ' .ccs-check >> nth=1');
@@ -142,7 +146,7 @@ const truthy = (v, msg) => { if (v) ok(msg); else fail(msg); };
 
     /* ---- row management ---------------------------------------------------------------------- */
     await p.fill('#' + await p.$eval('.adv-term:nth-child(1) [data-role=query]', e => e.id), 'alpha');
-    await p.click('#adv-add-row');
+    await p.click('#adv-add-row'); await p.click('#adv-add-row');
     await p.fill('.adv-term:nth-child(3) [data-role=query]', 'gamma');
     await p.click('.adv-term:nth-child(2) .ccs-combo:nth-child(2) .ccs-combo__field'); await p.keyboard.press('ArrowDown'); await p.keyboard.press('Enter');
     eq(await p.$eval('.adv-term:nth-child(2) input[name$="[op]"]', e => e.value), 'should', 'match mode is per row');
@@ -162,6 +166,7 @@ const truthy = (v, msg) => { if (v) ok(msg); else fail(msg); };
     p = await open(1440, 900);
     await p.fill('.adv-term:nth-child(1) [data-role=query]', 'eucalyptus oil');
     await p.click('.adv-term:nth-child(1) .ccs-combo:nth-child(1) .ccs-combo__field'); await p.keyboard.press('ArrowDown'); await p.keyboard.press('ArrowDown'); await p.keyboard.press('ArrowDown'); await p.keyboard.press('Enter');
+    await addFilterRow(p, 'type');
     const tv = '.adv-filter[data-key=type] .ccs-combo--values';
     await p.click(tv + ' .ccs-combo__field'); await p.fill(tv + ' .ccs-combo__search', 'photo'); await p.check(tv + ' .ccs-combo__item:not([hidden]) .ccs-check'); await p.keyboard.press('Escape');
     await p.click('.adv-filter[data-key=type] .ccs-combo:nth-child(1) .ccs-combo__field'); await p.keyboard.press('ArrowDown'); await p.keyboard.press('Enter');
@@ -187,6 +192,7 @@ const truthy = (v, msg) => { if (v) ok(msg); else fail(msg); };
 
     /* ---- date range ---------------------------------------------------------------------------- */
     p = await open(1440, 900);
+    await addFilterRow(p, 'year');
     const from = '.adv-filter--range .ccs-date:nth-child(1)', to = '.adv-filter--range .ccs-date:nth-child(2)';
     const fi = from + ' .ccs-date__input', ti = to + ' .ccs-date__input';
     eq(await rows(p, '.ccs-date__toggle'), 0, 'date fields have no calendar icon button');

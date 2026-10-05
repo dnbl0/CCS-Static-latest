@@ -28,10 +28,10 @@
   var FILTERS = [
     { key: 'collection', label: 'Collection Title', get: function (it) { return [it.collection]; }, on: true },
     { key: 'creator', label: 'Creator Name', get: function (it) { return [it.creator]; } },
-    { key: 'type', label: 'Object Type', get: function (it) { return it.types || []; }, on: true },
+    { key: 'type', label: 'Object Type', get: function (it) { return it.types || []; } },
     { key: 'licence', label: 'Licence Type', get: function (it) { return [it.licence]; } },
     { key: 'access', label: 'Object Access Condition', get: function (it) { return [it.access]; } },
-    { key: 'year', label: 'Production Date', range: true, on: true }
+    { key: 'year', label: 'Production Date', range: true }
   ];
   var MAX_ROWS = 8;
   var IMG = '/images/advanced/';
@@ -617,7 +617,7 @@
   function prefill() {
     var p = readParams();
     Object.keys(p.clauses).sort(function (a, b) { return a - b; }).forEach(function (k) { addTerm(p.clauses[k]); });
-    while ($$('.adv-term', termsList()).length < 2) addTerm();
+    while ($$('.adv-term', termsList()).length < 1) addTerm();
     var active = {};
     FILTERS.forEach(function (d) { if (d.on) active[d.key] = true; });
     Object.keys(p.filters).forEach(function (k) { if (defOf(k)) active[k] = true; });
