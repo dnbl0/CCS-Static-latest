@@ -497,7 +497,7 @@
       $('#' + sels[1].button.id + '-lbl').textContent = 'Match type, row ' + n;
       var q = $('[data-role=query]', row); q.name = 'clause[' + i + '][query]';
       $('label.sr-only[for="' + q.id + '"]', row).textContent = 'Search terms, row ' + n;
-      var del = $('.ccs-delete', row); del.setAttribute('aria-label', 'Delete search row ' + n);
+      var del = $('.ccs-delete', row); del.setAttribute('aria-label', 'Delete row ' + n);
       del.disabled = rows.length <= 1;      // the form always keeps at least one search row
     });
     var add = $('#adv-add-row');
@@ -541,7 +541,7 @@
     multi.setChecked((preset && preset.values) || [], true);
     controls.appendChild(mode.root); controls.appendChild(multi.root);
     row.appendChild(controls); row.appendChild(deleteButton());
-    $('.ccs-delete', row).setAttribute('aria-label', 'Delete ' + def.label + ' filter row');
+    $('.ccs-delete', row).setAttribute('aria-label', 'Delete row: ' + def.label + ' filter');
     multi.root.addEventListener('change', function () { applyMatchMode(row); });
     applyMatchMode(row);
     return row;
@@ -574,7 +574,7 @@
     sync();
     controls.appendChild(from.root); controls.appendChild(to.root);
     row.appendChild(controls); row.appendChild(hb); row.appendChild(he); row.appendChild(deleteButton());
-    $('.ccs-delete', row).setAttribute('aria-label', 'Delete ' + def.label + ' filter row');
+    $('.ccs-delete', row).setAttribute('aria-label', 'Delete row: ' + def.label + ' filter');
     return row;
   }
 

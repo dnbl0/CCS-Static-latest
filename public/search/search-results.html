@@ -292,7 +292,7 @@
     <section class="facet-rail__section">
       <h3 class="facet-rail__heading">
         <span class="facet-rail__name" id="rail-name-{{ sec.key }}">{{ sec.title }}<sc-if value="{{ sec.badge }}"><span class="facet-rail__badge">{{ sec.badge }}</span></sc-if></span>
-        <button type="button" class="facet-rail__toggle" aria-expanded="{{ sec.open }}" aria-controls="{{ sec.panelId }}" aria-labelledby="rail-name-{{ sec.key }}" onClick="{{ sec.toggle }}"><span class="facet-rail__value">{{ sec.value }}</span><svg class="facet-rail__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+        <button type="button" class="facet-rail__toggle" aria-expanded="{{ sec.open }}" aria-controls="{{ sec.panelId }}" aria-labelledby="rail-name-{{ sec.key }} rail-val-{{ sec.key }}" onClick="{{ sec.toggle }}"><span class="facet-rail__value" id="rail-val-{{ sec.key }}">{{ sec.value }}</span><svg class="facet-rail__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
       </h3>
       <sc-if value="{{ sec.open }}">
         <div class="facet-rail__panel" id="{{ sec.panelId }}">

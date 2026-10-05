@@ -154,7 +154,7 @@ const HARNESS = `<!doctype html><html lang="en"><head><meta charset="utf-8"><tit
     eq(await page.getAttribute(IA, 'placeholder'), 'Search within these results', 'sync() refreshes the placeholder');
 
     // chip
-    eq(await page.evaluate(() => { const c = document.querySelector('.bar-a .ccs-searchbar__chip'); return [c.hidden, c.textContent.trim(), c.getAttribute('aria-label')]; }), [false, 'skull', 'Remove search term'], 'chip shows the active term');
+    eq(await page.evaluate(() => { const c = document.querySelector('.bar-a .ccs-searchbar__chip'); return [c.hidden, c.textContent.trim(), c.getAttribute('aria-label')]; }), [false, 'skull', 'Remove search term skull'], 'chip shows the active term');
     eq(await page.evaluate(() => !document.querySelector('.bar-b .ccs-searchbar__chip')), true, 'a bar with no chip hook has no chip');
     await page.click(A + ' .ccs-searchbar__chip');
     eq(await page.evaluate(() => [log.clears, document.querySelector('.bar-a .ccs-searchbar__chip').hidden]), [1, true], 'clicking the chip calls onClearChip and sync() hides it');
