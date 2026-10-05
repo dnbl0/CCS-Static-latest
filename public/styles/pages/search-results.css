@@ -1572,6 +1572,11 @@ body.page-search-results .search-results-flyout__panel {
   animation: search-results-flyout-in 0.25s ease-out;
 }
 
+body.page-search-results .search-results-flyout__panel .search-results-filters-title__header {
+  padding-bottom: 16px;
+  border-bottom: 1px solid #c8c8c8;
+}
+
 body.page-search-results .search-results-flyout__frame {
   flex: 1 1 auto;
   width: 100%;

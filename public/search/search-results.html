@@ -810,7 +810,7 @@ const ADV_FILTER_KEYS = { collection: 'collection', type: 'type', creator: 'crea
 const ADV_SORTS = { 'year-desc': 'new', 'year-asc': 'old', az: 'az' };
 function parseAdvancedParams(qs) {
   const f = EMPTYF(); let any = false;
-  const rows = {};
+  const rows = {}, defOp = qs.get('op') === 'should' ? 'should' : 'must';   // Blacklight's single match all / any operator
   qs.forEach((val, name) => {
     let m;
     if ((m = name.match(/^clause\[(\d+)\]\[(field|op|query)\]$/))) (rows[m[1]] = rows[m[1]] || {})[m[2]] = val;
@@ -823,7 +823,7 @@ function parseAdvancedParams(qs) {
   });
   Object.keys(rows).sort((a, b) => a - b).forEach(i => {
     const r = rows[i];
-    if (r.query && r.query.trim() && ADV_FIELDS[r.field || 'all_fields']) { f.clauses.push({ field: r.field || 'all_fields', op: ADV_OPS[r.op] ? r.op : 'must', query: r.query.trim() }); any = true; }
+    if (r.query && r.query.trim() && ADV_FIELDS[r.field || 'all_fields']) { f.clauses.push({ field: r.field || 'all_fields', op: ADV_OPS[r.op] ? r.op : defOp, query: r.query.trim() }); any = true; }
   });
   const so = qs.get('sort'); if (ADV_SORTS[so]) { f.sort = ADV_SORTS[so]; any = any || f.clauses.length > 0; }
   return any ? f : null;

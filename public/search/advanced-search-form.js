@@ -319,7 +319,7 @@
     var self = { root: null, open: false, date: null, min: null, max: null, edge: o.edge };
     var calId = id + '-cal', errId = id + '-err', hintId = id + '-hint', titleId = id + '-cal-title';
     var b = bounds();
-    var label = el('label', { 'for': id, 'class': 'sr-only', text: o.label });
+    var label = el('label', { 'for': id, 'class': 'sr-only ccs-date__label', text: o.label });
     var input = el('input', { type: 'text', id: id, 'class': 'ccs-input ccs-date__input', placeholder: o.placeholder, autocomplete: 'off', inputmode: 'numeric', maxlength: '10', role: 'combobox', 'aria-haspopup': 'dialog', 'aria-expanded': 'false', 'aria-controls': calId, 'aria-describedby': hintId });
     var hint = el('span', { id: hintId, 'class': 'sr-only', text: 'Numbers only. Enter a date as dd/mm/yyyy, or just a year between ' + yearLabel(b.min) + ' and ' + yearLabel(b.max) + '. Press Arrow Down to open the calendar.' });
     var cal = el('div', { id: calId, 'class': 'ccs-cal', role: 'dialog', 'aria-label': 'Choose ' + o.label.toLowerCase(), hidden: true });
@@ -561,7 +561,7 @@
       var m1 = from.read(), m2 = to.read();
       from.setError(m1); to.setError(m2);
       var bad = !!(m1 || m2);
-      if (!bad && from.date && to.date && toKey(from.date) > toKey(to.date)) { to.setError('Production date to must be on or after the from date (' + fmt(from.date) + ').'); bad = true; }
+      if (!bad && from.date && to.date && toKey(from.date) > toKey(to.date)) { to.setError('The "To" date must be on or after the "From" date (' + fmt(from.date) + ').'); bad = true; }
       return !bad;
     }
     row.__range = { from: from, to: to, sync: sync, validate: validate };
@@ -600,7 +600,7 @@
   /* ---- URL <-> form -------------------------------------------------------------------------- */
   function readParams() {
     var qs = new URLSearchParams(location.search);
-    var out = { clauses: {}, filters: {}, range: {}, sort: qs.get('sort') || '' };
+    var out = { clauses: {}, filters: {}, range: {}, sort: qs.get('sort') || '', op: qs.get('op') || '' };
     qs.forEach(function (val, name) {
       var m;
       if ((m = name.match(/^clause\[(\d+)\]\[(field|op|query)\]$/))) {
@@ -616,7 +616,8 @@
   }
   function prefill() {
     var p = readParams();
-    Object.keys(p.clauses).sort(function (a, b) { return a - b; }).forEach(function (k) { addTerm(p.clauses[k]); });
+    var defOp = OPS.some(function (o) { return o[0] === p.op && o[0] !== 'must_not'; }) ? p.op : 'must';   // Blacklight's single "match all / any" operator
+    Object.keys(p.clauses).sort(function (a, b) { return a - b; }).forEach(function (k) { var c = p.clauses[k]; if (!c.op) c.op = defOp; addTerm(c); });
     while ($$('.adv-term', termsList()).length < 1) addTerm();
     var active = {};
     FILTERS.forEach(function (d) { if (d.on) active[d.key] = true; });
@@ -657,6 +658,10 @@
     showErrorSummary(errs);
     if (errs.length) { e.preventDefault(); $('#adv-errors').focus(); return; }
     disabledForSubmit = [];
+    var opIn = $('#adv-op');
+    if (opIn) { var ops = $$('.adv-term', termsList()).filter(function (r) { return $('[data-role=query]', r).value.trim(); }).map(function (r) { return $('input[name$="[op]"]', r).value; });
+      var uniform = ops.length > 1 && ops.every(function (v) { return v === ops[0] && v !== 'must_not'; });
+      opIn.value = uniform ? ops[0] : ''; opIn.disabled = !uniform; }
     function off(n) { if (n && !n.disabled) { n.disabled = true; disabledForSubmit.push(n); } }
     $$('.adv-term', termsList()).forEach(function (row) {
       if (!$('[data-role=query]', row).value.trim()) $$('input', row).forEach(off);
