@@ -3,11 +3,11 @@
 body.page-help .bc-mobile--styled {
   display: none;
   align-items: center;
-  gap: 6px;
+  gap: var(--space-6);
   list-style: none;
   margin: 0;
-  font-size: 18px;
-  color: #fff;
+  font-size: var(--font-size-body-lg);
+  color: var(--breadcrumbs-text-inverse);
 }
 
 body.page-help .bc-mobile__item {
@@ -18,8 +18,8 @@ body.page-help .bc-mobile__item {
 body.page-help .bc-mobile__item-link-cultural-collections {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  color: #fff;
+  gap: var(--space-6);
+  color: var(--breadcrumbs-text-inverse);
   text-decoration: none;
   min-height: 44px;
 }
@@ -27,8 +27,8 @@ body.page-help .bc-mobile__item-link-cultural-collections {
 body.page-help .bc-mobile__item-link-help-support {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  color: #fff;
+  gap: var(--space-6);
+  color: var(--breadcrumbs-text-inverse);
   text-decoration: none;
   min-height: 44px;
 }
@@ -54,49 +54,49 @@ body.page-help .help-main-content {
 
 body.page-help .help-access__group--v2 {
   display: grid;
-  gap: 24px;
-  margin-top: 24px;
+  gap: var(--space-24);
+  margin-top: var(--space-24);
 }
 
 body.page-help .help-access__group--v1 {
   display: grid;
-  gap: 4px;
+  gap: var(--space-4);
 }
 
 /* Matrix "Tables": header row navy, zebra rows */
 body.page-help .help-search-tips__group--v2 {
   display: grid;
   grid-template-columns: minmax(140px, 220px) minmax(0, 1fr);
-  margin: 0 0 24px;
-  border: 1px solid #c8c8c8;
+  margin: 0 0 var(--space-24);
+  border: 1px solid var(--content-border-default);
   border-bottom: 0;
 }
 
 body.page-help .help-search-tips__group--v2 > * {
-  padding: 12px 16px;
-  border-bottom: 1px solid #c8c8c8;
+  padding: var(--space-12) var(--space-16);
+  border-bottom: 1px solid var(--content-border-default);
 }
 
 body.page-help .help-search-tips__group--v2 > :nth-child(-n + 2) {
-  background: #000f46;
-  color: #fff;
+  background: var(--content-bg-brand);
+  color: var(--content-text-inverse);
 }
 
 body.page-help .help-search-tips__strong--v2,
 body.page-help .help-search-tips__text--v4 {
-  background: #f1f1f1;
+  background: var(--content-bg-surface-neutral);
 }
 
 body.page-help .help-search-tips__group--v1 {
   display: grid;
-  gap: 16px;
-  margin: 0 0 24px;
+  gap: var(--space-16);
+  margin: 0 0 var(--space-24);
 }
 
 /* Topic cards on the help landing use the homepage help card (ccs-help), three across on desktop */
 body.page-help .ccs-help--topics {
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  margin: 0 0 8px;
+  margin: 0 0 var(--space-8);
 }
 
 body.page-help .ccs-help--topics .ccs-help__item:nth-child(3n + 1) .ccs-help__card {

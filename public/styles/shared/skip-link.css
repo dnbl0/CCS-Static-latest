@@ -6,12 +6,12 @@
   left: 16px;
   background: var(--col-btn-action-bg, #46c8f0);
   color: var(--col-btn-action-text, #000f46);
-  padding: 12px 18px;
-  z-index: 99999;
-  font-weight: 700;
+  padding: var(--space-12) var(--space-18);
+  z-index: var(--z-99999);
+  font-weight: var(--font-weight-bold);
   text-decoration: none;
   border: 2px solid var(--col-bg-primary, #000f46);
-  transition: top 0.2s ease;
+  transition: top var(--duration-base) ease;
 }
 .skip-link:focus {
   top: 16px;

@@ -3,8 +3,8 @@
 
 /* Page banner — shared title banner (matches the Help page banner) */
 .page-banner {
-  background: #000b34;
-  color: #fff;
+  background: var(--banner-bg-brand-dark);
+  color: var(--banner-text-inverse);
 }
 .page-banner__inner {
   margin: 0 auto;
@@ -14,26 +14,26 @@
 .page-banner h1 {
   margin: 0;
   font-family: 'Fraunces', serif;
-  font-weight: 400;
-  font-size: 48px;
-  line-height: 1.2;
-  color: #fff;
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-title-1);
+  line-height: var(--line-height-tight);
+  color: var(--banner-text-inverse);
 }
 .page-banner--compact .page-banner__inner { padding: 36px 32px; }
 .page-banner--compact h1 { font-size: clamp(28px, 3.2vw, 38px); text-wrap: balance; }
 @media (max-width: 768px) {
-  .page-banner__inner { padding: 40px 16px; }
-  .page-banner h1 { font-size: 36px; }
+  .page-banner__inner { padding: var(--space-40) var(--space-16); }
+  .page-banner h1 { font-size: var(--font-size-title-2); }
 }
 
 
 /* Page banner description — copy sits under the banner heading */
 .page-banner__desc {
-  max-width: 760px;
-  margin: 16px 0 0;
-  font-size: 18px;
-  line-height: 1.5;
-  color: rgba(255, 255, 255, 0.92);
+  max-width: var(--layout-narrow);
+  margin: var(--space-16) 0 0;
+  font-size: var(--font-size-body-lg);
+  line-height: var(--line-height-normal);
+  color: var(--banner-text-inverse-strong);
   text-wrap: pretty;
 }
-.page-banner--compact .page-banner__desc { margin-top: 12px; font-size: 17px; }
+.page-banner--compact .page-banner__desc { margin-top: var(--space-12); font-size: var(--font-size-17); }

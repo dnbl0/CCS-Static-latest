@@ -14,9 +14,9 @@
    (cultural/medical advisories), but keep info for completeness. */
 .notice {
   margin: 0;
-  padding: 14px 18px;
-  font-size: 15px;
-  line-height: 1.5;
+  padding: var(--space-14) var(--space-18);
+  font-size: var(--font-size-15);
+  line-height: var(--line-height-normal);
 }
 
 a.contact-box__desc:hover {
@@ -29,9 +29,9 @@ a.contact-box__desc:hover {
 .pathfinder-inset {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  background: #fff;
-  border: 1px solid #e3e0d9;
+  gap: var(--space-6);
+  background: var(--content-bg-surface);
+  border: 1px solid var(--content-border-subtle);
   padding: 22px;
   text-decoration: none;
 }
@@ -42,11 +42,11 @@ a.contact-box__desc:hover {
 
 .pathfinder-inset__heading {
   font-family: 'Fraunces', serif;
-  font-size: 18px;
+  font-size: var(--font-size-body-lg);
   color: var(--col-text-primary, #1b1f2a);
 }
 
 .pathfinder-inset__desc {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: var(--col-text-muted, #5b6070);
 }
