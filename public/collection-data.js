@@ -931,8 +931,7 @@
       [23, 'Source URL', it.sourceUrl && [L(it.sourceUrl)]],
       [24, 'Related parent record', it.relatedParent && [L(it.relatedParent, true)]],
       [25, 'Related child record', it.relatedChild && [L(it.relatedChild, true)]],
-      [26, 'Related record', it.relatedRecord && [L(it.relatedRecord, true)]],
-      [30, 'Producer', (it.producer || it.imageProducer) && [L(it.producer || it.imageProducer)]]
+      [26, 'Related record', it.relatedRecord && [L(it.relatedRecord, true)]]
     ].filter(r => r[2]).map(([seq, label, lines, copy]) => ({ seq, label, lines, copy: !!copy, value: lines[0].text }));
     // Digital asset caption: "Complex fields" sheet, Image Caption (DA Caption). Recipe, in this order, each part dropped when it has no data:
     //   [DA Title]. [CA Date]. [CA Creator] [DOB-DOD]. [Role]. [Affiliation]. [CA Material]. [Copyright holder]. [Collection title (formal)]. [Credit line]. Image: [DA Creator]. [DA Date of Production].
@@ -964,8 +963,8 @@
     const citations = buildCitations(it, date, coll, creditLine, it.accession);
     
     // Digital Asset Media metadata mapped according to CCS Field labels and filters Final PRG schema
-    // Media metadata sidebar: DAM fields only (CCS Field labels sheet rows 28-31: Licence Type, Advisory,
-    // Terms of Use, Producer). A field with no data is omitted entirely, label included.
+    // Media metadata sidebar (the flyout on the media viewer): CCS Field labels sheet rows 27-30, in order: Licence Type, Advisory,
+    // Terms of Use, Producer (DAM fields). They appear here only, not in the details list or the page body. A field with no data is omitted, label included.
     const producerVal = it.imageProducer || it.producer;
     const termsText = it.terms || lic.terms.replace('{holder}', copyrightHolder.replace(/^©\s*/, '')).replace('{date}', date ? ', ' + date : '').replace('{unit}', UNIT[it.collection] || 'the Responsible Collection');
     // DA Web Access Status (Nexus DAM): open licences = View + Download; other licensed or in-copyright assets that are shown = View only. Records with no digital asset have no status.
@@ -976,11 +975,10 @@
     // CCS-50: items with an advisory or a film/game classification show a usage notice that must be accepted before the media is shown
     const usageNotice = hasDA && (advisories.length > 0 || !!filmCls) ? [...advisories.map(a => a.text), ...(filmCls ? [filmCls.text] : [])] : [];
     const media = hasDA ? [
-      { label: 'Licence type', value: lic.label },
-      ...(it.caption ? [{ label: 'Caption', value: it.caption }] : []),
-      ...(advisories.length ? [{ label: 'Advisory', value: advisories.map(a => a.text).join('\n\n') }] : []),
-      { label: 'Terms of use', value: termsText },
-      ...(producerVal ? [{ label: 'Producer', value: producerVal }] : [])
+      { seq: 27, label: 'Licence type', value: lic.label },
+      ...(advisories.length ? [{ seq: 28, label: 'Advisory', value: advisories.map(a => a.text).join('\n\n') }] : []),
+      { seq: 29, label: 'Terms of use', value: termsText },
+      ...(producerVal ? [{ seq: 30, label: 'Producer', value: producerVal }] : [])
     ] : [];
 
     return {

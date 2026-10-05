@@ -88,4 +88,23 @@ for (const r of R) {
   if (field(r, 'Caption') !== cap) badCap.push(`#${r.id} Caption row differs from the caption`);
 }
 if (badCap.length) fail(`${badCap.length} digital asset caption problems, e.g. ${badCap.slice(0, 3).join('; ')}`); else ok(`all ${R.filter(r => r.hasDA).length} digital-asset captions follow the Complex fields recipe (title, copyright, collection and credit line present, in order, no empty parts)`);
+/* ---- media metadata sidebar: Field labels rows 27-30 only, in order, and nowhere else ---- */
+const SIDEBAR = labels.filter(l => l.seq >= 27 && l.seq <= 30);
+const sideBad = [];
+for (const r of R) {
+  const m = r.media || [];
+  if (!r.hasDA && m.length) sideBad.push(`#${r.id} has media rows but no digital asset`);
+  if (r.hasDA && !m.length) sideBad.push(`#${r.id} digital asset has an empty media sidebar`);
+  m.forEach((row, i) => {
+    const sheet = SIDEBAR.find(l => norm(l.label) === norm(row.label));
+    if (!sheet) sideBad.push(`#${r.id} sidebar row "${row.label}" is not Field labels rows 27-30`);
+    else if (row.seq !== sheet.seq) sideBad.push(`#${r.id} sidebar row "${row.label}" has sequence ${row.seq}, the sheet says ${sheet.seq}`);
+    if (i && m[i - 1].seq > row.seq) sideBad.push(`#${r.id} sidebar rows are out of order`);
+    if (!row.value || !String(row.value).trim()) sideBad.push(`#${r.id} sidebar row "${row.label}" is empty`);
+  });
+  if (r.hasDA) for (const need of ['Licence Type', 'Terms of Use']) if (!m.some(x => norm(x.label) === norm(need))) sideBad.push(`#${r.id} sidebar lacks ${need}`);
+  for (const l of SIDEBAR) if ([...r.fields, ...r.rights].some(f => norm(f.label) === norm(l.label))) sideBad.push(`#${r.id} shows "${l.label}" outside the media sidebar`);
+}
+if (/Terms of use<\/span>/.test(fs.readFileSync(path.join(PUBLIC, 'collections/record.html'), 'utf8').replace(/<aside[\s\S]*?<\/aside>/, ''))) sideBad.push('record.html shows Terms of use outside the media sidebar');
+if (sideBad.length) fail(`${sideBad.length} media sidebar problems, e.g. ${sideBad.slice(0, 3).join('; ')}`); else ok(`media metadata sidebar follows Field labels rows 27-30 (${SIDEBAR.map(l => l.label).join(', ')}) on all ${R.filter(r => r.hasDA).length} digital-asset records, in order and nowhere else`);
 finish('data-model');

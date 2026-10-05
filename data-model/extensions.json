@@ -33,13 +33,14 @@
     }
   ],
   "renderedElsewhere": {
-    "_note": "Field labels sheet rows that are shown on the record page outside the Details list.",
+    "_note": "Field labels sheet rows shown on the record page outside the Details list. Rows 27-30 (Licence Type, Advisory, Terms of Use, Producer) are the media metadata sidebar / flyout for digital assets.",
     "Title": "page heading",
     "Copyright": "usage-rights block (rights[])",
     "Credit Line": "usage-rights block (rights[])",
-    "Licence Type": "digital-asset media panel / licence badge",
-    "Advisory": "advisory labels and media panel",
-    "Terms of Use": "usage-rights block, digital assets only"
+    "Licence Type": "media metadata sidebar (media[], row 27)",
+    "Advisory": "media metadata sidebar (media[], row 28)",
+    "Terms of Use": "media metadata sidebar (media[], row 29)",
+    "Producer": "media metadata sidebar (media[], row 30)"
   },
   "labelAliases": {
     "Dimensions": "Dimensions (H x W x D)"
