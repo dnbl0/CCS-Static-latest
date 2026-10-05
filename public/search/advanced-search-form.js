@@ -51,6 +51,8 @@
     return n;
   }
   function img(src) { return el('img', { src: src, alt: '' }); }
+  /* In the fly-out the pinned Search bar covers the bottom of the form: scroll an opened menu / calendar fully into view (the page's scroll-padding keeps it clear of the bar). */
+  function keepInView(n) { if (n && n.scrollIntoView) setTimeout(function () { n.scrollIntoView({ block: 'nearest' }); }, 0); }
   function nextId(p) { return p + '-' + (++uid); }
 
   /* ---- live region ------------------------------------------------------------------------- */
@@ -130,7 +132,7 @@
     self.show = function () {
       if (self.open) return;
       setOpen(self);
-      self.open = true; list.hidden = false; btn.setAttribute('aria-expanded', 'true');
+      self.open = true; list.hidden = false; btn.setAttribute('aria-expanded', 'true'); keepInView(list);
       iconImg.src = IMG + 'icon-select-open.svg'; root.classList.add('is-open');
       var i = indexOfValue(self.value); setActive(i > -1 ? i : 0);
     };
@@ -229,7 +231,7 @@
     self.show = function () {
       if (self.open) return;
       setOpen(self);
-      self.open = true; menu.hidden = false; btn.setAttribute('aria-expanded', 'true');
+      self.open = true; menu.hidden = false; btn.setAttribute('aria-expanded', 'true'); keepInView(menu);
       iconImg.src = IMG + 'icon-select-open.svg'; root.classList.add('is-open');
       var first = search || visible()[0];
       if (first) first.focus();
@@ -319,7 +321,7 @@
     var self = { root: null, open: false, date: null, min: null, max: null, edge: o.edge };
     var calId = id + '-cal', errId = id + '-err', hintId = id + '-hint', titleId = id + '-cal-title';
     var b = bounds();
-    var label = el('label', { 'for': id, 'class': 'sr-only', text: o.label });
+    var label = el('label', { 'for': id, 'class': 'sr-only ccs-date__label', text: o.shortLabel || o.label });
     var input = el('input', { type: 'text', id: id, 'class': 'ccs-input ccs-date__input', placeholder: o.placeholder, autocomplete: 'off', inputmode: 'numeric', maxlength: '10', role: 'combobox', 'aria-haspopup': 'dialog', 'aria-expanded': 'false', 'aria-controls': calId, 'aria-describedby': hintId });
     var hint = el('span', { id: hintId, 'class': 'sr-only', text: 'Numbers only. Enter a date as dd/mm/yyyy, or just a year between ' + yearLabel(b.min) + ' and ' + yearLabel(b.max) + '. Press Arrow Down to open the calendar.' });
     var cal = el('div', { id: calId, 'class': 'ccs-cal', role: 'dialog', 'aria-label': 'Choose ' + o.label.toLowerCase(), hidden: true });
@@ -400,7 +402,7 @@
         self.read();
         var start = clamp(self.date && self.date.y >= 1 ? self.date : today());
         focusDate = start; view = { y: start.y, m: start.m, d: 1 };
-        self.open = true; cal.hidden = false; input.setAttribute('aria-expanded', 'true'); root.classList.add('is-open');
+        self.open = true; cal.hidden = false; input.setAttribute('aria-expanded', 'true'); root.classList.add('is-open'); keepInView(cal);
         render();
       }
       if (intoGrid) focusDay();
@@ -548,8 +550,8 @@
   function buildRange(def, preset) {
     var row = filterShell(def); row.classList.add('adv-filter--range');
     var controls = el('div', { 'class': 'ccs-field-row__controls' });
-    var from = DateField({ label: 'Production date from', placeholder: 'From', edge: 'begin', onChange: function () { sync(); validate(); } });
-    var to = DateField({ label: 'Production date to', placeholder: 'To', edge: 'end', onChange: function () { sync(); validate(); } });
+    var from = DateField({ shortLabel: 'From', label: 'Production date from', placeholder: 'From', edge: 'begin', onChange: function () { sync(); validate(); } });
+    var to = DateField({ shortLabel: 'To', label: 'Production date to', placeholder: 'To', edge: 'end', onChange: function () { sync(); validate(); } });
     var hb = el('input', { type: 'hidden', name: 'range[' + def.key + '][begin]' });
     var he = el('input', { type: 'hidden', name: 'range[' + def.key + '][end]' });
     function sync() {
@@ -561,7 +563,7 @@
       var m1 = from.read(), m2 = to.read();
       from.setError(m1); to.setError(m2);
       var bad = !!(m1 || m2);
-      if (!bad && from.date && to.date && toKey(from.date) > toKey(to.date)) { to.setError('Production date to must be on or after the from date (' + fmt(from.date) + ').'); bad = true; }
+      if (!bad && from.date && to.date && toKey(from.date) > toKey(to.date)) { to.setError('The "To" date must be on or after the "From" date (' + fmt(from.date) + ').'); bad = true; }
       return !bad;
     }
     row.__range = { from: from, to: to, sync: sync, validate: validate };
@@ -600,7 +602,7 @@
   /* ---- URL <-> form -------------------------------------------------------------------------- */
   function readParams() {
     var qs = new URLSearchParams(location.search);
-    var out = { clauses: {}, filters: {}, range: {}, sort: qs.get('sort') || '' };
+    var out = { clauses: {}, filters: {}, range: {}, sort: qs.get('sort') || '', op: qs.get('op') || '' };
     qs.forEach(function (val, name) {
       var m;
       if ((m = name.match(/^clause\[(\d+)\]\[(field|op|query)\]$/))) {
@@ -616,7 +618,8 @@
   }
   function prefill() {
     var p = readParams();
-    Object.keys(p.clauses).sort(function (a, b) { return a - b; }).forEach(function (k) { addTerm(p.clauses[k]); });
+    var defOp = OPS.some(function (o) { return o[0] === p.op && o[0] !== 'must_not'; }) ? p.op : 'must';   // Blacklight's single "match all / any" operator
+    Object.keys(p.clauses).sort(function (a, b) { return a - b; }).forEach(function (k) { var c = p.clauses[k]; if (!c.op) c.op = defOp; addTerm(c); });
     while ($$('.adv-term', termsList()).length < 1) addTerm();
     var active = {};
     FILTERS.forEach(function (d) { if (d.on) active[d.key] = true; });
@@ -657,6 +660,10 @@
     showErrorSummary(errs);
     if (errs.length) { e.preventDefault(); $('#adv-errors').focus(); return; }
     disabledForSubmit = [];
+    var opIn = $('#adv-op');
+    if (opIn) { var ops = $$('.adv-term', termsList()).filter(function (r) { return $('[data-role=query]', r).value.trim(); }).map(function (r) { return $('input[name$="[op]"]', r).value; });
+      var uniform = ops.length > 1 && ops.every(function (v) { return v === ops[0] && v !== 'must_not'; });
+      opIn.value = uniform ? ops[0] : ''; opIn.disabled = !uniform; }
     function off(n) { if (n && !n.disabled) { n.disabled = true; disabledForSubmit.push(n); } }
     $$('.adv-term', termsList()).forEach(function (row) {
       if (!$('[data-role=query]', row).value.trim()) $$('input', row).forEach(off);

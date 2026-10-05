@@ -204,24 +204,33 @@ html.is-embed body { background: var(--white-100); }
 html.is-embed .skip-link, html.is-embed .ccs-nav--header, html.is-embed .uom-search-popover, html.is-embed .page-breadcrumbs,
 html.is-embed .ccs-banner, html.is-embed .ccs-instructions, html.is-embed .ccs-nav--footer { display: none; }
 html.is-embed .advanced-filters-page__group { min-height: 0; }
-html.is-embed .ccs-page__body { display: block; padding: var(--space-24); }
-html.is-embed .ccs-adv { gap: var(--space-24); }
-html.is-embed .ccs-adv__box, html.is-embed .ccs-adv__stack { gap: var(--space-16); }
-/* In the fly-out the form scrolls and Search / Reset stay pinned at the bottom */
+html.is-embed .ccs-page__body { display: block; padding: 24px; }
+html.is-embed .ccs-adv { gap: 24px; }
+html.is-embed .ccs-adv__box, html.is-embed .ccs-adv__stack { gap: 16px; }
+/* ---- Fly-out (400px column): one column; each search / filter row is a quiet card with its Delete link top-right ---- */
 html.is-embed { scroll-padding-bottom: 96px; }
-html.is-embed .ccs-adv__actions { position: sticky; bottom: 0; z-index: var(--z-5); flex-direction: row; gap: var(--space-16); margin-bottom: -24px; padding: var(--space-16) 0 var(--space-24); }
+html.is-embed .ccs-page__body { padding: 20px 24px 24px; }
+html.is-embed .ccs-adv, html.is-embed .ccs-adv__box, html.is-embed .ccs-adv__stack { gap: 16px; }
+html.is-embed .ccs-adv { gap: 28px; }
+html.is-embed .ccs-adv__box { gap: 8px; }
+html.is-embed .ccs-adv__stack { counter-reset: advrow; }
+html.is-embed .adv-term, html.is-embed .adv-filter { position: relative; display: block; margin: 0; padding: 12px 16px 16px; border: 0; background: rgba(0, 15, 70, 0.04); }
+html.is-embed .adv-term::before { counter-increment: advrow; content: "Row " counter(advrow); display: block; min-height: 32px; font-size: 14px; font-weight: 600; line-height: 32px; color: var(--brand-1100); }
+html.is-embed .adv-filter legend { float: left; width: calc(100% - 120px); min-height: 32px; margin: 0 0 8px; font-size: 14px; line-height: 32px; }
+html.is-embed .adv-filter .ccs-field-row__controls { clear: both; }
+html.is-embed .adv-term .ccs-field-row__controls, html.is-embed .adv-filter .ccs-field-row__controls { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
+html.is-embed .adv-term .ccs-field-row__controls > :nth-child(3) { grid-column: auto; order: -1; }
+html.is-embed .adv-term .ccs-delete, html.is-embed .adv-filter .ccs-delete { position: absolute; top: 4px; right: 12px; align-self: auto; min-height: 40px; }
+html.is-embed .adv-filter .ccs-delete { grid-column: auto; }
+html.is-embed .ccs-btn--add, html.is-embed .ccs-combo--add { align-self: stretch; width: 100%; }
+html.is-embed .ccs-combo, html.is-embed .ccs-combo__field { font-size: 16px; }
+html.is-embed .ccs-adv__sort { gap: 8px; max-width: none; }
+html.is-embed .ccs-adv__sort .ccs-combo { width: 100%; }
+html.is-embed .ccs-adv__actions { position: sticky; bottom: 0; z-index: 5; display: grid; grid-template-columns: 1fr 2fr; gap: 12px; margin: 0 0 -24px; padding: 16px 0 20px; }
 html.is-embed .ccs-adv__actions::before { content: ""; position: absolute; inset: 0 -24px; z-index: -1; background: #fff; border-top: 1px solid #c8c8c8; }
-html.is-embed .ccs-adv__actions > * { flex: 1 1 0; }
-@media (min-width: 480px) {
-  html.is-embed .ccs-btn--add, html.is-embed .ccs-combo--add { align-self: flex-start; width: fit-content; }
-}
-html.is-embed .ccs-adv__heading { font-size: var(--font-size-title-5); }
-html.is-embed .ccs-adv__desc { margin-top: -4px; font-size: var(--font-size-15); line-height: 22px; }
-@media (min-width: 700px) {
-  html.is-embed .adv-term { flex-direction: row; align-items: center; gap: var(--space-24); }
-  html.is-embed .adv-term .ccs-field-row__controls { grid-template-columns: 140px 232px minmax(0, 1fr); }
-  html.is-embed .adv-term .ccs-field-row__controls > :nth-child(3) { grid-column: auto; }
-}
+html.is-embed .ccs-date__label { position: static; width: auto; height: auto; margin: 0 0 4px; clip: auto; overflow: visible; white-space: normal; font-size: 14px; font-weight: 600; color: var(--brand-1100); }
+html.is-embed .ccs-adv__heading { font-size: 20px; line-height: 26px; }
+html.is-embed .ccs-adv__desc { margin-top: -4px; font-size: 15px; line-height: 22px; }
 
 /* advanced-filters: styles moved out of inline style="" attributes. Class names are semantic (block__element) and scoped by the page class on <body> (page-advanced-filters), which gives them the precedence the inline styles had over shared component CSS. Do not reintroduce inline styles. */
 

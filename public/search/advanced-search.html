@@ -243,6 +243,7 @@
   <div class="ccs-page__body">
     <search class="ccs-page__search-advanced-search" aria-label="Advanced search">
       <form id="adv-form" class="ccs-adv" action="search-results.html" method="get" novalidate>
+        <input type="hidden" id="adv-op" name="op" disabled>
         <div id="adv-errors" class="ccs-errors" role="alert" tabindex="-1"></div>
         <div id="adv-live" class="sr-only advanced-filters-adv-live" role="status" aria-live="polite"></div>
         <section class="ccs-adv__box" aria-labelledby="adv-terms-h">
@@ -265,7 +266,7 @@
         </div>
 
         <div class="ccs-adv__actions">
-          <a class="ccs-btn ccs-btn--secondary" href="advanced-search.html">Reset</a>
+          <a class="ccs-btn ccs-btn--secondary" href="advanced-search.html">Start over</a>
           <button type="submit" class="ccs-btn ccs-btn--primary">Search</button>
         </div>
       </form>
