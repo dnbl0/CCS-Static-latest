@@ -1372,7 +1372,7 @@ class Component extends DCLogic {
       padHero: mob ? '16px 16px 24px' : '20px 32px 36px', h1Size: sm ? '26px' : mob ? '30px' : '40px',
       padSum: mob ? '16px 16px 12px' : '28px 32px 16px', padBar: mob ? '10px 16px' : '12px 32px',
       padMain: mob ? '16px 16px 40px' : hasSidebar ? '24px 0 64px 24px' : '24px 32px 64px', formBasis: mob ? '100%' : '420px',
-      cols: view === 'masonry' ? (mob ? '1 260px' : hasSidebar ? '3 240px' : '4 260px') : 'auto', colGap: mob ? '12px' : hasSidebar ? '24px' : '20px',
+      cols: view === 'masonry' ? (mob ? '1 260px' : 'auto 240px') : 'auto', colGap: mob ? '12px' : hasSidebar ? '24px' : '20px',
       listGap: sm ? '12px' : '20px', listImgSize: sm ? '76px' : '104px',
       ...(s.modal ? this.modalVals(s) : {}),
       ...(hasSidebar ? this.sideVals(s) : {}), hasSidebar,
