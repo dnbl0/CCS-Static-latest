@@ -1099,3 +1099,7 @@ The results page (`public/search/search-results.html`) asks the Blacklight-shape
 - **What the API answers:** query (fuzzy, synonym and phrase meaning, or exact), collection / type / subject / culture / place / theme / licence facets, date range, sort, paging. Records returned are matched back to the full local record by id so images and formats still show.
 - **What stays local:** advanced clauses, match-all facets, creator life dates, accession, digital / download switches, scope and the remaining facets (`BlacklightAdapter.canServe`). Sidebar facet counts and "Did you mean" also still come from the local catalogue.
 - **Tests:** `tests/search-live.test.js` (adapter unit checks, plus browser checks with the API present, missing and returning 500).
+
+### Refactoring styles safely
+
+Stylesheet changes are verified with computed-style snapshots of every page, state and viewport (`npm run style:snapshot`, `npm run style:diff`). See `docs/css-refactor.md`.

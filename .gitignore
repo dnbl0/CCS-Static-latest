@@ -64,3 +64,4 @@ env/
 .vercel
 localhost_*.png
 
+.style-snapshots/
