@@ -9,7 +9,7 @@ const mime = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.
 const redirects = (cfg.redirects || []).map(r => [r.source, r.destination, r.statusCode || 308]);
 const rewrites = (cfg.rewrites || []).map(r => [new RegExp('^' + r.source.replace(/:(\w+)/g, '(?<$1>[^/]+)') + '$'), r.destination]);
 const file = p => [p, p + '.html', path.join(p, 'index.html')].find(f => fs.existsSync(f) && fs.statSync(f).isFile());
-http.createServer((req, res) => {
+function handler(req, res) {
   const [rawPath, qs = ''] = req.url.split('?');
   let url = decodeURIComponent(rawPath);
   const red = redirects.find(([s]) => s === url);
@@ -30,4 +30,9 @@ http.createServer((req, res) => {
   }
   res.writeHead(200, { 'Content-Type': type, 'Accept-Ranges': 'bytes', 'Content-Length': st.size });
   fs.createReadStream(f).pipe(res);
-}).listen(port, () => console.log(`CCS preview: http://localhost:${port}`));
+}
+
+// `node scripts/dev-server.js` serves on a port; other scripts (style snapshots) require() it and call createServer().
+const createServer = () => http.createServer(handler);
+module.exports = { createServer };
+if (require.main === module) createServer().listen(port, () => console.log(`CCS preview: http://localhost:${port}`));

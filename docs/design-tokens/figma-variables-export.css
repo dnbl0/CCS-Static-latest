@@ -1,3 +1,8 @@
+/* ARCHIVE (reference only, not linked by any page).
+   Original Figma Variables export that lived at the top of public/components/fig-tokens.css (everything before
+   the first component rule), unchanged, as of main 9064f77. About 1,350 custom properties; only a small fraction
+   is used by the app. The live tokens are now in public/styles/tokens.css. */
+
 /* Generated from Figma Variables. First mode = :root default.
    FLOAT tokens are unitless — multiply by 1px in calc() where a length is needed. */
 

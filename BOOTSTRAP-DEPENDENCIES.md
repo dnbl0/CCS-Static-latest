@@ -67,11 +67,11 @@ Exit code is non-zero if any issue is found.
 | Feature | Notes |
 |---|---|
 | Grid, spacing and display utilities | Core layout on several pages |
-| Typography, colours | Base styles overridden by the UoM theme and by `tokens/figma.css` |
+| Typography, colours | Base styles overridden by the UoM theme and by `tokens/tokens.css` |
 | Buttons, forms, cards | Used in places, restyled to Gen 3 (square corners, no shadows) |
 | Bootstrap JS (modals, dropdowns, carousel...) | Not relied on; only `index.html` loads the bundle |
 
-Not Bootstrap: the media viewer, record request dialog, search/facet logic (page scripts), the DC template runtime (`public/support.js`), and the design tokens (`public/styles/tokens/figma.css`).
+Not Bootstrap: the media viewer, record request dialog, search/facet logic (page scripts), the DC template runtime (`public/support.js`), and the design tokens (`public/styles/tokens/tokens.css`).
 
 **Class collisions**: Bootstrap's `!important` utilities (for example `.bg-secondary`) override custom classes with the same name. Pick distinct class names for custom components.
 

@@ -6,7 +6,7 @@ const STYLES = path.join(PUBLIC, 'styles');
 const rel = p => path.relative(STYLES, p).split(path.sep).join('/');
 const sheets = walk(STYLES, p => p.endsWith('.css')).map(rel).filter(p => !p.startsWith('vendor/'));
 const pages = walk(PUBLIC, p => p.endsWith('.html') && p !== path.join(PUBLIC, 'search.html'));
-const REQUIRED = ['vendor/bootstrap-uom.min.css', 'tokens/figma.css', 'tokens/uom-ds.css', 'tokens/semantic.css', 'base.css'];
+const REQUIRED = ['vendor/bootstrap-uom.min.css', 'tokens/tokens.css', 'base.css'];
 const ALLOWED_DIRS = ['tokens/', 'components/', 'pages/', 'vendor/'];
 
 const linked = new Set();

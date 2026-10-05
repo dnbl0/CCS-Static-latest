@@ -35,7 +35,7 @@
 
 All colors follow the University of Melbourne Gen 3 Design System official palette.
 
-**Where tokens live**: `public/styles/tokens/figma.css` carries the Gen 3 tokens (for example `--col-heritage-100` = `rgb(0 15 70)` = #000f46, `--col-btn-action-bg: #46c8f0`). The semantic `--col-*` colours (`--col-bg-primary`, `--col-bg-accent`, `--col-text-muted`, ...) are defined once in `public/styles/tokens/semantic.css`, which loads after `figma.css` and overrides the few names both define (`--col-bg-accent` is the sage `#abc1a7` here, a blue-dark token in `figma.css`).
+**Where tokens live**: `public/styles/tokens/tokens.css` (primitive, semantic and component tiers); rules and the Figma export are in `docs/design-tokens/README.md`.
 
 #### Primary Colors
 
@@ -802,9 +802,7 @@ vercel.json                          # clean URLs + legacy redirects
 ```
 public/styles/
   vendor/bootstrap-uom.min.css   Bootstrap 5.3.3 compiled from src/scss (committed)
-  tokens/figma.css               GENERATED from Figma Variables: palette, type, spacing (do not hand-edit)
-  tokens/uom-ds.css              UoM Design System token defaults the header and figma.css need
-  tokens/semantic.css            --col-* semantic colours (the only place they are defined)
+  tokens/tokens.css              the single token layer: primitive -> semantic -> component (see docs/design-tokens/README.md)
   base.css                       reset, body, links, skip link, focus ring, .sr-live
   components/                    ccs (nav/section/card/hero), header, breadcrumbs, page-banner, search-bar, hero-search,
                                  campaign-banner, licence-badge, collection, content-templates
@@ -813,13 +811,13 @@ public/styles/
 
 | Layer | Files | Rule |
 |-------|-------|------|
-| Tokens | `tokens/figma.css` (generated), `tokens/uom-ds.css`, `tokens/semantic.css` | Colours/spacing are defined once here. Use `var(--brand-1100)`, `var(--blue-400)`, `var(--white-100)` or `var(--col-*)`; do not paste hex values that already exist as tokens. `semantic.css` loads after `figma.css` and deliberately overrides its `--col-text-primary`/`--col-bg-primary`/`--col-bg-accent`. |
+| Tokens | `tokens/tokens.css` | One file, three tiers (primitive raw values, semantic roles, component tokens). Stylesheets use component tokens inside their component and semantic tokens elsewhere. `design-tokens/figma/` is generated from it for Figma (`npm run build:figma-tokens`). |
 | Base | `base.css` | Element defaults only. Page-specific link treatment sits at the bottom in `:where(body.page-x)` selectors so specificity stays at element level. |
 | Components | `components/*.css` | Reusable pieces shared by pages. A page links only the components it uses. |
 | Pages | `pages/<page>.css` | Rules scoped by `body.page-<page>`. |
 | Vendor | `vendor/bootstrap-uom.min.css` | Compiled; never hand-edit. |
 
-`tests/stylesheet-structure.test.js` enforces this layout (every sheet linked, tokens/base on every page, load order tokens -> components -> pages, no colour tokens outside `tokens/`).
+`tests/stylesheet-structure.test.js` enforces this layout (every sheet linked, tokens/base on every page, load order tokens -> components -> pages, tokens linked first); `tests/tokens.test.js` enforces the token tiers.
 
 ### Styles Import
 
@@ -827,9 +825,7 @@ Every page links, in this order (absolute paths), then the components it needs, 
 
 ```html
 <link rel="stylesheet" href="/styles/vendor/bootstrap-uom.min.css">
-<link rel="stylesheet" href="/styles/tokens/figma.css">
-<link rel="stylesheet" href="/styles/tokens/uom-ds.css">
-<link rel="stylesheet" href="/styles/tokens/semantic.css">
+<link rel="stylesheet" href="/styles/tokens/tokens.css">
 <link rel="stylesheet" href="/styles/base.css">
 <link rel="stylesheet" href="/styles/components/ccs.css">
 <link rel="stylesheet" href="/styles/components/header.css">
