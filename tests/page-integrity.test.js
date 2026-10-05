@@ -60,8 +60,8 @@ if (results.includes('Options within a filter are combined with OR.') || results
 // The count badge and toggle track styles live in the page stylesheet (inline styles were moved out of the page).
 const resultsCss = fs.readFileSync(path.join(PUBLIC, 'styles/pages/search-results.css'), 'utf8');
 const cssRules = resultsCss.split('}').map(r => r.replace(/\s+/g, ' '));
-const roundedRule = (...needles) => cssRules.some(r => r.includes('border-radius: 999px') && needles.every(n => r.includes(n)));
-if (!roundedRule('height: 22px', 'padding: 0 6px') || !roundedRule('width: 38px', 'height: 22px')) fail('filters: count or toggle track is not rounded');
+const roundedRule = (...needles) => cssRules.some(r => (r.includes('border-radius: 999px') || r.includes('border-radius: var(--radius-pill)')) && needles.every(n => r.includes(n)));
+if (!roundedRule('height: 22px', 'padding: 0 var(--space-6)') || !roundedRule('width: 38px', 'height: 22px')) fail('filters: count or toggle track is not rounded');
 const runtime = fs.readFileSync(path.join(PUBLIC, 'support.js'), 'utf8');
 if (!results.includes('data-dc-plain-interp') || !runtime.includes('return plainInterp ? String(v) : h("span", { key: i, className: "sc-interp" }, String(v));')) fail('filters: modal interpolations still use wrapper spans');
 finish('page-integrity');

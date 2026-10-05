@@ -3,10 +3,10 @@
 body.page-collections-browse .bc-mobile--styled {
   display: none;
   align-items: center;
-  gap: 6px;
+  gap: var(--space-6);
   list-style: none;
   margin: 0;
-  font-size: 18px;
+  font-size: var(--font-size-body-lg);
   color: var(--white-100);
 }
 
@@ -18,7 +18,7 @@ body.page-collections-browse .bc-mobile__item {
 body.page-collections-browse .bc-mobile__item-link-cultural-collections {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--space-6);
   color: var(--white-100);
   text-decoration: none;
   min-height: 44px;

@@ -20,7 +20,7 @@ a:hover{color:#0b2a6b;text-decoration:underline}
 
 .sr-live{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
-.skip-link{position:absolute;top:-120px;left:16px;background:var(--col-btn-action-bg);color:var(--col-btn-action-text);padding:12px 18px;z-index:99999;font-weight:700;text-decoration:none;border:2px solid var(--col-bg-primary);transition:top .2s ease}
+.skip-link{position:absolute;top:-120px;left:16px;background:var(--col-btn-action-bg);color:var(--col-btn-action-text);padding:12px 18px;z-index:var(--z-99999);font-weight:700;text-decoration:none;border:2px solid var(--col-bg-primary);transition:top var(--duration-base) ease}
 .skip-link:focus{top:16px}
 
 @media (max-width:768px){
