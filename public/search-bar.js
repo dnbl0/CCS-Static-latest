@@ -73,7 +73,9 @@
     const chev = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>';
     const paintScope = () => {
       const scope = getScope();
-      scopeBtn.innerHTML = (scope.length === 1 ? scope[0] : scope.length > 1 ? scope.length + ' collections' : 'All collections') + chev;
+      const scopeLabel = scope.length === 1 ? scope[0] : scope.length > 1 ? scope.length + ' collections' : 'All collections';
+      scopeBtn.innerHTML = scopeLabel + chev;
+      scopeBtn.setAttribute('aria-label', scopeLabel + ', search in collection'); // the accessible name starts with the visible text (WCAG 2.5.3)
       menu.innerHTML = SCOPES.map(([v, l]) => `<button type="button" role="option" aria-selected="${v === 'all' ? !scope.length : scope.includes(v)}" data-v="${v}"><span class="ccs-searchbar__check" aria-hidden="true"></span><span>${l}</span></button>`).join('');
     };
     paintScope();
@@ -144,7 +146,7 @@
 
     function sync() {
       paintScope();
-      if (chip) { const t = opts.chip() || ''; chip.hidden = !t; chipText.textContent = t; }
+      if (chip) { const t = opts.chip() || ''; chip.hidden = !t; chipText.textContent = t; chip.setAttribute('aria-label', 'Remove search term ' + t); }
       if (opts.placeholder) input.setAttribute('placeholder', opts.placeholder());
     }
     sync();
