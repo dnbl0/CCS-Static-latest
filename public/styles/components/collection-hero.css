@@ -1,5 +1,5 @@
 /* Collection landing hero: UoM Gen 3 split campaign banner.
-   Moved out of components/fig-tokens.css (see docs/css-refactor.md). Load right after fig-tokens.css. */
+   Moved out of the old components/fig-tokens.css (see docs/css-refactor.md). Load right after tokens.css. */
 
 /* Collection landing hero — UoM Gen 3 campaign banner (split, dark), as used on unimelb.edu.au/giving */
 .campaign-banner-split {

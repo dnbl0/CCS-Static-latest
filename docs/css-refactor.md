@@ -106,3 +106,21 @@ Every page used to carry its own near-copy of the base rules (`body`, `a`, `*` b
 Removed: `pages/{collection-landing,collections-browse,help,record,search-results}.base-elements.css` and `pages/{help,home}.skip-link.css`. Page-specific rules that were in them moved to the page's own file: the item media viewer to `pages/record.css`, the date facet and keyframes to `pages/search-results.css`, `html{scroll-behavior}` and the help topics grid to `pages/help.css`. `pages/home.page-styles.css` lost its `body`, `a`, `a:hover` and `.btn` rules (its `:root` block is untouched).
 
 Check: `style:diff` against the pre-change snapshot is `RESULT: IDENTICAL` (102 snapshots), both before and after rebasing onto the component-CSS move.
+
+## Token layer: one file, three tiers (steps 1 and 2)
+
+`public/styles/tokens.css` is now the only place design tokens are defined (primitives, semantic, component; 231 / 213 / 144 custom properties). It replaces `components/fig-tokens.css`, `shared/colour-tokens.css`, `shared/colour-tokens-v2.css`, `pages/record.colour-tokens.css` and the `:root` blocks that sat in `styles/header.css` and `pages/home.page-styles.css`. It is linked right after Bootstrap on every page. Full description, naming, how to add a token and the list of token conflicts are in `docs/design-tokens/README.md`.
+
+What changed, in order:
+
+1. **Dead tokens removed.** 1,367 custom properties were defined; 105 are used (by `var()` in a stylesheet, page or script, directly or through another token). About 2,000 declarations were deleted. The unmodified Figma and UoM header exports are archived under `docs/design-tokens/`.
+2. **One token layer.** The remaining tokens were merged into `tokens.css`. Where the old cascade gave a token different values on different pages (the home page), the value is kept with a page-scoped block at the end of the file.
+3. **Hard-coded values replaced** by tokens wherever the value is exactly equal: colours (as component tokens inside their component, semantic tokens elsewhere), font sizes, font weights, border radii, line heights, z-indexes, box shadows, transition durations and 2 to 48px spacing.
+
+Result: own CSS (excluding Bootstrap) went from 292,855 to about 231,000 bytes (30 to 27 files); `fig-tokens.css` alone was 73,789 bytes of which about 6,800 bytes remained after the dead tokens were removed.
+
+Proof: `style:diff` before against after is `RESULT: IDENTICAL` across all 102 snapshots (no element, style or box differences). Custom properties differ only where intended and are in `scripts/style-diff.allow.json` with reasons: five properties that were defined only in a never-matching `data-mode="wireframe"` block, and two colour tokens that used to exist on only some pages. Tests (`page-integrity`, `search-bar`) were updated for the new file name and for tokenised values.
+
+**Using `--tokens` for a clean-up like step 1:** the diff tool treats a token as "used" when any stylesheet mentions it with `var()`, including tokens that are themselves dead. Right after a dead-token removal it therefore reports the removed tokens that other dead tokens referenced. Filter those against the live set (anything not reachable from a real consumer) or compare a later snapshot with the one taken right after the removal.
+
+**Baseline caveat:** a few baseline captures of the home page (`index @1280 [scope-menu]`, `[header-search-overlay]`, and once the whole `index` page) were taken with the stylesheets not applied or with a different text wrap under heavy machine load, and showed as differences against unchanged code. Re-taking just those states fixed it. If the diff shows a whole page changing, re-snapshot that page before suspecting the CSS.

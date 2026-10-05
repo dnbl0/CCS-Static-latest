@@ -486,6 +486,8 @@
   --layout-content: var(--size-1224);
   --layout-content-wide: var(--size-1240);
   --layout-page: var(--size-1440);
+  /* Runtime layout value: record.html measures the header and overwrites this on <html>; 212px is the default (tall desktop header) */
+  --header-total-height: 212px;
 }
 
 /* ===================== TIER 3: COMPONENT ===================== */

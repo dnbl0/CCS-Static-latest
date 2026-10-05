@@ -1,5 +1,5 @@
 /* Licence badge <ccs-licence> (see /licence-badge.js), shared by record pages, search results and collection pages.
-   Moved out of components/fig-tokens.css (see docs/css-refactor.md). Load right after fig-tokens.css. */
+   Moved out of the old components/fig-tokens.css (see docs/css-refactor.md). Load right after tokens.css. */
 
 /* Licence badge <ccs-licence> (see /licence-badge.js) — shared by record pages, search results, collection pages */
 ccs-licence { position: relative; display: inline-block; vertical-align: middle; }

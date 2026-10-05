@@ -9,7 +9,7 @@
    .ccs-btn           buttons: --primary, --secondary         .ccs-delete  "Delete row" link-button
    .ccs-instructions  guidance panel      .ccs-errors  form error summary
 
-   Colours/typography come from the Gen 3 tokens in components/fig-tokens.css (brand, blue, sage, interactive,
+   Colours/typography come from the tokens in styles/tokens.css (brand, blue, sage, interactive,
    input-fill-*, stroke-*, text-*); sizes are px values from the Figma frames.
    Desktop is the base: <=1023px stacks the page columns, <=767px stacks the fields.
    ========================================================================== */

@@ -1,5 +1,5 @@
 /* Global keyboard focus ring (WCAG 2.4.7) and header search placeholder contrast (WCAG 1.4.3).
-   Moved out of components/fig-tokens.css (see docs/css-refactor.md). Load right after fig-tokens.css. */
+   Moved out of the old components/fig-tokens.css (see docs/css-refactor.md). Load right after tokens.css. */
 
 /* WCAG 2.4.7 Focus Visible: centralized keyboard-focus indicator for all
    focusable elements. Uses the design system's own focus token so the ring

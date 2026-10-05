@@ -1,5 +1,5 @@
 /* Page breadcrumbs / local history (Gen 3 design system) and the rule that breadcrumb labels wrap instead of truncating.
-   Moved out of components/fig-tokens.css (see docs/css-refactor.md). Load right after fig-tokens.css. */
+   Moved out of the old components/fig-tokens.css (see docs/css-refactor.md). Load right after tokens.css. */
 
 /* Page Breadcrumbs / Local History (Gen 3 Design System) */
 .page-breadcrumbs {

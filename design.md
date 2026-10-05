@@ -9,7 +9,7 @@
 ## Quick Reference
 
 **Files Location**: See `README.md` (Repository layout)  
-**Styles**: `public/components/fig-tokens.css` (tokens only), `public/styles/components/*.css` (breadcrumbs, focus, page-banner, licence-badge, search-bar, collection-hero), `public/components/fig-assets.css`, `public/styles/home.css` (Navigation + Section components), `advanced-filters.css` (form components), `header.css` (search overlay + colour variables), `collection.css`, plus page-local `<style>` blocks  
+**Styles**: `public/styles/tokens.css` (the one token layer), `public/styles/components/*.css` (breadcrumbs, focus, page-banner, licence-badge, search-bar, collection-hero), `public/components/fig-assets.css`, `public/styles/home.css` (Navigation + Section components), `advanced-filters.css` (form components), `header.css` (search overlay), `collection.css`, plus page-local `<style>` blocks  
 **Bootstrap**: `public/styles/vendor/bootstrap-uom.min.css` (5.3.3, built locally from `src/scss/custom-bootstrap.scss` with `npm run build:css`)
 
 ---
@@ -35,7 +35,7 @@
 
 All colors follow the University of Melbourne Gen 3 Design System official palette.
 
-**Where tokens live**: `public/components/fig-tokens.css` carries the Gen 3 tokens (for example `--col-heritage-100` = `rgb(0 15 70)` = #000f46, `--col-btn-action-bg: #46c8f0`). Each page also declares its own `:root` overrides in an inline `<style>` block (`--col-bg-primary`, `--col-bg-accent`, `--col-text-muted`, ...), and values differ slightly between the tables below and those blocks (for example `index.html` sets `--col-bg-primary-dark: #000b34` and `--col-bg-primary-hover: #213e5d`). Treat the page-local `:root` block as authoritative for that page. In `fig-tokens.css`, `--col-bg-accent` is a blue-dark token, whereas the pages' local `--col-bg-accent` is the sage `#abc1a7`.
+**Where tokens live**: all design tokens are in `public/styles/tokens.css`, in three tiers: primitives (palette, type, spacing, radius, elevation, z-index, motion, sizes), semantic tokens (purpose-named roles that reference primitives) and component tokens (per-component, referencing semantic tokens). Legacy names such as `--col-heritage-100`, `--col-btn-action-bg`, `--brand-*`, `--blue-*` and `--sage-*` still exist and resolve to the same values as before. Pages no longer declare their own `:root` overrides; the only page-scoped override is the home page block at the end of `tokens.css` (see "Token conflicts" in `docs/design-tokens/README.md`). The original Figma variable export is archived in `docs/design-tokens/` and is not loaded.
 
 #### Primary Colors
 
@@ -785,11 +785,11 @@ public/                              # Deployed web root
 ├── collection-data.js               # Record data -> window.CCS
 ├── nav.js                           # header dropdowns + mobile drawer
 ├── blacklight-adapter.js, support.js, image-slot.js
-├── components/                      # fig-tokens.css (variables only), fig-assets.css (+ exported .jsx/.d.ts)
+├── components/                      # fig-assets.css (+ exported .jsx/.d.ts)
 ├── styles/components/               # shared component CSS (breadcrumbs, focus, page-banner, licence-badge, search-bar, collection-hero)
-├── styles/                          # home.css, advanced-filters.css, header.css, collection.css, vendor/bootstrap-uom.min.css
+├── styles/                          # tokens.css, home.css, advanced-filters.css, header.css, collection.css, vendor/bootstrap-uom.min.css
 │   ├── pages/                       # <page>.css (classes moved out of inline styles) + a few <page>.<role>.css (former <style> blocks)
-│   └── shared/                      # base-elements.css and skip-link.css (one copy for every page), colour-tokens*.css
+│   └── shared/                      # base-elements.css and skip-link.css (one copy for every page)
 ├── assets/                          # images/collections, data (audio/video, metadata), documents
 ├── images/                          # optimised web images and icons
 └── .htaccess                        # Apache redirects/rewrites
@@ -804,12 +804,12 @@ vercel.json                          # clean URLs + legacy redirects
 
 | File | Purpose |
 |------|---------|
-| `public/components/fig-tokens.css` | Gen 3 design tokens (colour, type, spacing) only |
-| `public/styles/components/*.css` | Shared component CSS (breadcrumbs, global focus ring, page banner, licence badge, search bar, collection hero); linked right after fig-tokens.css on every page |
+| `public/styles/tokens.css` | The single token layer: primitives, semantic and component tokens (colour, type, spacing, radius, elevation, layers, motion, layout) |
+| `public/styles/components/*.css` | Shared component CSS (breadcrumbs, global focus ring, page banner, licence badge, search bar, collection hero); linked right after tokens.css on every page |
 | `public/components/fig-assets.css` | Asset/component styles from the design export |
 | `public/styles/home.css` | Navigation (header/footer, UniMelb-style mobile header and drill-in drawer) and Section components, accordion, links |
 | `public/styles/advanced-filters.css` | Advanced Filters form components |
-| `public/styles/header.css` | Search overlay, `.sr-only` and shared colour variables |
+| `public/styles/header.css` | Search overlay and `.sr-only` |
 | `public/styles/pages/*.css` | Per-page rules (scoped by `body.page-<page>`); includes the former inline styles and `<style>` blocks |
 | `public/styles/shared/*.css` | Former `<style>` blocks that several pages shared |
 | `public/styles/shared/content-templates.css` | Matrix content-template components (listing, pathfinder, contact box, notice, side nav, definition table, contact cards, numbered steps); see README |
@@ -822,7 +822,7 @@ vercel.json                          # clean URLs + legacy redirects
 
 ```html
 <link rel="stylesheet" href="styles/vendor/bootstrap-uom.min.css">
-<link rel="stylesheet" href="components/fig-tokens.css">
+<link rel="stylesheet" href="/styles/tokens.css">
 <link rel="stylesheet" href="styles/components/breadcrumbs.css"> <!-- ...and the other five files in styles/components/, in this order: focus, page-banner, licence-badge, search-bar, collection-hero -->
 <link rel="stylesheet" href="components/fig-assets.css">
 <link rel="stylesheet" href="styles/header.css">

@@ -1,5 +1,5 @@
 /* Shared page banner: title and description under the breadcrumbs.
-   Moved out of components/fig-tokens.css (see docs/css-refactor.md). Load right after fig-tokens.css. */
+   Moved out of the old components/fig-tokens.css (see docs/css-refactor.md). Load right after tokens.css. */
 
 /* Page banner — shared title banner (matches the Help page banner) */
 .page-banner {
