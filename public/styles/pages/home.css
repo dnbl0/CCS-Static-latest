@@ -3,3 +3,6 @@
 body.page-home {
   min-height: 100vh;
 }
+
+/* Bootstrap theme colours (the compiled theme's :root values are the UoM defaults; the homepage keeps its own brand pair) */
+:root { --bs-primary: var(--brand-1100); --bs-primary-rgb: 0, 15, 70; --bs-secondary: var(--sage-400); --bs-secondary-rgb: 171, 193, 167; }

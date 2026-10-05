@@ -1,7 +1,7 @@
 /* Content templates shared by the collections, help and Indigenous data pages. Modelled on the Matrix "Page Listing" (image list, text list) and "Pathfinder" (alt) content templates from unimelb.edu.au/web/matrix-cms/content-templates. */
 .ct-listing {
-  background: #fff;
-  color: var(--col-text-primary, #2d2d2d);
+  background: var(--white-100);
+  color: var(--col-text-primary);
 }
 
 .ct-listing--alt {
@@ -20,7 +20,7 @@
   font-size: 30px;
   font-weight: 400;
   line-height: 36px;
-  color: #000f46;
+  color: var(--brand-1100);
 }
 
 .ct-listing__lead {
@@ -79,7 +79,7 @@
 }
 
 .ct-listing__link:focus-visible {
-  outline: 3px solid var(--focus-focus, #0b4ea2);
+  outline: 3px solid var(--focus-focus);
   outline-offset: 4px;
 }
 
@@ -115,17 +115,17 @@
 .pathfinder-alt__link {
   display: flex;
   flex: 1;
-  background: #000b34;
-  color: #fff;
+  background: var(--brand-1200);
+  color: var(--white-100);
   text-decoration: none;
 }
 
 .pathfinder-alt__link:hover {
-  background: #000f46;
+  background: var(--brand-1100);
 }
 
 .pathfinder-alt__link:focus-visible {
-  outline: 3px solid var(--focus-focus, #0b4ea2);
+  outline: 3px solid var(--focus-focus);
   outline-offset: 2px;
 }
 
@@ -173,21 +173,21 @@
 .notice {
   margin: 32px 0;
   padding: 16px;
-  border: 1px solid #1f7593;
-  background: #e3f6fd;
-  color: #222;
+  border: 1px solid var(--blue-600);
+  background: var(--blue-100);
+  color: var(--neutral-1000);
   font-size: 16px;
   line-height: 24px;
 }
 
 .notice--warning {
-  border-color: #ac5907;
-  background: #fff5cb;
+  border-color: var(--yellow-600);
+  background: var(--yellow-100);
 }
 
 .notice--success {
-  border-color: #60751f;
-  background: #f2f6e2;
+  border-color: var(--green-600);
+  background: var(--green-100);
 }
 
 .notice a {
@@ -200,8 +200,8 @@
   margin: 48px 0 0;
   padding: 24px 32px;
   border: 1px solid #c8c8c8;
-  border-left: 8px solid #000f46;
-  background: #fff;
+  border-left: 8px solid var(--brand-1100);
+  background: var(--white-100);
 }
 
 .contact-box__title {
@@ -210,7 +210,7 @@
   font-size: 24px;
   font-weight: 600;
   line-height: 28.8px;
-  color: #000f46;
+  color: var(--brand-1100);
 }
 
 .contact-box__text {
@@ -228,7 +228,7 @@
 /* Side navigation — Matrix local navigation: current page marked, siblings listed */
 .side-nav {
   align-self: start;
-  border-top: 4px solid #000f46;
+  border-top: 4px solid var(--brand-1100);
 }
 
 .side-nav__title {
@@ -249,7 +249,7 @@
 }
 
 .side-nav__item {
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid var(--neutral-200);
 }
 
 .side-nav__link {
@@ -267,14 +267,14 @@
 }
 
 .side-nav__link[aria-current='page'] {
-  border-left: 4px solid #000f46;
+  border-left: 4px solid var(--brand-1100);
   padding-left: 12px;
   font-weight: 600;
-  color: #000f46;
+  color: var(--brand-1100);
 }
 
 .side-nav__link:focus-visible {
-  outline: 3px solid var(--focus-focus, #0b4ea2);
+  outline: 3px solid var(--focus-focus);
   outline-offset: -3px;
 }
 
@@ -292,7 +292,7 @@
   max-width: 800px;
   font-size: 16px;
   line-height: 24px;
-  color: var(--col-text-primary, #2d2d2d);
+  color: var(--col-text-primary);
 }
 
 /* Typography — Matrix "Typography" (styling-content/typography) */
@@ -302,7 +302,7 @@
   font-size: 30px;
   font-weight: 400;
   line-height: 36px;
-  color: #000f46;
+  color: var(--brand-1100);
 }
 
 .help-layout__content h3 {
@@ -311,7 +311,7 @@
   font-size: 24px;
   font-weight: 600;
   line-height: 28.8px;
-  color: #000f46;
+  color: var(--brand-1100);
 }
 
 .help-layout__content p {
@@ -372,7 +372,7 @@
   max-width: 800px;
   font-size: 16px;
   line-height: 24px;
-  color: var(--col-text-primary, #2d2d2d);
+  color: var(--col-text-primary);
 }
 
 .collection-section + .collection-section {
@@ -385,7 +385,7 @@
   font-size: 30px;
   font-weight: 400;
   line-height: 36px;
-  color: #000f46;
+  color: var(--brand-1100);
 }
 
 .collection-section__text {
@@ -418,7 +418,7 @@
 
 .def-table__term {
   font-weight: 600;
-  color: #000f46;
+  color: var(--brand-1100);
 }
 
 .def-table__definition {
@@ -499,7 +499,7 @@
   font-size: 24px;
   font-weight: 600;
   line-height: 28.8px;
-  color: #000f46;
+  color: var(--brand-1100);
 }
 
 /* Contact cards — Matrix "Contact box" repeated as a grid */
@@ -515,8 +515,8 @@
 .contact-cards__item {
   padding: 20px 24px;
   border: 1px solid #c8c8c8;
-  border-top: 4px solid #000f46;
-  background: #fff;
+  border-top: 4px solid var(--brand-1100);
+  background: var(--white-100);
 }
 
 .contact-cards__title {
@@ -524,7 +524,7 @@
   font-size: 20px;
   font-weight: 600;
   line-height: 24px;
-  color: #000f46;
+  color: var(--brand-1100);
 }
 
 .contact-cards__label {
@@ -568,8 +568,8 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: #000f46;
-  color: #fff;
+  background: var(--brand-1100);
+  color: var(--white-100);
   font-weight: 600;
   line-height: 32px;
   text-align: center;

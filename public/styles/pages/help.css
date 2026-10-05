@@ -7,7 +7,7 @@ body.page-help .bc-mobile--styled {
   list-style: none;
   margin: 0;
   font-size: 18px;
-  color: #fff;
+  color: var(--white-100);
 }
 
 body.page-help .bc-mobile__item {
@@ -19,7 +19,7 @@ body.page-help .bc-mobile__item-link-cultural-collections {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: #fff;
+  color: var(--white-100);
   text-decoration: none;
   min-height: 44px;
 }
@@ -28,7 +28,7 @@ body.page-help .bc-mobile__item-link-help-support {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: #fff;
+  color: var(--white-100);
   text-decoration: none;
   min-height: 44px;
 }
@@ -78,8 +78,8 @@ body.page-help .help-search-tips__group--v2 > * {
 }
 
 body.page-help .help-search-tips__group--v2 > :nth-child(-n + 2) {
-  background: #000f46;
-  color: #fff;
+  background: var(--brand-1100);
+  color: var(--white-100);
 }
 
 body.page-help .help-search-tips__strong--v2,
@@ -121,3 +121,13 @@ body.page-help .ccs-help--topics .ccs-help__item:nth-child(n + 4) .ccs-help__car
     margin-top: 0;
   }
 }
+
+/* Help topic grid; smooth scrolling for in-page anchors */
+.help-topics-grid{grid-template-columns:repeat(3,1fr)}
+@media (max-width:900px){
+  .help-topics-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:560px){
+  .help-topics-grid{grid-template-columns:1fr}
+}
+html{scroll-behavior:smooth}

@@ -2,14 +2,14 @@
    Loaded by the pages that show hearts (record, search results) and by /lists. Do not reintroduce inline styles. */
 
 /* ---- Heart button ------------------------------------------------------------------------------------------- */
-.fav-heart { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-width: 44px; min-height: 44px; padding: 0; border: 1px solid var(--brand-1100, #000f46); border-radius: 22px; background: #fff; color: var(--brand-1100, #000f46); font: inherit; font-size: 16px; font-weight: 600; line-height: 1; cursor: pointer; }
+.fav-heart { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-width: 44px; min-height: 44px; padding: 0; border: 1px solid var(--brand-1100); border-radius: 22px; background: var(--white-100); color: var(--brand-1100); font: inherit; font-size: 16px; font-weight: 600; line-height: 1; cursor: pointer; }
 .fav-heart[hidden] { display: none; }
 .fav-heart:hover { background: #e3f4fb; }
 .fav-heart__icon { flex: none; width: 24px; height: 24px; fill: none; stroke: currentColor; }
 .fav-heart[aria-pressed="true"] .fav-heart__icon { fill: currentColor; }
-.fav-heart[aria-pressed="true"] { background: var(--blue-400, #47c8f0); }
+.fav-heart[aria-pressed="true"] { background: var(--blue-400); }
 .fav-heart[aria-pressed="true"]:hover { background: #29b3d9; }
-.fav-heart:focus-visible { outline: 2px solid var(--blue-400, #47c8f0); outline-offset: 2px; }
+.fav-heart:focus-visible { outline: 2px solid var(--blue-400); outline-offset: 2px; }
 
 /* On cards the heart sits in the top-right corner of the card, above the image */
 .fav-heart--card { position: absolute; top: 8px; right: 8px; z-index: 2; box-shadow: 0 1px 4px rgba(0, 15, 70, .25); }
@@ -21,64 +21,64 @@ body.page-search-results .search-results-article__link--v3,
 body.page-record .record-article__link--v2 { padding-right: 52px; }
 
 /* On the record page the heart has a visible label, under the title in the banner */
-.fav-heart--labelled { margin-top: 16px; padding: 0 16px 0 12px; background: transparent; border-color: #fff; color: #fff; }
+.fav-heart--labelled { margin-top: 16px; padding: 0 16px 0 12px; background: transparent; border-color: var(--white-100); color: var(--white-100); }
 .fav-heart--labelled:hover { background: rgba(255, 255, 255, .15); }
-.fav-heart--labelled[aria-pressed="true"] { background: var(--blue-400, #47c8f0); border-color: var(--blue-400, #47c8f0); color: var(--brand-1100, #000f46); }
+.fav-heart--labelled[aria-pressed="true"] { background: var(--blue-400); border-color: var(--blue-400); color: var(--brand-1100); }
 .fav-heart--labelled[aria-pressed="true"]:hover { background: #29b3d9; }
 .fav-heart__text--on, .fav-heart[aria-pressed="true"] .fav-heart__text--off { display: none; }
 .fav-heart[aria-pressed="true"] .fav-heart__text--on { display: inline; }
 
 /* ---- Buttons shared by the dialog and the Lists page ---------------------------------------------------------- */
-.fav-btn { min-height: 44px; padding: 0 20px; border: 1px solid var(--brand-1100, #000f46); background: var(--brand-1100, #000f46); color: #fff; font: inherit; font-size: 16px; font-weight: 600; cursor: pointer; }
-.fav-btn:hover { background: #212e5d; }
-.fav-btn--secondary { background: var(--blue-400, #47c8f0); color: var(--brand-1100, #000f46); }
+.fav-btn { min-height: 44px; padding: 0 20px; border: 1px solid var(--brand-1100); background: var(--brand-1100); color: var(--white-100); font: inherit; font-size: 16px; font-weight: 600; cursor: pointer; }
+.fav-btn:hover { background: var(--brand-900); }
+.fav-btn--secondary { background: var(--blue-400); color: var(--brand-1100); }
 .fav-btn--secondary:hover { background: #29b3d9; }
-.fav-btn--quiet { background: transparent; color: var(--brand-1100, #000f46); border-color: transparent; text-decoration: underline; padding: 0 12px; }
+.fav-btn--quiet { background: transparent; color: var(--brand-1100); border-color: transparent; text-decoration: underline; padding: 0 12px; }
 .fav-btn--quiet:hover { background: #e3f4fb; }
 .fav-btn--danger { background: #b3261e; border-color: #b3261e; }
 .fav-btn--danger:hover { background: #8c1d18; }
-.fav-btn:focus-visible, .fav-dialog__input:focus-visible, .lists-select:focus-visible, .fav-check input:focus-visible + .fav-check__box { outline: 2px solid var(--blue-400, #47c8f0); outline-offset: 2px; }
+.fav-btn:focus-visible, .fav-dialog__input:focus-visible, .lists-select:focus-visible, .fav-check input:focus-visible + .fav-check__box { outline: 2px solid var(--blue-400); outline-offset: 2px; }
 
 /* ---- "Save to list" dialog ------------------------------------------------------------------------------------ */
 html.fav-dialog-open { overflow: hidden; }
 .fav-dialog { position: fixed; inset: 0; z-index: 3000; display: flex; align-items: center; justify-content: center; padding: 16px; }
 .fav-dialog[hidden] { display: none; }
 .fav-dialog__scrim { position: absolute; inset: 0; background: rgba(0, 11, 52, .72); }
-.fav-dialog__panel { position: relative; width: min(440px, 100%); max-height: calc(100vh - 32px); overflow-y: auto; padding: 24px; background: #fff; color: var(--col-text-primary, #1b1f2a); border-top: 4px solid var(--blue-400, #47c8f0); }
+.fav-dialog__panel { position: relative; width: min(440px, 100%); max-height: calc(100vh - 32px); overflow-y: auto; padding: 24px; background: var(--white-100); color: var(--col-text-primary); border-top: 4px solid var(--blue-400); }
 .fav-dialog__panel:focus { outline: none; }
-.fav-dialog__title { margin: 0 0 4px; font-family: "Fraunces", serif; font-size: 24px; font-weight: 500; color: var(--brand-1100, #000f46); }
-.fav-dialog__item { margin: 0 0 16px; font-size: 16px; color: var(--col-text-muted, #5b6070); overflow-wrap: anywhere; }
+.fav-dialog__title { margin: 0 0 4px; font-family: "Fraunces", serif; font-size: 24px; font-weight: 500; color: var(--brand-1100); }
+.fav-dialog__item { margin: 0 0 16px; font-size: 16px; color: var(--col-text-muted); overflow-wrap: anywhere; }
 .fav-dialog__lists { margin: 0 0 16px; padding: 0; list-style: none; border-top: 1px solid #d9d6cf; }
 .fav-dialog__list { border-bottom: 1px solid #d9d6cf; }
 .fav-check { display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 8px 4px; cursor: pointer; }
 .fav-check input { position: absolute; opacity: 0; width: 24px; height: 24px; margin: 0; }
-.fav-check__box { flex: none; width: 24px; height: 24px; border: 2px solid var(--brand-1100, #000f46); background: #fff; }
-.fav-check input:checked + .fav-check__box { background: var(--brand-1100, #000f46) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3.5'%3E%3Cpolyline points='5 12.5 10 17.5 19 7'/%3E%3C/svg%3E") center / 18px no-repeat; }
+.fav-check__box { flex: none; width: 24px; height: 24px; border: 2px solid var(--brand-1100); background: var(--white-100); }
+.fav-check input:checked + .fav-check__box { background: var(--brand-1100) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3.5'%3E%3Cpolyline points='5 12.5 10 17.5 19 7'/%3E%3C/svg%3E") center / 18px no-repeat; }
 .fav-check__name { flex: 1; min-width: 0; font-size: 16px; font-weight: 600; overflow-wrap: anywhere; }
-.fav-check__count { flex: none; font-size: 14px; color: var(--col-text-muted, #5b6070); }
+.fav-check__count { flex: none; font-size: 14px; color: var(--col-text-muted); }
 .fav-dialog__label { display: block; margin-bottom: 4px; font-size: 14px; font-weight: 600; }
 .fav-dialog__row { display: flex; flex-wrap: wrap; gap: 8px; }
-.fav-dialog__input { flex: 1 1 160px; min-width: 0; min-height: 44px; padding: 0 12px; border: 1px solid var(--brand-1100, #000f46); background: #fff; font: inherit; font-size: 16px; color: var(--col-text-primary, #1b1f2a); }
-.fav-dialog__note { margin: 16px 0; font-size: 14px; line-height: 1.5; color: var(--col-text-muted, #5b6070); }
+.fav-dialog__input { flex: 1 1 160px; min-width: 0; min-height: 44px; padding: 0 12px; border: 1px solid var(--brand-1100); background: var(--white-100); font: inherit; font-size: 16px; color: var(--col-text-primary); }
+.fav-dialog__note { margin: 16px 0; font-size: 14px; line-height: 1.5; color: var(--col-text-muted); }
 .fav-dialog__actions { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-.fav-dialog__link { color: var(--brand-1100, #000f46); font-weight: 600; }
+.fav-dialog__link { color: var(--brand-1100); font-weight: 600; }
 
 /* ---- Lists page ----------------------------------------------------------------------------------------------- */
 body.page-lists { display: flex; flex-direction: column; min-height: 100vh; }
 body.page-lists .lists-main { flex: 1; }
-body.page-lists .lists-page__group { width: 100%; background: #00354c; min-height: 40px; display: flex; align-items: center; }
-body.page-lists .bc-mobile--styled { display: none; align-items: center; gap: 6px; list-style: none; margin: 0; font-size: 18px; color: #fff; }
+body.page-lists .lists-page__group { width: 100%; background: var(--blue-900); min-height: 40px; display: flex; align-items: center; }
+body.page-lists .bc-mobile--styled { display: none; align-items: center; gap: 6px; list-style: none; margin: 0; font-size: 18px; color: var(--white-100); }
 body.page-lists .bc-mobile__item { display: flex; align-items: center; }
-body.page-lists .bc-mobile__item-link-cultural-collections { display: inline-flex; align-items: center; gap: 6px; color: #fff; text-decoration: none; min-height: 44px; }
+body.page-lists .bc-mobile__item-link-cultural-collections { display: inline-flex; align-items: center; gap: 6px; color: var(--white-100); text-decoration: none; min-height: 44px; }
 body.page-lists .page-local-history__link-image { vertical-align: middle; }
 .lists-layout { max-width: 960px; margin: 0 auto; padding: 32px 16px 64px; }
-.lists-note { margin: 0 0 24px; padding: 12px 16px; border-left: 4px solid var(--blue-400, #47c8f0); background: #eef8fc; font-size: 16px; line-height: 1.5; }
+.lists-note { margin: 0 0 24px; padding: 12px 16px; border-left: 4px solid var(--blue-400); background: #eef8fc; font-size: 16px; line-height: 1.5; }
 .lists-create { margin: 0 0 32px; }
 .lists-list { margin: 0 0 40px; }
-.lists-list__head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; padding-bottom: 12px; border-bottom: 2px solid var(--brand-1100, #000f46); }
-.lists-list__title { margin: 0; font-family: "Fraunces", serif; font-size: 28px; font-weight: 500; color: var(--brand-1100, #000f46); overflow-wrap: anywhere; }
+.lists-list__head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; padding-bottom: 12px; border-bottom: 2px solid var(--brand-1100); }
+.lists-list__title { margin: 0; font-family: "Fraunces", serif; font-size: 28px; font-weight: 500; color: var(--brand-1100); overflow-wrap: anywhere; }
 .lists-list__title:focus { outline: none; }
-.lists-list__count { font-family: "Source Sans 3", sans-serif; font-size: 16px; font-weight: 400; color: var(--col-text-muted, #5b6070); }
+.lists-list__count { font-family: "Source Sans 3", sans-serif; font-size: 16px; font-weight: 400; color: var(--col-text-muted); }
 .lists-list__tools { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
 .lists-confirm { display: inline-flex; align-items: center; gap: 8px; }
 .lists-confirm__text { font-size: 16px; font-weight: 600; }
@@ -89,21 +89,21 @@ body.page-lists .page-local-history__link-image { vertical-align: middle; }
 .lists-item { display: grid; grid-template-columns: 96px 1fr auto; gap: 8px 16px; align-items: start; padding: 16px 0; border-bottom: 1px solid #d9d6cf; }
 .lists-item__thumb { display: block; width: 96px; height: 96px; background: #f4f5f8; }
 .lists-item__image { display: block; width: 100%; height: 100%; object-fit: cover; }
-.lists-item__title { display: inline-block; font-family: "Fraunces", serif; font-size: 20px; font-weight: 500; color: var(--brand-1100, #000f46); overflow-wrap: anywhere; }
-.lists-item__meta { margin: 4px 0 0; font-size: 14px; color: var(--col-text-muted, #5b6070); }
+.lists-item__title { display: inline-block; font-family: "Fraunces", serif; font-size: 20px; font-weight: 500; color: var(--brand-1100); overflow-wrap: anywhere; }
+.lists-item__meta { margin: 4px 0 0; font-size: 14px; color: var(--col-text-muted); }
 .lists-item__advisory { margin: 12px 0 0; padding: 8px 12px; border-left: 4px solid #8a5a00; background: #fdf4e3; font-size: 14px; line-height: 1.5; }
 .lists-item__advisory-title { display: block; margin-bottom: 2px; color: #6b4500; }
 .lists-item__advisory-text { margin: 0; }
 .lists-item__actions { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
 .lists-item__move { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 8px; }
 .lists-item__move-label { font-size: 14px; font-weight: 600; }
-.lists-select { min-height: 44px; max-width: 200px; padding: 0 8px; border: 1px solid var(--brand-1100, #000f46); background: #fff; font: inherit; font-size: 16px; }
+.lists-select { min-height: 44px; max-width: 200px; padding: 0 8px; border: 1px solid var(--brand-1100); background: var(--white-100); font: inherit; font-size: 16px; }
 .lists-empty { padding: 32px 24px; background: #f4f5f8; text-align: center; }
 .lists-empty--list { padding: 16px; text-align: left; }
-.lists-empty__title { margin: 0 0 8px; font-family: "Fraunces", serif; font-size: 24px; font-weight: 500; color: var(--brand-1100, #000f46); }
+.lists-empty__title { margin: 0 0 8px; font-family: "Fraunces", serif; font-size: 24px; font-weight: 500; color: var(--brand-1100); }
 .lists-empty__text { margin: 0 auto 16px; max-width: 520px; font-size: 16px; line-height: 1.5; }
 .lists-empty__links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 24px; margin: 0; }
-.lists-empty__link { color: var(--brand-1100, #000f46); font-weight: 600; }
+.lists-empty__link { color: var(--brand-1100); font-weight: 600; }
 
 @media (max-width: 767px) {
   body.page-lists .page-local-history { display: none; }

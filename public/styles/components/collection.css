@@ -30,23 +30,23 @@ a.contact-box__desc:hover {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  background: #fff;
+  background: var(--white-100);
   border: 1px solid #e3e0d9;
   padding: 22px;
   text-decoration: none;
 }
 
 .pathfinder-inset:hover {
-  border-color: var(--col-bg-primary, #000f46);
+  border-color: var(--col-bg-primary);
 }
 
 .pathfinder-inset__heading {
   font-family: 'Fraunces', serif;
   font-size: 18px;
-  color: var(--col-text-primary, #1b1f2a);
+  color: var(--col-text-primary);
 }
 
 .pathfinder-inset__desc {
   font-size: 14px;
-  color: var(--col-text-muted, #5b6070);
+  color: var(--col-text-muted);
 }
