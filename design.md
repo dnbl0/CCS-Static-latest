@@ -9,7 +9,7 @@
 ## Quick Reference
 
 **Files Location**: See `README.md` (Repository layout)  
-**Styles**: `public/components/fig-tokens.css`, `public/components/fig-assets.css`, `public/styles/home.css` (Navigation + Section components), `advanced-filters.css` (form components), `header.css` (search overlay + colour variables), `collection.css`, plus page-local `<style>` blocks  
+**Styles**: `public/components/fig-tokens.css` (tokens only), `public/styles/components/*.css` (breadcrumbs, focus, page-banner, licence-badge, search-bar, collection-hero), `public/components/fig-assets.css`, `public/styles/home.css` (Navigation + Section components), `advanced-filters.css` (form components), `header.css` (search overlay + colour variables), `collection.css`, plus page-local `<style>` blocks  
 **Bootstrap**: `public/styles/vendor/bootstrap-uom.min.css` (5.3.3, built locally from `src/scss/custom-bootstrap.scss` with `npm run build:css`)
 
 ---
@@ -785,7 +785,8 @@ public/                              # Deployed web root
 ├── collection-data.js               # Record data -> window.CCS
 ├── nav.js                           # header dropdowns + mobile drawer
 ├── blacklight-adapter.js, support.js, image-slot.js
-├── components/                      # fig-tokens.css, fig-assets.css (+ exported .jsx/.d.ts)
+├── components/                      # fig-tokens.css (variables only), fig-assets.css (+ exported .jsx/.d.ts)
+├── styles/components/               # shared component CSS (breadcrumbs, focus, page-banner, licence-badge, search-bar, collection-hero)
 ├── styles/                          # home.css, advanced-filters.css, header.css, collection.css, vendor/bootstrap-uom.min.css
 │   ├── pages/                       # <page>.css (classes moved out of inline styles) + <page>.<role>.css (former <style> blocks)
 │   └── shared/                      # skip-link.css, colour-tokens*.css, base-elements.css (blocks shared by several pages)
@@ -803,7 +804,8 @@ vercel.json                          # clean URLs + legacy redirects
 
 | File | Purpose |
 |------|---------|
-| `public/components/fig-tokens.css` | Gen 3 design tokens (colour, type, spacing) and global focus styles |
+| `public/components/fig-tokens.css` | Gen 3 design tokens (colour, type, spacing) only |
+| `public/styles/components/*.css` | Shared component CSS (breadcrumbs, global focus ring, page banner, licence badge, search bar, collection hero); linked right after fig-tokens.css on every page |
 | `public/components/fig-assets.css` | Asset/component styles from the design export |
 | `public/styles/home.css` | Navigation (header/footer, UniMelb-style mobile header and drill-in drawer) and Section components, accordion, links |
 | `public/styles/advanced-filters.css` | Advanced Filters form components |
@@ -821,6 +823,7 @@ vercel.json                          # clean URLs + legacy redirects
 ```html
 <link rel="stylesheet" href="styles/vendor/bootstrap-uom.min.css">
 <link rel="stylesheet" href="components/fig-tokens.css">
+<link rel="stylesheet" href="styles/components/breadcrumbs.css"> <!-- ...and the other five files in styles/components/, in this order: focus, page-banner, licence-badge, search-bar, collection-hero -->
 <link rel="stylesheet" href="components/fig-assets.css">
 <link rel="stylesheet" href="styles/header.css">
 <link rel="stylesheet" href="styles/home.css">
