@@ -59,8 +59,33 @@ const noTitle = R.filter(r => !r.title || !r.title.trim()), noColl = R.filter(r 
 if (noTitle.length || noColl.length || noUnit.length) fail(`mandatory fields missing: ${noTitle.length} titles, ${noColl.length} collections, ${noUnit.length} responsible units`); else ok(`Title, Collection and Responsible Unit are present on all ${R.length} records (inventory: record cannot display without them)`);
 const mand = copyright.filter(c => /^Must/i.test(c.withDA || '') && /Copyright holder|Credit line|Collection Title|Responsible/i.test(c.descriptor)).map(c => c.descriptor.trim());
 ok(`Copyright Advice: ${mand.join(', ')} are mandatory (credit line and copyright checked on every record in collection-data.test.js)`);
+if (R.some(r => r.rights.some(f => f.label === 'Accession number'))) fail('Accession number must appear once (Field labels row 15, details list), not also in the usage-rights block');
 const ph = R.filter(r => [...r.fields, ...r.rights].some(f => /^(not recorded|no caption recorded)$/i.test(String(f.value).trim())));
 if (ph.length) fail(`${ph.length} records show a "Not recorded" placeholder; an unpopulated field must be omitted (inventory: "Field does not display")`); else ok('no placeholder values: unpopulated fields are omitted');
-const missingAcc = R.filter(r => !r.rights.some(f => f.label === 'Accession number')).length;
-if (missingAcc) warn(`${missingAcc} records have no accession number (a mandatory inventory field): data gap to chase with the collections`);
+// Accession number is mandatory in the inventory. Records that still lack one are tracked in data-model/accession-gaps.json (candidates found in the
+// EMu / Vernon exports, or why there is no match); a new gap, or a stale entry, fails here.
+const gaps = J('accession-gaps.json'), gapIds = new Set(gaps.map(g => g.id));
+const noAcc = R.filter(r => !r.fields.some(f => f.label === 'Accession number')).map(r => r.id);
+const untracked = noAcc.filter(id => !gapIds.has(id)), stale = gaps.filter(g => g.status !== 'filled' && !noAcc.includes(g.id));
+if (untracked.length) fail(`records without an accession number that are not in data-model/accession-gaps.json: ${untracked.join(', ')}`);
+if (stale.length) fail(`accession-gaps.json lists records that now have an accession number: ${stale.map(g => g.id).join(', ')} (mark them "filled" or remove)`);
+if (noAcc.length) warn(`${noAcc.length} records have no accession number (mandatory in the inventory); see data-model/accession-gaps.json`); else ok('every record has an accession number');
+
+/* ---- digital asset caption: "Complex fields" sheet recipe ----
+   [DA Title]. [CA Date]. [CA Creator] [DOB-DOD]. [Role]. [Affiliation]. [CA Material]. [Copyright holder]. [Collection title]. [Credit line]. Image: [DA Creator]. [DA date].
+   Title, Copyright holder, Credit line and Collection title are mandatory; empty parts are dropped; only records with a digital asset have one. */
+const field = (r, l) => (r.rights.concat(r.fields).find(f => f.label === l) || {}).value;
+const badCap = [];
+for (const r of R) {
+  const cap = r.caption;
+  if (!r.hasDA) { if (cap) badCap.push(`#${r.id} has a caption but no digital asset`); continue; }
+  if (!cap) { badCap.push(`#${r.id} digital asset has no caption`); continue; }
+  const credit = field(r, 'Credit line'), copy = field(r, 'Copyright'), coll = field(r, 'Collection');
+  const need = [['title', r.title], ['copyright holder', copy], ['credit line', credit], ['collection title', coll && (credit || '').includes(coll) ? '' : coll]];
+  for (const [n, v] of need) if (v && !cap.includes(String(v).replace(/[.\s]+$/, ''))) badCap.push(`#${r.id} caption lacks its ${n}`);
+  if (/undefined|null|\.\.|\. \./.test(cap)) badCap.push(`#${r.id} caption has an empty part`);
+  if (cap.indexOf(String(r.title).replace(/[.\s]+$/, '')) > cap.indexOf(String(credit).replace(/[.\s]+$/, ''))) badCap.push(`#${r.id} caption is out of recipe order`);
+  if (field(r, 'Caption') !== cap) badCap.push(`#${r.id} Caption row differs from the caption`);
+}
+if (badCap.length) fail(`${badCap.length} digital asset caption problems, e.g. ${badCap.slice(0, 3).join('; ')}`); else ok(`all ${R.filter(r => r.hasDA).length} digital-asset captions follow the Complex fields recipe (title, copyright, collection and credit line present, in order, no empty parts)`);
 finish('data-model');

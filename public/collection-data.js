@@ -26,7 +26,7 @@
     { id: 14, title: '[Timber eucalypt specimen cabinet]', img: 'cabinet', collection: UAC, objectType: 'Scientific Specimen', creator: 'Maker unknown', nationality: 'Australian', date: '1900', dateStart: 1900, dateEnd: 1900, licence: 'Public Domain', access: 'By Appointment', material: 'Wood', subject: 'Botany' },
     { id: 18, title: 'Butterfly piano', img: 'piano', collection: GMC, objectType: 'Cultural Object', creator: 'Maker unknown', nationality: 'British', date: '1880', dateStart: 1880, dateEnd: 1880, licence: 'Rights Reserved', access: 'By Appointment', material: 'Wood', subject: 'Music' },
     { id: 19, title: 'Inrō', img: 'inro3', collection: MHM, named: 'Roseby Collection', objectType: 'Cultural Object', creator: 'Japanese', nationality: 'Japanese', date: '1830', dateStart: 1830, dateEnd: 1830, licence: 'Rights Reserved', access: 'Open Access', material: 'Lacquer', subject: 'Asian art', place: 'Japan', period: 'Edo period (1603–1868)' },
-    { id: 20, title: 'Eucryphia glutinosa (Poepp. & Endl.) Baill.', img: 'eucryphia', collection: UAC, named: 'Russell and Mab Grimwade Bequest', objectType: 'Artwork', creator: 'Maker unknown', nationality: 'British', date: null, dateStart: null, dateEnd: null, licence: 'Public Domain', access: 'Open Access', material: 'Watercolour', subject: 'Botany', assoc: ['Grimwade, Russell'] },
+    { id: 20, accession: '1973.0004.000.000', title: 'Eucryphia glutinosa (Poepp. & Endl.) Baill.', img: 'eucryphia', collection: UAC, named: 'Russell and Mab Grimwade Bequest', objectType: 'Artwork', creator: 'Maker unknown', nationality: 'British', date: null, dateStart: null, dateEnd: null, licence: 'Public Domain', access: 'Open Access', material: 'Watercolour', subject: 'Botany', assoc: ['Grimwade, Russell'] },
     { id: 21, title: 'Dental forceps, set of six', img: null, collection: DENT, objectType: 'Cultural Object', creator: 'Maker unknown', nationality: 'British', date: '1890', dateStart: 1890, dateEnd: 1890, licence: 'CC BY-SA', access: 'By Appointment', material: 'Steel', subject: 'Medicine' },
     { id: 23, title: 'Grainger "Free Music" machine demonstration', img: null, collection: GMC, objectType: 'Video (Moving Image)', creator: 'Studio unknown', nationality: 'Australian', date: '1951', dateStart: 1951, dateEnd: 1951, licence: 'Rights Reserved', access: 'Open Access', material: 'Film', subject: 'Music', classification: 'G', language: 'English', assoc: ['Grainger, Percy Aldridge', 'Cross, Burnett'] },
     { id: 28, title: 'Pharmacy jar, "Carb: Soda"', img: 'carbsoda', collection: MHM, objectType: 'Cultural Object', creator: 'Maker unknown', nationality: 'British', date: null, dateStart: null, dateEnd: null, licence: 'Rights Reserved', access: 'Open Access', material: 'Glass', subject: 'Medicine', accession: 'MHM01137', inscription: 'CARB: SODAE; DIEU ET MON DROIT; HONI SOIT QUI MAL Y PENSE', language: 'Latin' },
@@ -934,12 +934,27 @@
       [26, 'Related record', it.relatedRecord && [L(it.relatedRecord, true)]],
       [30, 'Producer', (it.producer || it.imageProducer) && [L(it.producer || it.imageProducer)]]
     ].filter(r => r[2]).map(([seq, label, lines, copy]) => ({ seq, label, lines, copy: !!copy, value: lines[0].text }));
-    // Usage rights, in the order of the CCS-27 acceptance criteria: accession number, caption (digital assets only), credit, copyright.
+    // Digital asset caption: "Complex fields" sheet, Image Caption (DA Caption). Recipe, in this order, each part dropped when it has no data:
+    //   [DA Title]. [CA Date]. [CA Creator] [DOB-DOD]. [Role]. [Affiliation]. [CA Material]. [Copyright holder]. [Collection title (formal)]. [Credit line]. Image: [DA Creator]. [DA Date of Production].
+    // Title, Copyright holder, Credit line and Collection title are mandatory. A caption supplied by the DAM (it.caption) always wins;
+    // otherwise CCS composes this one from the record. Only records with a digital asset have a caption.
+    const damCaption = (() => {
+      if (!hasDA) return null;
+      if (it.caption) return it.caption;
+      const known = it.creator && !UNKNOWN.test(it.creator);
+      const person = known ? it.creator + (!/\([^)]*\)/.test(it.creator) && (it.creatorDoB || it.creatorDoD) ? ` (${it.creatorDoB || ''}–${it.creatorDoD || ''})` : '') : '';
+      const role = known && it.creatorRole ? it.creatorRole.charAt(0).toUpperCase() + it.creatorRole.slice(1) : '';
+      const producer = it.imageProducer || it.producer;
+      const clean = t => String(t).trim().replace(/[.\s]+$/, '');
+      const parts = [it.title, date, person, role, known ? it.culturalAffiliation : '', it.material, copyrightHolder, creditLine.includes(coll) ? '' : coll, creditLine,
+        producer ? 'Image: ' + producer + (it.imageProducerDate ? '. ' + it.imageProducerDate : '') : ''].filter(Boolean).map(clean).filter(Boolean);
+      return parts.join('. ') + '.';
+    })();
+    // Usage rights: caption (digital assets only), credit, copyright. Accession number is a Field labels sheet row (15) shown once, in the details list.
     // Data inventory ("Field behaviour if not populated in source") and Field labels sheet: a field with no data is omitted, label
-    // included, so Accession number and Caption appear only when recorded. Credit line and Copyright are mandatory (Copyright Advice sheet).
+    // included, so Caption appears only when recorded. Credit line and Copyright are mandatory (Copyright Advice sheet).
     const rights = [
-      ...(it.accession ? [{ seq: 15, label: 'Accession number', value: it.accession }] : []),
-      ...(hasDA && it.caption ? [{ seq: 15.5, label: 'Caption', value: it.caption }] : []),
+      ...(damCaption ? [{ seq: 15.5, label: 'Caption', value: damCaption }] : []),
       { seq: 17, label: 'Credit line', value: creditLine },
       { seq: 16, label: 'Copyright', value: copyrightHolder }
     ];
@@ -970,7 +985,7 @@
 
     return {
       id: it.id, title: it.title, altTitle: it.altTitle || null, type: objType, byline, images, slides, hasDA, fields: f, rights, media,
-      licence: hasDA ? { ...lic, key: it.licence } : null, terms: hasDA ? termsText : null, webAccess, accessMessage, viewRestricted: webAccess === 'Request to view', usageNotice, caption: it.caption || null, licenceKey: LIC[it.licence] ? it.licence : 'Rights Reserved', classification: filmCls, advisories, indigenous: !!it.indigenous,
+      licence: hasDA ? { ...lic, key: it.licence } : null, terms: hasDA ? termsText : null, webAccess, accessMessage, viewRestricted: webAccess === 'Request to view', usageNotice, caption: damCaption, licenceKey: LIC[it.licence] ? it.licence : 'Rights Reserved', classification: filmCls, advisories, indigenous: !!it.indigenous,
       subjects: it.subjects || (it.subject ? [it.subject] : []), citation, citations, unit: UNIT[it.collection] || 'Museums and Collections',
       assetId: `CA-${String(it.id).padStart(6, '0')}`, collection: coll, named: it.named, subject: it.subject,
       card: { id: it.id, title: it.title, img: images[0] || null, collection: coll, type: objType, lic: lic.label, licenceKey: LIC[it.licence] ? it.licence : 'Rights Reserved', licIcon: lic.icon, licIcons: lic.icons || [], hasLicIcons: !!(lic.icons && lic.icons.length), indigenous: !!it.indigenous }
