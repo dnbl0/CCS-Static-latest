@@ -277,6 +277,32 @@
   </div>
 </div>
 
+<div class="search-results-layout">
+<sc-if value="{{ hasSidebar }}">
+<aside class="facet-rail" aria-label="Filter results">
+  <div class="facet-rail__head">
+    <h2 class="facet-rail__title">Search filters</h2>
+    <sc-if value="{{ hasActive }}"><button type="button" class="facet-rail__clear" onClick="{{ clearAll }}">Clear all</button></sc-if>
+  </div>
+  <sc-for list="{{ sideSections }}" as="sec">
+    <section class="facet-rail__section">
+      <h3 class="facet-rail__heading">
+        <span class="facet-rail__name" id="rail-{{ sec.key }}">{{ sec.title }}</span>
+        <button type="button" class="facet-rail__toggle" aria-expanded="{{ sec.open }}" aria-labelledby="rail-{{ sec.key }}" onClick="{{ sec.toggle }}"><span class="facet-rail__value">{{ sec.summary }}</span><svg class="facet-rail__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+      </h3>
+      <sc-if value="{{ sec.open }}">
+        <div class="facet-rail__panel">
+          <ul class="facet-rail__list">
+            <sc-for list="{{ sec.options }}" as="o"><li class="facet-rail__item"><button type="button" class="facet-rail__option" role="checkbox" aria-checked="{{ o.ariaChecked }}" onClick="{{ o.toggle }}"><span class="facet-rail__box"><svg class="facet-rail__tick" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><polyline points="4 12 10 18 20 6"></polyline></svg></span><span class="facet-rail__label">{{ o.label }}</span><span class="facet-rail__count">{{ o.count }}</span></button></li></sc-for>
+          </ul>
+          <sc-if value="{{ sec.hasMore }}"><button type="button" class="facet-rail__more" onClick="{{ sec.toggleMore }}">{{ sec.moreLabel }}</button></sc-if>
+        </div>
+      </sc-if>
+    </section>
+  </sc-for>
+  <sc-if value="{{ hasExtraFilters }}"><button type="button" class="facet-rail__extra" aria-expanded="{{ extraOpen }}" onClick="{{ toggleExtra }}">{{ extraLabel }}</button></sc-if>
+</aside>
+</sc-if>
 <main class="search-results-main-content" id="main-content" ref="{{ mainRef }}" style="--dyn-padding:{{ padMain }}">
       <sc-if value="{{ hasActive }}">
           <div class="search-results-main-content__group search-results-main-content__group--v6">
@@ -408,6 +434,7 @@
     </div>
   </sc-if>
 </main>
+</div>
 
 
 <sc-if value="{{ modal }}">
@@ -902,7 +929,7 @@ function saveSearchHistory(term) {
   } catch (e) {}
 }
 class Component extends DCLogic {
-  state = { stuck: false, advOpen: false, f:EMPTYF(), loading:false, view:null, modal:false, mFind:'', draft:null, mOpen:{coll:true,type:true,date:true}, fq:{}, more:{}, sortOpen:false, perPage:20, ppOpen:false, page:1, yIn:null, yErr:'', counting:false, ackOpen:false, vw: typeof window !== 'undefined' ? window.innerWidth : 1200, liveItems: null, liveTotal: null, liveError: null };
+  state = { stuck: false, advOpen: false, f:EMPTYF(), loading:false, view:null, modal:false, mFind:'', draft:null, mOpen:{coll:true,type:true,date:true}, sOpen:{}, sMore:{}, sExtra:false, fq:{}, more:{}, sortOpen:false, perPage:20, ppOpen:false, page:1, yIn:null, yErr:'', counting:false, ackOpen:false, vw: typeof window !== 'undefined' ? window.innerWidth : 1200, liveItems: null, liveTotal: null, liveError: null };
   trackRef = React.createRef(); bodyRef = React.createRef(); sortRef = React.createRef(); ppRef = React.createRef(); advBtnRef = React.createRef(); advDialogRef = React.createRef(); advCloseRef = React.createRef(); advFrameRef = React.createRef(); mainRef = React.createRef();
   sentinelRef = React.createRef(); bannerHostRef = React.createRef(); compactHostRef = React.createRef(); dialogRef = React.createRef(); filterBtnRef = React.createRef(); ackRef = React.createRef();
   dom = { lo: 1700, hi: 2030 };
@@ -1100,6 +1127,31 @@ class Component extends DCLogic {
       this.applyDragValue(which, cur + step);
     };
   }
+  // Left-hand facet rail: same facets and counts as the Filters modal, but a click filters the results straight away (no Apply step).
+  sideVals(s) {
+    const f = s.f, cc = this.cnt(f, 'coll', 'collection');
+    const SIDE = ['coll', 'type', 'creator', 'period', 'material', 'subject', 'theme', 'nationality', 'place', 'classification', 'creatorRole', 'language'];
+    const sideSections = SIDE.map(k => FACETS.find(F => F.key === k)).filter(Boolean).map(F => {
+      const k = F.key, open = !!s.sOpen[k], more = !!s.sMore[k];
+      let options, selected;
+      if (F.kind === 'tree') {
+        selected = f.collection;
+        options = HIER.map(hh => this.opt(hh.name, cc[hh.name] || 0, f.collection.includes(hh.name), () => this.apply(ff => this.tog(ff, 'collection', hh.name))));
+      } else {
+        const c = this.cnt(f, k, k), base = LISTS[k] || uniq(k);
+        selected = f[k];
+        options = [...base].sort((a, b) => (c[b] || 0) - (c[a] || 0) || String(a).localeCompare(String(b))).map(v => this.opt(v, c[v] || 0, f[k].includes(v), () => this.apply(ff => this.tog(ff, k, v))));
+      }
+      options = options.filter(o => o.count || o.checked);
+      const summary = selected.length ? (selected.length === 1 ? selected[0] : selected.length + ' selected') : 'Select ' + F.title.toLowerCase();
+      return { key: k, title: F.title, open, summary, badge: selected.length || null, options: more ? options : options.slice(0, 6), count: options.length,
+        toggle: () => this.setState(st => ({ sOpen: { ...st.sOpen, [k]: !st.sOpen[k] } })),
+        hasMore: options.length > 6, moreLabel: more ? 'Show fewer' : 'Show all ' + options.length, toggleMore: () => this.setState(st => ({ sMore: { ...st.sMore, [k]: !st.sMore[k] } })) };
+    }).filter(sec => sec.count > 0);
+    const FIRST = 3, extraOpen = s.sExtra, hasExtraFilters = sideSections.length > FIRST;
+    return { sideSections: extraOpen ? sideSections : sideSections.slice(0, FIRST), hasExtraFilters, extraOpen,
+      extraLabel: extraOpen ? '− Show fewer filters' : '+ Show additional filters', toggleExtra: () => this.setState(st => ({ sExtra: !st.sExtra })) };
+  }
   modalVals(s) {
     const d = s.draft || s.f;
     const dN = ITEMS.filter(it => this.matchF(it, d)).length;
@@ -1285,14 +1337,15 @@ class Component extends DCLogic {
     // genuinely come back with zero results for a real query (matches the
     // existing isEmpty/no-results threshold below) — never on a healthy result set.
     const didYouMeanText = (!s.loading && f.q && !f.exact) ? spellingSuggestion(f.q) : null;
-    const mob = s.vw < 640, sm = s.vw < 420;
+    const mob = s.vw < 640, sm = s.vw < 420, hasSidebar = s.vw >= 1024;
     return {
       padHero: mob ? '16px 16px 24px' : '20px 32px 36px', h1Size: sm ? '26px' : mob ? '30px' : '40px',
       padSum: mob ? '16px 16px 12px' : '28px 32px 16px', padBar: mob ? '10px 16px' : '12px 32px',
-      padMain: mob ? '16px 16px 40px' : '24px 32px 64px', formBasis: mob ? '100%' : '420px',
-      cols: view === 'masonry' ? (mob ? '1 260px' : '4 260px') : 'auto', colGap: mob ? '12px' : '20px',
+      padMain: mob ? '16px 16px 40px' : hasSidebar ? '24px 0 64px 24px' : '24px 32px 64px', formBasis: mob ? '100%' : '420px',
+      cols: view === 'masonry' ? (mob ? '1 260px' : hasSidebar ? '3 240px' : '4 260px') : 'auto', colGap: mob ? '12px' : hasSidebar ? '24px' : '20px',
       listGap: sm ? '12px' : '20px', listImgSize: sm ? '76px' : '104px',
       ...(s.modal ? this.modalVals(s) : {}),
+      ...(hasSidebar ? this.sideVals(s) : {}), hasSidebar,
       saveSearchLabel: s.savedFlash ? 'Saved' : 'Save this search',
       saveSearch: () => {
         try {
