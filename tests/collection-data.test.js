@@ -72,14 +72,14 @@ const themed = sandbox.window.CCS.items.filter(i => Array.isArray(i.theme) && i.
 if (!themed) fail('no item has a theme');
 else ok(`theme present on ${themed}/${sandbox.window.CCS.items.length} items`);
 
-// CCS-27 + data inventory: Credit line and Copyright are mandatory on every record; Accession number and Caption (digital assets only)
+// CCS-27 + data inventory: Credit line and Copyright are mandatory on every record; Caption (digital assets only)
 // appear only when recorded, with no "Not recorded" style placeholders (a field with no data is omitted, label included)
 {
   const R = Object.values(CCS.records);
   const has = (r, l) => r.rights.some(x => x.label === l);
   const bad = R.filter(r => !has(r, 'Credit line') || !has(r, 'Copyright') || (!r.hasDA && has(r, 'Caption')) || r.rights.some(x => /^(not recorded|no caption recorded)/i.test(x.value)));
   if (bad.length) fail('usage rights are incorrect on ' + bad.length + ' records (for example #' + bad[0].id + ')');
-  else ok('usage rights: credit line and copyright on all ' + R.length + ' records; accession number and caption only when recorded');
+  else ok('usage rights: credit line and copyright on all ' + R.length + ' records; caption only when recorded');
 }
 // Creator role filter (Data Inventory field 'Creator Role'): roles are split, tidied and de-duplicated per record
 {

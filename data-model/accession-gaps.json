@@ -1,0 +1,133 @@
+[
+  {
+    "id": 20,
+    "status": "filled",
+    "confidence": "high",
+    "accession": "1973.0004.000.000",
+    "candidates": [
+      "1973.0004.000.000"
+    ],
+    "source": "EMu",
+    "note": "Matched on title (EMu spells 'Poeppe.'), University Art Collection, Russell and Mab Grimwade Bequest and medium (watercolour on paper). EMu also gives the creator (Stones, Margaret) and date ([late 1950s]) where the prototype record says Maker unknown / undated: confirm and update those too."
+  },
+  {
+    "id": 1,
+    "status": "open",
+    "confidence": "ambiguous",
+    "candidates": [
+      "4.0173",
+      "4.0174",
+      "4.0175",
+      "4.0176"
+    ],
+    "source": "EMu",
+    "note": "Four EMu works share this title, creator and 1952 date (watercolour/ink on paper). The prototype record has no detail to choose between them."
+  },
+  {
+    "id": 5,
+    "status": "open",
+    "confidence": "low",
+    "candidates": [
+      "4.0045"
+    ],
+    "source": "EMu",
+    "note": "Same title, but EMu is a colour etching and drypoint by Mortimer Menpes, 1913-14; the prototype record says oil paint, maker unknown, 1910."
+  },
+  {
+    "id": 6,
+    "status": "open",
+    "confidence": "low",
+    "candidates": [
+      "MHM06961"
+    ],
+    "source": "Vernon",
+    "note": "Vernon has 'Bottle of Bosisto's Oil of Eucalyptus', circa 1900; the prototype is a 1942 'War time pack ... Parrot Brand' (Bush Medicine collection). Probably a different object."
+  },
+  {
+    "id": 9,
+    "status": "open",
+    "confidence": "ambiguous",
+    "candidates": [
+      "MHM2009.46",
+      "MHM2009.47",
+      "MHM2009.48",
+      "MHM2009.49",
+      "MHM2009.50",
+      "MHM2009.51"
+    ],
+    "source": "Vernon",
+    "note": "Several Inro in the Roseby Collection with different dates; the prototype records (1800, 1820, 1830, Japanese, lacquer) do not match any one of them."
+  },
+  {
+    "id": 13,
+    "status": "open",
+    "confidence": "ambiguous",
+    "candidates": [
+      "MHM2009.46",
+      "MHM2009.47",
+      "MHM2009.48",
+      "MHM2009.49",
+      "MHM2009.50",
+      "MHM2009.51"
+    ],
+    "source": "Vernon",
+    "note": "As record 9."
+  },
+  {
+    "id": 19,
+    "status": "open",
+    "confidence": "ambiguous",
+    "candidates": [
+      "MHM2009.46",
+      "MHM2009.47",
+      "MHM2009.48",
+      "MHM2009.49",
+      "MHM2009.50",
+      "MHM2009.51"
+    ],
+    "source": "Vernon",
+    "note": "As record 9."
+  },
+  {
+    "id": 18,
+    "status": "open",
+    "confidence": "low",
+    "candidates": [
+      "0.0056"
+    ],
+    "source": "EMu",
+    "note": "EMu 'Butterfly piano' is a Wurlitzer, c. 1940; the prototype says maker unknown, 1880, wood."
+  },
+  {
+    "id": 21,
+    "status": "open",
+    "confidence": "none",
+    "candidates": [],
+    "source": "Vernon",
+    "note": "No 'Dental forceps, set of six' in the Vernon or EMu exports (Vernon has single dental forceps MHM01832-01834 with different titles)."
+  },
+  {
+    "id": 23,
+    "status": "open",
+    "confidence": "none",
+    "candidates": [],
+    "source": "EMu",
+    "note": "No record titled 'Grainger \"Free Music\" machine demonstration' in the EMu export (other Free Music records exist: 1.0001, 1.0002, 1.3519, 1.3551)."
+  },
+  {
+    "id": 32,
+    "status": "open",
+    "confidence": "none",
+    "candidates": [],
+    "source": "Vernon",
+    "note": "No 'Handmade bamboo pipes' in the Vernon or EMu exports."
+  },
+  {
+    "id": 10098,
+    "status": "source gap",
+    "confidence": "exact record, no value",
+    "candidates": [],
+    "source": "EMu",
+    "note": "The EMu row (ecatalogue_key 13404, IRN 407841) is this record and its Accession Number is blank in the export: Museums and Collections need to supply it."
+  }
+]

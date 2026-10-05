@@ -19,14 +19,22 @@ Regenerate after a workbook changes: `pip install openpyxl && python3 scripts/ex
 ## What the tests enforce
 - **Filters:** every sheet filter is on the site, in the sheet's order, in the sheet's section, with the sheet's behaviour (year selectors, "search within this filter"). The spelling License/Licence is treated as the same word.
 - **Record fields:** every label shown on a record is a sheet label (or a listed extension) with the sheet's sequence number. Title, Collection and Responsible Unit are on every record (the inventory says a record cannot display without them). Credit line and Copyright are on every record (Copyright Advice: mandatory).
-- **Unpopulated fields are omitted, label included** (inventory: "Field does not display"). Accession number and Caption therefore only appear when recorded; there are no "Not recorded" placeholders.
+- **Unpopulated fields are omitted, label included** (inventory: "Field does not display"). Accession number and Caption therefore only appear when recorded; there are no "Not recorded" placeholders. Accession number is shown once, in the details list (Field labels row 15); it used to appear a second time in the usage-rights block.
 
 ## Extensions (not in the workbooks)
 `data-model/extensions.json` lists what the site shows beyond the workbooks, each with a reason. They need sign-off from the data owners or removal:
 filters Creator role, Object's place of production, Accession number, Theme, Cultural affiliation; record labels UoM ID (the inventory says Collection Asset ID does not display) and Caption (comes from the Complex fields sheet).
 
+## Digital asset caption
+The Complex fields sheet gives the recipe for the Image Caption (DA Caption):
+`[DA Title]. [CA Date]. [CA Creator] [DOB-DOD]. [Role]. [Affiliation]. [CA Material]. [Copyright holder]. [Collection title]. [Credit line]. Image: [DA Creator]. [DA date].`
+Title, Copyright holder, Credit line and Collection title are mandatory, missing parts are dropped. The sheet notes the collection managers want to populate the caption in the DAM (open question 3), so a caption supplied by the DAM (`it.caption`) always wins; otherwise `collection-data.js` composes it from the record. All 47 digital-asset records now have a caption; `tests/data-model.test.js` checks the mandatory parts, the order and that records without a digital asset have none. Not yet in the data: DA Creator / Image producer and their date (no source field), and the person/organisation variants (location, start date) for organisation creators.
+
+## Accession numbers
+`data-model/accession-gaps.json` tracks records that lack an accession number (mandatory in the inventory) with candidates found in the EMu and Vernon exports. Record 20 was filled (1973.0004.000.000). The other 11 are listed with the reason: 8 are hand-authored prototype records (ids 1 to 32) whose details do not match any export row uniquely; record 10098's EMu row has a blank accession (needs Museums and Collections). A new gap or a stale entry fails the test.
+
 ## Known data gaps (warnings, not failures)
 - Field labels populated on no record: Editions, Source URL, Related Child Record, Producer.
-- 12 of 728 records have no accession number (mandatory in the inventory).
+- 11 of 728 records have no accession number (see Accession numbers above).
 - The two workbooks disagree on sequence numbers (the inventory's "Sequence of appearance" differs from the Field labels sheet). The site follows the Field labels sheet, which is the later "Final - PRG" file.
 - Open questions recorded in the sheets (for example whether Region is derived from Place of Production, and which Licence type options exist) are unanswered; the site keeps its current behaviour.
