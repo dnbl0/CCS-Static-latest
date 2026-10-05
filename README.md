@@ -101,6 +101,8 @@ public/                     Deployed web root
   .htaccess                 Apache equivalent of the vercel.json redirects
 src/scss/custom-bootstrap.scss   Bootstrap 5.3.3 theme source (see Styling)
 tests/                      Plain-Node test scripts (see Develop, test and deploy)
+scripts/                    dev-server.js, purge-css.js, style-snapshot.js + style-diff.js (computed-style safety net for CSS refactors, see docs/css-refactor.md)
+docs/                       Developer docs (css-refactor.md)
 config/redirects.json      Documentation-only list of legacy redirects (nothing reads it at runtime; vercel.json and .htaccess are authoritative)
 assets/                     Source material for content: spreadsheets, CSVs, help/landing-page copy (.docx), original images. Not deployed (listed in .vercelignore)
 .github/workflows/          ci.yml, auto-merge.yml, vercel-deploy.yml
@@ -254,6 +256,7 @@ Design tokens and rationale: see `design.md`. Bootstrap details: `BOOTSTRAP-DEPE
 npm ci            # installs bootstrap, sass and playwright-core (dev dependencies only)
 npm run build:css # rebuild public/styles/vendor/bootstrap-uom.min.css
 npm test          # full check, see below
+npm run style:snapshot -- <label> && npm run style:diff -- <a> <b>   # prove a CSS change has no visual effect (docs/css-refactor.md)
 python3 -m http.server 8933 --directory public   # local server (as in .claude/launch.json)
 ```
 
@@ -268,6 +271,8 @@ Clean URLs (`/search/search-results`, `/collections/record`) only resolve on a h
 5. `tests/collection-data.test.js` - loads `collection-data.js` in a bare sandbox; checks unique ids, titles, that field labels come from the specification list, and that `/assets` media files exist.
 6. `tests/no-inline-styles.test.js` - fails if a page contains a `<style>` block, a `style-hover` attribute or a `style` attribute that is not a pure CSS-custom-property pass-through.
 7. `tests/advanced-filters.test.js` - browser test (playwright-core with a Chromium build) of the Advanced Filters page: responsive layout at 1440 and 390px, dropdown keyboard behaviour and ARIA roles, multi-select and Add filter, row management limits, submission URL, pre-fill and Reset, and date-range validation. It starts its own static server. If no Chromium is found it prints `SKIP` and passes; set `PLAYWRIGHT_CHROMIUM_PATH` or run `npx playwright-core install chromium` to enable it locally.
+
+8. `tests/style-diff.test.js` - self-test of the CSS safety net (`scripts/style-snapshot.js` / `scripts/style-diff.js`, see `docs/css-refactor.md`): diff-engine unit tests, then two real snapshots of one page must be identical and a changed colour must be reported. Skipped without Chromium.
 
 **Warnings policy**: failures exit non-zero and fail CI. Warnings (printed as `WARNING:`) are informational and never fail the build; they track open data/content gaps (see Known issues). Current output: 0 failures, 5 warnings (no `<h1>` in `search.html`; the four unpopulated spec fields).
 
