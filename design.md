@@ -788,8 +788,8 @@ public/                              # Deployed web root
 ├── components/                      # fig-tokens.css (variables only), fig-assets.css (+ exported .jsx/.d.ts)
 ├── styles/components/               # shared component CSS (breadcrumbs, focus, page-banner, licence-badge, search-bar, collection-hero)
 ├── styles/                          # home.css, advanced-filters.css, header.css, collection.css, vendor/bootstrap-uom.min.css
-│   ├── pages/                       # <page>.css (classes moved out of inline styles) + <page>.<role>.css (former <style> blocks)
-│   └── shared/                      # skip-link.css, colour-tokens*.css, base-elements.css (blocks shared by several pages)
+│   ├── pages/                       # <page>.css (classes moved out of inline styles) + a few <page>.<role>.css (former <style> blocks)
+│   └── shared/                      # base-elements.css and skip-link.css (one copy for every page), colour-tokens*.css
 ├── assets/                          # images/collections, data (audio/video, metadata), documents
 ├── images/                          # optimised web images and icons
 └── .htaccess                        # Apache redirects/rewrites

@@ -89,3 +89,20 @@ Rules for adding to this directory:
 - **No tokens in component files and no component rules in the token file.** Page-specific rules stay in `styles/pages/`; the header stays in `styles/header.css`.
 - **Prove it.** Take `npm run style:snapshot -- baseline` before moving CSS and `npm run style:snapshot -- after` afterwards; `npm run style:diff -- baseline after` must say `RESULT: IDENTICAL`.
 - The six files are linked on pages that do not use every component (for example the help page has no licence badge). Dropping a file from a page is a separate change that has to pass the diff.
+
+## Base elements and skip link: one copy
+
+Every page used to carry its own near-copy of the base rules (`body`, `a`, `*` box-sizing) and of the skip-link rules, named `pages/<page>.base-elements.css` and `pages/<page>.skip-link.css`. They are now two shared files:
+
+| File | Contents |
+|---|---|
+| `styles/shared/base-elements.css` | `body`, `*`, `button,input,select` font, `.sr-live`, default link style (underlined), Bootstrap overrides (`.btn`, `.btn-primary`, `.card`, `.fw-serif`), the University-links hover colour, and the plain-link variants below |
+| `styles/shared/skip-link.css` | `.skip-link` and the mobile breadcrumb switch |
+
+**Link variants.** Three link styles existed: underlined (contact, Indigenous data, lists, advanced search, help), plain with navy hover (home, collections index, the five collection landing pages) and plain with blue hover (record, search results). The underlined style is the default; the other two are `:where(.page-x, ...) a` and `a:hover` rules at the end of `base-elements.css`. `:where()` adds no specificity, so each rule still ties with a plain `a` rule and the one that comes later wins, exactly as before. To change a page's link style, add or remove its body class (`page-*`) in the right `:where()` list.
+
+**Load order.** Link `base-elements.css` where the old base file was: last on every page except home, where it sits just before `home.page-styles.css` (home's old rules lived there). The skip-link file is linked first, as before.
+
+Removed: `pages/{collection-landing,collections-browse,help,record,search-results}.base-elements.css` and `pages/{help,home}.skip-link.css`. Page-specific rules that were in them moved to the page's own file: the item media viewer to `pages/record.css`, the date facet and keyframes to `pages/search-results.css`, `html{scroll-behavior}` and the help topics grid to `pages/help.css`. `pages/home.page-styles.css` lost its `body`, `a`, `a:hover` and `.btn` rules (its `:root` block is untouched).
+
+Check: `style:diff` against the pre-change snapshot is `RESULT: IDENTICAL` (102 snapshots), both before and after rebasing onto the component-CSS move.
