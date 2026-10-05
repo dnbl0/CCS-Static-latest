@@ -27,8 +27,18 @@
   document.addEventListener('DOMContentLoaded', function(){
     var f = document.getElementById('adv-form'); if (f) f.setAttribute('target', '_top');
     var r = document.querySelector('.ccs-adv__actions a'); if (r) r.setAttribute('href', 'advanced-search.html?embed=1');
-    function send(){ if (window.parent !== window) window.parent.postMessage({ ccsAdvHeight: document.documentElement.scrollHeight }, location.origin); }
-    if ('ResizeObserver' in window) new ResizeObserver(send).observe(document.body); send();
+    /* The form lives in the results page's right-hand fly-out. Keep keyboard users inside it: Esc closes the fly-out (the inner
+       dropdowns consume Esc themselves while one is open), and Tab past the first/last control hands focus to the fly-out's Close button. */
+    var FOCUSABLE = 'a[href],button:not([disabled]),input:not([disabled]):not([type=hidden]),[tabindex]:not([tabindex="-1"])';
+    function focusables(){ return Array.prototype.filter.call(document.querySelectorAll(FOCUSABLE), function(n){ return n.offsetParent !== null; }); }
+    function post(msg){ if (window.parent !== window) window.parent.postMessage(msg, location.origin); }
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape' && !e.defaultPrevented) post({ ccsAdvClose: true });
+      if (e.key !== 'Tab') return;
+      var els = focusables(); if (!els.length) return;
+      if ((!e.shiftKey && document.activeElement === els[els.length - 1]) || (e.shiftKey && document.activeElement === els[0])) { e.preventDefault(); post({ ccsAdvTab: true }); }
+    });
+    window.addEventListener('message', function(e){ if (e.origin === location.origin && e.data && e.data.ccsAdvFocusLast) { var els = focusables(); if (els.length) els[els.length - 1].focus(); } });
   });
 })();
 </script>
@@ -240,13 +250,14 @@
         <div id="adv-live" class="sr-only advanced-filters-adv-live" role="status" aria-live="polite"></div>
         <section class="ccs-adv__box" aria-labelledby="adv-terms-h">
           <h2 id="adv-terms-h" class="ccs-adv__heading">Search</h2>
-          <p id="adv-terms-hint" class="sr-only advanced-filters-adv-terms-hint">Choose a field and a match type, then enter your search terms. Use quotation marks for an exact phrase.</p>
+          <p id="adv-terms-hint" class="ccs-adv__desc">Choose a field and a match type, then enter your search terms. Use quotation marks for an exact phrase. Select Add row to search for more than one thing at once.</p>
           <div id="adv-terms" class="ccs-adv__stack"></div>
           <button type="button" id="adv-add-row" class="ccs-btn ccs-btn--add"><span class="ccs-btn__text">Add row</span><img class="ccs-btn__image" src="/images/advanced/icon-add.svg" alt=""></button>
         </section>
 
         <section class="ccs-adv__box" aria-labelledby="adv-filters-h">
           <h2 id="adv-filters-h" class="ccs-adv__heading">Filters</h2>
+          <p id="adv-filters-hint" class="ccs-adv__desc">Narrow your results by collection, object type, creator and more. Select Add filter to choose other filters, and remove any you do not need.</p>
           <div id="adv-filters" class="ccs-adv__stack"></div>
           <div class="advanced-filters-adv-add-filter-mount" id="adv-add-filter-mount"></div>
         </section>

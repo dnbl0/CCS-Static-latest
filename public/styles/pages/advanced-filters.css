@@ -33,6 +33,7 @@
 .ccs-adv { display: flex; flex-direction: column; gap: 40px; margin: 0; }
 .ccs-adv__box { display: flex; flex-direction: column; gap: 24px; margin: 0; padding: 0; border: 0; min-width: 0; }
 .ccs-adv__heading { margin: 0; font-family: "Fraunces", serif; font-size: 26px; font-weight: 600; line-height: 1.2; color: var(--brand-1100); font-variation-settings: "SOFT" 0, "WONK" 1; }
+.ccs-adv__desc { margin: -12px 0 0; max-width: 760px; font-size: 16px; line-height: 24px; color: var(--text-secondary); }
 .ccs-adv__stack { display: flex; flex-direction: column; gap: 24px; }
 .ccs-adv__sort { display: flex; flex-direction: column; gap: 4px; max-width: 288px; }
 .ccs-adv__label { font-size: 18px; font-weight: 600; line-height: 27px; color: var(--brand-1100); }
@@ -114,27 +115,18 @@ ul.ccs-combo__menu > .ccs-combo__option { list-style: none; }
 /* Completed (a value has been chosen): value text uses the primary text colour (already default) */
 .ccs-combo.is-complete .ccs-combo__value { color: var(--text-primary); }
 
-/* "Add filter" (multi-select): dark field on desktop (Figma 175:4325), sage button on mobile */
-.ccs-combo--add { align-self: flex-start; width: 288px; max-width: 100%; }
-.ccs-combo--add .ccs-combo__field { height: 48px; background: var(--input-fill-down-inverse); border: 1px solid var(--input-stroke-default); color: var(--text-primary-inverse); }
-.ccs-combo--add .ccs-combo__field:hover { background: var(--input-fill-hover-inverse); }
-.ccs-combo--add .ccs-combo__field:active { background: var(--input-fill-selected-inverse); }
-.ccs-combo--add .ccs-combo__value, .ccs-combo--add.is-complete .ccs-combo__value { color: var(--text-primary-inverse); }
-.ccs-combo--add .ccs-combo__icon { border-left: 0; width: 48px; }
-.ccs-combo--add .ccs-combo__icon img { filter: brightness(0) invert(1); }
-.ccs-combo--add .ccs-combo__field:focus-visible { outline-color: var(--brand-1100); }
+/* "Add filter" (multi-select): UoM secondary (outline) button, same look as "Add row" */
+.ccs-combo--add { align-self: flex-start; width: auto; min-width: 176px; max-width: 100%; }
+.ccs-combo--add .ccs-combo__field { height: 48px; background: transparent; border: 2px solid var(--brand-1100); color: var(--brand-1100); font-weight: 600; }
+.ccs-combo--add .ccs-combo__field:hover { background: rgba(0, 15, 70, 0.08); }
+.ccs-combo--add .ccs-combo__field:active, .ccs-combo--add.is-open .ccs-combo__field { background: rgba(0, 15, 70, 0.16); }
+.ccs-combo--add .ccs-combo__value, .ccs-combo--add.is-complete .ccs-combo__value { flex: none; padding: 11px 4px 11px 14px; color: var(--brand-1100); font-weight: 600; }
+.ccs-combo--add .ccs-combo__icon { border-left: 0; width: 40px; }
+.ccs-combo--add .ccs-combo__icon img { filter: none; }
 .ccs-combo--add .ccs-combo__menu { min-width: 288px; }
 @media (max-width: 767px) {
   .ccs-combo--add { width: 100%; }
-  .ccs-combo--add .ccs-combo__field { height: 52px; border: 0; background: var(--sage-400); color: var(--brand-1100); font-weight: 600; justify-content: flex-start; }
-  .ccs-combo--add .ccs-combo__field:hover { background: var(--sage-300); }
-  .ccs-combo--add .ccs-combo__field:active { background: var(--sage-200); }
-  .ccs-combo--add .ccs-combo__value { flex: none; padding: 14px 4px 14px 16px; color: var(--brand-1100); }
-  .ccs-combo--add .ccs-combo__icon { width: 44px; }
-  .ccs-combo--add .ccs-combo__icon img { filter: none; }
-  .ccs-combo--add.is-open .ccs-combo__field { background: var(--input-fill-down-inverse); border: 1px solid var(--input-stroke-default); height: 48px; font-weight: 400; color: var(--text-primary-inverse); justify-content: space-between; }
-  .ccs-combo--add.is-open .ccs-combo__value { flex: 1; padding: 11px 12px; color: var(--text-primary-inverse); }
-  .ccs-combo--add.is-open .ccs-combo__icon img { filter: brightness(0) invert(1); }
+  .ccs-combo--add .ccs-combo__field { justify-content: center; }
 }
 
 /* ---- Date field + calendar ------------------------------------------------------------------ */
@@ -167,18 +159,14 @@ ul.ccs-combo__menu > .ccs-combo__option { list-style: none; }
 .ccs-btn--secondary { background: transparent; border-color: var(--brand-1100); }
 .ccs-btn--secondary:hover { background: rgba(0, 15, 70, 0.08); }
 .ccs-btn--secondary:active { background: rgba(0, 15, 70, 0.16); }
-.ccs-btn--add { align-self: flex-start; justify-content: space-between; width: 288px; max-width: 100%; min-height: 48px; padding: 0 12px; border: 1px solid var(--input-stroke-default); background: var(--input-fill-down-inverse); color: var(--text-primary-inverse); font-weight: 400; }
-.ccs-btn--add:hover { background: var(--input-fill-hover-inverse); }
-.ccs-btn--add:active { background: var(--input-fill-selected-inverse); }
+.ccs-btn--add { flex-direction: row-reverse; align-self: flex-start; gap: 8px; min-width: 176px; max-width: 100%; padding: 0 16px; background: transparent; border-color: var(--brand-1100); }
+.ccs-btn--add:hover { background: rgba(0, 15, 70, 0.08); }
+.ccs-btn--add:active { background: rgba(0, 15, 70, 0.16); }
 .ccs-btn--add span { padding: 0; }
-.ccs-btn--add img { width: 24px; height: 24px; filter: brightness(0) invert(1); }
+.ccs-btn--add img { width: 20px; height: 20px; flex: none; }
 .ccs-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 @media (max-width: 767px) {
-  .ccs-btn--add { align-self: stretch; width: 100%; min-height: 52px; justify-content: flex-start; gap: 0; padding: 14px 16px; border: 0; background: var(--sage-400); color: var(--brand-1100); font-weight: 600; }
-  .ccs-btn--add:hover { background: var(--sage-300); }
-  .ccs-btn--add:active { background: var(--sage-200); }
-  .ccs-btn--add span { padding: 0 4px 0 0; }
-  .ccs-btn--add img { filter: none; }
+  .ccs-btn--add { align-self: stretch; width: 100%; }
   .ccs-adv__actions { flex-direction: column; }
   .ccs-adv__actions > * { min-width: 0; }
 }
@@ -219,15 +207,20 @@ html.is-embed .advanced-filters-page__group { min-height: 0; }
 html.is-embed .ccs-page__body { display: block; padding: 24px; }
 html.is-embed .ccs-adv { gap: 24px; }
 html.is-embed .ccs-adv__box, html.is-embed .ccs-adv__stack { gap: 16px; }
-html.is-embed .ccs-adv__heading { font-size: 20px; }
-@media (min-width: 900px) {
-  html.is-embed .adv-term { flex-direction: row; align-items: center; gap: 24px; }
-  html.is-embed .adv-term .ccs-field-row__controls { grid-template-columns: 1fr 1fr 2fr; }
-  html.is-embed .adv-term .ccs-field-row__controls > :nth-child(3) { grid-column: auto; }
+/* In the fly-out the form scrolls and Search / Reset stay pinned at the bottom */
+html.is-embed { scroll-padding-bottom: 96px; }
+html.is-embed .ccs-adv__actions { position: sticky; bottom: 0; z-index: 5; flex-direction: row; gap: 16px; margin-bottom: -24px; padding: 16px 0 24px; }
+html.is-embed .ccs-adv__actions::before { content: ""; position: absolute; inset: 0 -24px; z-index: -1; background: #fff; border-top: 1px solid #c8c8c8; }
+html.is-embed .ccs-adv__actions > * { flex: 1 1 0; }
+@media (min-width: 480px) {
+  html.is-embed .ccs-btn--add, html.is-embed .ccs-combo--add { align-self: flex-start; width: fit-content; }
 }
-/* "Add filter" is sage on phones, so its label stays dark there (light only on the dark desktop field) */
-@media (max-width: 767px) {
-  .ccs-combo--add .ccs-combo__value, .ccs-combo--add.is-complete .ccs-combo__value { color: var(--brand-1100); }
+html.is-embed .ccs-adv__heading { font-size: 20px; }
+html.is-embed .ccs-adv__desc { margin-top: -4px; font-size: 15px; line-height: 22px; }
+@media (min-width: 700px) {
+  html.is-embed .adv-term { flex-direction: row; align-items: center; gap: 24px; }
+  html.is-embed .adv-term .ccs-field-row__controls { grid-template-columns: 140px 232px minmax(0, 1fr); }
+  html.is-embed .adv-term .ccs-field-row__controls > :nth-child(3) { grid-column: auto; }
 }
 
 /* advanced-filters: styles moved out of inline style="" attributes. Class names are semantic (block__element) and scoped by the page class on <body> (page-advanced-filters), which gives them the precedence the inline styles had over shared component CSS. Do not reintroduce inline styles. */

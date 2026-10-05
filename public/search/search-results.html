@@ -231,12 +231,7 @@
   <div class="search-results-bar__search">
     <div class="search-results-bar__search-inner ccs-hero__search">
       <div class="search-results-bar__search-host" ref="{{ bannerHostRef }}"></div>
-      <button class="search-results-search-tools__link-advanced-search" type="button" onClick="{{ toggleAdv }}" aria-expanded="{{ advOpen }}" aria-controls="search-advanced-panel"><svg class="search-results-search-tools__link-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.5" y1="15.5" x2="21" y2="21"></line></svg>{{ advToggleLabel }}</button>
-      <sc-if value="{{ advOpen }}">
-        <div class="search-results-adv-panel" id="search-advanced-panel">
-          <iframe class="search-results-adv-panel__frame" title="Advanced search" src="{{ advSrc }}" style="--dyn-height:{{ advH }}"></iframe>
-        </div>
-      </sc-if>
+      <button class="search-results-search-tools__link-advanced-search" ref="{{ advBtnRef }}" type="button" onClick="{{ openAdv }}" aria-haspopup="dialog">Advanced search<svg class="search-results-search-tools__link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" aria-hidden="true"><polyline points="9 6 15 12 9 18"></polyline></svg></button>
     </div>
   </div>
   </div>
@@ -528,6 +523,21 @@
             <sc-if value="{{ counting }}"><svg class="search-results-filters-title__button-icon search-results-filters-title__button-icon--styled" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 3a9 9 0 1 0 9 9"></path></svg></sc-if>{{ showLabel }}</button>
         </div>
       </div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ advOpen }}">
+  <div class="search-results-flyout" onClick="{{ closeAdv }}">
+    <div class="search-results-flyout__panel" ref="{{ advDialogRef }}" role="dialog" aria-modal="true" aria-labelledby="adv-flyout-title" data-dc-plain-interp onClick="{{ stop }}" onKeyDown="{{ advTrapKey }}">
+      <div class="search-results-filters-title__header">
+        <h2 class="search-results-filters-title__heading" id="adv-flyout-title">Advanced search</h2>
+        <button class="search-results-filters-title__button-close-modal" ref="{{ advCloseRef }}" onClick="{{ closeAdv }}">
+          <svg class="search-results-filters-title__button-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><line x1="4" y1="4" x2="20" y2="20"></line><line x1="20" y1="4" x2="4" y2="20"></line></svg>
+          <span class="search-results-filters-title__button-label">Close</span>
+        </button>
+      </div>
+      <iframe class="search-results-flyout__frame" ref="{{ advFrameRef }}" title="Advanced search form" src="{{ advSrc }}"></iframe>
     </div>
   </div>
 </sc-if>
@@ -900,8 +910,8 @@ function saveSearchHistory(term) {
   } catch (e) {}
 }
 class Component extends DCLogic {
-  state = { stuck: false, advOpen: false, advH: '420px', f:EMPTYF(), loading:false, view:null, modal:false, mFind:'', draft:null, mOpen:{coll:true,type:true,date:true}, fq:{}, more:{}, sortOpen:false, perPage:20, ppOpen:false, page:1, yIn:null, yErr:'', counting:false, ackOpen:false, vw: typeof window !== 'undefined' ? window.innerWidth : 1200, liveItems: null, liveTotal: null, liveError: null };
-  trackRef = React.createRef(); bodyRef = React.createRef(); sortRef = React.createRef(); ppRef = React.createRef(); mainRef = React.createRef();
+  state = { stuck: false, advOpen: false, f:EMPTYF(), loading:false, view:null, modal:false, mFind:'', draft:null, mOpen:{coll:true,type:true,date:true}, fq:{}, more:{}, sortOpen:false, perPage:20, ppOpen:false, page:1, yIn:null, yErr:'', counting:false, ackOpen:false, vw: typeof window !== 'undefined' ? window.innerWidth : 1200, liveItems: null, liveTotal: null, liveError: null };
+  trackRef = React.createRef(); bodyRef = React.createRef(); sortRef = React.createRef(); ppRef = React.createRef(); advBtnRef = React.createRef(); advDialogRef = React.createRef(); advCloseRef = React.createRef(); advFrameRef = React.createRef(); mainRef = React.createRef();
   sentinelRef = React.createRef(); bannerHostRef = React.createRef(); compactHostRef = React.createRef(); dialogRef = React.createRef(); filterBtnRef = React.createRef(); ackRef = React.createRef();
   dom = { lo: 1700, hi: 2030 };
 
@@ -936,11 +946,12 @@ class Component extends DCLogic {
       }
     } catch (e) { /* stays in the roomy layout */ }
     
-    this.onAdvMsg = e => { if (e.origin === location.origin && e.data && e.data.ccsAdvHeight) this.setState({ advH: Math.ceil(e.data.ccsAdvHeight) + 'px' }); };
+    // Messages from the embedded advanced form: Esc pressed inside it, or Tab past its first/last control (keeps focus inside the fly-out)
+    this.onAdvMsg = e => { if (e.origin !== location.origin || !e.data || !this.state.advOpen) return; if (e.data.ccsAdvClose) this.closeAdv(); else if (e.data.ccsAdvTab && this.advCloseRef.current) this.advCloseRef.current.focus(); };
     window.addEventListener('message', this.onAdvMsg);
     this.onMove = e => this.move(e);
     this.onUp = () => { this.drag = null; };
-    this.onKey = e => { if (e.key === 'Escape') { if (this.state.ackOpen) this.closeAck(); else if (this.state.modal) this.closeModal(); } };
+    this.onKey = e => { if (e.key === 'Escape') { if (this.state.ackOpen) this.closeAck(); else if (this.state.modal) this.closeModal(); else if (this.state.advOpen) this.closeAdv(); } };
     this.onDown = e => { const s = this.state, out = r => r.current && !r.current.contains(e.target);
       const u = {}; if (s.sortOpen && out(this.sortRef)) u.sortOpen = false; if (s.ppOpen && out(this.ppRef)) u.ppOpen = false; if (Object.keys(u).length) this.setState(u); };
     this.onResize = () => this.setState({ vw: window.innerWidth });
@@ -1059,6 +1070,10 @@ class Component extends DCLogic {
     setTimeout(() => { const el = this.dialogRef.current && this.dialogRef.current.querySelector(FOCUSABLE); el && el.focus(); }, 30); }
   closeModal() { document.body.style.overflow = ''; this.setState({ modal: false }); setTimeout(() => this.filterBtnRef.current && this.filterBtnRef.current.focus(), 30); }
   closeAck() { try { localStorage.setItem('ccs-cultural-ack', '1'); } catch (e) {} this.setState({ ackOpen: false }); }
+  openAdv() { document.body.style.overflow = 'hidden'; this.setState({ advOpen: true }); setTimeout(() => this.advCloseRef.current && this.advCloseRef.current.focus(), 30); }
+  closeAdv() { document.body.style.overflow = ''; this.setState({ advOpen: false }); setTimeout(() => this.advBtnRef.current && this.advBtnRef.current.focus(), 30); }
+  // Tab from the Close button backwards goes to the last control in the form; the form sends Tab-past-the-end back to Close
+  advTrap = e => { if (e.key === 'Tab' && e.shiftKey && document.activeElement === this.advCloseRef.current && this.advFrameRef.current) { e.preventDefault(); this.advFrameRef.current.contentWindow.postMessage({ ccsAdvFocusLast: true }, location.origin); } };
   makeTrapKey(ref) {
     return e => { if (e.key !== 'Tab' || !ref.current) return; const els = [...ref.current.querySelectorAll(FOCUSABLE)]; if (!els.length) return;
       const first = els[0], last = els[els.length - 1]; if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); } else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); } };
@@ -1301,7 +1316,7 @@ class Component extends DCLogic {
       barCls: s.stuck ? 'is-stuck' : '', sentinelRef: this.sentinelRef, bannerHostRef: this.bannerHostRef, compactHostRef: this.compactHostRef,
       bannerLine: f.q ? n + (n === 1 ? ' result for ' : ' results for ') + '“' + f.q + '”' : 'Explore artworks, objects, manuscripts, photographs and recordings held across the University of Melbourne\'s cultural collections.',
       titleText: 'Showing ' + n + ' ' + (n === 1 ? 'result' : 'results'),
-      advHref: advancedFormHref(f), advOpen: s.advOpen, advSrc: advancedFormHref(f) + (advancedFormHref(f).includes('?') ? '&' : '?') + 'embed=1', advH: s.advH, advToggleLabel: s.advOpen ? 'Hide advanced search' : 'Advanced Search', toggleAdv: () => this.setState(st => ({ advOpen: !st.advOpen })), filterCount: (chips.length + (f.digital ? 1 : 0)) || null, filterBtnRef: this.filterBtnRef,
+      advHref: advancedFormHref(f), advOpen: s.advOpen, advSrc: advancedFormHref(f) + (advancedFormHref(f).includes('?') ? '&' : '?') + 'embed=1', advBtnRef: this.advBtnRef, advDialogRef: this.advDialogRef, advCloseRef: this.advCloseRef, advFrameRef: this.advFrameRef, advTrapKey: this.advTrap, closeAdv: () => this.closeAdv(), openAdv: () => this.openAdv(), filterCount: (chips.length + (f.digital ? 1 : 0)) || null, filterBtnRef: this.filterBtnRef,
       ppRef: this.ppRef, ppOpen: s.ppOpen, ppChev: s.ppOpen ? 'rotate(180deg)' : 'none', togglePP: () => this.setState(st => ({ ppOpen: !st.ppOpen })),
       rangeLabel: n ? 'Showing ' + ((page - 1) * s.perPage + 1) + '–' + Math.min(page * s.perPage, n) + ' records' : 'Showing 0 records',
       mainRef: this.mainRef, showPager: n > 0 && !s.loading,
