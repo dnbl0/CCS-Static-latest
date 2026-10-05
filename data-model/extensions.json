@@ -1,0 +1,47 @@
+{
+  "_note": "Things the site shows that the two workbooks (CCS Data inventory - final.xlsx, CCS Field labels and filters - Final - PRG - 1 OCT 2026.xlsx) do not list. Each needs sign-off from the data owners (Ant / Alli) or removal. tests/data-model.test.js fails on any filter or record label that is neither in the workbooks nor listed here.",
+  "filters": [
+    {
+      "name": "Creator role",
+      "reason": "Added in #114 from the inventory attribute 'Creator Role' (Agent); the inventory does not mark it faceted and the Filters sheet has no row."
+    },
+    {
+      "name": "Object's place of production",
+      "reason": "The inventory marks 'Place of Production' as faceted (Yes, not yet validated). The Filters sheet instead lists Region ('Place - Place of Production', is Region derived?); the site offers both until that is answered."
+    },
+    {
+      "name": "Accession number",
+      "reason": "Text search on the Accession Number field; the Filters sheet has no accession filter."
+    },
+    {
+      "name": "Theme",
+      "reason": "Prototype grouping of subjects; not in the Filters sheet or the inventory."
+    },
+    {
+      "name": "Cultural affiliation",
+      "reason": "The inventory marks 'Cultural Affiliation' as faceted (Yes, not yet validated) and the Field labels sheet has it (row 14), but the Filters sheet has no row for it."
+    }
+  ],
+  "recordFields": [
+    {
+      "label": "UoM ID",
+      "reason": "Persistent collection-asset identifier shown with a copy button. The inventory lists Collection Asset ID as 'Will field display in CCS? No'."
+    },
+    {
+      "label": "Caption",
+      "reason": "Digital-asset caption: the 'Complex fields' sheet (Image Caption / DA Caption), shown only when recorded."
+    }
+  ],
+  "renderedElsewhere": {
+    "_note": "Field labels sheet rows that are shown on the record page outside the Details list.",
+    "Title": "page heading",
+    "Copyright": "usage-rights block (rights[])",
+    "Credit Line": "usage-rights block (rights[])",
+    "Licence Type": "digital-asset media panel / licence badge",
+    "Advisory": "advisory labels and media panel",
+    "Terms of Use": "usage-rights block, digital assets only"
+  },
+  "labelAliases": {
+    "Dimensions": "Dimensions (H x W x D)"
+  }
+}

@@ -1,0 +1,3105 @@
+[
+  {
+    "component": "Collection details",
+    "recordFieldLabel": "[no label]",
+    "sequence": null,
+    "labelJJDN": "Collection Asset ID",
+    "metadataField": "Collection Asset ID",
+    "dataType": "Identifier",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": "Y",
+      "NexusDAM": null
+    },
+    "description": "Unique identifier for the collection asset, e.g., EMU:345677",
+    "sourceSystem": "CMS",
+    "displaysInCCS": "No",
+    "technicalStatus": "Yes",
+    "facetedSearch": "n/a",
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": "n/a",
+      "underCopyright": "Mandatory",
+      "notUnderCopyright": "Mandatory",
+      "recordWithDA": "Mandatory",
+      "recordWithoutDA": "Mandatory"
+    },
+    "collectionManagement": "Record cannot be displayed in CCS",
+    "complexOutOfScope2026": "n/a",
+    "comments": null
+  },
+  {
+    "component": "Collection details",
+    "recordFieldLabel": "Accession Number",
+    "sequence": "15",
+    "labelJJDN": "Accession Number",
+    "metadataField": "Accession Number",
+    "dataType": "Identifier",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": "Y",
+      "NexusDAM": null
+    },
+    "description": "Accession or catalogue number, e.g., 1987.0043",
+    "sourceSystem": "CMS",
+    "displaysInCCS": "Yes",
+    "technicalStatus": "n/a",
+    "facetedSearch": "n/a",
+    "ifNotPopulated": "Field does not display",
+    "status": {
+      "copyrightRequirement": "n/a",
+      "underCopyright": "Mandatory",
+      "notUnderCopyright": "Mandatory",
+      "recordWithDA": "Mandatory",
+      "recordWithoutDA": "Mandatory"
+    },
+    "collectionManagement": "Field does not display",
+    "complexOutOfScope2026": "n/a",
+    "comments": null
+  },
+  {
+    "component": "Collection details",
+    "recordFieldLabel": "Cite this record",
+    "sequence": "28",
+    "labelJJDN": "View full record",
+    "metadataField": "Holding Collection Link",
+    "dataType": "Identifier",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": "Y",
+      "NexusDAM": null
+    },
+    "description": "Link to the asset in an existing or legacy collection browser. \nPrevious name: Legacy Browser URL",
+    "sourceSystem": "CMS",
+    "displaysInCCS": "Yes",
+    "technicalStatus": "n/a",
+    "facetedSearch": "n/a",
+    "ifNotPopulated": "Field does not display",
+    "status": {
+      "copyrightRequirement": "n/a",
+      "underCopyright": "Mandatory",
+      "notUnderCopyright": "Mandatory",
+      "recordWithDA": "Mandatory",
+      "recordWithoutDA": "Mandatory"
+    },
+    "collectionManagement": "Field does not display",
+    "complexOutOfScope2026": "n/a",
+    "comments": "- Need to confirm that this data available and can be pulled from CMS\n - Noting that not all future collections have web search browsers"
+  },
+  {
+    "component": "Collection details",
+    "recordFieldLabel": "Collection",
+    "sequence": "24",
+    "labelJJDN": "Holding Collection",
+    "metadataField": "Holding Collection",
+    "dataType": "Collection",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": "Y",
+      "NexusDAM": null
+    },
+    "description": "Formal institutional collection, e.g., University Art Collection. \nPrevious name: Collection Title",
+    "sourceSystem": "CMS",
+    "displaysInCCS": "Yes",
+    "technicalStatus": "n/a",
+    "facetedSearch": "Yes",
+    "ifNotPopulated": "Field does not display",
+    "status": {
+      "copyrightRequirement": "Yes",
+      "underCopyright": "Mandatory",
+      "notUnderCopyright": "Mandatory",
+      "recordWithDA": "Mandatory",
+      "recordWithoutDA": "Mandatory"
+    },
+    "collectionManagement": "Record cannot display in CCS - Legal / Copyright",
+    "complexOutOfScope2026": "Yes - DA Caption",
+    "comments": null
+  },
+  {
+    "component": "Collection details",
+    "recordFieldLabel": "Sub-Collection",
+    "sequence": "23",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Named Collection",
+    "dataType": "Collection",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": "Y",
+      "NexusDAM": null
+    },
+    "description": "Named, donor or other recognised collection, e.g., Smith Bequest. \nPrevious name: Named",
+    "sourceSystem": "CMS",
+    "displaysInCCS": "Yes",
+    "technicalStatus": "n/a",
+    "facetedSearch": "Yes",
+    "ifNotPopulated": "Field does not display",
+    "status": {
+      "copyrightRequirement": "n/a",
+      "underCopyright": "Optional",
+      "notUnderCopyright": "Optional",
+      "recordWithDA": "Optional",
+      "recordWithoutDA": "Optional"
+    },
+    "collectionManagement": "Field does not display",
+    "complexOutOfScope2026": "n/a",
+    "comments": null
+  },
+  {
+    "component": "Collection details",
+    "recordFieldLabel": "Sub-Collection",
+    "sequence": "23",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Resposible Unit",
+    "dataType": "Agent",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": "Y",
+      "NexusDAM": null
+    },
+    "description": "University unit responsible for managing the collection",
+    "sourceSystem": "CMS",
+    "displaysInCCS": "Yes",
+    "technicalStatus": "Yes",
+    "facetedSearch": "n/a",
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": "Yes",
+      "underCopyright": "Mandatory",
+      "notUnderCopyright": "Mandatory",
+      "recordWithDA": "Mandatory",
+      "recordWithoutDA": "Mandatory"
+    },
+    "collectionManagement": "Record cannot display in CCS - Legal / Copyright",
+    "complexOutOfScope2026": "n/a",
+    "comments": "This info is not in CMS so CCS will have to derive this"
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Title",
+    "sequence": "1",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Primary Title",
+    "dataType": "Title",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": "Y",
+      "NexusDAM": null
+    },
+    "description": "Main title used to identify and display the asset, e.g., Portrait of a Young Woman",
+    "sourceSystem": "CMS",
+    "displaysInCCS": "Yes",
+    "technicalStatus": "n/a",
+    "facetedSearch": "n/a",
+    "ifNotPopulated": "Field does not display",
+    "status": {
+      "copyrightRequirement": "n/a",
+      "underCopyright": "Mandatory",
+      "notUnderCopyright": "Mandatory",
+      "recordWithDA": "Mandatory",
+      "recordWithoutDA": "Mandatory"
+    },
+    "collectionManagement": "Record cannot be displayed in CCS",
+    "complexOutOfScope2026": "Yes - DA Caption",
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Title",
+    "sequence": "1",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Determination",
+    "dataType": "Title",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": "Used for taxon records where title does not apply",
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Series",
+    "sequence": "9",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Series Title",
+    "dataType": "Title",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "[no label]",
+    "sequence": "2",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Alternate Title",
+    "dataType": "Title",
+    "heldBy": {
+      "M&C": "N",
+      "MDHS": "N",
+      "NexusDAM": null
+    },
+    "description": "Alternative or variant title, e.g., Young Woman Portrait",
+    "sourceSystem": "CMS",
+    "displaysInCCS": "Yes",
+    "technicalStatus": "n/a",
+    "facetedSearch": "n/a",
+    "ifNotPopulated": "Field does not display",
+    "status": {
+      "copyrightRequirement": "n/a",
+      "underCopyright": "Optional",
+      "notUnderCopyright": "Optional",
+      "recordWithDA": "Optional",
+      "recordWithoutDA": "Optional"
+    },
+    "collectionManagement": "Field does not display",
+    "complexOutOfScope2026": "n/a",
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Description",
+    "sequence": "8",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Description",
+    "dataType": "Text",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": "Y",
+      "NexusDAM": null
+    },
+    "description": "Descriptive or interpretive text about the asset",
+    "sourceSystem": "CMS",
+    "displaysInCCS": "Yes",
+    "technicalStatus": "n/a",
+    "facetedSearch": "n/a",
+    "ifNotPopulated": "Field does not display",
+    "status": {
+      "copyrightRequirement": "n/a",
+      "underCopyright": "Optional",
+      "notUnderCopyright": "Optional",
+      "recordWithDA": "Optional",
+      "recordWithoutDA": "Optional"
+    },
+    "collectionManagement": "Field does not display",
+    "complexOutOfScope2026": "n/a",
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Description",
+    "sequence": "8",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Scope and Content",
+    "dataType": "Text",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Language",
+    "sequence": "14",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Language",
+    "dataType": "Language",
+    "heldBy": {
+      "M&C": "N",
+      "MDHS": "N",
+      "NexusDAM": null
+    },
+    "description": "Language of the asset or its content, e.g., English",
+    "sourceSystem": "CMS",
+    "displaysInCCS": "Yes",
+    "technicalStatus": "n/a",
+    "facetedSearch": "Yes",
+    "ifNotPopulated": "Field does not display",
+    "status": {
+      "copyrightRequirement": "n/a",
+      "underCopyright": "Optional",
+      "notUnderCopyright": "Optional",
+      "recordWithDA": "Optional",
+      "recordWithoutDA": "Optional"
+    },
+    "collectionManagement": "Field does not display",
+    "complexOutOfScope2026": "n/a",
+    "comments": "This is not available in CMS for Ro and Tess"
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Inscriptions",
+    "sequence": "13",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Inscription",
+    "dataType": "Text",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": "Y",
+      "NexusDAM": null
+    },
+    "description": "Inscription, signature, label or other text recorded on the asset",
+    "sourceSystem": "CMS",
+    "displaysInCCS": "Yes",
+    "technicalStatus": "n/a",
+    "facetedSearch": "n/a",
+    "ifNotPopulated": "Field does not display",
+    "status": {
+      "copyrightRequirement": "n/a",
+      "underCopyright": "Optional",
+      "notUnderCopyright": "Optional",
+      "recordWithDA": "Optional",
+      "recordWithoutDA": "Optional"
+    },
+    "collectionManagement": "Field does not display",
+    "complexOutOfScope2026": "n/a",
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Category",
+    "sequence": "26",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Classification",
+    "dataType": "Subject Classification",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": "Classification within a defined scheme, e.g., Furniture or Eucalyptus globulus",
+    "sourceSystem": "CMS",
+    "displaysInCCS": "Yes",
+    "technicalStatus": "n/a",
+    "facetedSearch": "n/a",
+    "ifNotPopulated": "Field does not display",
+    "status": {
+      "copyrightRequirement": "n/a",
+      "underCopyright": "Optional",
+      "notUnderCopyright": "Optional",
+      "recordWithDA": "Optional",
+      "recordWithoutDA": "Optional"
+    },
+    "collectionManagement": "Field does not display",
+    "complexOutOfScope2026": "n/a",
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Subject",
+    "sequence": "27",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Subject",
+    "dataType": "Subject",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": "Topic, theme or concept represented by the asset, e.g., Military history",
+    "sourceSystem": "CMS",
+    "displaysInCCS": "Yes",
+    "technicalStatus": "n/a",
+    "facetedSearch": "Yes",
+    "ifNotPopulated": "Field does not display",
+    "status": {
+      "copyrightRequirement": "n/a",
+      "underCopyright": "Optional",
+      "notUnderCopyright": "Optional",
+      "recordWithDA": "Optional",
+      "recordWithoutDA": "Optional"
+    },
+    "collectionManagement": "Field does not display",
+    "complexOutOfScope2026": "n/a",
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Material",
+    "sequence": "11",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Material Technique",
+    "dataType": null,
+    "heldBy": {
+      "M&C": null,
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": "Materials and/or techniques used, e.g., Oil on canvas",
+    "sourceSystem": "CMS",
+    "displaysInCCS": "Yes",
+    "technicalStatus": "n/a",
+    "facetedSearch": "Yes",
+    "ifNotPopulated": "Field does not display",
+    "status": {
+      "copyrightRequirement": "n/a",
+      "underCopyright": "Optional",
+      "notUnderCopyright": "Optional",
+      "recordWithDA": "Optional",
+      "recordWithoutDA": "Optional"
+    },
+    "collectionManagement": "Field does not display",
+    "complexOutOfScope2026": "Yes - DA Caption",
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Material",
+    "sequence": "11",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Material Technique - Medium",
+    "dataType": "Material Technique",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": "N",
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Material",
+    "sequence": "11",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Material Technique - Material",
+    "dataType": "Material Technique",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": "Y",
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Material",
+    "sequence": "11",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Extent",
+    "dataType": "Measurement",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": "For archive assets",
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Dimensions",
+    "sequence": "12",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Measurement",
+    "dataType": null,
+    "heldBy": {
+      "M&C": null,
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": "Physical or technical measurements",
+    "sourceSystem": "CMS",
+    "displaysInCCS": "Yes",
+    "technicalStatus": "n/a",
+    "facetedSearch": "n/a",
+    "ifNotPopulated": "Field does not display",
+    "status": {
+      "copyrightRequirement": "n/a",
+      "underCopyright": "Optional",
+      "notUnderCopyright": "Optional",
+      "recordWithDA": "Optional",
+      "recordWithoutDA": "Optional"
+    },
+    "collectionManagement": "Field does not display",
+    "complexOutOfScope2026": "n/a",
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Dimensions",
+    "sequence": "12",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Measurement - Name",
+    "dataType": "Measurement",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": "N",
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Dimensions",
+    "sequence": "12",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Measurement - Height",
+    "dataType": "Measurement",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": "N",
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Dimensions",
+    "sequence": "12",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Measurement - Width",
+    "dataType": "Measurement",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": "N",
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Dimensions",
+    "sequence": "12",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Measurement - Depth",
+    "dataType": "Measurement",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": "N",
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Dimensions",
+    "sequence": "12",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Measurement - Diameter",
+    "dataType": "Measurement",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": "N",
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Dimensions",
+    "sequence": "12",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Measurement - Unit",
+    "dataType": "Measurement",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": "N",
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Dimensions",
+    "sequence": "12",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Measurement - Weight",
+    "dataType": "Measurement",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": "N",
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Dimensions",
+    "sequence": "12",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Measurement - Weight Unit",
+    "dataType": "Measurement",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": "N",
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Dimensions",
+    "sequence": "12",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Measurement - Display Value",
+    "dataType": "Measurement",
+    "heldBy": {
+      "M&C": "N",
+      "MDHS": "Y",
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Part of item",
+    "sequence": "22",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Related Parent Record",
+    "dataType": "Relationship",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Part of item",
+    "sequence": "22",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Related Record",
+    "dataType": "Relationship",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Edition",
+    "sequence": "10",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Editions",
+    "dataType": "Relationship",
+    "heldBy": {
+      "M&C": "N",
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": "Links to related editions of the asset\nSee Related Record",
+    "sourceSystem": "CMS",
+    "displaysInCCS": "Yes",
+    "technicalStatus": "n/a",
+    "facetedSearch": "n/a",
+    "ifNotPopulated": "Field does not display",
+    "status": {
+      "copyrightRequirement": "n/a",
+      "underCopyright": "Optional",
+      "notUnderCopyright": "Optional",
+      "recordWithDA": "Optional",
+      "recordWithoutDA": "Optional"
+    },
+    "collectionManagement": "Field does not display",
+    "complexOutOfScope2026": "n/a",
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Series",
+    "sequence": "9",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Series",
+    "dataType": "Relationship",
+    "heldBy": {
+      "M&C": "N",
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": "Series or other hierarchical grouping to which the asset belongs\nSee Related Parent Record",
+    "sourceSystem": "CMS",
+    "displaysInCCS": "Yes",
+    "technicalStatus": "n/a",
+    "facetedSearch": "n/a",
+    "ifNotPopulated": "Field does not display",
+    "status": {
+      "copyrightRequirement": "n/a",
+      "underCopyright": "Optional",
+      "notUnderCopyright": "Optional",
+      "recordWithDA": "Optional",
+      "recordWithoutDA": "Optional"
+    },
+    "collectionManagement": "Field does not display",
+    "complexOutOfScope2026": "n/a",
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "[Dimensions]",
+    "sequence": "9",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Duration",
+    "dataType": "Measurement",
+    "heldBy": {
+      "M&C": "N",
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": "Running or playback time, e.g., 42 minutes",
+    "sourceSystem": "CMS",
+    "displaysInCCS": "Yes",
+    "technicalStatus": "n/a",
+    "facetedSearch": "n/a",
+    "ifNotPopulated": "Field does not display",
+    "status": {
+      "copyrightRequirement": "n/a",
+      "underCopyright": "Optional",
+      "notUnderCopyright": "Optional",
+      "recordWithDA": "Optional",
+      "recordWithoutDA": "Optional"
+    },
+    "collectionManagement": "Field does not display",
+    "complexOutOfScope2026": "n/a",
+    "comments": "Should this be for digital assets only? Or for born-digital too?"
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Creator",
+    "sequence": "4",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Creator",
+    "dataType": null,
+    "heldBy": {
+      "M&C": "M",
+      "MDHS": "M",
+      "NexusDAM": null
+    },
+    "description": "Person or organisation responsible for creating the asset, e.g., John Longstaff",
+    "sourceSystem": "CMS",
+    "displaysInCCS": "Yes",
+    "technicalStatus": "n/a",
+    "facetedSearch": "Yes",
+    "ifNotPopulated": "Field does not display",
+    "status": {
+      "copyrightRequirement": "n/a",
+      "underCopyright": "Optional",
+      "notUnderCopyright": "Optional",
+      "recordWithDA": "Optional",
+      "recordWithoutDA": "Optional"
+    },
+    "collectionManagement": "Field does not display",
+    "complexOutOfScope2026": "Yes - DA Caption",
+    "comments": "Multiple creators possible"
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Creator",
+    "sequence": "4",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Creator Name",
+    "dataType": "Agent",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": "Y",
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Creator",
+    "sequence": "4",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Creator Role",
+    "dataType": "Agent",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": "Y",
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Creator",
+    "sequence": "4",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Creator Type",
+    "dataType": "Agent",
+    "heldBy": {
+      "M&C": null,
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Creator",
+    "sequence": "4",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Creator DOB",
+    "dataType": null,
+    "heldBy": {
+      "M&C": "S",
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Creator",
+    "sequence": "4",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Creator DOB - Display",
+    "dataType": "Date",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": "Y",
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Creator",
+    "sequence": "4",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Creator DOB - Earliest",
+    "dataType": "Date",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Creator",
+    "sequence": "4",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Creator DOB - Latest",
+    "dataType": "Date",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Creator",
+    "sequence": "4",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Creator DOD",
+    "dataType": null,
+    "heldBy": {
+      "M&C": null,
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Creator",
+    "sequence": "4",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Creator DOD - Display",
+    "dataType": "Date",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": "Y",
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Creator",
+    "sequence": "4",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Creator DOD - Earliest",
+    "dataType": "Date",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Creator",
+    "sequence": "4",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Creator DOD - Latest",
+    "dataType": "Date",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Creator",
+    "sequence": "4",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Creator Affiliation",
+    "dataType": null,
+    "heldBy": {
+      "M&C": null,
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Creator",
+    "sequence": "4",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Nationality/Heritage",
+    "dataType": "Affiliation",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Creator",
+    "sequence": "4",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Collector",
+    "dataType": null,
+    "heldBy": {
+      "M&C": null,
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Creator",
+    "sequence": "4",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Collector Name",
+    "dataType": "Agent",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Creator",
+    "sequence": "4",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Collector Role",
+    "dataType": "Agent",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "[no label]",
+    "sequence": "5",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Associations",
+    "dataType": null,
+    "heldBy": {
+      "M&C": null,
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": "Other people, organisations or groups associated with the asset. \nPrevious name: Other Entities",
+    "sourceSystem": "CMS",
+    "displaysInCCS": "Yes",
+    "technicalStatus": "n/a",
+    "facetedSearch": "Yes",
+    "ifNotPopulated": "Field does not display",
+    "status": {
+      "copyrightRequirement": "n/a",
+      "underCopyright": "Optional",
+      "notUnderCopyright": "Optional",
+      "recordWithDA": "Optional",
+      "recordWithoutDA": "Optional"
+    },
+    "collectionManagement": "Field does not display",
+    "complexOutOfScope2026": "n/a",
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "[no label]",
+    "sequence": "5",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Associations - Name",
+    "dataType": "Agent",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": "Y",
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "[no label]",
+    "sequence": "5",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Associations - Role",
+    "dataType": "Agent",
+    "heldBy": {
+      "M&C": "N",
+      "MDHS": "Y",
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "[no label]",
+    "sequence": "5",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Associations - DOB",
+    "dataType": "Date",
+    "heldBy": {
+      "M&C": "N",
+      "MDHS": "Y",
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "[no label]",
+    "sequence": "5",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Associations - DOD",
+    "dataType": "Date",
+    "heldBy": {
+      "M&C": "N",
+      "MDHS": "Y",
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "[No label]",
+    "sequence": "6",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Cultural Affiliation",
+    "dataType": "Affiliation",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": "Name of the affiliation of the asset, e.g., Wurundjeri Woi-wurrung",
+    "sourceSystem": "CMS",
+    "displaysInCCS": "Yes",
+    "technicalStatus": "n/a",
+    "facetedSearch": "Yes",
+    "ifNotPopulated": "Field does not display",
+    "status": {
+      "copyrightRequirement": "n/a",
+      "underCopyright": "Optional",
+      "notUnderCopyright": "Optional",
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": "Field does not display",
+    "complexOutOfScope2026": "n/a",
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "[No label]",
+    "sequence": "6",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Culture / Cultural Group",
+    "dataType": null,
+    "heldBy": {
+      "M&C": "N",
+      "MDHS": "N",
+      "NexusDAM": null
+    },
+    "description": "See Cultural Affiliation",
+    "sourceSystem": "CMS",
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Place",
+    "sequence": "7",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Place of Production",
+    "dataType": null,
+    "heldBy": {
+      "M&C": null,
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": "Place where the asset was produced, e.g., Melbourne, Victoria, Australia",
+    "sourceSystem": "CMS",
+    "displaysInCCS": "Yes",
+    "technicalStatus": "n/a",
+    "facetedSearch": "Yes",
+    "ifNotPopulated": "Field does not display",
+    "status": {
+      "copyrightRequirement": "n/a",
+      "underCopyright": "Optional",
+      "notUnderCopyright": "Optional",
+      "recordWithDA": "Optional",
+      "recordWithoutDA": "Optional"
+    },
+    "collectionManagement": "Field does not display",
+    "complexOutOfScope2026": "n/a",
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Place",
+    "sequence": "7",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Place of Production (L1)",
+    "dataType": "Place",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": "Y",
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Place",
+    "sequence": "7",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Place of Production (L2)",
+    "dataType": "Place",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Place",
+    "sequence": "7",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Place of Production (L3)",
+    "dataType": "Place",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Place",
+    "sequence": "7",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Place of Production (L4)",
+    "dataType": "Place",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Place",
+    "sequence": "7",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Place of Production (L5)",
+    "dataType": "Place",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Place",
+    "sequence": "7",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Collection Site",
+    "dataType": "Place",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Date",
+    "sequence": "3",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Date of Production",
+    "dataType": null,
+    "heldBy": {
+      "M&C": null,
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": "Date or date range when the asset was produced, e.g., c. 1920",
+    "sourceSystem": "CMS",
+    "displaysInCCS": "Yes",
+    "technicalStatus": "n/a",
+    "facetedSearch": "Yes",
+    "ifNotPopulated": "Field does not display",
+    "status": {
+      "copyrightRequirement": "n/a",
+      "underCopyright": "Optional",
+      "notUnderCopyright": "Optional",
+      "recordWithDA": "Optional",
+      "recordWithoutDA": "Optional"
+    },
+    "collectionManagement": "Field does not display",
+    "complexOutOfScope2026": "Yes - DA Caption",
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Date",
+    "sequence": "3",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Date of Production - Display",
+    "dataType": "Date",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": "Y",
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Date",
+    "sequence": "3",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Date of Production - Earliest",
+    "dataType": "Date",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Date",
+    "sequence": "3",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Date of Production - Latest",
+    "dataType": "Date",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Date",
+    "sequence": "3",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Date Collected",
+    "dataType": "Date",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Date",
+    "sequence": "3",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Created Period",
+    "dataType": "Date",
+    "heldBy": {
+      "M&C": "N",
+      "MDHS": "N",
+      "NexusDAM": null
+    },
+    "description": "Named historical or cultural period, e.g., Middle Ages or Ming Dynasty",
+    "sourceSystem": "CMS",
+    "displaysInCCS": "Yes",
+    "technicalStatus": "n/a",
+    "facetedSearch": "Yes",
+    "ifNotPopulated": "Field does not display",
+    "status": {
+      "copyrightRequirement": "n/a",
+      "underCopyright": "Optional",
+      "notUnderCopyright": "Optional",
+      "recordWithDA": "Optional",
+      "recordWithoutDA": "Optional"
+    },
+    "collectionManagement": "Field does not display",
+    "complexOutOfScope2026": "Yes - DA Caption",
+    "comments": "This needs to be derived from date"
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Date",
+    "sequence": "3",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Licence type",
+    "dataType": "Copyright",
+    "heldBy": {
+      "M&C": "N",
+      "MDHS": "N",
+      "NexusDAM": null
+    },
+    "description": "Licence or reuse conditions applying to the asset, e.g., CC BY 4.0",
+    "sourceSystem": "CMS",
+    "displaysInCCS": "Yes",
+    "technicalStatus": "n/a",
+    "facetedSearch": "Yes",
+    "ifNotPopulated": "Field does not display",
+    "status": {
+      "copyrightRequirement": "Yes",
+      "underCopyright": "Mandatory",
+      "notUnderCopyright": "Optional",
+      "recordWithDA": "Mandatory",
+      "recordWithoutDA": "Mandatory"
+    },
+    "collectionManagement": "Record cannot display in CCS - Legal / Copyright",
+    "complexOutOfScope2026": "n/a",
+    "comments": "Can CCS display records without copyrights information?"
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Date",
+    "sequence": "3",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Copyright",
+    "dataType": null,
+    "heldBy": {
+      "M&C": null,
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Date",
+    "sequence": "3",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Copyright Type",
+    "dataType": "Copyright",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": "N",
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Date",
+    "sequence": "3",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Copyright Statement",
+    "dataType": "Copyright",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": "Y",
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Copyright",
+    "sequence": "16",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Copyright Holder / Rights Holder",
+    "dataType": "Copyright",
+    "heldBy": {
+      "M&C": "N",
+      "MDHS": "N",
+      "NexusDAM": null
+    },
+    "description": "Person or organisation holding the rights",
+    "sourceSystem": "CMS",
+    "displaysInCCS": "Yes",
+    "technicalStatus": "n/a",
+    "facetedSearch": "n/a",
+    "ifNotPopulated": "Field does not display",
+    "status": {
+      "copyrightRequirement": "Yes",
+      "underCopyright": "Mandatory",
+      "notUnderCopyright": "Optional",
+      "recordWithDA": "Mandatory",
+      "recordWithoutDA": "Mandatory"
+    },
+    "collectionManagement": "Record cannot display in CCS - Legal / Copyright",
+    "complexOutOfScope2026": "Yes - DA Caption",
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Credit line",
+    "sequence": "17",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Credit Line",
+    "dataType": "Provinence",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": "Y",
+      "NexusDAM": null
+    },
+    "description": "Human-readable provenance or credit statement, e.g., Donated by the Smith family in 1954",
+    "sourceSystem": "CMS",
+    "displaysInCCS": "Yes",
+    "technicalStatus": "n/a",
+    "facetedSearch": "n/a",
+    "ifNotPopulated": "Field does not display",
+    "status": {
+      "copyrightRequirement": "Yes",
+      "underCopyright": "Mandatory",
+      "notUnderCopyright": "Optional",
+      "recordWithDA": "Mandatory",
+      "recordWithoutDA": "Mandatory"
+    },
+    "collectionManagement": "Record cannot display in CCS - Legal / Copyright",
+    "complexOutOfScope2026": "Yes - DA Caption",
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Access",
+    "sequence": "21",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Physical Access",
+    "dataType": "Access",
+    "heldBy": {
+      "M&C": "N",
+      "MDHS": "N",
+      "NexusDAM": null
+    },
+    "description": "Access conditions or restrictions, e.g., Open access, On display",
+    "sourceSystem": "CMS",
+    "displaysInCCS": "Yes",
+    "technicalStatus": "n/a",
+    "facetedSearch": "Yes",
+    "ifNotPopulated": "Field does not display",
+    "status": {
+      "copyrightRequirement": "n/a",
+      "underCopyright": "Optional",
+      "notUnderCopyright": "Optional",
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": "Field does not display",
+    "complexOutOfScope2026": "n/a",
+    "comments": null
+  },
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Type",
+    "sequence": "25",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Object Type",
+    "dataType": "N/A - part of document header",
+    "heldBy": {
+      "M&C": "Y",
+      "MDHS": "Y",
+      "NexusDAM": null
+    },
+    "description": "Broad type of collection asset represented by the record, e.g., Object, Specimen, Archive, Publication",
+    "sourceSystem": "CMS",
+    "displaysInCCS": "Yes",
+    "technicalStatus": "n/a",
+    "facetedSearch": "n/a",
+    "ifNotPopulated": "Field does not display",
+    "status": {
+      "copyrightRequirement": "n/a",
+      "underCopyright": "Mandatory",
+      "notUnderCopyright": "Mandatory",
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": "Field does not display",
+    "complexOutOfScope2026": "n/a",
+    "comments": null
+  },
+  {
+    "component": "Digital Asset details \n(when DA is available)",
+    "recordFieldLabel": "Type",
+    "sequence": "25",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Digital Asset ID",
+    "dataType": "Identifier",
+    "heldBy": {
+      "M&C": null,
+      "MDHS": null,
+      "NexusDAM": "Y"
+    },
+    "description": "Unique identifier for the digital asset, e.g., DAM-IMG-99231",
+    "sourceSystem": "DAM",
+    "displaysInCCS": "No",
+    "technicalStatus": "Yes",
+    "facetedSearch": "n/a",
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": "n/a",
+      "underCopyright": "Mandatory",
+      "notUnderCopyright": "Mandatory",
+      "recordWithDA": "Mandatory",
+      "recordWithoutDA": "n/a"
+    },
+    "collectionManagement": "Record cannot be displayed in CCS",
+    "complexOutOfScope2026": "n/a",
+    "comments": null
+  },
+  {
+    "component": "Digital Asset details \n(when DA is available)",
+    "recordFieldLabel": "Type",
+    "sequence": "25",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Title",
+    "dataType": "Title",
+    "heldBy": {
+      "M&C": null,
+      "MDHS": null,
+      "NexusDAM": "N"
+    },
+    "description": "Main title used to identify and display the digital asset",
+    "sourceSystem": "DAM",
+    "displaysInCCS": "Yes",
+    "technicalStatus": "n/a",
+    "facetedSearch": "n/a",
+    "ifNotPopulated": "Field does not display",
+    "status": {
+      "copyrightRequirement": "n/a",
+      "underCopyright": "Optional",
+      "notUnderCopyright": "Optional",
+      "recordWithDA": "Optional",
+      "recordWithoutDA": "n/a"
+    },
+    "collectionManagement": "Field does not display",
+    "complexOutOfScope2026": "Yes - DA Caption",
+    "comments": null
+  },
+  {
+    "component": "Digital Asset details \n(when DA is available)",
+    "recordFieldLabel": "Type",
+    "sequence": "25",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Description",
+    "dataType": "Text",
+    "heldBy": {
+      "M&C": null,
+      "MDHS": null,
+      "NexusDAM": "N"
+    },
+    "description": "Descriptive text about the digital asset",
+    "sourceSystem": "DAM",
+    "displaysInCCS": "Yes",
+    "technicalStatus": "n/a",
+    "facetedSearch": "n/a",
+    "ifNotPopulated": "Field does not display",
+    "status": {
+      "copyrightRequirement": "n/a",
+      "underCopyright": "Optional",
+      "notUnderCopyright": "Optional",
+      "recordWithDA": "Optional",
+      "recordWithoutDA": "n/a"
+    },
+    "collectionManagement": "Field does not display",
+    "complexOutOfScope2026": "n/a",
+    "comments": null
+  },
+  {
+    "component": "Digital Asset details \n(when DA is available)",
+    "recordFieldLabel": "Type",
+    "sequence": "25",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "DA Creator Name",
+    "dataType": "Agent",
+    "heldBy": {
+      "M&C": null,
+      "MDHS": null,
+      "NexusDAM": "Y"
+    },
+    "description": "Person or organisation responsible for creating the digital asset",
+    "sourceSystem": "DAM",
+    "displaysInCCS": "Yes",
+    "technicalStatus": "n/a",
+    "facetedSearch": "n/a",
+    "ifNotPopulated": "Field does not display",
+    "status": {
+      "copyrightRequirement": "Yes - if Image Producer is required",
+      "underCopyright": "Mandatory - if Image Producer required",
+      "notUnderCopyright": "Mandatory - if Image Producer required",
+      "recordWithDA": "Mandatory - if Image Producer required",
+      "recordWithoutDA": "n/a"
+    },
+    "collectionManagement": "Field does not display",
+    "complexOutOfScope2026": "Yes - DA Caption",
+    "comments": null
+  },
+  {
+    "component": "Digital Asset details \n(when DA is available)",
+    "recordFieldLabel": "Type",
+    "sequence": "25",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Material Technique",
+    "dataType": null,
+    "heldBy": {
+      "M&C": null,
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": "Digital medium or production technique, e.g., Structured light 3D scan, jpeg, svg",
+    "sourceSystem": "DAM",
+    "displaysInCCS": "No",
+    "technicalStatus": "n/a",
+    "facetedSearch": "n/a",
+    "ifNotPopulated": "Field does not display",
+    "status": {
+      "copyrightRequirement": "n/a",
+      "underCopyright": "Optional",
+      "notUnderCopyright": "Optional",
+      "recordWithDA": "Optional",
+      "recordWithoutDA": "n/a"
+    },
+    "collectionManagement": "Field does not display",
+    "complexOutOfScope2026": "n/a",
+    "comments": null
+  },
+  {
+    "component": "Digital Asset details \n(when DA is available)",
+    "recordFieldLabel": "Type",
+    "sequence": "25",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Material Technique - Format Type",
+    "dataType": "Material Technique",
+    "heldBy": {
+      "M&C": null,
+      "MDHS": null,
+      "NexusDAM": "Y"
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Digital Asset details \n(when DA is available)",
+    "recordFieldLabel": "Type",
+    "sequence": "25",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Material Technique - Format",
+    "dataType": "Material Technique",
+    "heldBy": {
+      "M&C": null,
+      "MDHS": null,
+      "NexusDAM": "Y"
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Digital Asset details \n(when DA is available)",
+    "recordFieldLabel": "Type",
+    "sequence": "25",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Measurement",
+    "dataType": null,
+    "heldBy": {
+      "M&C": null,
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": "Technical characteristics,Size, pixels, RGB etc e.g., 5000 × 6500 pixels",
+    "sourceSystem": "DAM",
+    "displaysInCCS": "Yes",
+    "technicalStatus": "n/a",
+    "facetedSearch": "n/a",
+    "ifNotPopulated": "Field does not display",
+    "status": {
+      "copyrightRequirement": "n/a",
+      "underCopyright": "Optional",
+      "notUnderCopyright": "Optional",
+      "recordWithDA": "Optional",
+      "recordWithoutDA": "n/a"
+    },
+    "collectionManagement": "Field does not display",
+    "complexOutOfScope2026": "n/a",
+    "comments": null
+  },
+  {
+    "component": "Digital Asset details \n(when DA is available)",
+    "recordFieldLabel": "Type",
+    "sequence": "25",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Measurement - Name",
+    "dataType": "Measurement",
+    "heldBy": {
+      "M&C": null,
+      "MDHS": null,
+      "NexusDAM": "Y"
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Digital Asset details \n(when DA is available)",
+    "recordFieldLabel": "Type",
+    "sequence": "25",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Measurement - Value",
+    "dataType": "Measurement",
+    "heldBy": {
+      "M&C": null,
+      "MDHS": null,
+      "NexusDAM": "Y"
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Digital Asset details \n(when DA is available)",
+    "recordFieldLabel": "Type",
+    "sequence": "25",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "URI",
+    "dataType": "Identifier",
+    "heldBy": {
+      "M&C": null,
+      "MDHS": null,
+      "NexusDAM": "Y"
+    },
+    "description": "Persistent or web address identifying or linking to the digital asset",
+    "sourceSystem": "DAM",
+    "displaysInCCS": "No",
+    "technicalStatus": "Yes",
+    "facetedSearch": "n/a",
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": "n/a",
+      "underCopyright": "Mandatory",
+      "notUnderCopyright": "Mandatory",
+      "recordWithDA": "Mandatory",
+      "recordWithoutDA": "n/a"
+    },
+    "collectionManagement": "Record cannot be displayed in CCS",
+    "complexOutOfScope2026": "n/a",
+    "comments": null
+  },
+  {
+    "component": "Digital Asset details \n(when DA is available)",
+    "recordFieldLabel": "Type",
+    "sequence": "25",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Embed Id",
+    "dataType": "Identifier",
+    "heldBy": {
+      "M&C": null,
+      "MDHS": null,
+      "NexusDAM": "Y"
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Digital Asset details \n(when DA is available)",
+    "recordFieldLabel": "Type",
+    "sequence": "25",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "File Name",
+    "dataType": "Identifier",
+    "heldBy": {
+      "M&C": null,
+      "MDHS": null,
+      "NexusDAM": "Y"
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Digital Asset details \n(when DA is available)",
+    "recordFieldLabel": "Type",
+    "sequence": "25",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Date of Production",
+    "dataType": "Date",
+    "heldBy": {
+      "M&C": null,
+      "MDHS": null,
+      "NexusDAM": "Y"
+    },
+    "description": "Date the digital asset was produced or created",
+    "sourceSystem": "DAM",
+    "displaysInCCS": "Yes",
+    "technicalStatus": "n/a",
+    "facetedSearch": "n/a",
+    "ifNotPopulated": "Field does not display",
+    "status": {
+      "copyrightRequirement": "Yes - if Image Producer is required",
+      "underCopyright": "Mandatory - if Image Producer required",
+      "notUnderCopyright": "Mandatory - if Image Producer required",
+      "recordWithDA": "Mandatory - if Image Producer required",
+      "recordWithoutDA": "n/a"
+    },
+    "collectionManagement": "Field does not display",
+    "complexOutOfScope2026": "n/a",
+    "comments": null
+  },
+  {
+    "component": "Digital Asset details \n(when DA is available)",
+    "recordFieldLabel": "[Licence logo]",
+    "sequence": "18",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Licence type",
+    "dataType": "Copyright",
+    "heldBy": {
+      "M&C": null,
+      "MDHS": null,
+      "NexusDAM": "Y"
+    },
+    "description": "Copyright, licence or permitted reuse information",
+    "sourceSystem": "DAM",
+    "displaysInCCS": "Yes",
+    "technicalStatus": "Yes",
+    "facetedSearch": "n/a",
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": "Yes",
+      "underCopyright": "Mandatory",
+      "notUnderCopyright": "Optional",
+      "recordWithDA": "Mandatory",
+      "recordWithoutDA": "n/a"
+    },
+    "collectionManagement": "Record cannot display in CCS - Legal / Copyright",
+    "complexOutOfScope2026": "n/a",
+    "comments": "Confirm the source, is it DAM/ CMS?"
+  },
+  {
+    "component": "Digital Asset details \n(when DA is available)",
+    "recordFieldLabel": "[Licence logo]",
+    "sequence": "18",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "DA Caption",
+    "dataType": "Caption (complex field)",
+    "heldBy": {
+      "M&C": null,
+      "MDHS": null,
+      "NexusDAM": "N"
+    },
+    "description": "This is the complex field for DA Caption",
+    "sourceSystem": "DAM and CMS?",
+    "displaysInCCS": "Yes",
+    "technicalStatus": "n/a",
+    "facetedSearch": "n/a",
+    "ifNotPopulated": "Field does not display",
+    "status": {
+      "copyrightRequirement": "n/a",
+      "underCopyright": "Mandatory when DA is available - tbd",
+      "notUnderCopyright": "Mandatory when DA is available - tbd",
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": "tbd",
+    "complexOutOfScope2026": "Yes - DA Caption",
+    "comments": null
+  },
+  {
+    "component": "Digital Asset details \n(when DA is available)",
+    "recordFieldLabel": "[Licence logo]",
+    "sequence": "18",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Access",
+    "dataType": null,
+    "heldBy": {
+      "M&C": null,
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Digital Asset details \n(when DA is available)",
+    "recordFieldLabel": "[Licence logo]",
+    "sequence": "18",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "DA Advisory - Type",
+    "dataType": "Access",
+    "heldBy": {
+      "M&C": null,
+      "MDHS": null,
+      "NexusDAM": "Y"
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Digital Asset details \n(when DA is available)",
+    "recordFieldLabel": "[Classification logo]",
+    "sequence": "19",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "DA Advisory - Classification",
+    "dataType": "Access",
+    "heldBy": {
+      "M&C": null,
+      "MDHS": null,
+      "NexusDAM": "Y"
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Digital Asset details \n(when DA is available)",
+    "recordFieldLabel": "[Classification logo]",
+    "sequence": "19",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "DA Sensitivity",
+    "dataType": "Access",
+    "heldBy": {
+      "M&C": null,
+      "MDHS": null,
+      "NexusDAM": "Y"
+    },
+    "description": null,
+    "sourceSystem": null,
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Digital Asset details \n(when DA is available)",
+    "recordFieldLabel": "Terms of Use",
+    "sequence": "20",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "DA Terms of Use",
+    "dataType": "Access",
+    "heldBy": {
+      "M&C": null,
+      "MDHS": null,
+      "NexusDAM": "Y"
+    },
+    "description": "New field in DAM to support the display of DA in CCS",
+    "sourceSystem": "DAM",
+    "displaysInCCS": "No",
+    "technicalStatus": "Yes",
+    "facetedSearch": "n/a",
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Digital Asset details \n(when DA is available)",
+    "recordFieldLabel": "Terms of Use",
+    "sequence": "20",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Digital Asset Role",
+    "dataType": "Digital Asset Reference",
+    "heldBy": {
+      "M&C": null,
+      "MDHS": null,
+      "NexusDAM": "N"
+    },
+    "description": "Purpose of the digital asset, e.g., Primary Image, Thumbnail, Transcript",
+    "sourceSystem": "DAM",
+    "displaysInCCS": "No",
+    "technicalStatus": "Yes",
+    "facetedSearch": "n/a",
+    "ifNotPopulated": "This is not a field in NDAM. \nAssumption to be validated by JJ: the primary image identified in the Sequence Field will be the primary image, thumbnail and transcripty",
+    "status": {
+      "copyrightRequirement": "n/a",
+      "underCopyright": "Mandatory",
+      "notUnderCopyright": "Mandatory",
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": "How should this field behave if hero image selction is not populated",
+    "complexOutOfScope2026": "n/a",
+    "comments": "This is to identify a hero / primary image for CCS - This Is this hero image? Is it an existing field in DAM or a new field requirement in DAM?"
+  },
+  {
+    "component": "Digital Asset details \n(when DA is available)",
+    "recordFieldLabel": "Terms of Use",
+    "sequence": "20",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Sequence",
+    "dataType": "Digital Asset Reference",
+    "heldBy": {
+      "M&C": null,
+      "MDHS": null,
+      "NexusDAM": "Y"
+    },
+    "description": "Order in which associated digital assets should be presented",
+    "sourceSystem": "DAM",
+    "displaysInCCS": "No",
+    "technicalStatus": "Yes",
+    "facetedSearch": "n/a",
+    "ifNotPopulated": "TBD Business",
+    "status": {
+      "copyrightRequirement": "n/a",
+      "underCopyright": "Mandatory",
+      "notUnderCopyright": "Optional",
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": "Images will be displayed in random order if sequencing is not populated",
+    "complexOutOfScope2026": "n/a",
+    "comments": null
+  },
+  {
+    "component": "Digital Asset details \n(when DA is available)",
+    "recordFieldLabel": "Terms of Use",
+    "sequence": "20",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "CCS IIIF viewer",
+    "dataType": null,
+    "heldBy": {
+      "M&C": null,
+      "MDHS": null,
+      "NexusDAM": "N"
+    },
+    "description": "New field in DAM to support DAs in IIIF viewer - Not in scope for 2026",
+    "sourceSystem": "DAM and CMS?",
+    "displaysInCCS": null,
+    "technicalStatus": null,
+    "facetedSearch": null,
+    "ifNotPopulated": null,
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Digital Asset details \n(when DA is available)",
+    "recordFieldLabel": "Terms of Use",
+    "sequence": "20",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Storage and Access Mechanism",
+    "dataType": "Digital Asset Reference",
+    "heldBy": {
+      "M&C": null,
+      "MDHS": null,
+      "NexusDAM": "N"
+    },
+    "description": "How/where the asset is managed and delivered, e.g., Nexus DAM – Managed Copy",
+    "sourceSystem": "DAM",
+    "displaysInCCS": "No",
+    "technicalStatus": "Yes",
+    "facetedSearch": "n/a",
+    "ifNotPopulated": "TBD, JJ to confirm requirement for this",
+    "status": {
+      "copyrightRequirement": "n/a",
+      "underCopyright": "Optional",
+      "notUnderCopyright": "Optional",
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": "Field does not display",
+    "complexOutOfScope2026": "n/a",
+    "comments": null
+  },
+  {
+    "component": "Generated by CCS",
+    "recordFieldLabel": "Terms of Use",
+    "sequence": "20",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "URI = Persistent URL",
+    "dataType": null,
+    "heldBy": {
+      "M&C": null,
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": "CCS",
+    "displaysInCCS": "Yes",
+    "technicalStatus": "Yes",
+    "facetedSearch": "n/a",
+    "ifNotPopulated": "n/a",
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  },
+  {
+    "component": "Generated by CCS",
+    "recordFieldLabel": "Terms of Use",
+    "sequence": "20",
+    "labelJJDN": "Sub-Collection",
+    "metadataField": "Global ID",
+    "dataType": null,
+    "heldBy": {
+      "M&C": null,
+      "MDHS": null,
+      "NexusDAM": null
+    },
+    "description": null,
+    "sourceSystem": "CCS",
+    "displaysInCCS": "Yes",
+    "technicalStatus": "Yes",
+    "facetedSearch": "n/a",
+    "ifNotPopulated": "n/a",
+    "status": {
+      "copyrightRequirement": null,
+      "underCopyright": null,
+      "notUnderCopyright": null,
+      "recordWithDA": null,
+      "recordWithoutDA": null
+    },
+    "collectionManagement": null,
+    "complexOutOfScope2026": null,
+    "comments": null
+  }
+]

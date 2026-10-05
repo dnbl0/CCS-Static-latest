@@ -154,7 +154,7 @@ Some early prototype stubs duplicate a fuller record. `SUPERSEDED = { oldId: can
 
 ## Field labels and the spreadsheet
 
-Field labels, sequence numbers and order follow `assets/CCS Field labels and filters - Final - PRG - 1 OCT 2026.xlsx` (sheets "CCS Field labels" and "CCS Filters").
+Field labels, sequence numbers, filters and mandatory/optional rules follow the two workbooks in `assets/` (CCS Field labels and filters - Final - PRG - 1 OCT 2026.xlsx and CCS Data inventory - final.xlsx), extracted to `data-model/` and enforced by `tests/data-model.test.js`; see `docs/data-model.md`.
 
 - Record page fields: the `f` array in `build()` in `public/collection-data.js` (`[seq, label, lines]`). Rights fields (16, 17, 29) come from the `rights` array; media metadata (Title, Format, Licence type, Terms of use, Advisory ...) from `media`.
 - Filters: the `FACETS` array in `public/search/search-results.html` (group, key, title, kind).

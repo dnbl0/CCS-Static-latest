@@ -1,0 +1,82 @@
+[
+  {
+    "descriptor": "Data descriptor",
+    "definition": "Definition",
+    "example": "Example",
+    "withDA": "Required to appear in CCS - Record with DA",
+    "withoutDA": "Required to appear in CCS - Record with NO DA - confirmed JB/AH 10/8/26",
+    "inventoryRow": null
+  },
+  {
+    "descriptor": "Copyright holder",
+    "definition": "A statement acknowledging entity holder for copyright",
+    "example": "(c) The Estate of Howard Arkley, Courtesy Kalli Rolfe Contemporary Art",
+    "withDA": "Must appear in CCS for all items - download or static",
+    "withoutDA": "Must",
+    "inventoryRow": "Row 125: Rights Holder"
+  },
+  {
+    "descriptor": "Credit line",
+    "definition": "A statement acknowledging the source of the collection asset and date",
+    "example": "Donated through the Australian Government's Cultural Gifts Program by Michael and Janet Buxton, 2018",
+    "withDA": "Must appear in CCS for all items - download or static",
+    "withoutDA": "Must",
+    "inventoryRow": "Row 130: Statement"
+  },
+  {
+    "descriptor": "Image producer",
+    "definition": "A statement acknowledging entity responsible for the digital asset's creation.",
+    "example": "Image Credit: Joe Smith (photographer)",
+    "withDA": "Must appear in CCS for items where this is relevant - download or static",
+    "withoutDA": "N/A",
+    "inventoryRow": "Row 47: Creator"
+  },
+  {
+    "descriptor": "Image production date",
+    "definition": "Date on which DA was created.",
+    "example": "2016",
+    "withDA": "ONLY REQUIRED IF image producer is required. Must appear in CCS for items where this is relevant - download or static.",
+    "withoutDA": "N/A",
+    "inventoryRow": "Row 51: Date of Production"
+  },
+  {
+    "descriptor": "License type",
+    "definition": "Indicates the licensing type for the asset as used by key national copyright agencies.",
+    "example": "CC0; CC BY NC; Individual; Public Domain",
+    "withDA": "Must appear in CCS for all items - download or static",
+    "withoutDA": "N/A",
+    "inventoryRow": "Row 41: Licence type"
+  },
+  {
+    "descriptor": "Risk status",
+    "definition": "Identifies the risk for takedown action or infringement claim based on current copyright information.",
+    "example": "High risk; low risk; no risk",
+    "withDA": "Does NOT appear in CCS - this is an internal consideration",
+    "withoutDA": "N/A",
+    "inventoryRow": "NOT REQUIRED FOR CCS"
+  },
+  {
+    "descriptor": "Use statement",
+    "definition": "State the conditions of use of the digital asset and the associated acknowledgement information to accompany it when published\n\nExplanation of licence type & advisory / sensitivity / classification",
+    "example": "Copyright in this material has expired. The work is in the public domain and can be used for any purpose. Please acknowledge the [Collection Name, University of Melbourne] as the source of this material.",
+    "withDA": "Must appear in CCS for all items - download or static",
+    "withoutDA": "N/A",
+    "inventoryRow": "Row 52: Copyright"
+  },
+  {
+    "descriptor": "Collection Title",
+    "definition": "Identifies the Collection the item resides in",
+    "example": "Harry Brookes Allen Museum of Anatomy & Pathology, University of Melbourne",
+    "withDA": "Must appear in CCS for all items - download or static",
+    "withoutDA": "Must",
+    "inventoryRow": "Row 20: Formal"
+  },
+  {
+    "descriptor": "Responsible Collection link",
+    "definition": "Name of management team & link for contact",
+    "example": "Museums and Collections",
+    "withDA": "Must appear in CCS for all items - download or static",
+    "withoutDA": "Must",
+    "inventoryRow": "Row 22: Responsible Unit"
+  }
+]

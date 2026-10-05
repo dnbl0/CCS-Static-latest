@@ -1,0 +1,527 @@
+[
+  {
+    "dataType": "Identifier",
+    "attributes": [
+      {
+        "name": "Type",
+        "linkedDataType": null,
+        "description": "Type of identifier, e.g., Accession Number, Digital Asset Identifier, URI"
+      },
+      {
+        "name": "Value",
+        "linkedDataType": null,
+        "description": "The identifier itself, e.g., 1987.0043"
+      }
+    ]
+  },
+  {
+    "dataType": "Title",
+    "attributes": [
+      {
+        "name": "Type",
+        "linkedDataType": null,
+        "description": "Type or purpose of the title, e.g., Preferred, Alternate, Translated"
+      },
+      {
+        "name": "Value",
+        "linkedDataType": null,
+        "description": "The title text, e.g., Portrait of a Young Woman"
+      },
+      {
+        "name": "Title Language",
+        "linkedDataType": "Language",
+        "description": "Language in which the title is expressed, e.g., English, French"
+      }
+    ]
+  },
+  {
+    "dataType": "Text",
+    "attributes": [
+      {
+        "name": "Type",
+        "linkedDataType": null,
+        "description": "Type or purpose of the text, e.g., Description, Inscription, Caption"
+      },
+      {
+        "name": "Value",
+        "linkedDataType": null,
+        "description": "The actual text or narrative content"
+      }
+    ]
+  },
+  {
+    "dataType": "Language",
+    "attributes": [
+      {
+        "name": "Code",
+        "linkedDataType": null,
+        "description": "Language code, e.g., en, fr"
+      },
+      {
+        "name": "Name",
+        "linkedDataType": null,
+        "description": "Name of the language, e.g., English, French, Woiwurrung"
+      }
+    ]
+  },
+  {
+    "dataType": "Collection",
+    "attributes": [
+      {
+        "name": "Name",
+        "linkedDataType": null,
+        "description": "Name of the collection, e.g., University Art Collection"
+      },
+      {
+        "name": "Type",
+        "linkedDataType": null,
+        "description": "Type or role of collection, e.g., Formal, Named, Archival"
+      },
+      {
+        "name": "Sequence",
+        "linkedDataType": null,
+        "description": "Order in which multiple collections should be presented"
+      }
+    ]
+  },
+  {
+    "dataType": "Subject Classification",
+    "attributes": [
+      {
+        "name": "Scheme",
+        "linkedDataType": null,
+        "description": "Classification scheme being used, e.g., Object Classification"
+      },
+      {
+        "name": "Value",
+        "linkedDataType": null,
+        "description": "Classification assigned to the asset, e.g., Chair"
+      },
+      {
+        "name": "Level",
+        "linkedDataType": null,
+        "description": "Level occupied within a classification hierarchy, e.g., 4"
+      },
+      {
+        "name": "Path",
+        "linkedDataType": null,
+        "description": "Hierarchical path showing where the classification sits within its scheme, e.g., Artefact > Furniture > Seating > Chair."
+      }
+    ]
+  },
+  {
+    "dataType": "Agent",
+    "attributes": [
+      {
+        "name": "Name",
+        "linkedDataType": null,
+        "description": "Name of the person, organisation or group, e.g., John Longstaff"
+      },
+      {
+        "name": "Agent Role Type",
+        "linkedDataType": null,
+        "description": "Role the agent has in context, e.g., Creator, Donor, Rights Holder"
+      },
+      {
+        "name": "Sequence",
+        "linkedDataType": null,
+        "description": "Order in which multiple agents should be presented"
+      },
+      {
+        "name": "Type",
+        "linkedDataType": null,
+        "description": "Type of agent, e.g., Person, Organisation"
+      },
+      {
+        "name": "Display Value",
+        "linkedDataType": null,
+        "description": "Complete agent value intended for display"
+      },
+      {
+        "name": "Agent Affiliation",
+        "linkedDataType": "Affiliation",
+        "description": "Cultural, community, organisational or professional affiliation"
+      },
+      {
+        "name": "Agent Nationality",
+        "linkedDataType": "Nationality",
+        "description": "Nationality associated with the agent, e.g., Australian"
+      },
+      {
+        "name": "Agent Place",
+        "linkedDataType": "Place",
+        "description": "Place associated with the agent"
+      },
+      {
+        "name": "Agent DOB",
+        "linkedDataType": "Date",
+        "description": "Person's date of birth"
+      },
+      {
+        "name": "Agent DOD",
+        "linkedDataType": "Date",
+        "description": "Person's date of death"
+      },
+      {
+        "name": "Agent Start Date",
+        "linkedDataType": "Date",
+        "description": "Commencement date associated with an agent, e.g., organisation start"
+      },
+      {
+        "name": "Agent End Date",
+        "linkedDataType": "Date",
+        "description": "End date associated with an agent, e.g., organisation closure"
+      }
+    ]
+  },
+  {
+    "dataType": "Affiliation",
+    "attributes": [
+      {
+        "name": "Name",
+        "linkedDataType": null,
+        "description": "Name of the affiliation, e.g., University of Melbourne or Wurundjeri Woi-wurrung"
+      },
+      {
+        "name": "Role",
+        "linkedDataType": null,
+        "description": "Type of affiliation, e.g., Organisation, Cultural Group, Community"
+      }
+    ]
+  },
+  {
+    "dataType": "Nationality",
+    "attributes": [
+      {
+        "name": "Name",
+        "linkedDataType": null,
+        "description": "Nationality or citizenship associated with an agent, e.g., Australian"
+      }
+    ]
+  },
+  {
+    "dataType": "Place",
+    "attributes": [
+      {
+        "name": "Role",
+        "linkedDataType": null,
+        "description": "How the place relates to the asset, e.g., Place of Production, Place of Collection"
+      },
+      {
+        "name": "Type",
+        "linkedDataType": null,
+        "description": "Type of place name, e.g., Preferred, Indigenous, Historical"
+      },
+      {
+        "name": "Value",
+        "linkedDataType": null,
+        "description": "Place name or geographic value, e.g., Melbourne, Victoria, Australia"
+      },
+      {
+        "name": "Display Sequence",
+        "linkedDataType": null,
+        "description": "Order in which multiple places should be presented"
+      }
+    ]
+  },
+  {
+    "dataType": "Date",
+    "attributes": [
+      {
+        "name": "Role",
+        "linkedDataType": null,
+        "description": "What the date represents, e.g., Production, Acquisition, Birth, Period"
+      },
+      {
+        "name": "Display Date",
+        "linkedDataType": null,
+        "description": "Human-readable date as it should appear, e.g., c. 1920"
+      },
+      {
+        "name": "From Date",
+        "linkedDataType": null,
+        "description": "Start or earliest date represented, e.g., 1920-01-01"
+      },
+      {
+        "name": "To Date",
+        "linkedDataType": null,
+        "description": "End or latest date represented, e.g., 1920-12-31"
+      },
+      {
+        "name": "Precision",
+        "linkedDataType": null,
+        "description": "Precision or certainty of the date, e.g., Year, Range, Approximate"
+      }
+    ]
+  },
+  {
+    "dataType": "Event",
+    "attributes": [
+      {
+        "name": "Title",
+        "linkedDataType": null,
+        "description": "Name or title of the event, e.g., Australian War Art Exhibition"
+      },
+      {
+        "name": "Type",
+        "linkedDataType": null,
+        "description": "Type of event, e.g., Exhibition, Digitisation, Acquisition"
+      },
+      {
+        "name": "Event Date",
+        "linkedDataType": "Date",
+        "description": "Date or period associated with the event"
+      },
+      {
+        "name": "Event Place",
+        "linkedDataType": "Place",
+        "description": "Place where the event occurred"
+      },
+      {
+        "name": "Event Description",
+        "linkedDataType": "Text",
+        "description": "Descriptive information about the event"
+      }
+    ]
+  },
+  {
+    "dataType": "Subject",
+    "attributes": [
+      {
+        "name": "Type",
+        "linkedDataType": null,
+        "description": "Type of subject, e.g., Topic, Theme, Scientific Concept"
+      },
+      {
+        "name": "Value",
+        "linkedDataType": null,
+        "description": "Subject term or value, e.g., Military history"
+      },
+      {
+        "name": "Agent Depicted",
+        "linkedDataType": "Agent",
+        "description": "Person, organisation or group depicted or represented"
+      },
+      {
+        "name": "Place Depicted",
+        "linkedDataType": "Place",
+        "description": "Place depicted or represented"
+      },
+      {
+        "name": "Event Depicted",
+        "linkedDataType": "Event",
+        "description": "Event depicted or represented"
+      }
+    ]
+  },
+  {
+    "dataType": "Copyright",
+    "attributes": [
+      {
+        "name": "Type",
+        "linkedDataType": null,
+        "description": "Purpose of the rights information, e.g., Copyright, Licence, Terms of Use"
+      },
+      {
+        "name": "Rights Category",
+        "linkedDataType": null,
+        "description": "Copyright or licence category, e.g., All Rights Reserved, CC BY"
+      },
+      {
+        "name": "Rights Statement Value",
+        "linkedDataType": null,
+        "description": "Human-readable copyright, licensing or reuse statement"
+      },
+      {
+        "name": "Rights Sequence",
+        "linkedDataType": null,
+        "description": "Order in which multiple rights statements should be presented"
+      },
+      {
+        "name": "Rights Holder",
+        "linkedDataType": "Agent",
+        "description": "Person or organisation holding the rights"
+      },
+      {
+        "name": "Date",
+        "linkedDataType": null,
+        "description": "Date associated with the copyright or rights information"
+      },
+      {
+        "name": "Logo / Text",
+        "linkedDataType": null,
+        "description": "Logo or text used to communicate the applicable rights information"
+      }
+    ]
+  },
+  {
+    "dataType": "Credit Line (Provenance)",
+    "attributes": [
+      {
+        "name": "Type",
+        "linkedDataType": null,
+        "description": "Type of provenance information, e.g., Origin, Ownership, Acquisition"
+      },
+      {
+        "name": "Credit Line / Statement",
+        "linkedDataType": null,
+        "description": "Human-readable provenance or credit statement, e.g., Donated by the Smith family in 1954"
+      },
+      {
+        "name": "Sequence",
+        "linkedDataType": null,
+        "description": "Order in which multiple provenance statements should be presented"
+      },
+      {
+        "name": "Donor",
+        "linkedDataType": "Agent",
+        "description": "Person or organisation that donated the asset"
+      },
+      {
+        "name": "Date of Acquisition",
+        "linkedDataType": "Date",
+        "description": "Date on which the asset was acquired"
+      }
+    ]
+  },
+  {
+    "dataType": "Advisory (Access)",
+    "attributes": [
+      {
+        "name": "Access Type",
+        "linkedDataType": null,
+        "description": "Type of access or advisory information, e.g., Film, Game, Sensitivity"
+      },
+      {
+        "name": "Access Category",
+        "linkedDataType": null,
+        "description": "Classification or advisory category, e.g., MA, R"
+      },
+      {
+        "name": "Access Statement",
+        "linkedDataType": null,
+        "description": "Human-readable access condition or advisory, e.g., Recommended for mature audiences"
+      },
+      {
+        "name": "Logo / Text",
+        "linkedDataType": null,
+        "description": "Logo or text used to communicate an access condition or advisory"
+      }
+    ]
+  },
+  {
+    "dataType": "Material Technique",
+    "attributes": [
+      {
+        "name": "Material Type",
+        "linkedDataType": null,
+        "description": "Material or medium, e.g., Paper, Bronze, Biological Material"
+      },
+      {
+        "name": "Technique Type",
+        "linkedDataType": null,
+        "description": "Production, preservation or digitisation technique, e.g., Painting, 3D Scanning"
+      },
+      {
+        "name": "Sequence",
+        "linkedDataType": null,
+        "description": "Order in which multiple material/technique entries should be presented"
+      },
+      {
+        "name": "Display Value",
+        "linkedDataType": null,
+        "description": "Combined display text, e.g., Oil on canvas"
+      }
+    ]
+  },
+  {
+    "dataType": "Measurement",
+    "attributes": [
+      {
+        "name": "Type",
+        "linkedDataType": null,
+        "description": "What is being measured, e.g., Height, Weight, Duration, Resolution"
+      },
+      {
+        "name": "Value",
+        "linkedDataType": null,
+        "description": "Numeric or recorded measurement value, e.g., 75"
+      },
+      {
+        "name": "Unit",
+        "linkedDataType": null,
+        "description": "Unit of measurement, e.g., cm, kg, pixels"
+      },
+      {
+        "name": "Characteristic Type",
+        "linkedDataType": null,
+        "description": "Type of non-numeric characteristic being described, e.g., Colour"
+      },
+      {
+        "name": "Characteristic Value",
+        "linkedDataType": null,
+        "description": "Value of that characteristic, e.g., Black and white"
+      },
+      {
+        "name": "Sequence",
+        "linkedDataType": null,
+        "description": "Order in which multiple measurements should be presented"
+      },
+      {
+        "name": "Display Value",
+        "linkedDataType": null,
+        "description": "Complete measurement as displayed, e.g., 75 × 50 cm or 42 minutes"
+      }
+    ]
+  },
+  {
+    "dataType": "Digital Asset Reference",
+    "attributes": [
+      {
+        "name": "Role",
+        "linkedDataType": null,
+        "description": "Purpose of the digital asset, e.g., Primary Image, Thumbnail, Transcript"
+      },
+      {
+        "name": "Sequence",
+        "linkedDataType": null,
+        "description": "Order in which associated digital assets should be presented"
+      },
+      {
+        "name": "Storage Location Type",
+        "linkedDataType": null,
+        "description": "Where/how the digital asset is managed, e.g., Nexus DAM, External Repository"
+      },
+      {
+        "name": "Access Mechanism",
+        "linkedDataType": null,
+        "description": "How the digital asset is delivered, e.g., Managed Copy, External Link"
+      }
+    ]
+  },
+  {
+    "dataType": "Relationship",
+    "attributes": [
+      {
+        "name": "Relationship Role",
+        "linkedDataType": null,
+        "description": "How the target record relates to this record, e.g., Parent, Child, Translation"
+      },
+      {
+        "name": "Target Identifier",
+        "linkedDataType": null,
+        "description": "Identifier of the related record"
+      },
+      {
+        "name": "Target Display Value",
+        "linkedDataType": null,
+        "description": "Human-readable name/title of the related record"
+      },
+      {
+        "name": "Sequence",
+        "linkedDataType": null,
+        "description": "Order in which multiple related records should be presented"
+      }
+    ]
+  }
+]

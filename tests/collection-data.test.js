@@ -2,14 +2,6 @@
 const { PUBLIC, fail, warn, ok, finish, fs, path } = require('./lib');
 const vm = require('vm');
 
-const SPEC_LABELS = [
-  'Object type', 'Date', 'Creator', 'Associated entity', 'Place', 'Description', 'Series',
-  'Editions', 'Material', 'Dimensions (H x W x D)', 'Inscription', 'Language',
-  'Cultural affiliation', 'UoM ID', 'Accession number', 'Named collection', 'Collection', 'Access',
-  'Classification', 'Subject', 'Source URL', 'Related parent record', 'Related child record',
-  'Related record', 'Producer'
-];
-
 const file = path.join(PUBLIC, 'collection-data.js');
 const src = fs.readFileSync(file, 'utf8');
 const sandbox = { window: {}, console };
@@ -37,20 +29,7 @@ for (const r of records) {
   if (typeof r.title !== 'string' || !r.title.trim()) fail(`record ${r.id}: empty title`);
 }
 
-// Field labels must come from the spec list
-const spec = new Set(SPEC_LABELS);
-const seenLabels = new Set();
-for (const r of records) {
-  for (const f of r.fields) {
-    seenLabels.add(f.label);
-    if (!spec.has(f.label)) fail(`record ${r.id}: field label "${f.label}" not in the spec list`);
-  }
-}
-// (c) key labels from the spec are actually emitted by the data/build code
-for (const label of SPEC_LABELS) {
-  if (!src.includes(`'${label}'`)) fail(`spec label "${label}" missing from collection-data.js`);
-  else if (!seenLabels.has(label)) warn(`spec label "${label}" is defined but no record populates it`);
-}
+// Field labels, their sequence and mandatory fields are checked against the workbooks in tests/data-model.test.js
 
 // Accession coverage (report only)
 const withAcc = records.filter(r => r.fields.some(f => f.label === 'Accession number')).length;
@@ -93,13 +72,14 @@ const themed = sandbox.window.CCS.items.filter(i => Array.isArray(i.theme) && i.
 if (!themed) fail('no item has a theme');
 else ok(`theme present on ${themed}/${sandbox.window.CCS.items.length} items`);
 
-// CCS-27: every record lists its usage rights (accession number, credit, copyright); caption is for digital assets only
+// CCS-27 + data inventory: Credit line and Copyright are mandatory on every record; Accession number and Caption (digital assets only)
+// appear only when recorded, with no "Not recorded" style placeholders (a field with no data is omitted, label included)
 {
   const R = Object.values(CCS.records);
-  const need = (r, ...labels) => labels.filter(l => !r.rights.some(x => x.label === l));
-  const bad = R.filter(r => need(r, 'Accession number', 'Credit line', 'Copyright').length || (r.hasDA && need(r, 'Caption').length) || (!r.hasDA && !need(r, 'Caption').length));
-  if (bad.length) fail('CCS-27 usage rights are incomplete on ' + bad.length + ' records (for example #' + bad[0].id + ')');
-  else ok('CCS-27 usage rights listed on all ' + R.length + ' records (caption on digital assets only)');
+  const has = (r, l) => r.rights.some(x => x.label === l);
+  const bad = R.filter(r => !has(r, 'Credit line') || !has(r, 'Copyright') || (!r.hasDA && has(r, 'Caption')) || r.rights.some(x => /^(not recorded|no caption recorded)/i.test(x.value)));
+  if (bad.length) fail('usage rights are incorrect on ' + bad.length + ' records (for example #' + bad[0].id + ')');
+  else ok('usage rights: credit line and copyright on all ' + R.length + ' records; accession number and caption only when recorded');
 }
 // Creator role filter (Data Inventory field 'Creator Role'): roles are split, tidied and de-duplicated per record
 {
