@@ -284,18 +284,43 @@
     <h2 class="facet-rail__title">Search filters</h2>
     <sc-if value="{{ hasActive }}"><button type="button" class="facet-rail__clear" onClick="{{ clearAll }}">Clear all</button></sc-if>
   </div>
+  <div class="facet-rail__switches" role="group" aria-label="Show only">
+    <span class="facet-rail__name">Show only</span>
+    <sc-for list="{{ railSwitches }}" as="sw"><button type="button" class="facet-rail__option" role="checkbox" aria-checked="{{ sw.ariaChecked }}" onClick="{{ sw.toggle }}"><span class="facet-rail__box"><svg class="facet-rail__tick" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><polyline points="4 12 10 18 20 6"></polyline></svg></span><span class="facet-rail__label">{{ sw.label }}</span></button></sc-for>
+  </div>
   <sc-for list="{{ sideSections }}" as="sec">
     <section class="facet-rail__section">
       <h3 class="facet-rail__heading">
-        <span class="facet-rail__name" id="rail-{{ sec.key }}">{{ sec.title }}</span>
-        <button type="button" class="facet-rail__toggle" aria-expanded="{{ sec.open }}" aria-labelledby="rail-{{ sec.key }}" onClick="{{ sec.toggle }}"><span class="facet-rail__value">{{ sec.summary }}</span><svg class="facet-rail__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+        <span class="facet-rail__name" id="rail-name-{{ sec.key }}">{{ sec.title }}<sc-if value="{{ sec.badge }}"><span class="facet-rail__badge">{{ sec.badge }}</span></sc-if></span>
+        <button type="button" class="facet-rail__toggle" aria-expanded="{{ sec.open }}" aria-controls="{{ sec.panelId }}" aria-labelledby="rail-name-{{ sec.key }}" onClick="{{ sec.toggle }}"><span class="facet-rail__value">{{ sec.value }}</span><svg class="facet-rail__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
       </h3>
       <sc-if value="{{ sec.open }}">
-        <div class="facet-rail__panel">
-          <ul class="facet-rail__list">
-            <sc-for list="{{ sec.options }}" as="o"><li class="facet-rail__item"><button type="button" class="facet-rail__option" role="checkbox" aria-checked="{{ o.ariaChecked }}" onClick="{{ o.toggle }}"><span class="facet-rail__box"><svg class="facet-rail__tick" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><polyline points="4 12 10 18 20 6"></polyline></svg></span><span class="facet-rail__label">{{ o.label }}</span><span class="facet-rail__count">{{ o.count }}</span></button></li></sc-for>
-          </ul>
+        <div class="facet-rail__panel" id="{{ sec.panelId }}">
+          <sc-if value="{{ sec.search }}"><input class="facet-rail__search" type="search" value="{{ sec.q }}" onChange="{{ sec.onQ }}" aria-label="{{ sec.searchLabel }}" placeholder="{{ sec.searchLabel }}"></sc-if>
+          <sc-if value="{{ sec.isRows }}">
+            <ul class="facet-rail__list">
+              <sc-for list="{{ sec.options }}" as="o"><li class="facet-rail__item"><button type="button" class="facet-rail__option" role="checkbox" aria-checked="{{ o.ariaChecked }}" disabled="{{ o.disabled }}" onClick="{{ o.toggle }}"><span class="facet-rail__box"><svg class="facet-rail__tick" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><polyline points="4 12 10 18 20 6"></polyline></svg></span><span class="facet-rail__label">{{ o.label }}</span><span class="facet-rail__count">{{ o.countLabel }}</span></button></li></sc-for>
+            </ul>
+          </sc-if>
+          <sc-if value="{{ sec.empty }}"><span class="facet-rail__note">No matching options</span></sc-if>
           <sc-if value="{{ sec.hasMore }}"><button type="button" class="facet-rail__more" onClick="{{ sec.toggleMore }}">{{ sec.moreLabel }}</button></sc-if>
+          <sc-if value="{{ sec.isDate }}">
+            <div class="facet-rail__years">
+              <label class="facet-rail__field"><span>Earliest year</span><input inputmode="numeric" value="{{ rYFrom }}" onChange="{{ onRYFrom }}" onBlur="{{ commitRYears }}" onKeyDown="{{ rYKey }}" placeholder="Any" aria-label="Earliest year"></label>
+              <label class="facet-rail__field"><span>Latest year</span><input inputmode="numeric" value="{{ rYTo }}" onChange="{{ onRYTo }}" onBlur="{{ commitRYears }}" onKeyDown="{{ rYKey }}" placeholder="Any" aria-label="Latest year"></label>
+            </div>
+            <span class="facet-rail__note">Use a minus sign for years BCE, e.g. -400.</span>
+            <sc-if value="{{ rYErr }}"><span role="alert" class="facet-rail__error">{{ rYErr }}</span></sc-if>
+            <sc-if value="{{ hasRDate }}"><button type="button" class="facet-rail__more" onClick="{{ clearRYears }}">Reset production date</button></sc-if>
+          </sc-if>
+          <sc-if value="{{ sec.isText }}"><input class="facet-rail__search" value="{{ sec.accessionVal }}" onChange="{{ sec.onAccession }}" aria-label="Accession number" placeholder="e.g. MHM2017.28"></sc-if>
+          <sc-if value="{{ sec.isLife }}">
+            <div class="facet-rail__years">
+              <label class="facet-rail__field"><span>{{ sec.lifeFromLabel }}</span><input inputmode="numeric" value="{{ sec.lifeFromVal }}" onChange="{{ sec.onLifeFrom }}" placeholder="{{ sec.lifeFromHint }}" aria-label="{{ sec.lifeFromLabel }}"></label>
+              <label class="facet-rail__field"><span>{{ sec.lifeToLabel }}</span><input inputmode="numeric" value="{{ sec.lifeToVal }}" onChange="{{ sec.onLifeTo }}" placeholder="{{ sec.lifeToHint }}" aria-label="{{ sec.lifeToLabel }}"></label>
+            </div>
+            <span class="facet-rail__note">{{ sec.lifeNote }}</span>
+          </sc-if>
         </div>
       </sc-if>
     </section>
@@ -929,7 +954,7 @@ function saveSearchHistory(term) {
   } catch (e) {}
 }
 class Component extends DCLogic {
-  state = { stuck: false, advOpen: false, f:EMPTYF(), loading:false, view:null, modal:false, mFind:'', draft:null, mOpen:{coll:true,type:true,date:true}, sOpen:{}, sMore:{}, sExtra:false, fq:{}, more:{}, sortOpen:false, perPage:20, ppOpen:false, page:1, yIn:null, yErr:'', counting:false, ackOpen:false, vw: typeof window !== 'undefined' ? window.innerWidth : 1200, liveItems: null, liveTotal: null, liveError: null };
+  state = { stuck: false, advOpen: false, f:EMPTYF(), loading:false, view:null, modal:false, mFind:'', draft:null, mOpen:{coll:true,type:true,date:true}, sOpen:{}, sMore:{}, sFq:{}, sExtra:false, sYIn:null, sYErr:'', fq:{}, more:{}, sortOpen:false, perPage:20, ppOpen:false, page:1, yIn:null, yErr:'', counting:false, ackOpen:false, vw: typeof window !== 'undefined' ? window.innerWidth : 1200, liveItems: null, liveTotal: null, liveError: null };
   trackRef = React.createRef(); bodyRef = React.createRef(); sortRef = React.createRef(); ppRef = React.createRef(); advBtnRef = React.createRef(); advDialogRef = React.createRef(); advCloseRef = React.createRef(); advFrameRef = React.createRef(); mainRef = React.createRef();
   sentinelRef = React.createRef(); bannerHostRef = React.createRef(); compactHostRef = React.createRef(); dialogRef = React.createRef(); filterBtnRef = React.createRef(); ackRef = React.createRef();
   dom = { lo: 1700, hi: 2030 };
@@ -1127,51 +1152,49 @@ class Component extends DCLogic {
       this.applyDragValue(which, cur + step);
     };
   }
-  // Left-hand facet rail: same facets and counts as the Filters modal, but a click filters the results straight away (no Apply step).
+  // Left-hand facet rail. The Filters modal is the source of truth: the rail lists the same facets (facetSections), in the same order and
+  // groups, with the same options and counts, but a click filters the results straight away instead of waiting for Apply.
   sideVals(s) {
-    const f = s.f, cc = this.cnt(f, 'coll', 'collection');
-    const SIDE = ['coll', 'type', 'creator', 'period', 'material', 'subject', 'theme', 'nationality', 'place', 'classification', 'creatorRole', 'language'];
-    const sideSections = SIDE.map(k => FACETS.find(F => F.key === k)).filter(Boolean).map(F => {
-      const k = F.key, open = !!s.sOpen[k], more = !!s.sMore[k];
-      let options, selected;
-      if (F.kind === 'tree') {
-        selected = f.collection;
-        options = HIER.map(hh => this.opt(hh.name, cc[hh.name] || 0, f.collection.includes(hh.name), () => this.apply(ff => this.tog(ff, 'collection', hh.name))));
-      } else {
-        const c = this.cnt(f, k, k), base = LISTS[k] || uniq(k);
-        selected = f[k];
-        options = [...base].sort((a, b) => (c[b] || 0) - (c[a] || 0) || String(a).localeCompare(String(b))).map(v => this.opt(v, c[v] || 0, f[k].includes(v), () => this.apply(ff => this.tog(ff, k, v))));
-      }
-      options = options.filter(o => o.count || o.checked);
-      const summary = selected.length ? (selected.length === 1 ? selected[0] : selected.length + ' selected') : 'Select ' + F.title.toLowerCase();
-      return { key: k, title: F.title, open, summary, badge: selected.length || null, options: more ? options : options.slice(0, 6), count: options.length,
-        toggle: () => this.setState(st => ({ sOpen: { ...st.sOpen, [k]: !st.sOpen[k] } })),
-        hasMore: options.length > 6, moreLabel: more ? 'Show fewer' : 'Show all ' + options.length, toggleMore: () => this.setState(st => ({ sMore: { ...st.sMore, [k]: !st.sMore[k] } })) };
-    }).filter(sec => sec.count > 0);
-    const FIRST = 3, extraOpen = s.sExtra, hasExtraFilters = sideSections.length > FIRST;
-    return { sideSections: extraOpen ? sideSections : sideSections.slice(0, FIRST), hasExtraFilters, extraOpen,
-      extraLabel: extraOpen ? '− Show fewer filters' : '+ Show additional filters', toggleExtra: () => this.setState(st => ({ sExtra: !st.sExtra })) };
+    const f = s.f, YMIN = YEAR_MIN, YMAX = YEAR_MAX;
+    const all = this.facetSections(s, f, { open: 'sOpen', fq: 'sFq', more: 'sMore', find: '', set: fn => this.apply(fn), prefix: 'rail-' });
+    all.forEach(sec => { sec.value = sec.summary || (sec.isDate || sec.isLife ? 'Select a date range' : sec.isText ? 'Enter an accession number' : 'Select ' + sec.title.toLowerCase()); sec.hasValue = !!sec.summary; });
+    const FIRST = 3, extraOpen = s.sExtra, shown = extraOpen ? all : all.slice(0, FIRST);
+    const parse = v => { const t = String(v).trim(); if (t === '') return null; return /^-?\d{1,4}$/.test(t) ? parseInt(t, 10) : NaN; };
+    const commitYears = () => { const yi = s.sYIn || {}; const pf = yi.from != null ? yi.from : (f.yFrom ?? ''), pt = yi.to != null ? yi.to : (f.yTo ?? '');
+      const a = parse(pf), b = parse(pt);
+      if (isNaN(a) || isNaN(b)) return this.setState({ sYErr: 'Enter years as whole numbers, for example 1850 (or -400 for BCE).' });
+      if ((a != null && (a < YMIN || a > YMAX)) || (b != null && (b < YMIN || b > YMAX))) return this.setState({ sYErr: 'Enter a year between ' + YMIN + ' and ' + YMAX + '.' });
+      if (a != null && b != null && a > b) return this.setState({ sYErr: 'The earliest year can’t be after the latest year.' });
+      if (a === f.yFrom && b === f.yTo && !s.sYIn) return;
+      this.setState({ sYIn: null, sYErr: '' }); this.apply(ff => ({ ...ff, yFrom: a, yTo: b })); };
+    const sw = (label, key) => { const on = !!f[key]; return { label, count: '', checked: on, ariaChecked: String(on), toggle: () => this.apply(ff => ({ ...ff, [key]: !ff[key] })) }; };
+    return { sideSections: shown, hasExtraFilters: all.length > FIRST, extraOpen, extraLabel: extraOpen ? '− Show fewer filters' : '+ Show additional filters', toggleExtra: () => this.setState(st => ({ sExtra: !st.sExtra })),
+      railSwitches: [sw('Has digital asset', 'digital'), sw('Only records with downloads', 'downloadable')],
+      rYFrom: s.sYIn && s.sYIn.from != null ? s.sYIn.from : (f.yFrom ?? ''), rYTo: s.sYIn && s.sYIn.to != null ? s.sYIn.to : (f.yTo ?? ''),
+      onRYFrom: e => { const v = e.target.value; this.setState(st => ({ sYIn: { ...(st.sYIn || {}), from: v } })); }, onRYTo: e => { const v = e.target.value; this.setState(st => ({ sYIn: { ...(st.sYIn || {}), to: v } })); },
+      rYKey: e => { if (e.key === 'Enter') { e.preventDefault(); commitYears(); } }, commitRYears: commitYears, rYErr: s.sYErr,
+      hasRDate: f.yFrom != null || f.yTo != null, clearRYears: () => { this.setState({ sYIn: null, sYErr: '' }); this.apply(ff => ({ ...ff, yFrom: null, yTo: null })); } };
   }
-  modalVals(s) {
-    const d = s.draft || s.f;
-    const dN = ITEMS.filter(it => this.matchF(it, d)).length;
+  // Facet sections shared by the Filters modal (draft values) and the left-hand rail (applied values), so both always list the same
+  // facets, in the same order, with the same options and counts. ctx names the state keys and says how a change is stored.
+  facetSections(s, d, ctx) {
     const cc = this.cnt(d, 'coll', 'collection'), cn = this.cnt(d, 'coll', 'named');
-    const find = (s.mFind || '').trim().toLowerCase();
+    const find = ctx.find || '';
     const sections = FACETS.map((F, fi) => {
-      const k = F.key, open = !!s.mOpen[k] || !!find, q = (s.fq[k] || '').toLowerCase(), more = !!s.more[k];
+      const k = F.key, open = !!s[ctx.open][k] || !!find, q = (s[ctx.fq][k] || '').toLowerCase(), more = !!s[ctx.more][k];
       let options = [], selected = [];
       if (F.kind === 'tree') {
         HIER.forEach(hh => {
           const pc = d.collection.includes(hh.name);
           selected.push(...(pc ? [hh.name] : []));
-          const rows = [this.opt(hh.name, cc[hh.name] || 0, pc, () => this.setDraft(dd => this.tog(dd, 'collection', hh.name)), { weight: 600 })];
+          const rows = [this.opt(hh.name, cc[hh.name] || 0, pc, () => ctx.set(dd => this.tog(dd, 'collection', hh.name)), { weight: 600 })];
           options.push(...(q ? rows.filter(o => o.label.toLowerCase().includes(q)) : rows));
         });
       } else if (F.kind !== 'date' && F.kind !== 'text' && F.kind !== 'life') {
         const c = this.cnt(d, k, k), base = LISTS[k] || uniq(k);
         selected = d[k].slice();
         let vs = LISTS[k] && F.kind !== 'list' ? base : [...base].sort((a, b) => (c[b] || 0) - (c[a] || 0) || String(a).localeCompare(String(b)));
-        options = vs.map(v => this.opt(v, c[v] || 0, d[k].includes(v), () => this.setDraft(dd => this.tog(dd, k, v))));
+        options = vs.map(v => this.opt(v, c[v] || 0, d[k].includes(v), () => ctx.set(dd => this.tog(dd, k, v))));
         if (F.kind === 'list') options = options.filter(o => o.count || o.checked);
         if (q) options = options.filter(o => o.label.toLowerCase().includes(q));
       }
@@ -1181,25 +1204,32 @@ class Component extends DCLogic {
       const hasLife = F.kind === 'life' && (lFrom != null || lTo != null);
       const badge = k === 'date' ? (hasDate ? 1 : null) : F.kind === 'life' ? (hasLife ? 1 : null) : k === 'accession' ? (d.accession ? 1 : null) : (selected.length || null);
       const summary = k === 'date' ? (hasDate ? (d.yFrom ?? 'Any') + ' – ' + (d.yTo ?? 'Present') : '') : F.kind === 'life' ? (hasLife ? (lFrom ?? 'Any') + ' – ' + (lTo ?? 'Any') : '') : k === 'accession' ? (d.accession || '') : selected.length ? selected[0] + (selected.length > 1 ? ' +' + (selected.length - 1) : '') : '';
-      return { key: k, title: F.title, group: F.group, groupStart: fi === 0 || FACETS[fi - 1].group !== F.group, open, panelId: 'facet-' + k, badge, summary, showSummary: !open && !!summary,
-        chev: open ? 'rotate(180deg)' : 'none', toggle: () => this.setState(st => ({ mOpen: { ...st.mOpen, [k]: !st.mOpen[k] } })),
+      return { key: k, title: F.title, group: F.group, groupStart: fi === 0 || FACETS[fi - 1].group !== F.group, open, panelId: ctx.prefix + k, badge, summary, showSummary: !open && !!summary,
+        chev: open ? 'rotate(180deg)' : 'none', toggle: () => this.setState(st => ({ [ctx.open]: { ...st[ctx.open], [k]: !st[ctx.open][k] } })),
         isChips: false, isRows: F.kind === 'list' || F.kind === 'tree' || F.kind === 'chips', isDate: F.kind === 'date', isText: F.kind === 'text', isLife: F.kind === 'life',
-        search: !!F.search, q: s.fq[k] || '', onQ: e => { const v = e.target.value; this.setState(st => ({ fq: { ...st.fq, [k]: v } })); }, searchLabel: 'Search ' + F.title.toLowerCase() + '…',
+        search: !!F.search, q: s[ctx.fq][k] || '', onQ: e => { const v = e.target.value; this.setState(st => ({ [ctx.fq]: { ...st[ctx.fq], [k]: v } })); }, searchLabel: 'Search ' + F.title.toLowerCase() + '…',
         matchText: find ? (F.title + ' ' + F.group + ' ' + options.map(o => o.label).join(' ')).toLowerCase() : '',
         options: more ? options : options.slice(0, limit), empty: F.kind !== 'date' && F.kind !== 'text' && F.kind !== 'life' && options.length === 0,
-        hasMore: options.length > limit, moreLabel: more ? 'Show fewer' : 'Show all ' + options.length, toggleMore: () => this.setState(st => ({ more: { ...st.more, [k]: !st.more[k] } })),
-        accessionVal: d.accession || '', onAccession: e => { const v = e.target.value; this.setDraft(dd => ({ ...dd, accession: v })); },
+        hasMore: options.length > limit, moreLabel: more ? 'Show fewer' : 'Show all ' + options.length, toggleMore: () => this.setState(st => ({ [ctx.more]: { ...st[ctx.more], [k]: !st[ctx.more][k] } })),
+        accessionVal: d.accession || '', onAccession: e => { const v = e.target.value; ctx.set(dd => ({ ...dd, accession: v })); },
         lifeFromVal: lFrom ?? '', lifeToVal: lTo ?? '',
         lifeFromLabel: lk === 'death' ? 'Died after' : 'Born after', lifeToLabel: lk === 'death' ? 'Died before' : 'Born before',
         lifeFromHint: lk === 'death' ? 'e.g. 1850' : 'e.g. 1800', lifeToHint: lk === 'death' ? 'e.g. 2000' : 'e.g. 1950',
         lifeNote: lk === 'death' ? 'Based on death years found in creator names.' : 'Based on birth years found in creator names.',
-        onLifeFrom: e => { const v = e.target.value.trim(); this.setDraft(dd => ({ ...dd, [lk + 'From']: v === '' ? null : parseInt(v, 10) })); },
-        onLifeTo: e => { const v = e.target.value.trim(); this.setDraft(dd => ({ ...dd, [lk + 'To']: v === '' ? null : parseInt(v, 10) })); } };
+        onLifeFrom: e => { const v = e.target.value.trim(); ctx.set(dd => ({ ...dd, [lk + 'From']: v === '' ? null : parseInt(v, 10) })); },
+        onLifeTo: e => { const v = e.target.value.trim(); ctx.set(dd => ({ ...dd, [lk + 'To']: v === '' ? null : parseInt(v, 10) })); } };
     });
     // Hide facets that have no values at all in the dataset (e.g. digital-asset access, still 'tbd' in the CCS Filters sheet) instead of showing an empty section.
     const sectionsVisible = sections.filter(sec => !(sec.empty && !sec.search && !sec.isDate && !sec.isText && !sec.isLife) || sec.badge);
     const sectionsShown = find ? sectionsVisible.filter(sec => sec.matchText.includes(find)) : sectionsVisible;
     sectionsShown.forEach((sec, i) => { sec.groupStart = i === 0 || sectionsShown[i - 1].group !== sec.group; });
+    return sectionsShown;
+  }
+  modalVals(s) {
+    const d = s.draft || s.f;
+    const dN = ITEMS.filter(it => this.matchF(it, d)).length;
+    const find = (s.mFind || '').trim().toLowerCase();
+    const sectionsShown = this.facetSections(s, d, { open: 'mOpen', fq: 'fq', more: 'more', find, set: fn => this.setDraft(fn), prefix: 'facet-' });
     // Selected filters inside the panel (the draft), each removable without leaving the panel
     const dChips = [];
     ['collection', ...KEYS].forEach(k => (d[k] || []).forEach(v => dChips.push({ group: k === 'collection' ? 'Collection' : LABELS[k], label: v, remove: () => this.setDraft(dd => this.tog(dd, k, v)) })));
@@ -1337,7 +1367,7 @@ class Component extends DCLogic {
     // genuinely come back with zero results for a real query (matches the
     // existing isEmpty/no-results threshold below) — never on a healthy result set.
     const didYouMeanText = (!s.loading && f.q && !f.exact) ? spellingSuggestion(f.q) : null;
-    const mob = s.vw < 640, sm = s.vw < 420, hasSidebar = s.vw >= 1024;
+    const mob = s.vw < 640, sm = s.vw < 420, hasSidebar = s.vw >= 960;
     return {
       padHero: mob ? '16px 16px 24px' : '20px 32px 36px', h1Size: sm ? '26px' : mob ? '30px' : '40px',
       padSum: mob ? '16px 16px 12px' : '28px 32px 16px', padBar: mob ? '10px 16px' : '12px 32px',
