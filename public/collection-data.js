@@ -934,11 +934,12 @@
       [26, 'Related record', it.relatedRecord && [L(it.relatedRecord, true)]],
       [30, 'Producer', (it.producer || it.imageProducer) && [L(it.producer || it.imageProducer)]]
     ].filter(r => r[2]).map(([seq, label, lines, copy]) => ({ seq, label, lines, copy: !!copy, value: lines[0].text }));
-    // CCS-27 usage rights, in the order of the acceptance criteria: accession number, caption (digital assets only),
-    // credit, copyright. Terms of use (digital assets only) and the contact follow on the record page.
+    // Usage rights, in the order of the CCS-27 acceptance criteria: accession number, caption (digital assets only), credit, copyright.
+    // Data inventory ("Field behaviour if not populated in source") and Field labels sheet: a field with no data is omitted, label
+    // included, so Accession number and Caption appear only when recorded. Credit line and Copyright are mandatory (Copyright Advice sheet).
     const rights = [
-      { seq: 15, label: 'Accession number', value: it.accession || 'Not recorded' },
-      ...(hasDA ? [{ seq: 15.5, label: 'Caption', value: it.caption || 'No caption recorded' }] : []),
+      ...(it.accession ? [{ seq: 15, label: 'Accession number', value: it.accession }] : []),
+      ...(hasDA && it.caption ? [{ seq: 15.5, label: 'Caption', value: it.caption }] : []),
       { seq: 17, label: 'Credit line', value: creditLine },
       { seq: 16, label: 'Copyright', value: copyrightHolder }
     ];

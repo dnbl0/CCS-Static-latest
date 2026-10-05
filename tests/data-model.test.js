@@ -1,0 +1,66 @@
+// The site's data model must follow the two project workbooks (extracted to data-model/*.json by scripts/extract-data-model.py):
+//   assets/CCS Data inventory - final.xlsx                                  -> inventory, datatypes, complex fields, copyright advice
+//   assets/CCS Field labels and filters - Final - PRG - 1 OCT 2026.xlsx     -> field-labels.json, filters.json
+// Anything the site shows beyond the workbooks must be listed, with a reason, in data-model/extensions.json.
+const { PUBLIC, ROOT, fail, warn, ok, finish, fs, path } = require('./lib');
+const vm = require('vm');
+const J = f => JSON.parse(fs.readFileSync(path.join(ROOT, 'data-model', f), 'utf8'));
+const labels = J('field-labels.json'), filters = J('filters.json'), inventory = J('inventory.json'), datatypes = J('datatypes.json'), ext = J('extensions.json'), copyright = J('copyright-advice.json');
+
+if (labels.length === 30 && filters.length === 22 && inventory.length > 50 && datatypes.length > 10) ok(`data model loaded: ${labels.length} display fields, ${filters.length} filters, ${inventory.length} inventory fields, ${datatypes.length} data types`);
+else fail('data-model/*.json look incomplete; re-run scripts/extract-data-model.py');
+
+const norm = s => String(s).toLowerCase().replace(/licen[sc]e/g, 'licence').replace(/&/g, 'and').replace(/[^a-z]/g, '');
+
+/* ---- every data type referenced by a field exists ---- */
+const typeNames = new Set(datatypes.map(d => norm(d.dataType)));
+const refTypes = [...new Set(labels.map(l => l.dataType).filter(Boolean))];
+const unknown = refTypes.filter(t => !t.includes('?') && !t.split(/ & | and /).some(p => typeNames.has(norm(p))) && !['Provinence', 'Copyright', 'Access', 'Relationship', 'Identifier', 'Measurement', 'Affiliation'].includes(t));
+if (unknown.length) warn('field-label data types not in the CCS Datatypes sheet: ' + unknown.join(', '));
+
+/* ---- filters: same names, order, sections and behaviour as the CCS Filters sheet ---- */
+const html = fs.readFileSync(path.join(PUBLIC, 'search/search-results.html'), 'utf8');
+const facets = [...html.matchAll(/\{group:'([^']*)', ?key:'(\w+)',title:("[^"]*"|'[^']*'),kind:'(\w+)'(,search:true)?(?:,dk:'\w+')?\}/g)].map(m => ({ group: m[1], key: m[2], title: eval(m[3]), kind: m[4], search: !!m[5] }));
+if (facets.length < 22) fail(`could not read the FACETS list from search-results.html (found ${facets.length})`);
+const extFilters = new Set(ext.filters.map(e => norm(e.name)));
+let last = -1;
+for (const f of filters) {
+  const i = facets.findIndex(x => norm(x.title) === norm(f.name));
+  if (i < 0) { fail(`Filters sheet row ${f.seq} "${f.name}" is missing from the site's filters`); continue; }
+  const x = facets[i];
+  if (i < last) fail(`filter "${f.name}" is out of the sheet's order`); last = i;
+  if (norm(x.group) !== norm(f.section)) fail(`filter "${f.name}" is in section "${x.group}", the sheet says "${f.section}"`);
+  const t = f.type || '';
+  if (/Date selector/i.test(t) && !['date', 'life'].includes(x.kind)) fail(`filter "${f.name}" should be a date selector, is "${x.kind}"`);
+  if (/Search within/i.test(t) && !x.search) fail(`filter "${f.name}" should allow searching within the filter`);
+  if (/Checkbox/i.test(t) && !['chips', 'list', 'tree'].includes(x.kind)) fail(`filter "${f.name}" should be a checkbox list, is "${x.kind}"`);
+}
+const extras = facets.filter(x => !filters.some(f => norm(f.name) === norm(x.title)));
+for (const x of extras) if (!extFilters.has(norm(x.title))) fail(`filter "${x.title}" is not in the Filters sheet and not listed in data-model/extensions.json`);
+ok(`${filters.length} sheet filters present in order with matching sections and behaviour; ${extras.length} documented extensions`);
+
+/* ---- record fields: labels and order from the Field labels sheet; mandatory fields present; no placeholders ---- */
+const sandbox = { window: {}, console }; vm.createContext(sandbox);
+vm.runInContext(fs.readFileSync(path.join(PUBLIC, 'collection-data.js'), 'utf8'), sandbox);
+const R = Object.values(sandbox.window.CCS.records);
+const alias = ext.labelAliases || {};
+const sheetLabel = new Map(labels.map(l => [norm(alias[l.label] || l.label), l]));
+const extLabels = new Set(ext.recordFields.map(e => norm(e.label)));
+const seen = new Set();
+for (const r of R) for (const f of [...r.fields, ...r.rights]) {
+  const l = sheetLabel.get(norm(f.label));
+  seen.add(norm(f.label));
+  if (!l && !extLabels.has(norm(f.label))) { fail(`record ${r.id}: label "${f.label}" is not in the Field labels sheet or extensions.json`); break; }
+  if (l && Number(f.seq) !== l.seq) { fail(`record ${r.id}: "${f.label}" has sequence ${f.seq}, the sheet says ${l.seq}`); break; }
+}
+const where = ext.renderedElsewhere || {};
+for (const l of labels) if (!seen.has(norm(alias[l.label] || l.label)) && !where[l.label]) warn(`Field labels row ${l.seq} "${l.label}" is not populated on any record`);
+const noTitle = R.filter(r => !r.title || !r.title.trim()), noColl = R.filter(r => !r.collection), noUnit = R.filter(r => !r.unit);
+if (noTitle.length || noColl.length || noUnit.length) fail(`mandatory fields missing: ${noTitle.length} titles, ${noColl.length} collections, ${noUnit.length} responsible units`); else ok(`Title, Collection and Responsible Unit are present on all ${R.length} records (inventory: record cannot display without them)`);
+const mand = copyright.filter(c => /^Must/i.test(c.withDA || '') && /Copyright holder|Credit line|Collection Title|Responsible/i.test(c.descriptor)).map(c => c.descriptor.trim());
+ok(`Copyright Advice: ${mand.join(', ')} are mandatory (credit line and copyright checked on every record in collection-data.test.js)`);
+const ph = R.filter(r => [...r.fields, ...r.rights].some(f => /^(not recorded|no caption recorded)$/i.test(String(f.value).trim())));
+if (ph.length) fail(`${ph.length} records show a "Not recorded" placeholder; an unpopulated field must be omitted (inventory: "Field does not display")`); else ok('no placeholder values: unpopulated fields are omitted');
+const missingAcc = R.filter(r => !r.rights.some(f => f.label === 'Accession number')).length;
+if (missingAcc) warn(`${missingAcc} records have no accession number (a mandatory inventory field): data gap to chase with the collections`);
+finish('data-model');
