@@ -4,7 +4,7 @@
    Navigation component  .ccs-nav  --header | --footer
    Section component     .ccs-section --hero | --intro | --cards | --help | --faq
 
-   Colours come from the design tokens in styles/tokens/figma.css (--brand-*, --sage-*,
+   Colours come from the design tokens in styles/tokens/tokens.css (--brand-*, --sage-*,
    --blue-400, --interactive-800, --neutral-*). Those tokens hold unitless numbers for
    sizes, so spacing/type values are written in px here, taken 1:1 from the Figma frames.
    Desktop is the base; <=1023px is the mobile layout (Figma "Mobile" frames).
