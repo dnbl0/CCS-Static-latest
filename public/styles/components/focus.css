@@ -1,0 +1,23 @@
+/* Global keyboard focus ring (WCAG 2.4.7) and header search placeholder contrast (WCAG 1.4.3).
+   Moved out of components/fig-tokens.css (see docs/css-refactor.md). Load right after fig-tokens.css. */
+
+/* WCAG 2.4.7 Focus Visible: centralized keyboard-focus indicator for all
+   focusable elements. Uses the design system's own focus token so the ring
+   tracks --focus-focus / --focus-focus-inverse across themes and Figma
+   variable updates. :focus-visible (not :focus) so the ring only shows for
+   keyboard/programmatic focus, not mouse clicks, per modern best practice. */
+:focus-visible {
+  outline: 2px solid var(--focus-focus);
+  outline-offset: 3px;
+}
+
+/* WCAG 1.4.3 Contrast (Minimum): the header search input sets its typed-text
+   color to --col-text-muted (#5b6070, ~6.26:1 on white) but has no explicit
+   ::placeholder rule, so the placeholder falls back to each browser's UA
+   default (commonly a low-contrast grey that fails 4.5:1 against the white
+   search bar background). Pin the placeholder to the same muted token so it
+   inherits that already-passing contrast ratio instead of the browser default. */
+section[data-component="Header"] input::placeholder {
+  color: var(--col-text-muted);
+  opacity: 1;
+}

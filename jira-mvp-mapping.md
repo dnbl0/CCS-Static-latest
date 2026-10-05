@@ -23,7 +23,7 @@ This revision was produced by fetching the live Jira issues directly (see audit 
 - **Legacy files**: the old root-level `*.dc.html` files and root `index.html` / `collection-data.js` no longer exist. The legacy `.dc.html` filenames survive only as 301-redirect sources in `vercel.json` and `public/.htaccess`.
 - **`config/redirects.json`**: documentation-only (nothing reads it at runtime). `vercel.json` and `public/.htaccess` are authoritative; the JSON file does not list the `/search` redirects.
 - **Shared data source**: `public/collection-data.js` defines `window.CCS` (`records`, `items`, `ids`, `related()`); `search/search-results.html` and `collections/record.html` both read it. 735 records are listed. See README.md.
-- **Live stylesheets**: `public/components/fig-tokens.css`, `fig-assets.css`, `public/styles/home.css`, `advanced-filters.css`, `header.css`, `collection.css`, and the locally built `public/styles/vendor/bootstrap-uom.min.css`. The dead duplicates `variables.css` / `components.css` have been deleted.
+- **Live stylesheets**: `public/components/fig-tokens.css`, `public/styles/components/*.css` (shared component CSS), `fig-assets.css`, `public/styles/home.css`, `advanced-filters.css`, `header.css`, `collection.css`, and the locally built `public/styles/vendor/bootstrap-uom.min.css`. The dead duplicates `variables.css` / `components.css` have been deleted.
 
 ---
 
@@ -37,7 +37,7 @@ This revision was produced by fetching the live Jira issues directly (see audit 
 | 4 | 3 records (`id` 152, 155, 171) had corrupted `year`/`dateDisplay` values (e.g. `year: 2663`) — not recoverable from source CSVs | Set to `year: null` (dateDisplay removed), matching the file's existing "unknown date" convention — no fabricated dates |
 | 5 | `config/redirects.json` mapped legacy files to a nonexistent `/pages/*.html` scheme, contradicting `.htaccess` | Rewritten to match `.htaccess`'s real targets |
 | 6 | 4 of 5 museum collection pages had a stale `data-props` schema default of `"MHM"` (actual render logic was already correct per-page) | Corrected each page's default to its real code (GMC/HBA/DENT/UAC) |
-| 7 | No centralized `:focus-visible` styling anywhere in the live stylesheet (WCAG 2.4.7 gap) | Added a `:focus-visible` rule using the design system's `--focus-focus` token to `public/components/fig-tokens.css` (the file actually loaded by pages) |
+| 7 | No centralized `:focus-visible` styling anywhere in the live stylesheet (WCAG 2.4.7 gap) | Added a `:focus-visible` rule using the design system's `--focus-focus` token to the global focus ring (now `public/styles/components/focus.css`, linked on every page) |
 | 8 | CCS-234 epic lists "Indigenous Cultural Data and Access" as its own static page; only existed as a subsection of the help page | Extracted to standalone `public/help/indigenous-data.html` (content preserved verbatim, no invented claims), linked from help and the homepage nav |
 
 ---

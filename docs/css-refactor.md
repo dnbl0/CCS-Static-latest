@@ -69,3 +69,23 @@ Two baselines of the same commit diff as empty (checked repeatedly, and by `test
 ## Cost
 
 A full snapshot takes about 80-95 s on a laptop (6 parallel contexts). `tests/style-diff.test.js` (in `npm test`, about 9 s) checks the diff engine and snapshots one page twice; it is skipped without Chromium.
+
+## Where component CSS lives
+
+`public/components/fig-tokens.css` holds Figma variables only (`:root` custom properties). Rules for shared components are one concern per file in `public/styles/components/`:
+
+| File | Contents |
+|---|---|
+| `breadcrumbs.css` | `.page-breadcrumbs` / local history, including the rule that long labels wrap |
+| `focus.css` | global `:focus-visible` ring (WCAG 2.4.7) and the header search placeholder contrast (WCAG 1.4.3) |
+| `page-banner.css` | `.page-banner` title and description |
+| `licence-badge.css` | `<ccs-licence>` badge and tooltip |
+| `search-bar.css` | the shared search bar (`search-bar.js`): scope menu, suggestions, recent searches, chip |
+| `collection-hero.css` | `.campaign-banner-split` collection landing hero |
+
+Rules for adding to this directory:
+
+- **Load order is part of the cascade.** Every page that links `fig-tokens.css` links these six files immediately after it, in the order above (this is the order the rules had inside the old file, so no specificity or source-order outcome changed). Add a new component file at the end of that run on every page, and in `tests/search-bar.test.js`'s harness page if the component needs it.
+- **No tokens in component files and no component rules in the token file.** Page-specific rules stay in `styles/pages/`; the header stays in `styles/header.css`.
+- **Prove it.** Take `npm run style:snapshot -- baseline` before moving CSS and `npm run style:snapshot -- after` afterwards; `npm run style:diff -- baseline after` must say `RESULT: IDENTICAL`.
+- The six files are linked on pages that do not use every component (for example the help page has no licence badge). Dropping a file from a page is a separate change that has to pass the diff.
