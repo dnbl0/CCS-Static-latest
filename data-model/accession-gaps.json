@@ -21,7 +21,7 @@
       "4.0176"
     ],
     "source": "EMu",
-    "note": "Four EMu works share this title, creator and 1952 date (watercolour/ink on paper). The prototype record has no detail to choose between them."
+    "note": "Four EMu works share this title, creator and 1952 date (watercolour/ink on paper). The prototype record has no detail to choose between them. Live check blocked: the Grainger/Art catalogue search (storeroom.its.unimelb.edu.au/umc) returned HTTP 500 from imu/request.php on 5 Oct 2026."
   },
   {
     "id": 5,
@@ -31,62 +31,51 @@
       "4.0045"
     ],
     "source": "EMu",
-    "note": "Same title, but EMu is a colour etching and drypoint by Mortimer Menpes, 1913-14; the prototype record says oil paint, maker unknown, 1910."
+    "note": "Same title, but EMu is a colour etching and drypoint by Mortimer Menpes, 1913-14; the prototype record says oil paint, maker unknown, 1910. Live check blocked: the Grainger/Art catalogue search (storeroom.its.unimelb.edu.au/umc) returned HTTP 500 from imu/request.php on 5 Oct 2026."
   },
   {
     "id": 6,
-    "status": "open",
-    "confidence": "low",
+    "status": "filled",
+    "confidence": "high",
     "candidates": [
       "MHM06961"
     ],
-    "source": "Vernon",
-    "note": "Vernon has 'Bottle of Bosisto's Oil of Eucalyptus', circa 1900; the prototype is a 1942 'War time pack ... Parrot Brand' (Bush Medicine collection). Probably a different object."
+    "source": "Medical History Museum live catalogue (collections.mdhs.unimelb.edu.au)",
+    "note": "exact title; live record /objects/34055 (Medical History Museum catalogue). Live date is Circa 1915, the prototype says 1942; the prototype photo is the Bosisto War Time Pack bottle.",
+    "accession": "MHM06961"
   },
   {
     "id": 9,
-    "status": "open",
-    "confidence": "ambiguous",
+    "status": "filled",
+    "confidence": "high",
     "candidates": [
-      "MHM2009.46",
-      "MHM2009.47",
-      "MHM2009.48",
-      "MHM2009.49",
-      "MHM2009.50",
       "MHM2009.51"
     ],
-    "source": "Vernon",
-    "note": "Several Inro in the Roseby Collection with different dates; the prototype records (1800, 1820, 1830, Japanese, lacquer) do not match any one of them."
+    "source": "Medical History Museum live catalogue (collections.mdhs.unimelb.edu.au)",
+    "note": "photo matches live object 27656 (Circa 1850, Roseby Collection) exactly; prototype date 1800 is invented.",
+    "accession": "MHM2009.51"
   },
   {
     "id": 13,
-    "status": "open",
-    "confidence": "ambiguous",
+    "status": "filled",
+    "confidence": "high",
     "candidates": [
-      "MHM2009.46",
-      "MHM2009.47",
-      "MHM2009.48",
-      "MHM2009.49",
-      "MHM2009.50",
-      "MHM2009.51"
+      "MHM2009.49"
     ],
-    "source": "Vernon",
-    "note": "As record 9."
+    "source": "Medical History Museum live catalogue (collections.mdhs.unimelb.edu.au)",
+    "note": "photo matches live object 27654 (no date, Roseby Collection) exactly.",
+    "accession": "MHM2009.49"
   },
   {
     "id": 19,
-    "status": "open",
-    "confidence": "ambiguous",
+    "status": "filled",
+    "confidence": "high",
     "candidates": [
-      "MHM2009.46",
-      "MHM2009.47",
-      "MHM2009.48",
-      "MHM2009.49",
-      "MHM2009.50",
-      "MHM2009.51"
+      "MHM2009.50"
     ],
-    "source": "Vernon",
-    "note": "As record 9."
+    "source": "Medical History Museum live catalogue (collections.mdhs.unimelb.edu.au)",
+    "note": "photo matches live object 27655 (Circa 1890s, Roseby Collection) exactly.",
+    "accession": "MHM2009.50"
   },
   {
     "id": 18,
@@ -96,7 +85,7 @@
       "0.0056"
     ],
     "source": "EMu",
-    "note": "EMu 'Butterfly piano' is a Wurlitzer, c. 1940; the prototype says maker unknown, 1880, wood."
+    "note": "EMu 'Butterfly piano' is a Wurlitzer, c. 1940; the prototype says maker unknown, 1880, wood. Live check blocked: the Grainger/Art catalogue search (storeroom.its.unimelb.edu.au/umc) returned HTTP 500 from imu/request.php on 5 Oct 2026."
   },
   {
     "id": 21,
@@ -104,7 +93,7 @@
     "confidence": "none",
     "candidates": [],
     "source": "Vernon",
-    "note": "No 'Dental forceps, set of six' in the Vernon or EMu exports (Vernon has single dental forceps MHM01832-01834 with different titles)."
+    "note": "No 'Dental forceps, set of six' in the Vernon or EMu exports (Vernon has single dental forceps MHM01832-01834 with different titles). Live catalogue check: no 'Dental forceps, set of six' (thousands of single forceps exist)."
   },
   {
     "id": 23,
@@ -112,7 +101,7 @@
     "confidence": "none",
     "candidates": [],
     "source": "EMu",
-    "note": "No record titled 'Grainger \"Free Music\" machine demonstration' in the EMu export (other Free Music records exist: 1.0001, 1.0002, 1.3519, 1.3551)."
+    "note": "No record titled 'Grainger \"Free Music\" machine demonstration' in the EMu export (other Free Music records exist: 1.0001, 1.0002, 1.3519, 1.3551). Live check blocked: the Grainger/Art catalogue search (storeroom.its.unimelb.edu.au/umc) returned HTTP 500 from imu/request.php on 5 Oct 2026."
   },
   {
     "id": 32,
@@ -120,7 +109,7 @@
     "confidence": "none",
     "candidates": [],
     "source": "Vernon",
-    "note": "No 'Handmade bamboo pipes' in the Vernon or EMu exports."
+    "note": "No 'Handmade bamboo pipes' in the Vernon or EMu exports. Live check blocked: the Grainger/Art catalogue search (storeroom.its.unimelb.edu.au/umc) returned HTTP 500 from imu/request.php on 5 Oct 2026."
   },
   {
     "id": 10098,
@@ -128,6 +117,6 @@
     "confidence": "exact record, no value",
     "candidates": [],
     "source": "EMu",
-    "note": "The EMu row (ecatalogue_key 13404, IRN 407841) is this record and its Accession Number is blank in the export: Museums and Collections need to supply it."
+    "note": "The EMu row (ecatalogue_key 13404, IRN 407841) is this record and its Accession Number is blank in the export: Museums and Collections need to supply it. Live check blocked: the Grainger/Art catalogue search (storeroom.its.unimelb.edu.au/umc) returned HTTP 500 from imu/request.php on 5 Oct 2026."
   }
 ]
