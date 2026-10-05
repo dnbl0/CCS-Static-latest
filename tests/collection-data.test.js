@@ -101,4 +101,11 @@ else ok(`theme present on ${themed}/${sandbox.window.CCS.items.length} items`);
   if (bad.length) fail('CCS-27 usage rights are incomplete on ' + bad.length + ' records (for example #' + bad[0].id + ')');
   else ok('CCS-27 usage rights listed on all ' + R.length + ' records (caption on digital assets only)');
 }
+// Creator role filter (Data Inventory field 'Creator Role'): roles are split, tidied and de-duplicated per record
+{
+  const items = CCS.items, withRole = items.filter(i => String(i.creatorRole || '').trim());
+  const bad = items.filter(i => !Array.isArray(i.creatorRoles) || i.creatorRoles.some(r => !r || /[,;\\]/.test(r) || r !== r.charAt(0).toUpperCase() + r.slice(1)) || new Set(i.creatorRoles).size !== i.creatorRoles.length || (!!String(i.creatorRole || '').trim() !== i.creatorRoles.length > 0));
+  if (bad.length) fail('creator roles are not tidy on ' + bad.length + ' items (for example #' + bad[0].id + ')');
+  else ok('creator roles tidy on all ' + items.length + ' items (' + withRole.length + ' have a role)');
+}
 finish('collection-data');

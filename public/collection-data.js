@@ -1004,6 +1004,8 @@
   const canonType = v => TYPE_DISPLAY[String(v).trim().toLowerCase()] || String(v).trim();
   const uniqList = a => a.filter((x, i) => a.indexOf(x) === i);
   const typesOf = it => uniqList(rawTypes(it).map(canonType));
+  // Creator role (Data Inventory field 'Creator Role', Agent): roles come as a comma/semicolon list and mixed case ("Maker,Maker", "composer\,publisher"), so split, tidy, de-duplicate, and show in sentence case
+  const creatorRolesOf = it => uniqList(String(it.creatorRole || '').split(/\\?[,;]/).map(r => r.trim().replace(/^\(|\)$/g, '').toLowerCase()).filter(Boolean)).map(r => r.charAt(0).toUpperCase() + r.slice(1));
   const classesOf = it => terms(it.classification).filter(c => !FILM_RATINGS[c] && c !== 'CTC');
   const ratingsOf = it => uniqList([it.classification, it.advisoryClassification].filter(Boolean).map(c => FILM_RATINGS[c]).filter(Boolean));
   // Broad themes for the Theme filter (CCS-20/38), derived from the museum Subject Classification. Indigenous objects are deliberately left out of themes until the Indigenous labels are approved.
@@ -1014,7 +1016,7 @@
     const base = { ...it, objectType: it.objectType || it.type, culture: it.culture || it.culturalAffiliation, img: it.img || (records[it.id].images[0] || null) };
     const kinds = uniqList(records[it.id].slides.map(sl => ({ image: 'Image', audio: 'Audio', video: 'Video', pdf: 'PDF' })[sl.kind]).filter(Boolean));
     const rc = records[it.id].classification;
-    return { ...base, types: typesOf(base), classes: classesOf(base), theme: themesOf(base), ratings: ratingsOf(base), formats: kinds, webAccess: records[it.id].webAccess, ratingLogo: rc && rc.logo ? rc.logo : null, ratingName: rc ? rc.name : null };
+    return { ...base, creatorRoles: creatorRolesOf(base), types: typesOf(base), classes: classesOf(base), theme: themesOf(base), ratings: ratingsOf(base), formats: kinds, webAccess: records[it.id].webAccess, ratingLogo: rc && rc.logo ? rc.logo : null, ratingName: rc ? rc.name : null };
   });
   function related(id, n = 4) {
     const r = records[id]; if (!r) return [];
