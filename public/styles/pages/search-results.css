@@ -39,7 +39,6 @@ body.page-search-results .date-range-handle--styled {
 }
 
 body.page-search-results .page-banner__inner--styled {
-  max-width: var(--layout-page);
   padding-top: 56px;
   padding-bottom: var(--space-48);
 }
@@ -2019,6 +2018,7 @@ body.page-search-results .facet-rail__more {
 }
 
 body.page-search-results .facet-rail__section {
+  position: relative;
   margin-bottom: var(--space-16);
 }
 
@@ -2077,8 +2077,16 @@ body.page-search-results .facet-rail__toggle[aria-expanded="true"] .facet-rail__
   transform: rotate(180deg);
 }
 
+/* Opens over the filters below instead of pushing them down (Europeana-style dropdown) */
 body.page-search-results .facet-rail__panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: var(--z-scale-10);
+  max-height: 320px;
+  overflow-y: auto;
   margin-top: -1px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
   padding: var(--space-4) var(--space-12) var(--space-4);
   border: 1px solid var(--col-bg-primary);
   background: var(--white-100);
