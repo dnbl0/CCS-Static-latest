@@ -51,6 +51,8 @@
     return n;
   }
   function img(src) { return el('img', { src: src, alt: '' }); }
+  /* In the fly-out the pinned Search bar covers the bottom of the form: scroll an opened menu / calendar fully into view (the page's scroll-padding keeps it clear of the bar). */
+  function keepInView(n) { if (n && n.scrollIntoView) setTimeout(function () { n.scrollIntoView({ block: 'nearest' }); }, 0); }
   function nextId(p) { return p + '-' + (++uid); }
 
   /* ---- live region ------------------------------------------------------------------------- */
@@ -130,7 +132,7 @@
     self.show = function () {
       if (self.open) return;
       setOpen(self);
-      self.open = true; list.hidden = false; btn.setAttribute('aria-expanded', 'true');
+      self.open = true; list.hidden = false; btn.setAttribute('aria-expanded', 'true'); keepInView(list);
       iconImg.src = IMG + 'icon-select-open.svg'; root.classList.add('is-open');
       var i = indexOfValue(self.value); setActive(i > -1 ? i : 0);
     };
@@ -229,7 +231,7 @@
     self.show = function () {
       if (self.open) return;
       setOpen(self);
-      self.open = true; menu.hidden = false; btn.setAttribute('aria-expanded', 'true');
+      self.open = true; menu.hidden = false; btn.setAttribute('aria-expanded', 'true'); keepInView(menu);
       iconImg.src = IMG + 'icon-select-open.svg'; root.classList.add('is-open');
       var first = search || visible()[0];
       if (first) first.focus();
@@ -400,7 +402,7 @@
         self.read();
         var start = clamp(self.date && self.date.y >= 1 ? self.date : today());
         focusDate = start; view = { y: start.y, m: start.m, d: 1 };
-        self.open = true; cal.hidden = false; input.setAttribute('aria-expanded', 'true'); root.classList.add('is-open');
+        self.open = true; cal.hidden = false; input.setAttribute('aria-expanded', 'true'); root.classList.add('is-open'); keepInView(cal);
         render();
       }
       if (intoGrid) focusDay();
