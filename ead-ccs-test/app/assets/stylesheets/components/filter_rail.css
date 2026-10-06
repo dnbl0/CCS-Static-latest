@@ -150,8 +150,6 @@
 }
 
 .facets .accordion-body {
-  max-height: 20rem;
-  overflow-y: auto;
   padding: var(--ccs-space-1) var(--ccs-space-3);
   border: 1px solid var(--ccs-navy-1100);
   background: var(--ccs-white);
@@ -304,18 +302,40 @@
   }
 }
 
-/* Range filters (production date, creator dates): the plugin's histogram, a two-handle slider
-   (controllers/range_slider_controller.js), then Begin / End and Apply limit */
+/* Range filters (production date, creator dates), after Airbnb's price range in UoM colours: a histogram, two
+   round handles on a rail, then Minimum / Maximum fields (controllers/range_slider_controller.js) */
 .range-slider {
+  --slider-bars: 5rem;
+  --slider-handle: 2rem;
   position: relative;
-  height: 2.75rem;
-  margin: 0 0.75rem var(--ccs-space-3);
+  height: calc(var(--slider-bars) + var(--slider-handle));
+  margin: 0 calc(var(--slider-handle) / 2) var(--ccs-space-3);
+}
+
+.range-slider__bars {
+  position: absolute;
+  inset: 0 0 calc(var(--slider-handle) / 2 + 1px);
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.range-slider__bar {
+  flex: 1 1 0;
+  min-width: 0;
+  border-radius: 2px 2px 0 0;
+  background: var(--ccs-navy-200);
+  transition: background var(--ccs-duration-fast);
+}
+
+.range-slider__bar.is-in-range {
+  background: var(--ccs-navy-1100);
 }
 
 .range-slider__rail {
   position: absolute;
-  inset: 0.625rem 0 auto;
-  height: 0.25rem;
+  inset: auto 0 calc(var(--slider-handle) / 2) 0;
+  height: 2px;
   background: var(--ccs-navy-200);
 }
 
@@ -327,9 +347,9 @@
 
 .range-slider__handle {
   position: absolute;
-  inset: 0 -0.75rem auto;
-  width: calc(100% + 1.5rem);
-  height: 1.5rem;
+  inset: auto calc(var(--slider-handle) / -2) 0;
+  width: calc(100% + var(--slider-handle));
+  height: var(--slider-handle);
   margin: 0;
   background: none;
   pointer-events: none;
@@ -340,26 +360,42 @@
 .range-slider__handle::-moz-range-track { background: none; }
 
 .range-slider__handle::-webkit-slider-thumb {
-  width: 1.25rem;
-  height: 1.25rem;
-  border: 2px solid var(--ccs-white);
+  width: var(--slider-handle);
+  height: var(--slider-handle);
+  border: 1px solid var(--ccs-neutral-500);
   border-radius: 50%;
-  background: var(--ccs-navy-1100);
-  box-shadow: var(--ccs-shadow-sm);
+  background: var(--ccs-white);
+  box-shadow: 0 2px 10px rgb(0 11 52 / 18%);
   cursor: grab;
   pointer-events: auto;
   appearance: none;
+  transition: border-color var(--ccs-duration-fast), box-shadow var(--ccs-duration-fast);
 }
 
 .range-slider__handle::-moz-range-thumb {
-  width: 1rem;
-  height: 1rem;
-  border: 2px solid var(--ccs-white);
+  box-sizing: border-box;
+  width: var(--slider-handle);
+  height: var(--slider-handle);
+  border: 1px solid var(--ccs-neutral-500);
   border-radius: 50%;
-  background: var(--ccs-navy-1100);
-  box-shadow: var(--ccs-shadow-sm);
+  background: var(--ccs-white);
+  box-shadow: 0 2px 10px rgb(0 11 52 / 18%);
   cursor: grab;
   pointer-events: auto;
+}
+
+.range-slider__handle:hover::-webkit-slider-thumb,
+.range-slider__handle.is-dragging::-webkit-slider-thumb {
+  border: 2px solid var(--ccs-navy-1100);
+  box-shadow: 0 0 0 6px rgb(0 15 70 / 10%), 0 2px 10px rgb(0 11 52 / 18%);
+  cursor: grabbing;
+}
+
+.range-slider__handle:hover::-moz-range-thumb,
+.range-slider__handle.is-dragging::-moz-range-thumb {
+  border: 2px solid var(--ccs-navy-1100);
+  box-shadow: 0 0 0 6px rgb(0 15 70 / 10%), 0 2px 10px rgb(0 11 52 / 18%);
+  cursor: grabbing;
 }
 
 .range-slider__handle:focus-visible {
@@ -367,22 +403,23 @@
 }
 
 .range-slider__handle:focus-visible::-webkit-slider-thumb {
-  outline: 2px solid var(--ccs-focus-ring);
+  outline: 3px solid #0b4ea2;
   outline-offset: 2px;
 }
 
 .range-slider__handle:focus-visible::-moz-range-thumb {
-  outline: 2px solid var(--ccs-focus-ring);
+  outline: 3px solid #0b4ea2;
   outline-offset: 2px;
 }
 
-.range-slider__ends {
+/* With the slider, the fields apply by themselves; the button stays for the form without JavaScript */
+.has-slider .range-limit-input-group .submit {
   position: absolute;
-  inset: 1.75rem 0 auto;
-  display: flex;
-  justify-content: space-between;
-  font-size: var(--ccs-font-size-sm);
-  color: var(--ccs-text-tertiary);
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
 }
 
 /* Begin / End: two even fields, then the button full width */
@@ -402,15 +439,21 @@
 .range-limit-input-group label {
   margin-bottom: var(--ccs-space-1);
   font-size: var(--ccs-font-size-sm);
-  font-weight: var(--ccs-font-weight-semibold);
-  color: var(--ccs-text-secondary) !important;
+  font-weight: var(--ccs-font-weight-regular);
+  color: var(--ccs-text-tertiary) !important;
 }
 
 .range-limit-input-group .form-control {
-  height: 2.5rem;
-  border: 1px solid var(--ccs-border-strong);
+  height: 3rem;
+  border: 1px solid var(--ccs-border-panel);
   border-radius: 0;
   font-size: var(--ccs-font-size-md);
+  text-align: center;
+}
+
+.range-limit-input-group .form-control:focus {
+  border-color: var(--ccs-navy-1100);
+  box-shadow: 0 0 0 3px rgb(70 200 240 / 45%);
 }
 
 .range-limit-input-group .submit {
@@ -434,4 +477,15 @@
 
 .range-limit-input-group > .d-flex:last-child > * {
   flex: 1 1 auto;
+}
+
+/* The number fields' spinners are in the way of the centred year */
+.range-limit-input-group input[type="number"] {
+  appearance: textfield;
+}
+
+.range-limit-input-group input[type="number"]::-webkit-inner-spin-button,
+.range-limit-input-group input[type="number"]::-webkit-outer-spin-button {
+  margin: 0;
+  appearance: none;
 }

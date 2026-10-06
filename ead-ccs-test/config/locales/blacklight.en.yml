@@ -1,6 +1,10 @@
 en:
   blacklight:
     application_name: 'Cultural Collection Search'
+    # The range filters' fields, after Airbnb's price range
+    range_limit:
+      range_begin_short: Minimum
+      range_end_short: Maximum
     search:
       # The names of the result views: button names, tooltips and the screen reader captions
       view:
