@@ -8,6 +8,17 @@ module Collections
 
     PLAUSIBLE = (1000..(Time.zone&.now&.year || Time.now.year) + 1).freeze
 
+    # One year out of an "Earliest"/"Latest Date Created" cell. The export holds plain years ("1918", "-586"),
+    # BC years written "BC -1000", and some full dates ("12/09/1925"); String#to_i read the last two as 0 and 12.
+    def explicit_year(text)
+      text = text.to_s.strip
+      return nil if text.empty?
+      return text.to_i if text.match?(/\A-?\d+\z/)
+      return -text[/\d+/].to_i if text.match?(/\ABC\b/i)
+
+      text[/\b\d{4}\b/]&.to_i
+    end
+
     def parse(text)
       return [ nil, nil ] if text.nil? || text.strip.empty?
 

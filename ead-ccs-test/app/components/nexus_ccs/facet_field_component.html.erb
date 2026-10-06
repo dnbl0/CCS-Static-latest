@@ -18,7 +18,7 @@
     </button>
   </h3>
   <div id="<%= html_id %>" role="region" aria-labelledby="<%= header_html_id %>" class="panel-collapse facet-content collapse <%= "show" unless @facet_field.collapsed? %>">
-    <div class="accordion-body">
+    <div class="accordion-body"<% if slider? %> data-controller="range-slider" data-range-slider-min-value="<%= @facet_field.min %>" data-range-slider-max-value="<%= @facet_field.max %>"<% end %>>
       <%= body %>
 
       <% if @facet_field.modal_path %>

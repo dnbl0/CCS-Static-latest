@@ -282,3 +282,135 @@
 .facet-field-heading .accordion-button.collapsed .facet-summary {
   display: block;
 }
+
+/* Range filters (production date, creator dates): the plugin's histogram, a two-handle slider
+   (controllers/range_slider_controller.js), then Begin / End and Apply limit */
+.range-slider {
+  position: relative;
+  height: 2.75rem;
+  margin: 0 0.75rem var(--ccs-space-3);
+}
+
+.range-slider__rail {
+  position: absolute;
+  inset: 0.625rem 0 auto;
+  height: 0.25rem;
+  background: var(--ccs-navy-200);
+}
+
+.range-slider__fill {
+  position: absolute;
+  inset-block: 0;
+  background: var(--ccs-navy-1100);
+}
+
+.range-slider__handle {
+  position: absolute;
+  inset: 0 -0.75rem auto;
+  width: calc(100% + 1.5rem);
+  height: 1.5rem;
+  margin: 0;
+  background: none;
+  pointer-events: none;
+  appearance: none;
+}
+
+.range-slider__handle::-webkit-slider-runnable-track { background: none; }
+.range-slider__handle::-moz-range-track { background: none; }
+
+.range-slider__handle::-webkit-slider-thumb {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid var(--ccs-white);
+  border-radius: 50%;
+  background: var(--ccs-navy-1100);
+  box-shadow: var(--ccs-shadow-sm);
+  cursor: grab;
+  pointer-events: auto;
+  appearance: none;
+}
+
+.range-slider__handle::-moz-range-thumb {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid var(--ccs-white);
+  border-radius: 50%;
+  background: var(--ccs-navy-1100);
+  box-shadow: var(--ccs-shadow-sm);
+  cursor: grab;
+  pointer-events: auto;
+}
+
+.range-slider__handle:focus-visible {
+  outline: none;
+}
+
+.range-slider__handle:focus-visible::-webkit-slider-thumb {
+  outline: 2px solid var(--ccs-focus-ring);
+  outline-offset: 2px;
+}
+
+.range-slider__handle:focus-visible::-moz-range-thumb {
+  outline: 2px solid var(--ccs-focus-ring);
+  outline-offset: 2px;
+}
+
+.range-slider__ends {
+  position: absolute;
+  inset: 1.75rem 0 auto;
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--ccs-font-size-sm);
+  color: var(--ccs-text-tertiary);
+}
+
+/* Begin / End: two even fields, then the button full width */
+.range_limit_form {
+  display: block !important;
+}
+
+.range-limit-input-group > .d-flex:first-child {
+  gap: var(--ccs-space-3);
+}
+
+.range-limit-input-group > .d-flex:first-child > div {
+  flex: 1 1 0;
+  margin: 0 !important;
+}
+
+.range-limit-input-group label {
+  margin-bottom: var(--ccs-space-1);
+  font-size: var(--ccs-font-size-sm);
+  font-weight: var(--ccs-font-weight-semibold);
+  color: var(--ccs-text-secondary) !important;
+}
+
+.range-limit-input-group .form-control {
+  height: 2.5rem;
+  border: 1px solid var(--ccs-border-strong);
+  border-radius: 0;
+  font-size: var(--ccs-font-size-md);
+}
+
+.range-limit-input-group .submit {
+  width: 100%;
+  padding: var(--ccs-space-2) var(--ccs-space-4);
+  border: 0;
+  border-radius: 0;
+  background: var(--ccs-action-primary);
+  font-size: var(--ccs-font-size-md);
+  font-weight: var(--ccs-font-weight-semibold);
+  color: var(--ccs-action-primary-text);
+}
+
+.range-limit-input-group .submit:hover {
+  background: var(--ccs-action-primary-hover);
+}
+
+.range-limit-input-group > .d-flex:last-child {
+  justify-content: stretch !important;
+}
+
+.range-limit-input-group > .d-flex:last-child > * {
+  flex: 1 1 auto;
+}

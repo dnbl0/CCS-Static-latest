@@ -165,4 +165,12 @@ class ResultsLayoutTest < ActiveSupport::TestCase
     assert_includes template, "facet-summary"
     assert_equal NexusCcs::FacetFieldComponent, Blacklight::Facets::ListComponent.new(facet_field: nil).instance_variable_get(:@layout)
   end
+
+  test "range filters get a two-handle slider over the plugin's Begin and End fields" do
+    assert_includes Rails.root.join("app/components/nexus_ccs/facet_field_component.html.erb").read, 'data-controller="range-slider"'
+    controller = Rails.root.join("app/javascript/controllers/range_slider_controller.js").read
+    assert_includes controller, "input.range_begin"
+    assert_includes controller, "Earliest year"
+    assert_includes STYLES.join("filter_rail.css").read, ".range-slider__handle"
+  end
 end

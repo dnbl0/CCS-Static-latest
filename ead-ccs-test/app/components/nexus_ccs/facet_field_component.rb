@@ -9,6 +9,11 @@ module NexusCcs
       @selected_values ||= range_values || @facet_field.search_state.filter(@facet_field.facet_field).values.flatten.compact.map { |value| value_label(value) }
     end
 
+    # Range filters get a slider over the plugin's Begin / End fields; it needs the results' first and last year
+    def slider?
+      @facet_field.facet_field.range && @facet_field.respond_to?(:min) && @facet_field.min.present? && @facet_field.max.present?
+    end
+
     def selected_count
       selected_values.size
     end

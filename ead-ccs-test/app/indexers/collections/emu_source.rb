@@ -124,8 +124,8 @@ module Collections
     # Scrape the display string for when there's no explicit range
     # columns to try to catch some more date ranges
     def date_range(row)
-      explicit_start = row.value(DATE_START)&.to_i
-      explicit_end   = row.value(DATE_END)&.to_i
+      explicit_start = DateRange.explicit_year(row.value(DATE_START))
+      explicit_end   = DateRange.explicit_year(row.value(DATE_END))
       return [ explicit_start, explicit_end ] if explicit_start || explicit_end
 
       DateRange.parse(row.value(DATE_CREATED))
