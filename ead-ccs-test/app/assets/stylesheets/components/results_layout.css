@@ -1,0 +1,336 @@
+/*
+ * Search results layout, after Europeana's search page (measurements from its open-source front end),
+ * with the filter sidebar kept on the LEFT:
+ *   - the sidebar is clamp(220px, 25%, 320px) from 992px; below that it is an off-canvas drawer
+ *     (components/filter_drawer.css);
+ *   - results are columns of 24px-gutter cards: 1, then 2 from 768px, 3 from 1200px, 4 from 1460px,
+ *     5 from 1880px, 6 from 2520px, 7 from 3020px (one column fewer below 768px is a single column);
+ *   - list view is one column, two from 1880px.
+ * Blacklight owns the markup; blacklight-gallery supplies the grid and mosaic documents.
+ */
+:root {
+  --results-gutter: 1.5rem;
+  --results-card-shadow: 0 1px 3px 0 rgb(0 0 0 / 25%);
+  --results-card-shadow-hover: 0 4px 12px 0 rgb(0 0 0 / 40%);
+  --sidebar-width: clamp(220px, 25%, 320px);
+}
+
+/* Sidebar left, fluid results beside it */
+@media (min-width: 992px) {
+  #main-container > .row {
+    flex-wrap: nowrap;
+    align-items: flex-start;
+  }
+
+  #sidebar {
+    flex: 0 0 var(--sidebar-width);
+    width: var(--sidebar-width);
+    max-width: var(--sidebar-width);
+    padding-right: var(--ccs-space-4);
+  }
+
+  #content {
+    flex: 1 1 0;
+    width: auto;
+    max-width: none;
+    min-width: 0;
+  }
+}
+
+/* The results column already has its gutter; a .container inside it would add another */
+#content > .container {
+  max-width: none;
+  padding-inline: 0;
+}
+
+/* Columns (grid and mosaic) */
+.documents-gallery,
+.documents-masonry {
+  --result-columns: 1;
+}
+
+@media (min-width: 768px) {
+  .documents-gallery, .documents-masonry { --result-columns: 2; }
+}
+
+@media (min-width: 1200px) {
+  .documents-gallery, .documents-masonry { --result-columns: 3; }
+}
+
+@media (min-width: 1460px) {
+  .documents-gallery, .documents-masonry { --result-columns: 4; }
+}
+
+@media (min-width: 1880px) {
+  .documents-gallery, .documents-masonry { --result-columns: 5; }
+}
+
+@media (min-width: 2520px) {
+  .documents-gallery, .documents-masonry { --result-columns: 6; }
+}
+
+@media (min-width: 3020px) {
+  .documents-gallery, .documents-masonry { --result-columns: 7; }
+}
+
+.documents-gallery {
+  --bs-gutter-x: 0;
+  --bs-gutter-y: 0;
+  display: grid;
+  grid-template-columns: repeat(var(--result-columns), minmax(0, 1fr));
+  gap: var(--results-gutter);
+  margin: 0;
+}
+
+.documents-gallery > .col {
+  width: auto;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* The layout polyfill (blacklight-gallery) reads these, so plain repeat() and 1fr */
+.documents-masonry {
+  grid-template-columns: repeat(var(--result-columns), 1fr);
+  grid-gap: var(--results-gutter);
+  gap: var(--results-gutter);
+  border: 0;
+}
+
+/* Cards: white, 4px radius, a small shadow that deepens on hover */
+.documents-gallery .document,
+.documents-masonry .document,
+.documents-list .document {
+  background: var(--ccs-white);
+  border: 0;
+  border-radius: var(--ccs-radius-sm);
+  box-shadow: var(--results-card-shadow);
+  transition: box-shadow var(--ccs-duration-slow) ease;
+}
+
+.documents-gallery .document:hover,
+.documents-gallery .document:focus-within,
+.documents-masonry .document:hover,
+.documents-masonry .document:focus-within,
+.documents-list .document:hover,
+.documents-list .document:focus-within {
+  box-shadow: var(--results-card-shadow-hover);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .documents-gallery .document,
+  .documents-masonry .document,
+  .documents-list .document {
+    transition: none;
+  }
+}
+
+/* Grid: image over a 16px body with a semibold title and muted details */
+.documents-gallery .document {
+  height: 100%;
+  overflow: hidden;
+}
+
+.documents-gallery .thumbnail-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.documents-gallery .document-thumbnail img,
+.documents-masonry .document-thumbnail img {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: 12rem;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  object-fit: cover;
+}
+
+.documents-gallery .caption-area .caption {
+  margin: 0;
+  padding: var(--ccs-space-4);
+  font-size: var(--ccs-font-size-sm);
+  line-height: 1.35;
+  color: var(--ccs-text-secondary);
+}
+
+.documents-gallery .document-title-heading {
+  margin: 0 0 var(--ccs-space-2);
+  font-size: var(--ccs-font-size-md);
+  font-weight: var(--ccs-font-weight-semibold);
+  line-height: var(--ccs-line-height-normal);
+}
+
+.documents-gallery .document-metadata {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  font-size: var(--ccs-font-size-sm);
+}
+
+.documents-gallery .document-metadata dt,
+.documents-gallery .document-metadata dd {
+  padding: 0;
+}
+
+.documents-gallery .document-metadata dt {
+  text-align: start;
+  font-weight: var(--ccs-font-weight-semibold);
+}
+
+/* Mosaic: the image is the card; the caption shows on hover or focus (Blacklight's own behaviour) */
+.documents-masonry .document {
+  overflow: hidden;
+  margin: 0;
+}
+
+.documents-masonry .thumbnail-container {
+  background: var(--ccs-neutral-200);
+}
+
+/* List: a card per record, one column, two on very wide screens */
+.documents-list {
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--results-gutter) 3.2rem;
+}
+
+@media (min-width: 1880px) {
+  .documents-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.documents-list .document {
+  padding: 1.25rem;
+}
+
+/* List card (NexusCcs::ResultCardComponent): text left, the image right on a dark box, never cropped */
+.result-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ccs-space-4);
+}
+
+.result-card__body {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.result-card__eyebrow {
+  margin: 0 0 var(--ccs-space-2);
+  overflow: hidden;
+  font-size: var(--ccs-font-size-sm);
+  font-weight: var(--ccs-font-weight-semibold);
+  letter-spacing: 0.04em;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--ccs-text-secondary);
+}
+
+.result-card .documentHeader {
+  margin: 0 0 var(--ccs-space-3);
+}
+
+.result-card .document-title-heading {
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  font-size: var(--ccs-font-size-md);
+  font-weight: var(--ccs-font-weight-semibold);
+  line-height: 1.2;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+}
+
+/* The collection is the eyebrow, so it is not repeated among the fields */
+.result-card .blacklight-collection_ssim {
+  display: none;
+}
+
+.result-card dl.document-metadata {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  column-gap: var(--ccs-space-4);
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  font-size: var(--ccs-font-size-sm);
+  color: var(--ccs-text-secondary);
+}
+
+.result-card dl.document-metadata dt,
+.result-card dl.document-metadata dd {
+  flex: none;
+  width: auto;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  text-align: start;
+}
+
+.result-card dl.document-metadata dt {
+  font-weight: var(--ccs-font-weight-semibold);
+}
+
+.result-card dl.document-metadata dd + dd {
+  grid-column: 2;
+}
+
+.result-card__footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ccs-space-2) var(--ccs-space-4);
+  margin: auto 0 0;
+  padding: var(--ccs-space-3) 0 0;
+  list-style: none;
+  font-size: var(--ccs-font-size-sm);
+  color: var(--ccs-text-secondary);
+}
+
+.result-card__footer li:last-child:not(:only-child) {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.documents-list .document-thumbnail {
+  order: -1;
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 13rem;
+  margin: 0;
+  border-radius: var(--ccs-radius-sm);
+  background: var(--ccs-neutral-800);
+}
+
+.documents-list .document-thumbnail img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+@media (min-width: 768px) {
+  .result-card {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .documents-list .document-thumbnail {
+    order: 2;
+    width: 10rem;
+    height: 10rem;
+  }
+}

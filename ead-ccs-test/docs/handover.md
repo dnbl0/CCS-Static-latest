@@ -7,7 +7,7 @@ git plumbing off `origin/main`, because the parent repo's checked-out branch bel
 
 ## State
 
-- Rails 8.1.3, Blacklight **9.0.0** (not 9.2.1), Ruby 4.0.6, Postgres 17, 85 tests passing (no Solr needed).
+- Rails 8.1.3, Blacklight **9.0.0** (not 9.2.1), Ruby 4.0.6, Postgres 17, 94 tests passing (no Solr needed).
 - Plugins: `blacklight-gallery` (git `main`, grid and mosaic only; slideshow removed; the rubygems 6.0.0 pins `blacklight ~> 9.0.0beta1`) and
   `blacklight_range_limit` 9.3.0. Config-only use; see `docs/blacklight-features.md`.
 - Styling: tokens, themed Bootstrap (dartsass-rails), site header, footer, search overlay, breadcrumb
@@ -68,8 +68,8 @@ gaps. The earlier pivot, query and contextual facets were removed because the wo
    The record page shows a record's images (`NexusCcs::DigitalAssetsComponent`).
 3. **Dates.** About 12,700 of 41,000 records have no `date_start_isi` and about 1,700 are 0 or below, which
    distorts the range histogram. Either exclude year <= 0 from the range facet or fix it at index time.
-4. **Style the rest** (results cards, toolbar, mobile filter drawer; the filter rail and record page are done,
-   see `docs/styling.md`): see `docs/styling-inventory.md` and the plan in `scratchpad/europeana/` (cards as one
+4. **Style the rest** (the home hero; the results layout, filter rail, drawer and record page are done and follow
+   Europeana and the static design, see `docs/styling.md`): see `docs/styling-inventory.md` and the plan in `scratchpad/europeana/` (cards as one
    component with variants, left sticky 296px rail, drawer under 992px, accessible chips and drawer).
 5. **Bookmarks** need a user model; `/bookmarks` redirects without one. The Blacklight guest-user /
    devise-guests pattern would make them work if D wants it.

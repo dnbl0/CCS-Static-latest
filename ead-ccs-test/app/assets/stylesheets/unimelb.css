@@ -272,20 +272,6 @@ dialog.modal {
   font-weight: 600;
 }
 
-/* A record's digital asset sits to the right of its details, at a fixed size */
-.documents-list .document-thumbnail {
-  flex: 0 0 10rem;
-  max-width: 10rem;
-  margin-inline-start: var(--ccs-space-4);
-}
-
-.documents-list .document-thumbnail img {
-  display: block;
-  width: 100%;
-  height: 10rem;
-  object-fit: cover;
-}
-
 /* Information panels ---------------------------- */
 
 .uom-panel,

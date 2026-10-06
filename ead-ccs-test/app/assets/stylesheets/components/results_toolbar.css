@@ -1,0 +1,142 @@
+/*
+ * The bar above the results (count, filters button, sort, page size, view), the applied-filter pills and
+ * the pagination, after Europeana's: no boxed bar, a plain count, pill-shaped applied filters and flat
+ * Previous / numbers / Next at the bottom.
+ */
+
+/* Applied filters as pills, with a plain "Start over" */
+.constraints-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ccs-space-2);
+  margin-bottom: var(--ccs-space-4) !important;
+}
+
+.constraints-label {
+  margin-right: var(--ccs-space-1);
+  font-family: var(--ccs-font-body);
+  font-size: var(--ccs-font-size-sm);
+  font-weight: var(--ccs-font-weight-semibold);
+  color: var(--ccs-text-secondary);
+}
+
+.constraints-container .applied-filter {
+  display: inline-flex;
+  max-width: 100%;
+  overflow: hidden;
+  border-radius: 1.125rem;
+  background: var(--ccs-cyan-100);
+}
+
+.constraints-container .applied-filter .btn {
+  display: inline-flex;
+  align-items: center;
+  height: 2.25rem;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  font-size: var(--ccs-font-size-sm);
+  color: var(--ccs-text-primary);
+}
+
+.constraints-container .applied-filter .constraint-value {
+  min-width: 0;
+  padding-inline: var(--ccs-space-4) var(--ccs-space-2);
+}
+
+.constraints-container .applied-filter .remove {
+  padding-inline: var(--ccs-space-3) var(--ccs-space-4);
+}
+
+.constraints-container .applied-filter .remove:hover,
+.constraints-container .applied-filter .remove:focus-visible {
+  background: var(--ccs-cyan-200);
+  color: var(--ccs-text-brand);
+}
+
+.constraints-container .catalog_startOverLink {
+  display: inline-flex;
+  align-items: center;
+  height: 2.25rem;
+  border: 0;
+  border-radius: var(--ccs-radius-sm);
+  background: var(--ccs-neutral-100);
+  font-size: var(--ccs-font-size-sm);
+  font-weight: var(--ccs-font-weight-semibold);
+  color: var(--ccs-text-brand);
+}
+
+.constraints-container .catalog_startOverLink:hover {
+  background: var(--ccs-neutral-200);
+}
+
+/* The bar: count on the left, controls on the right, no box */
+#sortAndPerPage {
+  align-items: center;
+  margin-bottom: var(--ccs-space-4) !important;
+  padding: 0 !important;
+  border: 0;
+  background: transparent;
+}
+
+#sortAndPerPage .paginate-section {
+  /* only the count is kept at the top; Previous and Next are with the page numbers below the results */
+  font-size: 0;
+}
+
+#sortAndPerPage .page-entries {
+  font-size: var(--ccs-font-size-md);
+  color: var(--ccs-text-secondary);
+}
+
+#sortAndPerPage .search-widgets {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ccs-space-2);
+}
+
+#sortAndPerPage .search-widgets > * {
+  margin: 0 !important;
+}
+
+/* Pagination: flat text buttons, the current page filled */
+.paginate-section .pagination {
+  flex-wrap: wrap;
+  gap: var(--ccs-space-1);
+  justify-content: center;
+  margin: var(--ccs-space-6) 0;
+}
+
+.paginate-section .page-link {
+  min-width: 2.5rem;
+  padding: var(--ccs-space-2) var(--ccs-space-3);
+  border: 0;
+  border-radius: var(--ccs-radius-sm);
+  background: transparent;
+  font-size: var(--ccs-font-size-sm);
+  text-align: center;
+  color: var(--ccs-text-primary);
+}
+
+.paginate-section .page-link:hover {
+  background: var(--ccs-neutral-100);
+}
+
+.paginate-section .page-item.active .page-link {
+  background: var(--ccs-navy-1100);
+  color: var(--ccs-text-inverse);
+}
+
+.paginate-section .page-item.disabled .page-link {
+  background: transparent;
+  color: var(--ccs-text-tertiary);
+}
+
+.paginate-section .page-item:first-child .page-link,
+.paginate-section .page-item:last-child .page-link {
+  font-weight: var(--ccs-font-weight-semibold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}

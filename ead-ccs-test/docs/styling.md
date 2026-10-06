@@ -79,8 +79,28 @@ header omits those items (in development it defaults to `http://localhost:3000`)
   list as ruled label and value rows in one white card, and `PersistentLinkComponent` (CCS-25, with a copy
   button, `clipboard_controller.js`). Field labels have no trailing colon (`blacklight.en.yml`).
 
+## Search results layout (after Europeana)
+
+`components/results_layout.css`, `filter_drawer.css`, `results_toolbar.css`, `NexusCcs::FilterSidebarComponent`,
+`FilterToggleComponent`, `ResultCardComponent`. Measurements come from Europeana's open-source front end
+(`portal.js`); its live site is behind a bot check, so rendered values were not compared pixel for pixel.
+
+| | Europeana | Here |
+|---|---|---|
+| Sidebar | right, `clamp(220px, 25%, 320px)` from 992px | **left**, same width rule |
+| Below 992px | off-canvas drawer from the right, 320px / 75vw max, 300ms, scrim `rgba(0,0,0,.7)`, z-index 1050 | same, from the **left**; focus moves in and is trapped, Escape and the scrim close it, scroll is locked, focus returns to the Filters button |
+| Columns | 1 / 2 (768) / 3 (1200) / 4 (1460) / 5 (1880) / 6 (2520) / 7 (3020), 24px gutters | the same (grid and mosaic); list is 1 column, 2 from 1880px |
+| Cards | white, 4px radius, shadow `0 1px 3px` growing to `0 4px 12px` on hover | the same |
+| Mosaic | image only, title on hover | image only, caption on hover or focus (blacklight-gallery) |
+| List card | provider above title, image right 160px on a dark box, never cropped, footer | collection above title, image right 160px on a dark box, licence and format footer; stacks below 768px |
+| Toolbar | a plain count, view switcher, no sort | plain count, Filters button (below 992px), sort, page size, view buttons |
+| Applied filters | pills | pills with a remove cross, plus "Start over" |
+| Pagination | Previous, page number input, Next | Previous, numbered pages (jump to any page, CCS-45), Next |
+| Filters | dropdowns that apply at once | accordion lists of checkbox links, one navigation per click (works without JavaScript) |
+
+Not copied on purpose: dropdown facets with instant apply, the page-number input, the right-hand sidebar.
+
 ## Not ported yet
 
-Results cards and toolbar, the home hero, the mobile filter drawer (each section still has its own "Show
-facets" toggle) and the static-only pages (help, contact, collection landing pages). See
+The home hero and the static-only pages (help, contact, collection landing pages). See
 `docs/styling-inventory.md`.

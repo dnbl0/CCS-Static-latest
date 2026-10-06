@@ -1,0 +1,19 @@
+<search class="filter-sidebar" data-controller="filter-drawer"
+        data-action="filter-drawer:open@window->filter-drawer#open keydown.esc@window->filter-drawer#escape">
+  <div class="filter-drawer__header d-lg-none">
+    <h2 id="filter-drawer-title" class="filter-drawer__title">Filters</h2>
+    <button type="button" class="filter-drawer__close" data-filter-drawer-target="close" data-action="filter-drawer#close">
+      Close
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
+    </button>
+  </div>
+
+  <% facet_group_names.each do |groupname| %>
+    <% fields = facet_fields_in_group(groupname) %>
+    <%= render group_component_class.new(id: groupname) do |component| %>
+      <% component.with_body do %>
+        <%= render Blacklight::FacetComponent.with_collection(fields, response: response) %>
+      <% end %>
+    <% end %>
+  <% end %>
+</search>

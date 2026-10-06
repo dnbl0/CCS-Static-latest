@@ -37,6 +37,7 @@ class CatalogController < ApplicationController
       shape = %w[placeholder-thumbnail.svg placeholder-portrait.svg placeholder-square.svg][document.id.sum % 3]
       ActionController::Base.helpers.image_tag(shape, image_options)
     end
+    config.view.list.document_component = NexusCcs::ResultCardComponent
     config.view.gallery(document_component: Blacklight::Gallery::DocumentComponent,
       icon: Blacklight::Gallery::Icons::GalleryComponent, default_thumbnail: "placeholder-thumbnail.svg")
     config.view.masonry(document_component: Blacklight::Gallery::DocumentComponent,
@@ -45,6 +46,9 @@ class CatalogController < ApplicationController
 
     config.add_results_document_tool(:bookmark, component: Blacklight::Document::BookmarkComponent, if: :render_bookmarks_control?)
 
+    # Below 992px the sidebar is a drawer; this button opens it.
+    config.index.sidebar_component = NexusCcs::FilterSidebarComponent
+    config.add_results_collection_tool(:filters_toggle, component: NexusCcs::FilterToggleComponent)
     config.add_results_collection_tool(:sort_widget)
     config.add_results_collection_tool(:per_page_widget)
     config.add_results_collection_tool(:view_type_group)
