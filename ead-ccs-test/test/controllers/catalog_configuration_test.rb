@@ -6,7 +6,7 @@ class CatalogConfigurationTest < ActiveSupport::TestCase
 
   test "result views: list plus the blacklight-gallery grid and mosaic (no slideshow)" do
     assert_equal %i[gallery list masonry], config.view.keys.map(&:to_sym).sort - %i[atom rss]
-    assert_equal Blacklight::Gallery::DocumentComponent, config.view.gallery.document_component
+    assert_equal NexusCcs::ResultCardComponent, config.view.gallery.document_component
     assert_equal Blacklight::Gallery::DocumentComponent, config.view.masonry.document_component
   end
 

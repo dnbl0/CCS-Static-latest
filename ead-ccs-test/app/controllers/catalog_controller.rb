@@ -38,7 +38,7 @@ class CatalogController < ApplicationController
       ActionController::Base.helpers.image_tag(shape, image_options)
     end
     config.view.list.document_component = NexusCcs::ResultCardComponent
-    config.view.gallery(document_component: Blacklight::Gallery::DocumentComponent,
+    config.view.gallery(document_component: NexusCcs::ResultCardComponent,
       icon: Blacklight::Gallery::Icons::GalleryComponent, default_thumbnail: "placeholder-thumbnail.svg")
     config.view.masonry(document_component: Blacklight::Gallery::DocumentComponent,
       icon: Blacklight::Gallery::Icons::MasonryComponent, default_thumbnail: mosaic_placeholder)

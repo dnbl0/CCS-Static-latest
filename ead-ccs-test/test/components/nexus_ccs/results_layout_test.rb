@@ -74,18 +74,22 @@ class ResultsLayoutTest < ActiveSupport::TestCase
     assert_equal NexusCcs::FilterToggleComponent, config.index.collection_actions[:filters_toggle].component
   end
 
-  test "the list card's eyebrow is the collection and its footer the licence and format" do
-    result = card("collection_ssim" => [ "Medical History Museum" ], "licence_type_ssim" => [ "Copyright - Current" ], "digital_asset_format_ssim" => [ "Image" ])
+  test "the card is the CCS UI card image, or card no media when the record has no digital asset" do
+    with_image = card("thumbnail_path_ssi" => "/digital-assets/thumbs/a.jpg", "title_tsim" => [ "Untitled" ])
+    without = card("title_tsim" => [ "Untitled" ])
 
-    assert_equal "Medical History Museum", result.collection
-    assert_equal [ "Copyright - Current", "Image" ], result.footer_items
+    assert with_image.media?
+    assert_equal "media", with_image.variant
+    assert_not without.media?
+    assert_equal "no-media", without.variant
   end
 
-  test "the list card leaves out what the record does not have" do
-    result = card("title_tsim" => [ "Untitled" ])
+  test "the card's three lines are the creator, the object type and the collection, whichever the record has" do
+    full = card("creator_ssim" => [ "Purdie, Shirley" ], "object_type_ssim" => [ "painting" ], "collection_ssim" => [ "Medical History Museum" ])
+    sparse = card("collection_ssim" => [ "Medical History Museum" ])
 
-    assert_nil result.collection
-    assert_empty result.footer_items
+    assert_equal [ "Purdie, Shirley", "painting", "Medical History Museum" ], full.lines
+    assert_equal [ "Medical History Museum" ], sparse.lines
   end
 
   test "the Filters button says how many filters are applied" do
