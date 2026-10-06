@@ -4,17 +4,8 @@
  * section titles and filters come from the workbook (see docs/data-model.md).
  */
 
-/* The rail as a whole stays in view while scrolling, not each section (they would overlap) */
-@media (min-width: 992px) {
-  #sidebar search {
-    position: sticky;
-    top: var(--ccs-space-4);
-    max-height: calc(100vh - 2rem);
-    overflow-y: auto;
-    padding: 0;
-  }
-}
-
+/* The rail runs the full length of the page: every filter is visible, none clipped (the column's right rule
+   runs the whole height too, see results_layout.css) */
 #sidebar .facets {
   margin: 0;
   border: 0;

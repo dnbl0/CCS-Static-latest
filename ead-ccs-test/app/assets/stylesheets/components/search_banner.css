@@ -33,20 +33,22 @@
   margin-top: var(--ccs-space-3);
 }
 
-/* The form: one white bar (input, scope select, submit), then the advanced search link */
+/* The form, as the static site's search bar: one white 56px bar, the query, the scope on a grey cell, then a
+   cyan 56px search button. The cyan and the navy focus ring match the static page. */
 .search-banner__form {
   width: 100%;
-  max-width: 32rem;
+  max-width: 40rem;
 }
 
 .search-banner .input-group {
   flex-wrap: nowrap;
-  height: 2.5rem;
+  height: 3.5rem;
   background: var(--ccs-white);
-  border: 1px solid var(--ccs-navy-1100);
+  border: 1px solid var(--ccs-white);
 }
 
 .search-banner .input-group:focus-within {
+  border-color: var(--ccs-navy-1100);
   box-shadow: 0 0 0 3px rgb(70 200 240 / 45%);
 }
 
@@ -57,7 +59,7 @@
 }
 
 .search-banner .search-autocomplete-wrapper {
-  order: 1;
+  order: 0;
   flex: 1 1 auto;
   min-width: 2.5rem;
   padding: 0;
@@ -65,29 +67,36 @@
 
 .search-banner .search-q {
   height: 100%;
-  padding: 0 var(--ccs-space-3) 0 var(--ccs-space-3);
+  padding: 0 0.875rem;
+  background: none;
   font-size: var(--ccs-font-size-md);
   color: var(--ccs-text-primary);
   box-shadow: none;
 }
 
+.search-banner .search-q::placeholder {
+  color: var(--ccs-text-tertiary);
+}
+
 .search-banner .search-field {
-  order: 0;
+  order: 1;
   flex: none;
   width: auto;
   max-width: 12.5rem;
-  padding-inline: var(--ccs-space-3) 1.75rem;
-  background-color: var(--ccs-surface-subtle);
+  padding-inline: 0.875rem 2rem;
+  border-left: 1px solid #d9d6cf;
+  background-color: #f4f5f8;
   font-size: var(--ccs-font-size-sm);
   font-weight: var(--ccs-font-weight-semibold);
   color: var(--ccs-navy-1100);
   box-shadow: none;
+  cursor: pointer;
 }
 
 .search-banner .search-btn {
-  order: 3;
+  order: 2;
   flex: none;
-  width: 2.5rem;
+  width: 3.5rem;
   padding: 0;
   display: flex;
   align-items: center;
@@ -98,6 +107,12 @@
 
 .search-banner .search-btn:hover {
   background: var(--ccs-action-primary-hover);
+}
+
+.search-banner .input-group button:focus-visible,
+.search-banner .input-group select:focus-visible {
+  outline: 3px solid #0b4ea2;
+  outline-offset: -3px;
 }
 
 .search-banner .search-btn .submit-search-text {
@@ -127,5 +142,11 @@
 
   .search-banner .search-field {
     max-width: 7.5rem;
+    padding-inline: 0.625rem 1.75rem;
+    font-size: 0.8125rem;
+  }
+
+  .search-banner .search-btn {
+    width: 3rem;
   }
 }
