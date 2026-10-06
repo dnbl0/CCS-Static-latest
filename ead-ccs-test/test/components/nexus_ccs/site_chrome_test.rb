@@ -118,4 +118,3 @@ class SiteChromeTest < ActiveSupport::TestCase
     assert_selector "#search-overlay-input[maxlength='255']"
   end
 end
-
