@@ -173,4 +173,14 @@ class ResultsLayoutTest < ActiveSupport::TestCase
     assert_includes controller, "Earliest year"
     assert_includes STYLES.join("filter_rail.css").read, ".range-slider__handle"
   end
+
+  test "the toolbar: even pill gaps, equal flexible selects, a two-row grid with full labels on phones" do
+    css = STYLES.join("results_toolbar.css").read
+    assert_match(/\.constraints-container \.applied-filter \{\s+margin: 0 !important;/, css) # not Bootstrap's mx-1
+    assert_match(/\.sort-dropdown,\s+#sortAndPerPage \.per_page-dropdown \{\s+flex: 1 1 0;[^}]*max-width: 18rem;/m, css)
+    phone = css[/@media \(max-width: 767\.98px\) \{.*?\n\}\n/m]
+    assert_includes phone, "grid-template-columns: repeat(2, minmax(0, 1fr));"
+    assert_includes phone, ".sort-dropdown .dropdown-toggle .d-none"
+    assert_includes phone, ".per_page-dropdown .dropdown-toggle .visually-hidden"
+  end
 end

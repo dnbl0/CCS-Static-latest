@@ -8,7 +8,6 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
   gap: var(--ccs-space-3) var(--ccs-space-4);
   margin: 0 0 var(--ccs-space-4);
   padding: 0;
@@ -19,7 +18,7 @@
 /* Count and pills */
 .constraints-container {
   display: flex;
-  flex: 1 1 auto;
+  flex: 0 1 auto;
   flex-wrap: wrap;
   align-items: center;
   gap: var(--ccs-space-2);
@@ -35,7 +34,9 @@
   color: var(--ccs-text-secondary);
 }
 
+/* Bootstrap's mx-1 on the pills made the gaps uneven; the container's gap spaces them */
 .constraints-container .applied-filter {
+  margin: 0 !important;
   display: inline-flex;
   max-width: 100%;
   overflow: hidden;
@@ -72,17 +73,43 @@
   background: var(--ccs-sage-300);
 }
 
-/* Controls: sort and page size as select-like boxes, then the view buttons, flush right */
+/* Controls: one row of [Filters (small screens)] [Sort] [Per page], equal flexible boxes up to 18rem, then the
+   view buttons flush right. The row takes whatever room the count and pills leave, or a row of its own when
+   there is not enough (flex-basis 36rem); phones get a two-row grid below. */
 #sortAndPerPage .search-widgets {
   display: flex;
-  flex-wrap: wrap;
+  flex: 1 1 36rem;
   align-items: stretch;
   gap: var(--ccs-space-2);
-  margin-left: auto;
+  min-width: 0;
 }
 
 #sortAndPerPage .search-widgets > * {
   margin: 0 !important;
+}
+
+/* The Filters button takes room too, so the row wraps to a line of its own earlier */
+@media (max-width: 991.98px) {
+  #sortAndPerPage .search-widgets {
+    flex-basis: 42rem;
+  }
+}
+
+#sortAndPerPage .sort-dropdown,
+#sortAndPerPage .per_page-dropdown {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 18rem;
+}
+
+#sortAndPerPage .search-widgets > [data-controller="tooltip"] {
+  flex: none;
+  margin-left: auto !important;
+}
+
+#sortAndPerPage .filters-toggle {
+  flex: none;
+  height: 3rem;
 }
 
 /* The static page's dropdown: a 48px white box with a navy outline, the value, then a 44px cell with a
@@ -90,8 +117,7 @@
 #sortAndPerPage .btn-group > .dropdown-toggle {
   position: relative;
   display: block;
-  width: 12.75rem;
-  max-width: 100%;
+  width: 100%;
   height: 3rem;
   padding: 0 3.25rem 0 0.875rem;
   line-height: 2.875rem;
@@ -190,6 +216,77 @@
   display: block;
   width: 2rem;
   height: 2rem;
+}
+
+/* Phones and small tablets (under 768px): Sort and per page share a row, Filters and the view buttons the next, with the full
+   labels ("Sort by relevance", "40 per page") that Bootstrap's d-none would hide at this width */
+@media (max-width: 767.98px) {
+  #sortAndPerPage .search-widgets {
+    display: grid;
+    flex-basis: 100%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--ccs-space-2);
+  }
+
+  #sortAndPerPage .sort-dropdown,
+  #sortAndPerPage .per_page-dropdown {
+    max-width: none;
+  }
+
+  #sortAndPerPage .sort-dropdown { grid-area: 1 / 1; }
+  #sortAndPerPage .per_page-dropdown { grid-area: 1 / 2; }
+
+  #sortAndPerPage .filters-toggle {
+    grid-area: 2 / 1;
+    justify-self: start;
+  }
+
+  #sortAndPerPage .search-widgets > [data-controller="tooltip"] {
+    grid-area: 2 / 2;
+    justify-self: end;
+  }
+
+  #sortAndPerPage .btn-group > .dropdown-toggle {
+    padding: 0 2.5rem 0 var(--ccs-space-3);
+    font-size: 0.9375rem;
+  }
+
+  #sortAndPerPage .btn-group > .dropdown-toggle::after {
+    width: 2.25rem;
+  }
+
+  #sortAndPerPage .sort-dropdown .dropdown-toggle .d-none {
+    display: inline !important;
+  }
+
+  /* "40 per page": show the words that are visually hidden at wider widths, drop "results" */
+  #sortAndPerPage .per_page-dropdown .dropdown-toggle .d-sm-inline {
+    display: none !important;
+  }
+
+  #sortAndPerPage .per_page-dropdown .dropdown-toggle .visually-hidden {
+    /* Bootstrap's .visually-hidden is !important throughout */
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    clip: auto !important;
+    clip-path: none !important;
+    white-space: nowrap !important;
+  }
+
+  @media (max-width: 400px) {
+    #sortAndPerPage .btn-group > .dropdown-toggle {
+      padding-left: 0.625rem;
+      font-size: 0.875rem;
+    }
+  }
+
+  /* The menus stay inside the screen: at least as wide as the box, and no wider than the screen */
+  #sortAndPerPage .btn-group > .dropdown-menu {
+    max-width: calc(100vw - 2rem);
+  }
 }
 
 /* Tooltips (Bootstrap's, started by controllers/tooltip_controller.js) in the UoM colours */

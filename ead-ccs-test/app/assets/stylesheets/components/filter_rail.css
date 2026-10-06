@@ -170,8 +170,7 @@
   min-width: 0;
 }
 
-.facet-values .facet-select,
-.facet-values .facet-label > .selected {
+.facet-values .facet-select {
   display: flex;
   flex: 1 1 auto;
   align-items: flex-start;
@@ -191,8 +190,7 @@
   text-decoration: underline;
 }
 
-.facet-values .facet-select::before,
-.facet-values .facet-label > .selected::before {
+.facet-values .facet-select::before {
   content: "";
   flex: none;
   box-sizing: border-box;
@@ -203,20 +201,9 @@
   background: var(--ccs-white);
 }
 
-.facet-values .facet-label > .selected {
-  font-weight: var(--ccs-font-weight-regular);
-  color: var(--ccs-text-primary);
-}
-
-.facet-values .facet-label > .selected::before {
+.facet-values .facet-select.is-selected::before {
   border-color: var(--ccs-navy-1100);
   background: var(--ccs-navy-1100) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3.5' stroke-linecap='square'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 0.75rem no-repeat;
-}
-
-/* Unticking: the remove link, kept small */
-.facet-values .remove {
-  align-self: center;
-  color: #5b6070;
 }
 
 .facet-values .facet-count {
@@ -488,4 +475,18 @@
 .range-limit-input-group input[type="number"]::-webkit-outer-spin-button {
   margin: 0;
   appearance: none;
+}
+
+/* --- Selected range: no row of its own, a Clear link under the fields instead --- */
+.range_limit .current {
+  display: none;
+}
+
+.range-clear {
+  display: inline-block;
+  margin-top: var(--ccs-space-3);
+  font-size: var(--ccs-font-size-sm);
+  font-weight: var(--ccs-font-weight-semibold);
+  text-decoration: underline;
+  color: var(--ccs-navy-1100);
 }

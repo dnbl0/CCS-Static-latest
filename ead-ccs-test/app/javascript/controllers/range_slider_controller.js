@@ -27,6 +27,7 @@ export default class extends Controller {
     this.lo = this.minValue
     this.hi = this.maxValue
     this.bins = []
+    this.addClearLink()
     this.render()
     this.fromFields()
     this.load()
@@ -54,6 +55,21 @@ export default class extends Controller {
       this.toHandle.value = this.position(to)
       this.paint()
     } catch (_) { /* the slider works without the bars */ }
+  }
+
+  // The plugin's row for the applied range (a ticked "1900 to 1950" with a small x) is hidden, since the slider
+  // and the filter pill show it; its remove link becomes a "Clear" link under the fields.
+  addClearLink() {
+    const remove = this.element.querySelector(".current a.remove")
+    if (!remove) return
+    const clear = document.createElement("a")
+    clear.className = "range-clear"
+    clear.href = remove.href
+    clear.rel = "nofollow"
+    clear.textContent = "Clear"
+    const label = this.element.closest(".facet-limit")?.querySelector(".facet-title__label")?.textContent.trim()
+    if (label) clear.setAttribute("aria-label", `Clear ${label} range`)
+    this.form.after(clear)
   }
 
   render() {
