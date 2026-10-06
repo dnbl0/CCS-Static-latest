@@ -6,6 +6,13 @@ module NexusCcs
   # Registered as the list and gallery views' document_component; everything else is Blacklight's
   # DocumentComponent (title slot with its link and counter, classes, ids).
   class ResultCardComponent < Blacklight::DocumentComponent
+    TITLE_TAG = :h5
+
+    # The card's heading is an h5 (Blacklight's default is h3)
+    def initialize(**args)
+      super(**args, title_component: TITLE_TAG)
+    end
+
     def media_path
       document["thumbnail_path_ssi"].presence
     end
