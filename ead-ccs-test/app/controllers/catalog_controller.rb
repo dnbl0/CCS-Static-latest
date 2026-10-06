@@ -38,10 +38,11 @@ class CatalogController < ApplicationController
       ActionController::Base.helpers.image_tag(shape, image_options)
     end
     config.view.list.document_component = NexusCcs::ResultCardComponent
+    config.view.list.icon = NexusCcs::ListViewIconComponent
     config.view.gallery(document_component: NexusCcs::ResultCardComponent,
-      icon: Blacklight::Gallery::Icons::GalleryComponent, default_thumbnail: "placeholder-thumbnail.svg")
-    config.view.masonry(document_component: Blacklight::Gallery::DocumentComponent,
-      icon: Blacklight::Gallery::Icons::MasonryComponent, default_thumbnail: mosaic_placeholder)
+      icon: NexusCcs::GalleryViewIconComponent, default_thumbnail: "placeholder-thumbnail.svg")
+    config.view.masonry(document_component: NexusCcs::ResultCardComponent,
+      icon: NexusCcs::MasonryViewIconComponent, default_thumbnail: mosaic_placeholder)
     config.index.display_type_field = "format"
 
     config.add_results_document_tool(:bookmark, component: Blacklight::Document::BookmarkComponent, if: :render_bookmarks_control?)

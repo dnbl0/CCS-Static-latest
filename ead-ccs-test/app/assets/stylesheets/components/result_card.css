@@ -7,6 +7,7 @@
 .documents-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  align-items: start;
   gap: var(--results-gutter);
   margin: 0;
 }
@@ -14,7 +15,7 @@
 .result-card {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: auto;
   overflow: hidden;
   border: 1px solid var(--ccs-border-panel);
   background: var(--ccs-white);
@@ -41,12 +42,24 @@
   object-fit: cover;
 }
 
+/* No padding or gap on the content block, so nothing is added under the last line; the title and the lines
+   carry the card's 24px themselves (16px between them) */
 .result-card__content {
-  display: flex;
-  flex: 1 1 auto;
-  flex-direction: column;
-  gap: var(--ccs-space-4);
-  padding: var(--ccs-space-5);
+  display: block;
+  flex: 0 0 auto;
+  padding: 0;
+}
+
+.result-card__content > :first-child {
+  padding-top: var(--ccs-space-5);
+}
+
+.result-card__content > :last-child {
+  padding-bottom: var(--ccs-space-5);
+}
+
+.result-card__content > * {
+  padding-inline: var(--ccs-space-5);
 }
 
 .result-card .documentHeader {
@@ -85,12 +98,12 @@
   white-space: nowrap;
 }
 
-.result-card__lines {
+.result-card__content > .result-card__lines {
   display: flex;
   flex-direction: column;
   gap: var(--ccs-space-1);
   margin: 0;
-  padding: 0;
+  padding-top: var(--ccs-space-4);
   list-style: none;
   font-size: var(--ccs-font-size-lg);
   line-height: var(--ccs-line-height-normal);
@@ -106,4 +119,44 @@
   width: 100%;
   max-width: none;
   margin: 0;
+}
+
+/* Grid: each card is as tall as its own content, so none has blank space under its last line */
+.documents-gallery {
+  align-items: start;
+}
+
+/* Mosaic: the same cards, laid out by the masonry polyfill; the image keeps its own proportions */
+.documents-masonry .result-card {
+  width: 100%;
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.documents-masonry .result-card__media {
+  aspect-ratio: auto;
+}
+
+.documents-masonry .result-card__media img {
+  height: auto;
+}
+
+/* blacklight-gallery greys the mosaic's titles for its dark captions; here the title is the card's own */
+.documents-masonry .result-card .index_title {
+  font-size: var(--ccs-font-size-2xl);
+}
+
+.documents-masonry .result-card .index_title a,
+.documents-masonry .result-card .index_title a:visited,
+.documents-masonry .result-card .index_title a:active {
+  color: var(--ccs-text-link);
+}
+
+.documents-masonry .result-card .index_title a:hover {
+  color: var(--ccs-text-link-hover);
+}
+
+.documents-masonry .result-card {
+  margin-bottom: 0;
 }

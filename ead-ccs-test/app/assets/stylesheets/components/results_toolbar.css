@@ -216,6 +216,7 @@
   display: block;
   width: 2rem;
   height: 2rem;
+  fill: currentColor;
 }
 
 /* Phones and small tablets (under 768px): Sort and per page share a row, Filters and the view buttons the next, with the full

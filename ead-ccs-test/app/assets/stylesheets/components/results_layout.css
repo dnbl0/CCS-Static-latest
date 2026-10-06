@@ -11,9 +11,7 @@
  */
 :root {
   --results-gutter: 1.5rem;
-  --results-card-shadow: 0 1px 3px 0 rgb(0 0 0 / 25%);
-  --results-card-shadow-hover: 0 4px 12px 0 rgb(0 0 0 / 40%);
-  --sidebar-width: 20rem; /* 320px */
+    --sidebar-width: 20rem; /* 320px */
   --content-gutter: 2rem; /* 32px either side of the results */
 }
 
@@ -134,35 +132,4 @@ body.blacklight-catalog-index #content {
   grid-gap: var(--results-gutter);
   gap: var(--results-gutter);
   border: 0;
-}
-
-/* Mosaic tiles: white, 4px radius, a small shadow that deepens on hover. Grid and list use the bordered
-   record card (components/result_card.css). */
-.documents-masonry .document {
-  background: var(--ccs-white);
-  border: 0;
-  border-radius: var(--ccs-radius-sm);
-  box-shadow: var(--results-card-shadow);
-  transition: box-shadow var(--ccs-duration-slow) ease;
-}
-
-.documents-masonry .document:hover,
-.documents-masonry .document:focus-within {
-  box-shadow: var(--results-card-shadow-hover);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .documents-masonry .document {
-    transition: none;
-  }
-}
-
-/* Mosaic: the image is the card; the caption shows on hover or focus (Blacklight's own behaviour) */
-.documents-masonry .document {
-  overflow: hidden;
-  margin: 0;
-}
-
-.documents-masonry .thumbnail-container {
-  background: var(--ccs-neutral-200);
 }
