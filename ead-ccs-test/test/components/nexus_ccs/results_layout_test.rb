@@ -139,6 +139,26 @@ class ResultsLayoutTest < ActiveSupport::TestCase
     assert_no_selector ".constraints-container"
   end
 
+  test "the digital assets switch turns the Digital asset filter's 'with' value on and off" do
+    response = Blacklight::Solr::Response.new({ "response" => { "docs" => [], "numFound" => 0 } }, {})
+    render_sidebar = lambda do |url|
+      with_controller_class(CatalogController) do
+        with_request_url(url) do
+          render_inline(NexusCcs::FilterSidebarComponent.new(blacklight_config: config, response: response, view_config: config.index))
+        end
+      end
+    end
+
+    render_sidebar.call("/catalog?q=art&page=3")
+    assert_selector "a.filter-switch[role=switch][aria-checked=false]", text: "Records with digital assets"
+    assert_includes page.find("a.filter-switch")[:href], "f%5Bhas_digital_asset%5D%5B%5D=with"
+    assert_not_includes page.find("a.filter-switch")[:href], "page="
+
+    render_sidebar.call("/catalog?q=art&f[has_digital_asset][]=with")
+    assert_selector "a.filter-switch.is-on[aria-checked=true]"
+    assert_not_includes page.find("a.filter-switch")[:href], "has_digital_asset"
+  end
+
   test "the sidebar leads with Advanced filters, 'Search filters (n)' and Clear all" do
     response = Blacklight::Solr::Response.new({ "response" => { "docs" => [], "numFound" => 0 } }, {})
     with_controller_class(CatalogController) do

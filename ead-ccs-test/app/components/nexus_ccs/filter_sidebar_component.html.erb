@@ -19,6 +19,14 @@
     <% end %>
   </div>
 
+  <div class="filter-sidebar__switches" role="group" aria-labelledby="digital-switch-label">
+    <span class="filter-sidebar__switch-caption" id="digital-switch-label">Show only</span>
+    <%= link_to digital_toggle_path, class: "filter-switch#{' is-on' if digital_only?}", role: "switch", "aria-checked": digital_only?.to_s do %>
+      <span class="filter-switch__track" aria-hidden="true"><span class="filter-switch__knob"></span></span>
+      <span class="filter-switch__label">Records with digital assets</span>
+    <% end %>
+  </div>
+
   <% facet_group_names.each do |groupname| %>
     <% fields = facet_fields_in_group(groupname) %>
     <%= render group_component_class.new(id: groupname) do |component| %>
