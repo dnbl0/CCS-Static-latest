@@ -1,0 +1,858 @@
+[
+  {
+    "component": "Collection Asset details",
+    "recordFieldLabel": "Title",
+    "sequence": "1",
+    "simpleOrComplex": "Simple",
+    "metadataField": "Primary Title",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": "[new line, no label]",
+    "sequence": "2",
+    "simpleOrComplex": "Simple",
+    "metadataField": "Alternate Title",
+    "instruction": "Alt title will not appear without Title"
+  },
+  {
+    "component": null,
+    "recordFieldLabel": "Date",
+    "sequence": "3",
+    "simpleOrComplex": "Simple",
+    "metadataField": "Date of Production",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": "3.A",
+    "simpleOrComplex": null,
+    "metadataField": "Date of Production - Display",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": "[hidden]",
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Date of Production - Earliest",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": "[hidden]",
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Date of Production - Latest",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": "Date Collected [alt]",
+    "sequence": "3.A",
+    "simpleOrComplex": null,
+    "metadataField": "Date Collected",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": "[no active]",
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Created Period",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": "Creator",
+    "sequence": "4",
+    "simpleOrComplex": "Complex",
+    "metadataField": "Creator",
+    "instruction": "Creator, DOB - DOD, Cultural Affiliation, Creator Role"
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": "4.A",
+    "simpleOrComplex": null,
+    "metadataField": "Creator Name",
+    "instruction": "Cultural Affiliation follows Creator on new line"
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": "4.B",
+    "simpleOrComplex": null,
+    "metadataField": "Creator DOB",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Creator DOB - Display",
+    "instruction": "After the first Creator, each additional creator / collector / Association has a new line with no label"
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Creator DOB - Earliest",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Creator DOB - Latest",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": "4.C",
+    "simpleOrComplex": "C",
+    "metadataField": "Creator DOD",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Creator DOD - Display",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Creator DOD - Earliest",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Creator DOD - Latest",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": "4.D",
+    "simpleOrComplex": "D",
+    "metadataField": "Creator Affiliation",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Nationality/Heritage",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Creator Role",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Creator Type",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": "4",
+    "simpleOrComplex": "Complex",
+    "metadataField": "Collector",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": "4.A",
+    "simpleOrComplex": "A",
+    "metadataField": "Collector Name",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": "4.B",
+    "simpleOrComplex": "B",
+    "metadataField": "Collector Role",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": "4",
+    "simpleOrComplex": "Complex",
+    "metadataField": "Associations",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": "4.A",
+    "simpleOrComplex": "A",
+    "metadataField": "Associations - Name",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": "4.B",
+    "simpleOrComplex": "B",
+    "metadataField": "Associations - Start",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": "4.C",
+    "simpleOrComplex": "C",
+    "metadataField": "Associations - End",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": "4.D",
+    "simpleOrComplex": "D",
+    "metadataField": "Place",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": "4.E",
+    "simpleOrComplex": "E",
+    "metadataField": "Associations - Role",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": "[new line, No label]",
+    "sequence": "5",
+    "simpleOrComplex": "Simple",
+    "metadataField": "Cultural Affiliation",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Culture / Cultural Group",
+    "instruction": null
+  },
+  {
+    "component": "Collection details",
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": null,
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": "[no label]",
+    "sequence": "29",
+    "simpleOrComplex": null,
+    "metadataField": "Collection Asset ID",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": "Accession Number",
+    "sequence": "15",
+    "simpleOrComplex": null,
+    "metadataField": "Accession Number",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": "Cite this record",
+    "sequence": "28",
+    "simpleOrComplex": null,
+    "metadataField": "Holding Collection Link",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": "Collection",
+    "sequence": "24",
+    "simpleOrComplex": null,
+    "metadataField": "Holding Collection",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": "Sub-Collection",
+    "sequence": "23",
+    "simpleOrComplex": null,
+    "metadataField": "Named Collection",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Resposible Unit",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Determination",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": "Series",
+    "sequence": "9",
+    "simpleOrComplex": null,
+    "metadataField": "Series Title",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": "Description",
+    "sequence": "8",
+    "simpleOrComplex": null,
+    "metadataField": "Description",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Scope and Content",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": "Language",
+    "sequence": "14",
+    "simpleOrComplex": null,
+    "metadataField": "Language",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": "Inscriptions",
+    "sequence": "13",
+    "simpleOrComplex": null,
+    "metadataField": "Inscription",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": "Category",
+    "sequence": "26",
+    "simpleOrComplex": null,
+    "metadataField": "Classification",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": "Subject",
+    "sequence": "27",
+    "simpleOrComplex": null,
+    "metadataField": "Subject",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": "Material",
+    "sequence": "11",
+    "simpleOrComplex": null,
+    "metadataField": "Material Technique",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Material Technique - Medium",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Material Technique - Material",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Extent",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": "Dimensions",
+    "sequence": "12",
+    "simpleOrComplex": null,
+    "metadataField": "Measurement",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Measurement - Name",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Measurement - Height",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Measurement - Width",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Measurement - Depth",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Measurement - Diameter",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Measurement - Unit",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Measurement - Weight",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Measurement - Weight Unit",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Measurement - Display Value",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": "Part of item",
+    "sequence": "22",
+    "simpleOrComplex": null,
+    "metadataField": "Related Parent Record",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Related Record",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": "Edition",
+    "sequence": "10",
+    "simpleOrComplex": null,
+    "metadataField": "Editions",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": "Series",
+    "sequence": "9",
+    "simpleOrComplex": null,
+    "metadataField": "Series",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": "[Dimensions]",
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Duration",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": "Place",
+    "sequence": "7",
+    "simpleOrComplex": null,
+    "metadataField": "Place of Production",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Place of Production (L1)",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Place of Production (L2)",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Place of Production (L3)",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Place of Production (L4)",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Place of Production (L5)",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Collection Site",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Licence type",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Copyright",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Copytight Type",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Copyright Statement",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": "Copyright",
+    "sequence": "16",
+    "simpleOrComplex": null,
+    "metadataField": "Copyright Holder / Rights Holder",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": "Credit line",
+    "sequence": "17",
+    "simpleOrComplex": null,
+    "metadataField": "Credit Line",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": "Access",
+    "sequence": "21",
+    "simpleOrComplex": null,
+    "metadataField": "Physical Access",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": "Type",
+    "sequence": "25",
+    "simpleOrComplex": null,
+    "metadataField": "Object Type",
+    "instruction": null
+  },
+  {
+    "component": "Digital Asset details \n(when DA is available)",
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Digital Asset ID",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Title",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Description",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "DA Creator Name",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Material Technique",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Material Technique - Format Type",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Material Technique - Format",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Measurement",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Measurement - Name",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Measurement - Value",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "URI",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Embed Id",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Date of Production",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": "[Licence logo]",
+    "sequence": "18",
+    "simpleOrComplex": null,
+    "metadataField": "Licence type",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "DA Caption",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": "Terms of Use",
+    "sequence": "20",
+    "simpleOrComplex": null,
+    "metadataField": "Terms of Use",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "DA Advisory - Type",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": "[Classification logo]",
+    "sequence": "19",
+    "simpleOrComplex": null,
+    "metadataField": "DA Advisory - Classification",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "DA Sensitivity",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Digital Asset Role",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Sequence",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "CCS IIIF viewer",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Storage and Access Mechanism",
+    "instruction": null
+  },
+  {
+    "component": "Generated by CCS",
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "URI = Persistent URL",
+    "instruction": null
+  },
+  {
+    "component": null,
+    "recordFieldLabel": null,
+    "sequence": null,
+    "simpleOrComplex": null,
+    "metadataField": "Global ID",
+    "instruction": null
+  }
+]

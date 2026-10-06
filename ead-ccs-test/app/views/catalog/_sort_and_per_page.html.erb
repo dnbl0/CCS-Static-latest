@@ -1,0 +1,7 @@
+<%# The results toolbar: "N results for" with the search and filters as pills on the left; the Filters button
+    (small screens), sort, page size and view on the right. Replaces Blacklight's, which put the previous/next
+    links and the count here (they are with the page numbers below the results). %>
+<div id="sortAndPerPage" class="sort-pagination" role="navigation" aria-label="<%= t("blacklight.search.per_page.aria_label") %>">
+  <%= render NexusCcs::ConstraintsComponent.new(search_state: search_state, inline: true) %>
+  <%= render_results_collection_tools wrapping_class: "search-widgets" %>
+</div>

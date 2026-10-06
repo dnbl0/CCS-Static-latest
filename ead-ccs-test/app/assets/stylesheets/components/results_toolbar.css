@@ -1,0 +1,208 @@
+/*
+ * The bar above the results, after the search results design: "N results for" with the search and filters as
+ * removable pills on the left; on the right the Filters button (small screens), sort, page size and the
+ * view buttons. Below the results: a small Previous / numbers / Next pager. Markup:
+ * catalog/_sort_and_per_page.html.erb and NexusCcs::ConstraintsComponent.
+ */
+#sortAndPerPage {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ccs-space-3) var(--ccs-space-4);
+  margin: 0 0 var(--ccs-space-4);
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+/* Count and pills */
+.constraints-container {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ccs-space-2);
+  min-width: 0;
+  margin: 0;
+}
+
+.constraints-label {
+  margin: 0;
+  font-family: var(--ccs-font-body);
+  font-size: var(--ccs-font-size-sm);
+  font-weight: var(--ccs-font-weight-semibold);
+  color: var(--ccs-text-secondary);
+}
+
+.constraints-container .applied-filter {
+  display: inline-flex;
+  max-width: 100%;
+  overflow: hidden;
+  border-radius: var(--ccs-radius-sm);
+  background: var(--ccs-sage-200);
+}
+
+.constraints-container .applied-filter .btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.5rem;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  font-size: var(--ccs-font-size-sm);
+  font-weight: var(--ccs-font-weight-semibold);
+  line-height: 1.5rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ccs-text-brand);
+}
+
+.constraints-container .applied-filter .constraint-value {
+  min-width: 0;
+  padding-inline: var(--ccs-space-2) var(--ccs-space-1);
+}
+
+.constraints-container .applied-filter .remove {
+  padding-inline: var(--ccs-space-2);
+}
+
+.constraints-container .applied-filter .remove:hover,
+.constraints-container .applied-filter .remove:focus-visible {
+  background: var(--ccs-sage-300);
+}
+
+/* Controls: sort and page size as select-like boxes, then the view buttons, flush right */
+#sortAndPerPage .search-widgets {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: var(--ccs-space-2);
+  margin-left: auto;
+}
+
+#sortAndPerPage .search-widgets > * {
+  margin: 0 !important;
+}
+
+#sortAndPerPage .btn-group > .dropdown-toggle {
+  position: relative;
+  display: block;
+  width: 14rem;
+  max-width: 100%;
+  height: 3rem;
+  padding: 0 4.5rem 0 var(--ccs-space-3);
+  line-height: 2.875rem;
+  border: 1px solid var(--ccs-border-panel);
+  border-radius: 0;
+  background: var(--ccs-white);
+  font-size: var(--ccs-font-size-lg);
+  text-align: start;
+  color: var(--ccs-text-tertiary);
+}
+
+/* The design's 288px selects, where there is room beside the count and pills */
+@media (min-width: 1760px) {
+  #sortAndPerPage .btn-group > .dropdown-toggle {
+    width: 18rem;
+  }
+}
+
+#sortAndPerPage .btn-group > .dropdown-toggle::after {
+  position: absolute;
+  inset: 0 0 0 auto;
+  margin: 0;
+  border: 0;
+  border-left: 1px solid var(--ccs-border-panel);
+  width: 3rem;
+  height: auto;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000f46' stroke-width='2.6' stroke-linecap='square'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center / 0.875rem no-repeat;
+  content: "";
+}
+
+#sortAndPerPage .view-type-group .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  padding: 0;
+  border-color: var(--ccs-border-panel);
+  border-radius: 0;
+}
+
+/* The buttons are joined: neighbours share one border */
+#sortAndPerPage .view-type-group .btn + .btn {
+  margin-left: -1px;
+}
+
+#sortAndPerPage .view-type-group .btn.active {
+  border-color: var(--ccs-navy-1200);
+  background: var(--ccs-navy-1200);
+}
+
+/* Blacklight leaves the icon's wrapper as an inline box with a line height, which pushes the icon up */
+#sortAndPerPage .view-type-group .blacklight-icons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+
+#sortAndPerPage .view-type-group .blacklight-icons svg {
+  display: block;
+  width: 2rem;
+  height: 2rem;
+}
+
+/* Tooltips (Bootstrap's, started by controllers/tooltip_controller.js) in the UoM colours */
+.tooltip {
+  --bs-tooltip-bg: var(--ccs-navy-1100);
+  --bs-tooltip-color: var(--ccs-text-inverse);
+  --bs-tooltip-font-size: var(--ccs-font-size-sm);
+  --bs-tooltip-border-radius: var(--ccs-radius-sm);
+  --bs-tooltip-opacity: 1;
+}
+
+/* Pagination: small caps Previous and Next around the page numbers, the current page filled */
+.paginate-section .pagination {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ccs-space-1);
+  justify-content: center;
+  margin: 0;
+  padding: var(--ccs-space-6) 0;
+}
+
+.paginate-section .page-link {
+  min-width: 2.5rem;
+  padding: var(--ccs-space-2) var(--ccs-space-3);
+  border: 0;
+  border-radius: var(--ccs-radius-sm);
+  background: transparent;
+  font-size: var(--ccs-font-size-sm);
+  line-height: 1.5;
+  text-align: center;
+  color: var(--ccs-text-primary);
+}
+
+.paginate-section .page-link:hover {
+  background: var(--ccs-neutral-100);
+}
+
+.paginate-section .page-item.active .page-link {
+  background: var(--ccs-navy-1100);
+  color: var(--ccs-text-inverse);
+}
+
+.paginate-section .page-item.disabled .page-link {
+  background: transparent;
+  color: var(--ccs-text-tertiary);
+}
+
+.paginate-section .page-item:first-child .page-link,
+.paginate-section .page-item:last-child .page-link {
+  font-weight: var(--ccs-font-weight-semibold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}

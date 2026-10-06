@@ -1,0 +1,24 @@
+name: Docker Image CI
+on:
+  push:
+jobs:  
+  prepare_matrix:
+    uses: unimelb-enterprise-apps/action-kube-build-deploy/.github/workflows/build-matrix-data.yaml@eks_tags
+  app:
+    needs: prepare_matrix
+    strategy:
+      matrix: ${{ fromJson(needs.prepare_matrix.outputs.matrix) }}
+    uses: unimelb-enterprise-apps/action-kube-build-deploy/.github/workflows/kube-build-deploy.yaml@eks    
+    with:
+      kube_repository: unimelb-enterprise-apps/ead-ccs-kube-manifests
+      filePath: ead-ccs/deployment.yaml
+      appId: ${{ vars.PR_CRUD_APP_ID }}
+      appInstallationId: ${{ vars.PR_CRUD_APP_INSTALL_ID }}
+      dockerBuildFlags: ${{ matrix.flags }}
+      buildOnly: ${{ matrix.buildOnly }}
+      dockerBuildTag: ${{ matrix.tag }}
+      useSyncSed: ${{ matrix.useSyncSed }}
+    secrets:
+      appPrivateKeyBase64: ${{ secrets.PR_CRUD_APP_PRIVATE_KEY }}
+      registryPassword: ${{ secrets.GITHUB_TOKEN }}
+      accessToken: ${{ secrets.REPO_SYNC }}

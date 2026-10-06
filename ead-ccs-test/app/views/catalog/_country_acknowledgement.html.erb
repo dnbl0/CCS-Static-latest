@@ -1,0 +1,32 @@
+<div data-controller="dialog" data-dialog-open-on-connect-value="true" data-turbo-temporary>
+  <dialog id="country-acknowledgement"
+          class="modal"
+          data-dialog-target="dialog"
+          data-action="click->dialog#closeOnBackdrop"
+          aria-labelledby="country-acknowledgement-title">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body p-4 p-md-5">
+          <h2 id="country-acknowledgement-title" class="h3 mb-4">
+            <%= t(".title") %>
+          </h2>
+
+          <blockquote class="uom-ack-quote">
+            <%= t(".body_html") %>
+          </blockquote>
+
+          <p class="text-secondary small mb-0"><%= t(".advisory") %></p>
+        </div>
+
+        <div class="modal-footer border-0 px-4 pb-4 pt-0 px-md-5 pb-md-5">
+          <button type="button"
+                  class="btn btn-primary"
+                  data-action="dialog#close"
+                  autofocus>
+            <%= t(".continue") %>
+          </button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+</div>

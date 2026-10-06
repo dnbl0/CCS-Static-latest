@@ -1,0 +1,135 @@
+/*
+ * Filter drawer: below 992px the sidebar leaves the page and slides in from the left (Europeana's
+ * pattern, mirrored because our sidebar is on the left): 320px wide at most, 75vw at most, 300ms, over a
+ * dark scrim. Markup: NexusCcs::FilterSidebarComponent and FilterToggleComponent; behaviour:
+ * controllers/filter_drawer_controller.js.
+ */
+.filters-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ccs-space-2);
+  height: 2.5rem;
+  padding: 0 var(--ccs-space-4);
+  border: 1px solid var(--ccs-navy-1100);
+  border-radius: var(--ccs-radius-sm);
+  background: var(--ccs-white);
+  font-weight: var(--ccs-font-weight-semibold);
+  color: var(--ccs-text-brand);
+}
+
+.filters-toggle:hover {
+  background: var(--ccs-cyan-100);
+}
+
+.filters-toggle__count {
+  min-width: 1.5rem;
+  padding: 0 var(--ccs-space-2);
+  border-radius: var(--ccs-radius-pill);
+  background: var(--ccs-navy-1100);
+  font-size: var(--ccs-font-size-sm);
+  line-height: 1.5rem;
+  text-align: center;
+  color: var(--ccs-text-inverse);
+}
+
+.filter-drawer__header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  align-items: center;
+  justify-content: space-between;
+  height: 3.5rem;
+  margin: 0 calc(-1 * var(--ccs-space-4)) var(--ccs-space-3);
+  padding: 0 var(--ccs-space-4);
+  border-bottom: 1px solid var(--ccs-border-panel);
+  background: var(--ccs-white);
+}
+
+.filter-drawer__title {
+  margin: 0;
+  font-family: var(--ccs-font-body);
+  font-size: var(--ccs-font-size-lg);
+  font-weight: var(--ccs-font-weight-semibold);
+}
+
+.filter-drawer__close {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ccs-space-2);
+  padding: var(--ccs-space-2);
+  border: 0;
+  background: none;
+  font-size: var(--ccs-font-size-sm);
+  font-weight: var(--ccs-font-weight-semibold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ccs-text-brand);
+}
+
+.filter-backdrop {
+  display: none;
+}
+
+@media (max-width: 991.98px) {
+  .filter-drawer__header {
+    display: flex;
+  }
+
+  #sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 1050; /* above the site header (1040), below modals */
+    width: 20rem;
+    max-width: 75vw;
+    padding: 0 var(--ccs-space-4) var(--ccs-space-5);
+    overflow-y: auto;
+    background: var(--ccs-white);
+    box-shadow: var(--ccs-shadow-lg);
+    transform: translateX(-100%);
+    visibility: hidden;
+    transition: transform var(--ccs-duration-slow) ease-in-out, visibility 0s linear var(--ccs-duration-slow);
+  }
+
+  #sidebar.is-open {
+    transform: none;
+    visibility: visible;
+    transition-delay: 0s;
+  }
+
+  .filter-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 1049;
+    background: rgb(0 0 0 / 70%);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--ccs-duration-slow) ease-in-out, visibility 0s linear var(--ccs-duration-slow);
+  }
+
+  .filter-backdrop.is-open {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
+  }
+
+  body.filter-drawer-open {
+    overflow: hidden;
+  }
+
+  /* The drawer replaces the per-section "Show facets" toggles: every section is always open in it */
+  .facet-toggle-button {
+    display: none !important;
+  }
+
+  .facets-collapse.collapse:not(.show) {
+    display: block;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #sidebar,
+  .filter-backdrop {
+    transition: none;
+  }
+}

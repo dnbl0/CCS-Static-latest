@@ -1,0 +1,9 @@
+<section class="persistent-link" aria-labelledby="persistent-link-heading" data-controller="clipboard">
+  <h2 id="persistent-link-heading" class="persistent-link__heading">Persistent link</h2>
+  <div class="persistent-link__row">
+    <input type="text" class="persistent-link__url" value="<%= url %>" readonly aria-label="Persistent link" data-clipboard-target="source">
+    <button type="button" class="btn btn-outline-primary" data-action="clipboard#copy" data-clipboard-target="button">Copy link</button>
+  </div>
+  <p class="persistent-link__note">Quote this link when contacting the collection team.</p>
+  <p class="visually-hidden" role="status" data-clipboard-target="status"></p>
+</section>

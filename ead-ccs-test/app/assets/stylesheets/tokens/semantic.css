@@ -1,0 +1,63 @@
+/*
+ * Design tokens, tier 2: semantic roles.
+ *
+ * What a value is for, not what it looks like. These reference primitives only
+ * and are what theme, layout and component stylesheets should use. Component
+ * specific tokens (e.g. --ccs-facet-*) belong in that component's stylesheet,
+ * referencing the tokens below.
+ *
+ * Naming: --ccs-<role>-<property>[-<variant>], e.g. --ccs-text-link-hover.
+ */
+:root {
+  /* Text */
+  --ccs-text-primary: var(--ccs-neutral-1000);
+  --ccs-text-secondary: var(--ccs-neutral-800);
+  --ccs-text-tertiary: var(--ccs-neutral-600);
+  --ccs-text-brand: var(--ccs-navy-1100);
+  --ccs-text-link: var(--ccs-blue-800);
+  --ccs-text-link-hover: var(--ccs-blue-700);
+  --ccs-text-inverse: var(--ccs-white);
+  --ccs-text-inverse-muted: rgb(255 255 255 / 85%);
+  --ccs-text-error: var(--ccs-red-600);
+
+  /* Surfaces */
+  --ccs-surface-default: var(--ccs-white);
+  --ccs-surface-subtle: var(--ccs-neutral-100);
+  --ccs-surface-panel: var(--ccs-white);
+  --ccs-surface-brand: var(--ccs-navy-1100);
+  --ccs-surface-brand-strong: var(--ccs-navy-1200);
+
+  /* Borders */
+  --ccs-border-default: var(--ccs-neutral-300);
+  --ccs-border-panel: var(--ccs-navy-200);
+  --ccs-border-strong: var(--ccs-navy-400);
+  --ccs-border-brand: var(--ccs-navy-1100);
+  --ccs-border-error: var(--ccs-red-600);
+
+  /* Actions: primary (cyan) and secondary (sage) buttons */
+  --ccs-action-primary: var(--ccs-cyan-400);
+  --ccs-action-primary-hover: var(--ccs-cyan-300);
+  --ccs-action-primary-active: var(--ccs-cyan-500);
+  --ccs-action-primary-text: var(--ccs-navy-1100);
+  --ccs-action-secondary: var(--ccs-sage-400);
+  --ccs-action-secondary-hover: var(--ccs-sage-300);
+  --ccs-action-secondary-active: var(--ccs-sage-500);
+  --ccs-action-secondary-text: var(--ccs-navy-1100);
+  --ccs-action-disabled: var(--ccs-neutral-200);
+  --ccs-action-disabled-text: var(--ccs-neutral-600);
+
+  /* Focus */
+  --ccs-focus-ring: var(--ccs-blue-600);
+  --ccs-focus-ring-glow: rgb(13 108 221 / 40%);
+
+  /* Typography roles */
+  --ccs-font-body: var(--ccs-font-family-sans);
+  --ccs-font-heading: var(--ccs-font-family-serif);
+  --ccs-font-code: var(--ccs-font-family-mono);
+
+  /* Shape and spacing roles */
+  --ccs-radius-control: var(--ccs-radius-md);
+  --ccs-radius-control-sm: var(--ccs-radius-sm);
+  --ccs-radius-panel: var(--ccs-radius-none);
+  --ccs-space-panel: var(--ccs-space-5);
+}

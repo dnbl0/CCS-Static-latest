@@ -1,0 +1,56 @@
+/*
+ * Loading skeleton: while the next page of a search loads (app/javascript/search_loading.js puts
+ * .is-searching on <html>) the result tiles and the filter values turn into grey shimmering blocks, the
+ * layout holding still. Content stays in the page for assistive technology (aria-busy on #content).
+ */
+:root {
+  --skeleton-base: var(--ccs-navy-200);
+  --skeleton-shine: var(--ccs-navy-100);
+}
+
+@keyframes skeleton-shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+
+.is-searching #documents .document,
+.is-searching .facet-values li,
+.is-searching .constraints-container .applied-filter {
+  background: linear-gradient(90deg, var(--skeleton-base) 30%, var(--skeleton-shine) 50%, var(--skeleton-base) 70%) 0 0 / 200% 100%;
+  animation: skeleton-shimmer 1.4s linear infinite;
+  box-shadow: none;
+  pointer-events: none;
+}
+
+/* What the skeleton replaces is hidden, not removed, so nothing moves */
+.is-searching #documents .document > *,
+.is-searching .facet-values li > *,
+.is-searching .constraints-container .applied-filter > * {
+  visibility: hidden;
+}
+
+.is-searching .facet-values li {
+  margin-block: var(--ccs-space-2);
+  padding-block: 0;
+  height: 1.375rem;
+  border-radius: var(--ccs-radius-sm);
+}
+
+.is-searching .constraints-container .applied-filter {
+  border-radius: var(--ccs-radius-sm);
+}
+
+.is-searching .pagination,
+.is-searching .search-widgets {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .is-searching #documents .document,
+  .is-searching .facet-values li,
+  .is-searching .constraints-container .applied-filter {
+    background: var(--skeleton-base);
+    animation: none;
+  }
+}

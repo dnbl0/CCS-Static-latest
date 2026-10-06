@@ -1,0 +1,26 @@
+/*
+ * This is a manifest file that'll be compiled into application.css by Propshaft.
+ * Load order: vendor (Bootstrap, Blacklight), design tokens, the UoM theme, then components.
+ * Only this manifest is linked by the layout; add new files with @import here.
+ */
+@import url("bootstrap-uom.css");
+@import url("blacklight.css");
+@import url("blacklight_gallery/gallery.css");
+@import url("blacklight_gallery/masonry.css");
+@import url("fonts.css");
+@import url("tokens/primitives.css");
+@import url("tokens/semantic.css");
+@import url("unimelb.css");
+@import url("components/arrow_link.css");
+@import url("components/site_header.css");
+@import url("components/search_overlay.css");
+@import url("components/breadcrumb_bar.css");
+@import url("components/search_banner.css");
+@import url("components/digital_assets.css");
+@import url("components/results_layout.css");
+@import url("components/results_toolbar.css");
+@import url("components/filter_rail.css");
+@import url("components/filter_drawer.css");
+@import url("components/skeleton.css");
+@import url("components/record_page.css");
+@import url("components/site_footer.css");

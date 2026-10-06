@@ -1,0 +1,10 @@
+<div class="spelling-correction alert alert-info" role="status">
+  No results for <strong><%= correction.original %></strong>.
+  Showing results for <strong><%= correction.corrected %></strong> instead.
+  <% if correction.suggestions.present? %>
+    <span class="spelling-correction-alternatives">
+      Did you mean:
+      <%= safe_join(correction.suggestions.map { |word| suggestion_link(word) }, ", ") %>?
+    </span>
+  <% end %>
+</div>

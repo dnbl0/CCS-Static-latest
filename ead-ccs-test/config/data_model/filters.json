@@ -1,0 +1,222 @@
+[
+  {
+    "seq": 1,
+    "section": "Collection details",
+    "name": "Collection Title",
+    "type": "Checkbox",
+    "additional": null,
+    "options": "List of all available Collections",
+    "dataModelRef": "Collection",
+    "questions": null
+  },
+  {
+    "seq": 2,
+    "section": "Collection details",
+    "name": "Named Collections",
+    "type": "Browse + Search within this filter",
+    "additional": null,
+    "options": "List of all available named Collections",
+    "dataModelRef": "Collection - Named",
+    "questions": null
+  },
+  {
+    "seq": 3,
+    "section": "Creator",
+    "name": "Creator Name",
+    "type": "Browse + Search within this filter",
+    "additional": null,
+    "options": "List of all available Creators",
+    "dataModelRef": "Agent - Creator",
+    "questions": null
+  },
+  {
+    "seq": 4,
+    "section": "Creator",
+    "name": "Creator Date of Birth",
+    "type": "Date selector (Year)",
+    "additional": null,
+    "options": "n/a",
+    "dataModelRef": "Agent > Date (Birth)",
+    "questions": null
+  },
+  {
+    "seq": 5,
+    "section": "Creator",
+    "name": "Creator Date of Death",
+    "type": "Date selector (Year)",
+    "additional": null,
+    "options": "n/a",
+    "dataModelRef": "Agent > Date (Death)",
+    "questions": null
+  },
+  {
+    "seq": 6,
+    "section": "Creator",
+    "name": "Nationality",
+    "type": "Browse + Search within this filter",
+    "additional": null,
+    "options": "n/a",
+    "dataModelRef": "Agent > Nationality",
+    "questions": null
+  },
+  {
+    "seq": 7,
+    "section": "Object",
+    "name": "Production date",
+    "type": "Date selector (Year)",
+    "additional": null,
+    "options": "n/a",
+    "dataModelRef": "Date - Date of Production",
+    "questions": null
+  },
+  {
+    "seq": 8,
+    "section": "Object",
+    "name": "Date (Era, Period, Century)",
+    "type": "Browse + Search within this filter",
+    "additional": null,
+    "options": "tbd",
+    "dataModelRef": "Date - Created Period",
+    "questions": "Is this a derived value that needs to be calculated?"
+  },
+  {
+    "seq": 9,
+    "section": "Object",
+    "name": "Classification",
+    "type": "Browse + Search within this filter",
+    "additional": null,
+    "options": "List of all available classifications",
+    "dataModelRef": "Subject Classification",
+    "questions": "Might need UI input"
+  },
+  {
+    "seq": 10,
+    "section": "Object",
+    "name": "Object Type",
+    "type": "Browse + Search within this filter",
+    "additional": null,
+    "options": "List of all available object types",
+    "dataModelRef": "Subject - Type",
+    "questions": null
+  },
+  {
+    "seq": 11,
+    "section": "Object",
+    "name": "Materials / Medium",
+    "type": "Browse + Search within this filter",
+    "additional": null,
+    "options": "List of all available Materials",
+    "dataModelRef": "Material Technique",
+    "questions": null
+  },
+  {
+    "seq": 12,
+    "section": "Object",
+    "name": "Language",
+    "type": "Browse + Search within this filter",
+    "additional": null,
+    "options": "List of all available languages",
+    "dataModelRef": "Language",
+    "questions": null
+  },
+  {
+    "seq": 13,
+    "section": "Object",
+    "name": "Region",
+    "type": "Browse + Search within this filter",
+    "additional": null,
+    "options": "List of all regions - tbd",
+    "dataModelRef": "Place - Place of Production",
+    "questions": "Region? - Is this a derived data point from Place of production?"
+  },
+  {
+    "seq": 14,
+    "section": "Subject / Topic",
+    "name": "Subject Terms",
+    "type": "Browse + Search within this filter",
+    "additional": null,
+    "options": "List of all available subjetc terms",
+    "dataModelRef": "Subject",
+    "questions": null
+  },
+  {
+    "seq": 15,
+    "section": "Subject / Topic",
+    "name": "Subject Agent",
+    "type": "Unsure",
+    "additional": null,
+    "options": null,
+    "dataModelRef": "Subject > Agent",
+    "questions": "Is this same as creator name? Do we need this?"
+  },
+  {
+    "seq": 16,
+    "section": "Subject / Topic",
+    "name": "Subject Location",
+    "type": "Browse + Search within this filter",
+    "additional": null,
+    "options": "List of all available locations",
+    "dataModelRef": "Subject > Place",
+    "questions": null
+  },
+  {
+    "seq": 17,
+    "section": "Subject / Topic",
+    "name": "Subject Event",
+    "type": "Browse + Search within this filter",
+    "additional": null,
+    "options": "List of all available events?",
+    "dataModelRef": "Subject > Event",
+    "questions": "Do we need this?"
+  },
+  {
+    "seq": 18,
+    "section": "Copyright & Advisory",
+    "name": "License type",
+    "type": "Checkbox",
+    "additional": null,
+    "options": "tbd",
+    "dataModelRef": "Copyright",
+    "questions": "What would be the options here?"
+  },
+  {
+    "seq": 19,
+    "section": "Copyright & Advisory",
+    "name": "Film & Gaming Classification",
+    "type": "Checkbox",
+    "additional": null,
+    "options": "G, PG, M, MA 15+, R 18+, X 18+, RC",
+    "dataModelRef": "Access Type - e.g., film, game, sensitivity",
+    "questions": null
+  },
+  {
+    "seq": 20,
+    "section": "Access",
+    "name": "Object Access Condition",
+    "type": "tbd",
+    "additional": null,
+    "options": "tbd",
+    "dataModelRef": "Access",
+    "questions": "Do we need this?"
+  },
+  {
+    "seq": 21,
+    "section": "Access",
+    "name": "Digital asset Access Condition",
+    "type": "tbd",
+    "additional": null,
+    "options": "tbd",
+    "dataModelRef": "Access",
+    "questions": "Do we need this?"
+  },
+  {
+    "seq": 22,
+    "section": "Media type",
+    "name": "Digital Asset Format Type",
+    "type": "Checkbox",
+    "additional": null,
+    "options": "List of available format types (Images, audio, video, PDF)",
+    "dataModelRef": "Material Technique - Digital format",
+    "questions": null
+  }
+]

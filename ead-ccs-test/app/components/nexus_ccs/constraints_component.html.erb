@@ -1,0 +1,15 @@
+<%= content_tag @tag || :div, id: @id, class: @classes do %>
+  <h2 class="constraints-label" aria-live="polite"><%= heading %></h2>
+
+  <% if query_constraints_area.present? %>
+    <% query_constraints_area.each do |constraint| %><%= constraint %><% end %>
+  <% else %>
+    <%= query_constraints %>
+  <% end %>
+
+  <% if facet_constraints_area.present? %>
+    <% facet_constraints_area.each do |constraint| %><%= constraint %><% end %>
+  <% else %>
+    <%= facet_constraints %>
+  <% end %>
+<% end %>

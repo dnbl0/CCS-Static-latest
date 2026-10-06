@@ -1,0 +1,18 @@
+<%= content_tag @component,
+  id: @id,
+  data: { "document-id": document.id.to_s.parameterize, "document-counter": counter },
+  itemscope: true,
+  itemtype: document.itemtype,
+  class: (classes + [ "result-card" ]).join(" ") do %>
+  <div class="result-card__body">
+    <% if collection %><p class="result-card__eyebrow"><%= collection %></p><% end %>
+    <%= title %>
+    <%= metadata %>
+    <% if footer_items.any? %>
+      <ul class="result-card__footer">
+        <% footer_items.each do |item| %><li><%= item %></li><% end %>
+      </ul>
+    <% end %>
+  </div>
+  <%= thumbnail %>
+<% end %>

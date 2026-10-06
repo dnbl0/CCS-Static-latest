@@ -1,0 +1,416 @@
+/*
+ * Filter rail: the facet sections in the search results sidebar, styled after the static CCS "Search
+ * filters" rail. Blacklight owns the markup (.facets groups of .facet-limit accordion items); the
+ * section titles and filters come from the workbook (see docs/data-model.md).
+ */
+
+/* The rail as a whole stays in view while scrolling, not each section (they would overlap) */
+@media (min-width: 992px) {
+  #sidebar search {
+    position: sticky;
+    top: var(--ccs-space-4);
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+    padding: 0;
+  }
+}
+
+#sidebar .facets {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  --bs-accordion-bg: transparent;
+  --bs-accordion-border-color: transparent;
+  --bs-accordion-btn-padding-x: 0;
+  --bs-accordion-btn-padding-y: 1.375rem;
+  --bs-accordion-btn-icon-width: 1.125rem;
+  --bs-accordion-body-padding-x: 0;
+  --bs-accordion-btn-focus-box-shadow: none;
+  --bs-accordion-active-bg: transparent;
+  --bs-accordion-btn-bg: transparent;
+  /* Blacklight hangs wrapped labels with a negative indent; the checkbox does that job here */
+  --bl-facet-label-indent: 0;
+  --bl-facet-label-padding-left: 0;
+}
+
+/* The workbook's section titles are not shown (the design is one flat list of filters), but stay for
+   screen readers as landmarks over each group */
+.facets-header {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+/* One filter: a flat row with a hairline under it */
+.facets .accordion-item.facet-limit {
+  border: 0;
+  border-bottom: 1px solid #ebe8e2;
+  border-radius: 0;
+  background: transparent;
+}
+
+.facets .accordion-item:last-of-type {
+  border-bottom: 1px solid #ebe8e2;
+}
+
+/* A filter: its name in the link blue, a chevron at the right */
+.facet-field-heading .accordion-button {
+  padding-inline: var(--ccs-space-4);
+  background: transparent;
+  box-shadow: none;
+  font-size: var(--ccs-font-size-xl);
+  line-height: 1.2;
+  font-weight: var(--ccs-font-weight-semibold);
+  color: var(--ccs-text-primary);
+}
+
+.facet-field-heading .accordion-button:not(.collapsed) {
+  background: transparent;
+  color: var(--ccs-text-primary);
+  box-shadow: none;
+}
+
+.facet-field-heading .accordion-button:focus-visible {
+  outline: 2px solid var(--ccs-focus-ring);
+  outline-offset: 2px;
+}
+
+.facets .accordion-body {
+  padding: 0 var(--ccs-space-4) 1.625rem;
+}
+
+/* Values: a checkbox (ticked when selected), the label, then the count */
+.facet-values li {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--ccs-space-3);
+  padding: 0.5625rem 0;
+}
+
+.facet-values .facet-label {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: flex-start;
+  gap: 0.875rem;
+  min-width: 0;
+}
+
+.facet-values .facet-select,
+.facet-values .facet-label > .selected {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 0.875rem;
+  font-size: var(--ccs-font-size-md);
+  line-height: var(--ccs-line-height-snug);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.facet-values .facet-select {
+  color: var(--ccs-text-primary);
+}
+
+.facet-values .facet-select:hover {
+  color: var(--ccs-text-link-hover);
+  text-decoration: underline;
+}
+
+.facet-values .facet-select::before,
+.facet-values .facet-label > .selected::before {
+  content: "";
+  flex: none;
+  box-sizing: border-box;
+  width: 1.375rem;
+  height: 1.375rem;
+  margin-top: -0.0625rem;
+  border: 1.5px solid var(--ccs-navy-1100);
+  background: var(--ccs-white);
+}
+
+.facet-values .facet-label > .selected {
+  font-weight: var(--ccs-font-weight-semibold);
+  color: var(--ccs-text-brand);
+}
+
+.facet-values .facet-label > .selected::before {
+  background: var(--ccs-navy-1100) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3.5' stroke-linecap='square'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 0.8rem no-repeat;
+}
+
+/* Unticking: the remove link, kept small */
+.facet-values .remove {
+  color: var(--ccs-text-tertiary);
+}
+
+.facet-values .facet-count {
+  flex: none;
+  font-size: var(--ccs-font-size-md);
+  font-variant-numeric: tabular-nums;
+  color: var(--ccs-text-tertiary);
+}
+
+/* "Show more": a plain underlined link, as in the static search page */
+.more_facets {
+  margin-top: var(--ccs-space-2);
+}
+
+.more_facets a {
+  display: inline-block;
+  padding: 0;
+  font-size: var(--ccs-font-size-md);
+  font-weight: var(--ccs-font-weight-semibold);
+  text-decoration: underline;
+  color: var(--ccs-text-primary);
+}
+
+/* Top of the rail: the advanced filters link, then "Search filters (n)" and "Clear filters" */
+.filter-sidebar__advanced {
+  margin: 0;
+  padding: var(--ccs-space-4);
+  border-bottom: 1px solid var(--ccs-surface-subtle);
+  font-size: var(--ccs-font-size-sm);
+  font-weight: var(--ccs-font-weight-semibold);
+  line-height: 1.43;
+}
+
+.filter-sidebar__advanced a {
+  text-decoration: none;
+}
+
+.filter-sidebar__advanced a:hover {
+  text-decoration: underline;
+}
+
+/* "Search filters (n)" and "Clear filters" share a row, equal width */
+.filter-sidebar__summary {
+  display: flex;
+  gap: var(--ccs-space-4);
+  padding: var(--ccs-space-4);
+  border-bottom: 1px solid var(--ccs-surface-subtle);
+}
+
+.filter-sidebar__heading,
+.filter-sidebar__clear {
+  display: flex;
+  flex: 1 1 0;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ccs-space-1);
+  min-width: 0;
+  margin: 0;
+  padding: var(--ccs-space-3) var(--ccs-space-2);
+  font-family: var(--ccs-font-body);
+  font-size: var(--ccs-font-size-md);
+  line-height: 1.5rem;
+  white-space: nowrap;
+  color: var(--ccs-text-brand);
+}
+
+.filter-sidebar__heading {
+  border: 1px solid var(--ccs-border-panel);
+  background: var(--ccs-white);
+  font-weight: var(--ccs-font-weight-semibold);
+}
+
+.filter-sidebar__clear {
+  border: 0;
+  background: var(--ccs-surface-subtle);
+  text-decoration: none;
+}
+
+.filter-sidebar__clear:hover {
+  background: var(--ccs-neutral-200);
+}
+
+/* The section title, with a count badge when values are selected, and under it (collapsed only) what they are */
+.facet-field-heading .accordion-button {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--ccs-space-1) var(--ccs-space-3);
+  text-align: start;
+}
+
+.facet-field-heading .accordion-button::after {
+  grid-column: 2;
+  grid-row: 1;
+  margin-left: 0;
+  /* Blacklight draws a white chevron on a filter that has values selected (it fills the header navy) */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23222' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m2 5 6 6 6-6'/%3E%3C/svg%3E");
+}
+
+.facet-title {
+  display: flex;
+  grid-column: 1;
+  grid-row: 1;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.625rem;
+  min-width: 0;
+}
+
+.facet-title__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.375rem;
+  height: 1.375rem;
+  padding: 0 0.4375rem;
+  border-radius: var(--ccs-radius-pill);
+  background: var(--ccs-navy-1100);
+  font-size: 0.8125rem;
+  font-weight: var(--ccs-font-weight-bold);
+  line-height: 1;
+  color: var(--ccs-text-inverse);
+}
+
+.facet-summary {
+  display: none;
+  grid-column: 1 / -1;
+  grid-row: 2;
+  overflow: hidden;
+  font-size: var(--ccs-font-size-sm);
+  font-weight: var(--ccs-font-weight-regular);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--ccs-navy-750);
+}
+
+.facet-field-heading .accordion-button.collapsed .facet-summary {
+  display: block;
+}
+
+/* Range filters (production date, creator dates): the plugin's histogram, a two-handle slider
+   (controllers/range_slider_controller.js), then Begin / End and Apply limit */
+.range-slider {
+  position: relative;
+  height: 2.75rem;
+  margin: 0 0.75rem var(--ccs-space-3);
+}
+
+.range-slider__rail {
+  position: absolute;
+  inset: 0.625rem 0 auto;
+  height: 0.25rem;
+  background: var(--ccs-navy-200);
+}
+
+.range-slider__fill {
+  position: absolute;
+  inset-block: 0;
+  background: var(--ccs-navy-1100);
+}
+
+.range-slider__handle {
+  position: absolute;
+  inset: 0 -0.75rem auto;
+  width: calc(100% + 1.5rem);
+  height: 1.5rem;
+  margin: 0;
+  background: none;
+  pointer-events: none;
+  appearance: none;
+}
+
+.range-slider__handle::-webkit-slider-runnable-track { background: none; }
+.range-slider__handle::-moz-range-track { background: none; }
+
+.range-slider__handle::-webkit-slider-thumb {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid var(--ccs-white);
+  border-radius: 50%;
+  background: var(--ccs-navy-1100);
+  box-shadow: var(--ccs-shadow-sm);
+  cursor: grab;
+  pointer-events: auto;
+  appearance: none;
+}
+
+.range-slider__handle::-moz-range-thumb {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid var(--ccs-white);
+  border-radius: 50%;
+  background: var(--ccs-navy-1100);
+  box-shadow: var(--ccs-shadow-sm);
+  cursor: grab;
+  pointer-events: auto;
+}
+
+.range-slider__handle:focus-visible {
+  outline: none;
+}
+
+.range-slider__handle:focus-visible::-webkit-slider-thumb {
+  outline: 2px solid var(--ccs-focus-ring);
+  outline-offset: 2px;
+}
+
+.range-slider__handle:focus-visible::-moz-range-thumb {
+  outline: 2px solid var(--ccs-focus-ring);
+  outline-offset: 2px;
+}
+
+.range-slider__ends {
+  position: absolute;
+  inset: 1.75rem 0 auto;
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--ccs-font-size-sm);
+  color: var(--ccs-text-tertiary);
+}
+
+/* Begin / End: two even fields, then the button full width */
+.range_limit_form {
+  display: block !important;
+}
+
+.range-limit-input-group > .d-flex:first-child {
+  gap: var(--ccs-space-3);
+}
+
+.range-limit-input-group > .d-flex:first-child > div {
+  flex: 1 1 0;
+  margin: 0 !important;
+}
+
+.range-limit-input-group label {
+  margin-bottom: var(--ccs-space-1);
+  font-size: var(--ccs-font-size-sm);
+  font-weight: var(--ccs-font-weight-semibold);
+  color: var(--ccs-text-secondary) !important;
+}
+
+.range-limit-input-group .form-control {
+  height: 2.5rem;
+  border: 1px solid var(--ccs-border-strong);
+  border-radius: 0;
+  font-size: var(--ccs-font-size-md);
+}
+
+.range-limit-input-group .submit {
+  width: 100%;
+  padding: var(--ccs-space-2) var(--ccs-space-4);
+  border: 0;
+  border-radius: 0;
+  background: var(--ccs-action-primary);
+  font-size: var(--ccs-font-size-md);
+  font-weight: var(--ccs-font-weight-semibold);
+  color: var(--ccs-action-primary-text);
+}
+
+.range-limit-input-group .submit:hover {
+  background: var(--ccs-action-primary-hover);
+}
+
+.range-limit-input-group > .d-flex:last-child {
+  justify-content: stretch !important;
+}
+
+.range-limit-input-group > .d-flex:last-child > * {
+  flex: 1 1 auto;
+}

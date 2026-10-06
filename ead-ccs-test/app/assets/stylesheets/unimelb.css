@@ -1,0 +1,393 @@
+/*
+ * 'University of Melbourne' skin for Blacklight 9 / CCS.
+ *
+ * This file loads *after* blacklight.css and sets CSS properties that Bootstrap
+ * and Blacklight already expose as theming hooks, plus overrides.
+ *
+ * The starter CSS has been inspired by the DevOps/Django team's 'Mothership' and the
+ * --uom-ds-* custom properties published on lib.unimelb.edu.au.
+ * Inlined here so the app has no runtime dependency on the CDN.
+ */
+
+:root {
+  /* Transitional aliases: the --uom-* names used below now resolve to the
+     design tokens in tokens/. Replace each with its --ccs-* token as the
+     rules that use it are migrated, then delete the alias. */
+  --uom-action-border: var(--ccs-border-strong);
+  --uom-navy: var(--ccs-navy-1100);
+  --uom-navy-dark: var(--ccs-navy-1200);
+  --uom-blue: var(--ccs-action-primary);
+  --uom-blue-hover: var(--ccs-action-primary-hover);
+  --uom-blue-active: var(--ccs-action-primary-active);
+  --uom-sage: var(--ccs-action-secondary);
+  --uom-sage-hover: var(--ccs-action-secondary-hover);
+  --uom-sage-active: var(--ccs-action-secondary-active);
+  --uom-link: var(--ccs-text-link);
+  --uom-link-hover: var(--ccs-text-link-hover);
+  --uom-focus: var(--ccs-focus-ring);
+  --uom-radius: var(--ccs-radius-control);
+  --uom-radius-sm: var(--ccs-radius-control-sm);
+  --uom-text: var(--ccs-text-primary);
+  --uom-text-secondary: var(--ccs-text-secondary);
+  --uom-text-tertiary: var(--ccs-text-tertiary);
+  --uom-bg-secondary: var(--ccs-surface-subtle);
+  --uom-border: var(--ccs-border-default);
+  --uom-panel-bg: var(--ccs-surface-panel);
+  --uom-panel-border: var(--ccs-border-panel);
+  --uom-panel-radius: var(--ccs-radius-panel);
+  --uom-panel-padding: var(--ccs-space-panel);
+  --uom-disabled-bg: var(--ccs-action-disabled);
+  --uom-font-sans: var(--ccs-font-body);
+  --uom-font-serif: var(--ccs-font-heading);
+
+  /* Bootstrap 5.3 global theme */
+  --bs-font-sans-serif: var(--uom-font-sans);
+  --bs-body-font-family: var(--uom-font-sans);
+  --bs-body-color: var(--uom-text);
+  --bs-body-color-rgb: 34, 34, 34;  /* = --ccs-text-primary */
+  --bs-secondary-color: var(--uom-text-secondary);
+  --bs-emphasis-color: var(--uom-navy);
+
+  --bs-primary: var(--uom-navy);
+  --bs-primary-rgb: 0, 15, 70;
+  --bs-dark-rgb: 0, 15, 70;      /* .bg-dark — the Blacklight topbar */
+  --bs-light-rgb: 244, 244, 244; /* .bg-light — the Blacklight search bar */
+
+  --bs-link-color: var(--uom-link);
+  --bs-link-color-rgb: 0, 63, 139;
+  --bs-link-hover-color: var(--uom-link-hover);
+  --bs-link-hover-color-rgb: 0, 78, 173;
+
+  --bs-border-color: var(--uom-border);
+  --bs-border-radius: var(--uom-radius);
+  --bs-border-radius-sm: var(--uom-radius-sm);
+  --bs-border-radius-lg: var(--uom-radius);
+  --bs-focus-ring-color: var(--ccs-focus-ring-glow);
+  --bs-focus-ring-width: 2px;
+
+  /* Blacklight */
+  --bl-constraint-remove-hover-bg: var(--ccs-red-600);
+  --bl-constraint-remove-hover-border-color: var(--ccs-red-600);
+  --bl-logo-image: url("unimelb-logo.svg");
+  --bl-logo-width: 56px;
+  --bl-logo-height: 56px;
+  --bl-main-padding-y: 0; /* main has no vertical padding; pages space their own content */
+}
+
+/* Font Fraunces for display headings, Source Sans for the rest 
+   based on lib.unimelb.edu.au */
+h1, h2, .h1, .h2 {
+  font-family: var(--uom-font-serif);
+  font-weight: 400;
+}
+
+h3, h4, h5, h6, .h3, .h4, .h5, .h6 {
+  font-weight: 600;
+}
+
+/* Buttons
+   -------------------------------------------------- */
+/* Bootstrap compiles .btn-* colours from Sass rather than --bs-primary,
+   so variables have to be restated. */
+.btn-primary {
+  --bs-btn-color: var(--uom-navy);
+  --bs-btn-bg: var(--uom-blue);
+  --bs-btn-border-color: var(--uom-blue);
+  --bs-btn-hover-color: var(--uom-navy);
+  --bs-btn-hover-bg: var(--uom-blue-hover);
+  --bs-btn-hover-border-color: var(--uom-blue-hover);
+  --bs-btn-active-color: var(--uom-navy);
+  --bs-btn-active-bg: var(--uom-blue-active);
+  --bs-btn-active-border-color: var(--uom-blue-active);
+  --bs-btn-disabled-color: var(--uom-text-tertiary);
+  --bs-btn-disabled-bg: var(--uom-disabled-bg);
+  --bs-btn-disabled-border-color: var(--uom-disabled-bg);
+}
+
+.btn-secondary {
+  --bs-btn-color: var(--uom-navy);
+  --bs-btn-bg: var(--uom-sage);
+  --bs-btn-border-color: var(--uom-sage);
+  --bs-btn-hover-color: var(--uom-navy);
+  --bs-btn-hover-bg: var(--uom-sage-hover);
+  --bs-btn-hover-border-color: var(--uom-sage-hover);
+  --bs-btn-active-color: var(--uom-navy);
+  --bs-btn-active-bg: var(--uom-sage-active);
+  --bs-btn-active-border-color: var(--uom-sage-active);
+}
+
+.btn-outline-primary,
+.btn-outline-secondary {
+  --bs-btn-color: var(--uom-navy);
+  --bs-btn-border-color: var(--uom-navy);
+  --bs-btn-hover-color: var(--ccs-text-inverse);
+  --bs-btn-hover-bg: var(--uom-navy);
+  --bs-btn-hover-border-color: var(--uom-navy);
+  --bs-btn-active-color: var(--ccs-text-inverse);
+  --bs-btn-active-bg: var(--uom-navy-dark);
+  --bs-btn-active-border-color: var(--uom-navy-dark);
+}
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1200px;
+  }
+}
+
+/* Form fields ------------------------------------- */
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--uom-focus);
+  box-shadow: 0 0 0 2px rgba(13, 108, 221, 0.35);
+}
+
+/* Modals ------------------------------------- */
+
+dialog.modal {
+  padding: 0;
+}
+
+/* Home page hero (app/views/catalog/_home_text.html.erb) */
+.uom-hero {
+  background-color: var(--uom-navy);
+  border-radius: var(--bs-border-radius);
+  color: var(--ccs-text-inverse);
+}
+
+.uom-hero h1 {
+  font-weight: 300; /* UoM title-display */
+}
+
+.uom-hero a:not(.btn) {
+  color: var(--ccs-text-inverse);
+}
+
+/* Facets ----------------------------------------- */
+/* Do not style .facet-limit here.
+   Blacklight's .facet-limit-active loads earlier. */
+.facets {
+  --bl-facet-active-bg: var(--uom-navy);
+  --bl-facet-active-item-color: var(--uom-navy);
+  --bl-facet-header-padding-y: 0;
+}
+
+.facets .accordion {
+  --bs-accordion-btn-color: var(--uom-navy);
+  --bs-accordion-active-color: var(--uom-navy);
+}
+
+/* Facet sidebar: see components/filter_rail.css */
+
+/* Pagination -------------------------------------- */
+.pagination {
+  --bs-pagination-color: var(--uom-link);
+  --bs-pagination-hover-color: var(--uom-link-hover);
+  --bs-pagination-hover-bg: var(--uom-bg-secondary);
+  --bs-pagination-focus-color: var(--uom-link-hover);
+  --bs-pagination-focus-bg: var(--uom-bg-secondary);
+  --bs-pagination-active-bg: var(--uom-navy);
+  --bs-pagination-active-border-color: var(--uom-navy);
+}
+
+.sort-pagination, .pagination-search-widgets {
+  align-items: center;
+  background-color: var(--uom-bg-secondary);
+  border: 1px solid var(--uom-border);
+  border-radius: var(--uom-radius);
+  padding: 0.5rem 0.75rem;
+  padding-bottom: 0.5rem !important; /* to override Blacklight's default */
+}
+
+/* On a record page Blacklight emits .pagination-search-widgets whenever a
+   search session exists, but if you arrive by direct link, or refresh and
+   the wrapper is there with an empty div. Using :has() to test for occupants. */
+.pagination-search-widgets:not(:has(.page-links, .header-tools, .constraints-container)) {
+  display: none;
+}
+
+/* Record page header ------------------------------ */
+/* One row: prev/next on the left, search-context links on the right.
+   See app/components/nexus_ccs/document_header_component.html.erb. */
+.uom-record-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+}
+
+.uom-record-nav .constraints-container {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 0;
+}
+
+.uom-record-nav .constraints-container .btn {
+  --bs-btn-bg: transparent;
+  --bs-btn-border-color: transparent;
+  --bs-btn-color: var(--uom-link);
+  --bs-btn-hover-bg: transparent;
+  --bs-btn-hover-border-color: transparent;
+  --bs-btn-hover-color: var(--uom-link-hover);
+  --bs-btn-active-bg: transparent;
+  --bs-btn-active-border-color: transparent;
+  --bs-btn-active-color: var(--uom-link-hover);
+  --bs-btn-padding-x: 0;
+  --bs-btn-padding-y: 0;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.uom-record-nav .page-links {
+  padding: 0;
+}
+
+/* Applied filters --------------------------------- */
+.constraints-container .applied-filter {
+  --bs-btn-border-radius: 999px;
+  font-size: 0.8rem;
+}
+
+/* The pill shows just the value; the filter name stays for screen readers */
+.constraints-container .applied-filter .filter-name {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.documentHeader h1 {
+  color: var(--uom-navy)
+}
+
+/* Result cards (app/views/catalog/_document_list.html.erb)*/
+.documents-list {
+  -bl-results-document-margin-top: 0;
+  --bl-results-document-padding-top: 0;
+  display: grid;
+  gap: 1.125rem;
+}
+
+.documents-list .document-title-heading {
+  font-family: var(--uom-font-sans);
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+/* Information panels ---------------------------- */
+
+.uom-panel,
+.documents-list .document {
+  background-color: var(--uom-panel-bg);
+  border: 1px solid var(--uom-panel-border);
+  border-radius: var(--uom-panel-radius);
+  padding: var(--uom-panel-padding);
+}
+
+#sidebar .card {
+  --bs-card-bg: var(--uom-panel-bg);
+  --bs-card-border-color: var(--uom-panel-border);
+  --bs-card-border-radius: var(--uom-panel-radius);
+  --bs-card-cap-bg: transparent;
+  --bs-card-cap-border-color: var(--uom-panel-border);
+  --bs-card-spacer-x: 1rem;
+}
+
+/* Actions panel ----------------------------------- */
+/* Each <li> is a slot, not a visual row: the bordered box is the control inside
+   it, so the list-group's own chrome is switched off via its variables. */
+.show-tools {
+  --bs-list-group-bg: transparent;
+  --bs-list-group-border-width: 0;
+  --bs-list-group-item-padding-x: 1rem;
+  --bs-list-group-item-padding-y: 0.25rem;
+  --bs-list-group-action-hover-bg: transparent;
+  --bs-list-group-action-hover-color: inherit;
+}
+
+.show-tools .card-header h2 {
+  font-family: var(--uom-font-serif);
+  font-size: 1.5rem;
+  font-weight: 400;
+  text-transform: none;
+}
+
+/* Unified CSS for panel controls, whether or not its a link or <button>. */
+.show-tools .nav-link,
+.show-tools .uom-action {
+  align-items: center;
+  background-color: var(--uom-panel-bg);
+  border: 1px solid var(--uom-action-border);
+  color: var(--uom-navy);
+  display: flex;
+  font-weight: 600;
+  gap: 0.5rem;
+  justify-content: center;
+  padding: 0.75rem 1rem;
+  text-decoration: none;
+  width: 100%;
+}
+
+.show-tools .nav-link:hover,
+.show-tools .uom-action:hover {
+  background-color: var(--uom-bg-secondary);
+  color: var(--uom-navy);
+}
+
+.show-tools .blacklight-icons {
+  display: inline-flex;
+}
+
+/* Interstitial dialog ----------------------------- */
+.uom-dialog {
+  --bs-modal-border-radius: var(--uom-panel-radius);
+  --bs-modal-border-width: 0;
+  --bs-modal-width: 520px;
+}
+
+.uom-dialog-host {
+  align-items: center;
+  background-color: var(--uom-bg-secondary);
+  border: 1px solid var(--uom-panel-border);
+  display: flex;
+  font-weight: 600;
+  gap: 0.5rem;
+  margin-bottom: 0;
+  overflow-wrap: anywhere;
+  padding: 0.5rem 0.75rem;
+}
+
+.uom-dialog-host a {
+  display: flex;
+  align-items: center;
+  color: var(--bs-modal-color)
+}
+
+.uom-dialog-host a:hover {
+color: var(--uom-link-hover);
+}
+
+/* Acknowledgement of Country -------------------- */
+
+#country-acknowledgement {
+  --bs-modal-border-radius: var(--uom-radius);
+  --bs-modal-border-width: 0;
+  --bs-modal-width: 620px;
+}
+
+#country-acknowledgement .modal-content {
+  box-shadow: 0 12px 32px rgba(0, 15, 70, 0.28);
+}
+
+.uom-ack-quote {
+  border-left: 4px solid var(--uom-blue);
+  margin: 0 0 1.25rem;
+  padding-left: 1.25rem;
+}
+
+.uom-ack-quote p:last-child {
+  margin-bottom: 0;
+}

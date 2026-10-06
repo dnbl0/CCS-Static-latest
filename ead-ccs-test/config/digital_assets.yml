@@ -1,0 +1,94 @@
+# Digital assets by accession number. Generated from the static prototype's ASSET_IMAGES
+# (public/collection-data.js); the first file is the thumbnail. Files are the original names;
+# bin/rails digital_assets:thumbnails makes public/digital-assets/thumbs/<name>.jpg from them.
+
+"0.0216":
+  - "GM00.0216_1.jpg"
+"1973.0004.000.000":
+  - "1973_0004_000_000_1.jpg"
+"1973.0071.000.000":
+  - "1973_0071_000_000.jpg"
+"1973.0084.000.000":
+  - "1973_0084_000_000.jpg"
+"1973.0870.000.A.000.F":
+  - "1973_0870_000_A_000_F-MF.jpg"
+  - "1973_0870_000_000A-MF.jpg"
+  - "1973_0870_000_000B-MF.jpg"
+  - "1973_0870_000_000C-MF.jpg"
+  - "1973_0870_000_000D-MF.jpg"
+  - "1973_0870_000_000E-MF.jpg"
+  - "1973_0870_000_000F-MF.jpg"
+"MHM00048":
+  - "MHM00048.jpg"
+  - "MHM00048_2.jpg"
+  - "MHM00048_3.jpg"
+  - "MHM00048_4.jpg"
+  - "MHM00048_5.jpg"
+"MHM2014.57":
+  - "MHM2014.57.jpg"
+"MHM03589":
+  - "MHM03589.jpg"
+  - "MHM03589_1.jpg"
+  - "MHM03589_2.jpg"
+  - "MHM03589_3.jpg"
+  - "MHM03589_4.jpg"
+  - "MHM03589_7.jpg"
+  - "MHM03589_9.jpg"
+"MHM2017.19":
+  - "MHM2017.19.jpg"
+"MHM2017.24":
+  - "MHM2017.24.jpg"
+"MHM2017.25":
+  - "MHM2017.25.jpg"
+"MHM2017.27":
+  - "MHM2017.27.jpg"
+"MHM2017.28":
+  - "MHM2017.28.jpg"
+"MHM2017.31":
+  - "MHM2017.31-MF.jpg"
+"MHM06961":
+  - "MHM06961-PF.jpg"
+"MHM04297":
+  - "MHM04297.jpg"
+"MHM2009.46":
+  - "MHM2009.46_a.jpg"
+"MHM2009.47":
+  - "MHM2009.47.jpg"
+"MHM2009.48":
+  - "MHM2009.48.jpg"
+"MHM2009.50":
+  - "MHM2009.50_a.jpg"
+  - "MHM2009.50_b.jpg"
+"MHM2009.51":
+  - "MHM2009.51_a.jpg"
+"MHM2009.49":
+  - "MHM2009.49_a.jpg"
+"MHM00394":
+  - "MHM00394.jpg"
+"1973.0755.000.A.000.L":
+  - "1973_0755-1~PF.jpg"
+  - "1973_0755-2~PF.jpg"
+  - "1973_0755_B~PF.jpg"
+  - "1973_0755_C~PF.jpg"
+  - "1973_0755_D~PF.jpg"
+  - "1973_0755_E~PF.jpg"
+  - "1973_0755_F~PF.jpg"
+  - "1973_0755_G~PF.jpg"
+  - "1973_0755_H~PF.jpg"
+  - "1973_0755_I~PF.jpg"
+"2001.0008.000.000":
+  - "2001_0008 B web.jpg"
+"2006.0111.000.000":
+  - "2006_0111 web.jpg"
+"2023.012.001":
+  - "Nyarrin-Nyarrin Patrick Mung Mung cropped.jpg"
+"4.0164":
+  - "GMC 04.0164.jpg"
+  - "GMC 04.0164 verso.jpg"
+"HFA3310":
+  - "HFA3310_004.jpg"
+  - "HFA3310.2_a.jpg"
+  - "HFA3310.2_b.jpg"
+"HFA2450":
+  - "HFA2450_a.jpg"
+  - "HFA2450_b.jpg"

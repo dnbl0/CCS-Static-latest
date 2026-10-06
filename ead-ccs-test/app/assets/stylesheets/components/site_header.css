@@ -1,0 +1,136 @@
+/*
+ * Site header: University of Melbourne Gen 3 header (logo block, audience links,
+ * site title, primary navigation with dropdown panels, and the mobile drawer).
+ * Markup: NexusCcs::SiteHeaderComponent. Behaviour: controllers/site_header_controller.js.
+ * Ported from the static CCS prototype (.ccs-nav--header).
+ */
+.site-header,
+.site-footer {
+  font-family: var(--ccs-font-body);
+}
+
+.site-header *,
+.site-header *::before,
+.site-header *::after {
+  box-sizing: border-box;
+}
+
+.site-header img {
+  display: block;
+  max-width: 100%;
+}
+
+.site-header ul {
+  list-style: none;
+}
+
+.site-header { display: flex; align-items: center; background: var(--ccs-navy-1100); position: relative; z-index: var(--ccs-z-header); }
+.site-header__brand { flex: none; display: flex; align-items: center; height: 110px; border-right: 1px solid var(--ccs-navy-900); }
+.site-header__brand a { display: block; width: 110px; height: 110px; }
+.site-header__brand img { width: 110px; height: 110px; }
+.site-header__main { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: flex-end; height: 110px; }
+.site-header__utility { display: flex; justify-content: flex-end; background: var(--ccs-navy-1200); border-bottom: 1px solid var(--ccs-navy-900); }
+.site-header__utility ul, .site-nav__audience { display: flex; gap: var(--ccs-space-4); margin: 0; padding: 0 var(--ccs-space-3) 0 0; list-style: none; }
+.site-header__utility a, .site-nav__audience a { display: flex; align-items: center; min-height: 44px; padding: var(--ccs-space-3) var(--ccs-space-1); font-size: var(--ccs-font-size-sm); font-weight: var(--ccs-font-weight-regular); line-height: 140%; letter-spacing: 1.12px; text-transform: uppercase; color: var(--ccs-sage-400); text-decoration: none; }
+.site-header__utility a:hover, .site-nav__audience a:hover { color: var(--ccs-sage-150); text-decoration: underline; }
+.site-header__search-toggle { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 10px; border: 0; background: var(--ccs-sage-400); cursor: pointer; }
+.site-header__search-toggle:hover { background: var(--ccs-sage-300); }
+.site-header__search-toggle:active { background: var(--ccs-sage-200); }
+.site-header__search-toggle img { width: 24px; height: 24px; padding: 0; }
+.site-header__bar { display: flex; align-items: center; justify-content: space-between; gap: var(--ccs-space-4); height: 65px; padding: var(--ccs-space-2); }
+.site-header__title { display: flex; align-items: center; min-height: 44px; padding: 0 var(--ccs-space-5) 0 var(--ccs-space-1); font-size: var(--ccs-font-size-md); font-weight: var(--ccs-font-weight-semibold); line-height: var(--ccs-line-height-tight); color: var(--ccs-white); text-decoration: none; white-space: nowrap; }
+.site-header__title:hover { color: var(--ccs-cyan-400); text-decoration: underline; }
+
+/* Primary navigation (links + dropdown triggers share the UniMelb interactive states) */
+.site-nav { display: flex; }
+.site-nav > ul { display: flex; margin: 0; padding: 0; list-style: none; }
+.site-nav > ul > li { position: static; }
+.site-nav > ul > li > a, .site-nav__trigger { display: flex; align-items: center; gap: var(--ccs-space-1); min-height: 49px; padding: var(--ccs-space-2) var(--ccs-space-3); border: 0; background: none; font: inherit; font-size: var(--ccs-font-size-md); font-weight: var(--ccs-font-weight-semibold); letter-spacing: -0.16px; line-height: var(--ccs-line-height-normal); color: var(--ccs-white); text-decoration: none; white-space: nowrap; cursor: pointer; }
+.site-nav > ul > li > a:hover, .site-nav__trigger:hover, .site-nav__trigger[aria-expanded="true"] { background: var(--ccs-cyan-250); color: var(--ccs-navy-1100); }
+.site-nav > ul > li > a:active, .site-nav__trigger:active { background: var(--ccs-cyan-150); color: var(--ccs-navy-1100); }
+.site-nav__trigger img { width: 10px; height: 6.17px; margin: 0 5px; transition: transform var(--ccs-duration-fast) ease; }
+.site-nav__trigger:hover img, .site-nav__trigger[aria-expanded="true"] img, .site-nav__trigger:active img { filter: invert(1); }
+.site-nav__trigger[aria-expanded="true"] img { transform: rotate(180deg); }
+.site-header a:focus-visible, .site-header button:focus-visible { outline: 2px solid var(--ccs-cyan-400); outline-offset: -2px; }
+.site-nav > ul > li > a:focus-visible, .site-nav__trigger:focus-visible { background: transparent; color: var(--ccs-white); }
+
+/* Dropdown panel (modelled on the UniMelb mega-menu panel: dark, 2px light-blue top rule, shadow) */
+.site-nav__panel { display: none; }
+.site-nav__trigger[aria-expanded="true"] + .site-nav__panel { display: block; }
+.site-nav__panel { position: absolute; top: 100%; right: 0; width: min(642px, 100%); padding: var(--ccs-space-6); background: var(--ccs-navy-1200); border-top: 2px solid var(--ccs-cyan-400); box-shadow: var(--ccs-shadow-xl); color: var(--ccs-white); z-index: calc(var(--ccs-z-header) + 1); }
+.site-nav__panel-title { display: inline-flex; align-items: center; gap: var(--ccs-space-1); min-height: 44px; font-family: var(--ccs-font-heading); font-size: var(--ccs-font-size-3xl); font-weight: var(--ccs-font-weight-regular); line-height: var(--ccs-line-height-tight); letter-spacing: -0.3px; color: var(--ccs-white); text-decoration: none; font-variation-settings: "SOFT" 50, "WONK" 0, "opsz" 9; }
+.site-nav__panel-title:hover, .site-nav__panel-list a:hover { text-decoration: underline; color: var(--ccs-cyan-400); }
+.site-nav__panel-title img, .site-nav__panel-list img { width: 24px; height: 24px; flex: none; }
+.site-nav__panel-list { display: grid; grid-template-columns: 1fr 1fr; gap: 0 var(--ccs-space-6); margin: var(--ccs-space-4) 0 0; padding: var(--ccs-space-4) 0 0; border-top: 1px solid var(--ccs-navy-750); list-style: none; }
+.site-nav__panel-list a { display: flex; align-items: flex-start; gap: var(--ccs-space-1); min-height: 40px; padding: var(--ccs-space-2) 0; font-size: var(--ccs-font-size-md); font-weight: var(--ccs-font-weight-semibold); line-height: 1.33; color: var(--ccs-white); text-decoration: none; }
+.site-nav__panel-list a[aria-current] { color: var(--ccs-cyan-400); }
+
+/* Mobile-only pieces (Menu button, drawer search, drawer top links, Back row) are hidden on desktop */
+.site-nav__label-more, .site-header__menu, .site-nav__search, .site-nav > ul.site-nav__audience, .site-nav__back { display: none; }
+
+/* Mobile and tablet header, following the UniMelb mobile header: one 96px row (logo block, site name, Menu button),
+   with search, navigation and the UniMelb audience links inside a right-hand drawer. */
+@media (max-width: 1023px) {
+  .site-header { height: 96px; }
+  .site-header__brand { height: 96px; width: 97px; }
+  .site-header__brand a, .site-header__brand img { width: 96px; height: 96px; margin: 0; }
+  .site-header__main { height: 96px; justify-content: center; }
+  .site-header__utility { display: none; }
+  .site-header__bar { height: 96px; padding: 0 var(--ccs-space-2) 0 var(--ccs-space-3); }
+  .site-header__title { padding: 0 var(--ccs-space-2) 0 0; font-size: var(--ccs-font-size-sm); line-height: 14px; overflow: hidden; text-overflow: ellipsis; }
+
+  /* Menu button: 32px icon over a 14px label, like the UniMelb mobile header */
+  .site-header__menu { display: flex; flex: none; flex-direction: column; align-items: center; justify-content: center; gap: var(--ccs-space-1); width: 74px; height: 96px; padding: 0; border: 0; background: none; color: var(--ccs-white); font: inherit; font-size: var(--ccs-font-size-sm); line-height: 14px; cursor: pointer; }
+  .site-header__menu svg { width: 32px; height: 32px; fill: none; stroke: currentColor; stroke-width: 2; }
+  .site-header__menu .site-header__menu-close { display: none; }
+  .site-header__menu[aria-expanded="true"] .site-header__menu-open { display: none; }
+  .site-header__menu[aria-expanded="true"] .site-header__menu-close { display: block; }
+  .site-header__menu:hover { color: var(--ccs-cyan-400); }
+  .site-header__menu:hover span { text-decoration: underline; }
+
+  /* Drawer: slides in from the right under the header (390px wide at most), page dimmed behind it */
+  .site-header:has(.site-header__menu[aria-expanded="true"])::after { content: ""; position: absolute; top: 100%; left: 0; right: 0; height: 100vh; background: var(--ccs-scrim); z-index: var(--ccs-z-raised); }
+  .site-nav { display: none; position: absolute; top: 100%; right: 0; left: auto; z-index: 2; width: min(390px, 100%); height: calc(100vh - 96px); height: calc(100dvh - 96px); overflow-y: auto; background: var(--ccs-navy-1200); box-shadow: none; flex-direction: column; }
+  .site-nav.is-open { display: block; border-top: 1px solid var(--ccs-navy-750); }
+  .site-nav__label-more { display: inline; }
+  .site-nav__search { display: block; padding: var(--ccs-space-4); border-bottom: 1px solid var(--ccs-navy-750); }
+  .site-nav__search form { display: flex; height: 48px; margin: 0; }
+  .site-nav__search input { flex: 1; min-width: 0; padding: var(--ccs-space-3); border: 0; background: var(--ccs-white); color: var(--ccs-neutral-1000); font: inherit; font-size: var(--ccs-font-size-lg); }
+  .site-nav__search button { flex: none; width: 48px; border: 0; background: var(--ccs-sage-400); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .site-nav__search button img { width: 24px; height: 24px; }
+  .site-nav > ul { flex-direction: column; border-top: 0; }
+  .site-nav > ul > li { border-bottom: 1px solid var(--ccs-navy-750); }
+  .site-nav > ul > li > a, .site-nav__trigger { width: 100%; justify-content: space-between; min-height: 63px; padding: var(--ccs-space-4) 10px var(--ccs-space-4) var(--ccs-space-4); font-size: var(--ccs-font-size-lg); font-weight: var(--ccs-font-weight-semibold); letter-spacing: -0.18px; line-height: 24px; color: var(--ccs-white); text-align: left; }
+  .site-nav > ul > li > a:hover, .site-nav__trigger:hover, .site-nav__trigger[aria-expanded="true"] { background: none; color: var(--ccs-white); text-decoration: underline; }
+  .site-nav > ul > li > a:active, .site-nav__trigger:active { background: none; color: var(--ccs-white); }
+
+  /* Items that open a sub-menu show a light-blue right chevron instead of the desktop down arrow */
+  .site-nav .site-nav__trigger img { display: none; }
+  .site-nav__trigger::after { content: ""; flex: none; width: 24px; height: 24px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2347c8f0' stroke-width='2' stroke-linecap='square'%3E%3Cpolyline points='9 6 15 12 9 18'/%3E%3C/svg%3E") center / contain no-repeat; }
+
+  /* Drilled-in view: the chosen item replaces the list, with a Back row, its own link, then its children indented */
+  .site-nav:has(.site-nav__trigger[aria-expanded="true"]) .site-nav__search,
+  .site-nav:has(.site-nav__trigger[aria-expanded="true"]) .site-nav__audience,
+  .site-nav > ul > li:not(:has(.site-nav__trigger[aria-expanded="true"])):has(~ li .site-nav__trigger[aria-expanded="true"]),
+  .site-nav:has(.site-nav__trigger[aria-expanded="true"]) > ul > li:not(:has(.site-nav__trigger[aria-expanded="true"])) { display: none; }
+  .site-nav__trigger[aria-expanded="true"] { display: none; }
+  .site-nav__back { display: flex; align-items: center; gap: var(--ccs-space-2); width: 100%; min-height: 59px; padding: var(--ccs-space-4); border: 0; border-bottom: 1px solid var(--ccs-navy-750); background: none; font: inherit; font-size: var(--ccs-font-size-md); font-weight: var(--ccs-font-weight-semibold); line-height: 24px; color: var(--ccs-white); text-align: left; cursor: pointer; }
+  .site-nav__back:hover { text-decoration: underline; }
+  .site-nav__back svg { flex: none; width: 20px; height: 20px; fill: none; stroke: var(--ccs-cyan-400); stroke-width: 2.4; stroke-linecap: square; }
+  .site-nav__panel { position: static; width: auto; padding: 0; border-top: 0; box-shadow: none; }
+  .site-nav__panel-title { display: flex; align-items: center; width: 100%; min-height: 57px; padding: var(--ccs-space-4) 18px; border-bottom: 1px solid var(--ccs-navy-750); font-family: "Source Sans 3", sans-serif; font-size: var(--ccs-font-size-lg); font-weight: var(--ccs-font-weight-semibold); letter-spacing: -0.18px; line-height: 24px; color: var(--ccs-white); text-decoration: none; }
+  .site-nav .site-nav__panel-title img, .site-nav .site-nav__panel-list img { display: none; }
+  .site-nav__panel-list { display: block; margin: 0; padding: 0; border-top: 0; }
+  .site-nav__panel-list li { border-bottom: 1px solid var(--ccs-navy-750); }
+  .site-nav__panel-list a { min-height: 57px; padding: var(--ccs-space-4) var(--ccs-space-4) var(--ccs-space-4) 34px; align-items: center; font-size: var(--ccs-font-size-lg); font-weight: var(--ccs-font-weight-semibold); letter-spacing: -0.18px; line-height: 24px; }
+  .site-nav__panel-list a[aria-current], .site-nav__panel-title[aria-current] { color: var(--ccs-white); }
+
+  /* UniMelb audience links under the list: 14px, sage, uppercase, letter-spaced */
+  .site-nav > ul.site-nav__audience { display: flex; flex-direction: column; gap: var(--ccs-space-3); padding: var(--ccs-space-5) var(--ccs-space-4); border-top: 0; }
+  .site-nav > ul.site-nav__audience > li { border-bottom: 0; }
+  .site-nav > ul.site-nav__audience > li > a { min-height: 20px; padding: 0; font-size: var(--ccs-font-size-sm); font-weight: var(--ccs-font-weight-semibold); line-height: 1.33; letter-spacing: 1.12px; text-transform: uppercase; color: var(--ccs-sage-400); }
+  .site-nav > ul.site-nav__audience > li > a:hover { color: var(--ccs-sage-150); text-decoration: underline; }
+}
+@media (prefers-reduced-motion: reduce) { .site-nav__trigger img { transition: none; } }
+
+/* ==========================================================================
