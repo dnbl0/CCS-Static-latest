@@ -55,6 +55,12 @@ module Collections
       raise NotImplementedError, "#{self.class} must implement #build_document"
     end
 
+    # EMu rights notes begin with the licence in square brackets, for example
+    # "[Copyright - Current] Grainger, Percy Aldridge"; that is the Licence type filter's value.
+    def licence_types(rights)
+      rights.filter_map { |note| note[/\A\[([^\]]+)\]/, 1]&.strip }.uniq
+    end
+
     # Drops empty arrays and nulls.
     def compact_document(document)
       document.each_with_object({}) do |(field, value), result|

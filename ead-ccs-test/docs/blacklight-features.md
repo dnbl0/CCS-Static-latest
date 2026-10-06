@@ -6,11 +6,8 @@ Configuration-only use of Blacklight 9.0.0 and its official plugins, in `Catalog
 | Feature | Mechanism | Solr field(s) |
 |---|---|---|
 | Search fields: all, title, creator, subject | `add_search_field` (qf/pf in `solr/conf/solrconfig.xml`) | `title_tsim`, `creator_tsim`, `subject_*`, `all_text_timv` |
-| Facets with "more" modal, collapse, limits | `add_facet_field ... limit:` | see facet table below |
-| Pivot (parent/child) | `pivot:` on `collection_pivot` | `collection_ssim` > `named_collection_ssim` |
-| Query facets (yes/no toggles) | `query:` on `record_includes` | `description_tsim`, `date_start_isi` |
-| Contextual facets | `if:` lambda (cultural/language group appear once a collection is selected) | `cultural_group_ssim`, `language_group_ssim` |
-| Date range | `blacklight_range_limit` 9.3.0, `range: true` | `date_start_isi` |
+| Facets with "more" modal, collapse, limits, in sections | `add_facet_field ... limit:`, `group:`, built from the workbook | see `docs/data-model.md` |
+| Year selectors (production date, creator birth and death) | `blacklight_range_limit` 9.3.0, `range: true` | `date_start_isi`, `creator_birth_isim`, `creator_death_isim` |
 | Constraints and Start over | built in (restyled in `unimelb.css`) | n/a |
 | Sort: relevance, title A-Z / Z-A, date newest / oldest | `add_sort_field` | `title_si`, `date_start_isi` |
 | Per page 12 / 24 / 48 / 96 (default 24) | `config.per_page`, `default_per_page` | n/a |
@@ -38,13 +35,12 @@ Configuration-only use of Blacklight 9.0.0 and its official plugins, in `Catalog
   a placeholder otherwise, and mosaic placeholders vary in shape so the masonry still reads as a mosaic.
   On a record's page `NexusCcs::DigitalAssetsComponent` (the show page's `document_embed_component`)
   shows the first image large under the title and the rest as thumbnails that open the large image.
-  The "Record includes > A digital asset" query facet filters to records with assets. More assets: add
+  The "Digital Asset Format Type" filter lists records with assets. More assets: add
   accession numbers and file names to the YAML, make thumbnails, reindex.
 - **Date quality.** `date_start_isi` has no value for about 12,700 of 41,000 records, and about
   1,700 values are 0 or below, which stretches the range histogram.
 - **JS.** chart.js and `@kurkle/color` (range-limit's dependencies) are vendored in
   `vendor/javascript`; the plugin's generator pins them to a CDN instead.
-- **Facets only render when they have values**, so `language_group_ssim` stays hidden until the
-  export populates it.
-- The sidebar shows the pivot as "Collection"; `collection_ssim` and `named_collection_ssim` stay
-  configured with `show: false` for constraints and advanced search.
+- **Facets only render when they have values.** The facets, sections and record fields now come from the
+  workbooks (`docs/data-model.md`); the earlier pivot, "Record includes" query facets and contextual
+  `if:` facets are no longer configured because the workbook does not define them.

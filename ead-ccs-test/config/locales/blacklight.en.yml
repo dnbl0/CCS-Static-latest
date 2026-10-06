@@ -13,3 +13,18 @@ en:
           date-asc: date (oldest)
           title: title (A-Z)
           title-desc: title (Z-A)
+      # Titles of the filter sections in the Field labels and filters workbook (facet groups)
+      facets-collection_details:
+        title: Collection details
+      facets-creator:
+        title: Creator
+      facets-object:
+        title: Object
+      facets-subject_topic:
+        title: Subject / Topic
+      facets-copyright_advisory:
+        title: Copyright & Advisory
+      facets-access:
+        title: Access
+      facets-media_type:
+        title: Media type

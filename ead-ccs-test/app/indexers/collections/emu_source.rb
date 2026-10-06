@@ -58,6 +58,9 @@ module Collections
       return nil if irn.nil?
 
       start_year, end_year = date_range(row)
+      creators = row.positional(CREATOR, DELIMITER).compact
+      births = row.positional(BIRTH, DELIMITER)
+      deaths = row.positional(DEATH, DELIMITER)
 
       compact_document(
         "id"                  => document_id(irn),
@@ -74,19 +77,23 @@ module Collections
 
         "title_tsim"             => row.any(TITLE, TAXON),
         "title_si"               => row.value(TITLE) || row.value(TAXON),
-        "alternative_title_tsim" => row.any(ALT_TITLES, SERIES_TITLE, COMMON_NAME),
+        "alternative_title_tsim" => row.any(ALT_TITLES, COMMON_NAME),
+        "series_ssim"            => row.list(SERIES_TITLE, DELIMITER),
 
         "creator_tsim"            => row.list(CREATOR, DELIMITER),
         "creator_ssim"            => row.list(CREATOR, DELIMITER),
         "creator_role_ssim"       => row.list(ROLE, DELIMITER),
+        "creator_display_ssim"    => Creators.display(creators, row.positional(ROLE, DELIMITER), births, deaths),
         "creator_birth_ssi"       => row.value(BIRTH),
         "creator_death_ssi"       => row.value(DEATH),
+        "creator_birth_isim"      => Creators.years(births),
+        "creator_death_isim"      => Creators.years(deaths),
         "preferred_citation_tsim" => row.values(CITATION),
 
         "subject_ssim"            => row.list_any([ SUBJECT, COLL_GROUP ], DELIMITER),
         "subject_tsim"            => row.list_any([ SUBJECT, COLL_GROUP ], DELIMITER),
-        "associated_subject_ssim" => row.list(COLLECTED_BY, DELIMITER),
-        "associated_entity_ssim"       => row.list(ASSOC_NAME, DELIMITER),
+        # Associated Entity (Field labels row 5): the collector and the named associated entities.
+        "associated_entity_ssim"       => row.list_any([ COLLECTED_BY, ASSOC_NAME ], DELIMITER),
         "associated_entity_role_ssim"  => row.list(ASSOC_TYPE, DELIMITER),
         "associated_entity_place_ssim" => row.list(ASSOC_PLACE, DELIMITER),
 
@@ -99,9 +106,12 @@ module Collections
         "date_start_isi"       => start_year,
         "date_end_isi"         => end_year,
 
-        "description_tsim" => row.any(MEDIUM, EXTENT),
+        # The workbook's Material field covers "material techniques, medium and extent"; the EMu
+        # export carries it in the two CADescription columns. EMu has no description in this export.
+        "material_ssim"    => row.list_any([ MEDIUM, EXTENT ], DELIMITER),
         "credit_line_tsim" => row.values(CREDIT_LINE),
         "rights_ssim"      => row.values(COPYRIGHT),
+        "licence_type_ssim" => licence_types(row.values(COPYRIGHT)),
 
         "parent_record_ssi"                => row.value(PARENT),
         "related_object_ssim"              => row.list(RELATED, DELIMITER),

@@ -74,42 +74,24 @@ class CatalogController < ApplicationController
     config.show.document_embed_component = NexusCcs::DigitalAssetsComponent
 
     # ================================================================
-    # Facets. Note: Every field here is populated by Collections::EmuSource or
-    # Collections::VernonSource. A facet on an empty field renders a sidebar box.
+    # Facets
     # ================================================================
-    # Parent/child: collection > named collection. The two flat facets stay configured (for
-    # constraints and advanced search) but the sidebar shows the pivot.
-    config.add_facet_field "collection_pivot", label: "Collection", pivot: %w[collection_ssim named_collection_ssim], limit: true
-    config.add_facet_field "collection_ssim", label: "Collection", limit: true, show: false
-    config.add_facet_field "named_collection_ssim", label: "Named Collection", limit: true, show: false
-    config.add_facet_field "classification_ssim", label: "Category", limit: 20
-    config.add_facet_field "object_type_ssim", label: "Object Type", limit: 20
-    config.add_facet_field "format", label: "Record Type", limit: true
-    config.add_facet_field "creator_ssim", label: "Creator", limit: 20, index_range: "A".."Z"
-    config.add_facet_field "subject_ssim", label: "Subject", limit: 20, index_range: "A".."Z"
-    config.add_facet_field "production_place_ssim", label: "Place of Production", limit: 20
+    # The filters, sections, order, names and types come from the workbook (DataModel). A filter the
+    # data cannot support yet (see config/data_model/solr_mapping.yml) is simply not offered.
+    DataModel.filters.select(&:available?).each do |filter|
+      options = { label: filter.name, group: filter.group }
+      case filter.type
+      when :year then options[:range] = true
+      when :checkbox then options[:limit] = nil
+      else options.merge!(limit: 20, index_range: "A".."Z")   # browse, with "search within this filter" in the modal
+      end
+      config.add_facet_field filter.solr, **options
+    end
 
-    # Only the EMu export populates these, so offer them once a collection is chosen.
-    # Maybe remove but possibly needed for Indigenous flag?
-    has_collection = ->(context, _config, _response) { Array(context.params.dig(:f, :collection_ssim)).any? }
-    config.add_facet_field "cultural_group_ssim", label: "Cultural Group", limit: true, if: has_collection
-    config.add_facet_field "language_group_ssim", label: "Language Group", limit: true, if: has_collection
-
-    # blacklight_range_limit: a histogram and year inputs on the start year.
-    config.add_facet_field "date_start_isi", label: "Date", range: true
-
-    # Yes/no toggles as query facets.
-    config.add_facet_field "record_includes", label: "Record includes", query: {
-      description: { label: "A description", fq: "description_tsim:[* TO *]" },
-      date: { label: "A date", fq: "date_start_isi:[* TO *]" },
-      digital_asset: { label: "A digital asset", fq: "has_digital_asset_bsi:true" }
-    }
-
-    # Self-excluding facets. Tag each facet's fq and have that same facet's counts
-    # ignore it (Solr {!tag}/{!ex} local params). Query, range and pivot facets are skipped:
-    # the query branch returns :fq verbatim, and range and pivot facets build their own filters.
+    # Self-excluding facets. Tag each facet's fq and have that same facet's counts ignore it
+    # (Solr {!tag}/{!ex} local params). Range facets build their own filters, so they are skipped.
     config.facet_fields.each_value do |facet|
-      next if facet.query || facet.range || facet.pivot
+      next if facet.range
 
       facet.tag = facet.key
       facet.ex  = facet.key
@@ -119,40 +101,15 @@ class CatalogController < ApplicationController
     config.add_facet_fields_to_solr_request!
 
     # ================================================================
-    # Search results list
+    # Record fields come from the workbook (DataModel): its labels, its order, and only the fields
+    # the data can carry. The title is the page heading, so it is not repeated as a field; the
+    # results list shows the fields marked `index` in config/data_model/solr_mapping.yml.
+    # access_condition_ssi and restrictions_tsi are deliberately absent.
     # ================================================================
-    config.add_index_field "creator_tsim", label: "Creator"
-    config.add_index_field "collection_ssim", label: "Collection"
-    config.add_index_field "object_type_ssim", label: "Object Type"
-    config.add_index_field "production_date_ssim", label: "Date"
-    config.add_index_field "production_place_ssim", label: "Place"
-
-    # ================================================================
-    # Single record view
-    # access_condition_ssi and restrictions_tsi are deliberately absent
-    # ================================================================
-    config.add_show_field "alternative_title_tsim", label: "Alternative Title"
-    config.add_show_field "creator_tsim", label: "Creator"
-    config.add_show_field "creator_role_ssim", label: "Creator Role"
-    config.add_show_field "production_date_ssim", label: "Date"
-    config.add_show_field "production_place_ssim", label: "Place of Production"
-    config.add_show_field "object_type_ssim", label: "Object Type"
-    config.add_show_field "classification_ssim", label: "Category"
-    config.add_show_field "description_tsim", label: "Description"
-    config.add_show_field "subject_ssim", label: "Subject"
-    config.add_show_field "associated_subject_ssim", label: "Associated Entities"
-    config.add_show_field "associated_entity_ssim", label: "Associated Name"
-    config.add_show_field "associated_entity_place_ssim", label: "Associated Place"
-    config.add_show_field "cultural_group_ssim", label: "Cultural Group"
-    config.add_show_field "language_group_ssim", label: "Language Group"
-    config.add_show_field "collection_ssim", label: "Collection"
-    config.add_show_field "named_collection_ssim", label: "Named Collection"
-    config.add_show_field "accession_number_ssim", label: "Accession Number"
-    config.add_show_field "source_reference_tsim", label: "Source Reference"
-    config.add_show_field "credit_line_tsim", label: "Credit Line"
-    config.add_show_field "rights_ssim", label: "Rights"
-    config.add_show_field "preferred_citation_tsim", label: "Preferred Citation"
-    config.add_show_field "related_object_ssim", label: "Related Objects"
+    DataModel.fields.select(&:available?).reject { |field| field.seq == 1 }.each do |field|
+      config.add_index_field field.solr, label: field.label if field.index
+      config.add_show_field field.solr, label: field.label
+    end
 
     # ================================================================
     # Search fields

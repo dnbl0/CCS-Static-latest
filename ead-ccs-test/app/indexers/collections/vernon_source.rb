@@ -52,8 +52,9 @@ module Collections
 
         "creator_tsim" => row.list(CREATOR, DELIMITER),
         "creator_ssim" => row.list(CREATOR, DELIMITER),
+        "creator_display_ssim" => row.list(CREATOR, DELIMITER),
 
-        "associated_subject_ssim" => row.list(ASSOCIATED, DELIMITER),
+        "associated_entity_ssim"  => row.list(ASSOCIATED, DELIMITER),
         "production_place_ssim"   => row.list(PLACE, DELIMITER),
 
         "production_date_ssim" => row.values(DATE),
@@ -63,6 +64,7 @@ module Collections
         "description_tsim" => row.values(DESCRIPTION),
         "credit_line_tsim" => row.values(CREDIT_LINE),
         "rights_ssim"      => row.values(RIGHTS),
+        "licence_type_ssim" => licence_types(row.values(RIGHTS)),
 
         # _tsi, not _tsim: suffix to match no copyField rule, so stored and 
         # queryable but never reach the public search box, spellcheck or autocomplete.

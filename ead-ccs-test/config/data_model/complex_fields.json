@@ -1,0 +1,175 @@
+[
+  [
+    "Complex Fields"
+  ],
+  [
+    "Questions:",
+    "1 - DA Caption is only available when there is a DA"
+  ],
+  [
+    "2 - Do all the DAs need to have a DA caption? Optional"
+  ],
+  [
+    "3 - Would CM's like this field to be concatenated in CCS or manually populate field in DAM? Ro and Tess wants to do it in DAM"
+  ],
+  [
+    "4 - Is the metadata listed correctly?"
+  ],
+  [
+    "5 - Is there any other metadata fields that need to be concatenated?"
+  ],
+  [
+    "6 - What is the style guide (sequence)?"
+  ],
+  [
+    "7 - In case of misssing data values, CCS will exclude that metadata from the screen."
+  ],
+  [
+    "Image Caption (DA Caption)",
+    "Metadata",
+    "Source datatype",
+    "Mandatory / Optional",
+    "Source system",
+    "Comments"
+  ],
+  [
+    "Title",
+    "Primary Title / DA",
+    "Mandatory",
+    "DAM",
+    "View (CA Title)"
+  ],
+  [
+    "Date of Production",
+    "Date of Production",
+    "Optional",
+    "CMS",
+    "Could include Created period",
+    "View"
+  ],
+  [
+    "CA Creator - Person",
+    "Agent",
+    "Optional",
+    "CMS",
+    "View"
+  ],
+  [
+    "DOB",
+    "Agent DOB",
+    "Optional",
+    "CMS",
+    "Not part of data inventory"
+  ],
+  [
+    "DOD",
+    "Agent DOD",
+    "Optional",
+    "CMS",
+    "Not part of data inventory"
+  ],
+  [
+    "Affiliation",
+    "Agent Affiliation",
+    "Optional",
+    "CMS"
+  ],
+  [
+    "CA Creator - Organisation",
+    "Agent",
+    "Optional",
+    "CMS",
+    "Not part of data inventory"
+  ],
+  [
+    "Location",
+    "Place",
+    "Optional",
+    "CMS",
+    "Not part of data inventory"
+  ],
+  [
+    "Start date",
+    "Date",
+    "Optional",
+    "CMS",
+    "Not part of data inventory"
+  ],
+  [
+    "End date",
+    "Date",
+    "Optional",
+    "CMS",
+    "Not part of data inventory"
+  ],
+  [
+    "Role",
+    "Agent Role",
+    "Optional",
+    "CMS",
+    "Not part of data inventory"
+  ],
+  [
+    "Material Technique",
+    "Material Technique",
+    "Optional",
+    "CMS"
+  ],
+  [
+    "Copyright Holder / Rights Holder",
+    "Copyright",
+    "Mandatory",
+    "CMS"
+  ],
+  [
+    "Credit Line",
+    "Credit Line",
+    "Mandatory",
+    "CMS"
+  ],
+  [
+    "Collection Title (Formal)",
+    "Collection",
+    "Mandatory",
+    "CMS"
+  ],
+  [
+    "Image Producer",
+    "Agent - Image Producer - Human vs Organisation?",
+    "Optional",
+    "DAM"
+  ],
+  [
+    "Date of Production",
+    "Date of Production",
+    "Optional",
+    "DAM"
+  ],
+  [
+    "Image Caption variations (as an example)"
+  ],
+  [
+    "1. Bush Medicine. 2024. Jessie Beasley (b.1958). Kemarr. artist. Medium acrylic on canvas. 30.0 x 30.0 cm. © Copyright for the artwork remains with the Artist. Bush Medicine collection/Aboriginal and Torres Strait Islander Art Collection. Medical History Museum. Purchased. 2025. Image by Jane Brown. 2026"
+  ],
+  [
+    "[DA Title]. [CA Date]. [CA Creator] [DOB-DOD]. [Role]. [Affiliation]. [CA Material]. [Credit Line]. Image: [DA Creator]. [DA Date of Production]."
+  ],
+  [
+    "2. Tramond mounted hip joint. ligaments (side view). Circa 1900. Maison Tramond . Paris. France. (estab. Circa 1850s) Maker. . Harry Brookes Allen Museum of Anatomy and Pathology. Image by Jane Brown. 2026"
+  ],
+  [
+    "[DA Title]. [CA Date]. [CA Creator]. [Location]. [Start Date]. [Collection Formal] [Credit Line]. Image: [DA Creator]. [DA Date of Production]"
+  ],
+  [
+    "3. Supa Interior. 1999. B62. Howard Arkley (1951—1999) artist. Synthetic polymer paint (airbrush) on canvas. 175 x 135 cm. (c) The Estate of Howard Arkley. Courtesy Kalli Rolfe Contemporary Art. Michael Buxton Collection. the University of Melbourne Art Collection. Donated through the Australian Government's Cultural Gifts Program by Michael and Janet Buxton. 2018. Image by Jane Brown. 2026."
+  ],
+  [
+    "[DA Title]. [CA Date]. [CA Creator] [DOB-DOD]. [Role]. [CA Material]. [Credit Line]. Image: [DA Creator]. [DA Date of Production]"
+  ],
+  [
+    "4. PDP-8 Paper Program Tape. from PDP-8 software set. 1968—70.. Digital Equipment Corporation. Maynard. Massachusetts. U.S.A.. Manufacturer. Engineering and Information Technology Collection. Image by Jane Brown. 2026"
+  ],
+  [
+    "[DA Title]. [CA Date]. [CA Creator]. [Location]. [Role]. [Collection Formal]. Image: [DA Creator]. [DA Date of Production]"
+  ]
+]

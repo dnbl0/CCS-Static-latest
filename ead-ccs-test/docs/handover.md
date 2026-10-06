@@ -7,7 +7,7 @@ git plumbing off `origin/main`, because the parent repo's checked-out branch bel
 
 ## State
 
-- Rails 8.1.3, Blacklight **9.0.0** (not 9.2.1), Ruby 4.0.6, Postgres 17, 54 tests passing (no Solr needed).
+- Rails 8.1.3, Blacklight **9.0.0** (not 9.2.1), Ruby 4.0.6, Postgres 17, 65 tests passing (no Solr needed).
 - Plugins: `blacklight-gallery` (git `main`, grid and mosaic only; slideshow removed; the rubygems 6.0.0 pins `blacklight ~> 9.0.0beta1`) and
   `blacklight_range_limit` 9.3.0. Config-only use; see `docs/blacklight-features.md`.
 - Styling: tokens, themed Bootstrap (dartsass-rails), site header, footer, search overlay, breadcrumb
@@ -44,6 +44,12 @@ Cloudflare on both sites, so treat these as the only rendered evidence.
 - **British Museum**: Drupal 11 (theme `numiko`), not Blacklight; GitHub org is unrelated R/DH scripts.
   URL scheme `/collection/search?keyword=&view=grid|list&sort=object_name__asc&page=N` (page 0-based,
   about 100 per page); term pages at `/collection/term/{id}`. Facet parameter names unverified.
+
+## Data model
+
+The facets, filter sections and record fields now come from the two workbooks in `data/` via `DataModel`
+(see `docs/data-model.md`): 19 of 30 fields and 13 of 22 filters have source data; the rest are documented
+gaps. The earlier pivot, query and contextual facets were removed because the workbook does not define them.
 
 ## Fixed since
 

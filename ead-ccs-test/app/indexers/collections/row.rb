@@ -41,6 +41,12 @@ module Collections
       values(header).flat_map { |v| v.split(delimiter) }.filter_map { |v| Text.clean(v) }
     end
 
+    # Like #list, but an empty entry stays in place as nil, so a column that repeats once per
+    # creator (role, birth, death) lines up with the creator names by position.
+    def positional(header, delimiter)
+      values(header).flat_map { |v| v.split(delimiter, -1) }.map { |v| Text.clean(v) }
+    end
+
     def list_any(headers, delimiter)
       headers.flat_map { |h| list(h, delimiter) }
     end

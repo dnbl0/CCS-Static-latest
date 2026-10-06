@@ -7,6 +7,8 @@ module Collections
   class DigitalAssets
     THUMBNAILS = "/digital-assets/thumbs".freeze
     LARGE = "/digital-assets/large".freeze
+    # Every file in config/digital_assets.yml is a still image; audio, video and PDF are not indexed yet.
+    FORMAT = "Image".freeze
     CONFIG = "config/digital_assets.yml".freeze
 
     # "2001_0008 B web.jpg" and "1973_0755_B~PF.jpg" become URL-safe, lowercase .jpg names.
@@ -32,7 +34,8 @@ module Collections
         "thumbnail_path_ssi" => thumbnails.first,
         "digital_asset_paths_ssim" => thumbnails,
         "digital_asset_large_paths_ssim" => names.map { |name| "#{LARGE}/#{name}" },
-        "has_digital_asset_bsi" => true
+        "has_digital_asset_bsi" => true,
+        "digital_asset_format_ssim" => [ FORMAT ]
       )
     end
   end
