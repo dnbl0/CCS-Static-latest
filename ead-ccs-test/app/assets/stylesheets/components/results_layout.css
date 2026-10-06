@@ -5,12 +5,12 @@
  *     column has 32px of padding either side;
  *     below that it is an off-canvas drawer (components/filter_drawer.css);
  *   - grid and mosaic tiles are as many 17rem-minimum columns as fit (five at 2000px, three at 1440px) with
- *     16px gutters, one column on a phone;
+ *     24px gutters, one column on a phone;
  *   - list view is one column, two from 1880px.
  * Blacklight owns the markup; blacklight-gallery supplies the grid and mosaic documents.
  */
 :root {
-  --results-gutter: 1rem;
+  --results-gutter: 1.5rem;
   --results-card-shadow: 0 1px 3px 0 rgb(0 0 0 / 25%);
   --results-card-shadow-hover: 0 4px 12px 0 rgb(0 0 0 / 40%);
   --sidebar-width: 20rem; /* 320px */
@@ -76,11 +76,11 @@ body.blacklight-catalog-index #content {
   --result-columns: repeat(1, 1fr);
 }
 
-@media (min-width: 624px) {
+@media (min-width: 632px) {
   .documents-gallery, .documents-masonry { --result-columns: repeat(2, 1fr); }
 }
 
-@media (min-width: 912px) {
+@media (min-width: 928px) {
   .documents-gallery, .documents-masonry { --result-columns: repeat(3, 1fr); }
 }
 
@@ -88,27 +88,27 @@ body.blacklight-catalog-index #content {
   .documents-gallery, .documents-masonry { --result-columns: repeat(2, 1fr); }
 }
 
-@media (min-width: 1232px) {
+@media (min-width: 1248px) {
   .documents-gallery, .documents-masonry { --result-columns: repeat(3, 1fr); }
 }
 
-@media (min-width: 1520px) {
+@media (min-width: 1544px) {
   .documents-gallery, .documents-masonry { --result-columns: repeat(4, 1fr); }
 }
 
-@media (min-width: 1808px) {
+@media (min-width: 1840px) {
   .documents-gallery, .documents-masonry { --result-columns: repeat(5, 1fr); }
 }
 
-@media (min-width: 2096px) {
+@media (min-width: 2136px) {
   .documents-gallery, .documents-masonry { --result-columns: repeat(6, 1fr); }
 }
 
-@media (min-width: 2384px) {
+@media (min-width: 2432px) {
   .documents-gallery, .documents-masonry { --result-columns: repeat(7, 1fr); }
 }
 
-@media (min-width: 2672px) {
+@media (min-width: 2728px) {
   .documents-gallery, .documents-masonry { --result-columns: repeat(8, 1fr); }
 }
 

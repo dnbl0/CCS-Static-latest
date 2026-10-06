@@ -27,14 +27,14 @@ class ResultsLayoutTest < ActiveSupport::TestCase
     assert_match(/body\.blacklight-catalog-index #main-container \{\s+padding-inline: 0;/, css)
   end
 
-  test "grid and mosaic columns step with the width, with 16px gutters; five at 2000px" do
+  test "grid and mosaic columns step with the width, with 24px gutters; five at 2000px" do
     css = STYLES.join("results_layout.css").read
     columns = css.scan(/@media \(min-width: (\d+)px\) \{\s+\.documents-gallery, \.documents-masonry \{ --result-columns: repeat\((\d+), 1fr\); \}/)
     steps = columns.map { |width, count| [ width.to_i, count.to_i ] }
 
-    assert_equal [ [ 624, 2 ], [ 912, 3 ], [ 992, 2 ], [ 1232, 3 ], [ 1520, 4 ], [ 1808, 5 ], [ 2096, 6 ], [ 2384, 7 ], [ 2672, 8 ] ], steps
+    assert_equal [ [ 632, 2 ], [ 928, 3 ], [ 992, 2 ], [ 1248, 3 ], [ 1544, 4 ], [ 1840, 5 ], [ 2136, 6 ], [ 2432, 7 ], [ 2728, 8 ] ], steps
     assert_equal 5, steps.reverse.find { |width, _| width <= 2000 }.last
-    assert_includes css, "--results-gutter: 1rem;"
+    assert_includes css, "--results-gutter: 1.5rem;"
   end
 
   test "the columns are the number of 17rem tiles that fit beside the 320px sidebar and the 32px side padding" do
@@ -43,7 +43,7 @@ class ResultsLayoutTest < ActiveSupport::TestCase
 
     steps.each do |width, count|
       content = width >= 992 ? width - 320 - 64 : width - 64
-      fits = ((content + 16) / (272 + 16)).floor
+      fits = ((content + 24) / (272 + 24)).floor
       assert_equal fits, count, "at #{width}px #{fits} columns fit"
     end
   end

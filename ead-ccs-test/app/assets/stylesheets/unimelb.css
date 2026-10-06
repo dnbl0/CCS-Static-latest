@@ -249,9 +249,14 @@ dialog.modal {
   font-size: 0.8rem;
 }
 
+/* The pill shows just the value; the filter name stays for screen readers */
 .constraints-container .applied-filter .filter-name {
-  font-weight: 600;
-  opacity: 0.75;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 .documentHeader h1 {
