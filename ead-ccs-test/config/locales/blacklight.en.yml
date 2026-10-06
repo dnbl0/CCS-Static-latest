@@ -13,6 +13,13 @@ en:
           date-asc: date (oldest)
           title: title (A-Z)
           title-desc: title (Z-A)
+      # Record and result field labels carry no trailing colon (the static CCS design)
+      show:
+        label: "%{label}"
+      index:
+        label: "%{label}"
+      facets:
+        more_html: Show more <span class="visually-hidden">%{field_name}</span>
       zero_results:
         title: No results found and no suggestions are available for this search phrase.
       # Titles of the filter sections in the Field labels and filters workbook (facet groups)

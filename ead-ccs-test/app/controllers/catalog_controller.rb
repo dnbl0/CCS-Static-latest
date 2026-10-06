@@ -4,7 +4,7 @@
 class CatalogController < ApplicationController
   include Blacklight::Catalog
   include BlacklightRangeLimit::ControllerOverride
-  include QueryLimit
+  include QueryRules
 
   # If you'd like to handle errors returned by Solr in a certain way,
   # you can use Rails rescue_from with a method you define in this controller,
@@ -71,8 +71,11 @@ class CatalogController < ApplicationController
     # pagination. Subclasses the Blacklight component and only swaps the template.
     config.show.document_header_component = NexusCcs::DocumentHeaderComponent
 
-    # A record's digital assets, between its title and its metadata.
-    config.show.document_embed_component = NexusCcs::DigitalAssetsComponent
+    # Between a record's title and its details: the digital assets and a summary line.
+    config.show.document_embed_component = NexusCcs::RecordEmbedComponent
+
+    # After the details: the persistent link.
+    config.show.partials = [ :persistent_link ]
 
     # ================================================================
     # Facets

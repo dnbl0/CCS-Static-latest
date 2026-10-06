@@ -67,7 +67,20 @@ bundle exec rails test
 `CCS_STATIC_URL` is the base URL of the static site that hosts Help and Contact; when unset the
 header omits those items (in development it defaults to `http://localhost:3000`).
 
+## Filter rail and record page
+
+- **Filter rail** (`components/filter_rail.css`): Blacklight's facet groups, one per section of the Filters
+  sheet, styled after the static "Search filters" rail: small-capital section titles over a rule, flat
+  hairline filter rows, checkbox values (ticked when selected) with right-aligned counts, "+ Show more".
+  Pure CSS on Blacklight's markup; the rail as a whole is sticky on wide screens (not each section).
+- **Record page** (`components/record_page.css`, `digital_assets.css`): `RecordBannerComponent` (dark title
+  band, hidden from assistive technology because Blacklight's own h1 stays), `RecordEmbedComponent` (the
+  digital assets on a dark band, then type and collection, creator and date, licence), Blacklight's details
+  list as ruled label and value rows in one white card, and `PersistentLinkComponent` (CCS-25, with a copy
+  button, `clipboard_controller.js`). Field labels have no trailing colon (`blacklight.en.yml`).
+
 ## Not ported yet
 
-Results cards, the results toolbar, facets, the record page body, the home hero and the static-only
-pages (help, contact, collection landing pages). See `docs/styling-inventory.md`.
+Results cards and toolbar, the home hero, the mobile filter drawer (each section still has its own "Show
+facets" toggle) and the static-only pages (help, contact, collection landing pages). See
+`docs/styling-inventory.md`.

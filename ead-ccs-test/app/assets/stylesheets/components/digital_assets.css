@@ -2,15 +2,15 @@
  * A record's digital assets on its page: one large image, then the rest as thumbnails.
  * Markup: NexusCcs::DigitalAssetsComponent.
  */
+/* A dark band, the large image on a light mat, as on the static record page */
 .digital-assets {
-  margin-block: var(--ccs-space-4) var(--ccs-space-5);
+  margin: 0;
+  padding: var(--ccs-space-5) var(--ccs-space-4);
+  background: var(--ccs-neutral-1000);
 }
 
 .digital-assets__main {
   margin: 0;
-  padding: var(--ccs-space-4);
-  background: var(--ccs-surface-subtle);
-  border: 1px solid var(--ccs-border-panel);
   text-align: center;
 }
 
@@ -19,26 +19,30 @@
   max-width: 100%;
   max-height: 70vh;
   height: auto;
+  padding: var(--ccs-space-3);
+  background: var(--ccs-surface-subtle);
   object-fit: contain;
 }
 
 .digital-assets__others {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: var(--ccs-space-2);
-  margin: var(--ccs-space-3) 0 0;
+  margin: var(--ccs-space-4) 0 0;
   padding: 0;
   list-style: none;
 }
 
 .digital-assets__other {
   display: block;
-  border: 1px solid var(--ccs-border-panel);
+  border: 2px solid transparent;
 }
 
 .digital-assets__other:hover,
 .digital-assets__other:focus-visible {
-  border-color: var(--ccs-border-brand);
+  border-color: var(--ccs-cyan-400);
+  outline: 0;
 }
 
 .digital-assets__other img {

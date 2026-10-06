@@ -30,7 +30,7 @@
         <div class="site-nav__search">
           <%= form_with url: all_records_path, method: :get, html: { role: "search" } do |form| %>
             <%= form.label :q, "Search Cultural Collections", for: "site-nav-q", class: "visually-hidden" %>
-            <%= form.search_field :q, id: "site-nav-q", placeholder: "Search", autocomplete: "off", maxlength: QueryLimit::MAX_LENGTH %>
+            <%= form.search_field :q, id: "site-nav-q", placeholder: "Search", autocomplete: "off", maxlength: QueryRules::MAX_LENGTH %>
             <button type="submit" aria-label="Search"><%= image_tag "site/icon-search-onaccent.svg", alt: "" %></button>
           <% end %>
         </div>
@@ -101,3 +101,4 @@
 <%= render NexusCcs::BreadcrumbComponent.new(items: breadcrumbs) %>
 
 <%= search_bar if show_search_banner? %>
+<%= render NexusCcs::RecordBannerComponent.new(title: record_title) if show_record_banner? %>

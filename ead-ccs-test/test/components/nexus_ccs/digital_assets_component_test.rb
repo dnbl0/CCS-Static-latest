@@ -46,7 +46,7 @@ class DigitalAssetsComponentTest < ActiveSupport::TestCase
     assert_no_selector ".digital-assets"
   end
 
-  test "is the show page's embed component" do
-    assert_equal NexusCcs::DigitalAssetsComponent, CatalogController.blacklight_config.view_config(:show).document_embed_component
+  test "the show page's embed component wraps it with the record summary" do
+    assert_equal NexusCcs::RecordEmbedComponent, CatalogController.blacklight_config.view_config(:show).document_embed_component
   end
 end

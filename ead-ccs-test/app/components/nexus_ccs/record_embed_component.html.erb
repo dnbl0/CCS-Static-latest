@@ -1,0 +1,9 @@
+<%= render NexusCcs::DigitalAssetsComponent.new(presenter: presenter) %>
+
+<% if summary? %>
+  <div class="record-summary">
+    <% if eyebrow %><p class="record-summary__eyebrow"><%= eyebrow %></p><% end %>
+    <% if byline %><p class="record-summary__byline"><%= byline %></p><% end %>
+    <% if licence %><p class="record-summary__licence"><span class="visually-hidden">Licence: </span><%= licence %></p><% end %>
+  </div>
+<% end %>

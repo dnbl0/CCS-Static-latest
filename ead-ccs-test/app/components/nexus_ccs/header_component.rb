@@ -28,6 +28,9 @@ module NexusCcs
 
     def show_search_banner? = helpers.action_name != "show"
 
+    # A record's page has its title band instead of the search banner.
+    def show_record_banner? = !show_search_banner?
+
     def record_title
       document = helpers.instance_variable_get(:@document)
       document ? helpers.document_presenter(document).heading : "Record"

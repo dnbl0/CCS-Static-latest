@@ -2,28 +2,50 @@ require "test_helper"
 
 # Search requirements from the CCS Jira board (label CCS-2026) that the prototype must meet, kept as tests
 # so a story marked Done in the developers' environment stays done here.
-class JiraSearchRequirementsTest < ActiveSupport::TestCase
+class JiraSearchRequirementsTest < ActionDispatch::IntegrationTest
   CONF = Rails.root.join("solr/conf")
 
   test "CCS-124: the no-results message uses the wording from the story" do
     assert_equal "No results found and no suggestions are available for this search phrase.", I18n.t("blacklight.search.zero_results.title")
   end
 
-  test "CCS-33: the query is cut to 255 characters before searching" do
-    host = Class.new do
-      def self.prepend_before_action(*) = nil
-      include QueryLimit
-      attr_reader :params
+  test "CCS-33: the query is cut to 255 characters" do
+    assert_equal 255, QueryRules.clean("a" * 300).length
+    assert_equal "skull", QueryRules.clean("skull")
+  end
 
-      def initialize(query) = @params = { q: query }
-      public :limit_query_length
+  test "CCS-33: special characters are not allowed in a search" do
+    {
+      "skull!" => "skull",
+      "red+blue" => "red blue",
+      "*:*" => "",
+      "title_tsim:skull" => "title tsim skull",
+      "{!lucene}skull" => "lucene skull",
+      "[1 TO 5]" => "1 TO 5",
+      "50% off\\n" => "50 off n",
+      "  many   spaces " => "many spaces"
+    }.each { |typed, searched| assert_equal searched, QueryRules.clean(typed), typed.inspect }
+  end
+
+  test "CCS-33 and CCS-34: what exact phrase and Boolean searches need, and real names, survive" do
+    [ '"compound monocular microscope"', "skull AND (bird OR monkey)", "O'Brien", "Grainger, Percy", "1973.0004", "Lin-Manuel", "caf\u00e9", "\u4e2d\u6587" ].each do |text|
+      assert_equal text, QueryRules.clean(text), text
     end
+  end
 
-    long = host.new("a" * 300).tap(&:limit_query_length)
-    short = host.new("skull").tap(&:limit_query_length)
+  test "CCS-33: a search of only special characters asks for a valid search string, and never reaches Solr" do
+    get "/catalog", params: { q: "!!!" }
 
-    assert_equal 255, long.params[:q].length
-    assert_equal "skull", short.params[:q]
+    assert_redirected_to root_path
+    assert_equal "Please enter a valid search string.", flash[:alert]
+  end
+
+  test "CCS-33: the same rule applies to the JSON API and to advanced search fields" do
+    get "/catalog.json", params: { q: "*:*" }
+    assert_response :unprocessable_content
+
+    get "/catalog", params: { clause: { "0" => { field: "title", query: "{!}" } } }
+    assert_redirected_to root_path
   end
 
   test "CCS-116: synonyms apply to queries only, and the synonym file holds the curated vocabulary" do

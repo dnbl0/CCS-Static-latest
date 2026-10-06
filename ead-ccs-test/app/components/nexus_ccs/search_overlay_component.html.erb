@@ -5,7 +5,7 @@
     <h2 id="search-overlay-title" class="visually-hidden">Search</h2>
     <%= form_with url: search_action_url, method: :get, class: "search-overlay__form", html: { role: "search" } do |form| %>
       <%= form.label :q, "Search Cultural Collections", for: "search-overlay-input", class: "visually-hidden" %>
-      <%= form.search_field :q, id: "search-overlay-input", placeholder: "Search", autocomplete: "off", maxlength: QueryLimit::MAX_LENGTH, data: { search_overlay_target: "input" } %>
+      <%= form.search_field :q, id: "search-overlay-input", placeholder: "Search", autocomplete: "off", maxlength: QueryRules::MAX_LENGTH, data: { search_overlay_target: "input" } %>
       <button type="submit" class="search-overlay__submit" aria-label="Search">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="11" cy="11" r="8"></circle>
