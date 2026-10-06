@@ -135,7 +135,7 @@ class ResultsLayoutTest < ActiveSupport::TestCase
     assert_no_selector ".constraints-container"
   end
 
-  test "the sidebar leads with Advanced filters, 'Search filters (n)' and Clear filters" do
+  test "the sidebar leads with Advanced filters, 'Search filters (n)' and Clear all" do
     response = Blacklight::Solr::Response.new({ "response" => { "docs" => [], "numFound" => 0 } }, {})
     with_controller_class(CatalogController) do
       with_request_url("/catalog?q=art&f[collection_ssim][]=A") do
@@ -145,9 +145,9 @@ class ResultsLayoutTest < ActiveSupport::TestCase
 
     assert_link "Advanced filters", href: "/catalog/advanced"
     assert_selector ".filter-sidebar__heading", text: "Search filters (1)"
-    assert_link "Clear filters"
+    assert_link "Clear all"
     assert_no_link "Clear filters", href: /f%5B|f\[/ # the link drops the filters but keeps the search
-    assert_selector "[data-controller=filter-drawer] .filter-drawer__close"
+    assert_selector "[data-controller~=filter-drawer] .filter-drawer__close"
   end
 
   test "a skeleton replaces the results and filter values while a search page loads" do

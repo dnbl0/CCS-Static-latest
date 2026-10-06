@@ -4,7 +4,7 @@ module NexusCcs
   # The line above the results: "385 results for" and the search and filters as removable pills. It sits in the
   # results toolbar (catalog/_sort_and_per_page), so Blacklight's own copy in the page header, which
   # builds this component without `inline:`, renders nothing. The "Start over" button is not used: pills
-  # remove one thing each, and the sidebar has "Clear filters".
+  # remove one thing each, and the sidebar has "Clear all".
   class ConstraintsComponent < Blacklight::ConstraintsComponent
     def initialize(search_state:, inline: false, **)
       super(search_state: search_state, start_over_component: nil, classes: "constraints-container", **)

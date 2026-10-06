@@ -14,6 +14,15 @@ module NexusCcs
       @facet_field.facet_field.range && @facet_field.respond_to?(:min) && @facet_field.min.present? && @facet_field.max.present?
     end
 
+    # Every filter starts closed, even one with values selected: the box shows what is chosen
+    def collapsed?
+      true
+    end
+
+    def placeholder
+      "Select #{@facet_field.label.to_s.downcase}"
+    end
+
     def selected_count
       selected_values.size
     end

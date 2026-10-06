@@ -4,29 +4,30 @@
  * section titles and filters come from the workbook (see docs/data-model.md).
  */
 
-/* The rail runs the full length of the page: every filter is visible, none clipped (the column's right rule
-   runs the whole height too, see results_layout.css) */
+
+/*
+ * The static search page's filters (its .facet-rail): each filter is a small uppercase name (with a count
+ * badge when values are selected) over a 48px select-like box showing what is chosen ("Select collection
+ * title" when nothing is). The box opens a panel over the filters below, with a navy outline, a shadow and a
+ * scroll at 320px. Blacklight's accordion supplies the open/close; every filter starts closed, selected or
+ * not. The rail runs the full length of the page, so none are clipped.
+ */
 #sidebar .facets {
   margin: 0;
+  padding: 0 var(--ccs-space-4);
   border: 0;
   border-radius: 0;
   background: transparent;
   --bs-accordion-bg: transparent;
   --bs-accordion-border-color: transparent;
-  --bs-accordion-btn-padding-x: 0;
-  --bs-accordion-btn-padding-y: 1.375rem;
-  --bs-accordion-btn-icon-width: 1.125rem;
-  --bs-accordion-body-padding-x: 0;
-  --bs-accordion-btn-focus-box-shadow: none;
-  --bs-accordion-active-bg: transparent;
   --bs-accordion-btn-bg: transparent;
-  /* Blacklight hangs wrapped labels with a negative indent; the checkbox does that job here */
+  --bs-accordion-active-bg: transparent;
+  --bs-accordion-btn-focus-box-shadow: none;
   --bl-facet-label-indent: 0;
   --bl-facet-label-padding-left: 0;
 }
 
-/* The workbook's section titles are not shown (the design is one flat list of filters), but stay for
-   screen readers as landmarks over each group */
+/* The workbook's section titles are not shown, but stay for screen readers as landmarks over each group */
 .facets-header {
   position: absolute;
   width: 1px;
@@ -36,42 +37,125 @@
   white-space: nowrap;
 }
 
-/* One filter: a flat row with a hairline under it */
 .facets .accordion-item.facet-limit {
+  position: relative;
+  margin-bottom: var(--ccs-space-4);
   border: 0;
-  border-bottom: 1px solid #ebe8e2;
   border-radius: 0;
   background: transparent;
 }
 
-.facets .accordion-item:last-of-type {
-  border-bottom: 1px solid #ebe8e2;
+.facets .accordion-item.facet-limit:first-child {
+  margin-top: var(--ccs-space-4);
 }
 
-/* A filter: its name in the link blue, a chevron at the right */
-.facet-field-heading .accordion-button {
-  padding-inline: var(--ccs-space-4);
-  background: transparent;
-  box-shadow: none;
-  font-size: var(--ccs-font-size-xl);
-  line-height: 1.2;
+.facet-field-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  margin: 0;
+}
+
+.facet-title {
+  display: flex;
+  align-items: center;
+  gap: var(--ccs-space-2);
+  font-size: var(--ccs-font-size-xs);
   font-weight: var(--ccs-font-weight-semibold);
-  color: var(--ccs-text-primary);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #5b6070;
 }
 
-.facet-field-heading .accordion-button:not(.collapsed) {
-  background: transparent;
-  color: var(--ccs-text-primary);
+.facet-title__badge {
+  display: inline-block;
+  min-width: 1.25rem;
+  padding: 0 0.375rem;
+  border-radius: var(--ccs-radius-pill);
+  background: var(--ccs-navy-1100);
+  font-size: var(--ccs-font-size-xs);
+  line-height: 1.25rem;
+  letter-spacing: normal;
+  text-align: center;
+  color: var(--ccs-text-inverse);
+}
+
+/* The box */
+.facet-field-heading .accordion-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ccs-space-2);
+  width: 100%;
+  min-height: 3rem;
+  padding: 0 var(--ccs-space-3);
+  border: 1px solid #cfcac0;
+  border-radius: 0;
+  background: var(--ccs-white);
   box-shadow: none;
+  font-size: var(--ccs-font-size-sm);
+  font-weight: var(--ccs-font-weight-regular);
+  line-height: 1.4;
+  text-align: start;
+  color: #5b6070;
+}
+
+.facet-field-heading .accordion-button:hover,
+.facet-field-heading .accordion-button[aria-expanded="true"] {
+  border-color: var(--ccs-navy-1100);
+  background: var(--ccs-white);
+}
+
+.facet-field-heading .accordion-button.has-value {
+  color: var(--ccs-text-primary);
 }
 
 .facet-field-heading .accordion-button:focus-visible {
-  outline: 2px solid var(--ccs-focus-ring);
+  outline: 3px solid #0b4ea2;
   outline-offset: 2px;
 }
 
+.facet-summary {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.facet-field-heading .accordion-button::after {
+  flex: none;
+  width: 0.875rem;
+  height: 0.875rem;
+  margin: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000f46' stroke-width='2.8'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-size: 0.875rem;
+  transition: transform var(--ccs-duration-fast);
+}
+
+.facet-field-heading .accordion-button[aria-expanded="true"]::after {
+  transform: rotate(180deg);
+}
+
+/* The panel opens over the filters below instead of pushing them down */
+.facets .facet-content {
+  position: absolute;
+  inset-inline: 0;
+  z-index: 10;
+  margin-top: -1px;
+}
+
+.facets .facet-content.collapsing {
+  transition: none;
+}
+
 .facets .accordion-body {
-  padding: 0 var(--ccs-space-4) 1.625rem;
+  max-height: 20rem;
+  overflow-y: auto;
+  padding: var(--ccs-space-1) var(--ccs-space-3);
+  border: 1px solid var(--ccs-navy-1100);
+  background: var(--ccs-white);
+  box-shadow: 0 6px 16px rgb(0 0 0 / 18%);
 }
 
 /* Values: a checkbox (ticked when selected), the label, then the count */
@@ -79,24 +163,24 @@
   display: flex;
   justify-content: space-between;
   gap: var(--ccs-space-3);
-  padding: 0.5625rem 0;
+  padding: 0;
 }
 
 .facet-values .facet-label {
   display: flex;
   flex: 1 1 auto;
-  align-items: flex-start;
-  gap: 0.875rem;
   min-width: 0;
 }
 
 .facet-values .facet-select,
 .facet-values .facet-label > .selected {
-  display: inline-flex;
+  display: flex;
+  flex: 1 1 auto;
   align-items: flex-start;
-  gap: 0.875rem;
-  font-size: var(--ccs-font-size-md);
-  line-height: var(--ccs-line-height-snug);
+  gap: 0.625rem;
+  padding: 0.375rem 0;
+  font-size: 0.9375rem;
+  line-height: 1.35;
   text-decoration: none;
   overflow-wrap: anywhere;
 }
@@ -106,7 +190,6 @@
 }
 
 .facet-values .facet-select:hover {
-  color: var(--ccs-text-link-hover);
   text-decoration: underline;
 }
 
@@ -115,53 +198,56 @@
   content: "";
   flex: none;
   box-sizing: border-box;
-  width: 1.375rem;
-  height: 1.375rem;
-  margin-top: -0.0625rem;
-  border: 1.5px solid var(--ccs-navy-1100);
+  width: 1.125rem;
+  height: 1.125rem;
+  margin-top: 1px;
+  border: 2px solid #5b6070;
   background: var(--ccs-white);
 }
 
 .facet-values .facet-label > .selected {
-  font-weight: var(--ccs-font-weight-semibold);
-  color: var(--ccs-text-brand);
+  font-weight: var(--ccs-font-weight-regular);
+  color: var(--ccs-text-primary);
 }
 
 .facet-values .facet-label > .selected::before {
-  background: var(--ccs-navy-1100) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3.5' stroke-linecap='square'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 0.8rem no-repeat;
+  border-color: var(--ccs-navy-1100);
+  background: var(--ccs-navy-1100) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3.5' stroke-linecap='square'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 0.75rem no-repeat;
 }
 
 /* Unticking: the remove link, kept small */
 .facet-values .remove {
-  color: var(--ccs-text-tertiary);
+  align-self: center;
+  color: #5b6070;
 }
 
 .facet-values .facet-count {
   flex: none;
-  font-size: var(--ccs-font-size-md);
+  align-self: center;
+  font-size: var(--ccs-font-size-sm);
   font-variant-numeric: tabular-nums;
-  color: var(--ccs-text-tertiary);
+  color: #5b6070;
 }
 
-/* "Show more": a plain underlined link, as in the static search page */
+/* "Show more": a small underlined link */
 .more_facets {
-  margin-top: var(--ccs-space-2);
+  margin: var(--ccs-space-1) 0 var(--ccs-space-2);
 }
 
 .more_facets a {
   display: inline-block;
   padding: 0;
-  font-size: var(--ccs-font-size-md);
+  font-size: var(--ccs-font-size-sm);
   font-weight: var(--ccs-font-weight-semibold);
   text-decoration: underline;
-  color: var(--ccs-text-primary);
+  color: var(--ccs-navy-1100);
 }
 
-/* Top of the rail: the advanced filters link, then "Search filters (n)" and "Clear filters" */
+/* Top of the rail: "Advanced filters", then the "Search filters" title with "Clear all" */
 .filter-sidebar__advanced {
   margin: 0;
   padding: var(--ccs-space-4);
-  border-bottom: 1px solid var(--ccs-surface-subtle);
+  border-bottom: 1px solid #e3e0d9;
   font-size: var(--ccs-font-size-sm);
   font-weight: var(--ccs-font-weight-semibold);
   line-height: 1.43;
@@ -175,103 +261,47 @@
   text-decoration: underline;
 }
 
-/* "Search filters (n)" and "Clear filters" share a row, equal width */
 .filter-sidebar__summary {
   display: flex;
-  gap: var(--ccs-space-4);
-  padding: var(--ccs-space-4);
-  border-bottom: 1px solid var(--ccs-surface-subtle);
-}
-
-.filter-sidebar__heading,
-.filter-sidebar__clear {
-  display: flex;
-  flex: 1 1 0;
   align-items: center;
-  justify-content: center;
-  gap: var(--ccs-space-1);
-  min-width: 0;
-  margin: 0;
-  padding: var(--ccs-space-3) var(--ccs-space-2);
-  font-family: var(--ccs-font-body);
-  font-size: var(--ccs-font-size-md);
-  line-height: 1.5rem;
-  white-space: nowrap;
-  color: var(--ccs-text-brand);
+  justify-content: space-between;
+  min-height: 3.5rem;
+  padding: 0 var(--ccs-space-4);
+  border-bottom: 1px solid #e3e0d9;
 }
 
 .filter-sidebar__heading {
-  border: 1px solid var(--ccs-border-panel);
-  background: var(--ccs-white);
+  margin: 0;
+  font-family: var(--ccs-font-body);
+  font-size: var(--ccs-font-size-md);
   font-weight: var(--ccs-font-weight-semibold);
+  color: var(--ccs-text-primary);
 }
 
 .filter-sidebar__clear {
-  border: 0;
-  background: var(--ccs-surface-subtle);
-  text-decoration: none;
-}
-
-.filter-sidebar__clear:hover {
-  background: var(--ccs-neutral-200);
-}
-
-/* The section title, with a count badge when values are selected, and under it (collapsed only) what they are */
-.facet-field-heading .accordion-button {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: var(--ccs-space-1) var(--ccs-space-3);
-  text-align: start;
-}
-
-.facet-field-heading .accordion-button::after {
-  grid-column: 2;
-  grid-row: 1;
-  margin-left: 0;
-  /* Blacklight draws a white chevron on a filter that has values selected (it fills the header navy) */
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23222' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m2 5 6 6 6-6'/%3E%3C/svg%3E");
-}
-
-.facet-title {
-  display: flex;
-  grid-column: 1;
-  grid-row: 1;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.625rem;
-  min-width: 0;
-}
-
-.facet-title__badge {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  min-width: 1.375rem;
-  height: 1.375rem;
-  padding: 0 0.4375rem;
-  border-radius: var(--ccs-radius-pill);
-  background: var(--ccs-navy-1100);
-  font-size: 0.8125rem;
-  font-weight: var(--ccs-font-weight-bold);
-  line-height: 1;
-  color: var(--ccs-text-inverse);
-}
-
-.facet-summary {
-  display: none;
-  grid-column: 1 / -1;
-  grid-row: 2;
-  overflow: hidden;
+  gap: var(--ccs-space-1);
   font-size: var(--ccs-font-size-sm);
-  font-weight: var(--ccs-font-weight-regular);
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: var(--ccs-navy-750);
+  font-weight: var(--ccs-font-weight-semibold);
+  text-decoration: underline;
+  color: var(--ccs-navy-1100);
 }
 
-.facet-field-heading .accordion-button.collapsed .facet-summary {
-  display: block;
+.filter-sidebar__clear svg {
+  display: none;
+}
+
+/* In the mobile drawer the panels sit in the flow: the drawer scrolls, so an overlay would be cut off */
+@media (max-width: 991.98px) {
+  .facets .facet-content {
+    position: static;
+    margin-top: 0;
+  }
+
+  .facets .accordion-body {
+    box-shadow: none;
+  }
 }
 
 /* Range filters (production date, creator dates): the plugin's histogram, a two-handle slider
