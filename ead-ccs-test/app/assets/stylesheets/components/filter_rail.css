@@ -16,7 +16,7 @@
 }
 
 #sidebar .facets {
-  margin-bottom: var(--ccs-space-5);
+  margin: 0;
   border: 0;
   border-radius: 0;
   background: transparent;
@@ -33,22 +33,15 @@
   --bl-facet-label-padding-left: 0;
 }
 
-/* Section title: small capitals over a rule */
+/* The workbook's section titles are not shown (the design is one flat list of filters), but stay for
+   screen readers as landmarks over each group */
 .facets-header {
-  padding-bottom: var(--ccs-space-2);
-  border-bottom: 1px solid var(--ccs-border-panel);
-}
-
-.facets-heading {
-  margin: 0;
-  padding: 0;
-  font-family: var(--ccs-font-body);
-  font-size: var(--ccs-font-size-xs);
-  font-weight: var(--ccs-font-weight-semibold);
-  letter-spacing: 0.08em;
-  line-height: var(--ccs-line-height-snug);
-  text-transform: uppercase;
-  color: var(--ccs-text-secondary);
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
 }
 
 /* One filter: a flat row with a hairline under it */
@@ -63,19 +56,19 @@
   border-bottom: 1px solid var(--ccs-border-panel);
 }
 
+/* A filter: its name in the link blue, a chevron at the right */
 .facet-field-heading .accordion-button {
+  padding-inline: var(--ccs-space-3);
   background: transparent;
   box-shadow: none;
   font-size: var(--ccs-font-size-sm);
   font-weight: var(--ccs-font-weight-semibold);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--ccs-text-brand);
+  color: var(--ccs-text-link);
 }
 
 .facet-field-heading .accordion-button:not(.collapsed) {
   background: transparent;
-  color: var(--ccs-text-brand);
+  color: var(--ccs-text-link);
   box-shadow: none;
 }
 
@@ -85,8 +78,7 @@
 }
 
 .facets .accordion-body {
-  padding-top: 0;
-  padding-bottom: var(--ccs-space-3);
+  padding: 0 var(--ccs-space-3) var(--ccs-space-3);
 }
 
 /* Values: a checkbox (ticked when selected), the label, then the count */
@@ -98,6 +90,10 @@
 }
 
 .facet-values .facet-label {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: flex-start;
+  gap: var(--ccs-space-2);
   min-width: 0;
 }
 
@@ -172,4 +168,51 @@
 
 .more_facets a:hover {
   text-decoration: underline;
+}
+
+/* Top of the rail: the advanced filters link, then "Search filters (n)" and "Clear filters" */
+.filter-sidebar__advanced {
+  margin: 0;
+  padding: var(--ccs-space-3);
+  font-size: var(--ccs-font-size-xs);
+  font-weight: var(--ccs-font-weight-semibold);
+}
+
+.filter-sidebar__advanced a {
+  text-decoration: none;
+}
+
+.filter-sidebar__advanced a:hover {
+  text-decoration: underline;
+}
+
+.filter-sidebar__summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ccs-space-2);
+  padding: 0 var(--ccs-space-2) var(--ccs-space-3);
+}
+
+.filter-sidebar__heading {
+  margin: 0;
+  padding: var(--ccs-space-2);
+  border: 1px solid var(--ccs-border-strong);
+  background: var(--ccs-white);
+  font-family: var(--ccs-font-body);
+  font-size: 0.8125rem;
+  font-weight: var(--ccs-font-weight-semibold);
+  color: var(--ccs-text-primary);
+}
+
+.filter-sidebar__clear {
+  padding: var(--ccs-space-2);
+  border: 1px solid transparent;
+  background: var(--ccs-neutral-100);
+  font-size: 0.8125rem;
+  text-decoration: none;
+  color: var(--ccs-text-primary);
+}
+
+.filter-sidebar__clear:hover {
+  background: var(--ccs-neutral-200);
 }

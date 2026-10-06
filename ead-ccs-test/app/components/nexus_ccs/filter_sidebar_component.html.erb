@@ -8,6 +8,17 @@
     </button>
   </div>
 
+  <p class="filter-sidebar__advanced">
+    <%= link_to advanced_filters_path do %>Advanced filters <span aria-hidden="true">&rarr;</span><% end %>
+  </p>
+
+  <div class="filter-sidebar__summary">
+    <h2 class="filter-sidebar__heading">Search filters<%= " (#{applied_count})" if applied_count.positive? %></h2>
+    <% if applied_count.positive? %>
+      <%= link_to "Clear filters", clear_filters_path, class: "filter-sidebar__clear" %>
+    <% end %>
+  </div>
+
   <% facet_group_names.each do |groupname| %>
     <% fields = facet_fields_in_group(groupname) %>
     <%= render group_component_class.new(id: groupname) do |component| %>

@@ -20,6 +20,9 @@ en:
         label: "%{label}"
       facets:
         more_html: Show more <span class="visually-hidden">%{field_name}</span>
+      per_page:
+        button_label: "%{count} results per page"
+        button_label_html: '%{count}<span class="d-none d-sm-inline"> results per page</span>'
       zero_results:
         title: No results found and no suggestions are available for this search phrase.
       # Titles of the filter sections in the Field labels and filters workbook (facet groups)

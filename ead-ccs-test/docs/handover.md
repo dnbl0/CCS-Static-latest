@@ -7,7 +7,7 @@ git plumbing off `origin/main`, because the parent repo's checked-out branch bel
 
 ## State
 
-- Rails 8.1.3, Blacklight **9.0.0** (not 9.2.1), Ruby 4.0.6, Postgres 17, 94 tests passing (no Solr needed).
+- Rails 8.1.3, Blacklight **9.0.0** (not 9.2.1), Ruby 4.0.6, Postgres 17, 99 tests passing (no Solr needed).
 - Plugins: `blacklight-gallery` (git `main`, grid and mosaic only; slideshow removed; the rubygems 6.0.0 pins `blacklight ~> 9.0.0beta1`) and
   `blacklight_range_limit` 9.3.0. Config-only use; see `docs/blacklight-features.md`.
 - Styling: tokens, themed Bootstrap (dartsass-rails), site header, footer, search overlay, breadcrumb

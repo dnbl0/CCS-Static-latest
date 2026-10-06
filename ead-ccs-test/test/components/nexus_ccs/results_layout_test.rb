@@ -16,24 +16,40 @@ class ResultsLayoutTest < ActiveSupport::TestCase
 
   def card(fields) = NexusCcs::ResultCardComponent.new(document: Presenter.new(SolrDocument.new(fields)))
 
-  test "the sidebar is a fluid column of clamp(220px, 25%, 320px) from 992px" do
+  test "the sidebar is a 14rem column flush with the window's left edge, ruled on its right" do
     css = STYLES.join("results_layout.css").read
 
-    assert_includes css, "--sidebar-width: clamp(220px, 25%, 320px);"
+    assert_includes css, "--sidebar-width: 14rem;"
     assert_match(/@media \(min-width: 992px\) \{\s+#main-container > \.row \{\s+flex-wrap: nowrap;/, css)
+    assert_includes css, "border-right: 1px solid var(--ccs-border-panel);"
+    assert_match(/body\.blacklight-catalog-index #main-container \{\s+padding-inline: 0;/, css)
   end
 
-  test "result columns follow Europeana's breakpoints with a 24px gutter" do
+  test "grid and mosaic columns step with the width, with 16px gutters; six at 2000px" do
     css = STYLES.join("results_layout.css").read
-    columns = css.scan(/@media \(min-width: (\d+)px\) \{\s+\.documents-gallery, \.documents-masonry \{ --result-columns: (\d+); \}/)
+    columns = css.scan(/@media \(min-width: (\d+)px\) \{\s+\.documents-gallery, \.documents-masonry \{ --result-columns: repeat\((\d+), 1fr\); \}/)
+    steps = columns.map { |width, count| [ width.to_i, count.to_i ] }
 
-    assert_equal [ %w[768 2], %w[1200 3], %w[1460 4], %w[1880 5], %w[2520 6], %w[3020 7] ], columns
-    assert_includes css, "--results-gutter: 1.5rem;"
+    assert_equal [ [ 592, 2 ], [ 880, 3 ], [ 992, 2 ], [ 1104, 3 ], [ 1392, 4 ], [ 1680, 5 ], [ 1968, 6 ], [ 2256, 7 ], [ 2544, 8 ] ], steps
+    assert_equal 6, steps.reverse.find { |width, _| width <= 2000 }.last
+    assert_includes css, "--results-gutter: 1rem;"
   end
 
-  test "the mosaic's layout polyfill gets plain repeat() and 1fr, which it can parse" do
+  test "the columns are the number of 17rem tiles that fit beside the 14rem sidebar (and its padding)" do
     css = STYLES.join("results_layout.css").read
-    assert_match(/\.documents-masonry \{\s+grid-template-columns: repeat\(var\(--result-columns\), 1fr\);/, css)
+    steps = css.scan(/min-width: (\d+)px\) \{\s+\.documents-gallery, \.documents-masonry \{ --result-columns: repeat\((\d+)/).map { |w, n| [ w.to_i, n.to_i ] }
+
+    steps.each do |width, count|
+      content = width >= 992 ? width - 224 - 32 : width - 32
+      fits = ((content + 16) / (272 + 16)).floor
+      assert_equal fits, count, "at #{width}px #{fits} columns fit"
+    end
+  end
+
+  test "the mosaic's layout polyfill reads plain repeat(N, 1fr) from the shared variable" do
+    css = STYLES.join("results_layout.css").read
+    assert_match(/\.documents-masonry \{\s+grid-template-columns: var\(--result-columns\);/, css)
+    assert_no_match(/auto-fill/, css.gsub(%r{/\*.*?\*/}m, ""), "auto-fill breaks the polyfill")
   end
 
   test "below 992px the sidebar is a drawer that slides from the left, 320px at most and 75vw at most" do
@@ -89,4 +105,47 @@ class ResultsLayoutTest < ActiveSupport::TestCase
     assert_selector "button.filters-toggle"
     assert_no_selector ".filters-toggle__count"
   end
+
+  def render_constraints(url:, total:, inline: true)
+    with_controller_class(CatalogController) do
+      with_request_url(url) do
+        vc_test_controller.instance_variable_set(:@response, Struct.new(:total).new(total))
+        render_inline(NexusCcs::ConstraintsComponent.new(search_state: Blacklight::SearchState.new(Rack::Utils.parse_nested_query(URI(url).query).with_indifferent_access, config, vc_test_controller), inline: inline))
+      end
+    end
+  end
+
+  test "the toolbar line is the count and 'for' with the search as a pill" do
+    render_constraints(url: "/catalog?q=art", total: 1234)
+
+    assert_selector ".constraints-label", text: "1,234 results for"
+    assert_selector ".applied-filter.query", text: "art"
+    assert_no_selector ".catalog_startOverLink"
+  end
+
+  test "with nothing applied the line is just the count, and a single result is singular" do
+    render_constraints(url: "/catalog?q=", total: 1)
+    assert_selector ".constraints-label", text: "1 result", exact_text: true
+  end
+
+  test "the page-header copy of the constraints renders nothing, so it appears once" do
+    render_constraints(url: "/catalog?q=art", total: 5, inline: false)
+    assert_no_selector ".constraints-container"
+  end
+
+  test "the sidebar leads with Advanced filters, 'Search filters (n)' and Clear filters" do
+    response = Blacklight::Solr::Response.new({ "response" => { "docs" => [], "numFound" => 0 } }, {})
+    with_controller_class(CatalogController) do
+      with_request_url("/catalog?q=art&f[collection_ssim][]=A") do
+        render_inline(NexusCcs::FilterSidebarComponent.new(blacklight_config: config, response: response, view_config: config.index))
+      end
+    end
+
+    assert_link "Advanced filters", href: "/catalog/advanced"
+    assert_selector ".filter-sidebar__heading", text: "Search filters (1)"
+    assert_link "Clear filters"
+    assert_no_link "Clear filters", href: /f%5B|f\[/ # the link drops the filters but keeps the search
+    assert_selector "[data-controller=filter-drawer] .filter-drawer__close"
+  end
 end
+

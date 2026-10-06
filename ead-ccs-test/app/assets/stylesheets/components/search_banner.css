@@ -9,16 +9,14 @@
 }
 
 .search-banner__inner {
-  max-width: 90rem;
-  margin-inline: auto;
-  padding: 3.5rem var(--ccs-space-6) var(--ccs-space-8);
+  padding: var(--ccs-space-6) var(--ccs-space-4) var(--ccs-space-5);
 }
 
 .search-banner__title {
   margin: 0;
   font-family: var(--ccs-font-heading);
   font-weight: var(--ccs-font-weight-regular);
-  font-size: 2.375rem;
+  font-size: 2rem;
   line-height: var(--ccs-line-height-tight);
   color: var(--ccs-text-inverse);
 }
@@ -32,18 +30,18 @@
 }
 
 .search-banner__search {
-  margin-top: var(--ccs-space-6);
+  margin-top: var(--ccs-space-3);
 }
 
 /* The form: one white bar (input, scope select, submit), then the advanced search link */
 .search-banner__form {
   width: 100%;
-  max-width: 45rem;
+  max-width: 32rem;
 }
 
 .search-banner .input-group {
   flex-wrap: nowrap;
-  height: 3rem;
+  height: 2.5rem;
   background: var(--ccs-white);
   border: 1px solid var(--ccs-navy-1100);
 }
@@ -74,11 +72,11 @@
 }
 
 .search-banner .search-field {
-  order: 2;
+  order: 0;
   flex: none;
   width: auto;
   max-width: 12.5rem;
-  padding-inline: var(--ccs-space-3) 2rem;
+  padding-inline: var(--ccs-space-3) 1.75rem;
   background-color: var(--ccs-surface-subtle);
   font-size: var(--ccs-font-size-sm);
   font-weight: var(--ccs-font-weight-semibold);
@@ -89,7 +87,7 @@
 .search-banner .search-btn {
   order: 3;
   flex: none;
-  width: 3rem;
+  width: 2.5rem;
   padding: 0;
   display: flex;
   align-items: center;
@@ -113,43 +111,18 @@
 }
 
 .search-banner .advanced_search {
-  /* Blacklight adds .text-body, which reads this variable with !important */
-  --bs-body-color-rgb: 255, 255, 255;
-  display: flex;
-  align-items: center;
-  width: fit-content;
-  min-height: 3rem;
-  margin-top: var(--ccs-space-2);
-  padding: 0;
-  border: 0;
-  font-weight: var(--ccs-font-weight-semibold);
-  color: var(--ccs-text-inverse);
-  text-decoration: none;
-}
-
-.search-banner .advanced_search::after {
-  content: "";
-  width: 0.5rem;
-  height: 0.5rem;
-  margin-left: var(--ccs-space-2);
-  border: solid currentColor;
-  border-width: 2px 2px 0 0;
-  transform: rotate(45deg);
-}
-
-.search-banner .advanced_search:hover,
-.search-banner .advanced_search:focus-visible {
-  color: var(--ccs-text-inverse);
-  text-decoration: underline;
+  /* the link lives in the filter sidebar ("Advanced filters"); this one stays for assistive technology */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
 }
 
 @media (max-width: 767px) {
-  .search-banner__inner {
-    padding: var(--ccs-space-6) var(--ccs-space-4);
-  }
-
   .search-banner__title {
-    font-size: var(--ccs-font-size-4xl);
+    font-size: var(--ccs-font-size-3xl);
   }
 
   .search-banner .search-field {

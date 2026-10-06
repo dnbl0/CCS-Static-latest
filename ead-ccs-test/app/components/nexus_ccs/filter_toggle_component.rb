@@ -10,7 +10,7 @@ module NexusCcs
     end
 
     def applied_count
-      helpers.search_state.filters.count { |filter| filter.values.any? }
+      helpers.applied_filter_count
     end
   end
 end

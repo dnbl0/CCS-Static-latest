@@ -28,7 +28,8 @@ class DataModelTest < ActiveSupport::TestCase
   end
 
   # CCS-41 asks for a with/without digital assets option, which is not in the workbook's filter list.
-  JIRA_ADDITIONS = %w[has_digital_asset].freeze
+  # Beyond the workbook: CCS-41's with/without digital assets, and Creator role from the search results design.
+  JIRA_ADDITIONS = %w[creator_role_ssim has_digital_asset].freeze
 
   test "facets are the workbook's available filters: same order, names, sections and types" do
     expected = DataModel.filters.select(&:available?)
@@ -42,12 +43,15 @@ class DataModelTest < ActiveSupport::TestCase
     end
   end
 
-  test "the only facet beyond the workbook is the digital asset option from CCS-41, in the Media type section" do
-    extra = config.facet_fields.values.select { |facet| JIRA_ADDITIONS.include?(facet.key) }
+  test "the facets beyond the workbook: Creator role after the creator dates, and CCS-41's digital asset option" do
+    extra = config.facet_fields.values.select { |facet| JIRA_ADDITIONS.include?(facet.key) }.index_by(&:key)
 
-    assert_equal JIRA_ADDITIONS, extra.map(&:key)
-    assert_equal %w[media_type], extra.map(&:group).uniq
-    assert_equal %w[with without], extra.first.query.keys.map(&:to_s)
+    assert_equal "creator", extra["creator_role_ssim"].group
+    assert_equal %w[with without], extra["has_digital_asset"].query.keys.map(&:to_s)
+    assert_equal "media_type", extra["has_digital_asset"].group
+
+    order = config.facet_fields.keys
+    assert_equal "creator_death_isim", order[order.index("creator_role_ssim") - 1]
   end
 
   test "filter sections appear in the workbook's order with titles" do

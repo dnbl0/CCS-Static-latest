@@ -48,6 +48,7 @@ class CatalogController < ApplicationController
 
     # Below 992px the sidebar is a drawer; this button opens it.
     config.index.sidebar_component = NexusCcs::FilterSidebarComponent
+    config.index.constraints_component = NexusCcs::ConstraintsComponent
     config.add_results_collection_tool(:filters_toggle, component: NexusCcs::FilterToggleComponent)
     config.add_results_collection_tool(:sort_widget)
     config.add_results_collection_tool(:per_page_widget)
@@ -94,6 +95,9 @@ class CatalogController < ApplicationController
       else options.merge!(limit: 20, index_range: "A".."Z")   # browse, with "search within this filter" in the modal
       end
       config.add_facet_field filter.solr, **options
+
+      # In the search results design but not in the workbook: Creator role follows the creator dates.
+      config.add_facet_field "creator_role_ssim", label: "Creator role", group: filter.group, limit: 20, index_range: "A".."Z" if filter.seq == 5
     end
 
     # CCS-41: show results with or without digital assets. Not in the workbook's filter list, so it is

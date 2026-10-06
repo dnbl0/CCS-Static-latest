@@ -1,121 +1,144 @@
 /*
- * The bar above the results (count, filters button, sort, page size, view), the applied-filter pills and
- * the pagination, after Europeana's: no boxed bar, a plain count, pill-shaped applied filters and flat
- * Previous / numbers / Next at the bottom.
+ * The bar above the results, after the search results design: "N results for" with the search and filters as
+ * removable pills on the left; on the right the Filters button (small screens), sort, page size and the
+ * view buttons. Below the results: a small Previous / numbers / Next pager. Markup:
+ * catalog/_sort_and_per_page.html.erb and NexusCcs::ConstraintsComponent.
  */
-
-/* Applied filters as pills, with a plain "Start over" */
-.constraints-container {
+#sortAndPerPage {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: space-between;
+  gap: var(--ccs-space-3) var(--ccs-space-4);
+  margin: 0 0 var(--ccs-space-4);
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+/* Count and pills */
+.constraints-container {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  align-items: center;
   gap: var(--ccs-space-2);
-  margin-bottom: var(--ccs-space-4) !important;
+  min-width: 0;
+  margin: 0;
 }
 
 .constraints-label {
-  margin-right: var(--ccs-space-1);
+  margin: 0;
   font-family: var(--ccs-font-body);
   font-size: var(--ccs-font-size-sm);
-  font-weight: var(--ccs-font-weight-semibold);
-  color: var(--ccs-text-secondary);
+  font-weight: var(--ccs-font-weight-regular);
+  color: var(--ccs-text-primary);
 }
 
 .constraints-container .applied-filter {
   display: inline-flex;
   max-width: 100%;
   overflow: hidden;
-  border-radius: 1.125rem;
-  background: var(--ccs-cyan-100);
+  border-radius: var(--ccs-radius-sm);
+  background: var(--ccs-sage-200);
 }
 
 .constraints-container .applied-filter .btn {
   display: inline-flex;
   align-items: center;
-  height: 2.25rem;
+  min-height: 1.75rem;
   border: 0;
   border-radius: 0;
   background: transparent;
-  font-size: var(--ccs-font-size-sm);
-  color: var(--ccs-text-primary);
+  font-size: var(--ccs-font-size-xs);
+  font-weight: var(--ccs-font-weight-semibold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ccs-text-brand);
 }
 
 .constraints-container .applied-filter .constraint-value {
   min-width: 0;
-  padding-inline: var(--ccs-space-4) var(--ccs-space-2);
+  padding-inline: var(--ccs-space-2) var(--ccs-space-1);
 }
 
 .constraints-container .applied-filter .remove {
-  padding-inline: var(--ccs-space-3) var(--ccs-space-4);
+  padding-inline: var(--ccs-space-2);
 }
 
 .constraints-container .applied-filter .remove:hover,
 .constraints-container .applied-filter .remove:focus-visible {
-  background: var(--ccs-cyan-200);
-  color: var(--ccs-text-brand);
+  background: var(--ccs-sage-300);
 }
 
-.constraints-container .catalog_startOverLink {
-  display: inline-flex;
-  align-items: center;
-  height: 2.25rem;
-  border: 0;
-  border-radius: var(--ccs-radius-sm);
-  background: var(--ccs-neutral-100);
-  font-size: var(--ccs-font-size-sm);
-  font-weight: var(--ccs-font-weight-semibold);
-  color: var(--ccs-text-brand);
-}
-
-.constraints-container .catalog_startOverLink:hover {
-  background: var(--ccs-neutral-200);
-}
-
-/* The bar: count on the left, controls on the right, no box */
-#sortAndPerPage {
-  align-items: center;
-  margin-bottom: var(--ccs-space-4) !important;
-  padding: 0 !important;
-  border: 0;
-  background: transparent;
-}
-
-#sortAndPerPage .paginate-section {
-  /* only the count is kept at the top; Previous and Next are with the page numbers below the results */
-  font-size: 0;
-}
-
-#sortAndPerPage .page-entries {
-  font-size: var(--ccs-font-size-md);
-  color: var(--ccs-text-secondary);
-}
-
+/* Controls: sort and page size as select-like boxes, then the view buttons, flush right */
 #sortAndPerPage .search-widgets {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: stretch;
   gap: var(--ccs-space-2);
+  margin-left: auto;
 }
 
 #sortAndPerPage .search-widgets > * {
   margin: 0 !important;
 }
 
-/* Pagination: flat text buttons, the current page filled */
+#sortAndPerPage .btn-group > .dropdown-toggle {
+  position: relative;
+  display: block;
+  min-width: 10rem;
+  height: 2.5rem;
+  padding: 0 3.5rem 0 var(--ccs-space-3);
+  line-height: 2.4rem;
+  border: 1px solid var(--ccs-border-strong);
+  border-radius: 0;
+  background: var(--ccs-white);
+  font-size: var(--ccs-font-size-sm);
+  text-align: start;
+  color: var(--ccs-text-secondary);
+}
+
+#sortAndPerPage .btn-group.per_page-dropdown > .dropdown-toggle {
+  min-width: 12.5rem;
+}
+
+#sortAndPerPage .btn-group > .dropdown-toggle::after {
+  position: absolute;
+  inset: 0 0 0 auto;
+  margin: 0;
+  border: 0;
+  border-left: 1px solid var(--ccs-border-panel);
+  width: 2.5rem;
+  height: auto;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000f46' stroke-width='2.6' stroke-linecap='square'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center / 0.875rem no-repeat;
+  content: "";
+}
+
+#sortAndPerPage .view-type-group .btn {
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border-color: var(--ccs-border-strong);
+  border-radius: 0;
+}
+
+/* Pagination: small caps Previous and Next around the page numbers, the current page filled */
 .paginate-section .pagination {
   flex-wrap: wrap;
+  align-items: center;
   gap: var(--ccs-space-1);
   justify-content: center;
   margin: var(--ccs-space-6) 0;
 }
 
 .paginate-section .page-link {
-  min-width: 2.5rem;
-  padding: var(--ccs-space-2) var(--ccs-space-3);
+  min-width: 1.75rem;
+  padding: var(--ccs-space-1) var(--ccs-space-2);
   border: 0;
   border-radius: var(--ccs-radius-sm);
   background: transparent;
-  font-size: var(--ccs-font-size-sm);
+  font-size: var(--ccs-font-size-xs);
   text-align: center;
   color: var(--ccs-text-primary);
 }
@@ -136,7 +159,7 @@
 
 .paginate-section .page-item:first-child .page-link,
 .paginate-section .page-item:last-child .page-link {
-  font-weight: var(--ccs-font-weight-semibold);
-  letter-spacing: 0.04em;
+  font-weight: var(--ccs-font-weight-bold);
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }

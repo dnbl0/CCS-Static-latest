@@ -79,26 +79,31 @@ header omits those items (in development it defaults to `http://localhost:3000`)
   list as ruled label and value rows in one white card, and `PersistentLinkComponent` (CCS-25, with a copy
   button, `clipboard_controller.js`). Field labels have no trailing colon (`blacklight.en.yml`).
 
-## Search results layout (after Europeana)
+## Search results layout
 
-`components/results_layout.css`, `filter_drawer.css`, `results_toolbar.css`, `NexusCcs::FilterSidebarComponent`,
-`FilterToggleComponent`, `ResultCardComponent`. Measurements come from Europeana's open-source front end
-(`portal.js`); its live site is behind a bot check, so rendered values were not compared pixel for pixel.
+Designed in `search-results-bl.png` (the search results design); Europeana's open-source front end
+informed the drawer and cards. Files: `components/results_layout.css`, `filter_rail.css`, `filter_drawer.css`,
+`results_toolbar.css`, `search_banner.css`; `NexusCcs::FilterSidebarComponent`, `FilterToggleComponent`,
+`ConstraintsComponent`, `ResultCardComponent`; `catalog/_sort_and_per_page.html.erb`.
 
-| | Europeana | Here |
-|---|---|---|
-| Sidebar | right, `clamp(220px, 25%, 320px)` from 992px | **left**, same width rule |
-| Below 992px | off-canvas drawer from the right, 320px / 75vw max, 300ms, scrim `rgba(0,0,0,.7)`, z-index 1050 | same, from the **left**; focus moves in and is trapped, Escape and the scrim close it, scroll is locked, focus returns to the Filters button |
-| Columns | 1 / 2 (768) / 3 (1200) / 4 (1460) / 5 (1880) / 6 (2520) / 7 (3020), 24px gutters | the same (grid and mosaic); list is 1 column, 2 from 1880px |
-| Cards | white, 4px radius, shadow `0 1px 3px` growing to `0 4px 12px` on hover | the same |
-| Mosaic | image only, title on hover | image only, caption on hover or focus (blacklight-gallery) |
-| List card | provider above title, image right 160px on a dark box, never cropped, footer | collection above title, image right 160px on a dark box, licence and format footer; stacks below 768px |
-| Toolbar | a plain count, view switcher, no sort | plain count, Filters button (below 992px), sort, page size, view buttons |
-| Applied filters | pills | pills with a remove cross, plus "Start over" |
-| Pagination | Previous, page number input, Next | Previous, numbered pages (jump to any page, CCS-45), Next |
-| Filters | dropdowns that apply at once | accordion lists of checkbox links, one navigation per click (works without JavaScript) |
+- **Banner**: compact: "Search the Collection" and a 2.5rem search bar (field selector left, cyan button).
+  The result count moved to the toolbar; "Advanced search" is "Advanced filters" at the top of the sidebar.
+- **Sidebar** (left, 14rem, flush with the window edge, ruled on its right): "Advanced filters", then
+  "Search filters (n)" and "Clear filters" (the search stays, the filters go), then one flat list of
+  filters in blue with chevrons. The workbook's section titles stay for screen readers only. Creator role
+  follows the creator dates (in the design, not in the workbook).
+- **Toolbar**: "N results for" with the search and each filter as a removable pill; sort and page size as
+  select-style boxes; the view buttons flush right; a Filters button replaces the sidebar below 992px.
+- **Results**: grid and mosaic columns step with the width (written out as `repeat(N, 1fr)`, because the
+  mosaic polyfill mis-sizes `auto-fill`): six columns at 2000px, 17rem tiles, 16px gutters. List is one
+  column, two from 1880px, with the collection above the title and the image right on a dark box.
+- **Pager**: small-caps Previous and Next around the page numbers, current page filled.
+- **Below 992px** the sidebar is an off-canvas drawer from the left (320px / 75vw max, 300ms, scrim
+  `rgba(0,0,0,.7)`); focus moves in and is trapped, Escape and the scrim close it, scroll is locked, focus
+  returns to the Filters button.
 
-Not copied on purpose: dropdown facets with instant apply, the page-number input, the right-hand sidebar.
+Not copied from Europeana on purpose: dropdown facets that apply at once, the page-number input, the
+right-hand sidebar. Europeana's live site is bot-protected, so its values were not compared rendered.
 
 ## Not ported yet
 
