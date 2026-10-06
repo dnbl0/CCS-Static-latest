@@ -3,6 +3,7 @@
 # Blacklight controller that handles searches and document requests
 class CatalogController < ApplicationController
   include Blacklight::Catalog
+  include BlacklightRangeLimit::ControllerOverride
 
   # If you'd like to handle errors returned by Solr in a certain way,
   # you can use Rails rescue_from with a method you define in this controller,
@@ -14,10 +15,9 @@ class CatalogController < ApplicationController
   self.search_service_class = ::SearchService
 
   configure_blacklight do |config|
-    ## Default parameters to send to solr for all search-like requests.
-    config.default_solr_params = {
-      rows: 10
-    }
+    # Results per page; the per_page widget offers these and the first request uses the default.
+    config.per_page = [ 12, 24, 48, 96 ]
+    config.default_per_page = 24
 
     # Blacklight's default is 'select', which solrconfig.xml now declares.
     # config.solr_path = 'select'
@@ -26,6 +26,16 @@ class CatalogController < ApplicationController
     config.header_component = NexusCcs::HeaderComponent
 
     config.index.title_field = "title_tsim"
+
+    # Result views from blacklight-gallery. No image field is indexed yet, so the card
+    # images are a placeholder until thumbnail_field can point at one.
+    placeholder = "placeholder-thumbnail.svg"
+    config.view.gallery(document_component: Blacklight::Gallery::DocumentComponent,
+      icon: Blacklight::Gallery::Icons::GalleryComponent, default_thumbnail: placeholder)
+    config.view.masonry(document_component: Blacklight::Gallery::DocumentComponent,
+      icon: Blacklight::Gallery::Icons::MasonryComponent, default_thumbnail: placeholder)
+    config.view.slideshow(document_component: Blacklight::Gallery::SlideshowComponent,
+      icon: Blacklight::Gallery::Icons::SlideshowComponent, default_thumbnail: placeholder)
     config.index.display_type_field = "format"
 
     config.add_results_document_tool(:bookmark, component: Blacklight::Document::BookmarkComponent, if: :render_bookmarks_control?)
@@ -60,32 +70,38 @@ class CatalogController < ApplicationController
     # Facets. Note: Every field here is populated by Collections::EmuSource or
     # Collections::VernonSource. A facet on an empty field renders a sidebar box.
     # ================================================================
-    config.add_facet_field "collection_ssim", label: "Collection", limit: true
+    # Parent/child: collection > named collection. The two flat facets stay configured (for
+    # constraints and advanced search) but the sidebar shows the pivot.
+    config.add_facet_field "collection_pivot", label: "Collection", pivot: %w[collection_ssim named_collection_ssim], limit: true
+    config.add_facet_field "collection_ssim", label: "Collection", limit: true, show: false
+    config.add_facet_field "named_collection_ssim", label: "Named Collection", limit: true, show: false
     config.add_facet_field "classification_ssim", label: "Category", limit: 20
     config.add_facet_field "object_type_ssim", label: "Object Type", limit: 20
     config.add_facet_field "format", label: "Record Type", limit: true
     config.add_facet_field "creator_ssim", label: "Creator", limit: 20, index_range: "A".."Z"
     config.add_facet_field "subject_ssim", label: "Subject", limit: 20, index_range: "A".."Z"
     config.add_facet_field "production_place_ssim", label: "Place of Production", limit: 20
-    config.add_facet_field "named_collection_ssim", label: "Named Collection", limit: true
 
-    # Only the EMu export populates these. Maybe remove but possibly needed for Indigenous flag?
-    config.add_facet_field "cultural_group_ssim", label: "Cultural Group", limit: true
-    config.add_facet_field "language_group_ssim", label: "Language Group", limit: true
+    # Only the EMu export populates these, so offer them once a collection is chosen.
+    # Maybe remove but possibly needed for Indigenous flag?
+    has_collection = ->(context, _config, _response) { Array(context.params.dig(:f, :collection_ssim)).any? }
+    config.add_facet_field "cultural_group_ssim", label: "Cultural Group", limit: true, if: has_collection
+    config.add_facet_field "language_group_ssim", label: "Language Group", limit: true, if: has_collection
 
-    # Ranged rather than a value-per-year facet to accomodate high variability in ranges
-    config.add_facet_field "date_range", label: "Date", query: {
-      pre_1800: { label: "Before 1800", fq: "date_start_isi:[* TO 1799]" },
-      c19:      { label: "1800-1899",   fq: "date_start_isi:[1800 TO 1899]" },
-      c20:      { label: "1900-1999",   fq: "date_start_isi:[1900 TO 1999]" },
-      c21:      { label: "2000 onwards", fq: "date_start_isi:[2000 TO *]" }
+    # blacklight_range_limit: a histogram and year inputs on the start year.
+    config.add_facet_field "date_start_isi", label: "Date", range: true
+
+    # Yes/no toggles as query facets.
+    config.add_facet_field "record_includes", label: "Record includes", query: {
+      description: { label: "A description", fq: "description_tsim:[* TO *]" },
+      date: { label: "A date", fq: "date_start_isi:[* TO *]" }
     }
 
     # Self-excluding facets. Tag each facet's fq and have that same facet's counts
-    # ignore it (Solr {!tag}/{!ex} local params). Query facets are skipped as query-facet
-    # branch returns :fq string verbatim and multiple date ranges would silently fail.
+    # ignore it (Solr {!tag}/{!ex} local params). Query, range and pivot facets are skipped:
+    # the query branch returns :fq verbatim, and range and pivot facets build their own filters.
     config.facet_fields.each_value do |facet|
-      next if facet.query
+      next if facet.query || facet.range || facet.pivot
 
       facet.tag = facet.key
       facet.ex  = facet.key
@@ -161,6 +177,8 @@ class CatalogController < ApplicationController
       }
     end
 
+    config.advanced_search.enabled = true
+
     # Set up a default advanced search configuration by using the current
     # search_fields and facet_fields configs.
     if config.advanced_search.enabled
@@ -176,7 +194,8 @@ class CatalogController < ApplicationController
     config.add_sort_field "relevance", sort: "score desc, title_si asc", label: "relevance"
     config.add_sort_field "date-desc", sort: "date_start_isi desc, title_si asc", label: "date (newest)"
     config.add_sort_field "date-asc", sort: "date_start_isi asc, title_si asc", label: "date (oldest)"
-    config.add_sort_field "title", sort: "title_si asc", label: "title"
+    config.add_sort_field "title", sort: "title_si asc", label: "title (A-Z)"
+    config.add_sort_field "title-desc", sort: "title_si desc", label: "title (Z-A)"
 
     # If there are more than this many search results, no spelling ("did you
     # mean") suggestion is offered.

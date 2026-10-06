@@ -1,3 +1,16 @@
 en:
   blacklight:
     application_name: 'Cultural Collection Search'
+    search:
+      view_title:
+        list: List
+        gallery: Grid
+        masonry: Mosaic
+        slideshow: Slideshow
+      fields:
+        sort:
+          relevance: relevance
+          date-desc: date (newest)
+          date-asc: date (oldest)
+          title: title (A-Z)
+          title-desc: title (Z-A)

@@ -1,5 +1,6 @@
 # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 Rails.application.routes.draw do
+  concern :range_searchable, BlacklightRangeLimit::Routes::RangeSearchable.new
   mount Blacklight::Engine => "/"
   root to: "catalog#index"
   concern :searchable, Blacklight::Routes::Searchable.new
@@ -9,6 +10,7 @@ Rails.application.routes.draw do
   scope constraints: { id: %r{[^/]+} } do
     resource :catalog, only: [], as: "catalog", path: "/catalog", controller: "catalog" do
       concerns :searchable
+      concerns :range_searchable
     end
     resources :solr_documents, only: [ :show ], path: "/catalog", controller: "catalog" do
       concerns :exportable

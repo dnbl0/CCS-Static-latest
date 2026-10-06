@@ -70,6 +70,11 @@ end
 
 gem "blacklight", "~> 9.0"
 
+# Official Blacklight plugins. blacklight-gallery 6.0.0 on rubygems pins blacklight ~> 9.0.0beta1,
+# so use its main branch, whose gemspec allows ~> 9.0.
+gem "blacklight-gallery", github: "projectblacklight/blacklight-gallery", branch: "main"
+gem "blacklight_range_limit"
+
 # Bootstrap source (Sass) for the themed build; Blacklight 9 requires Bootstrap >= 5.3.5, < 6
 gem "bootstrap", "~> 5.3.5"
 # Compiles app/assets/stylesheets/*.scss to app/assets/builds (works with Propshaft)

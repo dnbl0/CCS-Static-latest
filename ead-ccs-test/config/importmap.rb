@@ -9,3 +9,7 @@ pin "bootstrap", to: "bootstrap.js"
 pin "@popperjs/core", to: "popper-core.js"
 pin "@github/auto-complete-element", to: "auto-complete-element.js"
 pin "@github/combobox-nav", to: "combobox-nav.js"
+# chart.js (and its one dependency) are a dependency of blacklight-range-limit. Vendored from the
+# jsDelivr ES builds so the site makes no CDN requests; update versions together.
+pin "chart.js", to: "chart.js"
+pin "@kurkle/color", to: "kurkle-color.js"

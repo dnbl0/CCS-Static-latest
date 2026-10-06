@@ -2,6 +2,8 @@
 
 class SearchBuilder < Blacklight::SearchBuilder
   include Blacklight::Solr::SearchBuilderBehavior
+  include BlacklightRangeLimit::RangeLimitBuilder
+
 
   # How many of the user's terms a document has to match
   KEYWORD_MM = "4<-1 7<-2"

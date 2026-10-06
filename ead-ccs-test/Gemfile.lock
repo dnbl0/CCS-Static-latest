@@ -1,3 +1,12 @@
+GIT
+  remote: https://github.com/projectblacklight/blacklight-gallery.git
+  revision: 1829c3edd2b8a78f17efc666da0352a9900e4569
+  branch: main
+  specs:
+    blacklight-gallery (6.0.0)
+      blacklight (~> 9.0)
+      rails (>= 7.1, < 9)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -91,6 +100,9 @@ GEM
       rails (>= 7.0, < 9)
       view_component (>= 3.0, < 5.0)
       zeitwerk
+    blacklight_range_limit (9.3.0)
+      blacklight (>= 7.25.2, < 10)
+      view_component (>= 2.54, < 5)
     bootsnap (1.24.6)
       msgpack (~> 1.2)
     bootstrap (5.3.8)
@@ -475,6 +487,8 @@ PLATFORMS
 
 DEPENDENCIES
   blacklight (~> 9.0)
+  blacklight-gallery!
+  blacklight_range_limit
   bootsnap
   bootstrap (~> 5.3.5)
   brakeman
@@ -524,6 +538,8 @@ CHECKSUMS
   bigdecimal (4.1.2) sha256=53d217666027eab4280346fba98e7d5b66baaae1b9c3c1c0ffe89d48188a3fbd
   bindex (0.8.1) sha256=7b1ecc9dc539ed8bccfc8cb4d2732046227b09d6f37582ff12e50a5047ceb17e
   blacklight (9.0.0) sha256=10c796cb81c57ee91b3adf745c50a96c5cf9de17055a2fa66469da73ae1e17f8
+  blacklight-gallery (6.0.0)
+  blacklight_range_limit (9.3.0) sha256=bc22d55f3d650086a632a88e7591ac39e6d8e40ba3297dfcef9420c048e1e71d
   bootsnap (1.24.6) sha256=c60bab88c70332290f0a2636a288f675299eb4f804a02a3c085b42eca9da164a
   bootstrap (5.3.8) sha256=1c23b06df24ec28a0058ad90a0da93e260d2c0a5c453d7087f6bad428464742f
   brakeman (8.0.5) sha256=03735f9690d3fd4b32d66aacbf0a6d15a84266bdd06b32c05c8ecc8f6021d2be

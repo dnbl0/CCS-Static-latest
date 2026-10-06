@@ -4,3 +4,11 @@ import "controllers"
 import * as bootstrap from "bootstrap"
 import githubAutoCompleteElement from "@github/auto-complete-element"
 import Blacklight from "blacklight-frontend"
+import "blacklight-gallery"
+
+import BlacklightRangeLimit from "blacklight-range-limit";
+BlacklightRangeLimit.init({onLoadHandler: Blacklight.onLoad });
+
+Blacklight.onLoad(function() {
+  initSlideshow(".documents-slideshow");
+});
