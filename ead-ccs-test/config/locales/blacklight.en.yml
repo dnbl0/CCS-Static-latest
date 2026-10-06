@@ -13,6 +13,8 @@ en:
           date-asc: date (oldest)
           title: title (A-Z)
           title-desc: title (Z-A)
+      zero_results:
+        title: No results found and no suggestions are available for this search phrase.
       # Titles of the filter sections in the Field labels and filters workbook (facet groups)
       facets-collection_details:
         title: Collection details

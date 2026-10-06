@@ -4,6 +4,7 @@
 class CatalogController < ApplicationController
   include Blacklight::Catalog
   include BlacklightRangeLimit::ControllerOverride
+  include QueryLimit
 
   # If you'd like to handle errors returned by Solr in a certain way,
   # you can use Rails rescue_from with a method you define in this controller,
@@ -88,10 +89,18 @@ class CatalogController < ApplicationController
       config.add_facet_field filter.solr, **options
     end
 
+    # CCS-41: show results with or without digital assets. Not in the workbook's filter list, so it is
+    # an addition from the Jira story; it sits with the Media type filters.
+    config.add_facet_field "has_digital_asset", label: "Digital asset", group: "media_type", query: {
+      with: { label: "With a digital asset", fq: "has_digital_asset_bsi:true" },
+      without: { label: "Without a digital asset", fq: "-has_digital_asset_bsi:true" }
+    }
+
     # Self-excluding facets. Tag each facet's fq and have that same facet's counts ignore it
-    # (Solr {!tag}/{!ex} local params). Range facets build their own filters, so they are skipped.
+    # (Solr {!tag}/{!ex} local params). Range facets build their own filters and query facets pass
+    # their fq through verbatim, so both are skipped.
     config.facet_fields.each_value do |facet|
-      next if facet.range
+      next if facet.range || facet.query
 
       facet.tag = facet.key
       facet.ex  = facet.key

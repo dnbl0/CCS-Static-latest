@@ -30,7 +30,7 @@
         <div class="site-nav__search">
           <%= form_with url: all_records_path, method: :get, html: { role: "search" } do |form| %>
             <%= form.label :q, "Search Cultural Collections", for: "site-nav-q", class: "visually-hidden" %>
-            <%= form.search_field :q, id: "site-nav-q", placeholder: "Search", autocomplete: "off" %>
+            <%= form.search_field :q, id: "site-nav-q", placeholder: "Search", autocomplete: "off", maxlength: QueryLimit::MAX_LENGTH %>
             <button type="submit" aria-label="Search"><%= image_tag "site/icon-search-onaccent.svg", alt: "" %></button>
           <% end %>
         </div>

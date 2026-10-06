@@ -1,31 +1,59 @@
-# The ASF licenses this file to You under the Apache License, Version 2.0
-# (the "License"); you may not use this file except in compliance with
-# the License.  You may obtain a copy of the License at
+# Query-time synonyms for the CCS search, ported from the static prototype's curated vocabulary
+# (public/search/smart-search.js). The text field type applies them at query time only, so changing
+# this file needs a core reload (not a reindex). Single words only.
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# Interchangeable words: searching any of them also finds the others.
+doctor, physician, surgeon, clinician, medic
+tooth, teeth, dental, dentist, dentistry, denture, orthodontic
+photograph, photo, picture, image, snapshot, photographic, negative
+clothing, clothes, garment, apparel, costume, dress, attire
+cloth, fabric, textile, material
+jewellery, jewelry, necklace, bracelet, brooch, pendant
+pottery, ceramic, earthenware, porcelain, stoneware
+book, volume, publication, booklet
+letter, correspondence, epistle
+map, chart, cartography
+song, tune, melody, composition
+recording, audio, sound
+film, movie, footage, cinema
+xray, radiograph, radiology
+skull, cranium
+violin, fiddle
+harp, lyre
+baby, infant, newborn
+child, kid, juvenile
+weapon, arm
+cartoon, caricature, comic
+lamp, lantern, light
+clock, watch, timepiece
+sketch, drawing
+sculpture, statue, carving
+painting, canvas
+pharmacy, chemist, apothecary, pharmaceutical
+hospital, infirmary, clinic
+museum, gallery, collection
+farm, agriculture, pastoral, rural
 
-#-----------------------------------------------------------------------
-#some test synonym mappings unlikely to appear in real input text
-aaa => aaaa
-bbb => bbbb1 bbbb2
-ccc => cccc1,cccc2
-a\=>a => b\=>b
-a\,a => b\,b
-fooaaa,baraaa,bazaaa
-
-# Some synonym groups specific to this example
-GB,gib,gigabyte,gigabytes
-MB,mib,megabyte,megabytes
-Television, Televisions, TV, TVs
-#notice we use "gib" instead of "GiB" so any WordDelimiterFilter coming
-#after us won't split it into two words.
-
-# Synonym mappings can be used for spelling correction too
-pixima => pixma
-
+# A general word also finds the specific words catalogued under it (searching "instrument" finds harps).
+# One way only: a specific word does not widen to the general one, and specific words are not related to
+# each other (a harp is not a violin). The static prototype also widens specific to general; that matches
+# every record whose collection name is the general word ("medical"), so it is left out.
+animal => animal, bird, fauna, kangaroo, mammal, marsupial, possum, primate
+art => art, artwork, drawing, etching, lithograph, painting, portrait, print, sculpture
+artwork => artwork, drawing, etching, painting, print, sculpture
+bone => bone, anatomy, skeleton, skull, specimen
+building => building, architecture, blueprint, house, plan, structure
+container => container, bag, basket, bottle, bowl, box, jar, jug, vase, vessel
+document => document, archive, certificate, diary, file, letter, manuscript, report
+furniture => furniture, bench, cabinet, chair, desk, stool, table
+instrument => instrument, drum, fiddle, flute, guitar, harmonium, harp, metallophone, organ, piano, pipe, synthesiser, trumpet, violin
+medical => medical, anatomy, clinical, doctor, hospital, medicine, patient, surgeon, surgical
+medicine => medicine, bottle, drug, medical, pharmacy, remedy, tonic
+music => music, composer, composition, instrument, manuscript, orchestral, score, song
+musical => musical, composer, instrument, music, score
+plant => plant, botanical, eucalypt, fern, flower, fungi, herbarium, leaf, tree, wattle
+science => science, apparatus, chemistry, experiment, laboratory, physics, scientific
+tool => tool, apparatus, device, equipment, implement, utensil
+toy => toy, doll, figurine, game, puppet
+vehicle => vehicle, bicycle, car, carriage, cart
+war => war, army, battle, military, service, soldier

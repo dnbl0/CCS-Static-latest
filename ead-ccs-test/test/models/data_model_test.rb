@@ -27,9 +27,12 @@ class DataModelTest < ActiveSupport::TestCase
     end
   end
 
+  # CCS-41 asks for a with/without digital assets option, which is not in the workbook's filter list.
+  JIRA_ADDITIONS = %w[has_digital_asset].freeze
+
   test "facets are the workbook's available filters: same order, names, sections and types" do
     expected = DataModel.filters.select(&:available?)
-    actual = config.facet_fields.values
+    actual = config.facet_fields.values.reject { |facet| JIRA_ADDITIONS.include?(facet.key) }
 
     assert_equal expected.map(&:solr), actual.map(&:field)
     assert_equal expected.map(&:name), actual.map(&:label)
@@ -37,6 +40,14 @@ class DataModelTest < ActiveSupport::TestCase
     expected.zip(actual).each do |filter, facet|
       assert_equal filter.type == :year, facet.range.present?, "#{filter.name}: only year selectors are range facets"
     end
+  end
+
+  test "the only facet beyond the workbook is the digital asset option from CCS-41, in the Media type section" do
+    extra = config.facet_fields.values.select { |facet| JIRA_ADDITIONS.include?(facet.key) }
+
+    assert_equal JIRA_ADDITIONS, extra.map(&:key)
+    assert_equal %w[media_type], extra.map(&:group).uniq
+    assert_equal %w[with without], extra.first.query.keys.map(&:to_s)
   end
 
   test "filter sections appear in the workbook's order with titles" do

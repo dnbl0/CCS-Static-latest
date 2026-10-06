@@ -354,9 +354,18 @@
     <fieldType name="_bbox_coord" class="solr.DoublePointField" docValues="true" stored="false"/>
 
     <fieldType name="text" class="solr.TextField" omitNorms="false" positionIncrementGap="100">
-      <analyzer>
+      <analyzer type="index">
         <tokenizer class="solr.ICUTokenizerFactory"/>
         <filter class="solr.ICUFoldingFilterFactory"/>  <!-- NFKC, case folding, diacritics removed -->
+        <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt"/>
+        <filter class="solr.TrimFilterFactory"/>
+      </analyzer>
+      <!-- Synonyms (semantic search, CCS-116) apply to the query only, so editing synonyms.txt needs a
+           core reload but no reindex. -->
+      <analyzer type="query">
+        <tokenizer class="solr.ICUTokenizerFactory"/>
+        <filter class="solr.ICUFoldingFilterFactory"/>
+        <filter class="solr.SynonymGraphFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
         <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt"/>
         <filter class="solr.TrimFilterFactory"/>
       </analyzer>

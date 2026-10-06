@@ -90,3 +90,32 @@
   text-decoration: underline;
 }
 
+
+/* The visitor's recent searches (CCS-143) */
+.search-overlay__recent {
+  width: 100%;
+  margin-top: var(--ccs-space-5);
+  color: var(--ccs-text-inverse);
+}
+
+.search-overlay__recent-heading {
+  margin: 0 0 var(--ccs-space-2);
+  font-size: var(--ccs-font-size-sm);
+  font-weight: var(--ccs-font-weight-semibold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.search-overlay__recent-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ccs-space-2) var(--ccs-space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.search-overlay__recent-list a {
+  color: var(--ccs-text-inverse);
+  text-decoration: underline;
+}
