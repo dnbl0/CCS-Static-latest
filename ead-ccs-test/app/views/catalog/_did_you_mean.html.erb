@@ -1,0 +1,4 @@
+<%# Overrides Blacklight's partial, rendered by Blacklight::SearchHeaderComponent
+    above the sort/per-page controls -%>
+<%= render SpellingCorrectionComponent.new(response: @response) %>
+<%= render(Blacklight::Response::SpellcheckComponent.new(response: @response)) %>

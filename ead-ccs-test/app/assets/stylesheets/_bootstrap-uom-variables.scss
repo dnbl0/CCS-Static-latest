@@ -1,0 +1,51 @@
+// Bootstrap Sass variables for the University of Melbourne Gen 3 theme.
+//
+// Bootstrap derives tints, shades and contrast colours from these at compile time,
+// so they must be literal colours; they cannot be var(--ccs-*). Each value below
+// that has a design token names it in a comment, and
+// test/assets/bootstrap_theme_tokens_test.rb fails if the two drift apart.
+// Colours with no token yet are marked "no token".
+
+// Gen 3 rules: sharp corners, no shadows, no gradients.
+$enable-rounded: false;
+$enable-shadows: false;
+$enable-gradients: false;
+$enable-negative-margins: true;
+
+// Theme colours
+$primary: #000f46;   // --ccs-navy-1100
+$secondary: #abc1a7; // --ccs-sage-400
+$info: #47c8f0;      // --ccs-cyan-400
+$danger: #db1927;    // --ccs-red-600
+$dark: #000b34;      // --ccs-navy-1200
+$success: #2e7d32;   // no token
+$warning: #8a6200;   // no token
+$light: #faf9f6;     // no token
+
+// Body and typography
+$body-bg: #fff;                 // --ccs-white
+$body-color: #222;              // --ccs-neutral-1000
+$headings-color: #000f46;       // --ccs-navy-1100
+$font-family-sans-serif: "Source Sans 3", Helvetica, Arial, sans-serif;
+$font-family-serif: Fraunces, Georgia, serif;
+// Heading fonts and weights are not set here: only h1 and h2 are serif (Gen 3),
+// which unimelb.css handles; Bootstrap's defaults apply to the rest.
+
+// Borders
+$border-color: #cdcdcd; // --ccs-neutral-300
+$border-radius: 0;
+$border-radius-sm: 0;
+$border-radius-lg: 0;
+$border-radius-xl: 0;
+$border-radius-xxl: 0;
+$border-radius-pill: 0;
+
+// Focus rings use the focus colour at low opacity
+$btn-focus-box-shadow: 0 0 0 3px rgb(0 15 70 / 25%);
+$input-focus-border-color: #000f46; // --ccs-navy-1100
+$input-focus-box-shadow: 0 0 0 3px rgb(0 15 70 / 20%);
+
+// Accordion: Blacklight's facets are Bootstrap accordions
+$accordion-button-active-bg: #e8edf6; // no token
+$accordion-button-active-color: #000f46; // --ccs-navy-1100
+$accordion-button-focus-box-shadow: 0 0 0 3px rgb(0 15 70 / 20%);

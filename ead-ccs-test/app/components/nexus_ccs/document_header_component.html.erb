@@ -1,0 +1,11 @@
+<%# Same three pieces as the gem's template, but on one row inside the box.
+    Blacklight's own order is: applied_params, then a div wrapping the
+    pagination, then the header tools. -%>
+<div class="pagination-search-widgets uom-record-nav mb-2">
+  <div class="uom-record-nav-pagination">
+    <%= render pagination_component %>
+  </div>
+
+  <%= render applied_params_component %>
+  <%= render_header_tools %>
+</div>

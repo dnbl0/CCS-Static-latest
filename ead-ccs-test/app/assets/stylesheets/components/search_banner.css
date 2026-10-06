@@ -1,0 +1,158 @@
+/*
+ * Search banner: dark band under the site header with the page title, result summary
+ * and the search form. Markup: NexusCcs::SearchBannerComponent; the form itself is
+ * Blacklight's SearchBarComponent, so this styles Blacklight's own classes.
+ */
+.search-banner {
+  background: var(--ccs-navy-1200);
+  color: var(--ccs-text-inverse);
+}
+
+.search-banner__inner {
+  max-width: 90rem;
+  margin-inline: auto;
+  padding: 3.5rem var(--ccs-space-6) var(--ccs-space-8);
+}
+
+.search-banner__title {
+  margin: 0;
+  font-family: var(--ccs-font-heading);
+  font-weight: var(--ccs-font-weight-regular);
+  font-size: 2.375rem;
+  line-height: var(--ccs-line-height-tight);
+  color: var(--ccs-text-inverse);
+}
+
+.search-banner__summary {
+  margin: var(--ccs-space-2) 0 0;
+  max-width: 47.5rem;
+  font-size: var(--ccs-font-size-lg);
+  line-height: 1.55;
+  color: rgb(255 255 255 / 92%);
+}
+
+.search-banner__search {
+  margin-top: var(--ccs-space-6);
+}
+
+/* The form: one white bar (input, scope select, submit), then the advanced search link */
+.search-banner__form {
+  width: 100%;
+  max-width: 45rem;
+}
+
+.search-banner .input-group {
+  flex-wrap: nowrap;
+  height: 3rem;
+  background: var(--ccs-white);
+  border: 1px solid var(--ccs-navy-1100);
+}
+
+.search-banner .input-group:focus-within {
+  box-shadow: 0 0 0 3px rgb(70 200 240 / 45%);
+}
+
+.search-banner .input-group > * {
+  height: 100%;
+  border: 0;
+  border-radius: 0;
+}
+
+.search-banner .search-autocomplete-wrapper {
+  order: 1;
+  flex: 1 1 auto;
+  min-width: 2.5rem;
+  padding: 0;
+}
+
+.search-banner .search-q {
+  height: 100%;
+  padding: 0 var(--ccs-space-3) 0 var(--ccs-space-3);
+  font-size: var(--ccs-font-size-md);
+  color: var(--ccs-text-primary);
+  box-shadow: none;
+}
+
+.search-banner .search-field {
+  order: 2;
+  flex: none;
+  width: auto;
+  max-width: 12.5rem;
+  padding-inline: var(--ccs-space-3) 2rem;
+  background-color: var(--ccs-surface-subtle);
+  font-size: var(--ccs-font-size-sm);
+  font-weight: var(--ccs-font-weight-semibold);
+  color: var(--ccs-navy-1100);
+  box-shadow: none;
+}
+
+.search-banner .search-btn {
+  order: 3;
+  flex: none;
+  width: 3rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ccs-action-primary);
+  color: var(--ccs-action-primary-text);
+}
+
+.search-banner .search-btn:hover {
+  background: var(--ccs-action-primary-hover);
+}
+
+.search-banner .search-btn .submit-search-text {
+  /* the icon is the label; the text stays available to screen readers */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+.search-banner .advanced_search {
+  /* Blacklight adds .text-body, which reads this variable with !important */
+  --bs-body-color-rgb: 255, 255, 255;
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  min-height: 3rem;
+  margin-top: var(--ccs-space-2);
+  padding: 0;
+  border: 0;
+  font-weight: var(--ccs-font-weight-semibold);
+  color: var(--ccs-text-inverse);
+  text-decoration: none;
+}
+
+.search-banner .advanced_search::after {
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-left: var(--ccs-space-2);
+  border: solid currentColor;
+  border-width: 2px 2px 0 0;
+  transform: rotate(45deg);
+}
+
+.search-banner .advanced_search:hover,
+.search-banner .advanced_search:focus-visible {
+  color: var(--ccs-text-inverse);
+  text-decoration: underline;
+}
+
+@media (max-width: 767px) {
+  .search-banner__inner {
+    padding: var(--ccs-space-6) var(--ccs-space-4);
+  }
+
+  .search-banner__title {
+    font-size: var(--ccs-font-size-4xl);
+  }
+
+  .search-banner .search-field {
+    max-width: 7.5rem;
+  }
+}

@@ -1,0 +1,43 @@
+# --- Version control ---
+.git
+.gitignore
+.gitattributes
+.github
+
+# --- Dev environment / editors ---
+.devcontainer
+.vscode
+.idea
+*.swp
+
+# --- Bundler state (critical) ---
+# Never let host or devcontainer bundle config/gems into the image.
+.bundle
+vendor/bundle
+vendor/cache
+
+# --- Node dependencies and junk ---
+node_modules
+.yarn
+yarn-error.log
+npm-debug.log*
+
+# --- Rails runtime dirs (recreated at boot) ---
+log/*
+!log/.keep
+tmp/*
+!tmp/.keep
+!tmp/pids/.keep
+storage/*
+!storage/.keep
+public/assets
+
+# --- Secrets ---
+config/master.key
+config/credentials/*.key
+.env
+.env.*
+
+# --- Tests (run in CI/CD, not in the image) ---
+test
+coverage

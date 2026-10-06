@@ -1,0 +1,7 @@
+/* Inline link with a trailing arrow icon, e.g. the footer links. */
+.arrow-link { display: inline-flex; align-items: center; gap: var(--ccs-space-1); min-height: 44px; font-weight: var(--ccs-font-weight-semibold); font-size: var(--ccs-font-size-lg); line-height: 24px; color: var(--ccs-blue-800); text-decoration: none; }
+.arrow-link:hover { color: var(--ccs-blue-700); text-decoration: underline; }
+.arrow-link img { width: 24px; height: 24px; flex: none; }
+.arrow-link--inverse { color: var(--ccs-white); }
+.arrow-link--inverse:hover { color: var(--ccs-cyan-400); }
+.arrow-link--underline { text-decoration: underline; text-underline-position: from-font; }

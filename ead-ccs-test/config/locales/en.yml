@@ -1,0 +1,56 @@
+# Files in the config/locales directory are used for internationalization and
+# are automatically loaded by Rails. If you want to use locales other than
+# English, add the necessary files in this directory.
+#
+# To use the locales, use `I18n.t`:
+#
+#     I18n.t "hello"
+#
+# In views, this is aliased to just `t`:
+#
+#     <%= t("hello") %>
+#
+# To use a different locale, set it with `I18n.locale`:
+#
+#     I18n.locale = :es
+#     This would use the information in config/locales/es.yml.
+#
+# To learn more about the API, please read the Rails Internationalization guide
+# at https://guides.rubyonrails.org/i18n.html.
+#
+# NOTE: YAML interprets the following case-insensitive strings as
+# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
+# must be quoted to be interpreted as strings. For example:
+#
+#     en:
+#       "yes": yup
+#       enabled: "ON"
+
+en:
+  blacklight:
+    tools:
+      title: "Actions"      # Blacklight ships "Tools"
+
+  nexus_ccs:
+    view_full_record:
+      label: "View full record"
+      title: "You're leaving this site"
+      body: "The full record for this item is held on %{source}'s own system, which the University of Melbourne doesn't maintain and isn't responsible for."
+      default_source: "another organisation"
+      stay: "Stay on this page"
+      continue: "Continue to site"
+      close: "Close"
+
+  catalog:
+    country_acknowledgement:
+      title: "Acknowledgement of Country"
+      body_html: |
+        <p>The University of Melbourne respectfully acknowledges the Traditional
+        Custodians throughout Australia whose cultural heritage, knowledge,
+        histories and collections we care for, and the Traditional Custodians of
+        the lands on which our campuses, collections and communities are
+        situated.</p>
+        <p>We recognise their continuing connections to Country, culture and
+        community, and pay our respects to Elders past and present.</p>
+      advisory: "Some records may contain cultural material, or images, voices or names of people who have passed away."
+      continue: "Continue"

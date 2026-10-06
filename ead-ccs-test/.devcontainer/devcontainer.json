@@ -1,0 +1,64 @@
+{
+  "name": "CCS Frontend local Dev environment",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "args": {
+      "RUBY_VERSION": "4.0.6",
+      "USER_UID": "1001",
+      "USER_GID": "1001"
+    }
+  },
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "remoteUser": "local-dev",
+  // Expose the Rails server
+  "forwardPorts": [
+    3000
+  ],
+  "portsAttributes": {
+    "3000": {
+      "label": "Rails",
+      "onAutoForward": "notify"
+    }
+  },
+  // Useful environment variables (TODO: override these via VPN / local secrets)
+  "containerEnv": {
+    "BUNDLE_PATH": "/usr/local/bundle",
+    "RAILS_ENV": "development"
+    // "DATABASE_URL": "postgres://user:pass@remote-host:5432/blacklight_dev",
+    // "SOLR_URL": "http://remote-solr:8983/solr/blacklight-core"
+  },
+  // Run after the container is created
+  "postCreateCommand": "if [ -f Gemfile ]; then sudo chown -R $(id -u):$(id -g) /usr/local/bundle && bundle install; else echo 'No Gemfile yet run bin/bootstrap-blacklight first'; fi",
+  // Optional: run every time the container starts
+  // "postStartCommand": "bin/rails db:prepare",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "Shopify.ruby-lsp",
+        "KoichiSasada.vscode-rdbg",
+        "kaiwood.endwise",
+        "aliariff.vscode-erb-beautify",
+        "EditorConfig.EditorConfig",
+        "streetsidesoftware.code-spell-checker",
+        "usernamehw.errorlens"
+      ],
+      "settings": {
+        "editor.formatOnSave": true,
+        "rubyLsp.formatter": "auto",
+        "files.eol": "\n"
+      }
+    }
+  },
+  // Features (optional but convenient)
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": true,
+      "configureZshAsDefaultShell": true
+    }
+  },
+  "mounts": [
+    // Persist bundler cache across rebuilds
+    "source=blacklight-bundle-cache,target=/usr/local/bundle,type=volume"
+  ]
+}

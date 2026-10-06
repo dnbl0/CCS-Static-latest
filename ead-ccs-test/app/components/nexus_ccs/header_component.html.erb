@@ -1,0 +1,103 @@
+<header class="site-header" aria-label="Site header" data-controller="site-header"
+        data-action="click@window->site-header#clickAway keydown.esc@window->site-header#escape focusin@window->site-header#focusAway">
+  <div class="site-header__brand">
+    <a href="https://www.unimelb.edu.au" aria-label="The University of Melbourne homepage">
+      <picture>
+        <source media="(max-width: 1023px)" srcset="<%= image_path("site/logo-header-mobile.svg") %>">
+        <%= image_tag "site/logo-header-desktop.svg", alt: "" %>
+      </picture>
+    </a>
+  </div>
+
+  <div class="site-header__main">
+    <div class="site-header__utility">
+      <nav aria-label="University of Melbourne">
+        <ul>
+          <% audience_links.each do |link| %>
+            <li><%= link_to link.label, link.href %></li>
+          <% end %>
+        </ul>
+      </nav>
+      <button type="button" class="site-header__search-toggle" aria-label="Open search" data-action="site-header#openSearch">
+        <%= image_tag "site/icon-search-onaccent.svg", alt: "" %>
+      </button>
+    </div>
+
+    <div class="site-header__bar">
+      <%= link_to "Cultural Collections", root_path, class: "site-header__title", data: { site_header_target: "title" } %>
+
+      <nav id="site-nav" class="site-nav" aria-label="Primary navigation" data-site-header-target="nav">
+        <div class="site-nav__search">
+          <%= form_with url: all_records_path, method: :get, html: { role: "search" } do |form| %>
+            <%= form.label :q, "Search Cultural Collections", for: "site-nav-q", class: "visually-hidden" %>
+            <%= form.search_field :q, id: "site-nav-q", placeholder: "Search", autocomplete: "off" %>
+            <button type="submit" aria-label="Search"><%= image_tag "site/icon-search-onaccent.svg", alt: "" %></button>
+          <% end %>
+        </div>
+
+        <ul>
+          <li><%= link_to "Search all records", all_records_path, aria: { current: (helpers.current_page?(all_records_path) ? "page" : nil) } %></li>
+
+          <li>
+            <button type="button" class="site-nav__trigger" aria-expanded="false" aria-controls="site-nav-collections"
+                    data-site-header-target="trigger" data-action="site-header#toggleSection">
+              <span>Browse <span class="site-nav__label-more">all </span>collections</span>
+              <%= image_tag "site/icon-expand.svg", alt: "" %>
+            </button>
+            <div id="site-nav-collections" class="site-nav__panel">
+              <button type="button" class="site-nav__back" data-action="site-header#back"><%= back_label %></button>
+              <%= link_to all_records_path, class: "site-nav__panel-title" do %>
+                <%= image_tag "site/icon-arrow-footer.svg", alt: "" %>Browse <span class="site-nav__label-more">all </span>collections
+              <% end %>
+              <ul class="site-nav__panel-list">
+                <% collection_links.each do |link| %>
+                  <li><%= link_to link.href do %><%= image_tag "site/icon-arrow-footer.svg", alt: "" %><%= link.label %><% end %></li>
+                <% end %>
+              </ul>
+            </div>
+          </li>
+
+          <% if static_pages? %>
+            <li>
+              <button type="button" class="site-nav__trigger" aria-expanded="false" aria-controls="site-nav-help"
+                      data-site-header-target="trigger" data-action="site-header#toggleSection">
+                Help<%= image_tag "site/icon-expand.svg", alt: "" %>
+              </button>
+              <div id="site-nav-help" class="site-nav__panel">
+                <button type="button" class="site-nav__back" data-action="site-header#back"><%= back_label %></button>
+                <%= link_to help_home.href, class: "site-nav__panel-title" do %>
+                  <%= image_tag "site/icon-arrow-footer.svg", alt: "" %><%= help_home.label %>
+                <% end %>
+                <ul class="site-nav__panel-list">
+                  <% help_links.each do |link| %>
+                    <li><%= link_to link.href do %><%= image_tag "site/icon-arrow-footer.svg", alt: "" %><%= link.label %><% end %></li>
+                  <% end %>
+                </ul>
+              </div>
+            </li>
+            <li><%= link_to contact.label, contact.href %></li>
+          <% end %>
+        </ul>
+
+        <ul class="site-nav__audience" aria-label="University of Melbourne">
+          <% audience_links.each do |link| %>
+            <li><%= link_to link.label, link.href %></li>
+          <% end %>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <button type="button" class="site-header__menu" aria-expanded="false" aria-controls="site-nav"
+          data-site-header-target="menu" data-action="site-header#toggleMenu">
+    <svg class="site-header__menu-open" viewBox="0 0 24 24" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    <svg class="site-header__menu-close" viewBox="0 0 24 24" aria-hidden="true"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
+    <span data-site-header-target="menuLabel">Menu</span>
+  </button>
+</header>
+
+<%= render NexusCcs::SearchOverlayComponent.new %>
+
+<%= render NexusCcs::BreadcrumbComponent.new(items: breadcrumbs) %>
+
+<%= search_bar if show_search_banner? %>

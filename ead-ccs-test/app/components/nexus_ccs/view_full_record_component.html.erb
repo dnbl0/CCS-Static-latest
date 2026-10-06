@@ -1,0 +1,47 @@
+<%# Trigger and dialog share one controller element, so the button opens the
+    dialog by event bubbling. ie. nothing to keep in sync. -%>
+<div data-controller="dialog">
+  <button type="button" class="uom-action" data-action="dialog#open">
+    <%= render NexusCcs::Icons::OpenInNewComponent.new %>
+    <span><%= t("nexus_ccs.view_full_record.label") %></span>
+  </button>
+
+  <dialog class="modal uom-dialog"
+          data-dialog-target="dialog"
+          data-action="click->dialog#closeOnBackdrop"
+          aria-labelledby="<%= dialog_title_id %>">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header border-0">
+          <h2 class="modal-title h5" id="<%= dialog_title_id %>">
+            <%= t("nexus_ccs.view_full_record.title") %>
+          </h2>
+          <button type="button" class="btn-close" data-action="dialog#close"
+            aria-label="<%= t("nexus_ccs.view_full_record.close") %>">
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <p><%= t("nexus_ccs.view_full_record.body", source: source_name) %></p>
+
+          <p class="uom-dialog-host">
+            <%= link_to url do %>
+              <%= render NexusCcs::Icons::OpenInNewComponent.new %>
+            <% end %>
+            <span><%= host %></span>
+          </p>
+        </div>
+
+        <div class="modal-footer border-0">
+          <button type="button" class="btn btn-outline-primary" data-action="dialog#close">
+            <%= t("nexus_ccs.view_full_record.stay") %>
+          </button>
+          <%= link_to t("nexus_ccs.view_full_record.continue"), url,
+            class: "btn btn-primary",
+            target: "_blank",
+            rel: "noopener noreferrer" %>
+        </div>
+      </div>
+    </div>
+  </dialog>
+</div>

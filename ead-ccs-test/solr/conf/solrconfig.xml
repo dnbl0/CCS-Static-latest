@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config>
+  <!-- NOTE: various unused config options have been purged from this file.
+    Please refer to http://wiki.apache.org/solr/SolrConfigXml -->
+
+  <abortOnConfigurationError>${solr.abortOnConfigurationError:true}</abortOnConfigurationError>
+
+  <luceneMatchVersion>10.0.0</luceneMatchVersion>
+
+  <directoryFactory name="DirectoryFactory" class="${solr.directoryFactory:solr.StandardDirectoryFactory}"/>
+
+  <updateHandler class="solr.DirectUpdateHandler2">
+    <updateLog>
+      <str name="dir">${solr.core0.data.dir:}</str>
+    </updateLog>
+  </updateHandler>
+
+  <dataDir>${solr.data.dir:}</dataDir>
+  <schemaFactory class="ClassicIndexSchemaFactory"/>
+  <!-- Renamed default handler below from "search" to "/select" for Solr 10 compatibility -->
+  <requestHandler name="/select" class="solr.SearchHandler" default="true">
+    <!-- default values for query parameters can be specified, these
+         will be overridden by parameters in the request
+    -->
+     <lst name="defaults">
+       <str name="defType">edismax</str>
+       <str name="echoParams">explicit</str>
+       <str name="q.alt">*:*</str>
+       <!-- mm is set per-request in app/models/search_builder.rb -->
+       <!-- qs is the slop on phrases the user typed in quotes. At 1 a search for
+            "Indigenous data policy" also matched "Indigenous data on policy", so
+            an exact-phrase search was not exact. ps stays loose: it applies to the
+            phrase query generated from pf -->
+       <int name="qs">0</int>
+       <int name="ps">2</int>
+       <float name="tie">0.1</float>
+       <!-- this qf and pf are used by default. The default blacklight_config will 
+            use these for the "keywords" search. -->
+        <str name="qf">
+          title_tsim^5
+          alternative_title_tsim^3
+          creator_tsim^3
+          subject_tsim^2
+          description_tsim
+          all_text_timv
+          all_text_stemmed^0.5
+        </str>
+        <str name="pf">
+          all_text_timv^10
+        </str>
+        <!-- <str name="pf2">
+          title_tsim^5
+          creator_tsim^4
+          all_text_timv^2
+        </str> -->
+        <str name="pf3">
+          title_tsim^8
+          all_text_timv^5
+        </str>
+
+       <str name="creator_qf">
+          creator_tsim
+       </str>
+       <str name="creator_pf">
+       </str>
+       <str name="title_qf">
+          title_tsim
+          alternative_title_tsim
+       </str>
+       <str name="title_pf">
+       </str>
+       <str name="subject_qf">
+          subject_tsim
+       </str>
+       <str name="subject_pf">
+       </str>
+
+       <str name="fl">
+         *,
+         score
+       </str>
+
+       <str name="facet">true</str>
+       <str name="facet.mincount">1</str>
+       <str name="facet.limit">10</str>
+       <!--<str name="facet.field">subject_ssim</str> Dead? Blacklight always sends facet.field-->
+
+       <str name="spellcheck">true</str>
+       <str name="spellcheck.dictionary">default</str>
+       <str name="spellcheck.extendedResults">true</str>
+       <str name="spellcheck.collate">true</str>
+       <str name="spellcheck.count">5</str>
+       <int name="spellcheck.maxCollations">1</int>
+       <int name="spellcheck.maxCollationTries">5</int>
+       <!-- maxCollationTries re-runs each candidate collation to check it has
+            hits, but Solr builds that query as a sub-request with no request handler
+            attached. Added defType to prevent it falling back to the lucene parser 
+        -->
+        <str name="spellcheck.collateParam.defType">edismax</str> 
+        <str name="spellcheck.collateParam.qf">
+          title_tsim^5
+          alternative_title_tsim^3
+          creator_tsim^3
+          subject_tsim^2
+          description_tsim
+          all_text_timv
+          all_text_stemmed^0.5
+        </str>
+
+     </lst>
+    <arr name="last-components">
+      <str>spellcheck</str>
+    </arr>
+  </requestHandler>
+
+  <requestHandler name="permissions" class="solr.SearchHandler" >
+    <lst name="defaults">
+      <str name="facet">off</str>
+      <str name="echoParams">all</str>
+      <str name="rows">1</str>
+      <str name="q">{!raw f=id v=$id}</str> <!-- use id=666 instead of q=id:666 -->
+      <str name="fl">
+        id,
+        access_ssim,
+        discover_access_group_ssim,discover_access_person_ssim,
+        read_access_group_ssim,read_access_person_ssim,
+        edit_access_group_ssim,edit_access_person_ssim,
+        depositor_ti,
+        embargo_release_date_dtsi
+        inheritable_access_ssim,
+        inheritable_discover_access_group_ssim,inheritable_discover_access_person_ssim,
+        inheritable_read_access_group_ssim,inheritable_read_access_person_ssim,
+        inheritable_edit_access_group_ssim,inheritable_edit_access_person_ssim,
+        inheritable_embargo_release_date_dtsi
+      </str>
+    </lst>
+  </requestHandler>
+
+  <requestHandler name="standard" class="solr.SearchHandler">
+     <lst name="defaults">
+       <str name="echoParams">explicit</str>
+       <str name="defType">lucene</str>
+     </lst>
+  </requestHandler>
+
+
+  <searchComponent name="spellcheck" class="solr.SpellCheckComponent">
+    <str name="queryAnalyzerFieldType">textSpell</str>
+    <!-- Multiple "Spell Checkers" can be declared and used by this component-->
+    <lst name="spellchecker">
+      <str name="name">default</str>
+      <str name="classname">solr.DirectSolrSpellChecker</str>
+      <str name="field">spell</str>
+      <str name="distanceMeasure">internal</str>
+      <float name="accuracy">0.5</float>
+      <int name="maxEdits">2</int>
+      <int name="minPrefix">1</int>
+      <int name="maxInspections">5</int>
+      <int name="minQueryLength">3</int> <!-- words shorter than x characters don't get checked -->
+      <float name="maxQueryFrequency">0.01</float> <!-- 0.01 treats terms appearing in more than 1% of documents as correctly spelled -->
+    </lst>
+    <lst name="spellchecker">
+      <str name="name">author</str>
+      <str name="field">author_spell</str>
+      <str name="spellcheckIndexDir">./spell_author</str>
+      <str name="accuracy">0.7</str>
+      <str name="buildOnOptimize">true</str>
+    </lst>
+    <lst name="spellchecker">
+      <str name="name">subject</str>
+      <str name="field">subject_spell</str>
+      <str name="spellcheckIndexDir">./spell_subject</str>
+      <str name="accuracy">0.7</str>
+      <str name="buildOnOptimize">true</str>
+    </lst>
+    <lst name="spellchecker">
+      <str name="name">title</str>
+      <str name="field">title_spell</str>
+      <str name="spellcheckIndexDir">./spell_title</str>
+      <str name="accuracy">0.7</str>
+      <str name="buildOnOptimize">true</str>
+    </lst>
+  </searchComponent>
+
+  <searchComponent name="suggest" class="solr.SuggestComponent">
+    <lst name="suggester">
+      <str name="name">mySuggester</str>
+      <str name="lookupImpl">FuzzyLookupFactory</str>
+      <str name="suggestAnalyzerFieldType">textSuggest</str>
+      <str name="buildOnCommit">true</str>
+      <str name="field">suggest</str>
+    </lst>
+  </searchComponent>
+
+  <requestHandler name="/suggest" class="solr.SearchHandler" startup="lazy">
+    <lst name="defaults">
+      <str name="suggest">true</str>
+      <str name="suggest.count">5</str>
+      <str name="suggest.dictionary">mySuggester</str>
+    </lst>
+    <arr name="components">
+      <str>suggest</str>
+    </arr>
+  </requestHandler>
+
+  <requestHandler name="/replication" class="solr.ReplicationHandler" startup="lazy" />
+
+  <requestDispatcher handleSelect="true" >
+    <requestParsers enableRemoteStreaming="true" multipartUploadLimitInKB="2048" />
+  </requestDispatcher>
+
+  <requestHandler name="/analysis/field" startup="lazy" class="solr.FieldAnalysisRequestHandler" />
+</config>
