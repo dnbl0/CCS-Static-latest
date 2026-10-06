@@ -8,6 +8,7 @@ class DigitalAssetsTest < ActiveSupport::TestCase
 
     assert_equal "/digital-assets/thumbs/mhm2017_28.jpg", document["thumbnail_path_ssi"]
     assert_equal [ "/digital-assets/thumbs/mhm2017_28.jpg" ], document["digital_asset_paths_ssim"]
+    assert_equal [ "/digital-assets/large/mhm2017_28.jpg" ], document["digital_asset_large_paths_ssim"]
     assert_equal true, document["has_digital_asset_bsi"]
   end
 
@@ -35,6 +36,7 @@ class DigitalAssetsTest < ActiveSupport::TestCase
       files.each do |file|
         thumb = Rails.root.join("public/digital-assets/thumbs", Collections::DigitalAssets.thumbnail_name(file))
         assert thumb.exist?, "missing thumbnail for #{file}: run bin/rails digital_assets:thumbnails"
+        assert Rails.root.join("public/digital-assets/large", Collections::DigitalAssets.thumbnail_name(file)).exist?, "missing large image for #{file}"
       end
     end
   end

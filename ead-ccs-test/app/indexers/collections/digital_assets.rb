@@ -2,9 +2,11 @@ require "yaml"
 
 module Collections
   # Attaches digital-asset fields to a document when its accession number has images listed in
-  # config/digital_assets.yml. Images are thumbnails under public/digital-assets/thumbs.
+  # config/digital_assets.yml. Each image has an 800 px thumbnail (lists, grid, mosaic) and a
+  # 1600 px large version (record page) under public/digital-assets.
   class DigitalAssets
-    URL_PREFIX = "/digital-assets/thumbs".freeze
+    THUMBNAILS = "/digital-assets/thumbs".freeze
+    LARGE = "/digital-assets/large".freeze
     CONFIG = "config/digital_assets.yml".freeze
 
     # "2001_0008 B web.jpg" and "1973_0755_B~PF.jpg" become URL-safe, lowercase .jpg names.
@@ -24,10 +26,12 @@ module Collections
       files = Array(document["accession_number_ssim"]).filter_map { |accession| @files_by_accession[accession] }.first
       return document if files.blank?
 
-      paths = files.map { |file| "#{URL_PREFIX}/#{self.class.thumbnail_name(file)}" }
+      names = files.map { |file| self.class.thumbnail_name(file) }
+      thumbnails = names.map { |name| "#{THUMBNAILS}/#{name}" }
       document.merge(
-        "thumbnail_path_ssi" => paths.first,
-        "digital_asset_paths_ssim" => paths,
+        "thumbnail_path_ssi" => thumbnails.first,
+        "digital_asset_paths_ssim" => thumbnails,
+        "digital_asset_large_paths_ssim" => names.map { |name| "#{LARGE}/#{name}" },
         "has_digital_asset_bsi" => true
       )
     end

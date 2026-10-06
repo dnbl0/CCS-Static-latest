@@ -30,10 +30,14 @@ Configuration-only use of Blacklight 9.0.0 and its official plugins, in `Catalog
 - **Digital assets.** 30 records have images (about 60 files), mapped by accession number in
   `config/digital_assets.yml` (generated from the static prototype's `ASSET_IMAGES`). The indexer
   (`Collections::DigitalAssets`) adds `thumbnail_path_ssi`, `digital_asset_paths_ssim` and
-  `has_digital_asset_bsi`; thumbnails are 800 px JPEGs in `public/digital-assets/thumbs`, made from
-  the originals by `bin/rails digital_assets:thumbnails` (needs `vipsthumbnail`). `config.index.thumbnail_field`
+  `digital_asset_large_paths_ssim` and `has_digital_asset_bsi`; thumbnails (800 px) and large images
+  (1600 px) are JPEGs in `public/digital-assets/thumbs` and `/large`, made from the originals by
+  `bin/rails digital_assets:thumbnails` (needs `vipsthumbnail`; originals are not in this repo, they
+  live in the static site's `public/assets/images/collections`). `config.index.thumbnail_field`
   shows them in every view (the list shows one only when a record has an asset); grid and mosaic show
   a placeholder otherwise, and mosaic placeholders vary in shape so the masonry still reads as a mosaic.
+  On a record's page `NexusCcs::DigitalAssetsComponent` (the show page's `document_embed_component`)
+  shows the first image large under the title and the rest as thumbnails that open the large image.
   The "Record includes > A digital asset" query facet filters to records with assets. More assets: add
   accession numbers and file names to the YAML, make thumbnails, reindex.
 - **Date quality.** `date_start_isi` has no value for about 12,700 of 41,000 records, and about

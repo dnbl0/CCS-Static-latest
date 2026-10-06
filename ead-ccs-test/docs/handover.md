@@ -7,7 +7,7 @@ git plumbing off `origin/main`, because the parent repo's checked-out branch bel
 
 ## State
 
-- Rails 8.1.3, Blacklight **9.0.0** (not 9.2.1), Ruby 4.0.6, Postgres 17, 47 tests passing (no Solr needed).
+- Rails 8.1.3, Blacklight **9.0.0** (not 9.2.1), Ruby 4.0.6, Postgres 17, 54 tests passing (no Solr needed).
 - Plugins: `blacklight-gallery` (git `main`, grid and mosaic only; slideshow removed; the rubygems 6.0.0 pins `blacklight ~> 9.0.0beta1`) and
   `blacklight_range_limit` 9.3.0. Config-only use; see `docs/blacklight-features.md`.
 - Styling: tokens, themed Bootstrap (dartsass-rails), site header, footer, search overlay, breadcrumb
@@ -45,6 +45,12 @@ Cloudflare on both sites, so treat these as the only rendered evidence.
   URL scheme `/collection/search?keyword=&view=grid|list&sort=object_name__asc&page=N` (page 0-based,
   about 100 per page); term pages at `/collection/term/{id}`. Facet parameter names unverified.
 
+## Fixed since
+
+- The Vernon CSV is double-encoded UTF-8 (for example "Inrō" read as "InrÅ"). `Collections::Text.repair_mojibake`
+  now reverses it per character, including the control characters that Windows-1252 leaves undefined, and
+  keeps its round-trip check so correct accents are untouched (3,415 suspect sequences to 0).
+
 ## Open issues and next steps (in suggested order)
 
 1. **Decide the :8983 Solr** (D's call; see State).
@@ -53,8 +59,7 @@ Cloudflare on both sites, so treat these as the only rendered evidence.
    all records, ask the EMu and Vernon owners for a derivative or IIIF URL, whether it is public, and
    rights/Indigenous cultural-data restrictions (`access_condition_ssi` and `restrictions_tsi` are
    deliberately not shown), then index it into `thumbnail_path_ssi` (or a URL field) instead of the YAML.
-   Also: some titles are mojibake in Solr (for example "InrÅ" for "Inrō") because of a character-encoding
-   problem reading the Vernon CSV; investigate in `Collections::Source`.
+   The record page shows a record's images (`NexusCcs::DigitalAssetsComponent`).
 3. **Dates.** About 12,700 of 41,000 records have no `date_start_isi` and about 1,700 are 0 or below, which
    distorts the range histogram. Either exclude year <= 0 from the range facet or fix it at index time.
 4. **Style the new views and facets** to the UoM static design (results cards, toolbar, facet rail,

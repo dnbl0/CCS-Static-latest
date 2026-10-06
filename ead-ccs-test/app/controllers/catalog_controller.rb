@@ -70,6 +70,9 @@ class CatalogController < ApplicationController
     # pagination. Subclasses the Blacklight component and only swaps the template.
     config.show.document_header_component = NexusCcs::DocumentHeaderComponent
 
+    # A record's digital assets, between its title and its metadata.
+    config.show.document_embed_component = NexusCcs::DigitalAssetsComponent
+
     # ================================================================
     # Facets. Note: Every field here is populated by Collections::EmuSource or
     # Collections::VernonSource. A facet on an empty field renders a sidebar box.

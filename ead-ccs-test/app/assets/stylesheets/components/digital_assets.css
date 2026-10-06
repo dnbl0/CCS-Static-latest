@@ -1,0 +1,49 @@
+/*
+ * A record's digital assets on its page: one large image, then the rest as thumbnails.
+ * Markup: NexusCcs::DigitalAssetsComponent.
+ */
+.digital-assets {
+  margin-block: var(--ccs-space-4) var(--ccs-space-5);
+}
+
+.digital-assets__main {
+  margin: 0;
+  padding: var(--ccs-space-4);
+  background: var(--ccs-surface-subtle);
+  border: 1px solid var(--ccs-border-panel);
+  text-align: center;
+}
+
+.digital-assets__image {
+  display: inline-block;
+  max-width: 100%;
+  max-height: 70vh;
+  height: auto;
+  object-fit: contain;
+}
+
+.digital-assets__others {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ccs-space-2);
+  margin: var(--ccs-space-3) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.digital-assets__other {
+  display: block;
+  border: 1px solid var(--ccs-border-panel);
+}
+
+.digital-assets__other:hover,
+.digital-assets__other:focus-visible {
+  border-color: var(--ccs-border-brand);
+}
+
+.digital-assets__other img {
+  display: block;
+  width: 7.5rem;
+  height: 7.5rem;
+  object-fit: cover;
+}

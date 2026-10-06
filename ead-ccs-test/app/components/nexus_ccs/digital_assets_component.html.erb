@@ -1,0 +1,19 @@
+<section class="digital-assets" aria-labelledby="digital-assets-heading">
+  <h2 id="digital-assets-heading" class="visually-hidden">Digital <%= "asset".pluralize(count) %></h2>
+
+  <figure class="digital-assets__main">
+    <%= image_tag main.first, alt: alt(1), class: "digital-assets__image" %>
+  </figure>
+
+  <% if others.any? %>
+    <ul class="digital-assets__others">
+      <% others.each_with_index do |(large, thumbnail), index| %>
+        <li>
+          <%= link_to large, class: "digital-assets__other", target: "_blank", rel: "noopener" do %>
+            <%= image_tag thumbnail, alt: "#{alt(index + 2)} (opens full size in a new tab)", loading: "lazy" %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+</section>
