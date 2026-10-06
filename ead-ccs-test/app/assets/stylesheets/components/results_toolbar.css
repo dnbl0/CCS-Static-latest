@@ -116,11 +116,37 @@
 }
 
 #sortAndPerPage .view-type-group .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 2.5rem;
   height: 2.5rem;
   padding: 0;
   border-color: var(--ccs-border-strong);
   border-radius: 0;
+}
+
+/* Blacklight leaves the icon's wrapper as an inline box with a line height, which pushes the icon up */
+#sortAndPerPage .view-type-group .blacklight-icons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+
+#sortAndPerPage .view-type-group .blacklight-icons svg {
+  display: block;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Tooltips (Bootstrap's, started by controllers/tooltip_controller.js) in the UoM colours */
+.tooltip {
+  --bs-tooltip-bg: var(--ccs-navy-1100);
+  --bs-tooltip-color: var(--ccs-text-inverse);
+  --bs-tooltip-font-size: var(--ccs-font-size-sm);
+  --bs-tooltip-border-radius: var(--ccs-radius-sm);
+  --bs-tooltip-opacity: 1;
 }
 
 /* Pagination: small caps Previous and Next around the page numbers, the current page filled */

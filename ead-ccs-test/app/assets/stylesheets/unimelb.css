@@ -71,7 +71,7 @@
   --bl-logo-image: url("unimelb-logo.svg");
   --bl-logo-width: 56px;
   --bl-logo-height: 56px;
-  --bl-main-padding-y: 2.5rem;
+  --bl-main-padding-y: 0; /* main has no vertical padding; pages space their own content */
 }
 
 /* Font Fraunces for display headings, Source Sans for the rest 
