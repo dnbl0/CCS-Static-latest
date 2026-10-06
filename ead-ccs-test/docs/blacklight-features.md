@@ -17,15 +17,25 @@ Configuration-only use of Blacklight 9.0.0 and its official plugins, in `Catalog
 | Advanced search | `config.advanced_search.enabled` | search and facet fields |
 | Citation, search history, JSON API, did-you-mean, autocomplete | built in | n/a |
 | Bookmarks | built in, but needs a user model; `/bookmarks` redirects without one | n/a |
-| Grid (gallery), mosaic (masonry), slideshow views | `blacklight-gallery` (git `main`) via `config.view.*` | no image field yet |
+| List, grid (gallery) and mosaic (masonry) views | built-in list + `blacklight-gallery` (git `main`) via `config.view.*`; slideshow removed | `thumbnail_path_ssi` |
 
 ## Notes
+
+- **Results page width.** `BlacklightHelper#container_classes` makes the results page `container-fluid`
+  (no max width); other pages keep the fixed container.
 
 - **blacklight-gallery** 6.0.0 on rubygems pins `blacklight ~> 9.0.0beta1`, so the Gemfile uses its
   `main` branch (gemspec allows `~> 9.0`). Its generator also adds OpenSeadragon (IIIF viewer) and a
   jQuery CDN pin; neither is used here.
-- **Images.** No image, thumbnail or IIIF field is indexed, so the grid, mosaic and slideshow views
-  show `placeholder-thumbnail.svg`. When an image URL is indexed, set `config.index.thumbnail_field`.
+- **Digital assets.** 30 records have images (about 60 files), mapped by accession number in
+  `config/digital_assets.yml` (generated from the static prototype's `ASSET_IMAGES`). The indexer
+  (`Collections::DigitalAssets`) adds `thumbnail_path_ssi`, `digital_asset_paths_ssim` and
+  `has_digital_asset_bsi`; thumbnails are 800 px JPEGs in `public/digital-assets/thumbs`, made from
+  the originals by `bin/rails digital_assets:thumbnails` (needs `vipsthumbnail`). `config.index.thumbnail_field`
+  shows them in every view (the list shows one only when a record has an asset); grid and mosaic show
+  a placeholder otherwise, and mosaic placeholders vary in shape so the masonry still reads as a mosaic.
+  The "Record includes > A digital asset" query facet filters to records with assets. More assets: add
+  accession numbers and file names to the YAML, make thumbnails, reindex.
 - **Date quality.** `date_start_isi` has no value for about 12,700 of 41,000 records, and about
   1,700 values are 0 or below, which stretches the range histogram.
 - **JS.** chart.js and `@kurkle/color` (range-limit's dependencies) are vendored in

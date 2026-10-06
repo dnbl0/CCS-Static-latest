@@ -8,7 +8,3 @@ import "blacklight-gallery"
 
 import BlacklightRangeLimit from "blacklight-range-limit";
 BlacklightRangeLimit.init({onLoadHandler: Blacklight.onLoad });
-
-Blacklight.onLoad(function() {
-  initSlideshow(".documents-slideshow");
-});

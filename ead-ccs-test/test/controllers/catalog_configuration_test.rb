@@ -4,11 +4,10 @@ require "test_helper"
 class CatalogConfigurationTest < ActiveSupport::TestCase
   def config = CatalogController.blacklight_config
 
-  test "result views: list plus the blacklight-gallery grid, mosaic and slideshow" do
-    assert_equal %i[gallery list masonry slideshow], config.view.keys.map(&:to_sym).sort - %i[atom rss]
+  test "result views: list plus the blacklight-gallery grid and mosaic (no slideshow)" do
+    assert_equal %i[gallery list masonry], config.view.keys.map(&:to_sym).sort - %i[atom rss]
     assert_equal Blacklight::Gallery::DocumentComponent, config.view.gallery.document_component
     assert_equal Blacklight::Gallery::DocumentComponent, config.view.masonry.document_component
-    assert_equal Blacklight::Gallery::SlideshowComponent, config.view.slideshow.document_component
   end
 
   test "per-page options and default" do
@@ -35,7 +34,7 @@ class CatalogConfigurationTest < ActiveSupport::TestCase
 
   test "date has a range-limit facet and query facets provide yes/no toggles" do
     assert config.facet_fields["date_start_isi"].range
-    assert_equal %w[date description], config.facet_fields["record_includes"].query.keys.map(&:to_s).sort
+    assert_equal %w[date description digital_asset], config.facet_fields["record_includes"].query.keys.map(&:to_s).sort
   end
 
   test "range, pivot and query facets keep Blacklight's own filter handling" do
@@ -63,8 +62,16 @@ class CatalogConfigurationTest < ActiveSupport::TestCase
     end
   end
 
-  test "views use the placeholder thumbnail until an image field is indexed" do
-    assert_nil config.index.thumbnail_field
-    %i[gallery masonry slideshow].each { |view| assert_equal "placeholder-thumbnail.svg", config.view[view].default_thumbnail }
+  test "digital assets are the thumbnails, with placeholders only in grid and mosaic" do
+    assert_equal :thumbnail_path_ssi, config.index.thumbnail_field
+    assert_equal "placeholder-thumbnail.svg", config.view.gallery.default_thumbnail
+    assert_nil config.view.list.default_thumbnail
+    assert_respond_to config.view.masonry.default_thumbnail, :call
+  end
+
+  test "mosaic placeholders vary in shape so the layout is a mosaic" do
+    placeholder = config.view.masonry.default_thumbnail
+    shapes = %w[a b c d e f].map { |id| placeholder.call(Struct.new(:id).new(id), {})[/placeholder-[a-z]+(?:-[0-9a-f]+)?\.svg/] }
+    assert_operator shapes.uniq.size, :>, 1
   end
 end

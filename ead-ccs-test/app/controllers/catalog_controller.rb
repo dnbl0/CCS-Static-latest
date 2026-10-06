@@ -27,15 +27,19 @@ class CatalogController < ApplicationController
 
     config.index.title_field = "title_tsim"
 
-    # Result views from blacklight-gallery. No image field is indexed yet, so the card
-    # images are a placeholder until thumbnail_field can point at one.
-    placeholder = "placeholder-thumbnail.svg"
+    # Result views: the built-in list, plus grid (gallery) and mosaic (masonry) from blacklight-gallery.
+    # Records with a digital asset show it in every view; the rest show a placeholder in grid and
+    # mosaic (and nothing in the list). Mosaic placeholders vary in shape, as real images do, so
+    # the masonry layout stays a mosaic where images are missing.
+    config.index.thumbnail_field = :thumbnail_path_ssi
+    mosaic_placeholder = lambda do |document, image_options|
+      shape = %w[placeholder-thumbnail.svg placeholder-portrait.svg placeholder-square.svg][document.id.sum % 3]
+      ActionController::Base.helpers.image_tag(shape, image_options)
+    end
     config.view.gallery(document_component: Blacklight::Gallery::DocumentComponent,
-      icon: Blacklight::Gallery::Icons::GalleryComponent, default_thumbnail: placeholder)
+      icon: Blacklight::Gallery::Icons::GalleryComponent, default_thumbnail: "placeholder-thumbnail.svg")
     config.view.masonry(document_component: Blacklight::Gallery::DocumentComponent,
-      icon: Blacklight::Gallery::Icons::MasonryComponent, default_thumbnail: placeholder)
-    config.view.slideshow(document_component: Blacklight::Gallery::SlideshowComponent,
-      icon: Blacklight::Gallery::Icons::SlideshowComponent, default_thumbnail: placeholder)
+      icon: Blacklight::Gallery::Icons::MasonryComponent, default_thumbnail: mosaic_placeholder)
     config.index.display_type_field = "format"
 
     config.add_results_document_tool(:bookmark, component: Blacklight::Document::BookmarkComponent, if: :render_bookmarks_control?)
@@ -94,7 +98,8 @@ class CatalogController < ApplicationController
     # Yes/no toggles as query facets.
     config.add_facet_field "record_includes", label: "Record includes", query: {
       description: { label: "A description", fq: "description_tsim:[* TO *]" },
-      date: { label: "A date", fq: "date_start_isi:[* TO *]" }
+      date: { label: "A date", fq: "date_start_isi:[* TO *]" },
+      digital_asset: { label: "A digital asset", fq: "has_digital_asset_bsi:true" }
     }
 
     # Self-excluding facets. Tag each facet's fq and have that same facet's counts

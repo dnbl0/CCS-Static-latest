@@ -7,8 +7,8 @@ git plumbing off `origin/main`, because the parent repo's checked-out branch bel
 
 ## State
 
-- Rails 8.1.3, Blacklight **9.0.0** (not 9.2.1), Ruby 4.0.6, Postgres 17, 38 tests passing (no Solr needed).
-- Plugins: `blacklight-gallery` (git `main`; the rubygems 6.0.0 pins `blacklight ~> 9.0.0beta1`) and
+- Rails 8.1.3, Blacklight **9.0.0** (not 9.2.1), Ruby 4.0.6, Postgres 17, 47 tests passing (no Solr needed).
+- Plugins: `blacklight-gallery` (git `main`, grid and mosaic only; slideshow removed; the rubygems 6.0.0 pins `blacklight ~> 9.0.0beta1`) and
   `blacklight_range_limit` 9.3.0. Config-only use; see `docs/blacklight-features.md`.
 - Styling: tokens, themed Bootstrap (dartsass-rails), site header, footer, search overlay, breadcrumb
   and search banner as `NexusCcs::*` ViewComponents; see `docs/styling.md`.
@@ -48,11 +48,13 @@ Cloudflare on both sites, so treat these as the only rendered evidence.
 ## Open issues and next steps (in suggested order)
 
 1. **Decide the :8983 Solr** (D's call; see State).
-2. **Images.** No image, thumbnail or IIIF field is indexed, so grid, mosaic and slideshow show
-   `placeholder-thumbnail.svg`. Ask the EMu and Vernon owners for a derivative or IIIF URL, whether it is
-   public, and rights/Indigenous cultural-data restrictions (`access_condition_ssi` and `restrictions_tsi`
-   are deliberately not shown). Then index `thumbnail_url_ssi` (and a `has_image_bsi` for a yes/no facet)
-   in `app/indexers/collections/*` and set `config.index.thumbnail_field`.
+2. **Images.** 30 records now show real assets (see `docs/blacklight-features.md`), taken from the static
+   prototype's files; every other record shows a placeholder in grid/mosaic and nothing in the list. For
+   all records, ask the EMu and Vernon owners for a derivative or IIIF URL, whether it is public, and
+   rights/Indigenous cultural-data restrictions (`access_condition_ssi` and `restrictions_tsi` are
+   deliberately not shown), then index it into `thumbnail_path_ssi` (or a URL field) instead of the YAML.
+   Also: some titles are mojibake in Solr (for example "InrÅ" for "Inrō") because of a character-encoding
+   problem reading the Vernon CSV; investigate in `Collections::Source`.
 3. **Dates.** About 12,700 of 41,000 records have no `date_start_isi` and about 1,700 are 0 or below, which
    distorts the range histogram. Either exclude year <= 0 from the range facet or fix it at index time.
 4. **Style the new views and facets** to the UoM static design (results cards, toolbar, facet rail,
