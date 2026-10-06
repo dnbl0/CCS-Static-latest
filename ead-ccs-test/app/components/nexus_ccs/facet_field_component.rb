@@ -1,0 +1,32 @@
+# frozen_string_literal: true
+
+module NexusCcs
+  # One filter section (accordion item) in the sidebar. Blacklight's, plus: a count badge beside the title
+  # when values are selected, and under the title (while collapsed) a summary of what is selected,
+  # "Medical History Museum +1", as on the static search page.
+  class FacetFieldComponent < Blacklight::Facets::FieldComponent
+    def selected_values
+      @selected_values ||= @facet_field.search_state.filter(@facet_field.facet_field).values.flatten.compact.map { |value| value_label(value) }
+    end
+
+    def selected_count
+      selected_values.size
+    end
+
+    def summary
+      return if selected_values.empty?
+
+      extra = selected_count - 1
+      extra.positive? ? "#{selected_values.first} +#{extra}" : selected_values.first
+    end
+
+    private
+
+    # Range filters are Ranges; query filters (digital asset) are keys with labels in the config
+    def value_label(value)
+      return "#{value.begin} – #{value.end}" if value.is_a?(Range)
+
+      @facet_field.facet_field.query&.dig(value.to_s, :label) || @facet_field.facet_field.query&.dig(value.to_sym, :label) || value.to_s
+    end
+  end
+end

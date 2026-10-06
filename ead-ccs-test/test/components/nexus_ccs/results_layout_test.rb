@@ -149,5 +149,20 @@ class ResultsLayoutTest < ActiveSupport::TestCase
     assert_no_link "Clear filters", href: /f%5B|f\[/ # the link drops the filters but keeps the search
     assert_selector "[data-controller=filter-drawer] .filter-drawer__close"
   end
-end
 
+  test "a skeleton replaces the results and filter values while a search page loads" do
+    css = STYLES.join("skeleton.css").read
+    assert_includes STYLES.join("../application.css").read, 'components/skeleton.css'
+    %w[#documents\ .document .facet-values\ li].each { |selector| assert_includes css, ".is-searching #{selector}" }
+    assert_includes css, "prefers-reduced-motion: reduce"
+    assert_includes Rails.root.join("config/importmap.rb").read, 'pin "search_loading"'
+    assert_includes Rails.root.join("app/javascript/search_loading.js").read, "is-searching"
+  end
+
+  test "filter sections show a count badge and a summary of what is selected" do
+    template = Rails.root.join("app/components/nexus_ccs/facet_field_component.html.erb").read
+    assert_includes template, "facet-title__badge"
+    assert_includes template, "facet-summary"
+    assert_equal NexusCcs::FacetFieldComponent, Blacklight::Facets::ListComponent.new(facet_field: nil).instance_variable_get(:@layout)
+  end
+end

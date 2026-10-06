@@ -224,3 +224,61 @@
 .filter-sidebar__clear:hover {
   background: var(--ccs-neutral-200);
 }
+
+/* The section title, with a count badge when values are selected, and under it (collapsed only) what they are */
+.facet-field-heading .accordion-button {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--ccs-space-1) var(--ccs-space-3);
+  text-align: start;
+}
+
+.facet-field-heading .accordion-button::after {
+  grid-column: 2;
+  grid-row: 1;
+  margin-left: 0;
+  /* Blacklight draws a white chevron on a filter that has values selected (it fills the header navy) */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23222' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m2 5 6 6 6-6'/%3E%3C/svg%3E");
+}
+
+.facet-title {
+  display: flex;
+  grid-column: 1;
+  grid-row: 1;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.625rem;
+  min-width: 0;
+}
+
+.facet-title__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.375rem;
+  height: 1.375rem;
+  padding: 0 0.4375rem;
+  border-radius: var(--ccs-radius-pill);
+  background: var(--ccs-navy-1100);
+  font-size: 0.8125rem;
+  font-weight: var(--ccs-font-weight-bold);
+  line-height: 1;
+  color: var(--ccs-text-inverse);
+}
+
+.facet-summary {
+  display: none;
+  grid-column: 1 / -1;
+  grid-row: 2;
+  overflow: hidden;
+  font-size: var(--ccs-font-size-sm);
+  font-weight: var(--ccs-font-weight-regular);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--ccs-navy-750);
+}
+
+.facet-field-heading .accordion-button.collapsed .facet-summary {
+  display: block;
+}
