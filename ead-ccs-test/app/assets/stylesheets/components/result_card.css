@@ -1,7 +1,7 @@
 /*
  * The record card in the list and grid views, after the CCS UI "Card image" and "Card no media" (Figma
  * 250:21910 and 250:22182): a white card with a 1px #dddfe7 border; a 16:9 image when the record has a digital
- * asset; then 24px of padding around a 24px semibold link-blue title and three 18px lines (creator, object,
+ * asset; then 16px of padding around a 24px semibold link-blue title and three 16px lines (creator, object,
  * collection). Hover underlines the title. Markup: NexusCcs::ResultCardComponent.
  */
 .documents-list {
@@ -43,7 +43,7 @@
 }
 
 /* No padding or gap on the content block, so nothing is added under the last line; the title and the lines
-   carry the card's 24px themselves (16px between them) */
+   carry the card's 16px themselves (16px between them) */
 .result-card__content {
   display: block;
   flex: 0 0 auto;
@@ -51,15 +51,15 @@
 }
 
 .result-card__content > :first-child {
-  padding-top: var(--ccs-space-5);
+  padding-top: var(--ccs-space-4);
 }
 
 .result-card__content > :last-child {
-  padding-bottom: var(--ccs-space-5);
+  padding-bottom: var(--ccs-space-4);
 }
 
 .result-card__content > * {
-  padding-inline: var(--ccs-space-5);
+  padding-inline: var(--ccs-space-4);
 }
 
 .result-card .documentHeader {
@@ -105,7 +105,7 @@
   margin: 0;
   padding-top: var(--ccs-space-4);
   list-style: none;
-  font-size: var(--ccs-font-size-lg);
+  font-size: var(--ccs-font-size-md);
   line-height: var(--ccs-line-height-normal);
   color: var(--ccs-text-brand);
 }
@@ -159,4 +159,20 @@
 
 .documents-masonry .result-card {
   margin-bottom: 0;
+}
+
+/* Blacklight's .document rules clear the bottom border; the card has all four */
+.documents-list .result-card,
+.documents-gallery .result-card,
+.documents-masonry .result-card {
+  border: 1px solid var(--ccs-border-panel);
+}
+
+.documents-list .result-card:hover,
+.documents-gallery .result-card:hover,
+.documents-masonry .result-card:hover,
+.documents-list .result-card:focus-within,
+.documents-gallery .result-card:focus-within,
+.documents-masonry .result-card:focus-within {
+  border-color: var(--ccs-border-strong);
 }
