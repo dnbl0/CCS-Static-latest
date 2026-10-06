@@ -4,7 +4,8 @@
 module NexusFacetLayout
   def initialize(*, **kwargs)
     super
-    @layout = NexusCcs::FacetFieldComponent if @layout.in?([ Blacklight::Facets::FieldComponent, (Blacklight::Facets::FacetFieldComponent if defined?(Blacklight::Facets::FacetFieldComponent)) ].compact)
+    # the range component uses Blacklight's deprecated FieldComponent subclass, so match subclasses too
+    @layout = NexusCcs::FacetFieldComponent if @layout.is_a?(Class) && @layout <= Blacklight::Facets::FieldComponent && @layout != NexusCcs::FacetFieldComponent
   end
 end
 
@@ -12,4 +13,16 @@ Rails.application.config.to_prepare do
   [ Blacklight::Facets::ListComponent, Blacklight::Facets::CheckboxesComponent, BlacklightRangeLimit::RangeFacetComponent ].each do |component|
     component.prepend(NexusFacetLayout) unless component < NexusFacetLayout
   end
+end
+
+# The range limit plugin gives the applied-filter pill its value as HTML ("<span class=from>1900</span> to ..."),
+# which Blacklight escapes into the remove link's hidden text, so a screen reader reads out the markup.
+module NexusConstraintLabel
+  def remove_aria_label
+    ActionController::Base.helpers.strip_tags(CGI.unescapeHTML(super.to_s))
+  end
+end
+
+Rails.application.config.to_prepare do
+  Blacklight::ConstraintLayoutComponent.prepend(NexusConstraintLabel) unless Blacklight::ConstraintLayoutComponent < NexusConstraintLabel
 end

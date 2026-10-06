@@ -20,7 +20,7 @@ is ambiguous), **Not in prototype** (different environment or custom work, parke
 | CCS-20 Filter and refine | New | **Met** | Multiple filters, results limited to them, keyword search within filters, add or remove filters at any time (constraints). |
 | CCS-41 Digital assets only | New | **Fixed** | "Digital asset" filter: with (30 records), without (40,932). Added to the Media type section. |
 | CCS-55 Indigenous data filter | New | **Gap: data** | The flag's source field is "tbd" for EMu, Vernon and FEIT in the ticket itself; Nexus DAM "DA Indigeneity data" has no export. |
-| CCS-45 Pagination | Done | **Met** | Total count, per-page 12/24/48/96, numbered pages (jump to any page). |
+| CCS-45 Pagination | Done | **Met** | Total count, per-page 12/24/40/96 (default 40), numbered pages (jump to any page). |
 | CCS-116 Semantic search | Done | **Fixed** | Was not implemented here: `synonyms.txt` was Solr's sample file. Now a query-time synonym filter with the static prototype's curated vocabulary (30 groups; 19 general words that find their specifics). Specific words do not widen to general ones (that matched every "Medical" record). Reload the core, no reindex. |
 | CCS-123 Fuzzy search | Done | **Met** | A misspelled word returns results for the corrected word. |
 | CCS-158 Spelling suggestions | Done | **Met** | "No results for skul. Showing results for skull instead. Did you mean: ..." |

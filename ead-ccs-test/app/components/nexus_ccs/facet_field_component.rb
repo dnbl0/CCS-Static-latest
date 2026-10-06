@@ -6,7 +6,7 @@ module NexusCcs
   # "Medical History Museum +1", as on the static search page.
   class FacetFieldComponent < Blacklight::Facets::FieldComponent
     def selected_values
-      @selected_values ||= @facet_field.search_state.filter(@facet_field.facet_field).values.flatten.compact.map { |value| value_label(value) }
+      @selected_values ||= range_values || @facet_field.search_state.filter(@facet_field.facet_field).values.flatten.compact.map { |value| value_label(value) }
     end
 
     def selected_count
@@ -21,6 +21,17 @@ module NexusCcs
     end
 
     private
+
+    # A range filter lives in params[:range][field] as begin/end (or just one of them, or "missing")
+    def range_values
+      return unless @facet_field.facet_field.range
+
+      range = @facet_field.search_state.params.dig(:range, @facet_field.key)
+      return [] if range.blank?
+      return [ "Missing" ] if range[:missing]
+
+      [ [ range[:begin].presence || "Any", range[:end].presence || "Any" ].join(" – ") ]
+    end
 
     # Range filters are Ranges; query filters (digital asset) are keys with labels in the config
     def value_label(value)

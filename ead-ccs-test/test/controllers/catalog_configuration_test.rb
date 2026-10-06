@@ -11,8 +11,8 @@ class CatalogConfigurationTest < ActiveSupport::TestCase
   end
 
   test "per-page options and default" do
-    assert_equal [ 12, 24, 48, 96 ], config.per_page
-    assert_equal 24, config.default_per_page
+    assert_equal [ 12, 24, 40, 96 ], config.per_page
+    assert_equal 40, config.default_per_page
   end
 
   test "sort fields: relevance, title both ways, date both ways" do

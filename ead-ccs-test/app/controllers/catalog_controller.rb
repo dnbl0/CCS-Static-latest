@@ -17,8 +17,8 @@ class CatalogController < ApplicationController
 
   configure_blacklight do |config|
     # Results per page; the per_page widget offers these and the first request uses the default.
-    config.per_page = [ 12, 24, 48, 96 ]
-    config.default_per_page = 24
+    config.per_page = [ 12, 24, 40, 96 ]
+    config.default_per_page = 40
 
     # Blacklight's default is 'select', which solrconfig.xml now declares.
     # config.solr_path = 'select'
