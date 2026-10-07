@@ -76,9 +76,14 @@ Eg:
   `pages/collection.html.erb`; their text and the browse page's listings are in `config/pages.yml`. Help topic
   bodies are the partials in `app/views/pages/help`.
 * Record counts on the browse page come from Solr when it is reachable and are left out otherwise.
-* The styles are copied from the static site's CSS (`app/assets/stylesheets/pages`, with the static design tokens in
-  `tokens/static_site.css`). When the static CSS or copy changes, update these files to match. The header and footer
-  are the existing `NexusCcs` components.
+* The styles and images are generated from the static site, which is their source: `app/assets/stylesheets/pages`,
+  `tokens/static_site.css` and `app/assets/images/site/` are written by `node scripts/sync-rails-assets.js` (run
+  `npm run sync:rails` at the repository root) and checked by `npm test`. Never edit those files by hand: change
+  `public/styles` or `public/images` and re-run the script. The page copy is separate: the static pages and
+  `config/pages.yml` / the views here are edited together by hand. The header and footer are the existing
+  `NexusCcs` components.
+* `npm run parity` (with both sites running) compares computed styles of the same elements on each static page and its
+  Rails twin at 1440px and 390px; it runs in the `Rails CI` workflow.
 
 ## UI
 

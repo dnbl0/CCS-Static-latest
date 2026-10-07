@@ -23,6 +23,18 @@ difference was found and fixed: the Rails mobile breadcrumb back link was dark o
 rules did not travel with the copied markup; they are now one shared rule set). Remaining visual differences are the
 search bar on the home page (the Rails app keeps its Blacklight bar) and font fallback in offline test runs.
 
+## Progress
+
+- **Done 2026-10-07 (Phase 1):** decision taken (shared source for tokens, CSS and images; copy stays separate), items
+  2 and 3 built (`scripts/sync-rails-assets.js`, `scripts/parity.js`, both in CI), item 4 settled by documentation,
+  and items 6 and part of 5 done (CI split into `ci.yml` and `rails-ci.yml` with path filters, the Rails job gained
+  gem and importmap audits).
+- Item 5 changed: `ead-ccs-test/.github/workflows/deploy.yaml` builds and deploys the Rails image through the
+  organisation's `unimelb-enterprise-apps` actions and its secrets. Those only work in the repository that owns them,
+  so the nested workflows and `dependabot.yml` are left in place. They run if `ead-ccs-test` is published as its own
+  repository. Confirm how the app is delivered before removing them.
+- Still to do: Phases 2 (items 7-9), 3, 4 and 5.
+
 ## Phase 1 - Stop the two sites drifting apart (highest value)
 
 The pages exist twice and are kept in step by hand. That is the main structural risk.
@@ -46,9 +58,8 @@ The pages exist twice and are kept in step by hand. That is the main structural 
 ## Phase 2 - Safety nets and process
 
 5. **Check the CI layout (S).** `ead-ccs-test/.github/workflows/{ci,deploy}.yaml` are nested workflows that GitHub
-   never runs. Move anything still needed (the deploy job) to the root `.github/workflows` with a path filter, and
-   delete the nested copies and `dependabot.yml` (move that to the root with a `directory: /ead-ccs-test`). Done when:
-   `.github` exists only at the repository root.
+   does not run from this repository. See Progress: they stay until it is confirmed how the app is delivered. Add a
+   root `dependabot.yml` for npm, Bundler (`/ead-ccs-test`) and GitHub Actions.
 6. **Path-filter CI (S).** Run the `npm test` job only for static changes and the `rails` job only for
    `ead-ccs-test/**`, so neither blocks the other. Add Bundler and npm caching.
 7. **Review the auto-merge workflow (S).** `auto-merge.yml` squash-merges `feature/**`, `bugfix/**` and `enhance/**`
