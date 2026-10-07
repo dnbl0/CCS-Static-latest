@@ -191,7 +191,7 @@ jobs:
 
       - name: Cache Solr
         id: solr-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/solr-${{ env.SOLR_VERSION }}.tgz
           key: solr-${{ env.SOLR_VERSION }}
