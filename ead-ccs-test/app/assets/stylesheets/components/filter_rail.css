@@ -272,26 +272,32 @@
   }
 }
 
-/* Range filters (production date, creator dates), after Airbnb's price range in UoM colours: a histogram, two
-   round handles on a rail, year labels, then Minimum / Maximum fields (controllers/range_slider_controller.js).
-   --slider-handle is the handle's hit area: 28px, 44px on a phone or any coarse pointer. */
+/* Range filters (production date, creator dates), after the CCS UI "Slider" (Figma 256:24723 default, 256:24703
+   with a range): a histogram of 2px-gapped bars on a 2px rail, small white handles with a soft shadow, year labels
+   along the bottom, then From / To fields at the two ends (controllers/range_slider_controller.js).
+   --slider-handle is the handle's hit area: 28px, 44px on a phone or any coarse pointer; --slider-thumb is the
+   visible circle, 16px as designed. */
 .range-slider {
-  --slider-bars: 5rem;
+  --slider-bars: 3.05rem; /* the design's 48.8px graph */
   --slider-handle: 1.75rem;
+  --slider-thumb: 1rem;
   --slider-ticks: 1.5rem;
-  --slider-thumb: 1.75rem;
   position: relative;
-  height: calc(var(--slider-bars) + var(--slider-handle) + var(--slider-ticks));
-  margin: 0 calc(var(--slider-handle) / 2) var(--ccs-space-3);
+  height: calc(var(--slider-bars) + var(--slider-handle) / 2 + var(--slider-ticks) + 2px);
+  /* half a hit area either side, so the bars and rail run the width of the panel's content and the handles
+     reach its ends */
+  margin: 0 calc(var(--slider-handle) / 2);
 }
 
 .range-slider.no-bars {
   --slider-bars: 0rem;
 }
 
+/* the graph stands on the rail, overlapping it by its 2px */
 .range-slider__bars {
   position: absolute;
-  inset: 0 0 calc(var(--slider-handle) / 2 + var(--slider-ticks) + 1px);
+  inset: auto 0 calc(var(--slider-handle) / 2 + var(--slider-ticks)) 0;
+  height: var(--slider-bars);
   display: flex;
   align-items: flex-end;
   gap: 2px;
@@ -301,7 +307,7 @@
   flex: 1 1 0;
   min-width: 0;
   border-radius: 2px 2px 0 0;
-  background: var(--ccs-navy-200);
+  background: var(--ccs-neutral-300);
   transition: background var(--ccs-duration-fast);
 }
 
@@ -311,19 +317,20 @@
 
 /* while the histogram loads */
 .range-slider__bar.is-placeholder {
-  background: var(--ccs-navy-100);
+  background: var(--ccs-neutral-200);
   animation: range-slider-pulse 1.2s ease-in-out infinite;
 }
 
 @keyframes range-slider-pulse {
-  50% { background: var(--ccs-navy-200); }
+  50% { background: var(--ccs-neutral-300); }
 }
 
 .range-slider__rail {
   position: absolute;
-  inset: auto 0 calc(var(--slider-handle) / 2 + var(--slider-ticks)) 0;
+  inset: auto 0 calc(var(--slider-handle) / 2 + var(--slider-ticks) - 1px) 0;
   height: 2px;
-  background: var(--ccs-navy-200);
+  border-radius: 8px;
+  background: var(--ccs-neutral-200);
 }
 
 .range-slider__fill {
@@ -383,8 +390,9 @@
 .range-slider__handle::-webkit-slider-runnable-track { background: none; }
 .range-slider__handle::-moz-range-track { background: none; }
 
-/* The thumb is --slider-handle wide (the hit area); its visible circle is --slider-thumb, drawn inside a
-   transparent border so a phone gets a 44px target around a 28px handle. --nudge moves it clear of the other. */
+/* The thumb is --slider-handle wide (the hit area); the white circle is --slider-thumb, the padding box inside a
+   transparent border, and the drop-shadow filter follows the circle, not the hit area. --nudge moves the thumb
+   clear of the other one; --lift enlarges it on hover and while dragging. */
 .range-slider__handle::-webkit-slider-thumb {
   box-sizing: border-box;
   width: var(--slider-handle);
@@ -393,12 +401,13 @@
   border-radius: 50%;
   background: var(--ccs-white);
   background-clip: padding-box;
-  box-shadow: inset 0 0 0 1px var(--ccs-neutral-500), 0 2px 10px rgb(0 11 52 / 18%);
+  box-shadow: inset 0 0 0 0 var(--ccs-navy-1100);
+  filter: drop-shadow(0 2px 2px rgb(0 11 52 / 25%)) drop-shadow(0 0 1px rgb(0 11 52 / 30%));
   cursor: grab;
   pointer-events: auto;
   appearance: none;
-  transform: translateX(var(--nudge, 0px));
-  transition: box-shadow var(--ccs-duration-fast);
+  transform: translateX(var(--nudge, 0px)) scale(var(--lift, 1));
+  transition: transform var(--ccs-duration-fast), box-shadow var(--ccs-duration-fast);
 }
 
 .range-slider__handle::-moz-range-thumb {
@@ -409,23 +418,31 @@
   border-radius: 50%;
   background: var(--ccs-white);
   background-clip: padding-box;
-  box-shadow: inset 0 0 0 1px var(--ccs-neutral-500), 0 2px 10px rgb(0 11 52 / 18%);
+  box-shadow: inset 0 0 0 0 var(--ccs-navy-1100);
+  filter: drop-shadow(0 2px 2px rgb(0 11 52 / 25%)) drop-shadow(0 0 1px rgb(0 11 52 / 30%));
   cursor: grab;
   pointer-events: auto;
-  transform: translateX(var(--nudge, 0px));
+  transform: translateX(var(--nudge, 0px)) scale(var(--lift, 1));
+  transition: transform var(--ccs-duration-fast), box-shadow var(--ccs-duration-fast);
 }
+
+/* hover: a little larger; dragging: larger again, ringed in navy and grabbing */
+.range-slider__handle:hover { --lift: 1.2; }
+
+.range-slider__handle.is-dragging { --lift: 1.3; }
 
 .range-slider__handle:hover::-webkit-slider-thumb,
 .range-slider__handle.is-dragging::-webkit-slider-thumb {
-  box-shadow: inset 0 0 0 2px var(--ccs-navy-1100), 0 0 0 6px rgb(0 15 70 / 10%), 0 2px 10px rgb(0 11 52 / 18%);
-  cursor: grabbing;
+  box-shadow: inset 0 0 0 2px var(--ccs-navy-1100);
 }
 
 .range-slider__handle:hover::-moz-range-thumb,
 .range-slider__handle.is-dragging::-moz-range-thumb {
-  box-shadow: inset 0 0 0 2px var(--ccs-navy-1100), 0 0 0 6px rgb(0 15 70 / 10%), 0 2px 10px rgb(0 11 52 / 18%);
-  cursor: grabbing;
+  box-shadow: inset 0 0 0 2px var(--ccs-navy-1100);
 }
+
+.range-slider__handle.is-dragging::-webkit-slider-thumb { cursor: grabbing; }
+.range-slider__handle.is-dragging::-moz-range-thumb { cursor: grabbing; }
 
 .range-slider__handle:focus-visible {
   outline: none;
@@ -433,12 +450,14 @@
 
 .range-slider__handle:focus-visible::-webkit-slider-thumb {
   outline: 3px solid #0b4ea2;
-  outline-offset: 2px;
+  outline-offset: 0;
+  box-shadow: inset 0 0 0 2px var(--ccs-navy-1100);
 }
 
 .range-slider__handle:focus-visible::-moz-range-thumb {
   outline: 3px solid #0b4ea2;
-  outline-offset: 2px;
+  outline-offset: 0;
+  box-shadow: inset 0 0 0 2px var(--ccs-navy-1100);
 }
 
 @media (max-width: 575.98px), (pointer: coarse) {
@@ -448,6 +467,13 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .range-slider__bar,
+  .range-slider__stem,
+  .range-slider__handle::-webkit-slider-thumb,
+  .range-slider__handle::-moz-range-thumb {
+    transition: none;
+  }
+
   .range-slider__bar.is-placeholder {
     animation: none;
   }
@@ -463,33 +489,45 @@
   white-space: nowrap;
 }
 
-/* Begin / End: two even fields, then the button full width */
+/* From / To, as designed: a label over a 133 x 48 field, one at each end, 24px under the slider */
 .range_limit_form {
   display: block !important;
+  padding-top: var(--ccs-space-5);
 }
 
 .range-limit-input-group > .d-flex:first-child {
+  justify-content: space-between !important;
   gap: var(--ccs-space-3);
 }
 
 .range-limit-input-group > .d-flex:first-child > div {
-  flex: 1 1 0;
+  flex: 0 1 8.3125rem;
+  min-width: 0;
   margin: 0 !important;
 }
 
 .range-limit-input-group label {
-  margin-bottom: var(--ccs-space-1);
-  font-size: var(--ccs-font-size-sm);
-  font-weight: var(--ccs-font-weight-regular);
-  color: var(--ccs-text-tertiary) !important;
+  margin-bottom: var(--ccs-space-2);
+  font-size: var(--ccs-font-size-lg);
+  font-weight: var(--ccs-font-weight-semibold);
+  line-height: 1.5;
+  color: var(--ccs-navy-1100) !important;
 }
 
 .range-limit-input-group .form-control {
   height: 3rem;
-  border: 1px solid var(--ccs-border-panel);
+  padding: var(--ccs-space-3);
+  border: 1px solid var(--ccs-border-strong);
   border-radius: 0;
-  font-size: var(--ccs-font-size-md);
-  text-align: center;
+  background: var(--ccs-white);
+  font-size: var(--ccs-font-size-lg);
+  text-align: start;
+  color: var(--ccs-text-primary);
+}
+
+.range-limit-input-group .form-control::placeholder {
+  color: var(--ccs-text-tertiary);
+  opacity: 1;
 }
 
 .range-limit-input-group .form-control:focus {
@@ -497,6 +535,15 @@
   box-shadow: 0 0 0 3px rgb(70 200 240 / 45%);
 }
 
+/* in the drawer the panel is narrower: a smaller field so "Maximum" fits */
+@media (max-width: 575.98px) {
+  .range-limit-input-group .form-control {
+    padding-inline: var(--ccs-space-2);
+    font-size: var(--ccs-font-size-md);
+  }
+}
+
+/* The button (shown without JavaScript) */
 .range-limit-input-group .submit {
   width: 100%;
   padding: var(--ccs-space-2) var(--ccs-space-4);
@@ -520,7 +567,7 @@
   flex: 1 1 auto;
 }
 
-/* The number fields' spinners are in the way of the centred year */
+/* The number fields' spinners are in the way of the year */
 .range-limit-input-group input[type="number"] {
   appearance: textfield;
 }

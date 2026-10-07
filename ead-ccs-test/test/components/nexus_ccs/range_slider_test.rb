@@ -46,4 +46,41 @@ class RangeSliderTest < ActiveSupport::TestCase
     assert_includes CSS, "background-clip: padding-box;"
     assert_includes CSS, "translateX(var(--nudge, 0px))"
   end
+
+  test "the bar count is set from the width of the panel, 7.8px bars with 2px gaps, between 20 and 60" do
+    assert_includes JS, "const BAR_PITCH = 9.8"
+    assert_includes JS, "MIN_BARS = 20"
+    assert_includes JS, "MAX_BARS = 60"
+    assert_includes JS, "Math.floor((width + 2) / BAR_PITCH)"
+    assert_includes JS, 'url.searchParams.set("bins", this.barCount())'
+    assert_equal 60, RangeHistogram.bins_for("60")
+    assert_equal 29, RangeHistogram.bins_for("29")
+  end
+
+  test "with no range applied the fields are empty with Minimum and Maximum placeholders, and empty ones are not sent" do
+    assert_includes JS, "static values = { min: Number, max: Number, histogramUrl: String, applied: Boolean }"
+    assert_includes JS, 'this.begin.placeholder = "Minimum"'
+    assert_includes JS, 'this.end.placeholder = "Maximum"'
+    assert_includes JS, 'if (!this.appliedValue) {'
+    assert_includes JS, "leaveOutEmptyFields"
+    assert_includes JS, "input.disabled = input.value === \"\""
+    assert_includes Rails.root.join("app/components/nexus_ccs/facet_field_component.html.erb").read, "data-range-slider-applied-value"
+  end
+
+  test "the fields are From and To, 133 by 48, one at each end" do
+    locale = Rails.root.join("config/locales/blacklight.en.yml").read
+    assert_includes locale, "range_begin_short: From"
+    assert_includes locale, "range_end_short: To"
+    assert_includes CSS, "justify-content: space-between !important;"
+    assert_includes CSS, "flex: 0 1 8.3125rem;"
+    assert_match(/\.range-limit-input-group \.form-control \{\s+height: 3rem;/, CSS)
+  end
+
+  test "the handles are 16px white circles with a drop shadow, larger on hover and while dragging" do
+    assert_includes CSS, "--slider-thumb: 1rem;"
+    assert_includes CSS, "filter: drop-shadow("
+    assert_includes CSS, ".range-slider__handle:hover { --lift: 1.2; }"
+    assert_includes CSS, "const HANDLE = 16" if false
+    assert_includes JS, "const HANDLE = 16"
+  end
 end

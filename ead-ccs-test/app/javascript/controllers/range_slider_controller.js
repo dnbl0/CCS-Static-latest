@@ -1,17 +1,21 @@
 import { Controller } from "@hotwired/stimulus"
 
-// The range filters' slider, in the manner of Airbnb's price range: a histogram of the results, two round
-// handles on a rail, year labels along the bottom, and Minimum / Maximum fields. Bars inside the chosen range
-// are navy, the rest grey, and they follow the handles as they move. It sits over the range limit plugin's
-// Begin / End fields (typing a year still works, and so does the form without JavaScript). Letting go of a
-// handle, or leaving a field, applies the range after a short pause, and the new page announces the result.
+// The range filters' slider, after the CCS UI "Slider" (Figma 256:24723, 256:24703): a histogram of the results
+// with 2px between its bars, two small white handles on a 2px rail, year labels along the bottom, and From / To
+// fields at the two ends. Bars inside the chosen range are navy, the rest grey, and they follow the handles as
+// they move. With no range applied the fields are empty (their placeholders say Minimum / Maximum) and the
+// handles sit at the ends; dragging a handle fills its field, and a handle at its end leaves the field empty
+// (an open end). It sits over the range limit plugin's Begin / End fields (typing a year still works, and so
+// does the form without JavaScript). Letting go of a handle, or leaving a field, applies the range after a
+// short pause, and the new page announces the result.
 //
 // The handles are native <input type="range"> elements, so keyboard, touch and screen reader support are the
 // browser's; this adds Home / End / Page Up / Page Down (ten years), year values in the ARIA attributes, and
 // keeps the two handles apart: when they are closer than a handle's width they are nudged either side of their
 // true position, with a thin stem marking where each really is.
 //
-// The bars come from /catalog/range_histogram (RangeHistogram), 24 of them (20 on a narrow phone). Years run
+// The bars come from /catalog/range_histogram (RangeHistogram): as many 7.8px bars with 2px gaps as fit the
+// panel (about 29 in the sidebar), fetched when the panel is first opened. Years run
 // from before the common era to now but nearly every record is recent, so when the data goes back past the knee
 // the track is in two parts: the first quarter covers everything before it, the rest covers the knee to the
 // latest year. The same map as RangeHistogram.year in Ruby; keep them together.
@@ -19,14 +23,15 @@ const STEPS = 1000
 const KNEE = 1000
 const OLD_SHARE = 0.25
 const APPLY_DELAY = 700
-const HANDLE = 28 // px, the handle's visible width
-const BARS = 24
-const BARS_NARROW = 20
+const HANDLE = 16 // px, the handle's visible width
+const BAR_PITCH = 9.8 // px: a 7.8px bar and its 2px gap
+const MIN_BARS = 20
+const MAX_BARS = 60
 const PAGE_YEARS = 10
 const ANNOUNCE_KEY = "ccs-range-announce"
 
 export default class extends Controller {
-  static values = { min: Number, max: Number, histogramUrl: String }
+  static values = { min: Number, max: Number, histogramUrl: String, applied: Boolean }
 
   connect() {
     this.begin = this.element.querySelector("input.range_begin")
@@ -38,11 +43,18 @@ export default class extends Controller {
     this.hi = this.maxValue
     this.bins = []
     this.field = this.begin.name
+    this.loaded = false
     this.addClearLink()
+    // no range applied: the fields start empty, showing Minimum / Maximum
+    if (!this.appliedValue) {
+      this.begin.value = ""
+      this.end.value = ""
+    }
+    this.begin.placeholder = "Minimum"
+    this.end.placeholder = "Maximum"
     this.render()
     this.fromFields()
     this.drawTicks()
-    this.load()
     this.announceApplied()
   }
 
@@ -78,8 +90,14 @@ export default class extends Controller {
 
   histogramUrl() {
     const url = new URL(this.histogramUrlValue, window.location.origin)
-    url.searchParams.set("bins", window.matchMedia("(max-width: 400px)").matches ? BARS_NARROW : BARS)
+    url.searchParams.set("bins", this.barCount())
     return url
+  }
+
+  // as many bars as fit the track, 7.8px wide with 2px between
+  barCount() {
+    const width = this.rail?.getBoundingClientRect().width || 287
+    return Math.min(MAX_BARS, Math.max(MIN_BARS, Math.floor((width + 2) / BAR_PITCH)))
   }
 
   // The plugin's row for the applied range (a ticked "1900 to 1950" with a small x) is hidden, since the slider
@@ -118,8 +136,6 @@ export default class extends Controller {
     this.rail = slider.querySelector(".range-slider__rail")
     this.stems = [...slider.querySelectorAll(".range-slider__stem")]
     ;[this.fromHandle, this.toHandle] = slider.querySelectorAll("input")
-    this.drawPlaceholderBars()
-
     this.status = document.createElement("div")
     this.status.className = "visually-hidden"
     this.status.setAttribute("role", "status")
@@ -139,8 +155,18 @@ export default class extends Controller {
     this.end.addEventListener("input", () => this.fromFields())
     this.begin.addEventListener("change", () => this.applySoon())
     this.end.addEventListener("change", () => this.applySoon())
-    // the panel is hidden until opened, so the track has no width yet: measure again when it has one
-    this.observer = new ResizeObserver(() => this.paint())
+    this.form.addEventListener("submit", () => this.leaveOutEmptyFields())
+    window.addEventListener("pageshow", () => this.restoreFields())
+    // the panel is hidden until opened, so the track has no width yet: when it has one, size the bars to it and
+    // fetch the histogram (once), then measure again whenever it changes
+    this.observer = new ResizeObserver(() => {
+      if (!this.loaded && this.rail.getBoundingClientRect().width > 0) {
+        this.loaded = true
+        this.drawPlaceholderBars()
+        this.load()
+      }
+      this.paint()
+    })
     this.observer.observe(this.rail)
   }
 
@@ -151,7 +177,7 @@ export default class extends Controller {
 
   // grey bars of varying height while the real ones load
   drawPlaceholderBars() {
-    const count = window.matchMedia("(max-width: 400px)").matches ? BARS_NARROW : BARS
+    const count = this.barCount()
     const heights = [30, 45, 38, 60, 52, 75, 64, 88, 70, 55, 42, 66, 80, 58, 48, 36, 62, 74, 50, 40, 56, 68, 44, 34]
     this.barsElement.replaceChildren(...Array.from({ length: count }, (_, i) => {
       const bar = document.createElement("span")
@@ -236,8 +262,9 @@ export default class extends Controller {
     if (from > to) { if (document.activeElement === this.fromHandle) from = to; else to = from }
     this.fromHandle.value = from
     this.toHandle.value = to
-    this.begin.value = this.year(from)
-    this.end.value = this.year(to)
+    // a handle at its end is an open end: the field stays empty (Minimum / Maximum)
+    this.begin.value = from <= 0 ? "" : this.year(from)
+    this.end.value = to >= STEPS ? "" : this.year(to)
     this.paint()
   }
 
@@ -285,9 +312,24 @@ export default class extends Controller {
   applySoon() {
     clearTimeout(this.timer)
     this.timer = setTimeout(() => {
+      if (this.begin.value === "" && this.end.value === "") {
+        // nothing to apply; if a range was applied, taking both ends back out clears it
+        const clear = this.element.querySelector(".range-clear")
+        if (this.appliedValue && clear) window.location.assign(clear.href)
+        return
+      }
       try { sessionStorage.setItem(ANNOUNCE_KEY, this.field) } catch (_) { /* announcing is a nicety */ }
       this.form.requestSubmit()
     }, APPLY_DELAY)
+  }
+
+  // An empty field is not sent, so an open end is just a missing begin or end
+  leaveOutEmptyFields() {
+    ;[this.begin, this.end].forEach((input) => { input.disabled = input.value === "" })
+  }
+
+  restoreFields() {
+    ;[this.begin, this.end].forEach((input) => { input.disabled = false })
   }
 
   // After the page has reloaded with the range applied, say what it shows (a live region in the old page would
