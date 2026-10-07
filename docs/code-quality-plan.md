@@ -114,12 +114,14 @@ search bar on the home page (the Rails app keeps its Blacklight bar) and font fa
     in stylelint's dependency `braces`; they are not shipped, so they are reported, not blocking.
   - Items 25 and 28: `docs/conventions.md` holds the naming, the "where a change is made" table and an accessibility checklist.
 - **Not done, on purpose:**
-  - Content Security Policy (item 23): the initializer is still commented out. Blacklight and the page runtime use inline
-    scripts, so it needs nonces and a browser check on every page; turn it on as its own change.
+  - Enforcing the Content Security Policy (item 23): it is now on in report-only mode (`config/initializers/content_security_policy.rb`,
+    tested), so browsers report violations without blocking. Look at the console on every page; when quiet, set
+    `content_security_policy_report_only = false`.
   - Unit tests for the Stimulus controllers (item 21): the system tests exercise the controllers that matter (flyout,
     menu, dropdowns); a JS test runner would be a new dependency for little extra cover.
-  - One list of collections (items 25, 26): the slugs and facet values are still in five places, and the data model
-    workbook is still copied into both sites. Generating them from the workbook is a larger job than this pass.
+  - One list of collections (items 25, 26): in Rails it is now one place (`config/pages.yml`; the header menu is built from it,
+    and a test checks it against the static site's collection folders). The static build script still has its own list, and the
+    data model workbook is still copied into both sites.
   - Pre-rendering the static content pages (item 14): assessed above; only worth it if first paint on them matters.
   - Item 9: Brakeman must be bumped by hand when it releases (`bin/brakeman` fails on an outdated gem); Dependabot is set up.
   - Removing the `!important`s and the remaining duplicate-selector warnings (see above).

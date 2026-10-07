@@ -67,6 +67,8 @@ browse:
     named: Michael Buxton Collection
 collections:
   grainger-museum:
+    menu_label: Grainger Museum Collection
+    facet_value: Grainger Museum Collection
     name: Grainger Museum Collection
     blurb: The personal collection of composer Percy Grainger including instruments, manuscripts, correspondence
       and experimental machines.
@@ -114,6 +116,8 @@ collections:
       url: https://storeroom.its.unimelb.edu.au/umc/grainger?page=collection-areas
       summary: Opening hours, exhibitions, events and visitor information.
   harry-brookes-allen-museum:
+    menu_label: Harry Brookes Allen Museum
+    facet_value: Harry Brookes Allen Museum of Anatomy and Pathology
     name: Harry Brookes Allen Museum of Anatomy and Pathology
     blurb: Anatomical and pathological specimens, models and teaching collections supporting medical education
       and research.
@@ -156,6 +160,8 @@ collections:
       url: https://collections.mdhs.unimelb.edu.au/explore
       summary: Opening hours, exhibitions, events and visitor information.
   henry-forman-atkinson-dental-museum:
+    menu_label: Henry Forman Atkinson Dental Museum
+    facet_value: Henry Forman Atkinson Dental Museum
     name: Henry Forman Atkinson Dental Museum
     blurb: Instruments, equipment and teaching materials documenting the history of dentistry and oral
       health education.
@@ -200,6 +206,8 @@ collections:
       url: https://collections.mdhs.unimelb.edu.au/explore
       summary: Opening hours, exhibitions, events and visitor information.
   medical-history-museum:
+    menu_label: Medical History Museum
+    facet_value: Medical History Museum
     name: Medical History Museum
     blurb: Historical medical instruments, teaching models, pathological specimens and records documenting
       medical education.
@@ -236,6 +244,8 @@ collections:
       url: https://collections.mdhs.unimelb.edu.au/explore
       summary: Opening hours, exhibitions, events and visitor information.
   university-art-collection:
+    menu_label: University Art Collection
+    facet_value: University Art Collection
     name: University Art Collection
     blurb: A major university art collection featuring Australian and international works spanning painting,
       sculpture and works on paper.

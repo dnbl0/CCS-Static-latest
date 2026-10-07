@@ -40,7 +40,7 @@ module NexusCcs
     def audience_links = SiteNavigation::AUDIENCE
 
     def collection_links
-      SiteNavigation::COLLECTIONS.map { |label, _facet_value, slug| SiteNavigation::Link.new(label, helpers.collection_path(slug)) }
+      SiteNavigation.collections.map { |label, _facet_value, slug| SiteNavigation::Link.new(label, helpers.collection_path(slug)) }
     end
 
     def help_links

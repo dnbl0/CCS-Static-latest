@@ -18,22 +18,16 @@ module NexusCcs
       Link.new("Contact", "https://www.unimelb.edu.au/contact")
     ].freeze
 
-    # Menu label, the value of the collection_ssim facet, then the slug of its landing page.
-    COLLECTIONS = [
-      [ "Medical History Museum", "Medical History Museum", "medical-history-museum" ],
-      [ "Henry Forman Atkinson Dental Museum", "Henry Forman Atkinson Dental Museum", "henry-forman-atkinson-dental-museum" ],
-      [ "Harry Brookes Allen Museum", "Harry Brookes Allen Museum of Anatomy and Pathology", "harry-brookes-allen-museum" ],
-      [ "University Art Collection", "University Art Collection", "university-art-collection" ],
-      [ "Grainger Museum Collection", "Grainger Museum Collection", "grainger-museum" ]
-    ].freeze
+    # Menu label, the value of the collection_ssim facet, then the slug of its landing page (config/pages.yml).
+    def self.collections = SitePages.menu
 
     # The facet value of a collection landing page, by slug, and the slug of a facet value.
     def self.facet_value(slug)
-      COLLECTIONS.find { |_label, _value, collection_slug| collection_slug == slug }&.second
+      collections.find { |_label, _value, collection_slug| collection_slug == slug }&.second
     end
 
     def self.slug_for(facet_value)
-      COLLECTIONS.find { |_label, value, _slug| value == facet_value }&.last
+      collections.find { |_label, value, _slug| value == facet_value }&.last
     end
 
     # Labels of the help home and the contact page (the help topics are HelpTopic.all).
