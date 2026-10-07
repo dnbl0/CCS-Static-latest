@@ -1,0 +1,229 @@
+name: Rails CI
+
+# Checks for the Rails/Blacklight app in ead-ccs-test. The parity job also needs the static site, whose pages it
+# compares with the Rails ones, so it runs when public/ changes too.
+on:
+  pull_request:
+    paths:
+      - 'ead-ccs-test/**'
+      - 'public/**'
+      - 'scripts/parity.js'
+      - 'scripts/sync-rails-assets.js'
+      - 'package.json'
+      - '.github/workflows/rails-ci.yml'
+  push:
+    branches:
+      - main
+
+jobs:
+  rails:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ead-ccs-test
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      RAILS_ENV: test
+      PGHOST: localhost
+      PGUSER: postgres
+      PGPASSWORD: postgres
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          working-directory: ead-ccs-test
+          bundler-cache: true
+
+      - name: Rubocop
+        run: bin/rubocop
+
+      - name: ERB lint
+        run: bin/erb_lint --lint-all
+
+      - name: Brakeman
+        run: bin/brakeman --quiet --no-pager --exit-on-warn --exit-on-error
+
+      - name: Gem audit
+        run: bin/bundler-audit
+
+      - name: Importmap audit
+        run: bin/importmap audit
+
+      - name: Prepare database
+        run: bin/rails db:create db:schema:load
+
+      - name: Run tests
+        run: bin/rails test
+
+  parity:
+    # The Rails pages and their static twins must render the same styles at desktop and mobile widths
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      RAILS_ENV: test
+      PGHOST: localhost
+      PGUSER: postgres
+      PGPASSWORD: postgres
+      SECRET_KEY_BASE: parity-check-not-a-secret
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          working-directory: ead-ccs-test
+          bundler-cache: true
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: package.json
+
+      - name: Install Node dependencies and Chromium
+        run: |
+          npm install
+          npx playwright-core install --with-deps chromium
+
+      - name: Prepare the Rails app
+        working-directory: ead-ccs-test
+        run: |
+          bin/rails db:create db:schema:load
+          bin/rails dartsass:build
+
+      - name: Start both sites
+        run: |
+          (cd ead-ccs-test && nohup bin/rails server -p 3200 -b 127.0.0.1 > ../rails.log 2>&1 &)
+          nohup node scripts/dev-server.js 3100 > static.log 2>&1 &
+          for i in $(seq 1 30); do
+            curl -fs http://127.0.0.1:3200/up >/dev/null && curl -fs http://127.0.0.1:3100/ >/dev/null && exit 0
+            sleep 2
+          done
+          cat rails.log static.log
+          exit 1
+
+      - name: Compare the pages
+        run: node scripts/parity.js
+        env:
+          STATIC_URL: http://127.0.0.1:3100
+          RAILS_URL: http://127.0.0.1:3200
+
+  system:
+    # Browser journeys and axe accessibility checks against a real Solr holding the indexed records
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ead-ccs-test
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      RAILS_ENV: test
+      PGHOST: localhost
+      PGUSER: postgres
+      PGPASSWORD: postgres
+      SOLR_URL: http://127.0.0.1:8984/solr/blacklight-core
+      SOLR_VERSION: 10.0.0
+      SOLR_MODULES: analysis-extras
+      SOLR_ULIMIT_CHECKS: "false"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          working-directory: ead-ccs-test
+          bundler-cache: true
+
+      - name: Setup Node (axe-core for the accessibility checks)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: package.json
+
+      - name: Install axe-core
+        working-directory: .
+        run: npm install
+
+      - name: Cache Solr
+        id: solr-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/solr-${{ env.SOLR_VERSION }}.tgz
+          key: solr-${{ env.SOLR_VERSION }}
+
+      - name: Download Solr
+        if: steps.solr-cache.outputs.cache-hit != 'true'
+        run: curl -fsSL -o ~/solr-$SOLR_VERSION.tgz https://downloads.apache.org/solr/solr/$SOLR_VERSION/solr-$SOLR_VERSION.tgz
+
+      - name: Setup Java (Solr 10 needs Java 21; the runner has 17)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Start Solr with the collections core
+        run: |
+          mkdir -p ~/solr && tar xzf ~/solr-$SOLR_VERSION.tgz -C ~/solr --strip-components=1
+          ~/solr/bin/solr start -p 8984 --force
+          ~/solr/bin/solr create -c blacklight-core -d "$GITHUB_WORKSPACE/ead-ccs-test/solr" -s http://127.0.0.1:8984
+
+      - name: Prepare the database and index the records
+        run: |
+          bin/rails db:create db:schema:load
+          bin/rails collections:index
+
+      - name: Run system tests (journeys and accessibility)
+        run: bin/rails test:system
+
+      - name: Keep screenshots from failed system tests
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: screenshots
+          path: ${{ github.workspace }}/ead-ccs-test/tmp/screenshots
+          if-no-files-found: ignore

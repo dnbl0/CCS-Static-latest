@@ -3,7 +3,7 @@
     <%# Not a heading: every Blacklight page already renders its own h1 %>
     <p class="search-banner__title"><%= TITLE %></p>
     <p class="search-banner__desc"><%= summary || DESCRIPTION %></p>
-    <div class="search-banner__search" <%= tag.attributes(data: chip_data) %>>
+    <div class="search-banner__search" <%= tag.attributes(data: controllers) %>>
       <%= search_bar %>
     </div>
   </div>

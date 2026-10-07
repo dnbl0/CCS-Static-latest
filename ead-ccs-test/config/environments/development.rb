@@ -1,9 +1,6 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
-  # The static CCS site runs on :3000 in development.
-  config.x.ccs.static_site_url ||= "http://localhost:3000"
-
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Make code changes take effect immediately without server restart.

@@ -1,0 +1,412 @@
+/*
+ * The advanced search page and form (NexusCcs::AdvancedSearchFormComponent), after the static site's advanced
+ * search: a banner, then the form beside a grey "Search help" panel. The same form is the results page's flyout
+ * (components/advanced_flyout.css), where it stacks.
+ */
+/* The page sits in Blacklight's container; the banner runs the full width of the window */
+.advanced-banner {
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+}
+
+.advanced-banner .search-banner__inner {
+  padding-bottom: var(--ccs-space-7);
+}
+
+.advanced-page {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 20rem;
+  gap: var(--ccs-space-7);
+  align-items: start;
+  max-width: 76.5rem;
+  margin: 0 auto;
+  padding: var(--ccs-space-7) var(--ccs-space-6) var(--ccs-space-8);
+}
+
+@media (max-width: 1023.98px) {
+  .advanced-page {
+    grid-template-columns: minmax(0, 1fr);
+    padding-inline: var(--ccs-space-4);
+  }
+}
+
+/* The form */
+.advanced-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ccs-space-7);
+  color: var(--ccs-text-primary);
+}
+
+.advanced-form__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ccs-space-4);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.advanced-form__heading {
+  margin: 0;
+  font-family: var(--ccs-font-heading);
+  font-size: var(--ccs-font-size-3xl);
+  font-weight: var(--ccs-font-weight-regular);
+  line-height: var(--ccs-line-height-tight);
+  color: var(--ccs-text-brand);
+}
+
+.advanced-form__heading--label {
+  font-size: var(--ccs-font-size-2xl);
+}
+
+.advanced-form__hint,
+.advanced-form__note {
+  margin: 0;
+  font-size: var(--ccs-font-size-md);
+  line-height: var(--ccs-line-height-normal);
+  color: var(--ccs-text-secondary);
+}
+
+.advanced-form__field {
+  display: flex;
+  flex: 1 1 12rem;
+  flex-direction: column;
+  gap: var(--ccs-space-1);
+  min-width: 0;
+}
+
+.advanced-form__field--terms {
+  flex-basis: 16rem;
+}
+
+.advanced-form__label {
+  font-size: var(--ccs-font-size-sm);
+  font-weight: var(--ccs-font-weight-semibold);
+  color: var(--ccs-text-secondary);
+}
+
+.advanced-form__control {
+  width: 100%;
+  height: 3rem;
+  padding: 0 var(--ccs-space-3);
+  border: 1px solid var(--ccs-border-strong);
+  border-radius: 0;
+  background-color: var(--ccs-white);
+  font-size: var(--ccs-font-size-md);
+  color: var(--ccs-text-primary);
+}
+
+.advanced-form__control:focus-visible {
+  border-color: var(--ccs-navy-1100);
+  outline: 3px solid #0b4ea2;
+  outline-offset: 1px;
+}
+
+/* A row: three fields side by side, Delete row under them */
+.advanced-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ccs-space-4);
+  align-items: flex-end;
+  margin: 0;
+  padding: var(--ccs-space-4);
+  border: 1px solid var(--ccs-border-panel);
+}
+
+.advanced-row__legend,
+.advanced-filter__legend,
+.advanced-range__legend {
+  float: none;
+  width: auto;
+  margin: 0 0 var(--ccs-space-2);
+  padding: 0;
+  font-size: var(--ccs-font-size-md);
+  font-weight: var(--ccs-font-weight-semibold);
+  color: var(--ccs-text-brand);
+}
+
+.advanced-row__delete {
+  flex: 0 0 100%;
+  justify-self: start;
+  text-align: start;
+}
+
+.advanced-form__add {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ccs-space-3);
+  align-items: center;
+}
+
+/* Buttons and links */
+.advanced-form__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 11rem;
+  min-height: 3rem;
+  padding: 0 var(--ccs-space-5);
+  border: 1px solid var(--ccs-navy-1100);
+  border-radius: 0;
+  background: var(--ccs-white);
+  font-size: var(--ccs-font-size-md);
+  font-weight: var(--ccs-font-weight-semibold);
+  text-decoration: none;
+  color: var(--ccs-navy-1100);
+  cursor: pointer;
+}
+
+.advanced-form__button:hover {
+  background: var(--ccs-cyan-100);
+}
+
+.advanced-form__button:disabled {
+  border-color: var(--ccs-border-default);
+  background: var(--ccs-action-disabled);
+  color: var(--ccs-action-disabled-text);
+  cursor: not-allowed;
+}
+
+.advanced-form__button--primary {
+  border-color: var(--ccs-action-primary);
+  background: var(--ccs-action-primary);
+  color: var(--ccs-action-primary-text);
+}
+
+.advanced-form__button--primary:hover {
+  background: var(--ccs-action-primary-hover);
+}
+
+.advanced-form__button--secondary {
+  border-color: var(--ccs-border-strong);
+}
+
+.advanced-form__button:focus-visible,
+.advanced-form__link:focus-visible {
+  outline: 3px solid #0b4ea2;
+  outline-offset: 2px;
+}
+
+.advanced-form__link {
+  padding: var(--ccs-space-1) 0;
+  border: 0;
+  background: none;
+  font-size: var(--ccs-font-size-md);
+  font-weight: var(--ccs-font-weight-semibold);
+  text-decoration: underline;
+  color: var(--ccs-text-link);
+  cursor: pointer;
+}
+
+.advanced-form__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ccs-space-4);
+  justify-content: flex-end;
+}
+
+/* Filters: a box per filter with its values, any / all, and Remove filter */
+.advanced-form__field--menu {
+  flex: 0 0 auto;
+  max-width: 20rem;
+}
+
+.advanced-filter,
+.advanced-range {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ccs-space-3);
+  margin: 0;
+  padding: var(--ccs-space-4);
+  border: 1px solid var(--ccs-border-panel);
+}
+
+.advanced-filter[hidden] {
+  display: none;
+}
+
+.advanced-filter__mode,
+.advanced-filter__find {
+  flex: 0 0 auto;
+  max-width: 16rem;
+}
+
+.advanced-filter__values {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  gap: var(--ccs-space-1) var(--ccs-space-5);
+  max-height: 16rem;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.advanced-filter__values li[hidden] {
+  display: none;
+}
+
+.advanced-filter__values li {
+  display: flex;
+  gap: var(--ccs-space-2);
+  align-items: flex-start;
+  padding: var(--ccs-space-1) 0;
+}
+
+.advanced-filter__values input[type="checkbox"] {
+  flex: none;
+  width: 1.125rem;
+  height: 1.125rem;
+  margin-top: 0.2rem;
+  accent-color: var(--ccs-navy-1100);
+}
+
+.advanced-filter__values label {
+  display: flex;
+  flex: 1 1 auto;
+  gap: var(--ccs-space-2);
+  justify-content: space-between;
+  font-size: var(--ccs-font-size-md);
+  line-height: 1.35;
+}
+
+.advanced-filter__count {
+  flex: none;
+  font-size: var(--ccs-font-size-sm);
+  font-variant-numeric: tabular-nums;
+  color: var(--ccs-text-tertiary);
+}
+
+.advanced-filter .advanced-form__link {
+  align-self: flex-start;
+}
+
+.advanced-range {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  margin-bottom: var(--ccs-space-3);
+}
+
+.advanced-range__legend {
+  flex: 0 0 100%;
+}
+
+.advanced-range .advanced-form__field {
+  max-width: 12rem;
+}
+
+.advanced-form__field--sort {
+  flex: 0 0 auto;
+  max-width: 18rem;
+}
+
+/* Errors: "There is a problem" */
+.advanced-form__errors {
+  padding: var(--ccs-space-4) var(--ccs-space-5);
+  border: 2px solid var(--ccs-border-error);
+  background: var(--ccs-white);
+}
+
+.advanced-form__errors[hidden] {
+  display: none;
+}
+
+.advanced-form__errors-heading {
+  margin: 0 0 var(--ccs-space-2);
+  font-size: var(--ccs-font-size-xl);
+  font-weight: var(--ccs-font-weight-semibold);
+  color: var(--ccs-text-error);
+}
+
+.advanced-form__errors ul {
+  margin: 0;
+  padding-left: var(--ccs-space-5);
+}
+
+.advanced-form__errors a {
+  font-weight: var(--ccs-font-weight-semibold);
+  color: var(--ccs-text-error);
+}
+
+/* Search help */
+.advanced-help {
+  padding: var(--ccs-space-5);
+  background: #f1f1f1;
+}
+
+.advanced-help__title {
+  margin: 0 0 var(--ccs-space-4);
+  font-family: var(--ccs-font-heading);
+  font-size: var(--ccs-font-size-2xl);
+  font-weight: var(--ccs-font-weight-regular);
+  color: var(--ccs-text-brand);
+}
+
+.advanced-help__sub {
+  margin: var(--ccs-space-5) 0 var(--ccs-space-2);
+  font-size: var(--ccs-font-size-md);
+  font-weight: var(--ccs-font-weight-semibold);
+  color: var(--ccs-text-brand);
+}
+
+.advanced-help__list {
+  margin: 0;
+  padding-left: var(--ccs-space-5);
+  font-size: var(--ccs-font-size-sm);
+  line-height: var(--ccs-line-height-normal);
+  color: var(--ccs-text-secondary);
+}
+
+.advanced-help__list li + li {
+  margin-top: var(--ccs-space-2);
+}
+
+.advanced-help code {
+  padding: 0 var(--ccs-space-1);
+  background: var(--ccs-white);
+  color: var(--ccs-text-brand);
+}
+
+/* Narrow: the three fields of a row stack */
+@media (max-width: 575.98px) {
+  .advanced-row,
+  .advanced-form__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .advanced-form__actions {
+    flex-direction: column-reverse;
+  }
+
+  .advanced-form__button {
+    width: 100%;
+  }
+
+  .advanced-form__field {
+    flex-basis: auto;
+  }
+}
+
+/* In the flyout the form is one narrow column */
+.advanced-form--modal .advanced-row,
+.advanced-form--modal .advanced-range {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.advanced-form--modal .advanced-form__field,
+.advanced-form--modal .advanced-range .advanced-form__field {
+  flex-basis: auto;
+  max-width: none;
+}
+
+.advanced-form--modal .advanced-form__heading {
+  font-size: var(--ccs-font-size-2xl);
+}
+
+.advanced-form--modal .advanced-filter__values {
+  grid-template-columns: minmax(0, 1fr);
+}

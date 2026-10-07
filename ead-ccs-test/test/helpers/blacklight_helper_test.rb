@@ -18,11 +18,14 @@ class BlacklightHelperTest < ActiveSupport::TestCase
 
   test "other pages keep the fixed container" do
     assert_equal "container", container(searching: false)
-    assert_equal "container", container(action: "show")
     assert_equal "container", container(controller: "bookmarks")
   end
 
+  test "a record page uses the full width too: its sections set their own 1440px column" do
+    assert_equal "container-fluid", container(action: "show", searching: false)
+  end
+
   test "the gem's full_width_layout setting is still honoured" do
-    assert_equal "container-fluid", container(action: "show", full_width: true)
+    assert_equal "container-fluid", container(action: "advanced_search", full_width: true)
   end
 end

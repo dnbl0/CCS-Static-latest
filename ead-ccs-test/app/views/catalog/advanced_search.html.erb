@@ -1,0 +1,26 @@
+<% @page_title = t("advanced_search.page_title") + " - " + application_name %>
+
+<% if request.xhr? %>
+  <%# Opened from the results page's "Advanced search" link: Blacklight's modal takes the children of this container (the flyout) %>
+  <div data-blacklight-modal="container">
+    <div class="modal-header">
+      <h1 class="modal-title"><%= t("advanced_search.page_title") %></h1>
+      <button type="button" class="blacklight-modal-close btn-close" data-bl-dismiss="modal" aria-label="<%= t("blacklight.modal.close") %>"></button>
+    </div>
+    <div class="modal-body">
+      <%= render "advanced_search_form" %>
+    </div>
+  </div>
+<% else %>
+  <section class="search-banner advanced-banner" aria-labelledby="adv-title">
+    <div class="search-banner__inner">
+      <h1 id="adv-title" class="search-banner__title"><%= t("advanced_search.banner_title") %></h1>
+      <p class="search-banner__desc"><%= t("advanced_search.banner_description") %></p>
+    </div>
+  </section>
+
+  <div class="advanced-page">
+    <div class="advanced-page__form"><%= render "advanced_search_form" %></div>
+    <div class="advanced-page__help"><%= render "advanced_search_help" %></div>
+  </div>
+<% end %>

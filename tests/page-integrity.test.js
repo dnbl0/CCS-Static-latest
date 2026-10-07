@@ -58,7 +58,8 @@ if (collections.includes('id="h-facts"') || collections.includes('id="h-themes"'
 if (/data-contact-btn|>Report an issue<|\{\{ shareText \}\}|value="\{\{ hasAdvisory \}\}"/.test(record)) fail('record: removed actions or advisory still visible');
 if (results.includes('Options within a filter are combined with OR.') || results.includes('{{ sec.group }}')) fail('filters: help text or group subheadings still visible');
 // The count badge and toggle track styles live in the page stylesheet (inline styles were moved out of the page).
-const resultsCss = fs.readFileSync(path.join(PUBLIC, 'styles/pages/search-results.css'), 'utf8');
+const resultsDir = path.join(PUBLIC, 'styles/pages/search-results');
+const resultsCss = fs.readdirSync(resultsDir).sort().map(f => fs.readFileSync(path.join(resultsDir, f), 'utf8')).join('\n');
 const cssRules = resultsCss.split('}').map(r => r.replace(/\s+/g, ' '));
 const roundedRule = (...needles) => cssRules.some(r => (r.includes('border-radius: 999px') || r.includes('border-radius: var(--radius-pill)')) && needles.every(n => r.includes(n)));
 if (!roundedRule('height: 22px', 'padding: 0 var(--space-6)') || !roundedRule('width: 38px', 'height: 22px')) fail('filters: count or toggle track is not rounded');

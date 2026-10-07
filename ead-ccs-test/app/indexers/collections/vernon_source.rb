@@ -66,7 +66,7 @@ module Collections
         "rights_ssim"      => row.values(RIGHTS),
         "licence_type_ssim" => licence_types(row.values(RIGHTS)),
 
-        # _tsi, not _tsim: suffix to match no copyField rule, so stored and 
+        # _tsi, not _tsim: suffix to match no copyField rule, so stored and
         # queryable but never reach the public search box, spellcheck or autocomplete.
         # Future Chris - Rename this to _tsim to publish it.
         "restrictions_tsi" => row.value(RESTRICTIONS)

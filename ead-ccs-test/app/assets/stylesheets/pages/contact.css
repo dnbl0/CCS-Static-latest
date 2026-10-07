@@ -1,0 +1,23 @@
+/* Generated from public/styles/pages/contact.css by scripts/sync-rails-assets.js. Edit the static file, not this copy. */
+/* contact: styles moved out of inline style="" attributes. Class names are semantic (block__element) and scoped by the page class on <body> (page-contact), which gives them the precedence the inline styles had over shared component CSS. Do not reintroduce inline styles. */
+body.page-contact .contact-page__group--v1 {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+body.page-contact .contact-page__group--v2 {
+  width: 100%;
+  background: var(--blue-900);
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+body.page-contact .contact-page__icon {
+  display: none;
+}
+body.page-contact .page-local-history__link-image {
+  vertical-align: middle;
+}
+body.page-contact .contact-main-content {
+  flex: 1;
+}

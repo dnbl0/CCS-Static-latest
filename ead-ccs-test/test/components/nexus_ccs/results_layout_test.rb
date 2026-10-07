@@ -181,7 +181,7 @@ class ResultsLayoutTest < ActiveSupport::TestCase
 
   test "a skeleton replaces the results and filter values while a search page loads" do
     css = STYLES.join("skeleton.css").read
-    assert_includes STYLES.join("../application.css").read, 'components/skeleton.css'
+    assert_includes STYLES.join("../application.css").read, "components/skeleton.css"
     %w[#documents\ .document .facet-values\ li].each { |selector| assert_includes css, ".is-searching #{selector}" }
     assert_includes css, "prefers-reduced-motion: reduce"
     assert_includes Rails.root.join("config/importmap.rb").read, 'pin "search_loading"'

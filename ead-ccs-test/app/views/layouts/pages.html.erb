@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><%= content_for(:title) || "Cultural Collections Search - University of Melbourne" %></title>
+    <script>document.documentElement.classList.remove("no-js");</script>
+    <%= favicon_link_tag %>
+    <%= csrf_meta_tags %>
+    <%= stylesheet_link_tag "application", media: "all", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+  <body class="<%= content_for(:body_class) %>">
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <%= render blacklight_config.header_component.new(blacklight_config: blacklight_config) %>
+    <%= render "shared/flash_msg", layout: "shared/flash_messages" if flash.any? %>
+    <%= yield %>
+    <%= render "shared/footer" %>
+  </body>
+</html>

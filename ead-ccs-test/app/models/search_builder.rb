@@ -11,7 +11,15 @@ class SearchBuilder < Blacklight::SearchBuilder
 
   # Appending puts this after Blacklight's own add_query_to_solr, so
   # solr_parameters[:q] is the query string Solr will receive.
-  self.default_processor_chain += [ :add_minimum_should_match_to_solr ]
+  self.default_processor_chain += [ :add_minimum_should_match_to_solr, :add_all_facet_filters ]
+
+  # "Includes all" in the advanced search form: f_all[facet][]=value, one filter per value, so a record has to
+  # have every one. (Ticked values in the sidebar and "Includes any" are OR'd; see OrFilterQueryBuilder.)
+  def add_all_facet_filters(solr_parameters)
+    AllFacetFilters.each(blacklight_params, blacklight_config) do |config, value|
+      (solr_parameters[:fq] ||= []) << "{!term f=#{config.field}}#{value}"
+    end
+  end
 
   def add_minimum_should_match_to_solr(solr_parameters)
     return unless dismax?(solr_parameters)

@@ -4,14 +4,14 @@
     <h2 id="filter-drawer-title" class="filter-drawer__title">Filters</h2>
     <button type="button" class="filter-drawer__close" data-filter-drawer-target="close" data-action="filter-drawer#close">
       Close
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><line x1="5" y1="5" x2="19" y2="19" /><line x1="19" y1="5" x2="5" y2="19" /></svg>
     </button>
   </div>
 
   <div class="filter-sidebar__summary">
     <h2 class="filter-sidebar__heading">Search filters<%= " (#{applied_count})" if applied_count.positive? %></h2>
     <% if applied_count.positive? %>
-      <%= link_to clear_filters_path, class: "filter-sidebar__clear" do %>Clear all <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg><% end %>
+      <%= link_to clear_filters_path, class: "filter-sidebar__clear" do %>Clear all <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18" /><line x1="18" y1="6" x2="6" y2="18" /></svg><% end %>
     <% end %>
   </div>
 

@@ -23,10 +23,6 @@ module EadCcs
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.1
 
-    # Base URL of the static CCS site that hosts the help and contact pages. When blank, the
-    # header leaves out its Help and Contact items.
-    config.x.ccs.static_site_url = ENV["CCS_STATIC_URL"]
-
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
     # Common ones are `templates`, `generators`, or `middleware`, for example.
