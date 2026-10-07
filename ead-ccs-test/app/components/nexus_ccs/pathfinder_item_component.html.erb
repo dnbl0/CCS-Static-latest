@@ -1,8 +1,21 @@
-<li class="<%= item_class %>">
-  <%= link_to href, class: "pathfinder-alt__link", **link_options do %>
-    <span class="pathfinder-alt__content">
-      <span class="pathfinder-alt__title"><%= title %><% if external? %><span class="sr-only"> (opens in a new tab)</span><% end %></span>
-      <span class="pathfinder-alt__summary"><%= summary %></span>
-    </span>
+<% if search? %>
+<li class="ct-listing__item ct-listing__item--search">
+<div class="<%= tile_class %>">
+  <%= link_to href, class: "pathfinder__link", **link_options do %>
+    <div class="pathfinder__content">
+      <h3 class="pathfinder__title"><%= title %><% if external? %><span class="sr-only"> (opens in a new tab)</span><% end %></h3>
+      <p class="pathfinder__summary"><%= summary %></p>
+    </div>
   <% end %>
+</div>
 </li>
+<% else %>
+<div class="<%= tile_class %>">
+  <%= link_to href, class: "pathfinder__link", **link_options do %>
+    <div class="pathfinder__content">
+      <h3 class="pathfinder__title"><%= title %><% if external? %><span class="sr-only"> (opens in a new tab)</span><% end %></h3>
+      <p class="pathfinder__summary"><%= summary %></p>
+    </div>
+  <% end %>
+</div>
+<% end %>

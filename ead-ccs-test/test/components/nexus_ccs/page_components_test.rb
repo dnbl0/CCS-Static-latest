@@ -26,14 +26,21 @@ class PageComponentsTest < ViewComponent::TestCase
   test "a pathfinder card opens an external page in a new tab and says so" do
     render_inline(NexusCcs::PathfinderItemComponent.new(href: "https://example.org", title: "Museum website", summary: "Hours.", external: true))
 
-    assert_selector "li.ct-listing__item a.pathfinder-alt__link[target=_blank][rel=noopener][href='https://example.org']"
-    assert_selector ".pathfinder-alt__title .sr-only", text: "(opens in a new tab)"
+    assert_selector "div.pathfinder a.pathfinder__link[target=_blank][rel=noopener][href='https://example.org']"
+    assert_selector "h3.pathfinder__title .sr-only", text: "(opens in a new tab)"
   end
 
-  test "an internal pathfinder card has no new tab and the search card has its own class" do
+  test "an internal pathfinder card has no new tab and the search card is the inverse tile" do
     render_inline(NexusCcs::PathfinderItemComponent.new(href: "/catalog", title: "Search", summary: "All.", search: true))
 
-    assert_selector "li.ct-listing__item--search a[href='/catalog']:not([target])"
+    assert_selector "li.ct-listing__item--search .pathfinder.pathfinder--inverse a[href='/catalog']:not([target])"
     assert_no_selector ".sr-only"
+  end
+
+  test "every other pathfinder card can take the alternate background" do
+    render_inline(NexusCcs::PathfinderItemComponent.new(href: "/help", title: "Help", summary: "Guidance.", alt: true))
+
+    assert_selector "div.pathfinder.pathfinder--alt h3.pathfinder__title", text: "Help"
+    assert_selector "p.pathfinder__summary", text: "Guidance."
   end
 end

@@ -66,7 +66,8 @@ function filter(css) {
 
 const fixUrls = (css) => css
   .replace('url("/images/chevron-right.svg")', 'url("../site/chevron-right.svg")')
-  .replace("url('/images/arrow-right.svg')", "url('../site/arrow-right.svg')");
+  .replace("url('/images/arrow-right.svg')", "url('../site/arrow-right.svg')")
+  .replace(/url\('\/images\/home\/([a-z-]+\.svg)'\)/g, "url('../site/$1')");
 const header = (file) => `/* Generated from public/styles/${file} by scripts/sync-rails-assets.js. Edit the static file, not this copy. */\n`;
 const read = (file) => fs.readFileSync(path.join(STYLES, file), 'utf8');
 
