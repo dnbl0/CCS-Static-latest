@@ -20,7 +20,7 @@ module NexusCcs
 
     def search? = @search
 
-    def tile_class = ["pathfinder", ("pathfinder--inverse" if search?), ("pathfinder--alt" if @alt)].compact.join(" ")
+    def tile_class = [ "pathfinder", ("pathfinder--inverse" if search?), ("pathfinder--alt" if @alt) ].compact.join(" ")
 
     def link_options = external? ? { target: "_blank", rel: "noopener" } : {}
   end
