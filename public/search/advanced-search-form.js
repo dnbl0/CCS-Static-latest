@@ -699,11 +699,16 @@
     if (e.key === 'Escape' && openMenu) { openMenu.close(true); e.preventDefault(); }
   }
 
-  var bound = false;
+  var bound = false, enhancedForm = null;
   function ensure() {
     var form = document.getElementById('adv-form');
-    if (!form || form.getAttribute('data-ready')) return;
+    // The runtime can re-render the form from its template after this ran and copy the DOM built here, markup and
+    // data-ready included, but not the event listeners. So "already enhanced" is this script's own record of the form
+    // element, not an attribute, and a form that is not the one enhanced has what was copied cleared before it is built again.
+    if (!form || form === enhancedForm) return;
+    enhancedForm = form;
     form.setAttribute('data-ready', '1');
+    ['#adv-terms', '#adv-filters', '#adv-sort-mount', '#adv-add-filter-mount'].forEach(function (sel) { var box = $(sel); if (box) box.textContent = ''; });
     var sortMount = $('#adv-sort-mount'), addMount = $('#adv-add-filter-mount');
     sortSelect = Select({ id: 'adv-sort', label: 'Sort results by', name: 'sort', options: SORTS, value: 'relevance', completeStyle: true });
     if (sortMount) sortMount.appendChild(sortSelect.root);

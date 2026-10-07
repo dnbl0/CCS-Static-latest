@@ -61,7 +61,7 @@ class RangeSliderTest < ActiveSupport::TestCase
     assert_includes JS, "static values = { min: Number, max: Number, histogramUrl: String, applied: Boolean }"
     assert_includes JS, "this.begin.placeholder = String(this.lo)"
     assert_includes JS, "this.end.placeholder = String(this.hi)"
-    assert_includes JS, 'if (!this.appliedValue) {'
+    assert_includes JS, "if (!this.appliedValue) {"
     assert_includes JS, "leaveOutEmptyFields"
     assert_includes JS, "input.disabled = input.value === \"\""
     assert_includes Rails.root.join("app/components/nexus_ccs/facet_field_component.html.erb").read, "data-range-slider-applied-value"

@@ -18,26 +18,21 @@ module NexusCcs
       Link.new("Contact", "https://www.unimelb.edu.au/contact")
     ].freeze
 
-    # Menu label, then the value of the collection_ssim facet it filters on.
-    COLLECTIONS = [
-      [ "Medical History Museum", "Medical History Museum" ],
-      [ "Henry Forman Atkinson Dental Museum", "Henry Forman Atkinson Dental Museum" ],
-      [ "Harry Brookes Allen Museum", "Harry Brookes Allen Museum of Anatomy and Pathology" ],
-      [ "University Art Collection", "University Art Collection" ],
-      [ "Grainger Museum Collection", "Grainger Museum Collection" ]
-    ].freeze
+    # Menu label, the value of the collection_ssim facet, then the slug of its landing page (config/pages.yml).
+    def self.collections = SitePages.menu
 
-    # Paths on the static CCS site, which still hosts the help and contact pages.
-    HELP = [
-      Link.new("Frequently Asked Questions", "/help?topic=faq"),
-      Link.new("Search tips", "/help?topic=search-tips"),
-      Link.new("Copyright and terms of use", "/help?topic=copyright"),
-      Link.new("Access and information", "/help?topic=access"),
-      Link.new("Privacy", "/help?topic=privacy"),
-      Link.new("Indigenous cultural data and access", "/help/indigenous-data.html")
-    ].freeze
-    HELP_HOME = Link.new("Help and support", "/help/index.html")
-    CONTACT = Link.new("Contact", "/contact.html")
+    # The facet value of a collection landing page, by slug, and the slug of a facet value.
+    def self.facet_value(slug)
+      collections.find { |_label, _value, collection_slug| collection_slug == slug }&.second
+    end
+
+    def self.slug_for(facet_value)
+      collections.find { |_label, value, _slug| value == facet_value }&.last
+    end
+
+    # Labels of the help home and the contact page (the help topics are HelpTopic.all).
+    HELP_HOME_LABEL = "Help and support"
+    CONTACT_LABEL = "Contact"
 
     FOOTER_ABOUT = [
       Link.new("About us", "https://about.unimelb.edu.au/"),
@@ -69,14 +64,5 @@ module NexusCcs
       [ "CRICOS:", "00116K" ],
       [ "ABN:", "84 002 705 224" ]
     ].freeze
-
-    # Help and contact live on the static site; they only appear when its URL is configured.
-    def self.static_site_url
-      Rails.configuration.x.ccs.static_site_url.presence&.chomp("/")
-    end
-
-    def self.static_url(path)
-      "#{static_site_url}#{path}"
-    end
   end
 end

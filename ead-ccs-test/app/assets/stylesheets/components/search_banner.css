@@ -39,7 +39,7 @@
 }
 
 /* The search and the Advanced search link under it, in a column */
-.search-banner search {
+:is(.search-banner, .ccs-hero__search) search {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -53,31 +53,31 @@
   margin: 0;
 }
 
-.search-banner .input-group {
+:is(.search-banner, .ccs-hero__search) .input-group {
   flex-wrap: nowrap;
   height: 3rem;
   background: var(--ccs-white);
   border: 1px solid var(--ccs-navy-1100);
 }
 
-.search-banner .input-group:focus-within {
+:is(.search-banner, .ccs-hero__search) .input-group:focus-within {
   box-shadow: 0 0 0 3px rgb(70 200 240 / 45%);
 }
 
-.search-banner .input-group > * {
+:is(.search-banner, .ccs-hero__search) .input-group > * {
   height: 100%;
   border: 0;
   border-radius: 0;
 }
 
-.search-banner .search-autocomplete-wrapper {
+:is(.search-banner, .ccs-hero__search) .search-autocomplete-wrapper {
   order: 0;
   flex: 1 1 auto;
   min-width: 2.5rem;
   padding: 0;
 }
 
-.search-banner .search-q {
+:is(.search-banner, .ccs-hero__search) .search-q {
   height: 100%;
   padding: 0 0.875rem;
   background: none;
@@ -86,11 +86,11 @@
   box-shadow: none;
 }
 
-.search-banner .search-q::placeholder {
+:is(.search-banner, .ccs-hero__search) .search-q::placeholder {
   color: var(--ccs-text-tertiary);
 }
 
-.search-banner .search-field {
+:is(.search-banner, .ccs-hero__search) .search-field {
   order: 1;
   flex: none;
   width: auto;
@@ -105,7 +105,7 @@
   cursor: pointer;
 }
 
-.search-banner .search-btn {
+:is(.search-banner, .ccs-hero__search) .search-btn {
   order: 2;
   flex: none;
   width: 3rem;
@@ -118,17 +118,17 @@
   color: var(--ccs-action-primary-text);
 }
 
-.search-banner .search-btn:hover {
+:is(.search-banner, .ccs-hero__search) .search-btn:hover {
   background: var(--ccs-action-primary-hover);
 }
 
-.search-banner .input-group button:focus-visible,
-.search-banner .input-group select:focus-visible {
+:is(.search-banner, .ccs-hero__search) .input-group button:focus-visible,
+:is(.search-banner, .ccs-hero__search) .input-group select:focus-visible {
   outline: 3px solid #0b4ea2;
   outline-offset: -3px;
 }
 
-.search-banner .search-btn .submit-search-text {
+:is(.search-banner, .ccs-hero__search) .search-btn .submit-search-text {
   /* the icon is the label; the text stays available to screen readers */
   position: absolute;
   width: 1px;
@@ -139,7 +139,7 @@
 }
 
 /* Advanced search: white label and a small right chevron, as on the static page */
-.search-banner .advanced_search {
+:is(.search-banner, .ccs-hero__search) .advanced_search {
   display: inline-flex;
   align-items: center;
   gap: var(--ccs-space-2);
@@ -152,7 +152,7 @@
   color: var(--ccs-text-inverse) !important;
 }
 
-.search-banner .advanced_search::after {
+:is(.search-banner, .ccs-hero__search) .advanced_search::after {
   content: "";
   flex: none;
   width: 0.875rem;
@@ -160,12 +160,12 @@
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='2.8'%3E%3Cpolyline points='9 6 15 12 9 18'/%3E%3C/svg%3E") center / contain no-repeat;
 }
 
-.search-banner .advanced_search:hover {
+:is(.search-banner, .ccs-hero__search) .advanced_search:hover {
   color: var(--ccs-cyan-250) !important;
   text-decoration: none;
 }
 
-.search-banner .advanced_search:focus-visible {
+:is(.search-banner, .ccs-hero__search) .advanced_search:focus-visible {
   outline: 3px solid var(--ccs-cyan-250);
   outline-offset: 2px;
 }
@@ -212,14 +212,14 @@
 
 /* The scope menu (controllers/select_dropdown_controller.js) in the bar: the site's dropdown, 48px, after the
    query and before the search button */
-.search-banner .input-group > .ccs-select {
+:is(.search-banner, .ccs-hero__search) .input-group > .ccs-select {
   --ccs-select-width: 11rem;
   order: 1;
   flex: none;
   height: 100%;
 }
 
-.search-banner .input-group > .ccs-select > .dropdown-toggle {
+:is(.search-banner, .ccs-hero__search) .input-group > .ccs-select > .dropdown-toggle {
   border-radius: 0;
 }
 

@@ -5,10 +5,12 @@
 <title>Search All Records — Cultural Collections Search — University of Melbourne</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../runtime-libs.js"></script>
 <script src="../support.js"></script>
 <script src="../blacklight-adapter.js"></script>
 <script src="../collection-data.js"></script>
 <script src="/search/smart-search.js"></script>
+<script src="/search/range-slider.js"></script>
 <script src="/search-bar.js"></script>
 <link rel="stylesheet" href="/styles/vendor/bootstrap-uom.min.css">
 <link rel="stylesheet" href="/styles/tokens/tokens.css">
@@ -20,7 +22,16 @@
 <link rel="stylesheet" href="/styles/components/search-bar.css">
 <link rel="stylesheet" href="/styles/components/hero-search.css">
 <link rel="stylesheet" href="/styles/components/content-templates.css">
-<link rel="stylesheet" href="/styles/pages/search-results.css">
+<link rel="stylesheet" href="/styles/components/range-slider.css">
+<link rel="stylesheet" href="/styles/pages/search-results/layout.css">
+<link rel="stylesheet" href="/styles/pages/search-results/results.css">
+<link rel="stylesheet" href="/styles/pages/search-results/toolbar.css">
+<link rel="stylesheet" href="/styles/pages/search-results/banner.css">
+<link rel="stylesheet" href="/styles/pages/search-results/flyout.css">
+<link rel="stylesheet" href="/styles/pages/search-results/filters.css">
+<link rel="stylesheet" href="/styles/pages/search-results/facet-rail.css">
+<link rel="stylesheet" href="/styles/pages/search-results/pagination.css">
+<link rel="stylesheet" href="/styles/pages/search-results/pills.css">
 </head>
 <body class="page-search-results">
 <a href="#main-content" class="skip-link search-results-page__link-skip-main-content">Skip to main content</a>
@@ -62,7 +73,7 @@
           <form class="ccs-nav__form-search" role="search" action="/search/search-results.html" method="get">
             <label for="ccs-drawer-q" class="sr-only search-results-form__label-search-cultural-collections">Search Cultural Collections</label>
             <input class="ccs-drawer-q" id="ccs-drawer-q" name="q" type="text" autocomplete="off" placeholder="Search">
-            <button class="search-results-form__button" type="submit" aria-label="Search"><img class="search-results-form__button-image" src="/images/home/icon-search-onaccent.svg" alt=""></button>
+            <button class="search-results-form__button-search" type="submit" aria-label="Search"><img class="search-results-form__button-image" src="/images/home/icon-search-onaccent.svg" alt=""></button>
           </form>
         </div>
         <ul class="ccs-nav__list">
@@ -238,6 +249,13 @@
       <div class="search-results-summary__group search-results-summary__group--v4">
         <sc-if value="{{ loading }}"><span class="search-results-summary__text search-results-summary__text--v2"></span></sc-if>
         <sc-if value="{{ notLoading }}" hint-placeholder-val="{{ true }}"><h2 class="search-results-summary__heading" aria-live="polite">{{ titleText }}</h2></sc-if>
+        <sc-if value="{{ hasActive }}">
+          <ul class="search-results-pills" aria-label="Applied filters">
+            <sc-for list="{{ chips }}" as="c" hint-placeholder-count="2">
+              <li class="search-results-pills__item"><span class="search-results-pill"><span class="search-results-pill__text">{{ c.label }}</span><button type="button" class="search-results-pill__remove" onClick="{{ c.remove }}" aria-label="Remove filter {{ c.group }}: {{ c.label }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg></button></span></li>
+            </sc-for>
+          </ul>
+        </sc-if>
       </div>
       <div class="search-results-summary__group search-results-summary__group--v2">
         <button class="search-results-summary__button-save-search" onClick="{{ saveSearch }}"><svg class="search-results-summary__button-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12v18l-6-4.5L6 21z"></path></svg><span class="search-results-bar__save-text">{{ saveSearchLabel }}</span></button>
@@ -258,41 +276,47 @@
             </div>
           </sc-if>
         </div>
+      <sc-if value="{{ showPager }}">
+      <div class="search-results-per-page">
+        <div class="search-results-summary__group-pp" ref="{{ ppRef }}">
+          <button class="search-results-summary__button-toggle-pp" onClick="{{ togglePP }}" aria-haspopup="listbox" aria-expanded="{{ ppOpen }}">{{ rangeLabel }}<svg class="search-results-summary__button-icon search-results-summary__button-icon--styled" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" style="--dyn-transform:{{ ppChev }}"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+          <sc-if value="{{ ppOpen }}">
+            <div class="search-results-summary__group-listbox" role="listbox">
+              <sc-for list="{{ ppOpts }}" as="o"><button class="search-results-listbox__button-pick search-results-listbox__button-pick--v1" role="option" aria-selected="{{ o.sel }}" onClick="{{ o.pick }}" style="--dyn-background:{{ o.bg }}">{{ o.label }}</button></sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+      </sc-if>
       <button class="search-results-search-tools__button-filter-btn" ref="{{ filterBtnRef }}" onClick="{{ openModal }}" aria-haspopup="dialog">
         <svg class="search-results-search-tools__button-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="18" x2="20" y2="18"></line><line x1="15" y1="3.5" x2="15" y2="8.5"></line><line x1="9" y1="9.5" x2="9" y2="14.5"></line><line x1="13" y1="15.5" x2="13" y2="20.5"></line></svg>Filters
         <sc-if value="{{ filterCount }}"><span class="search-results-search-tools__button-text search-results-search-tools__button-text--v3">{{ filterCount }}</span></sc-if>
       </button>
-      <div class="search-results-summary__group search-results-summary__group--v1">
-        <sc-for list="{{ switches }}" as="sw" hint-placeholder-count="2">
-          <button class="search-results-summary__button-toggle" onClick="{{ sw.toggle }}" role="switch" aria-checked="{{ sw.on }}">
-            <span class="search-results-summary__button-text" style="--dyn-background:{{ sw.trackBg }}"><span class="search-results-summary__text search-results-summary__text--v1" style="--dyn-left:{{ sw.knobLeft }}"></span></span><span class="search-results-bar__switch-long">{{ sw.label }}</span><span class="search-results-bar__switch-short" aria-hidden="true">Digital</span>
-          </button>
-        </sc-for>
-      </div>
       <div class="search-results-view" role="group" aria-label="View">
-        <button class="search-results-view__button-set-grid" onClick="{{ setGrid }}" aria-pressed="{{ isMasonry }}" aria-label="Grid view" title="Grid view" style="--dyn-background:{{ gridBg }}"><svg class="search-results-view__button-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="6.5" height="6.5"></rect><rect x="13.5" y="4" width="6.5" height="6.5"></rect><rect x="4" y="13.5" width="6.5" height="6.5"></rect><rect x="13.5" y="13.5" width="6.5" height="6.5"></rect></svg></button>
-        <button class="search-results-view__button-set-list" onClick="{{ setList }}" aria-pressed="{{ isListView }}" aria-label="List view" title="List view" style="--dyn-background:{{ listBg }}"><svg class="search-results-view__button-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="7" x2="20" y2="7"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="17" x2="20" y2="17"></line></svg></button>
+        <button class="search-results-view__button-set-list" onClick="{{ setList }}" aria-pressed="{{ isListView }}" aria-label="List view" title="List view" style="--dyn-background:{{ listBg }}"><svg class="search-results-view__button-icon" width="32" height="32" viewBox="0 -960 960 960" fill="currentColor" aria-hidden="true" focusable="false"><path d="M286.67-613.33V-680H840v66.67H286.67Zm0 166.66v-66.66H840v66.66H286.67Zm0 166.67v-66.67H840V-280H286.67ZM153.33-613.33q-13.66 0-23.5-9.84Q120-633 120-647q0-14 9.83-23.5 9.84-9.5 23.84-9.5t23.5 9.58q9.5 9.59 9.5 23.75 0 13.67-9.59 23.5-9.58 9.84-23.75 9.84Zm0 166.66q-13.66 0-23.5-9.83-9.83-9.83-9.83-23.83 0-14 9.83-23.5 9.84-9.5 23.84-9.5t23.5 9.58q9.5 9.58 9.5 23.75 0 13.67-9.59 23.5-9.58 9.83-23.75 9.83Zm0 166.67q-13.66 0-23.5-9.83-9.83-9.84-9.83-23.84t9.83-23.5q9.84-9.5 23.84-9.5t23.5 9.59q9.5 9.58 9.5 23.75 0 13.66-9.59 23.5-9.58 9.83-23.75 9.83Z"></path></svg></button>
+        <button class="search-results-view__button-set-grid" onClick="{{ setGrid }}" aria-pressed="{{ isMasonry }}" aria-label="Mosaic view" title="Mosaic view" style="--dyn-background:{{ gridBg }}"><svg class="search-results-view__button-icon" width="32" height="32" viewBox="0 -960 960 960" fill="currentColor" aria-hidden="true" focusable="false"><path d="M120-266.67v-426.66q0-27.5 19.58-47.09Q159.17-760 186.67-760h586.66q27.5 0 47.09 19.58Q840-720.83 840-693.33v426.66q0 27.5-19.58 47.09Q800.83-200 773.33-200H186.67q-27.5 0-47.09-19.58Q120-239.17 120-266.67Zm277.67-246.66h375.66v-180H397.67v180Zm224 246.66h151.66v-180H621.67v180Zm-224 0h152.66v-180H397.67v180Zm-211 0H331v-426.66H186.67v426.66Z"></path></svg></button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="search-results-layout">
+<div class="search-results-layout {{ layoutCls }}" aria-busy="{{ loading }}">
 <sc-if value="{{ hasSidebar }}">
 <aside class="facet-rail" aria-label="Filter results">
   <div class="facet-rail__head">
-    <h2 class="facet-rail__title">Search filters</h2>
+    <h2 class="facet-rail__title">Search filters<sc-if value="{{ hasActive }}"> ({{ railCount }})</sc-if></h2>
     <sc-if value="{{ hasActive }}"><button type="button" class="facet-rail__clear" onClick="{{ clearAll }}">Clear all</button></sc-if>
   </div>
-  <div class="facet-rail__switches" role="group" aria-label="Show only">
-    <span class="facet-rail__name">Show only</span>
+  <div class="facet-rail__switches" role="group" aria-labelledby="rail-switch-label">
+    <span class="facet-rail__name" id="rail-switch-label">Show only</span>
+    <button type="button" class="filter-switch {{ digitalCls }}" role="switch" aria-checked="{{ digitalOn }}" onClick="{{ toggleDigital }}"><span class="filter-switch__track" aria-hidden="true"><span class="filter-switch__knob"></span></span><span class="filter-switch__label">Records with digital assets</span></button>
     <sc-for list="{{ railSwitches }}" as="sw"><button type="button" class="facet-rail__option" role="checkbox" aria-checked="{{ sw.ariaChecked }}" onClick="{{ sw.toggle }}"><span class="facet-rail__box"><svg class="facet-rail__tick" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><polyline points="4 12 10 18 20 6"></polyline></svg></span><span class="facet-rail__label">{{ sw.label }}</span></button></sc-for>
   </div>
   <sc-for list="{{ sideSections }}" as="sec">
     <section class="facet-rail__section">
       <h3 class="facet-rail__heading">
         <span class="facet-rail__name" id="rail-name-{{ sec.key }}">{{ sec.title }}<sc-if value="{{ sec.badge }}"><span class="facet-rail__badge">{{ sec.badge }}</span></sc-if></span>
-        <button type="button" class="facet-rail__toggle" aria-expanded="{{ sec.open }}" aria-controls="{{ sec.panelId }}" aria-labelledby="rail-name-{{ sec.key }} rail-val-{{ sec.key }}" onClick="{{ sec.toggle }}"><span class="facet-rail__value" id="rail-val-{{ sec.key }}">{{ sec.value }}</span><svg class="facet-rail__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+        <button type="button" class="facet-rail__toggle" data-has-value="{{ sec.hasValue }}" aria-expanded="{{ sec.open }}" aria-controls="{{ sec.panelId }}" aria-labelledby="rail-name-{{ sec.key }} rail-val-{{ sec.key }}" onClick="{{ sec.toggle }}"><span class="facet-rail__value" id="rail-val-{{ sec.key }}">{{ sec.value }}</span><svg class="facet-rail__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
       </h3>
       <sc-if value="{{ sec.open }}">
         <div class="facet-rail__panel" id="{{ sec.panelId }}">
@@ -305,20 +329,11 @@
           <sc-if value="{{ sec.empty }}"><span class="facet-rail__note">No matching options</span></sc-if>
           <sc-if value="{{ sec.hasMore }}"><button type="button" class="facet-rail__more" onClick="{{ sec.toggleMore }}">{{ sec.moreLabel }}</button></sc-if>
           <sc-if value="{{ sec.isDate }}">
-            <div class="facet-rail__years">
-              <label class="facet-rail__field"><span>Earliest year</span><input inputmode="numeric" value="{{ rYFrom }}" onChange="{{ onRYFrom }}" onBlur="{{ commitRYears }}" onKeyDown="{{ rYKey }}" placeholder="Any" aria-label="Earliest year"></label>
-              <label class="facet-rail__field"><span>Latest year</span><input inputmode="numeric" value="{{ rYTo }}" onChange="{{ onRYTo }}" onBlur="{{ commitRYears }}" onKeyDown="{{ rYKey }}" placeholder="Any" aria-label="Latest year"></label>
-            </div>
-            <span class="facet-rail__note">Use a minus sign for years BCE, e.g. -400.</span>
-            <sc-if value="{{ rYErr }}"><span role="alert" class="facet-rail__error">{{ rYErr }}</span></sc-if>
-            <sc-if value="{{ hasRDate }}"><button type="button" class="facet-rail__more" onClick="{{ clearRYears }}">Reset production date</button></sc-if>
+            <div class="range-host" data-range-key="{{ sec.key }}" data-range-scope="rail"></div>
           </sc-if>
           <sc-if value="{{ sec.isText }}"><input class="facet-rail__search" value="{{ sec.accessionVal }}" onChange="{{ sec.onAccession }}" aria-label="Accession number" placeholder="e.g. MHM2017.28"></sc-if>
           <sc-if value="{{ sec.isLife }}">
-            <div class="facet-rail__years">
-              <label class="facet-rail__field"><span>{{ sec.lifeFromLabel }}</span><input inputmode="numeric" value="{{ sec.lifeFromVal }}" onChange="{{ sec.onLifeFrom }}" placeholder="{{ sec.lifeFromHint }}" aria-label="{{ sec.lifeFromLabel }}"></label>
-              <label class="facet-rail__field"><span>{{ sec.lifeToLabel }}</span><input inputmode="numeric" value="{{ sec.lifeToVal }}" onChange="{{ sec.onLifeTo }}" placeholder="{{ sec.lifeToHint }}" aria-label="{{ sec.lifeToLabel }}"></label>
-            </div>
+            <div class="range-host" data-range-key="{{ sec.key }}" data-range-scope="rail"></div>
             <span class="facet-rail__note">{{ sec.lifeNote }}</span>
           </sc-if>
         </div>
@@ -329,17 +344,6 @@
 </aside>
 </sc-if>
 <main class="search-results-main-content" id="main-content" ref="{{ mainRef }}" style="--dyn-padding:{{ padMain }}">
-      <sc-if value="{{ hasActive }}">
-          <div class="search-results-main-content__group search-results-main-content__group--v6">
-            <sc-for list="{{ chips }}" as="c" hint-placeholder-count="2">
-              <button class="search-results-main-content__button-remove" onClick="{{ c.remove }}" aria-label="Remove filter">
-                <span class="search-results-main-content__button-text"><span class="search-results-main-content__text search-results-main-content__text--v1">{{ c.group }}:</span> {{ c.label }}</span>
-                <svg class="search-results-main-content__button-icon" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg>
-              </button>
-            </sc-for>
-            <button class="search-results-main-content__button-clear-all search-results-main-content__button-clear-all--v1" onClick="{{ clearAll }}">Clear all</button>
-          </div>
-        </sc-if>
         <div class="search-results-notices">
       <sc-if value="{{ showDidYouMeanTop }}">
         <div class="search-results-smart notice" role="status">
@@ -399,9 +403,12 @@
               </sc-if>
               
               <div class="search-results-article__group search-results-article__group--v4">
-                <a class="search-results-article__link search-results-article__link--v4" href="{{ r.href }}">{{ r.title }}</a>
-                <a class="search-results-article__link search-results-article__link--v5" href="/collections/index.html">{{ r.collection }}</a>
-                <span class="search-results-article__text search-results-article__text--v5">{{ r.type }}</span>
+                <h5 class="search-results-article__heading"><a class="search-results-article__link search-results-article__link--v4" href="{{ r.href }}">{{ r.title }}</a></h5>
+                <p class="search-results-article__lines">
+                  <span class="search-results-article__line">{{ r.creator }}</span>
+                  <span class="search-results-article__line">{{ r.type }}</span>
+                  <a class="search-results-article__line search-results-article__line--link" href="/collections/index.html">{{ r.collection }}</a>
+                </p>
                 <sc-if value="{{ r.matchLabel }}"><span class="search-results-article__text search-results-article__text--match">{{ r.matchLabel }}</span></sc-if>
                 <div class="search-results-article__group search-results-article__group--v1">
                   <sc-if value="{{ r.webAccess }}"><span class="search-results-article__text search-results-article__text--web-access">{{ r.webAccess }}</span></sc-if>
@@ -424,13 +431,12 @@
                 </a>
               </sc-if>
               <div class="search-results-article__group search-results-article__group--v3">
-                <a class="search-results-article__link search-results-article__link--v3" href="{{ r.href }}">{{ r.title }}</a>
-                <div class="search-results-article__group search-results-article__group--v2">
-                  <span class="search-results-article__text search-results-article__text--v3"><span class="search-results-article__text search-results-article__text--v2">Creator</span>{{ r.creator }}</span>
-                  <span class="search-results-article__text search-results-article__text--v3"><span class="search-results-article__text search-results-article__text--v2">Production date</span>{{ r.dateLabel }}</span>
-                  <span class="search-results-article__text search-results-article__text--v3"><span class="search-results-article__text search-results-article__text--v2">Collection</span><span class="search-results-article__text search-results-article__text--v1">{{ r.collection }}</span></span>
-                  <span class="search-results-article__text search-results-article__text--v3"><span class="search-results-article__text search-results-article__text--v2">Object type</span>{{ r.type }}</span>
-                </div>
+                <h5 class="search-results-article__heading"><a class="search-results-article__link search-results-article__link--v3" href="{{ r.href }}">{{ r.title }}</a></h5>
+                <p class="search-results-article__lines">
+                  <span class="search-results-article__line">{{ r.creator }}</span>
+                  <span class="search-results-article__line">{{ r.type }}</span>
+                  <a class="search-results-article__line search-results-article__line--link" href="/collections/index.html">{{ r.collection }}</a>
+                </p>
               </div>
             </article>
           </sc-for>
@@ -440,20 +446,11 @@
   </div>
   <sc-if value="{{ showPager }}">
     <div class="search-results-main-content__group search-results-main-content__group--v4">
-      <div class="search-results-per-page">
-        <div class="search-results-summary__group-pp" ref="{{ ppRef }}">
-          <button class="search-results-summary__button-toggle-pp" onClick="{{ togglePP }}" aria-haspopup="listbox" aria-expanded="{{ ppOpen }}">{{ rangeLabel }}<svg class="search-results-summary__button-icon search-results-summary__button-icon--styled" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" style="--dyn-transform:{{ ppChev }}"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-          <sc-if value="{{ ppOpen }}">
-            <div class="search-results-summary__group-listbox" role="listbox">
-              <sc-for list="{{ ppOpts }}" as="o"><button class="search-results-listbox__button-pick search-results-listbox__button-pick--v1" role="option" aria-selected="{{ o.sel }}" onClick="{{ o.pick }}" style="--dyn-background:{{ o.bg }}">{{ o.label }}</button></sc-for>
-            </div>
-          </sc-if>
-        </div>
-      </div>
+      <p class="search-results-main-content__range">{{ rangeText }}</p>
       <nav class="search-results-pagination" aria-label="Pagination">
-        <button class="search-results-pagination__button-prev-page" onClick="{{ prevPage }}" aria-label="Previous page" disabled="{{ !hasPrev }}" style="--dyn-color:{{ prevColor }}"><svg class="search-results-pagination__button-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="15 6 9 12 15 18"></polyline></svg></button>
+        <button class="search-results-pagination__button-prev-page" onClick="{{ prevPage }}" aria-label="Previous page" rel="prev" disabled="{{ !hasPrev }}" style="--dyn-color:{{ prevColor }}"><svg class="search-results-pagination__button-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false"><line x1="20" y1="12" x2="4" y2="12"></line><polyline points="10 6 4 12 10 18"></polyline></svg>Previous</button>
         <sc-for list="{{ pages }}" as="pg"><button class="search-results-pagination__button-go" onClick="{{ pg.go }}" aria-current="{{ pg.current }}" style="--dyn-background:{{ pg.bg }};--dyn-color:{{ pg.color }};--dyn-cursor:{{ pg.cursor }}">{{ pg.n }}</button></sc-for>
-        <button class="search-results-pagination__button-next-page" onClick="{{ nextPage }}" aria-label="Next page" disabled="{{ !hasNext }}" style="--dyn-background:{{ nextBg }};--dyn-color:{{ nextColor }};--dyn-cursor:{{ nextCursor }}">Next<svg class="search-results-pagination__button-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="9 6 15 12 9 18"></polyline></svg></button>
+        <button class="search-results-pagination__button-next-page" onClick="{{ nextPage }}" aria-label="Next page" rel="next" disabled="{{ !hasNext }}" style="--dyn-background:{{ nextBg }};--dyn-color:{{ nextColor }};--dyn-cursor:{{ nextCursor }}">Next<svg class="search-results-pagination__button-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false"><line x1="4" y1="12" x2="20" y2="12"></line><polyline points="14 6 20 12 14 18"></polyline></svg></button>
       </nav>
       <button class="search-results-main-content__button-top" onClick="{{ toTop }}"><svg class="search-results-main-content__button-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 15 12 9 18 15"></polyline></svg>Back to top</button>
     </div>
@@ -522,36 +519,14 @@
                 <sc-if value="{{ sec.isDate }}">
                   <div class="date-facet">
                     <span class="date-note">{{ dateNote }}</span>
-                    <p class="date-summary" aria-live="polite">{{ dateSummary }}</p>
-                    <div class="date-hist" aria-hidden="true">
-                      <sc-for list="{{ bins }}" as="b" hint-placeholder-count="34"><span class="date-hist__text" title="{{ b.title }}" style="--dyn-height:{{ b.h }};--dyn-background:{{ b.bg }}"></span></sc-for>
-                    </div>
-                    <div ref="{{ trackRef }}" class="date-track" onPointerDown="{{ downTrack }}">
-                      <div class="date-rail"></div>
-                      <span class="date-fill date-fill--styled" style="--dyn-left:{{ rangeLeft }};--dyn-width:{{ rangeWidth }}"></span>
-                      <button type="button" class="date-range-handle date-range-handle--styled" onPointerDown="{{ downFrom }}" onKeyDown="{{ fromKey }}" role="slider" aria-orientation="horizontal" aria-valuenow="{{ fromYear }}" aria-valuemin="{{ domLo }}" aria-valuemax="{{ fromMax }}" aria-valuetext="{{ fromText }}" aria-describedby="date-range-hint" aria-label="Earliest year" style="--dyn-left:{{ rangeLeft }}"></button>
-                      <button type="button" class="date-range-handle date-range-handle--styled" onPointerDown="{{ downTo }}" onKeyDown="{{ toKey }}" role="slider" aria-orientation="horizontal" aria-valuenow="{{ toYear }}" aria-valuemin="{{ toMin }}" aria-valuemax="{{ domHi }}" aria-valuetext="{{ toText }}" aria-describedby="date-range-hint" aria-label="Latest year" style="--dyn-left:{{ rangeRight }}"></button>
-                    </div>
-                    <div class="date-ends"><span class="date-ends__text">{{ domLoLabel }}</span><span class="date-ends__text">{{ domHi }}</span></div>
-                    <span id="date-range-hint" class="sr-only search-results-date-range-hint">Arrow keys change this handle by one year, Page Up and Page Down by ten years, Home and End jump to the limits. You can also type years into the Earliest and Latest fields.</span>
-                    <div class="date-inputs">
-                      <label class="date-field"><span class="date-field__text">Earliest year</span><input class="date-field__input-yfrom" inputmode="numeric" value="{{ yInFrom }}" onChange="{{ onYFrom }}" onBlur="{{ commitYears }}" onKeyDown="{{ yKey }}" placeholder="Any" aria-label="Earliest year"></label>
-                      <label class="date-field date-field--end"><span class="date-field__text">Latest year</span><input class="date-field__input-yto" inputmode="numeric" value="{{ yInTo }}" onChange="{{ onYTo }}" onBlur="{{ commitYears }}" onKeyDown="{{ yKey }}" placeholder="Any" aria-label="Latest year"></label>
-                    </div>
-                    <p class="date-help">Use a minus sign for years BCE, e.g. -400.</p>
-                    <sc-if value="{{ yErr }}"><span role="alert" class="date-error">{{ yErr }}</span></sc-if>
-                    <sc-if value="{{ hasDateRange }}"><button type="button" class="date-reset" onClick="{{ clearYears }}">Reset production date</button></sc-if>
+                    <div class="range-host" data-range-key="{{ sec.key }}" data-range-scope="modal"></div>
                   </div>
                 </sc-if>
                 <sc-if value="{{ sec.isText }}">
                   <input class="search-results-section__input-accession" value="{{ sec.accessionVal }}" onChange="{{ sec.onAccession }}" aria-label="Accession number" placeholder="e.g. MHM2017.28">
                 </sc-if>
                 <sc-if value="{{ sec.isLife }}">
-                  <div class="search-results-section__group search-results-section__group--v1">
-                    <label class="search-results-section__label">{{ sec.lifeFromLabel }}<input class="search-results-section__label-input-life-from" inputmode="numeric" value="{{ sec.lifeFromVal }}" onChange="{{ sec.onLifeFrom }}" placeholder="{{ sec.lifeFromHint }}" aria-label="{{ sec.lifeFromLabel }}"></label>
-                    <span class="search-results-section__text search-results-section__text--v7">to</span>
-                    <label class="search-results-section__label">{{ sec.lifeToLabel }}<input class="search-results-section__label-input-life" inputmode="numeric" value="{{ sec.lifeToVal }}" onChange="{{ sec.onLifeTo }}" placeholder="{{ sec.lifeToHint }}" aria-label="{{ sec.lifeToLabel }}"></label>
-                  </div>
+                  <div class="range-host" data-range-key="{{ sec.key }}" data-range-scope="modal"></div>
                   <span class="search-results-section__text search-results-section__text--v3">{{ sec.lifeNote }}</span>
                 </sc-if>
               </div>
@@ -954,7 +929,7 @@ function saveSearchHistory(term) {
   } catch (e) {}
 }
 class Component extends DCLogic {
-  state = { stuck: false, advOpen: false, f:EMPTYF(), loading:false, view:null, modal:false, mFind:'', draft:null, mOpen:{coll:true,type:true,date:true}, sOpen:{}, sMore:{}, sFq:{}, sExtra:false, sYIn:null, sYErr:'', fq:{}, more:{}, sortOpen:false, perPage:20, ppOpen:false, page:1, yIn:null, yErr:'', counting:false, ackOpen:false, vw: typeof window !== 'undefined' ? window.innerWidth : 1200, liveItems: null, liveTotal: null, liveError: null };
+  state = { stuck: false, advOpen: false, f:EMPTYF(), loading:false, view:null, modal:false, mFind:'', draft:null, mOpen:{coll:true,type:true,date:true}, sOpen:{}, sMore:{}, sFq:{}, sExtra:false, sYIn:null, sYErr:'', fq:{}, more:{}, sortOpen:false, perPage:40, ppOpen:false, page:1, yIn:null, yErr:'', counting:false, ackOpen:false, vw: typeof window !== 'undefined' ? window.innerWidth : 1200, liveItems: null, liveTotal: null, liveError: null };
   trackRef = React.createRef(); bodyRef = React.createRef(); sortRef = React.createRef(); ppRef = React.createRef(); advBtnRef = React.createRef(); advDialogRef = React.createRef(); advCloseRef = React.createRef(); advFrameRef = React.createRef(); mainRef = React.createRef();
   sentinelRef = React.createRef(); bannerHostRef = React.createRef(); compactHostRef = React.createRef(); dialogRef = React.createRef(); filterBtnRef = React.createRef(); ackRef = React.createRef();
   dom = { lo: 1700, hi: 2030 };
@@ -980,7 +955,7 @@ class Component extends DCLogic {
   }
 
   componentDidMount() {
-    this.syncBars();
+    this.syncBars(); this.syncRanges();
     // the search and tools bar is sticky; when it sticks to the top it switches to its compact layout
     try {
       const sentinel = this.sentinelRef.current;
@@ -995,9 +970,9 @@ class Component extends DCLogic {
     window.addEventListener('message', this.onAdvMsg);
     this.onMove = e => this.move(e);
     this.onUp = () => { this.drag = null; };
-    this.onKey = e => { if (e.key === 'Escape') { if (this.state.ackOpen) this.closeAck(); else if (this.state.modal) this.closeModal(); else if (this.state.advOpen) this.closeAdv(); } };
+    this.onKey = e => { if (e.key === 'Escape') { if (this.state.ackOpen) this.closeAck(); else if (this.state.modal) this.closeModal(); else if (this.state.advOpen) this.closeAdv(); else if (Object.values(this.state.sOpen || {}).some(Boolean)) { const t = document.querySelector('.facet-rail__toggle[aria-expanded="true"]'); this.setState({ sOpen: {} }); if (t) t.focus(); } } };
     this.onDown = e => { const s = this.state, out = r => r.current && !r.current.contains(e.target);
-      const u = {}; if (s.sortOpen && out(this.sortRef)) u.sortOpen = false; if (s.ppOpen && out(this.ppRef)) u.ppOpen = false; if (Object.keys(u).length) this.setState(u); };
+      const u = {}; if (s.sortOpen && out(this.sortRef)) u.sortOpen = false; if (s.ppOpen && out(this.ppRef)) u.ppOpen = false; if (Object.values(s.sOpen || {}).some(Boolean) && !(e.target.closest && e.target.closest('.facet-rail__section'))) u.sOpen = {}; if (Object.keys(u).length) this.setState(u); };
     this.onResize = () => this.setState({ vw: window.innerWidth });
     window.addEventListener('pointerdown', this.onDown); window.addEventListener('pointermove', this.onMove);
     window.addEventListener('pointerup', this.onUp); window.addEventListener('keydown', this.onKey); window.addEventListener('resize', this.onResize);
@@ -1006,6 +981,8 @@ class Component extends DCLogic {
     const pc = qs.getAll('collection').filter(Boolean), pt = qs.get('type'), pq = qs.get('q'), psc = qs.get('scope'), pn = qs.get('named'), pcl = qs.get('classification'), pex = qs.get('exact');
     let initF = null;
     const advF = parseAdvancedParams(qs);
+    // ?view=list|masonry decides the view; otherwise every search opens as the mosaic (nothing is remembered between searches)
+    const pv = qs.get('view'); if (pv === 'list' || pv === 'masonry') this.setState({ view: pv });
     if (advF) { initF = advF; this.setState({ f: advF }); }
     else if (pc.length || pt || pq || psc || pn || pcl || pex) {
       if (pq) saveSearchHistory(pq);
@@ -1017,6 +994,10 @@ class Component extends DCLogic {
       if (pt) initF.type = pt.split(';').map(t => window.CCS.canonType(t)).filter((t, i, a) => t && a.indexOf(t) === i);
       if (pq) initF.q = pq;
       if (psc) initF.scope = psc;
+      this.setState({ f: initF });
+    } else if ([...qs.keys()].every(k => k === 'view')) {
+      // the bare results page: every record that has a digital asset, as the mosaic
+      initF = clone(this.state.f); initF.digital = true;
       this.setState({ f: initF });
     }
     if (typeof BlacklightAdapter !== 'undefined' && BlacklightAdapter.isLive()) {
@@ -1038,16 +1019,42 @@ class Component extends DCLogic {
         onSubmit: q => this.runQ(q),
         onInput: v => this.bars.forEach(b => b.setValue(v)),
         filterTerm: t => this.state.f.scope === 'all' || t.sc === this.state.f.scope,
-        placeholder: () => this.state.f.q ? 'Search for something else' : 'Search, or use "quotes" for an exact phrase',
-        chip: host === this.bannerHostRef.current ? () => { const f = this.state.f; return f.q ? (f.scope !== 'all' ? SCOPES.find(x => x[0] === f.scope)[1] + ': ' : '') + f.q.toUpperCase() : ''; } : null,
-        onClearChip: () => this.apply(ff => ({ ...ff, q: '' }))
+        placeholder: () => 'Search, or use "quotes" for an exact phrase'
       }));
     });
   }
-  syncBars() { this.mountBars(); (this.bars || []).forEach(b => b.sync()); }
-  componentDidUpdate() { this.syncBars(); }
+  syncBars() { this.mountBars(); (this.bars || []).forEach(b => { b.setValue(this.state.f.q || ''); b.sync(); }); }
+  // The range filters (production date, creator birth and death years) are the shared range-slider.js: a histogram of the
+  // current results with two handles and From / To fields. Like the search bars, each is built into an empty host element
+  // (.range-host) so a re-render of this template never touches it; syncRanges() builds one when its host is new and, after
+  // every state change, hands each its years (the results with that filter's own range left out) and its range. The rail
+  // applies a range at once (this.apply); the Filters panel keeps it in the draft (this.setDraft).
+  syncRanges() {
+    const R = window.CCSRangeSlider; if (!R) return;
+    const s = this.state;
+    this.ranges = (this.ranges || []).filter(r => { if (r.host.isConnected) return true; r.inst.destroy(); return false; });
+    const life = (k, from, to) => ({ years: d => ITEMS.filter(it => this.matchF(it, d, k === 'birth' ? 'life' : 'lifeDeath')).map(it => lifespanOf(it.creator)[k]).filter(y => y != null),
+      get: d => ({ from: d[from], to: d[to] }), put: (ff, a, b) => ({ ...ff, [from]: a, [to]: b }) });
+    const SPECS = {
+      date: { years: d => ITEMS.filter(it => it.dateStart != null && this.matchF(it, d, 'date')).map(it => it.dateStart), get: d => ({ from: d.yFrom, to: d.yTo }), put: (ff, a, b) => ({ ...ff, yFrom: a, yTo: b }) },
+      life: life('birth', 'birthFrom', 'birthTo'), lifeDeath: life('death', 'deathFrom', 'deathTo')
+    };
+    document.querySelectorAll('.range-host').forEach(host => {
+      const spec = SPECS[host.dataset.rangeKey]; if (!spec) return;
+      const modal = host.dataset.rangeScope === 'modal', d = modal ? (s.draft || s.f) : s.f;
+      let rec = this.ranges.find(r => r.host === host);
+      if (!rec) {
+        const F = FACETS.find(x => x.key === host.dataset.rangeKey), set = fn => modal ? this.setDraft(fn) : this.apply(fn);
+        rec = { host, inst: R.create({ container: host, label: F ? F.title : 'Years', years: spec.years(d), range: spec.get(d), onChange: (a, b) => set(ff => spec.put(ff, a, b)) }) };
+        this.ranges.push(rec);
+      }
+      rec.inst.setData(spec.years(d)); rec.inst.setRange(spec.get(d)); rec.inst.setResultCount(ITEMS.filter(it => this.matchF(it, d)).length);
+    });
+  }
+  componentDidUpdate() { this.syncBars(); this.syncRanges(); }
 
   componentWillUnmount() {
+    (this.ranges || []).forEach(r => r.inst.destroy());
     window.removeEventListener('pointerdown', this.onDown); window.removeEventListener('pointermove', this.onMove);
     window.removeEventListener('pointerup', this.onUp); window.removeEventListener('keydown', this.onKey); window.removeEventListener('resize', this.onResize);
     clearTimeout(this.t); clearTimeout(this.ct); clearTimeout(this.bt); document.body.style.overflow = '';
@@ -1113,6 +1120,8 @@ class Component extends DCLogic {
   openModal() { document.body.style.overflow = 'hidden'; this.setState(s => ({ modal: true, draft: clone(s.f), yIn: null, yErr: '' }));
     setTimeout(() => { const el = this.dialogRef.current && this.dialogRef.current.querySelector(FOCUSABLE); el && el.focus(); }, 30); }
   closeModal() { document.body.style.overflow = ''; this.setState({ modal: false }); setTimeout(() => this.filterBtnRef.current && this.filterBtnRef.current.focus(), 30); }
+  // the chosen view goes in the URL (?view=) so a link or reload keeps it; it is not stored anywhere else
+  setView(v) { this.setState({ view: v }); try { const u = new URL(location.href); u.searchParams.set('view', v); history.replaceState(null, '', u); } catch (e) {} }
   closeAck() { try { localStorage.setItem('ccs-cultural-ack', '1'); } catch (e) {} this.setState({ ackOpen: false }); }
   openAdv() { document.body.style.overflow = 'hidden'; this.setState({ advOpen: true }); setTimeout(() => this.advCloseRef.current && this.advCloseRef.current.focus(), 30); }
   closeAdv() { document.body.style.overflow = ''; this.setState({ advOpen: false }); setTimeout(() => this.advBtnRef.current && this.advBtnRef.current.focus(), 30); }
@@ -1169,7 +1178,7 @@ class Component extends DCLogic {
       this.setState({ sYIn: null, sYErr: '' }); this.apply(ff => ({ ...ff, yFrom: a, yTo: b })); };
     const sw = (label, key) => { const on = !!f[key]; return { label, count: '', checked: on, ariaChecked: String(on), toggle: () => this.apply(ff => ({ ...ff, [key]: !ff[key] })) }; };
     return { sideSections: shown, hasExtraFilters: all.length > FIRST, extraOpen, extraLabel: extraOpen ? '− Show fewer filters' : '+ Show additional filters', toggleExtra: () => this.setState(st => ({ sExtra: !st.sExtra })),
-      railSwitches: [sw('Has digital asset', 'digital'), sw('Only records with downloads', 'downloadable')],
+      railSwitches: [sw('Only records with downloads', 'downloadable')],
       rYFrom: s.sYIn && s.sYIn.from != null ? s.sYIn.from : (f.yFrom ?? ''), rYTo: s.sYIn && s.sYIn.to != null ? s.sYIn.to : (f.yTo ?? ''),
       onRYFrom: e => { const v = e.target.value; this.setState(st => ({ sYIn: { ...(st.sYIn || {}), from: v } })); }, onRYTo: e => { const v = e.target.value; this.setState(st => ({ sYIn: { ...(st.sYIn || {}), to: v } })); },
       rYKey: e => { if (e.key === 'Enter') { e.preventDefault(); commitYears(); } }, commitRYears: commitYears, rYErr: s.sYErr,
@@ -1205,7 +1214,7 @@ class Component extends DCLogic {
       const badge = k === 'date' ? (hasDate ? 1 : null) : F.kind === 'life' ? (hasLife ? 1 : null) : k === 'accession' ? (d.accession ? 1 : null) : (selected.length || null);
       const summary = k === 'date' ? (hasDate ? (d.yFrom ?? 'Any') + ' – ' + (d.yTo ?? 'Present') : '') : F.kind === 'life' ? (hasLife ? (lFrom ?? 'Any') + ' – ' + (lTo ?? 'Any') : '') : k === 'accession' ? (d.accession || '') : selected.length ? selected[0] + (selected.length > 1 ? ' +' + (selected.length - 1) : '') : '';
       return { key: k, title: F.title, group: F.group, groupStart: fi === 0 || FACETS[fi - 1].group !== F.group, open, panelId: ctx.prefix + k, badge, summary, showSummary: !open && !!summary,
-        chev: open ? 'rotate(180deg)' : 'none', toggle: () => this.setState(st => ({ [ctx.open]: { ...st[ctx.open], [k]: !st[ctx.open][k] } })),
+        chev: open ? 'rotate(180deg)' : 'none', toggle: () => this.setState(st => ({ [ctx.open]: ctx.open === 'sOpen' ? (st.sOpen[k] ? {} : { [k]: true }) : { ...st[ctx.open], [k]: !st[ctx.open][k] } })),
         isChips: false, isRows: F.kind === 'list' || F.kind === 'tree' || F.kind === 'chips', isDate: F.kind === 'date', isText: F.kind === 'text', isLife: F.kind === 'life',
         search: !!F.search, q: s[ctx.fq][k] || '', onQ: e => { const v = e.target.value; this.setState(st => ({ [ctx.fq]: { ...st[ctx.fq], [k]: v } })); }, searchLabel: 'Search ' + F.title.toLowerCase() + '…',
         matchText: find ? (F.title + ' ' + F.group + ' ' + options.map(o => o.label).join(' ')).toLowerCase() : '',
@@ -1233,7 +1242,7 @@ class Component extends DCLogic {
     // Selected filters inside the panel (the draft), each removable without leaving the panel
     const dChips = [];
     ['collection', ...KEYS].forEach(k => (d[k] || []).forEach(v => dChips.push({ group: k === 'collection' ? 'Collection' : LABELS[k], label: v, remove: () => this.setDraft(dd => this.tog(dd, k, v)) })));
-    if (d.digital) dChips.push({ group: 'Show only', label: 'Has digital asset', remove: () => this.setDraft(dd => ({ ...dd, digital: false })) });
+    if (d.digital) dChips.push({ group: 'Show only', label: 'With a digital asset', remove: () => this.setDraft(dd => ({ ...dd, digital: false })) });
     if (d.downloadable) dChips.push({ group: 'Show only', label: 'Only records with downloads', remove: () => this.setDraft(dd => ({ ...dd, downloadable: false })) });
     if (d.yFrom != null || d.yTo != null) dChips.push({ group: 'Production date', label: (d.yFrom ?? 'Any') + ' – ' + (d.yTo ?? 'Present'), remove: () => this.setDraft(dd => ({ ...dd, yFrom: null, yTo: null })) });
     if (d.accession) dChips.push({ group: 'Accession number', label: d.accession, remove: () => this.setDraft(dd => ({ ...dd, accession: '' })) });
@@ -1274,7 +1283,7 @@ class Component extends DCLogic {
     return {
       sections: sectionsShown, noSections: sectionsShown.length === 0, findText: s.mFind || '', onFind: e => { const v = e.target.value; this.setState({ mFind: v }); },
       clearFind: () => this.setState({ mFind: '' }), hasFind: !!find, draftChips: dChips, hasDraftChips: dChips.length > 0, draftChipCount: dChips.length,
-      dSwitches: [sw('Has digital asset', 'digital'), sw('Only records with downloads', 'downloadable')],
+      dSwitches: [sw('Records with digital assets', 'digital'), sw('Only records with downloads', 'downloadable')],
       dateNote: undated ? undated + ' record' + (undated === 1 ? ' has' : 's have') + ' no production date and ' + (undated === 1 ? 'is' : 'are') + ' left out when a range is set.' : 'Records without a production date are left out when a range is set.',
       dateSummary, bins,
       rangeLeft: pct(from), rangeRight: pct(to), rangeWidth: ((to - from) / span) * 100 + '%', domLo: String(LO), domHi: String(HI), domLoLabel: LO + ' or earlier', fromYear: String(from), toYear: String(to),
@@ -1305,6 +1314,8 @@ class Component extends DCLogic {
     const s = this.state, p = this.props, f = s.f;
     const view = s.view ?? p.defaultView ?? 'masonry';
     const chips = [];
+    if (f.q) chips.push({ group: 'Search', label: f.q, remove: () => this.apply(ff => ({ ...ff, q: '' })) });
+    if (f.digital) chips.push({ group: 'Show only', label: 'With a digital asset', remove: () => this.apply(ff => ({ ...ff, digital: false })) });
     ['collection', ...KEYS].forEach(k => f[k].forEach(v => chips.push({ group: (k === 'collection' ? 'Collection' : LABELS[k]) + (f.fAll && f.fAll[k] && f[k].length > 1 ? ' (all)' : ''), label: v, remove: () => this.apply(ff => this.tog(ff, k, v)) })));
     (f.clauses || []).forEach((c, ci) => chips.push({ group: ADV_FIELDS[c.field] + ' ' + ADV_OPS[c.op], label: c.query, remove: () => this.apply(ff => ({ ...ff, clauses: ff.clauses.filter((_, j) => j !== ci) })) }));
     if (f.yFrom != null || f.yTo != null) chips.push({ group: 'Production date', label: (f.yFrom ?? 'Any') + ' – ' + (f.yTo ?? 'Present'), remove: () => this.apply(ff => ({ ...ff, yFrom: null, yTo: null })) });
@@ -1385,14 +1396,17 @@ class Component extends DCLogic {
         } catch (e) {}
         this.setState({ savedFlash: true }); clearTimeout(this._sf); this._sf = setTimeout(() => this.setState({ savedFlash: false }), 1800);
       },
-      setGrid: () => this.setState({ view: 'masonry' }), setList: () => this.setState({ view: 'list' }),
+      setGrid: () => this.setView('masonry'), setList: () => this.setView('list'),
       gridBg: view === 'masonry' ? '#c8d5c0' : '#fff', listBg: view === 'list' ? '#c8d5c0' : '#fff', isMasonry: view === 'masonry', isListView: view === 'list',
       barCls: s.stuck ? 'is-stuck' : '', sentinelRef: this.sentinelRef, bannerHostRef: this.bannerHostRef, compactHostRef: this.compactHostRef,
       bannerLine: f.q ? n + (n === 1 ? ' result for ' : ' results for ') + '“' + f.q + '”' : 'Explore artworks, objects, manuscripts, photographs and recordings held across the University of Melbourne\'s cultural collections.',
-      titleText: 'Showing ' + n + ' ' + (n === 1 ? 'result' : 'results'),
+      titleText: n + ' ' + (n === 1 ? 'result' : 'results') + (chips.length ? ' for' : ''),
+      digitalOn: String(!!f.digital), digitalCls: f.digital ? 'is-on' : '', toggleDigital: () => this.apply(ff => ({ ...ff, digital: !ff.digital })),
+      layoutCls: s.loading ? 'is-searching' : '',
       advHref: advancedFormHref(f), advOpen: s.advOpen, advSrc: advancedFormHref(f) + (advancedFormHref(f).includes('?') ? '&' : '?') + 'embed=1', advBtnRef: this.advBtnRef, advDialogRef: this.advDialogRef, advCloseRef: this.advCloseRef, advFrameRef: this.advFrameRef, advTrapKey: this.advTrap, closeAdv: () => this.closeAdv(), openAdv: () => this.openAdv(), filterCount: (chips.length + (f.digital ? 1 : 0)) || null, filterBtnRef: this.filterBtnRef,
       ppRef: this.ppRef, ppOpen: s.ppOpen, ppChev: s.ppOpen ? 'rotate(180deg)' : 'none', togglePP: () => this.setState(st => ({ ppOpen: !st.ppOpen })),
-      rangeLabel: n ? 'Showing ' + ((page - 1) * s.perPage + 1) + '–' + Math.min(page * s.perPage, n) + ' records' : 'Showing 0 records',
+      rangeLabel: s.perPage + ' results per page',
+      rangeText: n ? 'Showing ' + ((page - 1) * s.perPage + 1) + '–' + Math.min(page * s.perPage, n) + ' records' : 'Showing 0 records',
       mainRef: this.mainRef, showPager: n > 0 && !s.loading,
       pages: pageNums.map((pn, i) => pn === '…'
         ? { n: '…', key: 'e' + i, ellipsis: true, go: () => {}, current: undefined, bg: 'transparent', color: 'var(--col-bg-primary)', cursor: 'default' }
@@ -1402,15 +1416,13 @@ class Component extends DCLogic {
       prevColor: page > 1 ? 'var(--col-bg-primary)' : '#c3c6cd',
       nextBg: page < pageCount ? '#c8d5c0' : '#e4e7ec', nextColor: page < pageCount ? 'var(--col-bg-primary)' : '#9aa1af', nextCursor: page < pageCount ? 'pointer' : 'default',
       toTop: () => window.scrollTo({ top: 0, behavior: 'smooth' }),
-      ppOpts: [20, 40, 60].map(v => ({ label: v + ' per page', sel: s.perPage === v, bg: s.perPage === v ? '#b3e5f5' : '#fff', pick: () => { this.setState({ ppOpen: false, perPage: v }); this.apply(ff => ff); } })),
-      switches: [['Digital asset', 'digital']].map(([label, k]) => { const on = f[k]; return { label, on, toggle: () => this.apply(ff => ({ ...ff, [k]: !ff[k] })),
-        trackBg: on ? 'var(--col-bg-primary)' : '#c3c6cd', knobLeft: on ? '18px' : '2px' }; }),
+      ppOpts: [12, 24, 40, 96].map(v => ({ label: v + ' per page', sel: s.perPage === v, bg: s.perPage === v ? '#b3e5f5' : '#fff', pick: () => { this.setState({ ppOpen: false, perPage: v }); this.apply(ff => ff); } })),
       sortOpen: s.sortOpen, sortRef: this.sortRef, toggleSort: () => this.setState(st => ({ sortOpen: !st.sortOpen })),
       sortLabel: (SORTS.find(x => x[0] === f.sort) || [0, 'Sort by'])[1], sortColor: f.sort ? 'var(--col-text-primary)' : '#6b7080', sortChev: s.sortOpen ? 'rotate(180deg)' : 'none',
       sortOpts: SORTS.map(([v, label]) => ({ label, sel: f.sort === v, bg: f.sort === v ? '#b3e5f5' : '#fff', pick: () => { this.setState({ sortOpen: false }); this.apply(ff => ({ ...ff, sort: v })); } })),
       wrapDisplay: view === 'masonry' ? 'contents' : 'block',
       openModal: () => this.openModal(),
-      loading: s.loading, notLoading: !s.loading, chips, hasActive: chips.length > 0,
+      loading: s.loading, notLoading: !s.loading, chips, hasActive: chips.length > 0, railCount: chips.length,
       clearAll: () => this.apply(ff => ({ ...EMPTYF(), sort: ff.sort })),
       skeletons: (n ? results.slice(0, 12).map(r => ({ ar: r.hasImg ? r.ar : 'auto', imgDisplay: r.hasImg ? 'block' : 'none' })) : SKEL.slice(0, 6).map(x => ({ ar: '1 / ' + (x / 300), imgDisplay: 'block' }))),
       results: (isLive && s.liveItems) ? results : results.slice((page - 1) * s.perPage, page * s.perPage), isGrid: !s.loading && view === 'masonry' && n > 0, isList: !s.loading && view === 'list' && n > 0, isEmpty: !s.loading && n === 0,

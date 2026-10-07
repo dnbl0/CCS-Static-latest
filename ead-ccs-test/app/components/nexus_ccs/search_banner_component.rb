@@ -10,7 +10,7 @@ module NexusCcs
     # The gem's default classes size the form with grid columns; the banner sizes it in CSS.
     def search_bar_component
       search_bar_component_class.new(
-        url: helpers.search_action_url,
+        url: helpers.search_catalog_path,
         advanced_search_url: advanced_search_url,
         params: helpers.search_state.params_for_search.except(:qt, :view), # a new search opens in the default view
         autocomplete_path: suggest_index_catalog_path,
@@ -27,7 +27,7 @@ module NexusCcs
       if state[:clause].blank? && state[:q].present?
         state[:clause] = { "0" => { field: "all_fields", query: state.delete(:q) } }
       end
-      helpers.search_action_url(state.merge(action: "advanced_search"))
+      helpers.advanced_search_catalog_path(state)
     end
 
     def controllers

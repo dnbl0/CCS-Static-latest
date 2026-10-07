@@ -132,5 +132,3 @@
   .site-nav > ul.site-nav__audience > li > a:hover { color: var(--ccs-sage-150); text-decoration: underline; }
 }
 @media (prefers-reduced-motion: reduce) { .site-nav__trigger img { transition: none; } }
-
-/* ==========================================================================

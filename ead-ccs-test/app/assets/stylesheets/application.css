@@ -10,6 +10,7 @@
 @import url("fonts.css");
 @import url("tokens/primitives.css");
 @import url("tokens/semantic.css");
+@import url("tokens/static_site.css");
 @import url("unimelb.css");
 @import url("components/arrow_link.css");
 @import url("components/site_header.css");
@@ -28,3 +29,10 @@
 @import url("components/advanced_flyout.css");
 @import url("components/record_page.css");
 @import url("components/site_footer.css");
+@import url("pages/static_shared.css");
+@import url("pages/home.css");
+@import url("pages/collections_browse.css");
+@import url("pages/collection_landing.css");
+@import url("pages/contact.css");
+@import url("pages/help.css");
+@import url("pages/indigenous_data.css");

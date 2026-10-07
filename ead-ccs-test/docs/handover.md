@@ -5,6 +5,22 @@ Written 2026-10-06 so a fresh session can continue. Current branch with the work
 git plumbing off `origin/main`, because the parent repo's checked-out branch belongs to other work.
 `data/*.csv` (20 MB of collection exports) is deliberately not committed.
 
+## Status at 2026-10-07 (read this first; the sections below are from 2026-10-06)
+
+- Work is on `wip/local-main` of `dnbl0/CCS-Static-latest`, where this app lives in `ead-ccs-test/` beside the static
+  site. The branches named below (`feat/blacklight-oob`, `feat/rails-ccs-theme`) are history.
+- The app now has the home, collections (browse and a page each), help, indigenous data and contact pages
+  (`PagesController`, see the README), matching the static site; the search results are at `/catalog`.
+- Tests: `bin/rails test` (183 runs, no Solr needed) and `bin/rails test:system` (journeys and axe accessibility checks;
+  they need Solr, see `docs/solr-dev.md`). Rubocop, Brakeman and the gem and importmap audits run in
+  `.github/workflows/rails-ci.yml` at the repository root; the workflows under `ead-ccs-test/.github/` are the ones the
+  app's own repository uses to deploy.
+- The styles and images for the content pages are generated from the static site (`npm run sync:rails` at the repository
+  root); do not edit them here. Plan and progress: `docs/code-quality-plan.md` at the repository root.
+- Ruby: `.ruby-version` says 4.0.6 (CI uses it); the app also runs on 3.3.6.
+- Solr: 10.0.0 from downloads.apache.org works (`bin/solr start -p 8984 --force`, then `bin/solr create -c blacklight-core
+  -d solr -s http://127.0.0.1:8984`, with `SOLR_MODULES=analysis-extras`), then `bin/rails collections:index`.
+
 ## State
 
 - Rails 8.1.3, Blacklight **9.0.0** (not 9.2.1), Ruby 4.0.6, Postgres 17, 99 tests passing (no Solr needed).
@@ -73,7 +89,7 @@ gaps. The earlier pivot, query and contextual facets were removed because the wo
    component with variants, left sticky 296px rail, drawer under 992px, accessible chips and drawer).
 5. **Bookmarks** need a user model; `/bookmarks` redirects without one. The Blacklight guest-user /
    devise-guests pattern would make them work if D wants it.
-6. **Lint.** 13 existing RuboCop offenses (whitespace/final newlines) in files not touched by this work.
+6. **Lint.** Done: Rubocop is clean and runs in CI.
 7. **Push and PR** `feat/blacklight-oob` (decide first whether `data/*.csv` belongs in this repo).
 
 ## Deferred custom work (D said leave out for now)

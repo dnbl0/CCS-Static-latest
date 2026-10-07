@@ -1,7 +1,21 @@
 name: CI
 
+# The static site's checks. The Rails app has its own workflow (rails-ci.yml). `npm test` also checks that the Rails
+# copies of the shared styles and images (ead-ccs-test/app/assets) match public/, so it runs for either side's assets.
 on:
   pull_request:
+    paths:
+      - 'public/**'
+      - 'scripts/**'
+      - 'tests/**'
+      - 'src/**'
+      - 'data-model/**'
+      - 'api/**'
+      - 'package.json'
+      - 'eslint.config.js'
+      - '.stylelintrc.json'
+      - 'ead-ccs-test/app/assets/**'
+      - '.github/workflows/ci.yml'
   push:
     branches:
       - main
@@ -17,10 +31,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
+          cache-dependency-path: package.json
 
       - name: Install dependencies
         run: |
           if [ -f package-lock.json ]; then npm ci; else npm install; fi
+
+      - name: Audit runtime dependencies
+        run: npm audit --omit=dev
 
       - name: Install Chromium for browser tests
         run: npx playwright-core install --with-deps chromium

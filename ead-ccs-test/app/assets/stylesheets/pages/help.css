@@ -1,0 +1,82 @@
+/* Generated from public/styles/pages/help.css by scripts/sync-rails-assets.js. Edit the static file, not this copy. */
+/* help: styles moved out of inline style="" attributes. Class names are semantic (block__element) and scoped by the page class on <body> (page-help), which gives them the precedence the inline styles had over shared component CSS. Do not reintroduce inline styles. */
+body.page-help .help-page__group {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+body.page-help .help-page__icon {
+  display: none;
+}
+body.page-help .page-local-history__link-image {
+  vertical-align: middle;
+}
+body.page-help .help-main-content {
+  flex: 1;
+}
+body.page-help .help-access__group--v2 {
+  display: grid;
+  gap: var(--space-24);
+  margin-top: var(--space-24);
+}
+body.page-help .help-access__group--v1 {
+  display: grid;
+  gap: var(--space-4);
+}
+/* Matrix "Tables": header row navy, zebra rows */
+body.page-help .help-search-tips__group--v2 {
+  display: grid;
+  grid-template-columns: minmax(140px, 220px) minmax(0, 1fr);
+  margin: 0 0 var(--space-24);
+  border: 1px solid #c8c8c8;
+  border-bottom: 0;
+}
+body.page-help .help-search-tips__group--v2 > * {
+  padding: var(--space-12) var(--space-16);
+  border-bottom: 1px solid #c8c8c8;
+}
+body.page-help .help-search-tips__group--v2 > :nth-child(-n + 2) {
+  background: var(--brand-1100);
+  color: var(--white-100);
+}
+body.page-help .help-search-tips__strong--v2,
+body.page-help .help-search-tips__text--v4 {
+  background: #f1f1f1;
+}
+body.page-help .help-search-tips__group--v1 {
+  display: grid;
+  gap: var(--space-16);
+  margin: 0 0 var(--space-24);
+}
+/* Topic cards on the help landing use the homepage help card (ccs-help), three across on desktop */
+body.page-help .ccs-help--topics {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0 0 var(--space-8);
+}
+body.page-help .ccs-help--topics .ccs-help__item:nth-child(3n + 1) .ccs-help__card {
+  margin-left: 0;
+}
+body.page-help .ccs-help--topics .ccs-help__item:nth-child(n + 4) .ccs-help__card {
+  margin-top: -1px;
+}
+@media (max-width: 1023px) {
+body.page-help .ccs-help--topics {
+    grid-template-columns: minmax(0, 1fr);
+  }
+body.page-help .ccs-help--topics .ccs-help__item .ccs-help__card {
+    margin-left: 0;
+    margin-top: -1px;
+  }
+body.page-help .ccs-help--topics .ccs-help__item:first-child .ccs-help__card {
+    margin-top: 0;
+  }
+}
+/* Help topic grid; smooth scrolling for in-page anchors */
+.help-topics-grid{grid-template-columns:repeat(3,1fr)}
+@media (max-width:900px) {
+.help-topics-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:560px) {
+.help-topics-grid{grid-template-columns:1fr}
+}
+html{scroll-behavior:smooth}

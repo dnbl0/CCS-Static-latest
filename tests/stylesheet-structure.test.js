@@ -25,5 +25,12 @@ for (const s of sheets) {
   if (!linked.has(s)) fail(`styles/${s} is not linked from any page`);
   if (!s.startsWith('tokens/') && /^:root\s*\{[^}]*^\s*--(?:col|brand|uom-ds)-[\w-]+\s*:/m.test(fs.readFileSync(path.join(STYLES, s), 'utf8'))) fail(`styles/${s}: colour tokens belong in styles/tokens/`);
 }
+// Keep stylesheets one component or page area in size: split a sheet before it grows past this (tokens are one file by design)
+const MAX_BYTES = 32 * 1024;
+for (const s of sheets) {
+  if (s.startsWith('tokens/')) continue;
+  const bytes = fs.statSync(path.join(STYLES, s)).size;
+  if (bytes > MAX_BYTES) fail(`styles/${s} is ${Math.round(bytes / 1024)} KB: split it by component (limit ${MAX_BYTES / 1024} KB)`);
+}
 ok(`${sheets.length} stylesheets, ${pages.length} pages: structure and load order consistent`);
 finish('stylesheet-structure');

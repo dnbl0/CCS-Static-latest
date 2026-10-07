@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# "No results for X — showing results for Y instead", rendered above the result list 
+# "No results for X — showing results for Y instead", rendered above the result list
 class SpellingCorrectionComponent < ViewComponent::Base
   def initialize(response:)
     @correction = response.try(:spelling_correction)
