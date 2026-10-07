@@ -1,0 +1,8 @@
+<li class="<%= item_class %>">
+  <%= link_to href, class: "pathfinder-alt__link", **link_options do %>
+    <span class="pathfinder-alt__content">
+      <span class="pathfinder-alt__title"><%= title %><% if external? %><span class="sr-only"> (opens in a new tab)</span><% end %></span>
+      <span class="pathfinder-alt__summary"><%= summary %></span>
+    </span>
+  <% end %>
+</li>

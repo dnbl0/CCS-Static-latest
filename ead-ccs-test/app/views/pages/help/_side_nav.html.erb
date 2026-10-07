@@ -2,7 +2,7 @@
   <h2 class="side-nav__title">Help topics</h2>
   <ul class="side-nav__list">
     <li class="side-nav__item"><%= link_to "All help topics", help_path, class: "side-nav__link" %></li>
-    <% PagesController::HELP_TOPICS.each do |topic| %>
+    <% HelpTopic.all.each do |topic| %>
       <li class="side-nav__item"><%= link_to topic.title, topic.path(self), class: "side-nav__link", aria: { current: (topic.key == current ? "page" : "false") } %></li>
     <% end %>
   </ul>

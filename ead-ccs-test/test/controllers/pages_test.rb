@@ -35,11 +35,11 @@ class PagesTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_select "body.page-help h1", "Help and support"
-    assert_select ".ccs-help--topics .ccs-help__item", count: PagesController::HELP_TOPICS.size
+    assert_select ".ccs-help--topics .ccs-help__item", count: HelpTopic.all.size
   end
 
   test "each help topic has a page with the topics side nav" do
-    PagesController::HELP_TOPICS.reject { |topic| topic.key == "indigenous" }.each do |topic|
+    HelpTopic.all.reject { |topic| topic.key == "indigenous" }.each do |topic|
       get "/help", params: { topic: topic.key }
 
       assert_response :success

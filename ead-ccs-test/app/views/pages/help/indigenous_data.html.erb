@@ -1,7 +1,7 @@
 <% content_for :title, "Indigenous Cultural Data and Access — Help — Cultural Collections Search — University of Melbourne" %>
 <% content_for :body_class, "page-indigenous-data" %>
-<%= render "pages/breadcrumbs", trail: [ [ "Help and support", help_path ], [ "Indigenous Cultural Data and Access", nil ] ] %>
-<%= render "pages/banner", title: "Indigenous Cultural Data and Access", description: "The University of Melbourne acknowledge Aboriginal and Torres Strait Islander people as the Traditional Owners of the unceded lands on which we work, learn and live. We pay respect to Elders past, present and future, and acknowledge the importance of Indigenous knowledge in the Academy." %>
+<%= render NexusCcs::PageBreadcrumbsComponent.new(trail: [ [ "Help and support", help_path ], [ "Indigenous Cultural Data and Access", nil ] ]) %>
+<%= render NexusCcs::PageBannerComponent.new(title: "Indigenous Cultural Data and Access", description: "The University of Melbourne acknowledge Aboriginal and Torres Strait Islander people as the Traditional Owners of the unceded lands on which we work, learn and live. We pay respect to Elders past, present and future, and acknowledge the importance of Indigenous knowledge in the Academy.") %>
 <main class="indigenous-data-main-content" id="main-content">
   <div class="help-layout">
     <%= render "pages/help/side_nav", current: "indigenous" %>

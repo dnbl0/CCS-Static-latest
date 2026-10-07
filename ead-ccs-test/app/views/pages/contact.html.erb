@@ -1,7 +1,7 @@
 <% content_for :title, "Contact Collections Team — Cultural Collections Search — University of Melbourne" %>
 <% content_for :body_class, "page-contact" %>
-<%= render "pages/breadcrumbs", trail: [ [ "Contact", nil ] ] %>
-<%= render "pages/banner", title: "Contact Collections Team", description: "Contact the team that cares for each collection directly. Choose the collection you're interested in below to find its contact method \u2014 an email address or an external Access Request Form." %>
+<%= render NexusCcs::PageBreadcrumbsComponent.new(trail: [ [ "Contact", nil ] ]) %>
+<%= render NexusCcs::PageBannerComponent.new(title: "Contact Collections Team", description: "Contact the team that cares for each collection directly. Choose the collection you're interested in below to find its contact method \u2014 an email address or an external Access Request Form.") %>
 <main class="contact-main-content" id="main-content">
 <div class="collection-layout">
 <div class="collection-layout__content">

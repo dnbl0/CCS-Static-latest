@@ -27,12 +27,16 @@ module NexusCcs
       [ "Grainger Museum Collection", "Grainger Museum Collection", "grainger-museum" ]
     ].freeze
 
-    # The facet value of a collection landing page, by slug.
+    # The facet value of a collection landing page, by slug, and the slug of a facet value.
     def self.facet_value(slug)
       COLLECTIONS.find { |_label, _value, collection_slug| collection_slug == slug }&.second
     end
 
-    # Route helper names for the help topics (PagesController::HELP_TOPICS), the help home and contact page.
+    def self.slug_for(facet_value)
+      COLLECTIONS.find { |_label, value, _slug| value == facet_value }&.last
+    end
+
+    # Labels of the help home and the contact page (the help topics are HelpTopic.all).
     HELP_HOME_LABEL = "Help and support"
     CONTACT_LABEL = "Contact"
 

@@ -44,7 +44,7 @@ module NexusCcs
     end
 
     def help_links
-      PagesController::HELP_TOPICS.map { |topic| SiteNavigation::Link.new(topic.title, topic.path(helpers)) }
+      HelpTopic.all.map { |topic| SiteNavigation::Link.new(topic.title, topic.path(helpers)) }
     end
 
     def help_home = SiteNavigation::Link.new(SiteNavigation::HELP_HOME_LABEL, helpers.help_path)

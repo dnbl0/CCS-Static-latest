@@ -1,7 +1,7 @@
 <% content_for :title, "#{@collection["name"]} — Cultural Collections Search — University of Melbourne" %>
 <% content_for :body_class, "page-collection-landing" %>
 <% search_href = search_catalog_path(f: { collection_ssim: [ @facet_value ] }) %>
-<%= render "pages/breadcrumbs", trail: [ [ "Browse collections", collections_path ], [ @collection["name"], nil ] ] %>
+<%= render NexusCcs::PageBreadcrumbsComponent.new(trail: [ [ "Browse collections", collections_path ], [ @collection["name"], nil ] ]) %>
 <header class="campaign-banner-split campaign-banner-split--dark" role="presentation">
   <div class="campaign-banner-split__img">
     <%= image_tag "site/banners/#{@collection["banner"]}", class: "campaign-banner-split__img-inner", alt: "" %>
@@ -61,10 +61,10 @@
     <div class="ct-listing__inner">
       <h2 class="ct-listing__title" id="h-explore">Explore further</h2>
       <ul class="ct-listing__list ct-listing__list--pathfinder ct-listing__list--four">
-        <li class="ct-listing__item"><a class="pathfinder-alt__link" href="<%= search_href %>"><span class="pathfinder-alt__content"><span class="pathfinder-alt__title">Search this collection</span><span class="pathfinder-alt__summary">Search and filter every record in the <%= @collection["name"] %>.</span></span></a></li>
-        <li class="ct-listing__item"><a class="pathfinder-alt__link" href="<%= collections_path %>"><span class="pathfinder-alt__content"><span class="pathfinder-alt__title">Browse all collections</span><span class="pathfinder-alt__summary">Return to the five University cultural collections.</span></span></a></li>
-        <li class="ct-listing__item"><a class="pathfinder-alt__link" href="<%= help_path %>"><span class="pathfinder-alt__content"><span class="pathfinder-alt__title">Help and support</span><span class="pathfinder-alt__summary">Searching, using and requesting items from the collections.</span></span></a></li>
-        <li class="ct-listing__item"><a class="pathfinder-alt__link" href="<%= @collection["website"]["url"] %>" target="_blank" rel="noopener"><span class="pathfinder-alt__content"><span class="pathfinder-alt__title">Visit the museum website<span class="sr-only"> (opens in a new tab)</span></span><span class="pathfinder-alt__summary"><%= @collection["website"]["summary"] %></span></span></a></li>
+        <%= render NexusCcs::PathfinderItemComponent.new(href: search_href, title: "Search this collection", summary: "Search and filter every record in the #{@collection["name"]}.") %>
+        <%= render NexusCcs::PathfinderItemComponent.new(href: collections_path, title: "Browse all collections", summary: "Return to the five University cultural collections.") %>
+        <%= render NexusCcs::PathfinderItemComponent.new(href: help_path, title: "Help and support", summary: "Searching, using and requesting items from the collections.") %>
+        <%= render NexusCcs::PathfinderItemComponent.new(href: @collection["website"]["url"], title: "Visit the museum website", summary: @collection["website"]["summary"], external: true) %>
       </ul>
     </div>
   </section>

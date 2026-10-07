@@ -1,26 +1,26 @@
 <% content_for :body_class, "page-help" %>
 <% if @topic %>
   <% content_for :title, "#{@topic.title} — Help — Cultural Collections Search — University of Melbourne" %>
-  <%= render "pages/breadcrumbs", trail: [ [ "Help and support", help_path ], [ @topic.title, nil ] ] %>
-  <%= render "pages/banner", title: @topic.title, description: @topic.blurb %>
+  <%= render NexusCcs::PageBreadcrumbsComponent.new(trail: [ [ "Help and support", help_path ], [ @topic.title, nil ] ]) %>
+  <%= render NexusCcs::PageBannerComponent.new(title: @topic.title, description: @topic.blurb) %>
   <main class="help-main-content help-main-content--topic" id="main-content">
     <div class="help-layout">
       <%= render "pages/help/side_nav", current: @topic.key %>
       <div class="help-layout__content">
-        <%= render "pages/help/#{@topic.key.tr("-", "_")}" %>
+        <%= render @topic.partial %>
       </div>
     </div>
   </main>
 <% else %>
   <% content_for :title, "Help and Support — Cultural Collections Search — University of Melbourne" %>
-  <%= render "pages/breadcrumbs", trail: [ [ "Help and support", nil ] ] %>
-  <%= render "pages/banner", title: "Help and support", description: "Guidance on searching, using and requesting items from the University's cultural collections." %>
+  <%= render NexusCcs::PageBreadcrumbsComponent.new(trail: [ [ "Help and support", nil ] ]) %>
+  <%= render NexusCcs::PageBannerComponent.new(title: "Help and support", description: "Guidance on searching, using and requesting items from the University's cultural collections.") %>
   <section class="ct-listing" aria-labelledby="h-topics">
     <div class="ct-listing__inner">
       <h2 class="ct-listing__title" id="h-topics">Help topics</h2>
       <p class="ct-listing__lead">Choose a topic to find guidance on searching, accessing and using the University's cultural collections.</p>
       <ul class="ccs-help ccs-help--topics">
-        <% PagesController::HELP_TOPICS.each do |topic| %>
+        <% HelpTopic.all.each do |topic| %>
           <li class="ccs-help__item">
             <div class="ccs-help__card">
               <div class="ccs-help__icon"><%= image_tag "site/#{topic.icon}.svg", class: "ccs-help__image", alt: "" %></div>
