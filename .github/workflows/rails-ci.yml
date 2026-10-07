@@ -200,6 +200,12 @@ jobs:
         if: steps.solr-cache.outputs.cache-hit != 'true'
         run: curl -fsSL -o ~/solr-$SOLR_VERSION.tgz https://downloads.apache.org/solr/solr/$SOLR_VERSION/solr-$SOLR_VERSION.tgz
 
+      - name: Setup Java (Solr 10 needs Java 21; the runner has 17)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
       - name: Start Solr with the collections core
         run: |
           mkdir -p ~/solr && tar xzf ~/solr-$SOLR_VERSION.tgz -C ~/solr --strip-components=1

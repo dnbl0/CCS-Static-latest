@@ -1,6 +1,11 @@
 ---
 # Lints app/views and app/components templates. Run: bundle exec erb_lint --lint-all
 EnableDefaultLinters: true
+# CI installs gems into vendor/bundle; only our own templates are linted
+exclude:
+  - '**/vendor/**/*'
+  - '**/node_modules/**/*'
+  - '**/tmp/**/*'
 linters:
   ErbSafety:
     enabled: true
