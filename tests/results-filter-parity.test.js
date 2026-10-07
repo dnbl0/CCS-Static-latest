@@ -69,7 +69,7 @@ const { PUBLIC, fail, ok, finish, fs, path } = require('./lib');
     if ((await collection.locator('.facet-rail__toggle').getAttribute('aria-expanded')) !== 'true') await collection.locator('.facet-rail__toggle').click();
     await collection.locator('[role="checkbox"]').first().click();
     await page.waitForFunction(b => (document.querySelector('.search-results-summary__heading') || { textContent: b }).textContent !== b, before);
-    if ((await page.locator('.search-results-main-content__button-remove').count()) === 1) ok('a rail click filters immediately and adds a filter chip'); else fail('rail click did not add a filter chip');
+    if ((await page.locator('.search-results-pill__remove').count()) === 1) ok('a rail click filters immediately and adds a filter chip'); else fail('rail click did not add a filter chip');
     if (errors.length) fail('page errors: ' + errors.join('; ')); else ok('no page errors');
   } catch (e) { fail('filter parity check crashed: ' + e.message); }
   await browser.close(); srv.close();

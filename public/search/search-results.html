@@ -240,6 +240,13 @@
         <sc-if value="{{ notLoading }}" hint-placeholder-val="{{ true }}"><h2 class="search-results-summary__heading" aria-live="polite">{{ titleText }}</h2></sc-if>
       </div>
       <div class="search-results-summary__group search-results-summary__group--v2">
+        <sc-if value="{{ hasActive }}">
+          <ul class="search-results-pills" aria-label="Applied filters">
+            <sc-for list="{{ chips }}" as="c" hint-placeholder-count="2">
+              <li class="search-results-pills__item"><span class="search-results-pill"><span class="search-results-pill__text">{{ c.label }}</span><button type="button" class="search-results-pill__remove" onClick="{{ c.remove }}" aria-label="Remove filter {{ c.group }}: {{ c.label }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg></button></span></li>
+            </sc-for>
+          </ul>
+        </sc-if>
         <button class="search-results-summary__button-save-search" onClick="{{ saveSearch }}"><svg class="search-results-summary__button-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12v18l-6-4.5L6 21z"></path></svg><span class="search-results-bar__save-text">{{ saveSearchLabel }}</span></button>
         <button class="search-results-api-mode-toggle" id="api-mode-toggle" type="button" onClick="{{ toggleApiMode }}" title="Toggle between local mock data and live Blacklight API (/catalog.json)" style="--dyn-display:{{ apiBtnDisplay }};--dyn-background:{{ apiBtnBg }};--dyn-color:{{ apiBtnColor }}">{{ apiBtnText }}</button>
       </div>
@@ -274,13 +281,6 @@
         <svg class="search-results-search-tools__button-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="18" x2="20" y2="18"></line><line x1="15" y1="3.5" x2="15" y2="8.5"></line><line x1="9" y1="9.5" x2="9" y2="14.5"></line><line x1="13" y1="15.5" x2="13" y2="20.5"></line></svg>Filters
         <sc-if value="{{ filterCount }}"><span class="search-results-search-tools__button-text search-results-search-tools__button-text--v3">{{ filterCount }}</span></sc-if>
       </button>
-      <div class="search-results-summary__group search-results-summary__group--v1">
-        <sc-for list="{{ switches }}" as="sw" hint-placeholder-count="2">
-          <button class="search-results-summary__button-toggle" onClick="{{ sw.toggle }}" role="switch" aria-checked="{{ sw.on }}">
-            <span class="search-results-summary__button-text" style="--dyn-background:{{ sw.trackBg }}"><span class="search-results-summary__text search-results-summary__text--v1" style="--dyn-left:{{ sw.knobLeft }}"></span></span><span class="search-results-bar__switch-long">{{ sw.label }}</span><span class="search-results-bar__switch-short" aria-hidden="true">Digital</span>
-          </button>
-        </sc-for>
-      </div>
       <div class="search-results-view" role="group" aria-label="View">
         <button class="search-results-view__button-set-list" onClick="{{ setList }}" aria-pressed="{{ isListView }}" aria-label="List view" title="List view" style="--dyn-background:{{ listBg }}"><svg class="search-results-view__button-icon" width="32" height="32" viewBox="0 -960 960 960" fill="currentColor" aria-hidden="true" focusable="false"><path d="M286.67-613.33V-680H840v66.67H286.67Zm0 166.66v-66.66H840v66.66H286.67Zm0 166.67v-66.67H840V-280H286.67ZM153.33-613.33q-13.66 0-23.5-9.84Q120-633 120-647q0-14 9.83-23.5 9.84-9.5 23.84-9.5t23.5 9.58q9.5 9.59 9.5 23.75 0 13.67-9.59 23.5-9.58 9.84-23.75 9.84Zm0 166.66q-13.66 0-23.5-9.83-9.83-9.83-9.83-23.83 0-14 9.83-23.5 9.84-9.5 23.84-9.5t23.5 9.58q9.5 9.58 9.5 23.75 0 13.67-9.59 23.5-9.58 9.83-23.75 9.83Zm0 166.67q-13.66 0-23.5-9.83-9.83-9.84-9.83-23.84t9.83-23.5q9.84-9.5 23.84-9.5t23.5 9.59q9.5 9.58 9.5 23.75 0 13.66-9.59 23.5-9.58 9.83-23.75 9.83Z"></path></svg></button>
         <button class="search-results-view__button-set-grid" onClick="{{ setGrid }}" aria-pressed="{{ isMasonry }}" aria-label="Mosaic view" title="Mosaic view" style="--dyn-background:{{ gridBg }}"><svg class="search-results-view__button-icon" width="32" height="32" viewBox="0 -960 960 960" fill="currentColor" aria-hidden="true" focusable="false"><path d="M120-266.67v-426.66q0-27.5 19.58-47.09Q159.17-760 186.67-760h586.66q27.5 0 47.09 19.58Q840-720.83 840-693.33v426.66q0 27.5-19.58 47.09Q800.83-200 773.33-200H186.67q-27.5 0-47.09-19.58Q120-239.17 120-266.67Zm277.67-246.66h375.66v-180H397.67v180Zm224 246.66h151.66v-180H621.67v180Zm-224 0h152.66v-180H397.67v180Zm-211 0H331v-426.66H186.67v426.66Z"></path></svg></button>
@@ -289,15 +289,16 @@
   </div>
 </div>
 
-<div class="search-results-layout">
+<div class="search-results-layout {{ layoutCls }}" aria-busy="{{ loading }}">
 <sc-if value="{{ hasSidebar }}">
 <aside class="facet-rail" aria-label="Filter results">
   <div class="facet-rail__head">
     <h2 class="facet-rail__title">Search filters<sc-if value="{{ hasActive }}"> ({{ railCount }})</sc-if></h2>
     <sc-if value="{{ hasActive }}"><button type="button" class="facet-rail__clear" onClick="{{ clearAll }}">Clear all</button></sc-if>
   </div>
-  <div class="facet-rail__switches" role="group" aria-label="Show only">
-    <span class="facet-rail__name">Show only</span>
+  <div class="facet-rail__switches" role="group" aria-labelledby="rail-switch-label">
+    <span class="facet-rail__name" id="rail-switch-label">Show only</span>
+    <button type="button" class="filter-switch {{ digitalCls }}" role="switch" aria-checked="{{ digitalOn }}" onClick="{{ toggleDigital }}"><span class="filter-switch__track" aria-hidden="true"><span class="filter-switch__knob"></span></span><span class="filter-switch__label">Records with digital assets</span></button>
     <sc-for list="{{ railSwitches }}" as="sw"><button type="button" class="facet-rail__option" role="checkbox" aria-checked="{{ sw.ariaChecked }}" onClick="{{ sw.toggle }}"><span class="facet-rail__box"><svg class="facet-rail__tick" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><polyline points="4 12 10 18 20 6"></polyline></svg></span><span class="facet-rail__label">{{ sw.label }}</span></button></sc-for>
   </div>
   <sc-for list="{{ sideSections }}" as="sec">
@@ -341,17 +342,6 @@
 </aside>
 </sc-if>
 <main class="search-results-main-content" id="main-content" ref="{{ mainRef }}" style="--dyn-padding:{{ padMain }}">
-      <sc-if value="{{ hasActive }}">
-          <div class="search-results-main-content__group search-results-main-content__group--v6">
-            <sc-for list="{{ chips }}" as="c" hint-placeholder-count="2">
-              <button class="search-results-main-content__button-remove" onClick="{{ c.remove }}" aria-label="Remove filter">
-                <span class="search-results-main-content__button-text"><span class="search-results-main-content__text search-results-main-content__text--v1">{{ c.group }}:</span> {{ c.label }}</span>
-                <svg class="search-results-main-content__button-icon" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg>
-              </button>
-            </sc-for>
-            <button class="search-results-main-content__button-clear-all search-results-main-content__button-clear-all--v1" onClick="{{ clearAll }}">Clear all</button>
-          </div>
-        </sc-if>
         <div class="search-results-notices">
       <sc-if value="{{ showDidYouMeanTop }}">
         <div class="search-results-smart notice" role="status">
@@ -959,7 +949,7 @@ function saveSearchHistory(term) {
   } catch (e) {}
 }
 class Component extends DCLogic {
-  state = { stuck: false, advOpen: false, f:EMPTYF(), loading:false, view:null, modal:false, mFind:'', draft:null, mOpen:{coll:true,type:true,date:true}, sOpen:{}, sMore:{}, sFq:{}, sExtra:false, sYIn:null, sYErr:'', fq:{}, more:{}, sortOpen:false, perPage:20, ppOpen:false, page:1, yIn:null, yErr:'', counting:false, ackOpen:false, vw: typeof window !== 'undefined' ? window.innerWidth : 1200, liveItems: null, liveTotal: null, liveError: null };
+  state = { stuck: false, advOpen: false, f:EMPTYF(), loading:false, view:null, modal:false, mFind:'', draft:null, mOpen:{coll:true,type:true,date:true}, sOpen:{}, sMore:{}, sFq:{}, sExtra:false, sYIn:null, sYErr:'', fq:{}, more:{}, sortOpen:false, perPage:40, ppOpen:false, page:1, yIn:null, yErr:'', counting:false, ackOpen:false, vw: typeof window !== 'undefined' ? window.innerWidth : 1200, liveItems: null, liveTotal: null, liveError: null };
   trackRef = React.createRef(); bodyRef = React.createRef(); sortRef = React.createRef(); ppRef = React.createRef(); advBtnRef = React.createRef(); advDialogRef = React.createRef(); advCloseRef = React.createRef(); advFrameRef = React.createRef(); mainRef = React.createRef();
   sentinelRef = React.createRef(); bannerHostRef = React.createRef(); compactHostRef = React.createRef(); dialogRef = React.createRef(); filterBtnRef = React.createRef(); ackRef = React.createRef();
   dom = { lo: 1700, hi: 2030 };
@@ -982,10 +972,12 @@ class Component extends DCLogic {
     } else {
       this.setState({ liveItems: null, liveTotal: null, loading: false, liveError: res.error || null });
     }
+    // ?view=list|masonry decides the view; otherwise every search opens as the mosaic (nothing is remembered between searches)
+    const pv = qs.get('view'); if (pv === 'list' || pv === 'masonry') this.setState({ view: pv });
   }
 
   componentDidMount() {
-    this.syncBars();
+    this.syncBars(); this.syncRanges();
     // the search and tools bar is sticky; when it sticks to the top it switches to its compact layout
     try {
       const sentinel = this.sentinelRef.current;
@@ -994,6 +986,10 @@ class Component extends DCLogic {
         this.stuckObserver.observe(sentinel);
       }
     } catch (e) { /* stays in the roomy layout */ }
+    } else if ([...qs.keys()].every(k => k === 'view')) {
+      // the bare results page: every record that has a digital asset, as the mosaic
+      initF = clone(this.state.f); initF.digital = true;
+      this.setState({ f: initF });
     
     // Messages from the embedded advanced form: Esc pressed inside it, or Tab past its first/last control (keeps focus inside the fly-out)
     this.onAdvMsg = e => { if (e.origin !== location.origin || !e.data || !this.state.advOpen) return; if (e.data.ccsAdvClose) this.closeAdv(); else if (e.data.ccsAdvTab && this.advCloseRef.current) this.advCloseRef.current.focus(); };
@@ -1049,6 +1045,7 @@ class Component extends DCLogic {
   }
   syncBars() { this.mountBars(); (this.bars || []).forEach(b => { b.setValue(this.state.f.q || ''); b.sync(); }); }
   componentDidUpdate() { this.syncBars(); }
+    (this.ranges || []).forEach(r => r.inst.destroy());
 
   componentWillUnmount() {
     window.removeEventListener('pointerdown', this.onDown); window.removeEventListener('pointermove', this.onMove);
@@ -1114,6 +1111,8 @@ class Component extends DCLogic {
       pillBg: checked ? 'var(--col-bg-primary)' : '#fff', pillColor: checked ? '#fff' : (dis ? '#9a9ea8' : 'var(--col-text-primary)'), pillBorder: checked ? 'var(--col-bg-primary)' : (dis ? '#e3e0d9' : 'var(--col-border-neutral)') };
   }
   openModal() { document.body.style.overflow = 'hidden'; this.setState(s => ({ modal: true, draft: clone(s.f), yIn: null, yErr: '' }));
+  // the chosen view goes in the URL (?view=) so a link or reload keeps it; it is not stored anywhere else
+  setView(v) { this.setState({ view: v }); try { const u = new URL(location.href); u.searchParams.set('view', v); history.replaceState(null, '', u); } catch (e) {} }
     setTimeout(() => { const el = this.dialogRef.current && this.dialogRef.current.querySelector(FOCUSABLE); el && el.focus(); }, 30); }
   closeModal() { document.body.style.overflow = ''; this.setState({ modal: false }); setTimeout(() => this.filterBtnRef.current && this.filterBtnRef.current.focus(), 30); }
   closeAck() { try { localStorage.setItem('ccs-cultural-ack', '1'); } catch (e) {} this.setState({ ackOpen: false }); }
@@ -1172,7 +1171,7 @@ class Component extends DCLogic {
       this.setState({ sYIn: null, sYErr: '' }); this.apply(ff => ({ ...ff, yFrom: a, yTo: b })); };
     const sw = (label, key) => { const on = !!f[key]; return { label, count: '', checked: on, ariaChecked: String(on), toggle: () => this.apply(ff => ({ ...ff, [key]: !ff[key] })) }; };
     return { sideSections: shown, hasExtraFilters: all.length > FIRST, extraOpen, extraLabel: extraOpen ? '− Show fewer filters' : '+ Show additional filters', toggleExtra: () => this.setState(st => ({ sExtra: !st.sExtra })),
-      railSwitches: [sw('Has digital asset', 'digital'), sw('Only records with downloads', 'downloadable')],
+      railSwitches: [sw('Only records with downloads', 'downloadable')],
       rYFrom: s.sYIn && s.sYIn.from != null ? s.sYIn.from : (f.yFrom ?? ''), rYTo: s.sYIn && s.sYIn.to != null ? s.sYIn.to : (f.yTo ?? ''),
       onRYFrom: e => { const v = e.target.value; this.setState(st => ({ sYIn: { ...(st.sYIn || {}), from: v } })); }, onRYTo: e => { const v = e.target.value; this.setState(st => ({ sYIn: { ...(st.sYIn || {}), to: v } })); },
       rYKey: e => { if (e.key === 'Enter') { e.preventDefault(); commitYears(); } }, commitRYears: commitYears, rYErr: s.sYErr,
@@ -1236,7 +1235,7 @@ class Component extends DCLogic {
     // Selected filters inside the panel (the draft), each removable without leaving the panel
     const dChips = [];
     ['collection', ...KEYS].forEach(k => (d[k] || []).forEach(v => dChips.push({ group: k === 'collection' ? 'Collection' : LABELS[k], label: v, remove: () => this.setDraft(dd => this.tog(dd, k, v)) })));
-    if (d.digital) dChips.push({ group: 'Show only', label: 'Has digital asset', remove: () => this.setDraft(dd => ({ ...dd, digital: false })) });
+    if (d.digital) dChips.push({ group: 'Show only', label: 'With a digital asset', remove: () => this.setDraft(dd => ({ ...dd, digital: false })) });
     if (d.downloadable) dChips.push({ group: 'Show only', label: 'Only records with downloads', remove: () => this.setDraft(dd => ({ ...dd, downloadable: false })) });
     if (d.yFrom != null || d.yTo != null) dChips.push({ group: 'Production date', label: (d.yFrom ?? 'Any') + ' – ' + (d.yTo ?? 'Present'), remove: () => this.setDraft(dd => ({ ...dd, yFrom: null, yTo: null })) });
     if (d.accession) dChips.push({ group: 'Accession number', label: d.accession, remove: () => this.setDraft(dd => ({ ...dd, accession: '' })) });
@@ -1277,7 +1276,7 @@ class Component extends DCLogic {
     return {
       sections: sectionsShown, noSections: sectionsShown.length === 0, findText: s.mFind || '', onFind: e => { const v = e.target.value; this.setState({ mFind: v }); },
       clearFind: () => this.setState({ mFind: '' }), hasFind: !!find, draftChips: dChips, hasDraftChips: dChips.length > 0, draftChipCount: dChips.length,
-      dSwitches: [sw('Has digital asset', 'digital'), sw('Only records with downloads', 'downloadable')],
+      dSwitches: [sw('Records with digital assets', 'digital'), sw('Only records with downloads', 'downloadable')],
       dateNote: undated ? undated + ' record' + (undated === 1 ? ' has' : 's have') + ' no production date and ' + (undated === 1 ? 'is' : 'are') + ' left out when a range is set.' : 'Records without a production date are left out when a range is set.',
       dateSummary, bins,
       rangeLeft: pct(from), rangeRight: pct(to), rangeWidth: ((to - from) / span) * 100 + '%', domLo: String(LO), domHi: String(HI), domLoLabel: LO + ' or earlier', fromYear: String(from), toYear: String(to),
@@ -1306,6 +1305,8 @@ class Component extends DCLogic {
   }
   renderVals() {
     const s = this.state, p = this.props, f = s.f;
+    if (f.q) chips.push({ group: 'Search', label: f.q, remove: () => this.apply(ff => ({ ...ff, q: '' })) });
+    if (f.digital) chips.push({ group: 'Show only', label: 'With a digital asset', remove: () => this.apply(ff => ({ ...ff, digital: false })) });
     const view = s.view ?? p.defaultView ?? 'masonry';
     const chips = [];
     ['collection', ...KEYS].forEach(k => f[k].forEach(v => chips.push({ group: (k === 'collection' ? 'Collection' : LABELS[k]) + (f.fAll && f.fAll[k] && f[k].length > 1 ? ' (all)' : ''), label: v, remove: () => this.apply(ff => this.tog(ff, k, v)) })));
@@ -1388,11 +1389,13 @@ class Component extends DCLogic {
         } catch (e) {}
         this.setState({ savedFlash: true }); clearTimeout(this._sf); this._sf = setTimeout(() => this.setState({ savedFlash: false }), 1800);
       },
-      setGrid: () => this.setState({ view: 'masonry' }), setList: () => this.setState({ view: 'list' }),
+      setGrid: () => this.setView('masonry'), setList: () => this.setView('list'),
       gridBg: view === 'masonry' ? '#c8d5c0' : '#fff', listBg: view === 'list' ? '#c8d5c0' : '#fff', isMasonry: view === 'masonry', isListView: view === 'list',
       barCls: s.stuck ? 'is-stuck' : '', sentinelRef: this.sentinelRef, bannerHostRef: this.bannerHostRef, compactHostRef: this.compactHostRef,
       bannerLine: f.q ? n + (n === 1 ? ' result for ' : ' results for ') + '“' + f.q + '”' : 'Explore artworks, objects, manuscripts, photographs and recordings held across the University of Melbourne\'s cultural collections.',
-      titleText: n + ' ' + (n === 1 ? 'result' : 'results'),
+      titleText: n + ' ' + (n === 1 ? 'result' : 'results') + (chips.length ? ' for' : ''),
+      digitalOn: String(!!f.digital), digitalCls: f.digital ? 'is-on' : '', toggleDigital: () => this.apply(ff => ({ ...ff, digital: !ff.digital })),
+      layoutCls: s.loading ? 'is-searching' : '',
       advHref: advancedFormHref(f), advOpen: s.advOpen, advSrc: advancedFormHref(f) + (advancedFormHref(f).includes('?') ? '&' : '?') + 'embed=1', advBtnRef: this.advBtnRef, advDialogRef: this.advDialogRef, advCloseRef: this.advCloseRef, advFrameRef: this.advFrameRef, advTrapKey: this.advTrap, closeAdv: () => this.closeAdv(), openAdv: () => this.openAdv(), filterCount: (chips.length + (f.digital ? 1 : 0)) || null, filterBtnRef: this.filterBtnRef,
       ppRef: this.ppRef, ppOpen: s.ppOpen, ppChev: s.ppOpen ? 'rotate(180deg)' : 'none', togglePP: () => this.setState(st => ({ ppOpen: !st.ppOpen })),
       rangeLabel: s.perPage + ' results per page',
@@ -1406,9 +1409,7 @@ class Component extends DCLogic {
       prevColor: page > 1 ? 'var(--col-bg-primary)' : '#c3c6cd',
       nextBg: page < pageCount ? '#c8d5c0' : '#e4e7ec', nextColor: page < pageCount ? 'var(--col-bg-primary)' : '#9aa1af', nextCursor: page < pageCount ? 'pointer' : 'default',
       toTop: () => window.scrollTo({ top: 0, behavior: 'smooth' }),
-      ppOpts: [20, 40, 60].map(v => ({ label: v + ' per page', sel: s.perPage === v, bg: s.perPage === v ? '#b3e5f5' : '#fff', pick: () => { this.setState({ ppOpen: false, perPage: v }); this.apply(ff => ff); } })),
-      switches: [['Digital asset', 'digital']].map(([label, k]) => { const on = f[k]; return { label, on, toggle: () => this.apply(ff => ({ ...ff, [k]: !ff[k] })),
-        trackBg: on ? 'var(--col-bg-primary)' : '#c3c6cd', knobLeft: on ? '18px' : '2px' }; }),
+      ppOpts: [12, 24, 40, 96].map(v => ({ label: v + ' per page', sel: s.perPage === v, bg: s.perPage === v ? '#b3e5f5' : '#fff', pick: () => { this.setState({ ppOpen: false, perPage: v }); this.apply(ff => ff); } })),
       sortOpen: s.sortOpen, sortRef: this.sortRef, toggleSort: () => this.setState(st => ({ sortOpen: !st.sortOpen })),
       sortLabel: (SORTS.find(x => x[0] === f.sort) || [0, 'Sort by'])[1], sortColor: f.sort ? 'var(--col-text-primary)' : '#6b7080', sortChev: s.sortOpen ? 'rotate(180deg)' : 'none',
       sortOpts: SORTS.map(([v, label]) => ({ label, sel: f.sort === v, bg: f.sort === v ? '#b3e5f5' : '#fff', pick: () => { this.setState({ sortOpen: false }); this.apply(ff => ({ ...ff, sort: v })); } })),
