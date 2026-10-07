@@ -2,7 +2,7 @@
 
 A static front-end prototype for searching and browsing the University of Melbourne's cultural collections (Grainger Museum, Medical History Museum, University Art Collection, Harry Brookes Allen Museum, Henry Forman Atkinson Dental Museum, and a few smaller collections).
 
-**Design system**: UoM Gen 3 | **Bootstrap**: 5.3.3 (built locally) | **Hosting**: Vercel | **Repository**: https://github.com/dnbl0/CCS-Static-latest
+**Design system**: UoM Gen 3 | **Bootstrap**: 5.3.3 (built locally) | **Hosting**: GitHub Pages | **Repository**: https://github.com/Enterprise-Services-Group/CCS-2026-MVP
 
 The site is a prototype driven by an in-repo dataset (735 listed records), not a live catalogue. Accessibility work has been done and checked with axe-core scans (clean apart from the items listed under [Known issues](#known-issues--follow-ups)), but the site has **not** had a formal WCAG audit or certification.
 
@@ -103,10 +103,11 @@ src/scss/custom-bootstrap.scss   Bootstrap 5.3.3 theme source (see Styling)
 tests/                      Plain-Node test scripts (see Develop, test and deploy)
 config/redirects.json      Documentation-only list of legacy redirects (nothing reads it at runtime; vercel.json and .htaccess are authoritative)
 assets/                     Source material for content: spreadsheets, CSVs, help/landing-page copy (.docx), original images. Not deployed (listed in .vercelignore)
-.github/workflows/          ci.yml, auto-merge.yml, vercel-deploy.yml
+.github/workflows/          ci.yml, auto-merge.yml, pages.yml (deploy to GitHub Pages)
 .agents/rules/              PR workflow rule for coding agents
 verify-bootstrap.sh         Checks Bootstrap references in pages (run by npm test)
-vercel.json                 Vercel config
+vercel.json                 Clean URLs + legacy redirects; read by scripts/dev-server.js and scripts/build-pages.js (no longer deployed to Vercel)
+scripts/build-pages.js      Builds public/ into dist/ for GitHub Pages (base-path prefixing, /item/:code via 404.html, redirect pages); `npm run build:pages`
 design.md, github.md, jira-mvp-mapping.md, BOOTSTRAP-DEPENDENCIES.md   Supporting docs
 ```
 
