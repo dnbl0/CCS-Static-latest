@@ -92,11 +92,11 @@
           <legend class="advanced-range__legend"><%= range.label %></legend>
           <div class="advanced-form__field">
             <label for="adv-<%= range.key %>-from" class="advanced-form__label"><%= t("advanced_search.dates.from") %></label>
-            <%= number_field_tag "range[#{range.key}][begin]", range.from, id: "adv-#{range.key}-from", class: "advanced-form__control", inputmode: "numeric", placeholder: "Any", data: { advanced_search_target: "from" } %>
+            <%= number_field_tag "range[#{range.key}][begin]", range.from, id: "adv-#{range.key}-from", class: "advanced-form__control", inputmode: "numeric", autocomplete: "off", placeholder: "Any", data: { advanced_search_target: "from" } %>
           </div>
           <div class="advanced-form__field">
             <label for="adv-<%= range.key %>-to" class="advanced-form__label"><%= t("advanced_search.dates.to") %></label>
-            <%= number_field_tag "range[#{range.key}][end]", range.to, id: "adv-#{range.key}-to", class: "advanced-form__control", inputmode: "numeric", placeholder: "Any", data: { advanced_search_target: "to" } %>
+            <%= number_field_tag "range[#{range.key}][end]", range.to, id: "adv-#{range.key}-to", class: "advanced-form__control", inputmode: "numeric", autocomplete: "off", placeholder: "Any", data: { advanced_search_target: "to" } %>
           </div>
         </fieldset>
       <% end %>

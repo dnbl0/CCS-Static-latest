@@ -16,11 +16,9 @@ class CatalogController < ApplicationController
     end
   end
 
-  # If you'd like to handle errors returned by Solr in a certain way,
-  # you can use Rails rescue_from with a method you define in this controller,
-  # uncomment:
-  #
-  # rescue_from Blacklight::Exceptions::InvalidRequest, with: :my_handling_method
+  # Solr down, slow or refusing a request: say so, instead of a stack trace. The pages that do not search (home, help...)
+  # keep working. Timeouts come from config/blacklight.yml.
+  rescue_from Blacklight::Exceptions::ECONNREFUSED, Blacklight::Exceptions::InvalidRequest, Faraday::TimeoutError, Faraday::ConnectionFailed, with: :search_unavailable
 
   # Retries a zero-result search using Solr's spelling collation
   self.search_service_class = ::SearchService
@@ -161,5 +159,16 @@ class CatalogController < ApplicationController
     state = search_state.reset(search_state.params.deep_dup.tap { |p| p[:range]&.delete(field) })
     service = search_service_class.new(config: blacklight_config, search_state: state, **search_service_context)
     render json: RangeHistogramQuery.new(service: service, search_state: state, field: field, bins: params[:bins])
+  end
+
+  private
+
+  def search_unavailable(error)
+    Rails.logger.error("Search unavailable: #{error.class}: #{error.message}")
+    respond_to do |format|
+      format.html { render "catalog/unavailable", status: :service_unavailable }
+      format.json { render json: { error: "Search is unavailable. Please try again shortly." }, status: :service_unavailable }
+      format.any { head :service_unavailable }
+    end
   end
 end

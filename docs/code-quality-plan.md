@@ -95,128 +95,28 @@ search bar on the home page (the Rails app keeps its Blacklight bar) and font fa
     Lighthouse budgets are not added: they measure a build served over a network, which this site does not have yet.
 - **Done 2026-10-07 (small):** `hello_controller.js` removed (item 21); `ead-ccs-test/docs/handover.md` has a current status
   section (item 24).
-- Still to do: items 9, 16, 17, 20, the rest of 21, 23, 25-28 and the pre-rendering decision in item 14. The Chromium suites could not run in the sandbox
-  (the page runtime needs unpkg.com): they run in CI.
-
-## Phase 1 - Stop the two sites drifting apart (highest value)
-
-The pages exist twice and are kept in step by hand. That is the main structural risk.
-
-1. **Decide the source of truth (S, a decision).** Either (a) the static site stays the design reference and the Rails
-   app is a faithful port, or (b) one shared package of tokens, CSS and images feeds both. Recommended: (b) for
-   tokens, CSS and images only. Copy and templates stay separate because one is DC templates and the other ERB.
-2. **Share one design-token and CSS source (M).** Make `public/styles/tokens/tokens.css`, the page CSS and the images
-   the origin, and add a script (`scripts/sync-rails-assets.js`) that writes the Rails copies
-   (`tokens/static_site.css`, `pages/*.css`, `images/site/`). Today `/tmp`-style one-off generators produced them, and
-   nothing records how. Done when: one command regenerates the Rails files and a CI step fails if they differ from
-   the committed copies.
-3. **Add a parity test (M).** A Playwright test that loads each static page and its Rails twin at 1440 and 390px and
-   compares computed styles for a list of key selectors (the technique used for this review). Reuse
-   `scripts/style-snapshot.js` and `style-diff.js`, which already exist. Done when: a style change on one side
-   without the other fails CI.
-4. **One place for page copy (S).** `ead-ccs-test/config/pages.yml` and the static pages' JS dictionaries hold the
-   same text. Pick the YAML as the origin and have the static build read it, or document that both are edited
-   together.
-
-## Phase 2 - Safety nets and process
-
-5. **Check the CI layout (S).** `ead-ccs-test/.github/workflows/{ci,deploy}.yaml` are nested workflows that GitHub
-   does not run from this repository. See Progress: they stay until it is confirmed how the app is delivered. Add a
-   root `dependabot.yml` for npm, Bundler (`/ead-ccs-test`) and GitHub Actions.
-6. **Path-filter CI (S).** Run the `npm test` job only for static changes and the `rails` job only for
-   `ead-ccs-test/**`, so neither blocks the other. Add Bundler and npm caching.
-7. **Review the auto-merge workflow (S).** `auto-merge.yml` squash-merges `feature/**`, `bugfix/**` and `enhance/**`
-   pushes into `main` after a design check. Decide whether that is still wanted now that two applications live in one
-   repository, and restrict it so Rails changes get a human review.
-8. **Branch and release hygiene (S).** Work currently lands on `wip/local-main`. Agree the branch flow, add a
-   `CODEOWNERS` file (static vs Rails owners) and a pull request template that asks for desktop and mobile
-   screenshots for UI changes.
-9. **Dependency updates (S).** Keep Dependabot for Bundler, npm and GitHub Actions. Brakeman is pinned by
-   `bin/brakeman --ensure-latest`, so budget a bump when it releases.
-
-## Phase 3 - Static site (HTML, CSS, JS)
-
-10. **Add linters and formatters (S).** Stylelint (standard config plus a ban on `!important` and ID selectors),
-    ESLint (recommended), HTML validation with `html-validate` or `vnu`, and Prettier. Run them in `npm test`. Fix or
-    baseline the findings; there are only three `!important`s today.
-11. **Collapse the five landing pages (M).** `collections/*/index.html` are 769 lines each and differ only in data.
-    Generate them in `scripts/build-pages.js` from one template and one data file (the same shape as the Rails
-    `pages.yml`). Done when: adding a collection means adding data, not copying a file.
-12. **Pull the repeated header, footer and search overlay out of every page (M).** They are pasted into each HTML
-    file. Generate them at build time from one partial. The `no-inline-styles` and `page-integrity` tests already
-    protect the output.
-13. **Split the large stylesheets (M).** `search-results.css` (75 KB) and `record.css` (30 KB) should be split by
-    component (toolbar, filters, results card, record media) and ordered by an import manifest. Keep the BEM naming
-    already in use. Done when: no stylesheet is over about 15 KB and `stylesheet-structure.test.js` enforces it.
-14. **Retire what the build replaces (M).** `support.js` is a generated runtime that needs React and Babel from a CDN
-    at page load (so the pages are blank offline) and renders client-side. Evaluate pre-rendering the DC templates
-    to plain HTML in the build, which removes the runtime dependency, improves first paint and makes the pages
-    testable without a browser. This is the largest single improvement for the static site.
-15. **Accessibility and performance gates (M).** Run `axe-core` over every page in CI (the Chromium suite exists but
-    is skipped when Chromium is missing: make CI fail rather than skip), add Lighthouse CI budgets, and trim
-    `public/assets` (about 238 MB) with image derivatives and lazy loading.
-16. **Docs (S).** `README.md` is long and carries a changelog. Move the changelog to `CHANGELOG.md`, keep the README
-    to setup, structure and conventions, and fix the stale repository URL.
-
-## Phase 4 - Rails/Blacklight app
-
-17. **Lint everything Rails (S).** Rubocop stays as is; add `erb_lint` (ERB), `stylelint` for the asset CSS and
-    `bin/importmap audit` / `bundler-audit` to the CI job (they are already in `config/ci.rb`: run that file in CI so
-    local and CI checks cannot diverge).
-18. **Make the pages layer idiomatic (M).**
-    - `PagesController` holds the help topic list and YAML loading; move them to `app/models/help_topic.rb` and
-      `app/models/collection_page.rb` (plain Ruby objects) and cache the YAML parse at boot rather than in a class
-      variable.
-    - Turn the repeated page chrome (breadcrumb, banner, contact box, `ct-listing` and pathfinder cards) into
-      ViewComponents next to the existing `NexusCcs::*` ones, with component tests.
-    - Move the generated static HTML for the contact, help and indigenous pages to i18n or content partials so copy is
-      editable without touching markup.
-19. **Slim `CatalogController` (M).** About 270 lines of configuration plus actions. Extract the facet setup, the
-    range histogram action and the default-redirect into concerns or config objects (`CatalogConfig`,
-    `RangeHistogramsController`) so each can be tested alone. Keep Blacklight's own extension points (components,
-    search builder, search state fields) as the only coupling.
-20. **CSS structure (M).** The `components/` files for the search results are large (`record_page.css` 400+ lines,
-    `advanced_search.css` 400+). Apply the rule used on the static side: one file per component, tokens only, no
-    `!important` (26 today). Remove the per-page `bc-mobile` style of duplication from the copied static files (done
-    for breadcrumbs; sweep for the rest after step 2).
-21. **JavaScript (S).** Stimulus controllers are small and conventional. Add unit tests with a lightweight runner
-    (Vitest or the Rails system test driver) for the ones with logic (`range_slider`, `advanced_search`,
-    `select_dropdown`) and delete `hello_controller.js`.
-22. **Test depth (M).** Add system tests (Capybara) for the main journeys: search, filter, open a record, open the
-    advanced search flyout, the mobile menu. Add integration tests for the error paths (Solr down shows a friendly
-    page; the pages work without Solr, which is the case today and is logged).
-23. **Operational basics (S).** Health check `up`, structured logging, Solr timeouts and a rescue for
-    `Blacklight::Exceptions::InvalidRequest` that renders a useful message; confirm Content-Security-Policy is on
-    (`config/initializers/content_security_policy.rb`) now that the layout loads only same-origin assets.
-24. **Docs (S).** Refresh `docs/handover.md` (it names old branches and Ruby 4.0.6; the sandbox ran 3.3.6), keep
-    `docs/` as the single place for architecture notes, and add an ADR folder for decisions like step 1.
-
-## Phase 5 - Across both
-
-25. **Naming and conventions (S).** Agree one vocabulary: collection slugs, the facet values (`collection_ssim`) and
-    the labels in the header (`SiteNavigation::COLLECTIONS` and `pages.yml` repeat them).
-26. **Content model (M).** The data model workbooks (`data/*.xlsx`, `data-model/*.json`, `config/data_model`) are the
-    third copy of the field and filter definitions. Make the workbook the origin and generate the JSON for both sites
-    (the Rails docs describe this; the static `scripts/extract-data-model.py` is the other half).
-27. **Security (S).** Keep Brakeman and bundler-audit blocking, add `npm audit` for the static tooling, and rotate any
-    secret that ever appeared in history (Solr password hash is in `solr/security.json`; see `docs/secrets.md`).
-28. **Accessibility (S).** One checklist for both sites (focus order, contrast, landmarks, reduced motion), run in the
-    parity test from step 3 with axe on both.
-
-## Suggested order and effort
-
-| Week | Items | Outcome |
-|---|---|---|
-| 1 | 5, 6, 7, 17 | CI is correct, scoped and fast; nothing runs twice or never |
-| 2 | 1, 2, 3 | The two sites cannot drift unnoticed |
-| 3 | 10, 11, 12 | Static site lints and has no copy-paste pages |
-| 4-5 | 13, 14, 15 | Static CSS split, templates pre-rendered, accessibility gated |
-| 4-5 | 18, 19, 20 | Rails controllers, components and CSS follow the same structure |
-| 6 | 21, 22, 23, 24, 25-28 | Test depth, operations, docs, shared conventions |
-
-## Definition of done for the whole plan
-
-- One command runs every check for both codebases locally and in CI, and a failing check blocks merging.
-- A style or copy change shows up in both sites or fails the parity test.
-- No file is generated by an undocumented one-off script.
-- Every page is covered by a test at desktop and mobile widths.
+- **Done 2026-10-07 (the rest):**
+  - Item 16: the README's changelog moved to `CHANGELOG.md`, and the README documents the generated files and commands.
+  - Item 17: `erb_lint` (`.erb_lint.yml`, `bin/erb_lint`) is clean (35 whitespace fixes, autocomplete attributes on three
+    inputs) and runs in the `rails` CI job. The Rails CSS is linted by `npm run lint:rails-css` (0 errors, warnings for
+    `!important` and duplicate selectors); linting found a dangling comment at the end of `site_header.css`, now removed.
+  - Item 20 (part): the `!important`s in the Rails CSS (24, mostly overrides of Bootstrap's `.visually-hidden` and
+    margins) are reported as warnings, not removed: removing them needs a visual check of the results page for each, and a
+    wrong one would be visible to everyone.
+  - Item 23 (part): a Solr that is down or refuses a request now gives a "Search is unavailable" page (HTTP 503; JSON too)
+    instead of a stack trace, the pages that do not search keep working, and Solr has connect and read timeouts
+    (`config/blacklight.yml`). Tested.
+  - Item 27: `npm audit --omit=dev` runs in the static CI job (0 vulnerabilities: the site has no runtime npm
+    dependencies); `bundler-audit`, `importmap audit` and Brakeman already ran. The dev tooling has 6 high advisories
+    in stylelint's dependency `braces`; they are not shipped, so they are reported, not blocking.
+  - Items 25 and 28: `docs/conventions.md` holds the naming, the "where a change is made" table and an accessibility checklist.
+- **Not done, on purpose:**
+  - Content Security Policy (item 23): the initializer is still commented out. Blacklight and the page runtime use inline
+    scripts, so it needs nonces and a browser check on every page; turn it on as its own change.
+  - Unit tests for the Stimulus controllers (item 21): the system tests exercise the controllers that matter (flyout,
+    menu, dropdowns); a JS test runner would be a new dependency for little extra cover.
+  - One list of collections (items 25, 26): the slugs and facet values are still in five places, and the data model
+    workbook is still copied into both sites. Generating them from the workbook is a larger job than this pass.
+  - Pre-rendering the static content pages (item 14): assessed above; only worth it if first paint on them matters.
+  - Item 9: Brakeman must be bumped by hand when it releases (`bin/brakeman` fails on an outdated gem); Dependabot is set up.
+  - Removing the `!important`s and the remaining duplicate-selector warnings (see above).

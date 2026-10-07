@@ -53,6 +53,9 @@ jobs:
       - name: Rubocop
         run: bin/rubocop
 
+      - name: ERB lint
+        run: bin/erb_lint --lint-all
+
       - name: Brakeman
         run: bin/brakeman --quiet --no-pager --exit-on-warn --exit-on-error
 

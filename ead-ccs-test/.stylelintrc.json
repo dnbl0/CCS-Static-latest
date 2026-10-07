@@ -1,0 +1,23 @@
+{
+  "extends": "stylelint-config-recommended",
+  "ignoreFiles": [
+    "ead-ccs-test/app/assets/builds/**",
+    "ead-ccs-test/app/assets/stylesheets/tokens/static_site.css",
+    "ead-ccs-test/app/assets/stylesheets/pages/**"
+  ],
+  "rules": {
+    "declaration-no-important": [
+      true,
+      {
+        "severity": "warning"
+      }
+    ],
+    "no-descending-specificity": null,
+    "no-duplicate-selectors": [
+      true,
+      {
+        "severity": "warning"
+      }
+    ]
+  }
+}
