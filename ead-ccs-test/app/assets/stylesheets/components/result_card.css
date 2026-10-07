@@ -149,9 +149,12 @@
   margin-bottom: 0;
 }
 
-/* Blacklight's .document rules clear the bottom border; the card has all four */
+/* Blacklight's .document rules clear the bottom border and add 24px of padding and a top margin; the card
+   has all four borders and its content and image sit flush to them */
 .documents-list .result-card,
 .documents-masonry .result-card {
+  margin: 0;
+  padding: 0;
   border: 1px solid var(--ccs-border-panel);
 }
 
