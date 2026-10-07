@@ -17,7 +17,7 @@
     "build:figma-tokens": "node scripts/build-figma-tokens.js",
     "style:snapshot": "node scripts/style-snapshot.js",
     "style:diff": "node scripts/style-diff.js",
-    "test": "npm run build:css && npm run verify:bootstrap && node tests/blacklight-adapter.test.js && node tests/search-live.test.js &&node tests/catalog-api.test.js && node tests/page-integrity.test.js && node tests/collection-data.test.js && node tests/data-model.test.js && node tests/no-inline-styles.test.js && node tests/stylesheet-structure.test.js && node tests/tokens.test.js && node tests/advanced-filters.test.js && node tests/smart-search.test.js && node tests/search-bar.test.js && node tests/results-filter-parity.test.js && node tests/image-aspect.test.js && node tests/style-diff.test.js && node tests/pages-build.test.js && node tests/accessibility.test.js"
+    "test": "npm run build:css && npm run verify:bootstrap && node tests/blacklight-adapter.test.js && node tests/search-live.test.js &&node tests/catalog-api.test.js && node tests/page-integrity.test.js && node tests/collection-data.test.js && node tests/data-model.test.js && node tests/no-inline-styles.test.js && node tests/stylesheet-structure.test.js && node tests/tokens.test.js && node tests/advanced-filters.test.js && node tests/smart-search.test.js && node tests/search-bar.test.js && node tests/results-filter-parity.test.js && node tests/range-slider.test.js && node tests/image-aspect.test.js && node tests/style-diff.test.js && node tests/pages-build.test.js && node tests/accessibility.test.js"
   },
   "repository": {
     "type": "git",

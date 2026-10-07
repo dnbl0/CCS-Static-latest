@@ -24,20 +24,6 @@ body.page-search-results .bc-mobile__item-link-cultural-collections {
   min-height: 44px;
 }
 
-body.page-search-results .date-fill--styled {
-  left: var(--dyn-left);
-  width: var(--dyn-width);
-}
-
-body.page-search-results .date-hist__text {
-  height: var(--dyn-height);
-  background: var(--dyn-background);
-}
-
-body.page-search-results .date-range-handle--styled {
-  left: var(--dyn-left);
-}
-
 body.page-search-results .page-banner__inner--styled {
   padding-top: 56px;
   padding-bottom: var(--space-48);
@@ -1921,28 +1907,6 @@ button,input,select{font-family:inherit}
 /* Production date facet: histogram + dual-handle slider + labelled year fields */
 .date-facet{display:flex;flex-direction:column;gap:0}
 .date-note{font-size:var(--font-size-15);color:var(--col-text-muted)}
-.date-summary{margin:var(--space-14) 0 0;font-size:16px;font-weight:var(--font-weight-semibold);color:var(--col-text-primary);min-height:24px}
-.date-hist{display:flex;align-items:flex-end;gap:var(--space-2);height:84px;margin:var(--space-12) var(--space-16) 0}
-.date-hist span{flex:1 1 0;min-width:2px;transition:background var(--duration-fast),height var(--duration-fast)}
-.date-track{position:relative;margin:0 16px;height:36px;touch-action:none;cursor:pointer}
-.date-rail{position:absolute;top:50%;left:0;right:0;height:2px;background:#c3c6cd;transform:translateY(-50%)}
-.date-fill{position:absolute;top:50%;height:2px;background:var(--col-bg-primary);transform:translateY(-50%)}
-.date-range-handle{position:absolute;top:50%;width:28px;height:28px;margin:-14px 0 0 -14px;border-radius:50%;border:2px solid var(--col-bg-primary);background:var(--white-100);cursor:grab;touch-action:none;padding:0}
-.date-range-handle::after{content:"";position:absolute;inset:-8px}
-.date-range-handle:hover{background:#e8edf6}
-.date-range-handle:active{cursor:grabbing;background:#d6e0f0}
-.date-range-handle:focus-visible{outline:3px solid var(--blue-400);outline-offset:2px}
-.date-ends{display:flex;justify-content:space-between;margin:var(--space-2) var(--space-16) 0;font-size:13px;color:var(--col-text-muted)}
-.date-inputs{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-top:var(--space-16)}
-.date-field{display:flex;flex-direction:column;gap:var(--space-6);font-size:14px;color:var(--col-text-muted)}
-.date-field--end{align-items:flex-end}
-.date-field input{box-sizing:border-box;width:140px;height:48px;border:1px solid var(--col-border-neutral);border-radius:var(--radius-none);padding:0 14px;font:inherit;font-size:17px;color:var(--col-text-primary);text-align:center;background:var(--white-100)}
-.date-field input::placeholder{color:var(--col-text-muted)}
-.date-field input:focus-visible{outline:3px solid var(--blue-400);outline-offset:2px;border-color:var(--col-bg-primary)}
-.date-help{margin:var(--space-10) 0 0;font-size:13px;color:var(--col-text-muted)}
-.date-error{margin-top:var(--space-6);font-size:14px;color:#b3261e}
-.date-reset{align-self:flex-start;margin-top:10px;border:0;background:none;padding:0;font:inherit;font-size:var(--font-size-15);font-weight:600;text-decoration:underline;color:var(--col-text-primary);cursor:pointer}
-@media (max-width:480px){.date-field input{width:112px}}
 
 /* ---- Facet rail: filters down the left, masonry results on the right (desktop only; the Filters modal stays).
    Laid out like Europeana's search (a "Search filters" panel of labelled select-style filters beside a masonry grid), mirrored to the left. ---- */
@@ -1959,13 +1923,13 @@ body.page-search-results .search-results-layout > .search-results-main-content {
   margin: 0;
 }
 
+/* The rail runs the full length of the page, as in the Blacklight prototype: no scrolling box of its own, so a
+   panel opening over the filters below is never clipped. --facet-panel-padding-y is the open panel's top and
+   bottom padding. */
 body.page-search-results .facet-rail {
+  --facet-panel-padding-y: var(--space-12);
   flex: none;
-  width: 296px;
-  position: sticky;
-  top: var(--space-16);
-  max-height: calc(100vh - var(--space-32));
-  overflow-y: auto;
+  width: 320px;
   margin-top: var(--space-24);
   padding: 0 var(--space-16) var(--space-24) 0;
   border-right: 1px solid var(--col-border-neutral-soft);
@@ -2030,6 +1994,7 @@ body.page-search-results .facet-rail__heading {
 }
 
 body.page-search-results .facet-rail__name {
+  font-family: var(--font-family-sans); /* it sits in an h3, which is set in the serif */
   font-size: var(--font-size-caption);
   font-weight: var(--font-weight-semibold);
   text-transform: uppercase;
@@ -2048,11 +2013,26 @@ body.page-search-results .facet-rail__toggle {
   border: 1px solid var(--col-border-neutral);
   background: var(--white-100);
   font: inherit;
+  font-family: var(--font-family-sans); /* the button sits in an h3, which is set in the serif */
   font-size: var(--font-size-small);
   font-weight: var(--font-weight-regular);
   color: var(--col-text-muted);
   text-align: left;
   cursor: pointer;
+}
+
+/* A filter with a value chosen shows it in the dark text colour; the placeholder stays muted */
+body.page-search-results .facet-rail__toggle[data-has-value="true"] {
+  color: var(--col-text-primary);
+}
+
+body.page-search-results .facet-rail__toggle:focus-visible,
+body.page-search-results .facet-rail__option:focus-visible,
+body.page-search-results .facet-rail__clear:focus-visible,
+body.page-search-results .facet-rail__more:focus-visible,
+body.page-search-results .facet-rail__search:focus-visible {
+  outline: 3px solid var(--blue-400);
+  outline-offset: 2px;
 }
 
 body.page-search-results .facet-rail__toggle:hover,
@@ -2083,11 +2063,9 @@ body.page-search-results .facet-rail__panel {
   left: 0;
   right: 0;
   z-index: var(--z-scale-10);
-  max-height: 320px;
-  overflow-y: auto;
   margin-top: -1px;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
-  padding: var(--space-4) var(--space-12) var(--space-4);
+  padding: var(--facet-panel-padding-y) var(--space-12);
   border: 1px solid var(--col-bg-primary);
   background: var(--white-100);
 }
@@ -2233,4 +2211,514 @@ body.page-search-results .facet-rail__error {
 body.page-search-results .facet-rail__option:disabled {
   cursor: default;
   color: var(--col-text-muted);
+}
+
+/* ------------------------------------------------------------------------------------------------
+   Blacklight parity: the results page follows the Rails (Blacklight) prototype's look. Banner scope
+   menu, count line, 48px dropdown boxes, List / Mosaic buttons, Card image / Card no media, the
+   horizontal list card and the pager. Later than the rules above on purpose; the JS sets only the
+   --dyn-* values these rules read.
+   ------------------------------------------------------------------------------------------------ */
+
+/* Banner: the scope menu is the site's dropdown box (a navy outline), not a grey cell */
+body.page-search-results .search-results-banner .ccs-searchbar__scope-btn {
+  background: var(--white-100);
+  border: 1px solid var(--col-bg-primary);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-regular);
+  color: var(--col-text-primary);
+}
+
+body.page-search-results .search-results-banner .ccs-searchbar__scope-btn:hover {
+  background: var(--palette-blue-95);
+}
+
+/* Toolbar: the count is a small semibold line, the buttons are 48px */
+body.page-search-results .search-results-bar .search-results-summary__heading {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.2;
+  color: var(--col-text-primary);
+}
+
+body.page-search-results .search-results-bar .search-results-summary__button-save-search,
+body.page-search-results .search-results-bar .search-results-search-tools__button-filter-btn {
+  height: 48px;
+  font-size: var(--font-size-body);
+}
+
+/* Results per page: the same 48px box as Sort, in the toolbar */
+body.page-search-results .search-results-per-page {
+  position: relative;
+  flex: 0 0 16rem;
+  margin: 0;
+}
+
+body.page-search-results .search-results-per-page .search-results-summary__group-pp {
+  align-self: auto;
+  margin-top: 0;
+}
+
+body.page-search-results .search-results-per-page .search-results-summary__button-toggle-pp {
+  width: 100%;
+  height: 48px;
+  justify-content: space-between;
+  gap: 0;
+  padding: 0 0 0 var(--space-14);
+  border: 1px solid var(--col-bg-primary);
+  background: var(--white-100);
+  font-size: var(--font-size-body);
+  color: var(--col-text-primary);
+  text-align: left;
+}
+
+body.page-search-results .search-results-per-page .search-results-summary__button-icon {
+  flex: none;
+  box-sizing: border-box;
+  width: 44px;
+  height: 46px;
+  padding: 15px;
+  border-left: 1px solid var(--col-bg-primary);
+  color: var(--col-bg-primary);
+}
+
+body.page-search-results .search-results-per-page .search-results-summary__group-listbox {
+  top: 100%;
+  bottom: auto;
+  right: 0;
+  margin-top: -1px;
+  border-top: 0;
+}
+
+body.page-search-results .search-results-bar__switch-long {
+  white-space: nowrap;
+}
+
+/* List and Mosaic: 48px joined buttons, the chosen one navy with a white icon */
+body.page-search-results .search-results-view {
+  gap: 0;
+  border: 0;
+}
+
+body.page-search-results .search-results-bar__controls .search-results-view button {
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--palette-grey-91);
+  background: var(--white-100);
+  color: var(--col-bg-primary);
+}
+
+body.page-search-results .search-results-bar__controls .search-results-view button + button {
+  margin-left: -1px;
+}
+
+body.page-search-results .search-results-bar__controls .search-results-view button[aria-pressed="true"] {
+  border-color: var(--col-bg-primary-dark);
+  background: var(--col-bg-primary-dark);
+  color: var(--white-100);
+}
+
+body.page-search-results .search-results-view__button-icon {
+  width: 32px;
+  height: 32px;
+}
+
+/* Result cards: Card image / Card no media. A white card with a 1px border, the image when the record has
+   one, 16px of padding, a 24px semibold link-blue title (an h5) and three 16px lines. */
+body.page-search-results .search-results-main-content__article--v1,
+body.page-search-results .search-results-main-content__article--v2 {
+  border: 1px solid var(--palette-grey-91);
+  border-radius: 0;
+  background: var(--white-100);
+  box-shadow: none;
+  transition: border-color var(--duration-base);
+}
+
+body.page-search-results .search-results-main-content__article--v1:hover,
+body.page-search-results .search-results-main-content__article--v2:hover,
+body.page-search-results .search-results-main-content__article--v1:focus-within,
+body.page-search-results .search-results-main-content__article--v2:focus-within {
+  border-color: var(--palette-slate-75);
+  background: var(--white-100);
+}
+
+body.page-search-results .search-results-article__group--v4,
+body.page-search-results .search-results-article__group--v3 {
+  gap: var(--space-16);
+  padding: var(--space-16);
+}
+
+body.page-search-results .search-results-article__heading {
+  margin: 0;
+  font-size: var(--font-size-title-4);
+  line-height: 1.2;
+}
+
+body.page-search-results .search-results-article__link--v3,
+body.page-search-results .search-results-article__link--v4 {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-title-4);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+  text-decoration: none;
+  color: var(--palette-navy-27);
+}
+
+body.page-search-results .search-results-main-content__article:hover .search-results-article__link--v3,
+body.page-search-results .search-results-main-content__article:hover .search-results-article__link--v4,
+body.page-search-results .search-results-article__link--v3:focus-visible,
+body.page-search-results .search-results-article__link--v4:focus-visible {
+  text-decoration: underline;
+  text-underline-position: from-font;
+}
+
+body.page-search-results .search-results-article__lines {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin: 0;
+  font-size: var(--font-size-body);
+  line-height: 1.5;
+  color: var(--col-bg-primary);
+}
+
+body.page-search-results .search-results-article__line {
+  overflow-wrap: anywhere;
+}
+
+body.page-search-results .search-results-main-content__article .search-results-article__group--v1 {
+  margin: 0;
+  padding: 0;
+  border-top: 0;
+}
+
+body.page-search-results .search-results-article__line:empty {
+  display: none;
+}
+
+body.page-search-results .search-results-article__line--link {
+  color: inherit;
+  text-decoration: none;
+}
+
+body.page-search-results .search-results-article__line--link:hover {
+  text-decoration: underline;
+}
+
+/* List view: one column of cards; the vertical card under 768px, the horizontal card from 768px (text left,
+   the 324 x 182 image right), two columns from 1800px */
+body.page-search-results .search-results-main-content__group--v5 {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-24);
+}
+
+body.page-search-results .search-results-main-content__article--v2 {
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
+  align-items: stretch;
+}
+
+body.page-search-results .search-results-article__link--v2 {
+  flex: none;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  background: var(--palette-grey-88);
+}
+
+body.page-search-results .search-results-article__link-image--v2 {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  mix-blend-mode: normal;
+}
+
+@media (min-width: 768px) {
+  body.page-search-results .search-results-main-content__article--v2 {
+    flex-direction: row;
+  }
+
+  body.page-search-results .search-results-main-content__article--v2 .search-results-article__group--v3 {
+    justify-content: center;
+  }
+
+  body.page-search-results .search-results-article__link--v2 {
+    order: 2;
+    width: 324px;
+    min-height: 182px;
+    aspect-ratio: auto;
+    align-self: stretch;
+  }
+}
+
+@media (min-width: 1800px) {
+  body.page-search-results .search-results-main-content__group--v5 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Pager: sage Previous / Next with arrows, square page numbers, the current page tinted sage. Previous and
+   Next are left out where there is no such page. Under 576px they are full width, above and below the numbers. */
+body.page-search-results .search-results-main-content__group--v4 {
+  align-items: flex-start;
+  gap: var(--space-16);
+  padding-top: var(--space-32);
+}
+
+body.page-search-results .search-results-main-content__range {
+  margin: 0;
+  font-size: var(--font-size-small);
+  color: var(--col-text-muted);
+}
+
+body.page-search-results .search-results-pagination {
+  justify-content: flex-start;
+  gap: var(--space-4);
+}
+
+body.page-search-results .search-results-pagination__button-go {
+  min-width: 32px;
+  height: 32px;
+  padding: 0 var(--space-4);
+  background: var(--white-100);
+  color: var(--col-bg-primary);
+  font-size: var(--font-size-body-lg);
+  font-weight: var(--font-weight-regular);
+}
+
+body.page-search-results .search-results-pagination__button-go[aria-current="page"] {
+  background: var(--sage-200);
+}
+
+body.page-search-results .search-results-pagination__button-prev-page,
+body.page-search-results .search-results-pagination__button-next-page {
+  width: auto;
+  height: auto;
+  min-height: 48px;
+  gap: var(--space-8);
+  padding: var(--space-12);
+  border: 0;
+  background: var(--sage-400);
+  color: var(--col-bg-primary);
+  font-size: var(--font-size-body-lg);
+  font-weight: var(--font-weight-semibold);
+}
+
+body.page-search-results .search-results-pagination__button-prev-page:hover,
+body.page-search-results .search-results-pagination__button-next-page:hover {
+  background: var(--sage-300);
+}
+
+body.page-search-results .search-results-pagination__button-prev-page:disabled,
+body.page-search-results .search-results-pagination__button-next-page:disabled {
+  display: none;
+}
+
+body.page-search-results .search-results-pagination__button-icon {
+  width: 24px;
+  height: 24px;
+}
+
+@media (max-width: 575.98px) {
+  body.page-search-results .search-results-pagination {
+    width: 100%;
+  }
+
+  body.page-search-results .search-results-pagination__button-prev-page,
+  body.page-search-results .search-results-pagination__button-next-page {
+    flex: 1 1 100%;
+  }
+
+  body.page-search-results .search-results-pagination__button-prev-page {
+    order: -1;
+  }
+
+  body.page-search-results .search-results-pagination__button-next-page {
+    order: 99;
+  }
+}
+
+/* Phones: Sort and Results per page share the first row */
+@media (max-width: 767.98px) {
+  body.page-search-results .search-results-bar .search-results-per-page {
+    order: 1;
+    flex: 1 1 calc(50% - 4px);
+    min-width: 0;
+  }
+
+  body.page-search-results .search-results-bar .search-results-per-page .search-results-summary__button-toggle-pp {
+    padding-left: var(--space-10);
+    font-size: var(--font-size-small);
+  }
+
+  body.page-search-results .search-results-bar.is-stuck .search-results-per-page {
+    display: none;
+  }
+}
+
+/* Stuck at tablet widths there is no room for a second dropdown beside the search box */
+@media (max-width: 1279.98px) {
+  body.page-search-results .search-results-bar.is-stuck .search-results-per-page {
+    display: none;
+  }
+}
+
+/* ===== Blacklight-style results experience: switch, pills, rail skeleton (phase 2a) ===== */
+
+/* "Show only: Records with digital assets", a switch at the top of the filter rail */
+body.page-search-results .facet-rail__switches {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+body.page-search-results .filter-switch {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: var(--font-size-body);
+  text-align: left;
+  color: var(--col-text-primary);
+  cursor: pointer;
+}
+
+body.page-search-results .filter-switch:hover .filter-switch__label {
+  text-decoration: underline;
+}
+
+body.page-search-results .filter-switch__track {
+  position: relative;
+  flex: none;
+  width: 44px;
+  height: 24px;
+  border-radius: var(--radius-pill);
+  background: var(--col-border-neutral);
+  transition: background var(--duration-base);
+}
+
+body.page-search-results .filter-switch__knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: var(--radius-circle);
+  background: var(--white-100);
+  box-shadow: var(--shadow-soft);
+  transition: transform var(--duration-base);
+}
+
+body.page-search-results .filter-switch.is-on .filter-switch__track {
+  background: var(--col-bg-primary);
+}
+
+body.page-search-results .filter-switch.is-on .filter-switch__knob {
+  transform: translateX(20px);
+}
+
+body.page-search-results .filter-switch:focus-visible {
+  outline: 3px solid var(--blue-400);
+  outline-offset: 2px;
+}
+
+/* Applied filters, as pills after "N results for" in the toolbar: the value only, sage, removable */
+body.page-search-results .search-results-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+body.page-search-results .search-results-pill {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  background: var(--col-bg-accent-soft);
+  color: var(--col-bg-primary);
+}
+
+body.page-search-results .search-results-pill__text {
+  min-width: 0;
+  padding: var(--space-2) var(--space-4) var(--space-2) var(--space-8);
+  overflow: hidden;
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-semibold);
+  line-height: 24px;
+  letter-spacing: 0.08em;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+body.page-search-results .search-results-pill__remove {
+  display: inline-flex;
+  align-items: center;
+  align-self: stretch;
+  padding: 0 var(--space-8);
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+body.page-search-results .search-results-pill__remove:hover,
+body.page-search-results .search-results-pill__remove:focus-visible {
+  background: var(--palette-sage-80);
+}
+
+body.page-search-results .search-results-pill__remove:focus-visible {
+  outline: 3px solid var(--blue-400);
+  outline-offset: -3px;
+}
+
+/* While results update (aria-busy on the layout) the rail's options and the pills shimmer grey, as the cards do */
+body.page-search-results .search-results-layout.is-searching .facet-rail__item,
+body.page-search-results .search-results-layout.is-searching .facet-rail__toggle {
+  background: linear-gradient(90deg, #ecebe7 0, #f6f5f2 40%, #ecebe7 80%);
+  background-size: 1200px 100%;
+  animation: shimmer 1.3s linear infinite;
+  pointer-events: none;
+}
+
+body.page-search-results .search-results-layout.is-searching .facet-rail__item > *,
+body.page-search-results .search-results-layout.is-searching .facet-rail__value,
+body.page-search-results .search-results-layout.is-searching .facet-rail__chevron {
+  visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.page-search-results .search-results-layout.is-searching .facet-rail__item,
+  body.page-search-results .search-results-layout.is-searching .facet-rail__toggle,
+  body.page-search-results .search-results-loading-results__group--v2,
+  body.page-search-results .search-results-loading-results__text--v1,
+  body.page-search-results .search-results-loading-results__text--v2,
+  body.page-search-results .search-results-loading-results__text--v3,
+  body.page-search-results .search-results-loading-results__text--v4 {
+    animation: none;
+  }
+
+  body.page-search-results .filter-switch__track,
+  body.page-search-results .filter-switch__knob {
+    transition: none;
+  }
+}
+
+/* the count and its pills sit on one line, with room between */
+body.page-search-results .search-results-bar .search-results-summary__group--v4 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-8) var(--space-12);
 }
