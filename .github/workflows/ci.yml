@@ -27,3 +27,49 @@ jobs:
 
       - name: Run tests
         run: npm test
+
+  rails:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ead-ccs-test
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      RAILS_ENV: test
+      PGHOST: localhost
+      PGUSER: postgres
+      PGPASSWORD: postgres
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          working-directory: ead-ccs-test
+          bundler-cache: true
+
+      - name: Rubocop
+        run: bin/rubocop
+
+      - name: Brakeman
+        run: bin/brakeman --quiet --no-pager --exit-on-warn --exit-on-error
+
+      - name: Prepare database
+        run: bin/rails db:create db:schema:load
+
+      - name: Run tests
+        run: bin/rails test

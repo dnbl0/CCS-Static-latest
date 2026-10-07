@@ -70,7 +70,7 @@ class CatalogController < ApplicationController
     # Links out to the record in its source system, behind a "you're leaving this
     # site" interstitial. Guarded here rather than by the component's render?,.
     config.add_show_tools_partial(:view_full_record, component: NexusCcs::ViewFullRecordComponent,
-      if: ->(_context, _config, options) {  #so a record with no URL doesn't leave an empty <li>
+      if: ->(_context, _config, options) {  # so a record with no URL doesn't leave an empty <li>
         NexusCcs::ViewFullRecordComponent.url_for(options[:document]).present?
       })
     config.add_show_tools_partial(:citation)
@@ -260,5 +260,4 @@ class CatalogController < ApplicationController
 
     render json: { min: min, max: max, bins: edges.each_with_index.map { |(from, to), i| { from: from, to: to, count: counts["b#{i}"].to_i } } }
   end
-
 end
