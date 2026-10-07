@@ -67,7 +67,11 @@ search bar on the home page (the Rails app keeps its Blacklight bar) and font fa
   is done, so pre-rendering would only cover contact, help, indigenous data, the browse page and the collection pages,
   and the help topics would need their own URLs (today `?topic=`). Worth doing if first paint on those pages matters;
   not needed for correctness.
-- Still to do: items 9, 15, 16, the rest of 13 and 14, 17, 19-28. The Chromium suites could not run in the sandbox
+- **Done 2026-10-07 (item 19):** `CatalogController` went from 263 to 165 lines. The facet, record field and search
+  field configuration is `CatalogConfig::Facets`, `RecordFields` and `SearchFields` (`app/models/catalog_config`), and the
+  range histogram action's Solr work is `RangeHistogramQuery`. The resulting Blacklight configuration is identical to
+  before (checked by dumping it from both versions). The histogram endpoint had no tests; it now has endpoint and query tests.
+- Still to do: items 9, 15, 16, the rest of 13 and 14, 17, 20-28. The Chromium suites could not run in the sandbox
   (the page runtime needs unpkg.com): they run in CI.
 
 ## Phase 1 - Stop the two sites drifting apart (highest value)

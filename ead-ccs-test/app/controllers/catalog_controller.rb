@@ -95,97 +95,11 @@ class CatalogController < ApplicationController
     # After the details: the persistent link.
     config.show.partials = [ :persistent_link ]
 
-    # ================================================================
-    # Facets
-    # ================================================================
-    # The filters, sections, order, names and types come from the workbook (DataModel). A filter the
-    # data cannot support yet (see config/data_model/solr_mapping.yml) is simply not offered.
-    DataModel.filters.select(&:available?).each do |filter|
-      options = { label: filter.name, group: filter.group }
-      case filter.type
-      when :year then options[:range] = { chart_js: false, textual_facets: false } # our own histogram, see range_histogram
-      when :checkbox then options.merge!(limit: nil, item_component: NexusCcs::FacetItemComponent)
-      else options.merge!(limit: 20, index_range: "A".."Z", item_component: NexusCcs::FacetItemComponent)   # browse, with "search within this filter" in the modal
-      end
-      config.add_facet_field filter.solr, **options
+    CatalogConfig::Facets.apply(config)
 
-      # In the search results design but not in the workbook: Creator role follows the creator dates.
-      config.add_facet_field "creator_role_ssim", label: "Creator role", group: filter.group, limit: 20, index_range: "A".."Z", item_component: NexusCcs::FacetItemComponent if filter.seq == 5
-    end
+    CatalogConfig::RecordFields.apply(config)
 
-    # CCS-41: show results with or without digital assets. Not in the workbook's filter list, so it is
-    # an addition from the Jira story; it sits with the Media type filters.
-    config.add_facet_field "has_digital_asset", label: "Digital asset", group: "media_type", item_component: NexusCcs::FacetItemComponent, query: {
-      with: { label: "With a digital asset", fq: "has_digital_asset_bsi:true" },
-      without: { label: "Without a digital asset", fq: "-has_digital_asset_bsi:true" }
-    }
-
-    # Self-excluding facets. Tag each facet's fq and have that same facet's counts ignore it
-    # (Solr {!tag}/{!ex} local params). Range facets build their own filters and query facets pass
-    # their fq through verbatim, so both are skipped.
-    config.facet_fields.each_value do |facet|
-      next if facet.range || facet.query
-
-      facet.tag = facet.key
-      facet.ex  = facet.key
-      facet.filter_query_builder = OrFilterQueryBuilder
-    end
-
-    config.add_facet_fields_to_solr_request!
-
-    # The advanced search form's "Includes all" filters (see AllFacetFilters) are carried in the search state
-    # like f and f_inclusive: Blacklight drops any parameter that is not listed here
-    config.search_state_fields = config.search_state_fields + [ { AllFacetFilters::PARAM => config.facet_fields.keys.index_with { [] } } ]
-
-    # ================================================================
-    # Record fields come from the workbook (DataModel): its labels, its order, and only the fields
-    # the data can carry. The title is the page heading, so it is not repeated as a field; the
-    # results list shows the fields marked `index` in config/data_model/solr_mapping.yml.
-    # access_condition_ssi and restrictions_tsi are deliberately absent.
-    # ================================================================
-    DataModel.fields.select(&:available?).reject { |field| field.seq == 1 }.each do |field|
-      config.add_index_field field.solr, label: field.label if field.index
-      config.add_show_field field.solr, label: field.label
-    end
-
-    # ================================================================
-    # Search fields
-    # The qf/pf values are defined in the /select handler in solr/conf/solrconfig.xml
-    # ================================================================
-    config.add_search_field "all_fields", label: "All Fields"
-
-    config.add_search_field("title") do |field|
-      field.solr_parameters = {
-        'spellcheck.dictionary': "title",
-        qf: "${title_qf}",
-        pf: "${title_pf}"
-      }
-    end
-
-    config.add_search_field("creator") do |field|
-      # No spellcheck.dictionary override: the "author" dictionary is built from
-      # author_spell, which is fed by author_tsim (not populated)
-      field.solr_parameters = {
-        qf: "${creator_qf}",
-        pf: "${creator_pf}"
-      }
-    end
-
-    config.add_search_field("subject") do |field|
-      field.solr_parameters = {
-        'spellcheck.dictionary': "subject",
-        qf: "${subject_qf}",
-        pf: "${subject_pf}"
-      }
-    end
-
-    # Vernon records only (the EMu export has no description column)
-    config.add_search_field("description") do |field|
-      field.solr_parameters = {
-        qf: "description_tsim",
-        pf: "description_tsim"
-      }
-    end
+    CatalogConfig::SearchFields.apply(config)
 
     config.advanced_search.enabled = true
 
@@ -246,18 +160,6 @@ class CatalogController < ApplicationController
 
     state = search_state.reset(search_state.params.deep_dup.tap { |p| p[:range]&.delete(field) })
     service = search_service_class.new(config: blacklight_config, search_state: state, **search_service_context)
-    base = service.search_builder.with(state).to_hash.merge(rows: 0, facet: false, "facet.query": nil)
-    repository = service.repository
-
-    stats = repository.search(params: base.merge(stats: true, "stats.field": field)).dig("stats", "stats_fields", field)
-    return render json: { bins: [] } unless stats && stats["min"]
-
-    min = stats["min"].to_i
-    max = stats["max"].to_i
-    edges = RangeHistogram.edges(min, max, RangeHistogram.bins_for(params[:bins]))
-    queries = edges.each_with_index.map { |(from, to), i| "{!key=b#{i}}#{field}:[#{from} TO #{to}]" }
-    counts = repository.search(params: base.merge(facet: true, "facet.query": queries)).dig("facet_counts", "facet_queries") || {}
-
-    render json: { min: min, max: max, bins: edges.each_with_index.map { |(from, to), i| { from: from, to: to, count: counts["b#{i}"].to_i } } }
+    render json: RangeHistogramQuery.new(service: service, search_state: state, field: field, bins: params[:bins])
   end
 end
