@@ -9,6 +9,8 @@ class CatalogConfigurationTest < ActiveSupport::TestCase
     assert_equal NexusCcs::ResultCardComponent, config.view.masonry.document_component
     assert_equal NexusCcs::ListViewIconComponent, config.view.list.icon
     assert_equal NexusCcs::MasonryViewIconComponent, config.view.masonry.icon
+    assert config.view.masonry.default, "mosaic is the default view"
+    assert_not config.view.list.default
   end
 
   test "per-page options and default" do

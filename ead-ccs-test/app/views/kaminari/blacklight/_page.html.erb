@@ -1,0 +1,18 @@
+<%# Link showing a page number. Blacklight's, with aria-current on the link itself: its own list item gets
+    `aria_current` (underscore), which is not an attribute. -%>
+<% page_display = number_with_delimiter(page.to_s) %>
+<% link_attrs = {
+                  remote: remote,
+                  rel: page.next? ? 'next' : page.prev? ? 'prev' : nil,
+                  class: 'page-link',
+                }
+%>
+<% if page.current? %>
+  <%= tag.li class: class_names('page-item', 'active') do %>
+    <%= link_to page_display, url, link_attrs.merge(aria: { current: 'page', label: t('views.pagination.aria.current_page', page: page_display) }) %>
+  <% end %>
+<% else %>
+  <%= tag.li class: 'page-item' do %>
+    <%= link_to page_display, url, link_attrs.merge(aria: { label: t('views.pagination.aria.go_to_page', page: page_display) }) %>
+  <% end %>
+<% end %>

@@ -39,7 +39,8 @@ class CatalogController < ApplicationController
     end
     config.view.list.document_component = NexusCcs::ResultCardComponent
     config.view.list.icon = NexusCcs::ListViewIconComponent
-    config.view.masonry(document_component: NexusCcs::ResultCardComponent,
+    # Mosaic is the default view; List is the other button
+    config.view.masonry(document_component: NexusCcs::ResultCardComponent, default: true,
       icon: NexusCcs::MasonryViewIconComponent, default_thumbnail: mosaic_placeholder)
     config.index.display_type_field = "format"
 

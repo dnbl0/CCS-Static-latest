@@ -1,7 +1,7 @@
 /*
  * The bar above the results, after the search results design: "N results for" with the search and filters as
  * removable pills on the left; on the right the Filters button (small screens), sort, page size and the
- * view buttons. Below the results: a small Previous / numbers / Next pager. Markup:
+ * view buttons (the pager below the results is components/pagination.css). Markup:
  * catalog/_sort_and_per_page.html.erb and NexusCcs::ConstraintsComponent.
  */
 #sortAndPerPage {
@@ -297,47 +297,4 @@
   --bs-tooltip-font-size: var(--ccs-font-size-sm);
   --bs-tooltip-border-radius: var(--ccs-radius-sm);
   --bs-tooltip-opacity: 1;
-}
-
-/* Pagination: small caps Previous and Next around the page numbers, the current page filled */
-.paginate-section .pagination {
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--ccs-space-1);
-  justify-content: center;
-  margin: 0;
-  padding: var(--ccs-space-6) 0;
-}
-
-.paginate-section .page-link {
-  min-width: 2.5rem;
-  padding: var(--ccs-space-2) var(--ccs-space-3);
-  border: 0;
-  border-radius: var(--ccs-radius-sm);
-  background: transparent;
-  font-size: var(--ccs-font-size-sm);
-  line-height: 1.5;
-  text-align: center;
-  color: var(--ccs-text-primary);
-}
-
-.paginate-section .page-link:hover {
-  background: var(--ccs-neutral-100);
-}
-
-.paginate-section .page-item.active .page-link {
-  background: var(--ccs-navy-1100);
-  color: var(--ccs-text-inverse);
-}
-
-.paginate-section .page-item.disabled .page-link {
-  background: transparent;
-  color: var(--ccs-text-tertiary);
-}
-
-.paginate-section .page-item:first-child .page-link,
-.paginate-section .page-item:last-child .page-link {
-  font-weight: var(--ccs-font-weight-semibold);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
 }
