@@ -77,7 +77,15 @@ search bar on the home page (the Rails app keeps its Blacklight bar) and font fa
   snapshot tool (`style:snapshot` / `style:diff`) on the search page: 14 states and widths, 0 differences. The
   snapshots cover those states only, so a hover or focus state outside them is not proven. `stylesheet-structure`
   now fails a stylesheet over 32 KB. Nine duplicate-selector warnings remain (record.css and some inside media queries).
-- Still to do: items 9, 15, 16, 17, 20-28 and the pre-rendering decision in item 14. The Chromium suites could not run in the sandbox
+- **Done 2026-10-07 (item 22, system tests):** the Rails app had a system test that could not run (its base class,
+  `test/application_system_test_case.rb`, did not exist). It now has one (Cuprite, headless Chrome) and six journey
+  tests: home search, mosaic/list, filtering, opening a record and back, the advanced search panel, the phone menu.
+  Running them needs Solr; a `system` job in `rails-ci.yml` downloads Solr 10, creates the core, indexes the CSVs and
+  runs them. I ran them here against a real Solr (Solr 10 from downloads.apache.org, 40,962 records) three times, all
+  green. The CI job itself has not run on GitHub yet. Two things the work turned up: the old Acknowledgement of Country
+  test expected the dialog at `/`, which stopped being true when `/` became the home page, so the home page now shows it
+  (once a day per browser) and the test is updated; and `catalog/_home_text` is dead code since the front page moved.
+- Still to do: items 9, 15, 16, 17, 20, 21, 23-28 and the pre-rendering decision in item 14. The Chromium suites could not run in the sandbox
   (the page runtime needs unpkg.com): they run in CI.
 
 ## Phase 1 - Stop the two sites drifting apart (highest value)

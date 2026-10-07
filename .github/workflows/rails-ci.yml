@@ -135,3 +135,75 @@ jobs:
         env:
           STATIC_URL: http://127.0.0.1:3100
           RAILS_URL: http://127.0.0.1:3200
+
+  system:
+    # Browser journeys (search, filter, record, advanced search, mobile menu) against a real Solr holding the indexed records
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ead-ccs-test
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      RAILS_ENV: test
+      PGHOST: localhost
+      PGUSER: postgres
+      PGPASSWORD: postgres
+      SOLR_URL: http://127.0.0.1:8984/solr/blacklight-core
+      SOLR_VERSION: 10.0.0
+      SOLR_MODULES: analysis-extras
+      SOLR_ULIMIT_CHECKS: "false"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          working-directory: ead-ccs-test
+          bundler-cache: true
+
+      - name: Cache Solr
+        id: solr-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/solr-${{ env.SOLR_VERSION }}.tgz
+          key: solr-${{ env.SOLR_VERSION }}
+
+      - name: Download Solr
+        if: steps.solr-cache.outputs.cache-hit != 'true'
+        run: curl -fsSL -o ~/solr-$SOLR_VERSION.tgz https://downloads.apache.org/solr/solr/$SOLR_VERSION/solr-$SOLR_VERSION.tgz
+
+      - name: Start Solr with the collections core
+        run: |
+          mkdir -p ~/solr && tar xzf ~/solr-$SOLR_VERSION.tgz -C ~/solr --strip-components=1
+          ~/solr/bin/solr start -p 8984 --force
+          ~/solr/bin/solr create -c blacklight-core -d "$GITHUB_WORKSPACE/ead-ccs-test/solr" -s http://127.0.0.1:8984
+
+      - name: Prepare the database and index the records
+        run: |
+          bin/rails db:create db:schema:load
+          bin/rails collections:index
+
+      - name: Run system tests
+        run: bin/rails test:system
+
+      - name: Keep screenshots from failed system tests
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: screenshots
+          path: ${{ github.workspace }}/ead-ccs-test/tmp/screenshots
+          if-no-files-found: ignore

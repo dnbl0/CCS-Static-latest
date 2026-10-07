@@ -154,3 +154,6 @@
       </div>
     </section>
   </main>
+
+<%# The Acknowledgement of Country, once a day per browser (see CountryAcknowledgement) %>
+<%= render "catalog/country_acknowledgement" if acknowledge_country? %>
