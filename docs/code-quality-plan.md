@@ -93,7 +93,9 @@ search bar on the home page (the Rails app keeps its Blacklight bar) and font fa
     other browser suites cannot be silently skipped; `tests/budgets.test.js` caps the stylesheets (220 KB), scripts
     (650 KB) and any one image (800 KB) a page names (current largest: 187 KB of CSS, 590 KB of scripts, a 672 KB image).
     Lighthouse budgets are not added: they measure a build served over a network, which this site does not have yet.
-- Still to do: items 9, 16, 17, 20, 21, 23-28 and the pre-rendering decision in item 14. The Chromium suites could not run in the sandbox
+- **Done 2026-10-07 (small):** `hello_controller.js` removed (item 21); `ead-ccs-test/docs/handover.md` has a current status
+  section (item 24).
+- Still to do: items 9, 16, 17, 20, the rest of 21, 23, 25-28 and the pre-rendering decision in item 14. The Chromium suites could not run in the sandbox
   (the page runtime needs unpkg.com): they run in CI.
 
 ## Phase 1 - Stop the two sites drifting apart (highest value)
