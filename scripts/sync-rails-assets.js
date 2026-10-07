@@ -14,7 +14,9 @@ const RAILS = path.join(ROOT, 'ead-ccs-test/app/assets');
 const check = process.argv.includes('--check');
 
 // Rules of the static navigation, footer and search popover: the Rails app has its own header, footer and overlay.
-const DROP = /^\s*(\.ccs-nav|\.ccs-foot|\.uom-search-popover|\.uom-menu|\.uom-primary|:root|\.home-university|\.home-form|section\[data-component)/;
+// Also dropped: the static pathfinder tiles (.pathfinder-alt__*, .pathfinder-inset*): the Rails app renders the design
+// system's Pathfinder, styled in app/assets/stylesheets/components/pathfinder.css.
+const DROP = /^\s*(\.pathfinder-alt__|\.pathfinder-inset|\.ccs-nav|\.ccs-foot|\.uom-search-popover|\.uom-menu|\.uom-primary|:root|\.home-university|\.home-form|section\[data-component)/;
 
 // Splits CSS into top-level blocks: [prelude, body|null, raw].
 function splitRules(css) {
@@ -67,16 +69,14 @@ function filter(css) {
 const fixUrls = (css) => css
   .replace('url("/images/chevron-right.svg")', 'url("../site/chevron-right.svg")')
   .replace("url('/images/arrow-right.svg')", "url('../site/arrow-right.svg')");
+// The Rails app has no mobile breadcrumb (the trail wraps instead): remove the selector from the shared rule.
+const noMobileBreadcrumb = (css) => css.replace(/,\s*\.page-breadcrumbs \.bc-mobile(?=\s*\{)/g, '');
 const header = (file) => `/* Generated from public/styles/${file} by scripts/sync-rails-assets.js. Edit the static file, not this copy. */\n`;
 const read = (file) => fs.readFileSync(path.join(STYLES, file), 'utf8');
 
 // Rules the Rails markup needs that the static pages get from base.css, header.css or per-page files.
 const SHARED_EXTRAS = `
 /* Generated: helpers and link treatments (from public/styles/base.css and components/header.css). */
-/* The mobile breadcrumb (a back link to the parent page), shown by the rule below under 769px. */
-.bc-mobile--styled { display: none; align-items: center; gap: var(--space-6); list-style: none; margin: 0; padding: 0; font-size: var(--font-size-body-lg); color: var(--white-100); }
-.bc-mobile__item { display: flex; align-items: center; }
-.bc-mobile__link { display: inline-flex; align-items: center; gap: var(--space-6); min-height: 44px; color: var(--white-100); text-decoration: none; }
 /* The static base layer: body text colour (the home page sets its own in ccs.css), and links are plain navy and underline on hover (Bootstrap's default underlines them). */
 body.page-collection-landing, body.page-collections-browse, body.page-help, body.page-contact, body.page-indigenous-data { color: var(--col-text-primary); }
 :where(body.page-home, body.page-collection-landing, body.page-collections-browse, body.page-help, body.page-contact, body.page-indigenous-data) a { color: #0b2a6b; text-decoration: none; }
@@ -84,10 +84,6 @@ body.page-collection-landing, body.page-collections-browse, body.page-help, body
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 .skip-link{position:absolute;top:-120px;left:16px;background:var(--col-btn-action-bg);color:var(--col-btn-action-text);padding:12px 18px;z-index:var(--z-99999);font-weight:700;text-decoration:none;border:2px solid var(--col-bg-primary);transition:top var(--duration-base) ease}
 .skip-link:focus{top:16px}
-@media (max-width:768px){
-  nav[aria-label="Breadcrumb"] > ol:not(.bc-mobile){display:none!important}
-  nav[aria-label="Breadcrumb"] .bc-mobile{display:flex!important}
-}
 :where(body.page-help, body.page-contact, body.page-indigenous-data) a{text-decoration:underline;text-underline-offset:2px}
 :where(body.page-help, body.page-contact, body.page-indigenous-data) a:hover{color:var(--col-bg-primary)}
 :where(body.page-home, body.page-collection-landing, body.page-collections-browse) a:hover{color:var(--col-bg-primary)}
@@ -99,7 +95,7 @@ const PAGES = { home: 'home', 'collections-browse': 'collections_browse', 'colle
 const files = new Map(); // path relative to RAILS -> Buffer | string
 files.set('stylesheets/tokens/static_site.css', read('tokens/tokens.css'));
 files.set('stylesheets/pages/static_shared.css',
-  (SHARED.map((name) => `\n${header(`components/${name}.css`)}${fixUrls(filter(read(`components/${name}.css`)))}`).join('') + SHARED_EXTRAS).trimStart());
+  (SHARED.map((name) => `\n${header(`components/${name}.css`)}${noMobileBreadcrumb(fixUrls(filter(read(`components/${name}.css`))))}`).join('') + SHARED_EXTRAS).trimStart());
 for (const [source, target] of Object.entries(PAGES)) {
   // The shared .bc-mobile rules replace each page's copy of them.
   const body = fixUrls(filter(read(`pages/${source}.css`))).replace(/^body\.page-[a-z-]+ \.bc-mobile[^{]*\{[^}]*\}\n?/gm, '');

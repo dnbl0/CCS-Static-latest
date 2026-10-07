@@ -160,8 +160,7 @@
   --breadcrumb-padding-x: calc(var(--spacing-075) * 1px);
   --breadcrumb-padding-y: calc(var(--spacing-050) * 1px);
 }
-.page-breadcrumbs .page-local-history,
-.page-breadcrumbs .bc-mobile {
+.page-breadcrumbs .page-local-history {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -348,40 +347,6 @@
 }
 .ct-listing__item--search {
   justify-content: stretch;
-}
-.pathfinder-alt__link {
-  display: flex;
-  flex: 1;
-  background: var(--brand-1200);
-  color: var(--white-100);
-  text-decoration: none;
-}
-.pathfinder-alt__link:hover {
-  background: var(--brand-1100);
-}
-.pathfinder-alt__link:focus-visible {
-  outline: 3px solid var(--focus-focus);
-  outline-offset: 2px;
-}
-.pathfinder-alt__content {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: var(--space-8);
-  padding: var(--space-24) var(--space-32);
-}
-.pathfinder-alt__title {
-  font-family: 'Source Sans 3', Helvetica, Arial, sans-serif;
-  font-size: var(--font-size-title-4);
-  font-weight: var(--font-weight-semibold);
-  line-height: 28.8px;
-}
-.pathfinder-alt__title::after {
-  content: '\00a0\2192';
-}
-.pathfinder-alt__summary {
-  font-size: var(--font-size-body);
-  line-height: 24px;
 }
 @media (max-width: 1000px) {
 .ct-listing__list {
@@ -816,32 +781,7 @@ a.contact-box__desc:hover {
 /* Pathfinder (inset, white) — single box used for an external redirect link.
    unimelb.edu.au/web/matrix-cms/content-templates/pathfinder documents this
    as the "Redirect page" asset pattern. */
-.pathfinder-inset {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-6);
-  background: var(--white-100);
-  border: 1px solid #e3e0d9;
-  padding: 22px;
-  text-decoration: none;
-}
-.pathfinder-inset:hover {
-  border-color: var(--col-bg-primary);
-}
-.pathfinder-inset__heading {
-  font-family: 'Fraunces', serif;
-  font-size: var(--font-size-body-lg);
-  color: var(--col-text-primary);
-}
-.pathfinder-inset__desc {
-  font-size: var(--font-size-small);
-  color: var(--col-text-muted);
-}
 /* Generated: helpers and link treatments (from public/styles/base.css and components/header.css). */
-/* The mobile breadcrumb (a back link to the parent page), shown by the rule below under 769px. */
-.bc-mobile--styled { display: none; align-items: center; gap: var(--space-6); list-style: none; margin: 0; padding: 0; font-size: var(--font-size-body-lg); color: var(--white-100); }
-.bc-mobile__item { display: flex; align-items: center; }
-.bc-mobile__link { display: inline-flex; align-items: center; gap: var(--space-6); min-height: 44px; color: var(--white-100); text-decoration: none; }
 /* The static base layer: body text colour (the home page sets its own in ccs.css), and links are plain navy and underline on hover (Bootstrap's default underlines them). */
 body.page-collection-landing, body.page-collections-browse, body.page-help, body.page-contact, body.page-indigenous-data { color: var(--col-text-primary); }
 :where(body.page-home, body.page-collection-landing, body.page-collections-browse, body.page-help, body.page-contact, body.page-indigenous-data) a { color: #0b2a6b; text-decoration: none; }
@@ -849,10 +789,6 @@ body.page-collection-landing, body.page-collections-browse, body.page-help, body
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 .skip-link{position:absolute;top:-120px;left:16px;background:var(--col-btn-action-bg);color:var(--col-btn-action-text);padding:12px 18px;z-index:var(--z-99999);font-weight:700;text-decoration:none;border:2px solid var(--col-bg-primary);transition:top var(--duration-base) ease}
 .skip-link:focus{top:16px}
-@media (max-width:768px){
-  nav[aria-label="Breadcrumb"] > ol:not(.bc-mobile){display:none!important}
-  nav[aria-label="Breadcrumb"] .bc-mobile{display:flex!important}
-}
 :where(body.page-help, body.page-contact, body.page-indigenous-data) a{text-decoration:underline;text-underline-offset:2px}
 :where(body.page-help, body.page-contact, body.page-indigenous-data) a:hover{color:var(--col-bg-primary)}
 :where(body.page-home, body.page-collection-landing, body.page-collections-browse) a:hover{color:var(--col-bg-primary)}

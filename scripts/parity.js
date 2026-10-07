@@ -20,7 +20,7 @@ const PAGES = [
   ['/', '/', ['.ccs-hero__title', '.ccs-hero__text', '.ccs-intro', '.ccs-section__heading', '.ccs-card__title a', '.ccs-card__text',
     '.ccs-help__title', '.ccs-help__text', '.ccs-faq__text', '.ccs-acc__summary-text']],
   ['/collections/', '/collections', ['.page-banner h1', '.page-banner__desc', '.ct-listing__title', '.ct-listing__lead',
-    '.ct-listing__heading', '.ct-listing__excerpt', '.pathfinder-alt__title', '.pathfinder-alt__summary']],
+    '.ct-listing__heading', '.ct-listing__excerpt']], // the Rails tiles are the design system's Pathfinder (.pathfinder__*), so the static .pathfinder-alt__* tiles are not compared
   ['/collections/grainger-museum/', '/collections/grainger-museum', ['.campaign-banner-split__heading', '.campaign-banner-split__text',
     '.campaign-banner-split__content a.button', '.collection-section__text', '.def-table__term', '.def-table__text', '.contact-box__title',
     '.contact-box__term', '.contact-box__para', '.ct-listing__title']],

@@ -1,8 +1,11 @@
 <li class="<%= item_class %>">
-  <%= link_to href, class: "pathfinder-alt__link", **link_options do %>
-    <span class="pathfinder-alt__content">
-      <span class="pathfinder-alt__title"><%= title %><% if external? %><span class="sr-only"> (opens in a new tab)</span><% end %></span>
-      <span class="pathfinder-alt__summary"><%= summary %></span>
-    </span>
+  <%= link_to href, class: "pathfinder__link", **link_options do %>
+    <div class="pathfinder__content">
+      <span class="pathfinder__icon" aria-hidden="true"></span>
+      <div class="pathfinder__text">
+        <%= content_tag title_tag, class: "pathfinder__title" do %><%= title %><% if external? %><span class="sr-only"> (opens in a new tab)</span><% end %><% end %>
+        <% if summary.present? %><p class="pathfinder__summary"><%= summary %></p><% end %>
+      </div>
+    </div>
   <% end %>
 </li>

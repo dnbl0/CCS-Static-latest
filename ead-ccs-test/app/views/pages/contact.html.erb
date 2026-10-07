@@ -63,10 +63,10 @@
 <div class="ct-listing__inner">
 <h2 class="ct-listing__title" id="h-help">Need help searching?</h2>
 <p class="ct-listing__lead">Read the guidance first. It may answer your question straight away.</p>
-<ul class="ct-listing__list ct-listing__list--pathfinder">
-<li class="ct-listing__item"><a class="pathfinder-alt__link" href="<%= help_path(topic: "search-tips") %>"><span class="pathfinder-alt__content"><span class="pathfinder-alt__title">Search tips</span><span class="pathfinder-alt__summary">How to find information, images, audio and video in the collections.</span></span></a></li>
-<li class="ct-listing__item"><a class="pathfinder-alt__link" href="<%= help_path(topic: "faq") %>"><span class="pathfinder-alt__content"><span class="pathfinder-alt__title">Frequently asked questions</span><span class="pathfinder-alt__summary">Answers to common questions about searching and using items.</span></span></a></li>
-<li class="ct-listing__item"><a class="pathfinder-alt__link" href="<%= help_path(topic: "copyright") %>"><span class="pathfinder-alt__content"><span class="pathfinder-alt__title">Copyright and terms of use</span><span class="pathfinder-alt__summary">How a collection item can be used.</span></span></a></li>
+<ul class="pathfinder">
+<%= render NexusCcs::PathfinderItemComponent.new(href: help_path(topic: "search-tips"), title: "Search tips", summary: "How to find information, images, audio and video in the collections.") %>
+<%= render NexusCcs::PathfinderItemComponent.new(href: help_path(topic: "faq"), title: "Frequently asked questions", summary: "Answers to common questions about searching and using items.") %>
+<%= render NexusCcs::PathfinderItemComponent.new(href: help_path(topic: "copyright"), title: "Copyright and terms of use", summary: "How a collection item can be used.") %>
 </ul>
 </div>
 </section></main>

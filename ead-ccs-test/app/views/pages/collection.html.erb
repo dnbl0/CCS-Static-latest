@@ -60,7 +60,7 @@
   <section class="ct-listing ct-listing--alt" aria-labelledby="h-explore">
     <div class="ct-listing__inner">
       <h2 class="ct-listing__title" id="h-explore">Explore further</h2>
-      <ul class="ct-listing__list ct-listing__list--pathfinder ct-listing__list--four">
+      <ul class="pathfinder pathfinder--cols-4">
         <%= render NexusCcs::PathfinderItemComponent.new(href: search_href, title: "Search this collection", summary: "Search and filter every record in the #{@collection["name"]}.") %>
         <%= render NexusCcs::PathfinderItemComponent.new(href: collections_path, title: "Browse all collections", summary: "Return to the five University cultural collections.") %>
         <%= render NexusCcs::PathfinderItemComponent.new(href: help_path, title: "Help and support", summary: "Searching, using and requesting items from the collections.") %>

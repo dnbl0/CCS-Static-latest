@@ -1,0 +1,130 @@
+/*
+ * The Pathfinder, after the CCS UI design (Figma R1KcOD0U72yGXc44fMRUjJ, node 102:1279) and the University of Melbourne
+ * design system's component of the same name: tiles that guide the visitor on. Three equal columns from 900px with a
+ * 1px line between them (the list's background shows through the gap), stacked in one column below, white then light
+ * grey then white, with no borders or shadows. Each tile is one link: a 32px arrow, then a Fraunces title over a summary.
+ * Four columns with .pathfinder--cols-4 (two columns under 1001px, one under 641px). Markup:
+ * NexusCcs::PathfinderItemComponent.
+ *
+ * Hover underlines the title and turns the title and arrow the darker link blue. The tile's background never changes and
+ * no text takes the colour of its tile: the page stylesheets colour a link on hover, which once left a tile's text the
+ * colour of its background, so the colours of the title, arrow and summary are set outright for every state.
+ */
+.pathfinder {
+  --pathfinder-padding-y: var(--space-24);
+  --pathfinder-gutter: var(--space-16);
+  --pathfinder-link: var(--ccs-text-link);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  margin: 0;
+  padding: 0;
+  background: var(--ccs-border-panel);
+  list-style: none;
+}
+
+.pathfinder--cols-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.pathfinder__item {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  background: var(--ccs-white);
+}
+
+.pathfinder__item:nth-child(even) {
+  background: var(--ccs-surface-subtle);
+}
+
+.pathfinder__link,
+.pathfinder__link:visited,
+.pathfinder__link:hover,
+.pathfinder__link:focus,
+.pathfinder__link:active {
+  color: var(--pathfinder-link);
+  text-decoration: none;
+}
+
+.pathfinder__link {
+  display: block;
+  flex: 1 1 auto;
+  padding: var(--pathfinder-padding-y) var(--pathfinder-gutter);
+}
+
+.pathfinder__link:hover,
+.pathfinder__link:focus-visible {
+  --pathfinder-link: var(--ccs-text-link-hover);
+}
+
+.pathfinder__link:focus-visible {
+  outline: 3px solid var(--ccs-focus-ring);
+  outline-offset: -3px;
+}
+
+.pathfinder__content {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.pathfinder__icon {
+  flex: none;
+  width: 2rem;
+  height: 2rem;
+  margin-top: var(--space-4);
+  background-color: var(--pathfinder-link);
+  mask: url("../pathfinder-arrow.svg") center / contain no-repeat;
+}
+
+.pathfinder__text {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: var(--space-16);
+  min-width: 0;
+}
+
+.pathfinder__title {
+  margin: 0;
+  font-family: var(--ccs-font-heading);
+  font-size: 2rem;
+  font-weight: 400;
+  font-variation-settings: "SOFT" 50, "WONK" 0, "opsz" 9;
+  line-height: 2.5rem;
+  letter-spacing: -0.02rem;
+  color: var(--pathfinder-link);
+}
+
+.pathfinder__link:hover .pathfinder__title,
+.pathfinder__link:focus-visible .pathfinder__title {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.pathfinder__summary {
+  margin: 0;
+  font-size: var(--ccs-font-size-lg);
+  line-height: 1.5;
+  color: var(--ccs-text-primary);
+}
+
+/* Below 900px the tiles stack in one column, white then grey then white, a 1px line between rows */
+@media (max-width: 899.98px) {
+  .pathfinder:not(.pathfinder--cols-4) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 1000px) {
+  .pathfinder--cols-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .pathfinder--cols-4 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
