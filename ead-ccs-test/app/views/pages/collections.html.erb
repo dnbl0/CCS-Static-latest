@@ -42,11 +42,11 @@
     <div class="ct-listing__inner">
       <h2 id="h-help" class="ct-listing__title">Help and guidance</h2>
       <p class="ct-listing__lead">Information on searching, accessing and respectfully using the collections.</p>
-      <ul class="ct-listing__list ct-listing__list--pathfinder">
+      <div class="grid grid--cols-3 grid--collapsed">
         <%= render NexusCcs::PathfinderItemComponent.new(href: help_path, title: "Help and support", summary: "Searching, using and requesting items from the collections.") %>
-        <%= render NexusCcs::PathfinderItemComponent.new(href: indigenous_data_path, title: "Indigenous cultural data and access", summary: "How Aboriginal and Torres Strait Islander cultural material is described, protected and accessed.") %>
+        <%= render NexusCcs::PathfinderItemComponent.new(href: indigenous_data_path, title: "Indigenous cultural data and access", summary: "How Aboriginal and Torres Strait Islander cultural material is described, protected and accessed.", alt: true) %>
         <%= render NexusCcs::PathfinderItemComponent.new(href: contact_path, title: "Contact the collections team", summary: "Ask a question or request access to a collection item.") %>
-      </ul>
+      </div>
     </div>
   </section>
 </main>

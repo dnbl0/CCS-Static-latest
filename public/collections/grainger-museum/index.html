@@ -272,12 +272,12 @@
   <section class="ct-listing ct-listing--alt" aria-labelledby="h-explore">
     <div class="ct-listing__inner">
       <h2 class="ct-listing__title" id="h-explore">Explore further</h2>
-      <ul class="ct-listing__list ct-listing__list--pathfinder ct-listing__list--four">
-        <li class="ct-listing__item"><a class="pathfinder-alt__link" href="{{ coll.searchHref }}"><span class="pathfinder-alt__content"><span class="pathfinder-alt__title">Search this collection</span><span class="pathfinder-alt__summary">Search and filter every record in the {{ coll.name }}.</span></span></a></li>
-        <li class="ct-listing__item"><a class="pathfinder-alt__link" href="/collections"><span class="pathfinder-alt__content"><span class="pathfinder-alt__title">Browse all collections</span><span class="pathfinder-alt__summary">Return to the five University cultural collections.</span></span></a></li>
-        <li class="ct-listing__item"><a class="pathfinder-alt__link" href="/help"><span class="pathfinder-alt__content"><span class="pathfinder-alt__title">Help and support</span><span class="pathfinder-alt__summary">Searching, using and requesting items from the collections.</span></span></a></li>
-        <li class="ct-listing__item"><a class="pathfinder-alt__link" href="{{ coll.externalUrl }}" target="_blank" rel="noopener"><span class="pathfinder-alt__content"><span class="pathfinder-alt__title">Visit the museum website<span class="sr-only"> (opens in a new tab)</span></span><span class="pathfinder-alt__summary">Opening hours, exhibitions, events and visitor information.</span></span></a></li>
-      </ul>
+      <div class="grid grid--cols-4 grid--collapsed">
+        <div class="pathfinder"><a class="pathfinder__link" href="{{ coll.searchHref }}"><div class="pathfinder__content"><h3 class="pathfinder__title">Search this collection</h3><p class="pathfinder__summary">Search and filter every record in the {{ coll.name }}.</p></div></a></div>
+        <div class="pathfinder pathfinder--alt"><a class="pathfinder__link" href="/collections"><div class="pathfinder__content"><h3 class="pathfinder__title">Browse all collections</h3><p class="pathfinder__summary">Return to the five University cultural collections.</p></div></a></div>
+        <div class="pathfinder"><a class="pathfinder__link" href="/help"><div class="pathfinder__content"><h3 class="pathfinder__title">Help and support</h3><p class="pathfinder__summary">Searching, using and requesting items from the collections.</p></div></a></div>
+        <div class="pathfinder pathfinder--alt"><a class="pathfinder__link" href="{{ coll.externalUrl }}" target="_blank" rel="noopener"><div class="pathfinder__content"><h3 class="pathfinder__title">Visit the museum website<span class="sr-only"> (opens in a new tab)</span></h3><p class="pathfinder__summary">Opening hours, exhibitions, events and visitor information.</p></div></a></div>
+      </div>
     </div>
   </section>
 </main>
