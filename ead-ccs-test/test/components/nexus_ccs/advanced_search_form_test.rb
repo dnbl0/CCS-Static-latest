@@ -93,4 +93,11 @@ class AdvancedSearchFormTest < ActiveSupport::TestCase
 
     assert_selector "form.advanced-form--modal"
   end
+
+  test "a failed check moves focus to the error summary, which is a focusable alert" do
+    js = Rails.root.join("app/javascript/controllers/advanced_search_controller.js").read
+    assert_includes js, 'this.errorsTarget.setAttribute("tabindex", "-1")'
+    assert_includes js, "this.errorsTarget.focus()"
+    assert_includes Rails.root.join("app/assets/stylesheets/components/advanced_search.css").read, ".advanced-form__errors:focus-visible"
+  end
 end

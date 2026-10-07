@@ -2,20 +2,20 @@
 <% content_for :body_class, "page-collection-landing" %>
 <% search_href = search_catalog_path(f: { collection_ssim: [ @facet_value ] }) %>
 <%= render NexusCcs::PageBreadcrumbsComponent.new(trail: [ [ "Browse collections", collections_path ], [ @collection["name"], nil ] ]) %>
-<header class="campaign-banner-split campaign-banner-split--dark" role="presentation">
+<section class="campaign-banner-split campaign-banner-split--dark" aria-labelledby="collection-heading">
   <div class="campaign-banner-split__img">
     <%= image_tag "site/banners/#{@collection["banner"]}", class: "campaign-banner-split__img-inner", alt: "" %>
   </div>
   <div class="max campaign-banner-split__inner">
     <div class="campaign-banner-split__content">
       <div class="campaign-banner-split__content-inner">
-        <h1 class="campaign-banner-split__heading"><%= @collection["name"] %></h1>
+        <h1 class="campaign-banner-split__heading" id="collection-heading"><%= @collection["name"] %></h1>
         <p class="campaign-banner-split__text"><%= @collection["blurb"] %></p>
         <a href="<%= search_href %>" class="button">Explore the collection</a>
       </div>
     </div>
   </div>
-</header>
+</section>
 
 <main class="collection-landing-main-content" id="main-content">
   <div class="collection-layout">
