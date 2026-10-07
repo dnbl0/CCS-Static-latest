@@ -1,41 +1,8 @@
-/* Keyframes and production-date facet (was an inline <style> block) */
-
-button,input,select{font-family:inherit}
-
-@keyframes imgIn{from{opacity:0}to{opacity:1}}
-
-@keyframes cardIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-
-@keyframes spin{to{transform:rotate(360deg)}}
-
-@keyframes shimmer{0%{background-position:-600px 0}100%{background-position:600px 0}}
-
-/* Production date facet: histogram + dual-handle slider + labelled year fields */
-
-.date-facet{display:flex;flex-direction:column;gap:0}
-
-.date-note{font-size:var(--font-size-15);color:var(--col-text-muted)}
-
-/* ---- Facet rail: filters down the left, masonry results on the right (desktop only; the Filters modal stays).
-   Laid out like Europeana's search (a "Search filters" panel of labelled select-style filters beside a masonry grid), mirrored to the left. ---- */
-
-body.page-search-results .search-results-layout {
-  display: flex;
-  align-items: flex-start;
-  margin: 0 auto;
-  padding: 0 var(--space-16);
-}
-
-body.page-search-results .search-results-layout > .search-results-main-content {
-  flex: 1 1 0;
-  min-width: 0;
-  margin: 0;
-}
+/* search-results: Facet rail: the filters down the left of the results on desktop. Class names are semantic block__element names scoped by body.page-search-results. */
 
 /* The rail runs the full length of the page, as in the Blacklight prototype: no scrolling box of its own, so a
    panel opening over the filters below is never clipped. --facet-panel-padding-y is the open panel's top and
    bottom padding. */
-
 body.page-search-results .facet-rail {
   --facet-panel-padding-y: var(--space-12);
   flex: none;
@@ -132,7 +99,6 @@ body.page-search-results .facet-rail__toggle {
 }
 
 /* A filter with a value chosen shows it in the dark text colour; the placeholder stays muted */
-
 body.page-search-results .facet-rail__toggle[data-has-value="true"] {
   color: var(--col-text-primary);
 }
@@ -169,7 +135,6 @@ body.page-search-results .facet-rail__toggle[aria-expanded="true"] .facet-rail__
 }
 
 /* Opens over the filters below instead of pushing them down (Europeana-style dropdown) */
-
 body.page-search-results .facet-rail__panel {
   position: absolute;
   left: 0;
@@ -245,10 +210,6 @@ body.page-search-results .facet-rail__count {
   font-size: var(--font-size-small);
   color: var(--col-text-muted);
   font-variant-numeric: tabular-nums;
-}
-
-body.page-search-results .search-results-layout .search-results-main-content__article--v1 {
-  margin-bottom: var(--space-24);
 }
 
 body.page-search-results .facet-rail__switches {

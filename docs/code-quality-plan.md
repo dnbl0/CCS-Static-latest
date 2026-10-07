@@ -71,7 +71,13 @@ search bar on the home page (the Rails app keeps its Blacklight bar) and font fa
   field configuration is `CatalogConfig::Facets`, `RecordFields` and `SearchFields` (`app/models/catalog_config`), and the
   range histogram action's Solr work is `RangeHistogramQuery`. The resulting Blacklight configuration is identical to
   before (checked by dumping it from both versions). The histogram endpoint had no tests; it now has endpoint and query tests.
-- Still to do: items 9, 15, 16, the rest of 13 and 14, 17, 20-28. The Chromium suites could not run in the sandbox
+- **Done 2026-10-07 (item 13):** the search results styles are nine files by component (`layout`, `results`, `toolbar`,
+  `banner`, `flyout`, `filters`, `facet-rail`, `pagination`, `pills`), the largest 20 KB. The 14 duplicate selectors were
+  merged one at a time and the regrouping was done in one step; both were checked with the repo's computed-style
+  snapshot tool (`style:snapshot` / `style:diff`) on the search page: 14 states and widths, 0 differences. The
+  snapshots cover those states only, so a hover or focus state outside them is not proven. `stylesheet-structure`
+  now fails a stylesheet over 32 KB. Nine duplicate-selector warnings remain (record.css and some inside media queries).
+- Still to do: items 9, 15, 16, 17, 20-28 and the pre-rendering decision in item 14. The Chromium suites could not run in the sandbox
   (the page runtime needs unpkg.com): they run in CI.
 
 ## Phase 1 - Stop the two sites drifting apart (highest value)
