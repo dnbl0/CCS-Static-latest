@@ -86,6 +86,9 @@ class CatalogController < ApplicationController
     # pagination. Subclasses the Blacklight component and only swaps the template.
     config.show.document_header_component = NexusCcs::DocumentHeaderComponent
 
+    # The record page body after the CCS UI "Record-detail": media, summary, details, persistent link, copyright.
+    config.show.document_component = NexusCcs::RecordDocumentComponent
+
     # Between a record's title and its details: the digital assets and a summary line.
     config.show.document_embed_component = NexusCcs::RecordEmbedComponent
 

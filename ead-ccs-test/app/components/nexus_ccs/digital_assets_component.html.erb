@@ -1,19 +1,59 @@
-<section class="digital-assets" aria-labelledby="digital-assets-heading">
+<section class="digital-assets" data-controller="media-viewer" aria-labelledby="digital-assets-heading">
   <h2 id="digital-assets-heading" class="visually-hidden">Digital <%= "asset".pluralize(count) %></h2>
 
-  <figure class="digital-assets__main">
-    <%= image_tag main.first, alt: alt(1), class: "digital-assets__image" %>
-  </figure>
+  <div class="digital-assets__stage" data-media-viewer-target="stage">
+    <figure class="digital-assets__main">
+      <%= image_tag main.first, alt: alt(1), class: "digital-assets__image", data: { media_viewer_target: "image" } %>
+    </figure>
+
+    <% if metadata? %>
+      <aside id="media-metadata" class="digital-assets__panel" aria-labelledby="media-metadata-heading" hidden data-media-viewer-target="panel">
+        <div class="digital-assets__panel-head">
+          <h3 id="media-metadata-heading" class="digital-assets__panel-title">Media metadata</h3>
+          <button type="button" class="digital-assets__button" data-action="media-viewer#closePanel" aria-label="Close media metadata">
+            <svg width="1em" height="1em" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.67" stroke-linecap="square" aria-hidden="true" focusable="false"><path d="M4.5 4.5l11 11M15.5 4.5l-11 11"/></svg>
+          </button>
+        </div>
+        <dl class="digital-assets__list">
+          <% metadata.each do |label, text| %>
+            <div class="digital-assets__item">
+              <dt><%= label %></dt>
+              <dd><%= text %></dd>
+            </div>
+          <% end %>
+        </dl>
+      </aside>
+    <% end %>
+  </div>
 
   <% if others.any? %>
     <ul class="digital-assets__others">
       <% others.each_with_index do |(large, thumbnail), index| %>
         <li>
-          <%= link_to large, class: "digital-assets__other", target: "_blank", rel: "noopener" do %>
+          <%= link_to large, class: "digital-assets__other", target: "_blank", rel: "noopener",
+                data: { action: "media-viewer#show", media_viewer_large: large, media_viewer_alt: alt(index + 2) } do %>
             <%= image_tag thumbnail, alt: "#{alt(index + 2)} (opens full size in a new tab)", loading: "lazy" %>
           <% end %>
         </li>
       <% end %>
     </ul>
   <% end %>
+
+  <div class="digital-assets__toolbar">
+    <div class="digital-assets__toolbar-inner">
+      <% if licence %>
+        <p class="digital-assets__licence"><%= icon("media-copyright") %><span><span class="visually-hidden">Licence: </span><%= licence %></span></p>
+      <% else %>
+        <span></span>
+      <% end %>
+      <div class="digital-assets__controls">
+        <% if metadata? %>
+          <button type="button" class="digital-assets__button" aria-controls="media-metadata" aria-expanded="false" aria-label="Media metadata" title="Media metadata"
+                  data-media-viewer-target="infoButton" data-action="media-viewer#togglePanel"><%= icon("media-info") %></button>
+        <% end %>
+        <button type="button" class="digital-assets__button" aria-label="Full screen" title="Full screen" hidden
+                data-media-viewer-target="fullscreenButton" data-action="media-viewer#toggleFullscreen"><%= icon("media-fullscreen") %></button>
+      </div>
+    </div>
+  </div>
 </section>

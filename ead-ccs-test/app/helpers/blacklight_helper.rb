@@ -12,7 +12,7 @@ module BlacklightHelper
   end
 
   def container_classes
-    results_page = controller_name == "catalog" && action_name == "index" && has_search_parameters?
-    blacklight_config.full_width_layout || results_page ? "container-fluid" : "container"
+    page = controller_name == "catalog" && (action_name == "show" || (action_name == "index" && has_search_parameters?))
+    blacklight_config.full_width_layout || page ? "container-fluid" : "container"
   end
 end

@@ -1,9 +1,20 @@
-<section class="persistent-link" aria-labelledby="persistent-link-heading" data-controller="clipboard">
-  <h2 id="persistent-link-heading" class="persistent-link__heading">Persistent link</h2>
+<section class="persistent-link record-card" aria-labelledby="persistent-link-heading" data-controller="clipboard">
   <div class="persistent-link__row">
-    <input type="text" class="persistent-link__url" value="<%= url %>" readonly aria-label="Persistent link" data-clipboard-target="source">
-    <button type="button" class="btn btn-outline-primary" data-action="clipboard#copy" data-clipboard-target="button">Copy link</button>
+    <span class="persistent-link__icon" aria-hidden="true">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5"/></svg>
+    </span>
+    <div class="persistent-link__text">
+      <h2 id="persistent-link-heading" class="persistent-link__heading">Persistent link</h2>
+      <input type="text" class="persistent-link__url" value="<%= url %>" readonly aria-label="Persistent link" data-clipboard-target="source">
+    </div>
+    <button type="button" class="persistent-link__copy" data-action="clipboard#copy" data-clipboard-target="button">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></svg>
+      <span data-clipboard-target="label">Copy link</span>
+    </button>
   </div>
-  <p class="persistent-link__note">Quote this link when contacting the collection team.</p>
+  <div class="persistent-link__footer">
+    <p class="persistent-link__note">Quote this link when contacting the collection team.</p>
+    <% if document %><div class="persistent-link__browser"><%= render NexusCcs::ViewFullRecordComponent.new(document: document, action: nil) %></div><% end %>
+  </div>
   <p class="visually-hidden" role="status" data-clipboard-target="status"></p>
 </section>
