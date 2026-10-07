@@ -1,0 +1,44 @@
+/* Copied from the static site (public/styles/pages/contact.css) so the Rails pages match it. */
+/* contact: styles moved out of inline style="" attributes. Class names are semantic (block__element) and scoped by the page class on <body> (page-contact), which gives them the precedence the inline styles had over shared component CSS. Do not reintroduce inline styles. */
+body.page-contact .bc-mobile--styled {
+  display: none;
+  align-items: center;
+  gap: var(--space-6);
+  list-style: none;
+  margin: 0;
+  font-size: var(--font-size-body-lg);
+  color: var(--white-100);
+}
+body.page-contact .bc-mobile__item {
+  display: flex;
+  align-items: center;
+}
+body.page-contact .bc-mobile__item-link-cultural-collections {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-6);
+  color: var(--white-100);
+  text-decoration: none;
+  min-height: 44px;
+}
+body.page-contact .contact-page__group--v1 {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+body.page-contact .contact-page__group--v2 {
+  width: 100%;
+  background: var(--blue-900);
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+body.page-contact .contact-page__icon {
+  display: none;
+}
+body.page-contact .page-local-history__link-image {
+  vertical-align: middle;
+}
+body.page-contact .contact-main-content {
+  flex: 1;
+}

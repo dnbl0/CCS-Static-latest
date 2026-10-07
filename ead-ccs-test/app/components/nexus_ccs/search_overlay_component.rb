@@ -5,7 +5,7 @@ module NexusCcs
   class SearchOverlayComponent < Blacklight::Component
     RECENT = 5
 
-    delegate :search_action_url, to: :helpers
+    delegate :search_catalog_path, to: :helpers
 
     # The visitor's latest searches this session (Blacklight keeps their ids in the session), newest first.
     def recent_searches

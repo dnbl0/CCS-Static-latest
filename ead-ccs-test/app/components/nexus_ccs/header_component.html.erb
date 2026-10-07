@@ -46,7 +46,7 @@
             </button>
             <div id="site-nav-collections" class="site-nav__panel">
               <button type="button" class="site-nav__back" data-action="site-header#back"><%= back_label %></button>
-              <%= link_to all_records_path, class: "site-nav__panel-title" do %>
+              <%= link_to collections_home, class: "site-nav__panel-title" do %>
                 <%= image_tag "site/icon-arrow-footer.svg", alt: "" %>Browse <span class="site-nav__label-more">all </span>collections
               <% end %>
               <ul class="site-nav__panel-list">
@@ -57,26 +57,25 @@
             </div>
           </li>
 
-          <% if static_pages? %>
-            <li>
-              <button type="button" class="site-nav__trigger" aria-expanded="false" aria-controls="site-nav-help"
-                      data-site-header-target="trigger" data-action="site-header#toggleSection">
-                Help<%= image_tag "site/icon-expand.svg", alt: "" %>
-              </button>
-              <div id="site-nav-help" class="site-nav__panel">
-                <button type="button" class="site-nav__back" data-action="site-header#back"><%= back_label %></button>
-                <%= link_to help_home.href, class: "site-nav__panel-title" do %>
-                  <%= image_tag "site/icon-arrow-footer.svg", alt: "" %><%= help_home.label %>
+          
+          <li>
+            <button type="button" class="site-nav__trigger" aria-expanded="false" aria-controls="site-nav-help"
+                    data-site-header-target="trigger" data-action="site-header#toggleSection">
+              Help<%= image_tag "site/icon-expand.svg", alt: "" %>
+            </button>
+            <div id="site-nav-help" class="site-nav__panel">
+              <button type="button" class="site-nav__back" data-action="site-header#back"><%= back_label %></button>
+              <%= link_to help_home.href, class: "site-nav__panel-title" do %>
+                <%= image_tag "site/icon-arrow-footer.svg", alt: "" %><%= help_home.label %>
+              <% end %>
+              <ul class="site-nav__panel-list">
+                <% help_links.each do |link| %>
+                  <li><%= link_to link.href do %><%= image_tag "site/icon-arrow-footer.svg", alt: "" %><%= link.label %><% end %></li>
                 <% end %>
-                <ul class="site-nav__panel-list">
-                  <% help_links.each do |link| %>
-                    <li><%= link_to link.href do %><%= image_tag "site/icon-arrow-footer.svg", alt: "" %><%= link.label %><% end %></li>
-                  <% end %>
-                </ul>
-              </div>
-            </li>
-            <li><%= link_to contact.label, contact.href %></li>
-          <% end %>
+              </ul>
+            </div>
+          </li>
+          <li><%= link_to contact.label, contact.href %></li>
         </ul>
 
         <ul class="site-nav__audience" aria-label="University of Melbourne">

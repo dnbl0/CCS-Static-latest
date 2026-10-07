@@ -28,9 +28,9 @@ module NexusCcs
 
     # A record's page has its title band instead of the search banner, and the advanced search page its own
     # banner (catalog/advanced_search.html.erb): the form is the search.
-    def show_search_banner? = !%w[show advanced_search].include?(helpers.action_name)
+    def show_search_banner? = helpers.controller_name == "catalog" && !%w[show advanced_search].include?(helpers.action_name)
 
-    def show_record_banner? = helpers.action_name == "show"
+    def show_record_banner? = helpers.controller_name == "catalog" && helpers.action_name == "show"
 
     def record_title
       document = helpers.instance_variable_get(:@document)
@@ -40,22 +40,20 @@ module NexusCcs
     def audience_links = SiteNavigation::AUDIENCE
 
     def collection_links
-      SiteNavigation::COLLECTIONS.map do |label, facet_value|
-        SiteNavigation::Link.new(label, search_action_url(f: { collection_ssim: [ facet_value ] }))
-      end
+      SiteNavigation::COLLECTIONS.map { |label, _facet_value, slug| SiteNavigation::Link.new(label, helpers.collection_path(slug)) }
     end
 
     def help_links
-      SiteNavigation::HELP.map { |link| SiteNavigation::Link.new(link.label, SiteNavigation.static_url(link.href)) }
+      PagesController::HELP_TOPICS.map { |topic| SiteNavigation::Link.new(topic.title, topic.path(helpers)) }
     end
 
-    def help_home = SiteNavigation::Link.new(SiteNavigation::HELP_HOME.label, SiteNavigation.static_url(SiteNavigation::HELP_HOME.href))
+    def help_home = SiteNavigation::Link.new(SiteNavigation::HELP_HOME_LABEL, helpers.help_path)
 
-    def contact = SiteNavigation::Link.new(SiteNavigation::CONTACT.label, SiteNavigation.static_url(SiteNavigation::CONTACT.href))
+    def contact = SiteNavigation::Link.new(SiteNavigation::CONTACT_LABEL, helpers.contact_path)
 
-    def static_pages? = SiteNavigation.static_site_url.present?
+    def collections_home = helpers.collections_path
 
-    def all_records_path = search_action_url
+    def all_records_path = helpers.search_catalog_path
 
     # "<" icon and label of the row that leaves a drilled-in menu section on mobile.
     def back_label

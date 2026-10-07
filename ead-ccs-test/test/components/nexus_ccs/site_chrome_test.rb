@@ -19,37 +19,27 @@ class SiteChromeTest < ActiveSupport::TestCase
     end
   end
 
-  def with_static_site(url)
-    original = Rails.configuration.x.ccs.static_site_url
-    Rails.configuration.x.ccs.static_site_url = url
-    yield
-  ensure
-    Rails.configuration.x.ccs.static_site_url = original
-  end
-
-  test "header has the audience links, search toggle and a collections menu that filters by facet" do
-    with_static_site(nil) { render_header }
+  test "header has the audience links, search toggle and a collections menu that links to the collection pages" do
+    render_header
 
     assert_selector "header.site-header"
     assert_selector ".site-header__utility a", count: NexusCcs::SiteNavigation::AUDIENCE.size
     assert_selector "button.site-header__search-toggle[aria-label='Open search']"
-    assert_selector "#site-nav-collections a[href*='collection_ssim']", count: NexusCcs::SiteNavigation::COLLECTIONS.size
+    assert_selector "#site-nav-collections li a[href^='/collections/']", count: NexusCcs::SiteNavigation::COLLECTIONS.size
     assert_selector "#search-overlay form[role=search]"
     assert_selector "#site-nav form[role=search]"
   end
 
-  test "header leaves out Help and Contact until the static site URL is configured" do
-    with_static_site(nil) { render_header }
-    assert_no_selector "#site-nav-help"
-    assert_no_link "Contact", href: %r{/contact\.html}
+  test "header has the Help menu and the Contact link" do
+    render_header
 
-    with_static_site("http://static.test/") { render_header }
-    assert_selector "#site-nav-help a[href='http://static.test/help?topic=faq']"
-    assert_link "Contact", href: "http://static.test/contact.html"
+    assert_selector "#site-nav-help a[href='/help?topic=faq']"
+    assert_selector "#site-nav-help a[href='/help/indigenous-data']"
+    assert_link "Contact", href: "/contact"
   end
 
   test "header menu controls are wired to the site-header Stimulus controller" do
-    with_static_site("http://static.test") { render_header }
+    render_header
 
     assert_selector "header[data-controller='site-header']"
     assert_selector "button.site-nav__trigger[aria-expanded='false'][data-action='site-header#toggleSection']", count: 2
@@ -67,8 +57,8 @@ class SiteChromeTest < ActiveSupport::TestCase
     assert_no_selector "nav.topbar" # Blacklight's own top navbar is replaced
   end
 
-  test "the home page has no breadcrumb" do
-    render_header(url: "/")
+  test "the bare search page has no breadcrumb" do
+    render_header(url: "/catalog")
     assert_no_selector "nav.breadcrumb-bar"
   end
 

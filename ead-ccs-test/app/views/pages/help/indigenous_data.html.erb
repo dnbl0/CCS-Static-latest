@@ -1,0 +1,31 @@
+<% content_for :title, "Indigenous Cultural Data and Access — Help — Cultural Collections Search — University of Melbourne" %>
+<% content_for :body_class, "page-indigenous-data" %>
+<%= render "pages/breadcrumbs", trail: [ [ "Help and support", help_path ], [ "Indigenous Cultural Data and Access", nil ] ] %>
+<%= render "pages/banner", title: "Indigenous Cultural Data and Access", description: "The University of Melbourne acknowledge Aboriginal and Torres Strait Islander people as the Traditional Owners of the unceded lands on which we work, learn and live. We pay respect to Elders past, present and future, and acknowledge the importance of Indigenous knowledge in the Academy." %>
+<main class="indigenous-data-main-content" id="main-content">
+  <div class="help-layout">
+    <%= render "pages/help/side_nav", current: "indigenous" %>
+    <div class="help-layout__content">
+<p class="indigenous-data-main-content__text">
+<a class="indigenous-data-main-content__text-link-read-about-indigenous" href="<%= help_path(topic: "access") %>">Read about our Indigenous priorities</a>
+<a class="indigenous-data-main-content__text-link-read-full-acknowledgement" href="https://www.unimelb.edu.au/indigenous/acknowledgement-of-country">Read our full Acknowledgement of Country</a>
+</p>
+<section aria-labelledby="h-images-voices" class="indigenous-data-images-voices">
+<h2 class="indigenous-data-images-voices__heading-note-images-voices" id="h-images-voices">Note on images and voices</h2>
+<p class="notice notice--warning indigenous-data-images-voices__notice">Aboriginal and Torres Strait Islander people should be aware that the University of Melbourne website and collections contain the names, images and voices of people who have died.</p>
+</section>
+<section aria-labelledby="h-language" class="indigenous-data-language">
+<h2 class="indigenous-data-language__heading-note-language" id="h-language">Note on language</h2>
+<p class="indigenous-data-language__text">Please be advised that people may be disturbed by the content of some collection items, which may include distressing images and descriptions, and derogatory terms used in their historical context, including for Aboriginal and Torres Strait Islander people. They reflect the period in which they were created and are not the views of the University of Melbourne.</p>
+</section>
+<section aria-labelledby="h-terminology" class="indigenous-data-terminology">
+<h2 class="indigenous-data-terminology__heading-note-terminology" id="h-terminology">Note on terminology</h2>
+<p class="indigenous-data-terminology__text">The following terms are used interchangeably throughout collection items: Aboriginal and Torres Strait Islander, First Nations, First Peoples, Indigenous Australians (inclusive of Aboriginal and Torres Strait Islander peoples), Aboriginal peoples and Indigenous peoples (commonly used for First Nations peoples internationally).</p>
+</section>
+<section aria-labelledby="h-contact" class="indigenous-data-contact">
+<h2 class="indigenous-data-contact__heading" id="h-contact">Contact</h2>
+<p class="indigenous-data-contact__text">If you have questions about Indigenous cultural materials, cultural protocols or access conditions, or wish to provide feedback about a record, please contact the relevant <a class="indigenous-data-contact__text-link-collection-team" href="<%= help_path(topic: "access") %>">collection team</a>.</p>
+</section>
+    </div>
+  </div>
+</main>

@@ -18,26 +18,23 @@ module NexusCcs
       Link.new("Contact", "https://www.unimelb.edu.au/contact")
     ].freeze
 
-    # Menu label, then the value of the collection_ssim facet it filters on.
+    # Menu label, the value of the collection_ssim facet, then the slug of its landing page.
     COLLECTIONS = [
-      [ "Medical History Museum", "Medical History Museum" ],
-      [ "Henry Forman Atkinson Dental Museum", "Henry Forman Atkinson Dental Museum" ],
-      [ "Harry Brookes Allen Museum", "Harry Brookes Allen Museum of Anatomy and Pathology" ],
-      [ "University Art Collection", "University Art Collection" ],
-      [ "Grainger Museum Collection", "Grainger Museum Collection" ]
+      [ "Medical History Museum", "Medical History Museum", "medical-history-museum" ],
+      [ "Henry Forman Atkinson Dental Museum", "Henry Forman Atkinson Dental Museum", "henry-forman-atkinson-dental-museum" ],
+      [ "Harry Brookes Allen Museum", "Harry Brookes Allen Museum of Anatomy and Pathology", "harry-brookes-allen-museum" ],
+      [ "University Art Collection", "University Art Collection", "university-art-collection" ],
+      [ "Grainger Museum Collection", "Grainger Museum Collection", "grainger-museum" ]
     ].freeze
 
-    # Paths on the static CCS site, which still hosts the help and contact pages.
-    HELP = [
-      Link.new("Frequently Asked Questions", "/help?topic=faq"),
-      Link.new("Search tips", "/help?topic=search-tips"),
-      Link.new("Copyright and terms of use", "/help?topic=copyright"),
-      Link.new("Access and information", "/help?topic=access"),
-      Link.new("Privacy", "/help?topic=privacy"),
-      Link.new("Indigenous cultural data and access", "/help/indigenous-data.html")
-    ].freeze
-    HELP_HOME = Link.new("Help and support", "/help/index.html")
-    CONTACT = Link.new("Contact", "/contact.html")
+    # The facet value of a collection landing page, by slug.
+    def self.facet_value(slug)
+      COLLECTIONS.find { |_label, _value, collection_slug| collection_slug == slug }&.second
+    end
+
+    # Route helper names for the help topics (PagesController::HELP_TOPICS), the help home and contact page.
+    HELP_HOME_LABEL = "Help and support"
+    CONTACT_LABEL = "Contact"
 
     FOOTER_ABOUT = [
       Link.new("About us", "https://about.unimelb.edu.au/"),
@@ -69,14 +66,5 @@ module NexusCcs
       [ "CRICOS:", "00116K" ],
       [ "ABN:", "84 002 705 224" ]
     ].freeze
-
-    # Help and contact live on the static site; they only appear when its URL is configured.
-    def self.static_site_url
-      Rails.configuration.x.ccs.static_site_url.presence&.chomp("/")
-    end
-
-    def self.static_url(path)
-      "#{static_site_url}#{path}"
-    end
   end
 end

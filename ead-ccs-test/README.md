@@ -66,6 +66,20 @@ Eg:
 
 # Modifications from base Blacklight Project
 
+## Content pages (home, collections, help, contact)
+
+`PagesController` serves the pages of the static prototype (`public/` in the repository root) so the two sites match:
+`/` (home), `/collections`, `/collections/<slug>`, `/help` (`?topic=faq|search-tips|copyright|access|privacy`),
+`/help/indigenous-data` and `/contact`. The search results live at `/catalog`.
+
+* Views are in `app/views/pages` (layout `layouts/pages`). The five collection landing pages share
+  `pages/collection.html.erb`; their text and the browse page's listings are in `config/pages.yml`. Help topic
+  bodies are the partials in `app/views/pages/help`.
+* Record counts on the browse page come from Solr when it is reachable and are left out otherwise.
+* The styles are copied from the static site's CSS (`app/assets/stylesheets/pages`, with the static design tokens in
+  `tokens/static_site.css`). When the static CSS or copy changes, update these files to match. The header and footer
+  are the existing `NexusCcs` components.
+
 ## UI
 
 ### Component overrides
