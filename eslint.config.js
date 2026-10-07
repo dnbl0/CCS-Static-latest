@@ -4,7 +4,7 @@ const js = require('@eslint/js');
 const globals = require('globals');
 
 module.exports = [
-  { ignores: ['node_modules/**', 'dist/**', 'ead-ccs-test/**', 'public/support.js', 'public/image-slot.js', 'public/assets/**', 'assets/**', 'public/styles/vendor/**'] },
+  { ignores: ['node_modules/**', 'dist/**', 'ead-ccs-test/**', 'public/support.js', 'public/image-slot.js', 'public/assets/**', 'assets/**', 'public/styles/vendor/**', 'public/vendor/**'] },
   js.configs.recommended,
   { files: ['api/**/*.js', 'eslint.config.js'], languageOptions: { sourceType: 'commonjs', globals: { ...globals.node } } },
   // scripts that drive Playwright pass functions to page.evaluate, which run in the page
