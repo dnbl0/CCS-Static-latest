@@ -32,7 +32,7 @@ search bar on the home page (the Rails app keeps its Blacklight bar) and font fa
 - Item 5 changed: `ead-ccs-test/.github/workflows/deploy.yaml` builds and deploys the Rails image through the
   organisation's `unimelb-enterprise-apps` actions and its secrets. Those only work in the repository that owns them,
   so the nested workflows and `dependabot.yml` are left in place. They run if `ead-ccs-test` is published as its own
-  repository. Confirm how the app is delivered before removing them.
+  repository. Decision (2026-10-07): keep them. They are the organisation repository's own CI and deploy; deleting `deploy.yaml` could stop deployments, and they cost nothing here. `ead-ccs-test/.github/README.md` says so.
 - **Done 2026-10-07 (Phase 3, items 10-12):**
   - Item 10: ESLint (`eslint.config.js`, 0 errors, 12 warnings to clean up) and Stylelint (`.stylelintrc.json`, 0
     errors, 23 warnings: duplicate selectors and `!important`) run first in `npm test` (`npm run lint`). HTML
