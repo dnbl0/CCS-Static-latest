@@ -1,0 +1,63 @@
+/* ==========================================================================
+   Banner, search bar and tools bar
+   The compact banner holds the title and the full search form (hero-style, Advanced Search underneath).
+   Under it, one sticky tools bar (count, Save, Sort, Filters, Digital asset, view). Its height stays the same
+   when it sticks; a compact search box appears in it so searching is still possible while scrolling.
+   ========================================================================== */
+body.page-search-results .search-results-banner .page-banner__inner {
+  padding: 56px var(--space-32) var(--space-48);
+}
+
+/* the banner sits above the sticky bar so the scope menu and suggestions open over it */
+body.page-search-results .search-results-banner {
+  position: relative;
+  z-index: var(--z-950);
+}
+
+body.page-search-results .search-results-banner h1 {
+  font-size: clamp(28px, 3.2vw, 38px);
+}
+
+body.page-search-results .search-results-banner .page-banner__desc {
+  margin: var(--space-8) 0 0;
+  max-width: var(--layout-narrow);
+  font-size: var(--font-size-body-lg);
+  line-height: 28px;
+}
+
+body.page-search-results .search-results-bar__search {
+  width: 100%;
+  margin-top: var(--space-32);
+  /* layout comes from the shared .ccs-hero__search (column, Advanced Search under the form) */
+}
+
+/* Banner search: the shared search-bar.js form, at most 720px wide */
+body.page-search-results .search-results-bar__search-host {
+  width: 100%;
+  max-width: var(--layout-search);
+}
+
+/* Fly-out trigger: label, then a right chevron */
+body.page-search-results .search-results-banner .search-results-search-tools__link-advanced-search {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--white-100);
+  font-family: inherit;
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+}
+
+body.page-search-results .search-results-banner .search-results-search-tools__link-advanced-search .search-results-search-tools__link-icon {
+  flex: none;
+}
+
+body.page-search-results .search-results-banner .search-results-search-tools__link-advanced-search:focus-visible {
+  outline: 3px solid #a3e4f7;
+  outline-offset: 2px;
+}

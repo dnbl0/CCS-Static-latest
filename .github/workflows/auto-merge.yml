@@ -13,6 +13,8 @@ on:
       - '**.md'
       - 'design.md'
       - 'README.md'
+      # The Rails app (ead-ccs-test) is reviewed by a person, not merged automatically
+      - '!ead-ccs-test/**'
 
 jobs:
   create-pr:

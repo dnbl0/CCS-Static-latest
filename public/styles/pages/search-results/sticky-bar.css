@@ -1,0 +1,267 @@
+/* Compact search: the shared search-bar.js form, only shown while the bar is stuck */
+body.page-search-results .search-results-bar__compact {
+  display: none;
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 48px;
+}
+
+body.page-search-results .search-results-form__button-image {
+  width: 24px;
+  height: 24px;
+}
+
+body.page-search-results .search-results-bar.is-stuck .search-results-bar__compact {
+  display: flex;
+}
+
+body.page-search-results .search-results-bar.is-stuck .search-results-bar__count {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Tablets stuck: search row, then every control on one row at the same height */
+@media (min-width: 768px) {
+  body.page-search-results .search-results-bar__controls {
+    flex-wrap: nowrap;
+  }
+
+  body.page-search-results .search-results-bar .search-results-search-tools__group-sort {
+    flex: none;
+    width: 190px;
+    margin: 0;
+  }
+
+  body.page-search-results .search-results-bar .search-results-search-tools__button-toggle-sort {
+    width: 100%;
+  }
+
+  body.page-search-results .search-results-bar.is-stuck .search-results-bar__compact {
+    flex: 1 1 100%;
+  }
+
+  body.page-search-results .search-results-bar.is-stuck .search-results-bar__controls {
+    width: 100%;
+  }
+}
+
+/* Desktop stuck: search and tools share one row, so the bar keeps the same height */
+@media (min-width: 1280px) {
+  body.page-search-results .search-results-bar.is-stuck .search-results-bar__compact {
+    flex: 1 1 auto;
+  }
+
+  body.page-search-results .search-results-bar.is-stuck .search-results-bar__controls {
+    width: auto;
+  }
+}
+
+body.page-search-results .search-results-bar__controls .search-results-view {
+  box-sizing: border-box;
+  height: 48px;
+}
+
+body.page-search-results .search-results-bar__controls .search-results-view button {
+  height: 46px;
+}
+
+body.page-search-results .search-results-notices {
+  margin: 0 0 var(--space-24);
+}
+
+body.page-search-results .search-results-notices .search-results-smart {
+  margin: 0;
+}
+
+body.page-search-results .search-results-notices .search-results-smart + .search-results-smart {
+  margin-top: var(--space-16);
+}
+
+body.page-search-results .search-results-per-page {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0 0 var(--space-16);
+}
+
+body.page-search-results .search-results-per-page .search-results-summary__group-listbox {
+  top: auto;
+  bottom: 100%;
+}
+
+/* Phones */
+@media (max-width: 767px) {
+  body.page-search-results .search-results-banner .page-banner__inner {
+    padding: var(--space-32) var(--space-16) 28px;
+  }
+
+  body.page-search-results .search-results-banner .page-banner__desc {
+    font-size: var(--font-size-body);
+    line-height: 24px;
+  }
+
+  body.page-search-results .search-results-bar__search {
+    margin-top: var(--space-24);
+  }
+
+  /* Banner search on phones: the search box and button share the top row, the collections menu spans a row below */
+  body.page-search-results .search-results-bar__search-host .ccs-searchbar {
+    height: auto;
+    flex-wrap: wrap;
+  }
+
+  body.page-search-results .search-results-bar__search-host .ccs-searchbar input[name="q"] {
+    flex: 1 1 0;
+    min-height: 46px;
+  }
+
+  body.page-search-results .search-results-bar__search-host .ccs-searchbar > button[type="submit"] {
+    order: 2;
+    min-height: 46px;
+  }
+
+  body.page-search-results .search-results-bar__search-host .ccs-searchbar__scope {
+    order: 3;
+    flex: 1 1 100%;
+    border-top: 1px solid var(--col-border-neutral-mid);
+  }
+
+  body.page-search-results .search-results-bar__search-host .ccs-searchbar__scope-btn {
+    width: 100%;
+    max-width: none;
+    min-height: 44px;
+    justify-content: space-between;
+    border-left: 0;
+  }
+
+  body.page-search-results .search-results-bar__search-host .ccs-searchbar__menu {
+    left: 0;
+    right: 0;
+    max-width: none;
+  }
+
+  /* Tools: Sort and Filters on one row, then Digital asset, the view toggle and an icon-only Save */
+  body.page-search-results .search-results-bar__tools {
+    padding: var(--space-12) var(--space-16);
+    gap: var(--space-8);
+  }
+
+  body.page-search-results .search-results-bar__count,
+  body.page-search-results .search-results-bar__controls {
+    display: contents;
+  }
+
+  body.page-search-results .search-results-bar .search-results-summary__heading {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  /* The results count is visually hidden here; take its wrapper out of the flex row so it adds no gap before Sort */
+  body.page-search-results .search-results-bar .search-results-summary__group--v4 {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  body.page-search-results .search-results-bar .search-results-search-tools__group-sort {
+    order: 1;
+    flex: 1 1 calc(50% - 4px);
+    min-width: 0;
+    max-width: none;
+    margin: 0;
+  }
+
+  body.page-search-results .search-results-bar .search-results-search-tools__button-filter-btn {
+    order: 2;
+    flex: 1 1 calc(50% - 4px);
+    min-width: 0;
+    min-height: 48px;
+    padding: 0 var(--space-8);
+    justify-content: center;
+  }
+
+  body.page-search-results .search-results-bar .search-results-summary__group--v1 {
+    order: 3;
+    margin-right: auto;
+  }
+
+  body.page-search-results .search-results-bar .search-results-view {
+    order: 4;
+  }
+
+  body.page-search-results .search-results-bar .search-results-summary__group--v2 {
+    order: 5;
+  }
+
+  body.page-search-results .search-results-bar__save-text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  body.page-search-results .search-results-bar .search-results-summary__button-save-search {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    justify-content: center;
+  }
+
+  /* Stuck on a phone: search box, then Sort, Filters and Digital on one row */
+  body.page-search-results .search-results-bar.is-stuck .search-results-bar__tools {
+    padding: var(--space-8) var(--space-16);
+  }
+
+  body.page-search-results .search-results-bar.is-stuck .search-results-bar__compact {
+    order: 0;
+    flex: 1 1 100%;
+  }
+
+  body.page-search-results .search-results-bar.is-stuck .search-results-search-tools__group-sort,
+  body.page-search-results .search-results-bar.is-stuck .search-results-search-tools__button-filter-btn {
+    flex: 1 1 0;
+  }
+
+  body.page-search-results .search-results-bar.is-stuck .search-results-view,
+  body.page-search-results .search-results-bar.is-stuck .search-results-summary__group--v2 {
+    display: none;
+  }
+
+  body.page-search-results .search-results-bar.is-stuck .search-results-summary__group--v1 {
+    margin-right: 0;
+    flex: none;
+  }
+
+  body.page-search-results .search-results-bar.is-stuck .search-results-bar__switch-long {
+    display: none;
+  }
+
+  body.page-search-results .search-results-bar.is-stuck .search-results-bar__switch-short {
+    display: inline;
+  }
+}
+
+/* Very narrow phones: stuck, Sort and Filters take a row each half and Digital asset drops to its own row instead of clipping */
+@media (max-width: 359px) {
+  body.page-search-results .search-results-bar.is-stuck .search-results-search-tools__group-sort,
+  body.page-search-results .search-results-bar.is-stuck .search-results-search-tools__button-filter-btn {
+    flex: 1 1 calc(50% - 4px);
+  }
+
+  body.page-search-results .search-results-bar.is-stuck .search-results-summary__group--v1 {
+    flex: 1 1 100%;
+  }
+}

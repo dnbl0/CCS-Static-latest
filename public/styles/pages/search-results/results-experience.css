@@ -1,0 +1,154 @@
+/* ===== Blacklight-style results experience: switch, pills, rail skeleton (phase 2a) ===== */
+
+/* "Show only: Records with digital assets", a switch at the top of the filter rail */
+body.page-search-results .facet-rail__switches {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+body.page-search-results .filter-switch {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: var(--font-size-body);
+  text-align: left;
+  color: var(--col-text-primary);
+  cursor: pointer;
+}
+
+body.page-search-results .filter-switch:hover .filter-switch__label {
+  text-decoration: underline;
+}
+
+body.page-search-results .filter-switch__track {
+  position: relative;
+  flex: none;
+  width: 44px;
+  height: 24px;
+  border-radius: var(--radius-pill);
+  background: var(--col-border-neutral);
+  transition: background var(--duration-base);
+}
+
+body.page-search-results .filter-switch__knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: var(--radius-circle);
+  background: var(--white-100);
+  box-shadow: var(--shadow-soft);
+  transition: transform var(--duration-base);
+}
+
+body.page-search-results .filter-switch.is-on .filter-switch__track {
+  background: var(--col-bg-primary);
+}
+
+body.page-search-results .filter-switch.is-on .filter-switch__knob {
+  transform: translateX(20px);
+}
+
+body.page-search-results .filter-switch:focus-visible {
+  outline: 3px solid var(--blue-400);
+  outline-offset: 2px;
+}
+
+/* Applied filters, as pills after "N results for" in the toolbar: the value only, sage, removable */
+body.page-search-results .search-results-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+body.page-search-results .search-results-pill {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  background: var(--col-bg-accent-soft);
+  color: var(--col-bg-primary);
+}
+
+body.page-search-results .search-results-pill__text {
+  min-width: 0;
+  padding: var(--space-2) var(--space-4) var(--space-2) var(--space-8);
+  overflow: hidden;
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-semibold);
+  line-height: 24px;
+  letter-spacing: 0.08em;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+body.page-search-results .search-results-pill__remove {
+  display: inline-flex;
+  align-items: center;
+  align-self: stretch;
+  padding: 0 var(--space-8);
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+body.page-search-results .search-results-pill__remove:hover,
+body.page-search-results .search-results-pill__remove:focus-visible {
+  background: var(--palette-sage-80);
+}
+
+body.page-search-results .search-results-pill__remove:focus-visible {
+  outline: 3px solid var(--blue-400);
+  outline-offset: -3px;
+}
+
+/* While results update (aria-busy on the layout) the rail's options and the pills shimmer grey, as the cards do */
+body.page-search-results .search-results-layout.is-searching .facet-rail__item,
+body.page-search-results .search-results-layout.is-searching .facet-rail__toggle {
+  background: linear-gradient(90deg, #ecebe7 0, #f6f5f2 40%, #ecebe7 80%);
+  background-size: 1200px 100%;
+  animation: shimmer 1.3s linear infinite;
+  pointer-events: none;
+}
+
+body.page-search-results .search-results-layout.is-searching .facet-rail__item > *,
+body.page-search-results .search-results-layout.is-searching .facet-rail__value,
+body.page-search-results .search-results-layout.is-searching .facet-rail__chevron {
+  visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.page-search-results .search-results-layout.is-searching .facet-rail__item,
+  body.page-search-results .search-results-layout.is-searching .facet-rail__toggle,
+  body.page-search-results .search-results-loading-results__group--v2,
+  body.page-search-results .search-results-loading-results__text--v1,
+  body.page-search-results .search-results-loading-results__text--v2,
+  body.page-search-results .search-results-loading-results__text--v3,
+  body.page-search-results .search-results-loading-results__text--v4 {
+    animation: none;
+  }
+
+  body.page-search-results .filter-switch__track,
+  body.page-search-results .filter-switch__knob {
+    transition: none;
+  }
+}
+
+/* the count and its pills sit on one line, with room between */
+body.page-search-results .search-results-bar .search-results-summary__group--v4 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-8) var(--space-12);
+}

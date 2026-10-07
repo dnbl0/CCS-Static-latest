@@ -44,7 +44,16 @@ search bar on the home page (the Rails app keeps its Blacklight bar) and font fa
     the search page's search button class (neither is styled) and the home page footer's image paths (now absolute).
     The page-named BEM classes in the header (`contact-university-melbourne__list`) are kept: the partial is a template
     with `@PAGE@`.
-- Still to do: Phase 2 (items 7-9), 3 (items 13-16), 4 and 5. The Chromium suites could not run in the sandbox
+- **Done 2026-10-07 (more):**
+  - Item 13 (part): `search-results.css` is split into eight files under `public/styles/pages/search-results/`, cut
+    only at the section comments that were already there and loaded in the same order, so the cascade is unchanged.
+    It is not yet split by component: the sheet is layered (later rules refine earlier ones, 23 duplicate-selector
+    warnings), so merging the layers needs the Chromium `style-diff` suite to prove nothing moved. Do that in CI.
+  - Item 18: `HelpTopic`, `SitePages` and `CollectionCounts` replace the logic in `PagesController`; breadcrumb, page
+    banner and pathfinder card are ViewComponents with tests.
+  - Item 7: `auto-merge.yml` no longer fires for changes under `ead-ccs-test/`. Item 8: a pull request template asks for
+    the checks and for desktop and mobile screenshots (no `CODEOWNERS` yet: it needs the owners' usernames).
+- Still to do: items 9, 14 (pre-rendering), 15, 16, the rest of 13, 17, 19-28. The Chromium suites could not run in the sandbox
   (the page runtime needs unpkg.com): they run in CI.
 
 ## Phase 1 - Stop the two sites drifting apart (highest value)
