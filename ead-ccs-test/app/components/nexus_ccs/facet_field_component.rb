@@ -14,6 +14,11 @@ module NexusCcs
       @facet_field.facet_field.range && @facet_field.respond_to?(:min) && @facet_field.min.present? && @facet_field.max.present?
     end
 
+    # Whether a range is applied: with none, the slider's From / To fields are empty (Minimum / Maximum shown)
+    def range_applied?
+      @facet_field.respond_to?(:selected_range) && @facet_field.selected_range.present?
+    end
+
     # Every filter starts closed, even one with values selected: the box shows what is chosen
     def collapsed?
       true

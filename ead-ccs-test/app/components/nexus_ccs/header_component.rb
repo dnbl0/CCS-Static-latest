@@ -26,10 +26,11 @@ module NexusCcs
       end
     end
 
-    def show_search_banner? = helpers.action_name != "show"
+    # A record's page has its title band instead of the search banner, and the advanced search page its own
+    # banner (catalog/advanced_search.html.erb): the form is the search.
+    def show_search_banner? = !%w[show advanced_search].include?(helpers.action_name)
 
-    # A record's page has its title band instead of the search banner.
-    def show_record_banner? = !show_search_banner?
+    def show_record_banner? = helpers.action_name == "show"
 
     def record_title
       document = helpers.instance_variable_get(:@document)

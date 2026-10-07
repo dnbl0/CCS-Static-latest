@@ -6,6 +6,16 @@ class CatalogController < ApplicationController
   include BlacklightRangeLimit::ControllerOverride
   include QueryRules
 
+  # The results open in the default view (mosaic) every time. Blacklight would remember the last view the
+  # visitor chose in the session and open every later search that way; here only ?view= in the URL changes it.
+  # (A block here, so it comes after, and wins over, the gem's own helper.)
+  helper do
+    def document_index_view_type(query_params = params || {})
+      view = query_params[:view]
+      view.present? && document_index_views.key?(view.to_sym) ? view.to_sym : default_document_index_view_type
+    end
+  end
+
   # If you'd like to handle errors returned by Solr in a certain way,
   # you can use Rails rescue_from with a method you define in this controller,
   # uncomment:
@@ -76,6 +86,9 @@ class CatalogController < ApplicationController
     # pagination. Subclasses the Blacklight component and only swaps the template.
     config.show.document_header_component = NexusCcs::DocumentHeaderComponent
 
+    # The record page body after the CCS UI "Record-detail": media, summary, details, persistent link, copyright.
+    config.show.document_component = NexusCcs::RecordDocumentComponent
+
     # Between a record's title and its details: the digital assets and a summary line.
     config.show.document_embed_component = NexusCcs::RecordEmbedComponent
 
@@ -120,6 +133,10 @@ class CatalogController < ApplicationController
 
     config.add_facet_fields_to_solr_request!
 
+    # The advanced search form's "Includes all" filters (see AllFacetFilters) are carried in the search state
+    # like f and f_inclusive: Blacklight drops any parameter that is not listed here
+    config.search_state_fields = config.search_state_fields + [ { AllFacetFilters::PARAM => config.facet_fields.keys.index_with { [] } } ]
+
     # ================================================================
     # Record fields come from the workbook (DataModel): its labels, its order, and only the fields
     # the data can carry. The title is the page heading, so it is not repeated as a field; the
@@ -162,6 +179,14 @@ class CatalogController < ApplicationController
       }
     end
 
+    # Vernon records only (the EMu export has no description column)
+    config.add_search_field("description") do |field|
+      field.solr_parameters = {
+        qf: "description_tsim",
+        pf: "description_tsim"
+      }
+    end
+
     config.advanced_search.enabled = true
 
     # Set up a default advanced search configuration by using the current
@@ -189,6 +214,27 @@ class CatalogController < ApplicationController
     # Configuration for autocomplete suggester
     config.autocomplete_enabled = true
     config.autocomplete_path = "suggest"
+  end
+
+  # The bare front page is the results page with the Digital asset switch on: every record that has a digital
+  # asset, as the mosaic. Any parameter (a search, a filter, a sort...) means the visitor chose something.
+  before_action :show_digital_assets_by_default, only: :index
+
+  def show_digital_assets_by_default
+    return unless controller_name == "catalog" && request.format.html? && request.query_parameters.empty?
+
+    redirect_to search_action_url(f: { has_digital_asset: [ "with" ] }, search_field: "all_fields", view: "masonry")
+  end
+
+  # "Includes all" filters (f_all) alone make a search too: the results page, not the home page
+  def has_search_parameters?
+    super || AllFacetFilters.pairs(search_state.params, blacklight_config).any?
+  end
+
+  # The advanced search form. Opened by Blacklight's modal (an XHR request) it is only the form, for the flyout.
+  def advanced_search
+    super
+    render layout: false if request.xhr?
   end
 
   # JSON for the range filters' slider: the first and last year of the results, with that filter's own range

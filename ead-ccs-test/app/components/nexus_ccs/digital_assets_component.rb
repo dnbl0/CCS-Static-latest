@@ -1,11 +1,18 @@
 # frozen_string_literal: true
 
 module NexusCcs
-  # A record's digital assets on its page: the first image large, the others as a row of
-  # thumbnails that open the large image. Renders nothing for a record without assets.
-  # Registered as the show page's document_embed_component, which sits between the title
-  # and the metadata.
+  # A record's media on its page, after the CCS UI "Record-detail" media section: a dark band with the large
+  # image (a row of thumbnails under it when there are several), a "Media metadata" panel that slides over the
+  # band's right edge, and a toolbar with the licence and the buttons for that panel and for full screen.
+  # Renders nothing for a record without assets. Registered, through NexusCcs::RecordEmbedComponent, as the show
+  # page's document_embed_component. Behaviour: controllers/media_viewer_controller.js.
   class DigitalAssetsComponent < Blacklight::Component
+    # The advisory every record carries (the demo's wording)
+    ADVISORY = "Some collection items include terms and views that are not appropriate today. They reflect the " \
+               "period in which they were created and are not the views of the University of Melbourne."
+
+    ICONS = %w[media-copyright media-info media-fullscreen].freeze
+
     def initialize(presenter:, document_counter: nil, **)
       @document = presenter.document
     end
@@ -31,6 +38,39 @@ module NexusCcs
     # The image name carries the title and position, so each one is distinguishable.
     def alt(position)
       count == 1 ? title : "#{title}, image #{position} of #{count}"
+    end
+
+    # e.g. "Copyright - Current"; the toolbar shows it as the licence chip
+    def licence
+      Array(@document["licence_type_ssim"]).first.presence
+    end
+
+    # What the record's rights note says (the licence name in brackets is the chip's, so it is not repeated)
+    def terms
+      note = Array(@document["rights_ssim"]).first.to_s.sub(/\A\s*\[[^\]]*\]\s*/, "").strip
+      note.presence
+    end
+
+    # [label, text] rows of the Media metadata panel
+    def metadata
+      [ [ "Licence type", licence ], [ "Advisory", ADVISORY ], [ "Terms of use", terms ] ].select { |_, text| text.present? }
+    end
+
+    def metadata?
+      metadata.any?
+    end
+
+    # An icon from app/assets/images, drawn in the text colour (the files carry the design's fixed navy)
+    def icon(name)
+      raise ArgumentError, name unless ICONS.include?(name)
+
+      File.read(Rails.root.join("app/assets/images/#{name}.svg"))
+          .gsub(/ (width|height|style|preserveAspectRatio|overflow)="[^"]*"/, "")
+          .gsub(/ clip-path="[^"]*"/, "")
+          .gsub(/ id="[^"]*"/, "")
+          .gsub(/(stroke|fill)="#(?:[0-9A-Fa-f]{3,6})"/, '\1="currentColor"')
+          .sub("<svg", '<svg width="1em" height="1em" aria-hidden="true" focusable="false"')
+          .html_safe
     end
 
     private

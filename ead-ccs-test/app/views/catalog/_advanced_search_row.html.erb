@@ -1,0 +1,19 @@
+<%# One row of the advanced search form: clause[index][field|op|query] %>
+<fieldset class="advanced-row" data-advanced-search-target="row">
+  <legend class="advanced-row__legend" data-advanced-search-target="legend"><%= t("advanced_search.search.row", number: index.is_a?(Integer) ? index + 1 : "__NUMBER__") %></legend>
+  <div class="advanced-form__field">
+    <label for="adv-field-<%= index %>" class="advanced-form__label"><%= t("advanced_search.search.field") %></label>
+    <%= select_tag "clause[#{index}][field]", options_for_select(field_options, row.field), id: "adv-field-#{index}", class: "advanced-form__control" %>
+  </div>
+  <div class="advanced-form__field">
+    <label for="adv-op-<%= index %>" class="advanced-form__label"><%= t("advanced_search.search.match") %></label>
+    <%= select_tag "clause[#{index}][op]", options_for_select(match_options, row.op), id: "adv-op-#{index}", class: "advanced-form__control" %>
+  </div>
+  <div class="advanced-form__field advanced-form__field--terms">
+    <label for="adv-query-<%= index %>" class="advanced-form__label"><%= t("advanced_search.search.terms") %></label>
+    <%= text_field_tag "clause[#{index}][query]", row.query, id: "adv-query-#{index}", class: "advanced-form__control", maxlength: QueryRules::MAX_LENGTH, autocomplete: "off", data: { advanced_search_target: "query" } %>
+  </div>
+  <button type="button" class="advanced-form__link advanced-row__delete" data-action="advanced-search#deleteRow" data-advanced-search-target="delete">
+    <%= t("advanced_search.search.delete_row") %><span class="visually-hidden" data-advanced-search-target="deleteLabel"></span>
+  </button>
+</fieldset>
