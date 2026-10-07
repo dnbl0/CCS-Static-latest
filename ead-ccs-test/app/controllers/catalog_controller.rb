@@ -120,6 +120,10 @@ class CatalogController < ApplicationController
 
     config.add_facet_fields_to_solr_request!
 
+    # The advanced search form's "Includes all" filters (see AllFacetFilters) are carried in the search state
+    # like f and f_inclusive: Blacklight drops any parameter that is not listed here
+    config.search_state_fields = config.search_state_fields + [ { AllFacetFilters::PARAM => config.facet_fields.keys.index_with { [] } } ]
+
     # ================================================================
     # Record fields come from the workbook (DataModel): its labels, its order, and only the fields
     # the data can carry. The title is the page heading, so it is not repeated as a field; the
@@ -162,6 +166,14 @@ class CatalogController < ApplicationController
       }
     end
 
+    # Vernon records only (the EMu export has no description column)
+    config.add_search_field("description") do |field|
+      field.solr_parameters = {
+        qf: "description_tsim",
+        pf: "description_tsim"
+      }
+    end
+
     config.advanced_search.enabled = true
 
     # Set up a default advanced search configuration by using the current
@@ -189,6 +201,17 @@ class CatalogController < ApplicationController
     # Configuration for autocomplete suggester
     config.autocomplete_enabled = true
     config.autocomplete_path = "suggest"
+  end
+
+  # "Includes all" filters (f_all) alone make a search too: the results page, not the home page
+  def has_search_parameters?
+    super || AllFacetFilters.pairs(search_state.params, blacklight_config).any?
+  end
+
+  # The advanced search form. Opened by Blacklight's modal (an XHR request) it is only the form, for the flyout.
+  def advanced_search
+    super
+    render layout: false if request.xhr?
   end
 
   # JSON for the range filters' slider: the first and last year of the results, with that filter's own range

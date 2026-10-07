@@ -11,7 +11,7 @@ class SearchChipTest < ViewComponent::TestCase
     render_banner("/catalog?q=art&f[collection_ssim][]=Medical+History+Museum&page=3")
 
     wrapper = page.find(".search-banner__search")
-    assert_equal "search-chip", wrapper["data-controller"]
+    assert_includes wrapper["data-controller"].split, "search-chip"
     assert_equal "art", wrapper["data-search-chip-query-value"]
     clear = wrapper["data-search-chip-clear-url-value"]
     assert_not_includes clear, "q=art"
@@ -29,7 +29,7 @@ class SearchChipTest < ViewComponent::TestCase
     render_banner("/catalog")
 
     wrapper = page.find(".search-banner__search")
-    assert_equal "search-chip", wrapper["data-controller"]
+    assert_includes wrapper["data-controller"].split, "search-chip"
     assert_nil wrapper["data-search-chip-query-value"]
   end
 

@@ -7,7 +7,8 @@ module BlacklightHelper
   # Blacklight's fixed-width container.
   # How many filters (facets, not values) the search has applied: "Search filters (2)".
   def applied_filter_count
-    search_state.filters.count { |filter| filter.values.any? }
+    search_state.filters.count { |filter| filter.values.any? } +
+      AllFacetFilters.pairs(search_state.params, blacklight_config).map(&:first).uniq.size
   end
 
   def container_classes
