@@ -961,7 +961,7 @@ class Component extends DCLogic {
     window.addEventListener('message', this.onAdvMsg);
     this.onMove = e => this.move(e);
     this.onUp = () => { this.drag = null; };
-    this.onKey = e => { if (e.key === 'Escape') { if (this.state.ackOpen) this.closeAck(); else if (this.state.modal) this.closeModal(); else if (this.state.advOpen) this.closeAdv(); else if (Object.values(this.state.sOpen || {}).some(Boolean)) this.setState({ sOpen: {} }); } };
+    this.onKey = e => { if (e.key === 'Escape') { if (this.state.ackOpen) this.closeAck(); else if (this.state.modal) this.closeModal(); else if (this.state.advOpen) this.closeAdv(); else if (Object.values(this.state.sOpen || {}).some(Boolean)) { const t = document.querySelector('.facet-rail__toggle[aria-expanded="true"]'); this.setState({ sOpen: {} }); if (t) t.focus(); } } };
     this.onDown = e => { const s = this.state, out = r => r.current && !r.current.contains(e.target);
       const u = {}; if (s.sortOpen && out(this.sortRef)) u.sortOpen = false; if (s.ppOpen && out(this.ppRef)) u.ppOpen = false; if (Object.values(s.sOpen || {}).some(Boolean) && !(e.target.closest && e.target.closest('.facet-rail__section'))) u.sOpen = {}; if (Object.keys(u).length) this.setState(u); };
     this.onResize = () => this.setState({ vw: window.innerWidth });

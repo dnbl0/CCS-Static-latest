@@ -61,6 +61,14 @@ const { PUBLIC, fail, ok, finish, fs, path } = require('./lib');
       await page.keyboard.press('Escape');
       if (JSON.stringify(r) === JSON.stringify(m) && r && r.length) ok(`"${title}" shows the same options and counts in the rail and the modal`); else fail(`"${title}" options differ.\n rail:  ${JSON.stringify(r)}\n modal: ${JSON.stringify(m)}`);
     }
+    // Escape closes an open rail panel and puts focus back on its toggle
+    {
+      const tg = page.locator('.facet-rail__section').filter({ hasText: 'Object type' }).first().locator('.facet-rail__toggle');
+      if ((await tg.getAttribute('aria-expanded')) !== 'true') await tg.click();
+      await page.keyboard.press('Escape');
+      const back = await page.evaluate(() => { const a = document.activeElement; return a && a.classList.contains('facet-rail__toggle') && a.getAttribute('aria-expanded') === 'false' && /Object type/.test(a.closest('.facet-rail__section').textContent); });
+      if (back) ok('Escape closes the open rail panel and returns focus to its toggle'); else fail('Escape did not return focus to the rail toggle');
+    }
     // a rail click filters at once and shows up as a chip
     const heading = () => page.textContent('.search-results-summary__heading');
     const before = await heading();
