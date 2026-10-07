@@ -1,19 +1,14 @@
 require "test_helper"
 
 class PageComponentsTest < ViewComponent::TestCase
-  test "the breadcrumb links every item but the last, and its mobile link goes to the parent" do
+  test "the breadcrumb links every item but the last, and has no separate mobile breadcrumb" do
     render_inline(NexusCcs::PageBreadcrumbsComponent.new(trail: [ [ "Help and support", "/help" ], [ "Privacy", nil ] ]))
 
     assert_selector "nav.page-breadcrumbs[aria-label=Breadcrumb] ol.page-local-history li", count: 3
     assert_selector "li[aria-current=page] .page-local-history__item-text", text: "Privacy"
     assert_selector "li a[href='/help'][title='Help and support']"
-    assert_selector "ol.bc-mobile a.bc-mobile__link[href='/help']", text: "Help and support"
-  end
-
-  test "a page one level down goes back to the home page on mobile" do
-    render_inline(NexusCcs::PageBreadcrumbsComponent.new(trail: [ [ "Contact", nil ] ]))
-
-    assert_selector "ol.bc-mobile a.bc-mobile__link[href='/']", text: "Cultural Collections"
+    assert_no_selector ".bc-mobile"
+    assert_selector "nav.page-breadcrumbs ol", count: 1
   end
 
   test "the banner has the page heading and its description" do

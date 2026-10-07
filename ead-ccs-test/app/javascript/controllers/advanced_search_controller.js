@@ -123,7 +123,9 @@ export default class extends Controller {
       return item
     }))
     this.errorsTarget.hidden = false
-    this.errorsTarget.scrollIntoView({ block: "nearest" })
+    // Focus goes to the summary, so a keyboard user lands on the first link instead of having to find it
+    this.errorsTarget.setAttribute("tabindex", "-1")
+    this.errorsTarget.focus()
   }
 
   errors() {
