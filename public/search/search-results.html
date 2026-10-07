@@ -293,7 +293,7 @@
 <sc-if value="{{ hasSidebar }}">
 <aside class="facet-rail" aria-label="Filter results">
   <div class="facet-rail__head">
-    <h2 class="facet-rail__title">Search filters</h2>
+    <h2 class="facet-rail__title">Search filters<sc-if value="{{ hasActive }}"> ({{ railCount }})</sc-if></h2>
     <sc-if value="{{ hasActive }}"><button type="button" class="facet-rail__clear" onClick="{{ clearAll }}">Clear all</button></sc-if>
   </div>
   <div class="facet-rail__switches" role="group" aria-label="Show only">
@@ -304,7 +304,7 @@
     <section class="facet-rail__section">
       <h3 class="facet-rail__heading">
         <span class="facet-rail__name" id="rail-name-{{ sec.key }}">{{ sec.title }}<sc-if value="{{ sec.badge }}"><span class="facet-rail__badge">{{ sec.badge }}</span></sc-if></span>
-        <button type="button" class="facet-rail__toggle" aria-expanded="{{ sec.open }}" aria-controls="{{ sec.panelId }}" aria-labelledby="rail-name-{{ sec.key }} rail-val-{{ sec.key }}" onClick="{{ sec.toggle }}"><span class="facet-rail__value" id="rail-val-{{ sec.key }}">{{ sec.value }}</span><svg class="facet-rail__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+        <button type="button" class="facet-rail__toggle" data-has-value="{{ sec.hasValue }}" aria-expanded="{{ sec.open }}" aria-controls="{{ sec.panelId }}" aria-labelledby="rail-name-{{ sec.key }} rail-val-{{ sec.key }}" onClick="{{ sec.toggle }}"><span class="facet-rail__value" id="rail-val-{{ sec.key }}">{{ sec.value }}</span><svg class="facet-rail__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
       </h3>
       <sc-if value="{{ sec.open }}">
         <div class="facet-rail__panel" id="{{ sec.panelId }}">
@@ -1000,9 +1000,9 @@ class Component extends DCLogic {
     window.addEventListener('message', this.onAdvMsg);
     this.onMove = e => this.move(e);
     this.onUp = () => { this.drag = null; };
-    this.onKey = e => { if (e.key === 'Escape') { if (this.state.ackOpen) this.closeAck(); else if (this.state.modal) this.closeModal(); else if (this.state.advOpen) this.closeAdv(); } };
+    this.onKey = e => { if (e.key === 'Escape') { if (this.state.ackOpen) this.closeAck(); else if (this.state.modal) this.closeModal(); else if (this.state.advOpen) this.closeAdv(); else if (Object.values(this.state.sOpen || {}).some(Boolean)) this.setState({ sOpen: {} }); } };
     this.onDown = e => { const s = this.state, out = r => r.current && !r.current.contains(e.target);
-      const u = {}; if (s.sortOpen && out(this.sortRef)) u.sortOpen = false; if (s.ppOpen && out(this.ppRef)) u.ppOpen = false; if (Object.keys(u).length) this.setState(u); };
+      const u = {}; if (s.sortOpen && out(this.sortRef)) u.sortOpen = false; if (s.ppOpen && out(this.ppRef)) u.ppOpen = false; if (Object.values(s.sOpen || {}).some(Boolean) && !(e.target.closest && e.target.closest('.facet-rail__section'))) u.sOpen = {}; if (Object.keys(u).length) this.setState(u); };
     this.onResize = () => this.setState({ vw: window.innerWidth });
     window.addEventListener('pointerdown', this.onDown); window.addEventListener('pointermove', this.onMove);
     window.addEventListener('pointerup', this.onUp); window.addEventListener('keydown', this.onKey); window.addEventListener('resize', this.onResize);
@@ -1208,7 +1208,7 @@ class Component extends DCLogic {
       const badge = k === 'date' ? (hasDate ? 1 : null) : F.kind === 'life' ? (hasLife ? 1 : null) : k === 'accession' ? (d.accession ? 1 : null) : (selected.length || null);
       const summary = k === 'date' ? (hasDate ? (d.yFrom ?? 'Any') + ' – ' + (d.yTo ?? 'Present') : '') : F.kind === 'life' ? (hasLife ? (lFrom ?? 'Any') + ' – ' + (lTo ?? 'Any') : '') : k === 'accession' ? (d.accession || '') : selected.length ? selected[0] + (selected.length > 1 ? ' +' + (selected.length - 1) : '') : '';
       return { key: k, title: F.title, group: F.group, groupStart: fi === 0 || FACETS[fi - 1].group !== F.group, open, panelId: ctx.prefix + k, badge, summary, showSummary: !open && !!summary,
-        chev: open ? 'rotate(180deg)' : 'none', toggle: () => this.setState(st => ({ [ctx.open]: { ...st[ctx.open], [k]: !st[ctx.open][k] } })),
+        chev: open ? 'rotate(180deg)' : 'none', toggle: () => this.setState(st => ({ [ctx.open]: ctx.open === 'sOpen' ? (st.sOpen[k] ? {} : { [k]: true }) : { ...st[ctx.open], [k]: !st[ctx.open][k] } })),
         isChips: false, isRows: F.kind === 'list' || F.kind === 'tree' || F.kind === 'chips', isDate: F.kind === 'date', isText: F.kind === 'text', isLife: F.kind === 'life',
         search: !!F.search, q: s[ctx.fq][k] || '', onQ: e => { const v = e.target.value; this.setState(st => ({ [ctx.fq]: { ...st[ctx.fq], [k]: v } })); }, searchLabel: 'Search ' + F.title.toLowerCase() + '…',
         matchText: find ? (F.title + ' ' + F.group + ' ' + options.map(o => o.label).join(' ')).toLowerCase() : '',
@@ -1414,7 +1414,7 @@ class Component extends DCLogic {
       sortOpts: SORTS.map(([v, label]) => ({ label, sel: f.sort === v, bg: f.sort === v ? '#b3e5f5' : '#fff', pick: () => { this.setState({ sortOpen: false }); this.apply(ff => ({ ...ff, sort: v })); } })),
       wrapDisplay: view === 'masonry' ? 'contents' : 'block',
       openModal: () => this.openModal(),
-      loading: s.loading, notLoading: !s.loading, chips, hasActive: chips.length > 0,
+      loading: s.loading, notLoading: !s.loading, chips, hasActive: chips.length > 0, railCount: chips.length,
       clearAll: () => this.apply(ff => ({ ...EMPTYF(), sort: ff.sort })),
       skeletons: (n ? results.slice(0, 12).map(r => ({ ar: r.hasImg ? r.ar : 'auto', imgDisplay: r.hasImg ? 'block' : 'none' })) : SKEL.slice(0, 6).map(x => ({ ar: '1 / ' + (x / 300), imgDisplay: 'block' }))),
       results: (isLive && s.liveItems) ? results : results.slice((page - 1) * s.perPage, page * s.perPage), isGrid: !s.loading && view === 'masonry' && n > 0, isList: !s.loading && view === 'list' && n > 0, isEmpty: !s.loading && n === 0,

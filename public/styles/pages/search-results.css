@@ -1959,13 +1959,13 @@ body.page-search-results .search-results-layout > .search-results-main-content {
   margin: 0;
 }
 
+/* The rail runs the full length of the page, as in the Blacklight prototype: no scrolling box of its own, so a
+   panel opening over the filters below is never clipped. --facet-panel-padding-y is the open panel's top and
+   bottom padding. */
 body.page-search-results .facet-rail {
+  --facet-panel-padding-y: var(--space-12);
   flex: none;
   width: 296px;
-  position: sticky;
-  top: var(--space-16);
-  max-height: calc(100vh - var(--space-32));
-  overflow-y: auto;
   margin-top: var(--space-24);
   padding: 0 var(--space-16) var(--space-24) 0;
   border-right: 1px solid var(--col-border-neutral-soft);
@@ -2030,6 +2030,7 @@ body.page-search-results .facet-rail__heading {
 }
 
 body.page-search-results .facet-rail__name {
+  font-family: var(--font-family-sans); /* it sits in an h3, which is set in the serif */
   font-size: var(--font-size-caption);
   font-weight: var(--font-weight-semibold);
   text-transform: uppercase;
@@ -2048,11 +2049,26 @@ body.page-search-results .facet-rail__toggle {
   border: 1px solid var(--col-border-neutral);
   background: var(--white-100);
   font: inherit;
+  font-family: var(--font-family-sans); /* the button sits in an h3, which is set in the serif */
   font-size: var(--font-size-small);
   font-weight: var(--font-weight-regular);
   color: var(--col-text-muted);
   text-align: left;
   cursor: pointer;
+}
+
+/* A filter with a value chosen shows it in the dark text colour; the placeholder stays muted */
+body.page-search-results .facet-rail__toggle[data-has-value="true"] {
+  color: var(--col-text-primary);
+}
+
+body.page-search-results .facet-rail__toggle:focus-visible,
+body.page-search-results .facet-rail__option:focus-visible,
+body.page-search-results .facet-rail__clear:focus-visible,
+body.page-search-results .facet-rail__more:focus-visible,
+body.page-search-results .facet-rail__search:focus-visible {
+  outline: 3px solid var(--blue-400);
+  outline-offset: 2px;
 }
 
 body.page-search-results .facet-rail__toggle:hover,
@@ -2083,11 +2099,9 @@ body.page-search-results .facet-rail__panel {
   left: 0;
   right: 0;
   z-index: var(--z-scale-10);
-  max-height: 320px;
-  overflow-y: auto;
   margin-top: -1px;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
-  padding: var(--space-4) var(--space-12) var(--space-4);
+  padding: var(--facet-panel-padding-y) var(--space-12);
   border: 1px solid var(--col-bg-primary);
   background: var(--white-100);
 }
