@@ -1,0 +1,22 @@
+/* Generated from public/styles/pages/indigenous-data.css by scripts/sync-rails-assets.js. Edit the static file, not this copy. */
+/* indigenous-data: styles moved out of inline style="" attributes. Class names are semantic (block__element) and scoped by the page class on <body> (page-indigenous-data), which gives them the precedence the inline styles had over shared component CSS. Do not reintroduce inline styles. */
+body.page-indigenous-data .indigenous-data-page__group {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+body.page-indigenous-data .indigenous-data-page__icon {
+  display: none;
+}
+body.page-indigenous-data .page-local-history__link-image {
+  vertical-align: middle;
+}
+body.page-indigenous-data .indigenous-data-main-content {
+  flex: 1;
+}
+body.page-indigenous-data .indigenous-data-main-content__text {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8) var(--space-24);
+  margin: 0 0 var(--space-32);
+}

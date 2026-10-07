@@ -1,0 +1,6 @@
+/* Generated from public/styles/pages/home.css by scripts/sync-rails-assets.js. Edit the static file, not this copy. */
+/* home: styles moved out of inline style="" attributes. Class names are semantic (block__element) and scoped by the page class on <body> (page-home), which gives them the precedence the inline styles had over shared component CSS. Do not reintroduce inline styles. */
+body.page-home {
+  min-height: 100vh;
+}
+/* Bootstrap theme colours (the compiled theme's :root values are the UoM defaults; the homepage keeps its own brand pair) */

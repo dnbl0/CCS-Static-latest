@@ -1,0 +1,61 @@
+en:
+  advanced_search:
+    page_title: Advanced search
+    banner_title: Advanced Search
+    banner_description: Combine fields and filters to find exactly what you're looking for across every collection.
+    search:
+      heading: Search
+      hint: Choose a field and a match type, then enter your search terms. Use quotation marks for an exact phrase. Select Add row to search for more than one thing at once.
+      row: "Row %{number}"
+      field: Search field
+      match: Match type
+      terms: Search terms
+      add_row: Add row
+      delete_row: Delete row
+      max_rows: You can add up to %{count} rows.
+    match:
+      must: Contains all (AND)
+      should: Contains any (OR)
+      must_not: Does not contain (NOT)
+    filters:
+      heading: Filters
+      hint: Narrow your results by collection, object type, creator and more. Select Add filter to choose other filters, and remove any you do not need.
+      add: Add filter
+      add_placeholder: Choose a filter
+      remove: Remove filter
+      find: "Find in %{filter}"
+      mode: Match
+      any: Includes any (OR)
+      all: Includes all (AND)
+      none_available: No values to choose from
+    dates:
+      heading: Dates
+      hint: Use years, for example 1900. Leave a box empty for no limit. Use a minus sign for years BCE.
+      from: From
+      to: To
+    sort:
+      heading: Sort results by
+    actions:
+      search: Search
+      start_over: Start over
+    errors:
+      heading: There is a problem
+      empty: Enter search terms or choose a filter to search.
+      range_order: "%{field}: the From year must not be later than the To year."
+    help:
+      heading: Search help
+      tips: Tips for better results
+      tips_list:
+        - Add rows to expand your search, or delete rows to simplify it.
+        - Search a specific field (Title, Creator, Subject, Description) instead of everywhere.
+        - 'Each row can require its terms (<em>Contains all</em>), allow either (<em>Contains any</em>), or exclude them (<em>Does not contain</em>).'
+        - 'Narrow by object type, collection, creator and more. Each filter has its own <em>Includes any (OR)</em> / <em>Includes all (AND)</em> choice.'
+        - 'Use quotation marks to search for an exact phrase, e.g. <code>"eucalyptus oil"</code>.'
+      examples: Search examples
+      examples_list:
+        - '<em>eucalyptus oil bottle</em> in one row with <em>Contains all</em> displays records with all three terms anywhere in the record.'
+        - '<em>botanical illustration</em> with <em>Contains any</em> displays records with <em>botanical</em> OR <em>illustration</em>.'
+      filter_examples: Filter examples
+      filter_examples_list:
+        - '<em>Photograph, Manuscript</em> with <em>Includes all</em> displays records tagged with both Photograph AND Manuscript.'
+        - '<em>Photograph, Manuscript</em> with <em>Includes any</em> displays records tagged with either Photograph OR Manuscript.'

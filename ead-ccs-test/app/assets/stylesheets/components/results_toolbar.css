@@ -112,9 +112,10 @@
   height: 3rem;
 }
 
-/* The static page's dropdown: a 48px white box with a navy outline, the value, then a 44px cell with a
+/* The site's dropdown (the sort and per-page buttons, and any <select> turned into one by
+   controllers/select_dropdown_controller.js, which gives it the .ccs-select class): a 48px white box with a navy outline, the value, then a 44px cell with a
    navy rule and a small chevron; the menu opens flush beneath with the same outline and a pale-blue hover */
-#sortAndPerPage .btn-group > .dropdown-toggle {
+:is(#sortAndPerPage .btn-group, .ccs-select) > .dropdown-toggle {
   position: relative;
   display: block;
   width: 100%;
@@ -132,13 +133,13 @@
   color: var(--ccs-text-primary);
 }
 
-#sortAndPerPage .btn-group > .dropdown-toggle:hover,
-#sortAndPerPage .btn-group > .dropdown-toggle.show {
+:is(#sortAndPerPage .btn-group, .ccs-select) > .dropdown-toggle:hover,
+:is(#sortAndPerPage .btn-group, .ccs-select) > .dropdown-toggle.show {
   background: #f0f2f7;
   color: var(--ccs-text-primary);
 }
 
-#sortAndPerPage .btn-group > .dropdown-toggle::after {
+:is(#sortAndPerPage .btn-group, .ccs-select) > .dropdown-toggle::after {
   position: absolute;
   inset: 0 0 0 auto;
   margin: 0;
@@ -151,11 +152,11 @@
   transition: transform var(--ccs-duration-fast);
 }
 
-#sortAndPerPage .btn-group > .dropdown-toggle.show::after {
+:is(#sortAndPerPage .btn-group, .ccs-select) > .dropdown-toggle.show::after {
   transform: rotate(180deg);
 }
 
-#sortAndPerPage .btn-group > .dropdown-menu {
+:is(#sortAndPerPage .btn-group, .ccs-select) > .dropdown-menu {
   --bs-dropdown-min-width: 100%;
   --bs-dropdown-padding-y: 0;
   --bs-dropdown-border-color: var(--ccs-navy-1100);
@@ -173,12 +174,12 @@
   font-size: var(--ccs-font-size-md);
 }
 
-#sortAndPerPage .btn-group > .dropdown-menu .dropdown-item.active {
+:is(#sortAndPerPage .btn-group, .ccs-select) > .dropdown-menu .dropdown-item.active {
   font-weight: var(--ccs-font-weight-semibold);
 }
 
-#sortAndPerPage .btn-group > .dropdown-toggle:focus-visible,
-#sortAndPerPage .btn-group > .dropdown-menu .dropdown-item:focus-visible {
+:is(#sortAndPerPage .btn-group, .ccs-select) > .dropdown-toggle:focus-visible,
+:is(#sortAndPerPage .btn-group, .ccs-select) > .dropdown-menu .dropdown-item:focus-visible {
   outline: 3px solid #0b4ea2;
   outline-offset: -3px;
 }
@@ -247,12 +248,12 @@
     justify-self: end;
   }
 
-  #sortAndPerPage .btn-group > .dropdown-toggle {
+  :is(#sortAndPerPage .btn-group, .ccs-select) > .dropdown-toggle {
     padding: 0 2.5rem 0 var(--ccs-space-3);
     font-size: 0.9375rem;
   }
 
-  #sortAndPerPage .btn-group > .dropdown-toggle::after {
+  :is(#sortAndPerPage .btn-group, .ccs-select) > .dropdown-toggle::after {
     width: 2.25rem;
   }
 
@@ -278,14 +279,14 @@
   }
 
   @media (max-width: 400px) {
-    #sortAndPerPage .btn-group > .dropdown-toggle {
+    :is(#sortAndPerPage .btn-group, .ccs-select) > .dropdown-toggle {
       padding-left: 0.625rem;
       font-size: 0.875rem;
     }
   }
 
   /* The menus stay inside the screen: at least as wide as the box, and no wider than the screen */
-  #sortAndPerPage .btn-group > .dropdown-menu {
+  :is(#sortAndPerPage .btn-group, .ccs-select) > .dropdown-menu {
     max-width: calc(100vw - 2rem);
   }
 }
@@ -297,4 +298,9 @@
   --bs-tooltip-font-size: var(--ccs-font-size-sm);
   --bs-tooltip-border-radius: var(--ccs-radius-sm);
   --bs-tooltip-opacity: 1;
+}
+
+/* Menu items start with a capital: Blacklight's sort labels ("relevance", "date (newest)") are lower case */
+:is(#sortAndPerPage .btn-group, .ccs-select) > .dropdown-menu .dropdown-item::first-letter {
+  text-transform: uppercase;
 }

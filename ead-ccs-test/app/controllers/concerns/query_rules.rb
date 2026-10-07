@@ -26,7 +26,7 @@ module QueryRules
   private
 
   def apply_query_rules
-    return unless request.get?
+    return unless request.get? || request.head?
 
     cleaned = apply_query_rule_to(params, :q)
     params[:clause].each_value { |clause| cleaned &&= apply_query_rule_to(clause, :query) } if params[:clause].respond_to?(:each_value)

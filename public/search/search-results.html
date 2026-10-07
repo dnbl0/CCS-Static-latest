@@ -5,6 +5,7 @@
 <title>Search All Records — Cultural Collections Search — University of Melbourne</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../runtime-libs.js"></script>
 <script src="../support.js"></script>
 <script src="../blacklight-adapter.js"></script>
 <script src="../collection-data.js"></script>
@@ -22,7 +23,15 @@
 <link rel="stylesheet" href="/styles/components/hero-search.css">
 <link rel="stylesheet" href="/styles/components/content-templates.css">
 <link rel="stylesheet" href="/styles/components/range-slider.css">
-<link rel="stylesheet" href="/styles/pages/search-results.css">
+<link rel="stylesheet" href="/styles/pages/search-results/layout.css">
+<link rel="stylesheet" href="/styles/pages/search-results/results.css">
+<link rel="stylesheet" href="/styles/pages/search-results/toolbar.css">
+<link rel="stylesheet" href="/styles/pages/search-results/banner.css">
+<link rel="stylesheet" href="/styles/pages/search-results/flyout.css">
+<link rel="stylesheet" href="/styles/pages/search-results/filters.css">
+<link rel="stylesheet" href="/styles/pages/search-results/facet-rail.css">
+<link rel="stylesheet" href="/styles/pages/search-results/pagination.css">
+<link rel="stylesheet" href="/styles/pages/search-results/pills.css">
 </head>
 <body class="page-search-results">
 <a href="#main-content" class="skip-link search-results-page__link-skip-main-content">Skip to main content</a>
@@ -64,7 +73,7 @@
           <form class="ccs-nav__form-search" role="search" action="/search/search-results.html" method="get">
             <label for="ccs-drawer-q" class="sr-only search-results-form__label-search-cultural-collections">Search Cultural Collections</label>
             <input class="ccs-drawer-q" id="ccs-drawer-q" name="q" type="text" autocomplete="off" placeholder="Search">
-            <button class="search-results-form__button" type="submit" aria-label="Search"><img class="search-results-form__button-image" src="/images/home/icon-search-onaccent.svg" alt=""></button>
+            <button class="search-results-form__button-search" type="submit" aria-label="Search"><img class="search-results-form__button-image" src="/images/home/icon-search-onaccent.svg" alt=""></button>
           </form>
         </div>
         <ul class="ccs-nav__list">

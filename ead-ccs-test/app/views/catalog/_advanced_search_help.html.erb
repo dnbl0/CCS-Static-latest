@@ -1,0 +1,19 @@
+<%# The static site's "Search help", in the grey panel beside the form %>
+<aside class="advanced-help" aria-labelledby="adv-help-h">
+  <h2 id="adv-help-h" class="advanced-help__title"><%= t("advanced_search.help.heading") %></h2>
+
+  <h3 class="advanced-help__sub"><%= t("advanced_search.help.tips") %></h3>
+  <ul class="advanced-help__list">
+    <% t("advanced_search.help.tips_list").each do |tip| %><li><%= sanitize(tip, tags: %w[em code]) %></li><% end %>
+  </ul>
+
+  <h3 class="advanced-help__sub"><%= t("advanced_search.help.examples") %></h3>
+  <ul class="advanced-help__list">
+    <% t("advanced_search.help.examples_list").each do |example| %><li><%= sanitize(example, tags: %w[em code]) %></li><% end %>
+  </ul>
+
+  <h3 class="advanced-help__sub"><%= t("advanced_search.help.filter_examples") %></h3>
+  <ul class="advanced-help__list">
+    <% t("advanced_search.help.filter_examples_list").each do |example| %><li><%= sanitize(example, tags: %w[em code]) %></li><% end %>
+  </ul>
+</aside>

@@ -46,4 +46,56 @@ class RangeSliderTest < ActiveSupport::TestCase
     assert_includes CSS, "background-clip: padding-box;"
     assert_includes CSS, "translateX(var(--nudge, 0px))"
   end
+
+  test "the bar count is set from the width of the panel, 7.8px bars with 2px gaps, between 20 and 60" do
+    assert_includes JS, "const BAR_PITCH = 9.8"
+    assert_includes JS, "MIN_BARS = 20"
+    assert_includes JS, "MAX_BARS = 60"
+    assert_includes JS, "Math.floor((width + 2) / BAR_PITCH)"
+    assert_includes JS, 'url.searchParams.set("bins", this.barCount())'
+    assert_equal 60, RangeHistogram.bins_for("60")
+    assert_equal 29, RangeHistogram.bins_for("29")
+  end
+
+  test "with no range applied the fields are empty with the first and last year as placeholders, and empty ones are not sent" do
+    assert_includes JS, "static values = { min: Number, max: Number, histogramUrl: String, applied: Boolean }"
+    assert_includes JS, "this.begin.placeholder = String(this.lo)"
+    assert_includes JS, "this.end.placeholder = String(this.hi)"
+    assert_includes JS, "if (!this.appliedValue) {"
+    assert_includes JS, "leaveOutEmptyFields"
+    assert_includes JS, "input.disabled = input.value === \"\""
+    assert_includes Rails.root.join("app/components/nexus_ccs/facet_field_component.html.erb").read, "data-range-slider-applied-value"
+  end
+
+  test "the fields are From and To, 133 by 48, one at each end" do
+    locale = Rails.root.join("config/locales/blacklight.en.yml").read
+    assert_includes locale, "range_begin_short: From"
+    assert_includes locale, "range_end_short: To"
+    assert_includes CSS, "justify-content: space-between !important;"
+    assert_includes CSS, "flex: 0 1 8.3125rem;"
+    assert_match(/\.range-limit-input-group \.form-control \{\s+height: 3rem;/, CSS)
+  end
+
+  test "the handles are 16px white circles with a drop shadow, larger on hover and while dragging" do
+    assert_includes CSS, "--slider-thumb: 1rem;"
+    assert_includes CSS, "filter: drop-shadow("
+    assert_includes CSS, ".range-slider__handle:hover { --lift: 1.2; }"
+    assert_includes CSS, "const HANDLE = 16" if false
+    assert_includes JS, "const HANDLE = 16"
+  end
+
+  test "empty bars are 4px stubs in neutral-200" do
+    assert_includes JS, 'bin.count ? `max(4px, ${Math.min(Math.sqrt(bin.count / top), 1) * 100}%)` : "4px"'
+    assert_includes JS, 'bar.classList.toggle("is-empty", !bin.count)'
+    css = Rails.root.join("app/assets/stylesheets/components/filter_rail.css").read
+    assert_match(/\.range-slider__bar\.is-empty,\s*\.range-slider__bar\.is-empty\.is-in-range \{\s*background: var\(--ccs-neutral-200\);/, css)
+  end
+
+  test "the scope select in the search bar is the site's dropdown, not the browser's" do
+    assert_includes Rails.root.join("app/components/nexus_ccs/search_banner_component.rb").read, "select-dropdown"
+    assert_includes Rails.root.join("app/javascript/controllers/select_dropdown_controller.js").read, "ccs-select"
+    toolbar = Rails.root.join("app/assets/stylesheets/components/results_toolbar.css").read
+    assert_includes toolbar, ":is(#sortAndPerPage .btn-group, .ccs-select) > .dropdown-toggle"
+    assert_includes toolbar, ".dropdown-item::first-letter"
+  end
 end

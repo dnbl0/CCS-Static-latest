@@ -1,0 +1,16 @@
+/* Generated from public/styles/pages/collection-landing.css by scripts/sync-rails-assets.js. Edit the static file, not this copy. */
+/* collection-landing: styles moved out of inline style="" attributes. Class names are semantic (block__element) and scoped by the page class on <body> (page-collection-landing), which gives them the precedence the inline styles had over shared component CSS. Do not reintroduce inline styles. */
+body.page-collection-landing .collection-landing-page__group {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+body.page-collection-landing .collection-landing-page__icon {
+  display: none;
+}
+body.page-collection-landing .page-local-history__link-image {
+  vertical-align: middle;
+}
+body.page-collection-landing .collection-landing-main-content {
+  flex: 1;
+}

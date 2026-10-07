@@ -1,12 +1,41 @@
 /*
- * A record's page, styled after the static CCS record page: a dark title band, the digital asset on a
- * dark band, a small summary (type and collection, creator and date, licence), then the details as a
- * white card of ruled rows and a persistent link. Markup: NexusCcs::RecordBannerComponent,
- * NexusCcs::RecordEmbedComponent (with DigitalAssetsComponent), NexusCcs::PersistentLinkComponent;
- * the details list is Blacklight's own.
+ * A record's page, after the CCS UI "Record-detail" (Figma 258:25075, a rough demo: the layout and styling are
+ * followed, the sizes adapted): a navy title band (centred), the digital asset section (digital_assets.css), a
+ * summary (title, creator and date, tags), then in a 1440px column the details as a ruled list in a card with the
+ * persistent link card below it, and a Copyright card beside them. Stacks below 1024px.
+ * Markup: NexusCcs::RecordBannerComponent, NexusCcs::RecordDocumentComponent, NexusCcs::PersistentLinkComponent.
  */
+:root {
+  --record-gutter: var(--ccs-space-6); /* 32px beside the 1440px column; 16px on a phone */
+  --record-text: #1b1f2a;
+  --record-text-muted: #3b4050;
+  --record-rule: #f1efea;
+  --record-link: #0b2a6b;
+}
+
 body.blacklight-catalog-show {
-  background: var(--ccs-surface-subtle);
+  background: var(--ccs-white);
+}
+
+body.blacklight-catalog-show #main-container {
+  padding-inline: 0;
+}
+
+/* Blacklight lays the record out as a 9-column section beside a sidebar column; the page runs the full width
+   (the actions it listed in the sidebar are in the page) */
+body.blacklight-catalog-show #main-container > .row {
+  display: block;
+  margin: 0;
+}
+
+body.blacklight-catalog-show #main-container .show-document {
+  width: 100%;
+  max-width: none;
+  padding: 0;
+}
+
+body.blacklight-catalog-show #main-container .page-sidebar {
+  display: none;
 }
 
 /* Title band under the breadcrumb */
@@ -16,9 +45,9 @@ body.blacklight-catalog-show {
 }
 
 .record-banner__inner {
-  max-width: 90rem;
+  max-width: calc(90rem + 2 * var(--record-gutter));
   margin-inline: auto;
-  padding: var(--ccs-space-6);
+  padding: 2.25rem var(--record-gutter);
 }
 
 .record-banner__title {
@@ -26,144 +55,354 @@ body.blacklight-catalog-show {
   font-family: var(--ccs-font-heading);
   font-size: 2.375rem;
   font-weight: var(--ccs-font-weight-regular);
-  line-height: var(--ccs-line-height-tight);
+  line-height: 1.2;
+  text-align: center;
+  text-wrap: balance;
   overflow-wrap: anywhere;
 }
 
-/* The banner shows the title, so Blacklight's own h1 stays for screen readers only */
-#document .document-main-section > h1,
-#document .document-main-section > header {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
+/* Summary: the title again (the band is decorative), the creator and date, tags */
+.record-summary__inner,
+.record-main__inner {
+  max-width: calc(90rem + 2 * var(--record-gutter));
+  margin-inline: auto;
+  padding-inline: var(--record-gutter);
 }
 
-/* One white card: media, summary, details */
-#document {
-  background: var(--ccs-surface-panel);
-  border: 1px solid var(--ccs-border-panel);
+.record-summary__inner {
+  padding-top: var(--ccs-space-5);
 }
 
-.record-summary {
-  padding: var(--ccs-space-5) var(--ccs-space-6) 0;
-}
-
-.record-summary__eyebrow {
+.record-summary__title {
   margin: 0;
-  font-size: var(--ccs-font-size-xs);
+  font-size: var(--ccs-font-size-3xl);
   font-weight: var(--ccs-font-weight-semibold);
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  color: var(--ccs-text-link);
+  line-height: 1.2;
+  color: var(--ccs-text-brand);
+  overflow-wrap: anywhere;
 }
 
 .record-summary__byline {
   margin: var(--ccs-space-2) 0 0;
   font-size: var(--ccs-font-size-lg);
-  color: var(--ccs-text-secondary);
+  line-height: 1.5;
+  color: var(--record-text-muted);
 }
 
-.record-summary__licence {
-  display: inline-block;
-  margin-top: var(--ccs-space-3);
-  padding: var(--ccs-space-1) var(--ccs-space-3);
-  background: var(--ccs-surface-subtle);
-  font-size: var(--ccs-font-size-sm);
-  color: var(--ccs-text-primary);
-}
-
-/* Details: label and value rows ruled with hairlines */
-#document .document-metadata {
-  margin: var(--ccs-space-5) var(--ccs-space-6) var(--ccs-space-6);
-  padding: 0;
-  background: transparent;
-  border: 0;
-}
-
-/* Vertical spacing only: the horizontal margins and padding are Bootstrap's grid (the second value of a
-   field is offset to sit under the first) */
-#document .document-metadata dt,
-#document .document-metadata dd {
-  margin-block: 0;
-  padding-block: var(--ccs-space-3);
-}
-
-#document .document-metadata dt {
-  text-align: left;
-  font-weight: var(--ccs-font-weight-semibold);
-  color: var(--ccs-text-primary);
-}
-
-/* a rule above each field (its label and first value), not between the values of one field */
-#document .document-metadata dt,
-#document .document-metadata dt + dd {
-  border-top: 1px solid var(--ccs-border-panel);
-}
-
-#document .document-metadata dt:first-of-type,
-#document .document-metadata dt:first-of-type + dd {
-  border-top: 0;
-}
-
-#document .document-metadata dd + dd {
-  padding-top: 0;
-}
-
-/* Persistent link card */
-.persistent-link {
-  margin: 0 var(--ccs-space-6) var(--ccs-space-6);
-  padding: var(--ccs-space-4);
-  border: 1px solid var(--ccs-border-panel);
-  background: var(--ccs-surface-subtle);
-}
-
-.persistent-link__heading {
-  margin: 0 0 var(--ccs-space-2);
-  font-family: var(--ccs-font-body);
-  font-size: var(--ccs-font-size-md);
-  font-weight: var(--ccs-font-weight-semibold);
-}
-
-.persistent-link__row {
+.record-summary__tags {
   display: flex;
   flex-wrap: wrap;
+  gap: var(--ccs-space-4);
+  margin: var(--ccs-space-5) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.record-tag {
+  padding-inline: var(--ccs-space-2);
+  background: var(--ccs-sage-200);
+  font-size: var(--ccs-font-size-sm);
+  font-weight: var(--ccs-font-weight-semibold);
+  line-height: 1.7;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ccs-text-brand);
+}
+
+/* The two columns */
+.record-main__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--ccs-space-5);
+  align-items: start;
+  padding-block: var(--ccs-space-7) 3.5rem;
+}
+
+@media (min-width: 1024px) {
+  .record-main__inner {
+    grid-template-columns: minmax(0, 1fr) 25.625rem; /* the card is 410px in the design */
+  }
+}
+
+.record-main__details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ccs-space-5);
+  min-width: 0;
+}
+
+.record-card {
+  border: 1px solid var(--ccs-border-panel);
+  background: var(--ccs-white);
+}
+
+/* Details: term and description side by side, ruled with a hairline */
+.record-details__list {
+  margin: 0;
+  padding: var(--ccs-space-2) var(--ccs-space-5) var(--ccs-space-3);
+}
+
+.record-details__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--ccs-space-1);
+  padding-block: var(--ccs-space-3);
+  border-bottom: 1px solid var(--record-rule);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--record-text);
+}
+
+.record-details__row:last-child {
+  border-bottom: 0;
+}
+
+@media (min-width: 768px) {
+  .record-details__row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--ccs-space-5);
+  }
+}
+
+.record-details__row dt {
+  font-weight: var(--ccs-font-weight-bold);
+}
+
+.record-details__row dd {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.record-details__row dd a {
+  color: var(--record-link);
+}
+
+.record-details__copyable {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
   gap: var(--ccs-space-2);
 }
 
-.persistent-link__url {
-  flex: 1 1 16rem;
+.record-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ccs-space-1);
+  padding: 2px var(--ccs-space-1);
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.8125rem;
+  color: #4a5577;
+  cursor: pointer;
+}
+
+.record-copy:hover {
+  text-decoration: underline;
+}
+
+.record-copy:focus-visible,
+.persistent-link__copy:focus-visible,
+.persistent-link__browser .uom-action:focus-visible {
+  outline: 3px solid #0b4ea2;
+  outline-offset: 2px;
+}
+
+/* Persistent link card */
+.persistent-link__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.875rem;
+  padding: var(--ccs-space-5);
+}
+
+.persistent-link__icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  background: #e8edf6;
+  color: var(--ccs-navy-1100);
+}
+
+.persistent-link__text {
+  display: flex;
+  flex: 1 1 14rem;
+  flex-direction: column;
+  gap: 2px;
   min-width: 0;
-  padding: var(--ccs-space-2) var(--ccs-space-3);
-  border: 1px solid var(--ccs-border-strong);
+}
+
+.persistent-link__heading {
+  margin: 0;
+  font-family: var(--ccs-font-body);
+  font-size: 0.8125rem;
+  font-weight: var(--ccs-font-weight-bold);
+  line-height: 1.5;
+  color: var(--record-text);
+}
+
+.persistent-link__url {
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  text-overflow: ellipsis;
+  color: var(--record-link);
+}
+
+.persistent-link__copy {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: var(--ccs-space-2);
+  height: 2.5rem;
+  padding-inline: 0.875rem;
+  border: 1px solid var(--ccs-navy-1100);
   background: var(--ccs-white);
-  font-size: var(--ccs-font-size-sm);
-  color: var(--ccs-text-link);
+  font-size: 0.9375rem;
+  font-weight: var(--ccs-font-weight-semibold);
+  color: var(--ccs-navy-1100);
+  cursor: pointer;
+}
+
+.persistent-link__copy:hover {
+  background: var(--ccs-cyan-100);
+}
+
+.persistent-link__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ccs-space-2) var(--ccs-space-4);
+  padding: var(--ccs-space-5);
+  border-top: 1px solid #ece9e3;
 }
 
 .persistent-link__note {
-  margin: var(--ccs-space-2) 0 0;
+  margin: 0;
   font-size: var(--ccs-font-size-sm);
-  color: var(--ccs-text-tertiary);
+  line-height: 1.5;
+  color: #5b6070;
+}
+
+/* "View in collection browser": the existing leaving-the-site button, set as an underlined link */
+.persistent-link__browser .uom-action {
+  display: inline;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: var(--ccs-font-size-sm);
+  font-weight: var(--ccs-font-weight-semibold);
+  text-decoration: underline;
+  text-underline-position: from-font;
+  color: var(--record-text);
+  cursor: pointer;
+}
+
+.persistent-link__browser .uom-action svg {
+  display: none;
+}
+
+/* Copyright card */
+.record-copyright__title {
+  margin: 0;
+  padding: var(--ccs-space-3) var(--ccs-space-5);
+  font-family: var(--ccs-font-heading);
+  font-size: 1.375rem;
+  font-weight: var(--ccs-font-weight-semibold);
+  line-height: 1.2;
+  color: var(--ccs-navy-1100);
+}
+
+.record-copyright__list {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: var(--ccs-space-3) var(--ccs-space-5) 0;
+}
+
+.record-copyright__item {
+  padding-block: var(--ccs-space-3);
+  border-top: 1px solid var(--record-rule);
+  font-size: var(--ccs-font-size-sm);
+  line-height: 1.5;
+  color: var(--record-text-muted);
+}
+
+.record-copyright__item:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.record-copyright__item dt {
+  margin-bottom: 3px;
+  font-size: 0.8125rem;
+  font-weight: var(--ccs-font-weight-bold);
+  line-height: 1.5;
+  color: var(--record-text);
+}
+
+.record-copyright__item dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.record-copyright__item a,
+.record-copyright__terms a {
+  color: var(--record-link);
+}
+
+.record-copyright__terms {
+  margin: 0;
+  padding: var(--ccs-space-3) var(--ccs-space-5) var(--ccs-space-5);
+  font-size: 0.9375rem;
+  font-weight: var(--ccs-font-weight-semibold);
+}
+
+.record-copyright__terms a {
+  text-decoration: underline;
+  text-underline-position: from-font;
+}
+
+/* Previous / next record and back to search, under the page */
+.record-nav {
+  max-width: calc(90rem + 2 * var(--record-gutter));
+  margin-inline: auto;
+  padding: 0 var(--record-gutter) var(--ccs-space-7);
 }
 
 @media (max-width: 767px) {
-  .record-banner__inner {
-    padding: var(--ccs-space-5) var(--ccs-space-4);
+  :root {
+    --record-gutter: var(--ccs-space-4);
   }
 
   .record-banner__title {
-    font-size: var(--ccs-font-size-4xl);
+    font-size: var(--ccs-font-size-3xl);
   }
 
-  .record-summary,
-  #document .document-metadata,
-  .persistent-link {
-    margin-inline: var(--ccs-space-4);
-    padding-inline: 0;
+  .record-summary__title {
+    font-size: var(--ccs-font-size-2xl);
+  }
+
+  .record-details__list,
+  .persistent-link__row,
+  .persistent-link__footer {
+    padding-inline: var(--ccs-space-4);
+  }
+
+  .record-copyright__title,
+  .record-copyright__list,
+  .record-copyright__terms {
+    padding-inline: var(--ccs-space-4);
   }
 }

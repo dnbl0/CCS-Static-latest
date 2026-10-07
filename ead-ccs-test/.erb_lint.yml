@@ -1,0 +1,33 @@
+---
+# Lints app/views and app/components templates. Run: bundle exec erb_lint --lint-all
+EnableDefaultLinters: true
+# CI installs gems into vendor/bundle; only our own templates are linted
+exclude:
+  - '**/vendor/**/*'
+  - '**/node_modules/**/*'
+  - '**/tmp/**/*'
+linters:
+  ErbSafety:
+    enabled: true
+  Rubocop:
+    enabled: false # Ruby style is checked by bin/rubocop; ERB blocks are not worth a second set of rules
+  SpaceAroundErbTag:
+    enabled: true
+  AllowedScriptType:
+    enabled: true
+  ClosingErbTagIndent:
+    enabled: false
+  ExtraNewline:
+    enabled: true
+  FinalNewline:
+    enabled: true
+  NoJavascriptTagHelper:
+    enabled: true
+  ParserErrors:
+    enabled: true
+  RightTrim:
+    enabled: true
+  SelfClosingTag:
+    enabled: false
+  TrailingWhitespace:
+    enabled: true

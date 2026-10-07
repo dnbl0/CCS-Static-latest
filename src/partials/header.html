@@ -1,0 +1,86 @@
+<header class="ccs-nav ccs-nav--header" data-component="Header" aria-label="Site header">
+  <div class="ccs-nav__brand">
+    <a class="ccs-nav__link-university-melbourne-homepage" href="https://www.unimelb.edu.au" aria-label="The University of Melbourne homepage">
+      <picture class="ccs-nav__link-picture"><source media="(max-width: 1023px)" srcset="/images/home/logo-header-mobile.svg"><img class="ccs-nav__picture-image" src="/images/home/logo-header-desktop.svg" alt=""></picture>
+    </a>
+  </div>
+  <div class="ccs-nav__main">
+    <div class="ccs-nav__top">
+      <nav class="@PAGE@-university-melbourne" aria-label="University of Melbourne">
+        <ul class="@PAGE@-university-melbourne__list">
+          <li class="@PAGE@-university-melbourne__list-item"><a class="@PAGE@-university-melbourne__item-link-study" href="https://study.unimelb.edu.au">Study</a></li>
+          <li class="@PAGE@-university-melbourne__list-item"><a class="@PAGE@-university-melbourne__item-link-students" href="https://students.unimelb.edu.au">Students</a></li>
+          <li class="@PAGE@-university-melbourne__list-item"><a class="@PAGE@-university-melbourne__item-link-research" href="https://research.unimelb.edu.au">Research</a></li>
+          <li class="@PAGE@-university-melbourne__list-item"><a class="@PAGE@-university-melbourne__item-link-library" href="https://library.unimelb.edu.au">Library</a></li>
+          <li class="@PAGE@-university-melbourne__list-item"><a class="@PAGE@-university-melbourne__item-link-staff" href="https://staff.unimelb.edu.au">Staff</a></li>
+          <li class="@PAGE@-university-melbourne__list-item"><a class="@PAGE@-university-melbourne__item-link-alumni" href="https://www.unimelb.edu.au/alumni">Alumni</a></li>
+          <li class="@PAGE@-university-melbourne__list-item"><a class="@PAGE@-university-melbourne__item-link-giving" href="https://giving.unimelb.edu.au">Giving</a></li>
+          <li class="@PAGE@-university-melbourne__list-item"><a class="@PAGE@-university-melbourne__item-link-about" href="https://about.unimelb.edu.au">About</a></li>
+          <li class="@PAGE@-university-melbourne__list-item"><a class="@PAGE@-university-melbourne__item-link-contact" href="https://www.unimelb.edu.au/contact">Contact</a></li>
+        </ul>
+      </nav>
+      <button type="button" class="ccs-nav__search" popovertarget="uom-search-popover" data-popover-type="search" aria-label="Open search">
+        <img class="ccs-nav__image" src="/images/home/icon-search-onaccent.svg" alt="">
+      </button>
+    </div>
+    <div class="ccs-nav__bottom">
+      <a class="ccs-nav__title" href="/index.html">Cultural Collections</a>
+      <nav id="ccs-primary-nav" class="ccs-nav__primary" aria-label="Primary navigation">
+        <div class="ccs-nav__drawer-search">
+          <form class="ccs-nav__form-search" role="search" action="/search/search-results.html" method="get">
+            <label for="ccs-drawer-q" class="sr-only @PAGE@-form__label-search-cultural-collections">Search Cultural Collections</label>
+            <input class="ccs-drawer-q" id="ccs-drawer-q" name="q" type="text" autocomplete="off" placeholder="Search">
+            <button class="@PAGE@-form__button-search" type="submit" aria-label="Search"><img class="@PAGE@-form__button-image" src="/images/home/icon-search-onaccent.svg" alt=""></button>
+          </form>
+        </div>
+        <ul class="ccs-nav__list">
+          <li class="ccs-nav__list-item"><a class="ccs-nav__item-link-search-all-records" href="/search/search-results.html"@CUR:search@>Search all records</a></li>
+          <li class="ccs-nav__list-item">
+            <button type="button" class="ccs-nav__trigger" aria-expanded="false" aria-controls="ccs-dd-collections"@CUR:collections@><span>Browse <span class="ccs-nav__label-more">all </span>collections</span><img class="ccs-nav__image" src="/images/home/icon-expand.svg" alt=""></button>
+            <div id="ccs-dd-collections" class="ccs-nav__panel">
+              <a class="ccs-nav__panel-title" href="/collections/index.html"><img class="ccs-nav__image" src="/images/home/icon-arrow-footer.svg" alt="">Browse <span class="ccs-nav__label-more">all </span>collections</a>
+              <ul class="ccs-nav__panel-list">
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-medical-history-museum" href="/collections/medical-history-museum/"@CUR:coll-medical-history-museum@><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Medical History Museum</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-henry-forman-atkinson" href="/collections/henry-forman-atkinson-dental-museum/"@CUR:coll-henry-forman-atkinson-dental-museum@><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Henry Forman Atkinson Dental Museum</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-harry-brookes-allen" href="/collections/harry-brookes-allen-museum/"@CUR:coll-harry-brookes-allen-museum@><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Harry Brookes Allen Museum</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-university-art-collection" href="/collections/university-art-collection/"@CUR:coll-university-art-collection@><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">University Art Collection</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-grainger-museum-collection" href="/collections/grainger-museum/"@CUR:coll-grainger-museum@><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Grainger Museum Collection</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="ccs-nav__list-item">
+            <button type="button" class="ccs-nav__trigger" aria-expanded="false" aria-controls="ccs-dd-help"@CUR:help@>Help<img class="ccs-nav__image" src="/images/home/icon-expand.svg" alt=""></button>
+            <div id="ccs-dd-help" class="ccs-nav__panel">
+              <a class="ccs-nav__panel-title" href="/help/index.html"><img class="ccs-nav__image" src="/images/home/icon-arrow-footer.svg" alt="">Help and support</a>
+              <ul class="ccs-nav__panel-list">
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-frequently-asked-questions" href="/help?topic=faq"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Frequently Asked Questions</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-search-tips" href="/help?topic=search-tips"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Search tips</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-copyright-terms-use" href="/help?topic=copyright"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Copyright and terms of use</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-access-information" href="/help?topic=access"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Access and information</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-privacy" href="/help?topic=privacy"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Privacy</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-indigenous-cultural-data" href="/help/indigenous-data.html"@CUR:help-indigenous@><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Indigenous cultural data and access</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="ccs-nav__list-item"><a class="ccs-nav__item-link-contact" href="/contact.html"@CUR:contact@>Contact</a></li>
+        </ul>
+        <ul class="ccs-nav__drawer-top" aria-label="University of Melbourne">
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-study" href="https://study.unimelb.edu.au">Study</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-students" href="https://students.unimelb.edu.au">Students</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-research" href="https://research.unimelb.edu.au">Research</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-library" href="https://library.unimelb.edu.au">Library</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-staff" href="https://staff.unimelb.edu.au">Staff</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-alumni" href="https://www.unimelb.edu.au/alumni">Alumni</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-giving" href="https://giving.unimelb.edu.au">Giving</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-about" href="https://about.unimelb.edu.au">About</a></li>
+        <li class="ccs-nav__item"><a class="ccs-nav__item-link-contact" href="https://www.unimelb.edu.au/contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+  <button type="button" class="ccs-nav__menu" aria-expanded="false" aria-controls="ccs-primary-nav">
+    <svg class="ccs-nav__menu-open" viewBox="0 0 24 24" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    <svg class="ccs-nav__menu-close" viewBox="0 0 24 24" aria-hidden="true"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
+    <span class="ccs-nav__text">Menu</span>
+  </button>
+</header>

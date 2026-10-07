@@ -5,6 +5,7 @@
 <title>Contact Collections Team — Cultural Collections Search — University of Melbourne</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="runtime-libs.js"></script>
 <script src="support.js"></script>
 <link rel="stylesheet" href="/styles/vendor/bootstrap-uom.min.css">
 <link rel="stylesheet" href="/styles/tokens/tokens.css">
@@ -42,7 +43,7 @@
           <li class="contact-university-melbourne__list-item"><a class="contact-university-melbourne__item-link-alumni" href="https://www.unimelb.edu.au/alumni">Alumni</a></li>
           <li class="contact-university-melbourne__list-item"><a class="contact-university-melbourne__item-link-giving" href="https://giving.unimelb.edu.au">Giving</a></li>
           <li class="contact-university-melbourne__list-item"><a class="contact-university-melbourne__item-link-about" href="https://about.unimelb.edu.au">About</a></li>
-          <li class="contact-university-melbourne__list-item"><a class="contact-university-melbourne__item-link" href="https://www.unimelb.edu.au/contact">Contact</a></li>
+          <li class="contact-university-melbourne__list-item"><a class="contact-university-melbourne__item-link-contact" href="https://www.unimelb.edu.au/contact">Contact</a></li>
         </ul>
       </nav>
       <button type="button" class="ccs-nav__search" popovertarget="uom-search-popover" data-popover-type="search" aria-label="Open search">
@@ -273,11 +274,11 @@
     <div class="ct-listing__inner">
       <h2 class="ct-listing__title" id="h-help">Need help searching?</h2>
       <p class="ct-listing__lead">Read the guidance first. It may answer your question straight away.</p>
-      <ul class="ct-listing__list ct-listing__list--pathfinder">
-        <li class="ct-listing__item"><a class="pathfinder-alt__link" href="/help?topic=search-tips"><span class="pathfinder-alt__content"><span class="pathfinder-alt__title">Search tips</span><span class="pathfinder-alt__summary">How to find information, images, audio and video in the collections.</span></span></a></li>
-        <li class="ct-listing__item"><a class="pathfinder-alt__link" href="/help?topic=faq"><span class="pathfinder-alt__content"><span class="pathfinder-alt__title">Frequently asked questions</span><span class="pathfinder-alt__summary">Answers to common questions about searching and using items.</span></span></a></li>
-        <li class="ct-listing__item"><a class="pathfinder-alt__link" href="/help?topic=copyright"><span class="pathfinder-alt__content"><span class="pathfinder-alt__title">Copyright and terms of use</span><span class="pathfinder-alt__summary">How a collection item can be used.</span></span></a></li>
-      </ul>
+      <div class="grid grid--cols-3 grid--collapsed">
+        <div class="pathfinder"><a class="pathfinder__link" href="/help?topic=search-tips"><div class="pathfinder__content"><h3 class="pathfinder__title">Search tips</h3><p class="pathfinder__summary">How to find information, images, audio and video in the collections.</p></div></a></div>
+        <div class="pathfinder pathfinder--alt"><a class="pathfinder__link" href="/help?topic=faq"><div class="pathfinder__content"><h3 class="pathfinder__title">Frequently asked questions</h3><p class="pathfinder__summary">Answers to common questions about searching and using items.</p></div></a></div>
+        <div class="pathfinder"><a class="pathfinder__link" href="/help?topic=copyright"><div class="pathfinder__content"><h3 class="pathfinder__title">Copyright and terms of use</h3><p class="pathfinder__summary">How a collection item can be used.</p></div></a></div>
+      </div>
     </div>
   </section>
 </main>

@@ -30,7 +30,7 @@ module NexusCcs
 
     # The same search with its filters removed (the search words stay).
     def clear_filters_path
-      helpers.search_action_path(helpers.search_state.to_h.except("f", "f_inclusive", "range", "page"))
+      helpers.search_action_path(helpers.search_state.to_h.except("f", "f_inclusive", "f_all", "range", "page"))
     end
   end
 end

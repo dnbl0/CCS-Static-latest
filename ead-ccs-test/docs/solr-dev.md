@@ -20,3 +20,11 @@ bundle exec rails server -p 3002
 After changing `solr/conf` or the indexers, recreate the core (or `rails collections:clear`) and
 reindex. The index is stale if a facet defined in `CatalogController` does not render: compare the
 fields the indexers emit with the controller's fields before changing the controller.
+
+## System tests
+
+`bin/rails test:system` drives a real headless Chrome (Cuprite, over the DevTools protocol, so no chromedriver has to
+match the Chrome version) through the main journeys: search from the home page, the view buttons, filtering, opening a
+record, the advanced search panel, the phone menu and the Acknowledgement of Country. They need the Solr core above,
+indexed, at `SOLR_URL`. Set `BROWSER_PATH` to a Chrome or Chromium that is not on the PATH. In CI the `system` job in
+`.github/workflows/rails-ci.yml` downloads Solr, creates the core from `solr/`, indexes `data/*.csv` and runs them.

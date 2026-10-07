@@ -1,0 +1,159 @@
+<%# Home page, from public/index.html of the static site %>
+<% content_for :title, "Cultural Collections Search - University of Melbourne" %>
+<% content_for :body_class, "page-home ccs-home" %>
+<main id="main-content" class="home-main-content">
+
+    <!-- Section component: hero banner (162:1245 / 162:3462) -->
+    <section class="ccs-section ccs-section--hero" aria-labelledby="home-title">
+      <div class="ccs-hero">
+        <div class="ccs-hero__content">
+          <div class="ccs-hero__group">
+            <div class="ccs-hero__group">
+              <h1 id="home-title" class="ccs-hero__title">Cultural Collections</h1>
+              <p class="ccs-hero__text">Join a vibrant community of students, academics and researchers at Australia's #1 ranked university. </p>
+            </div>
+            <div class="ccs-hero__search">
+              <%= render NexusCcs::HeroSearchComponent.new(blacklight_config: blacklight_config) %>
+            </div>
+          </div>
+        </div>
+        <div class="ccs-hero__media"><img class="ccs-hero__image" src="<%= asset_path("site/hero-parkville.jpg") %>" alt="The University of Melbourne Parkville campus"></div>
+      </div>
+    </section>
+
+    <!-- Section component: introduction (162:1273 / 162:3463) -->
+    <section class="ccs-section ccs-section--intro">
+      <div class="ccs-section__inner">
+        <p class="ccs-intro">The University of Melbourne's cultural collections are unrivalled among Australian universities, spanning historical and contemporary collections across visual arts, cartography, medical history, zoology, archives and more, including significant collections of Aboriginal and Torres Strait Islander cultural heritage.</p>
+      </div>
+    </section>
+
+    <!-- Section component: collections (162:1276 / 162:3464) -->
+    <section class="ccs-section ccs-section--cards" aria-labelledby="home-collections">
+      <div class="ccs-section__inner">
+        <h2 id="home-collections" class="ccs-section__heading ccs-section__heading-browse-collections">Browse collections</h2>
+        <ul class="ccs-cards">
+        <li class="ccs-card">
+          <div class="ccs-card__media"><img class="ccs-card__image" src="<%= asset_path("site/banners/medical-history-museum.jpg") %>" alt=""></div>
+          <div class="ccs-card__body">
+            <h3 class="ccs-card__title"><a class="ccs-card__link" href="<%= collection_path("medical-history-museum") %>">Medical History Museum</a></h3>
+            <p class="ccs-card__text">Historical medical instruments, teaching models, pathological specimens and records documenting medical education.</p>
+          </div>
+        </li>
+        <li class="ccs-card">
+          <div class="ccs-card__media"><img class="ccs-card__image" src="<%= asset_path("site/banners/henry-forman-atkinson-dental-museum.jpg") %>" alt=""></div>
+          <div class="ccs-card__body">
+            <h3 class="ccs-card__title"><a class="ccs-card__link" href="<%= collection_path("henry-forman-atkinson-dental-museum") %>">Henry Forman Atkinson Dental Museum</a></h3>
+            <p class="ccs-card__text">Instruments, equipment and teaching materials documenting the history of dentistry and oral health education.</p>
+          </div>
+        </li>
+        <li class="ccs-card">
+          <div class="ccs-card__media"><img class="ccs-card__image" src="<%= asset_path("site/banners/harry-brookes-allen-museum.jpg") %>" alt=""></div>
+          <div class="ccs-card__body">
+            <h3 class="ccs-card__title"><a class="ccs-card__link" href="<%= collection_path("harry-brookes-allen-museum") %>">Harry Brookes Allen Museum of Anatomy and Pathology</a></h3>
+            <p class="ccs-card__text">Anatomical and pathological specimens, models and teaching collections supporting medical education and research.</p>
+          </div>
+        </li>
+        <li class="ccs-card">
+          <div class="ccs-card__media"><img class="ccs-card__image" src="<%= asset_path("site/banners/university-art-collection.jpg") %>" alt=""></div>
+          <div class="ccs-card__body">
+            <h3 class="ccs-card__title"><a class="ccs-card__link" href="<%= collection_path("university-art-collection") %>">University Art Collection</a></h3>
+            <p class="ccs-card__text">A major university art collection featuring Australian and international works spanning painting, sculpture and works on paper.</p>
+          </div>
+        </li>
+        <li class="ccs-card">
+          <div class="ccs-card__media"><img class="ccs-card__image" src="<%= asset_path("site/banners/grainger-museum.jpg") %>" alt=""></div>
+          <div class="ccs-card__body">
+            <h3 class="ccs-card__title"><a class="ccs-card__link" href="<%= collection_path("grainger-museum") %>">Grainger Museum Collection</a></h3>
+            <p class="ccs-card__text">The personal collection of composer Percy Grainger including instruments, manuscripts, correspondence and experimental machines.</p>
+          </div>
+        </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Section component: help and guidance (162:1340 / 162:3465) -->
+    <section class="ccs-section ccs-section--help" aria-labelledby="home-help">
+      <div class="ccs-section__inner">
+        <h2 id="home-help" class="ccs-section__heading">Help and guidance</h2>
+        <ul class="ccs-help">
+        <li class="ccs-help__item">
+          <div class="ccs-help__card">
+            <div class="ccs-help__icon"><img class="ccs-help__image" src="<%= asset_path("site/help-search-tips.svg") %>" alt=""></div>
+            <div class="ccs-help__body">
+              <div class="ccs-help__group">
+                <h3 class="ccs-help__title">Search tips</h3>
+                <p class="ccs-help__text">Learn how to use keyword search, Boolean operators, exact phrase matching and advanced filters to find what you need.</p>
+              </div>
+              <a class="ccs-link" href="<%= help_path(topic: "search-tips") %>">Read guide<span class="sr-only ccs-link__text"> for search tips</span><img class="ccs-link__image" src="<%= asset_path("site/icon-arrow-right.svg") %>" alt=""></a>
+            </div>
+          </div>
+        </li>
+        <li class="ccs-help__item">
+          <div class="ccs-help__card">
+            <div class="ccs-help__icon"><img class="ccs-help__image" src="<%= asset_path("site/help-metadata.svg") %>" alt=""></div>
+            <div class="ccs-help__body">
+              <div class="ccs-help__group">
+                <h3 class="ccs-help__title">Metadata and fields</h3>
+                <p class="ccs-help__text">Understand the metadata fields used across collections including creator, culture, rights, format and persistent identifiers.</p>
+              </div>
+              <a class="ccs-link" href="<%= help_path %>">Read guide<span class="sr-only ccs-link__text"> for metadata and fields</span><img class="ccs-link__image" src="<%= asset_path("site/icon-arrow-right.svg") %>" alt=""></a>
+            </div>
+          </div>
+        </li>
+        <li class="ccs-help__item">
+          <div class="ccs-help__card">
+            <div class="ccs-help__icon"><img class="ccs-help__image" src="<%= asset_path("site/help-rights.svg") %>" alt=""></div>
+            <div class="ccs-help__body">
+              <div class="ccs-help__group">
+                <h3 class="ccs-help__title">Rights and Licensing</h3>
+                <p class="ccs-help__text">Guidance on copyright, open licences, rights statements and how to understand what you can and cannot do with items.</p>
+              </div>
+              <a class="ccs-link" href="<%= help_path(topic: "copyright") %>">Read guide<span class="sr-only ccs-link__text"> for rights and licensing</span><img class="ccs-link__image" src="<%= asset_path("site/icon-arrow-right.svg") %>" alt=""></a>
+            </div>
+          </div>
+        </li>
+        <li class="ccs-help__item">
+          <div class="ccs-help__card">
+            <div class="ccs-help__icon"><img class="ccs-help__image" src="<%= asset_path("site/help-citing.svg") %>" alt=""></div>
+            <div class="ccs-help__body">
+              <div class="ccs-help__group">
+                <h3 class="ccs-help__title">Citing Collections</h3>
+                <p class="ccs-help__text">How to cite collection items in academic and research contexts including APA, Chicago, MLA and Harvard styles.</p>
+              </div>
+              <a class="ccs-link" href="<%= help_path(topic: "access") %>">Read guide<span class="sr-only ccs-link__text"> for citing collections</span><img class="ccs-link__image" src="<%= asset_path("site/icon-arrow-right.svg") %>" alt=""></a>
+            </div>
+          </div>
+        </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Section component: frequently asked questions (162:1394 / 162:3466) -->
+    <section class="ccs-section ccs-section--faq" aria-labelledby="home-faq">
+      <div class="ccs-section__inner ccs-faq">
+        <div class="ccs-faq__intro">
+          <h2 id="home-faq" class="ccs-section__heading">Frequently Asked Questions </h2>
+          <p class="ccs-faq__text">Having problems when searching for items across the cultural collections? Here are some frequently asked questions to help.</p>
+          <a class="ccs-link" href="<%= help_path(topic: "faq") %>">View all Frequently Asked Questions<img class="ccs-link__image" src="<%= asset_path("site/icon-arrow-faq.svg") %>" alt=""></a>
+        </div>
+        <div class="ccs-faq__list">
+        <details class="ccs-acc">
+          <summary class="ccs-acc__summary-how-do-i"><span class="ccs-acc__summary-text">How do I search across multiple collections at once?</span><img class="ccs-acc__summary-image" src="<%= asset_path("site/icon-chevron.svg") %>" alt=""></summary>
+          <div class="ccs-acc__panel"><p class="ccs-acc__text">By default, searches run across every collection in Cultural Collections Search. Use the filters on the results page to narrow a single collection, or to further refine your results by object type, access condition, or date.</p></div>
+        </details>
+        <details class="ccs-acc">
+          <summary class="ccs-acc__summary-what-collections-currently"><span class="ccs-acc__summary-text">What collections are currently included?</span><img class="ccs-acc__summary-image" src="<%= asset_path("site/icon-chevron.svg") %>" alt=""></summary>
+          <div class="ccs-acc__panel"><p class="ccs-acc__text">The platform is continuously being improved to include items from across the University's museums, archives, art, and scientific collections. Use Browse Collections to see the contributing collections. Please revisit frequently to discover new added items and collections.</p></div>
+        </details>
+        <details class="ccs-acc">
+          <summary class="ccs-acc__summary-can-i-download"><span class="ccs-acc__summary-text">Can I download images from my search results?</span><img class="ccs-acc__summary-image" src="<%= asset_path("site/icon-chevron.svg") %>" alt=""></summary>
+          <div class="ccs-acc__panel"><p class="ccs-acc__text">It depends on the item's copyright and terms of use. If a download icon appears near the preview window, you know the image, audio, or video can be used non-commercially. Respectful of the terms of use by always attributing the creator and the University of Melbourne.</p></div>
+        </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+<%# The Acknowledgement of Country, once a day per browser (see CountryAcknowledgement) %>
+<%= render "catalog/country_acknowledgement" if acknowledge_country? %>
