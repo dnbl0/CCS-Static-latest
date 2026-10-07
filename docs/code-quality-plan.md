@@ -53,7 +53,21 @@ search bar on the home page (the Rails app keeps its Blacklight bar) and font fa
     banner and pathfinder card are ViewComponents with tests.
   - Item 7: `auto-merge.yml` no longer fires for changes under `ead-ccs-test/`. Item 8: a pull request template asks for
     the checks and for desktop and mobile screenshots (no `CODEOWNERS` yet: it needs the owners' usernames).
-- Still to do: items 9, 14 (pre-rendering), 15, 16, the rest of 13, 17, 19-28. The Chromium suites could not run in the sandbox
+- **Done 2026-10-07 (item 14, first step):** the page runtime no longer needs unpkg.com. `public/runtime-libs.js`
+  (loaded before `support.js` on every page) maps the three CDN URLs to the exact builds in `public/vendor/runtime`,
+  using the runtime's own `__resources` hook, so `support.js` (generated, not edited) is untouched.
+  `tests/runtime-libs.test.js` checks the load order and that the files match the hashes `support.js` pins. The pages
+  now render offline and the Chromium suites run in the sandbox: search-bar, results-filter-parity, image-aspect,
+  style-diff and search-live pass, accessibility passes (30 page states; one run flagged a contrast failure while
+  results were still rendering and did not repeat). `advanced-filters` fails 5 checks on the arrow-key behaviour of
+  the dropdown; it fails the same way on the code from before this work, so it is not caused by it. Investigate in CI
+  against the pinned Playwright browser.
+- **Pre-rendering, assessed:** with the CDN dependency gone the remaining cost is speed: Babel (3 MB) compiles every
+  page's template at load. The interactive pages (search results, record, advanced search) need the runtime whatever
+  is done, so pre-rendering would only cover contact, help, indigenous data, the browse page and the collection pages,
+  and the help topics would need their own URLs (today `?topic=`). Worth doing if first paint on those pages matters;
+  not needed for correctness.
+- Still to do: items 9, 15, 16, the rest of 13 and 14, 17, 19-28. The Chromium suites could not run in the sandbox
   (the page runtime needs unpkg.com): they run in CI.
 
 ## Phase 1 - Stop the two sites drifting apart (highest value)
