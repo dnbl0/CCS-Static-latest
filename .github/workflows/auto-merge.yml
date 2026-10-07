@@ -99,7 +99,7 @@ jobs:
       - name: Create Pull Request
         if: steps.batch-check.outputs.is_batch == 'true'
         id: cpr
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         env:
           PR_BODY: ${{ steps.pr-body.outputs.body }}
         with:
@@ -194,7 +194,7 @@ jobs:
           done
 
       - name: Approve and Merge PR
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         env:
           PR_NUMBER: ${{ needs.create-pr.outputs.pr_number }}
         with:
