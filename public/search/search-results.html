@@ -258,6 +258,18 @@
             </div>
           </sc-if>
         </div>
+      <sc-if value="{{ showPager }}">
+      <div class="search-results-per-page">
+        <div class="search-results-summary__group-pp" ref="{{ ppRef }}">
+          <button class="search-results-summary__button-toggle-pp" onClick="{{ togglePP }}" aria-haspopup="listbox" aria-expanded="{{ ppOpen }}">{{ rangeLabel }}<svg class="search-results-summary__button-icon search-results-summary__button-icon--styled" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" style="--dyn-transform:{{ ppChev }}"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+          <sc-if value="{{ ppOpen }}">
+            <div class="search-results-summary__group-listbox" role="listbox">
+              <sc-for list="{{ ppOpts }}" as="o"><button class="search-results-listbox__button-pick search-results-listbox__button-pick--v1" role="option" aria-selected="{{ o.sel }}" onClick="{{ o.pick }}" style="--dyn-background:{{ o.bg }}">{{ o.label }}</button></sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+      </sc-if>
       <button class="search-results-search-tools__button-filter-btn" ref="{{ filterBtnRef }}" onClick="{{ openModal }}" aria-haspopup="dialog">
         <svg class="search-results-search-tools__button-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="18" x2="20" y2="18"></line><line x1="15" y1="3.5" x2="15" y2="8.5"></line><line x1="9" y1="9.5" x2="9" y2="14.5"></line><line x1="13" y1="15.5" x2="13" y2="20.5"></line></svg>Filters
         <sc-if value="{{ filterCount }}"><span class="search-results-search-tools__button-text search-results-search-tools__button-text--v3">{{ filterCount }}</span></sc-if>
@@ -270,8 +282,8 @@
         </sc-for>
       </div>
       <div class="search-results-view" role="group" aria-label="View">
-        <button class="search-results-view__button-set-grid" onClick="{{ setGrid }}" aria-pressed="{{ isMasonry }}" aria-label="Grid view" title="Grid view" style="--dyn-background:{{ gridBg }}"><svg class="search-results-view__button-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="6.5" height="6.5"></rect><rect x="13.5" y="4" width="6.5" height="6.5"></rect><rect x="4" y="13.5" width="6.5" height="6.5"></rect><rect x="13.5" y="13.5" width="6.5" height="6.5"></rect></svg></button>
-        <button class="search-results-view__button-set-list" onClick="{{ setList }}" aria-pressed="{{ isListView }}" aria-label="List view" title="List view" style="--dyn-background:{{ listBg }}"><svg class="search-results-view__button-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="7" x2="20" y2="7"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="17" x2="20" y2="17"></line></svg></button>
+        <button class="search-results-view__button-set-list" onClick="{{ setList }}" aria-pressed="{{ isListView }}" aria-label="List view" title="List view" style="--dyn-background:{{ listBg }}"><svg class="search-results-view__button-icon" width="32" height="32" viewBox="0 -960 960 960" fill="currentColor" aria-hidden="true" focusable="false"><path d="M286.67-613.33V-680H840v66.67H286.67Zm0 166.66v-66.66H840v66.66H286.67Zm0 166.67v-66.67H840V-280H286.67ZM153.33-613.33q-13.66 0-23.5-9.84Q120-633 120-647q0-14 9.83-23.5 9.84-9.5 23.84-9.5t23.5 9.58q9.5 9.59 9.5 23.75 0 13.67-9.59 23.5-9.58 9.84-23.75 9.84Zm0 166.66q-13.66 0-23.5-9.83-9.83-9.83-9.83-23.83 0-14 9.83-23.5 9.84-9.5 23.84-9.5t23.5 9.58q9.5 9.58 9.5 23.75 0 13.67-9.59 23.5-9.58 9.83-23.75 9.83Zm0 166.67q-13.66 0-23.5-9.83-9.83-9.84-9.83-23.84t9.83-23.5q9.84-9.5 23.84-9.5t23.5 9.59q9.5 9.58 9.5 23.75 0 13.66-9.59 23.5-9.58 9.83-23.75 9.83Z"></path></svg></button>
+        <button class="search-results-view__button-set-grid" onClick="{{ setGrid }}" aria-pressed="{{ isMasonry }}" aria-label="Mosaic view" title="Mosaic view" style="--dyn-background:{{ gridBg }}"><svg class="search-results-view__button-icon" width="32" height="32" viewBox="0 -960 960 960" fill="currentColor" aria-hidden="true" focusable="false"><path d="M120-266.67v-426.66q0-27.5 19.58-47.09Q159.17-760 186.67-760h586.66q27.5 0 47.09 19.58Q840-720.83 840-693.33v426.66q0 27.5-19.58 47.09Q800.83-200 773.33-200H186.67q-27.5 0-47.09-19.58Q120-239.17 120-266.67Zm277.67-246.66h375.66v-180H397.67v180Zm224 246.66h151.66v-180H621.67v180Zm-224 0h152.66v-180H397.67v180Zm-211 0H331v-426.66H186.67v426.66Z"></path></svg></button>
       </div>
     </div>
   </div>
@@ -399,9 +411,12 @@
               </sc-if>
               
               <div class="search-results-article__group search-results-article__group--v4">
-                <a class="search-results-article__link search-results-article__link--v4" href="{{ r.href }}">{{ r.title }}</a>
-                <a class="search-results-article__link search-results-article__link--v5" href="/collections/index.html">{{ r.collection }}</a>
-                <span class="search-results-article__text search-results-article__text--v5">{{ r.type }}</span>
+                <h5 class="search-results-article__heading"><a class="search-results-article__link search-results-article__link--v4" href="{{ r.href }}">{{ r.title }}</a></h5>
+                <p class="search-results-article__lines">
+                  <span class="search-results-article__line">{{ r.creator }}</span>
+                  <span class="search-results-article__line">{{ r.type }}</span>
+                  <a class="search-results-article__line search-results-article__line--link" href="/collections/index.html">{{ r.collection }}</a>
+                </p>
                 <sc-if value="{{ r.matchLabel }}"><span class="search-results-article__text search-results-article__text--match">{{ r.matchLabel }}</span></sc-if>
                 <div class="search-results-article__group search-results-article__group--v1">
                   <sc-if value="{{ r.webAccess }}"><span class="search-results-article__text search-results-article__text--web-access">{{ r.webAccess }}</span></sc-if>
@@ -424,13 +439,12 @@
                 </a>
               </sc-if>
               <div class="search-results-article__group search-results-article__group--v3">
-                <a class="search-results-article__link search-results-article__link--v3" href="{{ r.href }}">{{ r.title }}</a>
-                <div class="search-results-article__group search-results-article__group--v2">
-                  <span class="search-results-article__text search-results-article__text--v3"><span class="search-results-article__text search-results-article__text--v2">Creator</span>{{ r.creator }}</span>
-                  <span class="search-results-article__text search-results-article__text--v3"><span class="search-results-article__text search-results-article__text--v2">Production date</span>{{ r.dateLabel }}</span>
-                  <span class="search-results-article__text search-results-article__text--v3"><span class="search-results-article__text search-results-article__text--v2">Collection</span><span class="search-results-article__text search-results-article__text--v1">{{ r.collection }}</span></span>
-                  <span class="search-results-article__text search-results-article__text--v3"><span class="search-results-article__text search-results-article__text--v2">Object type</span>{{ r.type }}</span>
-                </div>
+                <h5 class="search-results-article__heading"><a class="search-results-article__link search-results-article__link--v3" href="{{ r.href }}">{{ r.title }}</a></h5>
+                <p class="search-results-article__lines">
+                  <span class="search-results-article__line">{{ r.creator }}</span>
+                  <span class="search-results-article__line">{{ r.type }}</span>
+                  <a class="search-results-article__line search-results-article__line--link" href="/collections/index.html">{{ r.collection }}</a>
+                </p>
               </div>
             </article>
           </sc-for>
@@ -440,20 +454,11 @@
   </div>
   <sc-if value="{{ showPager }}">
     <div class="search-results-main-content__group search-results-main-content__group--v4">
-      <div class="search-results-per-page">
-        <div class="search-results-summary__group-pp" ref="{{ ppRef }}">
-          <button class="search-results-summary__button-toggle-pp" onClick="{{ togglePP }}" aria-haspopup="listbox" aria-expanded="{{ ppOpen }}">{{ rangeLabel }}<svg class="search-results-summary__button-icon search-results-summary__button-icon--styled" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" style="--dyn-transform:{{ ppChev }}"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-          <sc-if value="{{ ppOpen }}">
-            <div class="search-results-summary__group-listbox" role="listbox">
-              <sc-for list="{{ ppOpts }}" as="o"><button class="search-results-listbox__button-pick search-results-listbox__button-pick--v1" role="option" aria-selected="{{ o.sel }}" onClick="{{ o.pick }}" style="--dyn-background:{{ o.bg }}">{{ o.label }}</button></sc-for>
-            </div>
-          </sc-if>
-        </div>
-      </div>
+      <p class="search-results-main-content__range">{{ rangeText }}</p>
       <nav class="search-results-pagination" aria-label="Pagination">
-        <button class="search-results-pagination__button-prev-page" onClick="{{ prevPage }}" aria-label="Previous page" disabled="{{ !hasPrev }}" style="--dyn-color:{{ prevColor }}"><svg class="search-results-pagination__button-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="15 6 9 12 15 18"></polyline></svg></button>
+        <button class="search-results-pagination__button-prev-page" onClick="{{ prevPage }}" aria-label="Previous page" rel="prev" disabled="{{ !hasPrev }}" style="--dyn-color:{{ prevColor }}"><svg class="search-results-pagination__button-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false"><line x1="20" y1="12" x2="4" y2="12"></line><polyline points="10 6 4 12 10 18"></polyline></svg>Previous</button>
         <sc-for list="{{ pages }}" as="pg"><button class="search-results-pagination__button-go" onClick="{{ pg.go }}" aria-current="{{ pg.current }}" style="--dyn-background:{{ pg.bg }};--dyn-color:{{ pg.color }};--dyn-cursor:{{ pg.cursor }}">{{ pg.n }}</button></sc-for>
-        <button class="search-results-pagination__button-next-page" onClick="{{ nextPage }}" aria-label="Next page" disabled="{{ !hasNext }}" style="--dyn-background:{{ nextBg }};--dyn-color:{{ nextColor }};--dyn-cursor:{{ nextCursor }}">Next<svg class="search-results-pagination__button-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="9 6 15 12 9 18"></polyline></svg></button>
+        <button class="search-results-pagination__button-next-page" onClick="{{ nextPage }}" aria-label="Next page" rel="next" disabled="{{ !hasNext }}" style="--dyn-background:{{ nextBg }};--dyn-color:{{ nextColor }};--dyn-cursor:{{ nextCursor }}">Next<svg class="search-results-pagination__button-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false"><line x1="4" y1="12" x2="20" y2="12"></line><polyline points="14 6 20 12 14 18"></polyline></svg></button>
       </nav>
       <button class="search-results-main-content__button-top" onClick="{{ toTop }}"><svg class="search-results-main-content__button-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 15 12 9 18 15"></polyline></svg>Back to top</button>
     </div>
@@ -1038,13 +1043,11 @@ class Component extends DCLogic {
         onSubmit: q => this.runQ(q),
         onInput: v => this.bars.forEach(b => b.setValue(v)),
         filterTerm: t => this.state.f.scope === 'all' || t.sc === this.state.f.scope,
-        placeholder: () => this.state.f.q ? 'Search for something else' : 'Search, or use "quotes" for an exact phrase',
-        chip: host === this.bannerHostRef.current ? () => { const f = this.state.f; return f.q ? (f.scope !== 'all' ? SCOPES.find(x => x[0] === f.scope)[1] + ': ' : '') + f.q.toUpperCase() : ''; } : null,
-        onClearChip: () => this.apply(ff => ({ ...ff, q: '' }))
+        placeholder: () => 'Search, or use "quotes" for an exact phrase'
       }));
     });
   }
-  syncBars() { this.mountBars(); (this.bars || []).forEach(b => b.sync()); }
+  syncBars() { this.mountBars(); (this.bars || []).forEach(b => { b.setValue(this.state.f.q || ''); b.sync(); }); }
   componentDidUpdate() { this.syncBars(); }
 
   componentWillUnmount() {
@@ -1389,10 +1392,11 @@ class Component extends DCLogic {
       gridBg: view === 'masonry' ? '#c8d5c0' : '#fff', listBg: view === 'list' ? '#c8d5c0' : '#fff', isMasonry: view === 'masonry', isListView: view === 'list',
       barCls: s.stuck ? 'is-stuck' : '', sentinelRef: this.sentinelRef, bannerHostRef: this.bannerHostRef, compactHostRef: this.compactHostRef,
       bannerLine: f.q ? n + (n === 1 ? ' result for ' : ' results for ') + '“' + f.q + '”' : 'Explore artworks, objects, manuscripts, photographs and recordings held across the University of Melbourne\'s cultural collections.',
-      titleText: 'Showing ' + n + ' ' + (n === 1 ? 'result' : 'results'),
+      titleText: n + ' ' + (n === 1 ? 'result' : 'results'),
       advHref: advancedFormHref(f), advOpen: s.advOpen, advSrc: advancedFormHref(f) + (advancedFormHref(f).includes('?') ? '&' : '?') + 'embed=1', advBtnRef: this.advBtnRef, advDialogRef: this.advDialogRef, advCloseRef: this.advCloseRef, advFrameRef: this.advFrameRef, advTrapKey: this.advTrap, closeAdv: () => this.closeAdv(), openAdv: () => this.openAdv(), filterCount: (chips.length + (f.digital ? 1 : 0)) || null, filterBtnRef: this.filterBtnRef,
       ppRef: this.ppRef, ppOpen: s.ppOpen, ppChev: s.ppOpen ? 'rotate(180deg)' : 'none', togglePP: () => this.setState(st => ({ ppOpen: !st.ppOpen })),
-      rangeLabel: n ? 'Showing ' + ((page - 1) * s.perPage + 1) + '–' + Math.min(page * s.perPage, n) + ' records' : 'Showing 0 records',
+      rangeLabel: s.perPage + ' results per page',
+      rangeText: n ? 'Showing ' + ((page - 1) * s.perPage + 1) + '–' + Math.min(page * s.perPage, n) + ' records' : 'Showing 0 records',
       mainRef: this.mainRef, showPager: n > 0 && !s.loading,
       pages: pageNums.map((pn, i) => pn === '…'
         ? { n: '…', key: 'e' + i, ellipsis: true, go: () => {}, current: undefined, bg: 'transparent', color: 'var(--col-bg-primary)', cursor: 'default' }
