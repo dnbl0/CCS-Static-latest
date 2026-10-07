@@ -1,11 +1,6 @@
 /* ===== Blacklight-style results experience: switch, pills, rail skeleton (phase 2a) ===== */
 
 /* "Show only: Records with digital assets", a switch at the top of the filter rail */
-body.page-search-results .facet-rail__switches {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-6);
-}
 
 body.page-search-results .filter-switch {
   display: flex;
@@ -62,6 +57,7 @@ body.page-search-results .filter-switch:focus-visible {
 }
 
 /* Applied filters, as pills after "N results for" in the toolbar: the value only, sage, removable */
+
 body.page-search-results .search-results-pills {
   display: flex;
   flex-wrap: wrap;
@@ -114,6 +110,7 @@ body.page-search-results .search-results-pill__remove:focus-visible {
 }
 
 /* While results update (aria-busy on the layout) the rail's options and the pills shimmer grey, as the cards do */
+
 body.page-search-results .search-results-layout.is-searching .facet-rail__item,
 body.page-search-results .search-results-layout.is-searching .facet-rail__toggle {
   background: linear-gradient(90deg, #ecebe7 0, #f6f5f2 40%, #ecebe7 80%);
@@ -146,6 +143,7 @@ body.page-search-results .search-results-layout.is-searching .facet-rail__chevro
 }
 
 /* the count and its pills sit on one line, with room between */
+
 body.page-search-results .search-results-bar .search-results-summary__group--v4 {
   display: flex;
   flex-wrap: wrap;

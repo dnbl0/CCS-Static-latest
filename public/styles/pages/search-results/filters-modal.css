@@ -1,5 +1,6 @@
 /* Filters modal, following the Gen 3 Modal component: white panel, navy 80% blanket, Fraunces heading,
    top-right Close button with a visible label. Header and footer stay put while the filters scroll. */
+
 body.page-search-results .search-results-filters-title__header {
   flex: none;
   display: flex;
@@ -132,10 +133,6 @@ body.page-search-results .filters-empty__button {
   cursor: pointer;
 }
 
-body.page-search-results .search-results-filters-title__group--v4 {
-  border-top: 1px solid #c8c8c8;
-  padding: var(--space-16) var(--space-24);
-}
 @media (max-width: 640px) {
   body.page-search-results .search-results-filters-title__header {
     padding: var(--space-16) var(--space-16) var(--space-4);

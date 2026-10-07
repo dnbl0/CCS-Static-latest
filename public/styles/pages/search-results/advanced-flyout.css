@@ -1,5 +1,6 @@
 /* Advanced search fly-out (Gen 3 modal pattern, anchored right): navy 80% blanket, white full-height panel that slides in,
    header with Fraunces heading + labelled Close button (shared with the Filters modal), the form scrolls inside. */
+
 body.page-search-results .search-results-flyout {
   position: fixed;
   inset: 0;
@@ -91,6 +92,9 @@ body.page-search-results .search-results-bar__switch-short {
 
 body.page-search-results .search-results-bar .search-results-summary__heading {
   margin: 0;
-  font-size: var(--font-size-title-4);
-  line-height: 28.8px;
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.2;
+  color: var(--col-text-primary);
 }

@@ -6,6 +6,7 @@
    ------------------------------------------------------------------------------------------------ */
 
 /* Banner: the scope menu is the site's dropdown box (a navy outline), not a grey cell */
+
 body.page-search-results .search-results-banner .ccs-searchbar__scope-btn {
   background: var(--white-100);
   border: 1px solid var(--col-bg-primary);
@@ -19,13 +20,6 @@ body.page-search-results .search-results-banner .ccs-searchbar__scope-btn:hover 
 }
 
 /* Toolbar: the count is a small semibold line, the buttons are 48px */
-body.page-search-results .search-results-bar .search-results-summary__heading {
-  font-family: var(--font-family-sans);
-  font-size: var(--font-size-small);
-  font-weight: var(--font-weight-semibold);
-  line-height: 1.2;
-  color: var(--col-text-primary);
-}
 
 body.page-search-results .search-results-bar .search-results-summary__button-save-search,
 body.page-search-results .search-results-bar .search-results-search-tools__button-filter-btn {
@@ -34,11 +28,6 @@ body.page-search-results .search-results-bar .search-results-search-tools__butto
 }
 
 /* Results per page: the same 48px box as Sort, in the toolbar */
-body.page-search-results .search-results-per-page {
-  position: relative;
-  flex: 0 0 16rem;
-  margin: 0;
-}
 
 body.page-search-results .search-results-per-page .search-results-summary__group-pp {
   align-self: auto;
@@ -68,31 +57,11 @@ body.page-search-results .search-results-per-page .search-results-summary__butto
   color: var(--col-bg-primary);
 }
 
-body.page-search-results .search-results-per-page .search-results-summary__group-listbox {
-  top: 100%;
-  bottom: auto;
-  right: 0;
-  margin-top: -1px;
-  border-top: 0;
-}
-
 body.page-search-results .search-results-bar__switch-long {
   white-space: nowrap;
 }
 
 /* List and Mosaic: 48px joined buttons, the chosen one navy with a white icon */
-body.page-search-results .search-results-view {
-  gap: 0;
-  border: 0;
-}
-
-body.page-search-results .search-results-bar__controls .search-results-view button {
-  width: 48px;
-  height: 48px;
-  border: 1px solid var(--palette-grey-91);
-  background: var(--white-100);
-  color: var(--col-bg-primary);
-}
 
 body.page-search-results .search-results-bar__controls .search-results-view button + button {
   margin-left: -1px;
@@ -111,6 +80,7 @@ body.page-search-results .search-results-view__button-icon {
 
 /* Result cards: Card image / Card no media. A white card with a 1px border, the image when the record has
    one, 16px of padding, a 24px semibold link-blue title (an h5) and three 16px lines. */
+
 body.page-search-results .search-results-main-content__article--v1,
 body.page-search-results .search-results-main-content__article--v2 {
   border: 1px solid var(--palette-grey-91);
@@ -194,34 +164,6 @@ body.page-search-results .search-results-article__line--link:hover {
 
 /* List view: one column of cards; the vertical card under 768px, the horizontal card from 768px (text left,
    the 324 x 182 image right), two columns from 1800px */
-body.page-search-results .search-results-main-content__group--v5 {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--space-24);
-}
-
-body.page-search-results .search-results-main-content__article--v2 {
-  flex-direction: column;
-  gap: 0;
-  padding: 0;
-  align-items: stretch;
-}
-
-body.page-search-results .search-results-article__link--v2 {
-  flex: none;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 16 / 9;
-  background: var(--palette-grey-88);
-}
-
-body.page-search-results .search-results-article__link-image--v2 {
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  mix-blend-mode: normal;
-}
 
 @media (min-width: 768px) {
   body.page-search-results .search-results-main-content__article--v2 {
@@ -249,31 +191,11 @@ body.page-search-results .search-results-article__link-image--v2 {
 
 /* Pager: sage Previous / Next with arrows, square page numbers, the current page tinted sage. Previous and
    Next are left out where there is no such page. Under 576px they are full width, above and below the numbers. */
-body.page-search-results .search-results-main-content__group--v4 {
-  align-items: flex-start;
-  gap: var(--space-16);
-  padding-top: var(--space-32);
-}
 
 body.page-search-results .search-results-main-content__range {
   margin: 0;
   font-size: var(--font-size-small);
   color: var(--col-text-muted);
-}
-
-body.page-search-results .search-results-pagination {
-  justify-content: flex-start;
-  gap: var(--space-4);
-}
-
-body.page-search-results .search-results-pagination__button-go {
-  min-width: 32px;
-  height: 32px;
-  padding: 0 var(--space-4);
-  background: var(--white-100);
-  color: var(--col-bg-primary);
-  font-size: var(--font-size-body-lg);
-  font-weight: var(--font-weight-regular);
 }
 
 body.page-search-results .search-results-pagination__button-go[aria-current="page"] {
@@ -329,6 +251,7 @@ body.page-search-results .search-results-pagination__button-icon {
 }
 
 /* Phones: Sort and Results per page share the first row */
+
 @media (max-width: 767.98px) {
   body.page-search-results .search-results-bar .search-results-per-page {
     order: 1;
@@ -347,6 +270,7 @@ body.page-search-results .search-results-pagination__button-icon {
 }
 
 /* Stuck at tablet widths there is no room for a second dropdown beside the search box */
+
 @media (max-width: 1279.98px) {
   body.page-search-results .search-results-bar.is-stuck .search-results-per-page {
     display: none;

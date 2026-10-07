@@ -4,11 +4,13 @@
    Under it, one sticky tools bar (count, Save, Sort, Filters, Digital asset, view). Its height stays the same
    when it sticks; a compact search box appears in it so searching is still possible while scrolling.
    ========================================================================== */
+
 body.page-search-results .search-results-banner .page-banner__inner {
   padding: 56px var(--space-32) var(--space-48);
 }
 
 /* the banner sits above the sticky bar so the scope menu and suggestions open over it */
+
 body.page-search-results .search-results-banner {
   position: relative;
   z-index: var(--z-950);
@@ -32,12 +34,14 @@ body.page-search-results .search-results-bar__search {
 }
 
 /* Banner search: the shared search-bar.js form, at most 720px wide */
+
 body.page-search-results .search-results-bar__search-host {
   width: 100%;
   max-width: var(--layout-search);
 }
 
 /* Fly-out trigger: label, then a right chevron */
+
 body.page-search-results .search-results-banner .search-results-search-tools__link-advanced-search {
   display: inline-flex;
   align-items: center;

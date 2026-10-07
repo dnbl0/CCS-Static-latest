@@ -1,4 +1,5 @@
 /* Compact search: the shared search-bar.js form, only shown while the bar is stuck */
+
 body.page-search-results .search-results-bar__compact {
   display: none;
   flex: 1 1 auto;
@@ -26,6 +27,7 @@ body.page-search-results .search-results-bar.is-stuck .search-results-bar__count
 }
 
 /* Tablets stuck: search row, then every control on one row at the same height */
+
 @media (min-width: 768px) {
   body.page-search-results .search-results-bar__controls {
     flex-wrap: nowrap;
@@ -51,6 +53,7 @@ body.page-search-results .search-results-bar.is-stuck .search-results-bar__count
 }
 
 /* Desktop stuck: search and tools share one row, so the bar keeps the same height */
+
 @media (min-width: 1280px) {
   body.page-search-results .search-results-bar.is-stuck .search-results-bar__compact {
     flex: 1 1 auto;
@@ -67,7 +70,11 @@ body.page-search-results .search-results-bar__controls .search-results-view {
 }
 
 body.page-search-results .search-results-bar__controls .search-results-view button {
-  height: 46px;
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--palette-grey-91);
+  background: var(--white-100);
+  color: var(--col-bg-primary);
 }
 
 body.page-search-results .search-results-notices {
@@ -85,15 +92,21 @@ body.page-search-results .search-results-notices .search-results-smart + .search
 body.page-search-results .search-results-per-page {
   display: flex;
   justify-content: flex-end;
-  margin: 0 0 var(--space-16);
+  position: relative;
+  flex: 0 0 16rem;
+  margin: 0;
 }
 
 body.page-search-results .search-results-per-page .search-results-summary__group-listbox {
-  top: auto;
-  bottom: 100%;
+  top: 100%;
+  bottom: auto;
+  right: 0;
+  margin-top: -1px;
+  border-top: 0;
 }
 
 /* Phones */
+
 @media (max-width: 767px) {
   body.page-search-results .search-results-banner .page-banner__inner {
     padding: var(--space-32) var(--space-16) 28px;
@@ -255,6 +268,7 @@ body.page-search-results .search-results-per-page .search-results-summary__group
 }
 
 /* Very narrow phones: stuck, Sort and Filters take a row each half and Digital asset drops to its own row instead of clipping */
+
 @media (max-width: 359px) {
   body.page-search-results .search-results-bar.is-stuck .search-results-search-tools__group-sort,
   body.page-search-results .search-results-bar.is-stuck .search-results-search-tools__button-filter-btn {
