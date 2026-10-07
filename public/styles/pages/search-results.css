@@ -24,20 +24,6 @@ body.page-search-results .bc-mobile__item-link-cultural-collections {
   min-height: 44px;
 }
 
-body.page-search-results .date-fill--styled {
-  left: var(--dyn-left);
-  width: var(--dyn-width);
-}
-
-body.page-search-results .date-hist__text {
-  height: var(--dyn-height);
-  background: var(--dyn-background);
-}
-
-body.page-search-results .date-range-handle--styled {
-  left: var(--dyn-left);
-}
-
 body.page-search-results .page-banner__inner--styled {
   padding-top: 56px;
   padding-bottom: var(--space-48);
@@ -1921,28 +1907,6 @@ button,input,select{font-family:inherit}
 /* Production date facet: histogram + dual-handle slider + labelled year fields */
 .date-facet{display:flex;flex-direction:column;gap:0}
 .date-note{font-size:var(--font-size-15);color:var(--col-text-muted)}
-.date-summary{margin:var(--space-14) 0 0;font-size:16px;font-weight:var(--font-weight-semibold);color:var(--col-text-primary);min-height:24px}
-.date-hist{display:flex;align-items:flex-end;gap:var(--space-2);height:84px;margin:var(--space-12) var(--space-16) 0}
-.date-hist span{flex:1 1 0;min-width:2px;transition:background var(--duration-fast),height var(--duration-fast)}
-.date-track{position:relative;margin:0 16px;height:36px;touch-action:none;cursor:pointer}
-.date-rail{position:absolute;top:50%;left:0;right:0;height:2px;background:#c3c6cd;transform:translateY(-50%)}
-.date-fill{position:absolute;top:50%;height:2px;background:var(--col-bg-primary);transform:translateY(-50%)}
-.date-range-handle{position:absolute;top:50%;width:28px;height:28px;margin:-14px 0 0 -14px;border-radius:50%;border:2px solid var(--col-bg-primary);background:var(--white-100);cursor:grab;touch-action:none;padding:0}
-.date-range-handle::after{content:"";position:absolute;inset:-8px}
-.date-range-handle:hover{background:#e8edf6}
-.date-range-handle:active{cursor:grabbing;background:#d6e0f0}
-.date-range-handle:focus-visible{outline:3px solid var(--blue-400);outline-offset:2px}
-.date-ends{display:flex;justify-content:space-between;margin:var(--space-2) var(--space-16) 0;font-size:13px;color:var(--col-text-muted)}
-.date-inputs{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-top:var(--space-16)}
-.date-field{display:flex;flex-direction:column;gap:var(--space-6);font-size:14px;color:var(--col-text-muted)}
-.date-field--end{align-items:flex-end}
-.date-field input{box-sizing:border-box;width:140px;height:48px;border:1px solid var(--col-border-neutral);border-radius:var(--radius-none);padding:0 14px;font:inherit;font-size:17px;color:var(--col-text-primary);text-align:center;background:var(--white-100)}
-.date-field input::placeholder{color:var(--col-text-muted)}
-.date-field input:focus-visible{outline:3px solid var(--blue-400);outline-offset:2px;border-color:var(--col-bg-primary)}
-.date-help{margin:var(--space-10) 0 0;font-size:13px;color:var(--col-text-muted)}
-.date-error{margin-top:var(--space-6);font-size:14px;color:#b3261e}
-.date-reset{align-self:flex-start;margin-top:10px;border:0;background:none;padding:0;font:inherit;font-size:var(--font-size-15);font-weight:600;text-decoration:underline;color:var(--col-text-primary);cursor:pointer}
-@media (max-width:480px){.date-field input{width:112px}}
 
 /* ---- Facet rail: filters down the left, masonry results on the right (desktop only; the Filters modal stays).
    Laid out like Europeana's search (a "Search filters" panel of labelled select-style filters beside a masonry grid), mirrored to the left. ---- */
@@ -1965,7 +1929,7 @@ body.page-search-results .search-results-layout > .search-results-main-content {
 body.page-search-results .facet-rail {
   --facet-panel-padding-y: var(--space-12);
   flex: none;
-  width: 296px;
+  width: 320px;
   margin-top: var(--space-24);
   padding: 0 var(--space-16) var(--space-24) 0;
   border-right: 1px solid var(--col-border-neutral-soft);
