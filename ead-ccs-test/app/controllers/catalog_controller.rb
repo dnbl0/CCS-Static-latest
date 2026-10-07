@@ -6,6 +6,16 @@ class CatalogController < ApplicationController
   include BlacklightRangeLimit::ControllerOverride
   include QueryRules
 
+  # The results open in the default view (mosaic) every time. Blacklight would remember the last view the
+  # visitor chose in the session and open every later search that way; here only ?view= in the URL changes it.
+  # (A block here, so it comes after, and wins over, the gem's own helper.)
+  helper do
+    def document_index_view_type(query_params = params || {})
+      view = query_params[:view]
+      view.present? && document_index_views.key?(view.to_sym) ? view.to_sym : default_document_index_view_type
+    end
+  end
+
   # If you'd like to handle errors returned by Solr in a certain way,
   # you can use Rails rescue_from with a method you define in this controller,
   # uncomment:
@@ -201,6 +211,16 @@ class CatalogController < ApplicationController
     # Configuration for autocomplete suggester
     config.autocomplete_enabled = true
     config.autocomplete_path = "suggest"
+  end
+
+  # The bare front page is the results page with the Digital asset switch on: every record that has a digital
+  # asset, as the mosaic. Any parameter (a search, a filter, a sort...) means the visitor chose something.
+  before_action :show_digital_assets_by_default, only: :index
+
+  def show_digital_assets_by_default
+    return unless controller_name == "catalog" && request.format.html? && request.query_parameters.empty?
+
+    redirect_to search_action_url(f: { has_digital_asset: [ "with" ] }, search_field: "all_fields", view: "masonry")
   end
 
   # "Includes all" filters (f_all) alone make a search too: the results page, not the home page

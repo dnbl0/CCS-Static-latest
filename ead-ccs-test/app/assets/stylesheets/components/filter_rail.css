@@ -149,8 +149,14 @@
   transition: none;
 }
 
-.facets .accordion-body {
-  padding: var(--ccs-space-1) var(--ccs-space-3);
+/* The panel's own top and bottom padding: one token for every open panel, the range ones (.has-slider) included */
+.facets {
+  --facet-panel-padding-y: var(--ccs-space-3); /* 12px */
+}
+
+.facets .accordion-body,
+.facets .accordion-body.has-slider {
+  padding: var(--facet-panel-padding-y) var(--ccs-space-3);
   border: 1px solid var(--ccs-navy-1100);
   background: var(--ccs-white);
   box-shadow: 0 6px 16px rgb(0 0 0 / 18%);
@@ -353,6 +359,15 @@
   font-size: var(--ccs-font-size-xs);
   white-space: nowrap;
   color: var(--ccs-text-tertiary);
+}
+
+/* the first year under the rail's left end and the last under its right end */
+.range-slider__tick:first-child {
+  transform: none;
+}
+
+.range-slider__tick:last-child {
+  transform: translateX(-100%);
 }
 
 /* a thin stem from the rail up past the handle, where the handles have been nudged apart, so the real year

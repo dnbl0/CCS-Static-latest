@@ -12,7 +12,7 @@ module NexusCcs
       search_bar_component_class.new(
         url: helpers.search_action_url,
         advanced_search_url: advanced_search_url,
-        params: helpers.search_state.params_for_search.except(:qt),
+        params: helpers.search_state.params_for_search.except(:qt, :view), # a new search opens in the default view
         autocomplete_path: suggest_index_catalog_path,
         classes: %w[search-query-form search-banner__form]
       )
@@ -30,20 +30,8 @@ module NexusCcs
       helpers.search_action_url(state.merge(action: "advanced_search"))
     end
 
-    # The query the chip shows, and where removing it goes: the same search without it (filters stay)
-    def query
-      helpers.params[:q].presence
-    end
-
-    def clear_query_url
-      helpers.search_action_url(helpers.search_state.params_for_search.except(:q, :page, :qt))
-    end
-
-    def chip_data
-      # Always attached: without a query it only puts the cursor in the box after a chip was cleared
-      return { controller: "search-chip advanced-flyout" } unless query
-
-      { controller: "search-chip advanced-flyout", "search-chip-query-value": query, "search-chip-clear-url-value": clear_query_url }
+    def controllers
+      { controller: "advanced-flyout" }
     end
 
     def summary

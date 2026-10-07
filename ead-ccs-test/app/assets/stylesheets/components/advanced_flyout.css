@@ -93,3 +93,15 @@
     width: 100%;
   }
 }
+
+/* In the flyout the form's buttons (Start over, Search) sit side by side, at every width */
+#blacklight-modal.advanced-flyout .advanced-form__actions {
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: var(--ccs-space-3);
+}
+
+#blacklight-modal.advanced-flyout .advanced-form__actions .advanced-form__button {
+  flex: 1 1 0;
+  width: auto;
+}

@@ -3,7 +3,7 @@ import { Controller } from "@hotwired/stimulus"
 // The range filters' slider, after the CCS UI "Slider" (Figma 256:24723, 256:24703): a histogram of the results
 // with 2px between its bars, two small white handles on a 2px rail, year labels along the bottom, and From / To
 // fields at the two ends. Bars inside the chosen range are navy, the rest grey, and they follow the handles as
-// they move. With no range applied the fields are empty (their placeholders say Minimum / Maximum) and the
+// they move. With no range applied the fields are empty (their placeholders are the first and last year) and the
 // handles sit at the ends; dragging a handle fills its field, and a handle at its end leaves the field empty
 // (an open end). It sits over the range limit plugin's Begin / End fields (typing a year still works, and so
 // does the form without JavaScript). Letting go of a handle, or leaving a field, applies the range after a
@@ -50,12 +50,17 @@ export default class extends Controller {
       this.begin.value = ""
       this.end.value = ""
     }
-    this.begin.placeholder = "Minimum"
-    this.end.placeholder = "Maximum"
+    this.setPlaceholders()
     this.render()
     this.fromFields()
     this.drawTicks()
     this.announceApplied()
+  }
+
+  // The empty fields show the first and last year of the results, not the words Minimum and Maximum
+  setPlaceholders() {
+    this.begin.placeholder = String(this.lo)
+    this.end.placeholder = String(this.hi)
   }
 
   disconnect() {
@@ -76,6 +81,7 @@ export default class extends Controller {
       this.bins = data.bins
       this.begin.min = this.end.min = this.lo
       this.begin.max = this.end.max = this.hi
+      this.setPlaceholders()
       this.fromHandle.value = this.position(from)
       this.toHandle.value = this.position(to)
       this.drawBars()
@@ -209,22 +215,13 @@ export default class extends Controller {
     }))
   }
 
-  // Three or four year labels along the bottom at round years, spread over the track
+  // Two year labels under the rail: the first and the last year
   drawTicks() {
-    const count = window.matchMedia("(max-width: 400px)").matches ? 3 : 4
-    const seen = new Set()
-    const ticks = []
-    for (let i = 0; i < count; i++) {
-      const target = count === 1 ? 0.5 : 0.1 + (0.8 * i) / (count - 1)
-      const year = this.round(this.year(target * STEPS))
-      if (year < this.lo || year > this.hi || seen.has(year)) continue
-      seen.add(year)
-      ticks.push(year)
-    }
-    this.ticksElement.replaceChildren(...ticks.map((year) => {
+    const years = this.hi > this.lo ? [ this.lo, this.hi ] : [ this.lo ]
+    this.ticksElement.replaceChildren(...years.map((year, i) => {
       const tick = document.createElement("span")
       tick.className = "range-slider__tick"
-      tick.style.insetInlineStart = `${this.position(year) / STEPS * 100}%`
+      tick.style.insetInlineStart = i === 0 ? "0%" : "100%"
       tick.textContent = this.format(year)
       return tick
     }))

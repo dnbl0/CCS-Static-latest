@@ -57,10 +57,10 @@ class RangeSliderTest < ActiveSupport::TestCase
     assert_equal 29, RangeHistogram.bins_for("29")
   end
 
-  test "with no range applied the fields are empty with Minimum and Maximum placeholders, and empty ones are not sent" do
+  test "with no range applied the fields are empty with the first and last year as placeholders, and empty ones are not sent" do
     assert_includes JS, "static values = { min: Number, max: Number, histogramUrl: String, applied: Boolean }"
-    assert_includes JS, 'this.begin.placeholder = "Minimum"'
-    assert_includes JS, 'this.end.placeholder = "Maximum"'
+    assert_includes JS, "this.begin.placeholder = String(this.lo)"
+    assert_includes JS, "this.end.placeholder = String(this.hi)"
     assert_includes JS, 'if (!this.appliedValue) {'
     assert_includes JS, "leaveOutEmptyFields"
     assert_includes JS, "input.disabled = input.value === \"\""
