@@ -6,7 +6,7 @@
  */
 .documents-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   align-items: start;
   gap: var(--results-gutter);
   margin: 0;
@@ -160,4 +160,50 @@
 .documents-list .result-card:focus-within,
 .documents-masonry .result-card:focus-within {
   border-color: var(--ccs-border-strong);
+}
+
+/*
+ * List view, after the CCS UI "List views" (Figma 254:23780): below 768px (xs-sm) the card is the vertical
+ * card, one column; from 768px (md-lg) it is the horizontal card, text on the left and the 324 x 182 image on
+ * the right, one column; from 1800px (xl-wide) two columns of them. Without a digital asset the text takes the
+ * whole width.
+ */
+@media (min-width: 768px) {
+  .documents-list .result-card {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .documents-list .result-card__content {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+  }
+
+  .documents-list .result-card__media {
+    order: 2;
+    flex: none;
+    width: 20.25rem;
+    min-height: 11.375rem;
+    aspect-ratio: auto;
+  }
+
+  /* The image fills the box (at least 182px tall, as tall as the row if the text is taller) without sizing it */
+  .documents-list .result-card__media {
+    position: relative;
+  }
+
+  .documents-list .result-card__media img {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+  }
+}
+
+@media (min-width: 1800px) {
+  .documents-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
