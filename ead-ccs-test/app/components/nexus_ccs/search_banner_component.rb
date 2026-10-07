@@ -31,7 +31,7 @@ module NexusCcs
     end
 
     def controllers
-      { controller: "advanced-flyout" }
+      { controller: "advanced-flyout select-dropdown", "select-dropdown-selector-value": "select.search-field" }
     end
 
     def summary

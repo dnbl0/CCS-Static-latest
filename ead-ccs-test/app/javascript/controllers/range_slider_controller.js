@@ -210,7 +210,9 @@ export default class extends Controller {
     this.barsElement.replaceChildren(...this.bins.map((bin) => {
       const bar = document.createElement("span")
       bar.className = "range-slider__bar"
-      bar.style.height = bin.count ? `max(4px, ${Math.min(Math.sqrt(bin.count / top), 1) * 100}%)` : "0"
+      // an empty bin is a 4px stub in the neutral grey (is-empty), never a gap
+      bar.style.height = bin.count ? `max(4px, ${Math.min(Math.sqrt(bin.count / top), 1) * 100}%)` : "4px"
+      bar.classList.toggle("is-empty", !bin.count)
       return bar
     }))
   }

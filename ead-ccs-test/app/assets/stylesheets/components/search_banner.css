@@ -209,3 +209,25 @@
     border-left: 0;
   }
 }
+
+/* The scope menu (controllers/select_dropdown_controller.js) in the bar: the site's dropdown, 48px, after the
+   query and before the search button */
+.search-banner .input-group > .ccs-select {
+  --ccs-select-width: 11rem;
+  order: 1;
+  flex: none;
+  height: 100%;
+}
+
+.search-banner .input-group > .ccs-select > .dropdown-toggle {
+  border-radius: 0;
+}
+
+@media (max-width: 575.98px) {
+  .search-banner .input-group > .ccs-select {
+    --ccs-select-width: 100%;
+    order: 3;
+    flex: 1 1 100%;
+    width: 100%;
+  }
+}

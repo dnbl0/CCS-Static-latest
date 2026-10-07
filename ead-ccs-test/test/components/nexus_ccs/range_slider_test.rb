@@ -83,4 +83,19 @@ class RangeSliderTest < ActiveSupport::TestCase
     assert_includes CSS, "const HANDLE = 16" if false
     assert_includes JS, "const HANDLE = 16"
   end
+
+  test "empty bars are 4px stubs in neutral-200" do
+    assert_includes JS, 'bin.count ? `max(4px, ${Math.min(Math.sqrt(bin.count / top), 1) * 100}%)` : "4px"'
+    assert_includes JS, 'bar.classList.toggle("is-empty", !bin.count)'
+    css = Rails.root.join("app/assets/stylesheets/components/filter_rail.css").read
+    assert_match(/\.range-slider__bar\.is-empty,\s*\.range-slider__bar\.is-empty\.is-in-range \{\s*background: var\(--ccs-neutral-200\);/, css)
+  end
+
+  test "the scope select in the search bar is the site's dropdown, not the browser's" do
+    assert_includes Rails.root.join("app/components/nexus_ccs/search_banner_component.rb").read, "select-dropdown"
+    assert_includes Rails.root.join("app/javascript/controllers/select_dropdown_controller.js").read, "ccs-select"
+    toolbar = Rails.root.join("app/assets/stylesheets/components/results_toolbar.css").read
+    assert_includes toolbar, ":is(#sortAndPerPage .btn-group, .ccs-select) > .dropdown-toggle"
+    assert_includes toolbar, ".dropdown-item::first-letter"
+  end
 end

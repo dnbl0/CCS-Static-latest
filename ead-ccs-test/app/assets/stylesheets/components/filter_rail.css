@@ -317,6 +317,12 @@
   transition: background var(--ccs-duration-fast);
 }
 
+/* An empty bin: a 4px stub in neutral-200 whether or not it is inside the range */
+.range-slider__bar.is-empty,
+.range-slider__bar.is-empty.is-in-range {
+  background: var(--ccs-neutral-200);
+}
+
 .range-slider__bar.is-in-range {
   background: var(--ccs-navy-1100);
 }
