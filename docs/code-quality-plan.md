@@ -59,9 +59,12 @@ search bar on the home page (the Rails app keeps its Blacklight bar) and font fa
   `tests/runtime-libs.test.js` checks the load order and that the files match the hashes `support.js` pins. The pages
   now render offline and the Chromium suites run in the sandbox: search-bar, results-filter-parity, image-aspect,
   style-diff and search-live pass, accessibility passes (30 page states; one run flagged a contrast failure while
-  results were still rendering and did not repeat). `advanced-filters` fails 5 checks on the arrow-key behaviour of
-  the dropdown; it fails the same way on the code from before this work, so it is not caused by it. Investigate in CI
-  against the pinned Playwright browser.
+  results were still rendering and did not repeat). `advanced-filters` failed 5 keyboard checks. I first put that down to the
+  sandbox because it failed on the code from before this work too; that was wrong. It failed because serving React locally
+  made the runtime render the form before `advanced-search-form.js` ran, and the runtime copies the DOM that script builds
+  (markup and `data-ready`, not the listeners), so the dropdowns in the search rows did nothing. With the CDN's slower load the
+  race went the other way. Fixed in the script (it now records the form element it enhanced, instead of trusting an attribute
+  that survives the copy, and clears what was copied); all seven browser suites pass.
 - **Pre-rendering, assessed:** with the CDN dependency gone the remaining cost is speed: Babel (3 MB) compiles every
   page's template at load. The interactive pages (search results, record, advanced search) need the runtime whatever
   is done, so pre-rendering would only cover contact, help, indigenous data, the browse page and the collection pages,
