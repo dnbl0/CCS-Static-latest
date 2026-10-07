@@ -33,7 +33,19 @@ search bar on the home page (the Rails app keeps its Blacklight bar) and font fa
   organisation's `unimelb-enterprise-apps` actions and its secrets. Those only work in the repository that owns them,
   so the nested workflows and `dependabot.yml` are left in place. They run if `ead-ccs-test` is published as its own
   repository. Confirm how the app is delivered before removing them.
-- Still to do: Phases 2 (items 7-9), 3, 4 and 5.
+- **Done 2026-10-07 (Phase 3, items 10-12):**
+  - Item 10: ESLint (`eslint.config.js`, 0 errors, 12 warnings to clean up) and Stylelint (`.stylelintrc.json`, 0
+    errors, 23 warnings: duplicate selectors and `!important`) run first in `npm test` (`npm run lint`). HTML
+    validation is left out: the pages are DC templates with `{{ }}` and custom tags that validators reject.
+  - Item 11: the five collection pages are generated from `src/collection-landing.template.html` by
+    `scripts/build-collection-pages.js` (output unchanged, byte for byte); `--check` runs in `npm test`.
+  - Item 12: the header, search overlay and footer are `src/partials/*`, written into every page by
+    `scripts/sync-partials.js` (`--check` in `npm test`). Three pages changed: the contact page's Contact link class,
+    the search page's search button class (neither is styled) and the home page footer's image paths (now absolute).
+    The page-named BEM classes in the header (`contact-university-melbourne__list`) are kept: the partial is a template
+    with `@PAGE@`.
+- Still to do: Phase 2 (items 7-9), 3 (items 13-16), 4 and 5. The Chromium suites could not run in the sandbox
+  (the page runtime needs unpkg.com): they run in CI.
 
 ## Phase 1 - Stop the two sites drifting apart (highest value)
 

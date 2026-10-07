@@ -12,6 +12,8 @@ on:
       - 'data-model/**'
       - 'api/**'
       - 'package.json'
+      - 'eslint.config.js'
+      - '.stylelintrc.json'
       - 'ead-ccs-test/app/assets/**'
       - '.github/workflows/ci.yml'
   push:

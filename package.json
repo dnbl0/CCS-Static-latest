@@ -14,12 +14,15 @@
     "watch:css": "sass --quiet-deps --silence-deprecation=import --load-path=node_modules --watch src/scss/custom-bootstrap.scss:public/styles/vendor/bootstrap-uom.css",
     "verify:bootstrap": "bash verify-bootstrap.sh",
     "build:pages": "node scripts/build-pages.js",
+    "lint": "eslint . && stylelint \"public/styles/**/*.css\"",
+    "sync:partials": "node scripts/sync-partials.js",
+    "build:collections": "node scripts/build-collection-pages.js",
     "sync:rails": "node scripts/sync-rails-assets.js",
     "parity": "node scripts/parity.js",
     "build:figma-tokens": "node scripts/build-figma-tokens.js",
     "style:snapshot": "node scripts/style-snapshot.js",
     "style:diff": "node scripts/style-diff.js",
-    "test": "npm run build:css && npm run verify:bootstrap && node tests/blacklight-adapter.test.js && node tests/search-live.test.js &&node tests/catalog-api.test.js && node tests/page-integrity.test.js && node tests/collection-data.test.js && node tests/data-model.test.js && node tests/no-inline-styles.test.js && node tests/stylesheet-structure.test.js && node tests/tokens.test.js && node tests/advanced-filters.test.js && node tests/smart-search.test.js && node tests/search-bar.test.js && node tests/results-filter-parity.test.js && node tests/range-slider.test.js && node tests/image-aspect.test.js && node tests/style-diff.test.js && node tests/pages-build.test.js && node tests/accessibility.test.js && node scripts/sync-rails-assets.js --check"
+    "test": "npm run lint && npm run build:css && npm run verify:bootstrap && node scripts/sync-partials.js --check && node scripts/build-collection-pages.js --check && node tests/blacklight-adapter.test.js && node tests/search-live.test.js &&node tests/catalog-api.test.js && node tests/page-integrity.test.js && node tests/collection-data.test.js && node tests/data-model.test.js && node tests/no-inline-styles.test.js && node tests/stylesheet-structure.test.js && node tests/tokens.test.js && node tests/advanced-filters.test.js && node tests/smart-search.test.js && node tests/search-bar.test.js && node tests/results-filter-parity.test.js && node tests/range-slider.test.js && node tests/image-aspect.test.js && node tests/style-diff.test.js && node tests/pages-build.test.js && node tests/accessibility.test.js && node scripts/sync-rails-assets.js --check"
   },
   "repository": {
     "type": "git",
@@ -34,9 +37,14 @@
   },
   "homepage": "https://github.com/dnbl0/CCS-Static-latest#readme",
   "devDependencies": {
+    "@eslint/js": "^9.39.5",
     "axe-core": "^4.13.0",
     "bootstrap": "^5.3.3",
+    "eslint": "^9.39.5",
+    "globals": "^17.13.0",
     "playwright-core": "^1.63.0",
-    "sass": "^1.105.1"
+    "sass": "^1.105.1",
+    "stylelint": "^16.26.1",
+    "stylelint-config-recommended": "^14.0.1"
   }
 }
