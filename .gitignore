@@ -66,3 +66,6 @@ localhost_*.png
 
 dist-test/
 .style-snapshots/
+
+# The page runtime's libraries are committed on purpose (public/runtime-libs.js)
+!public/vendor/runtime/*.min.js
