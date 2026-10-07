@@ -1,0 +1,80 @@
+<%= content_tag @component,
+  id: @id,
+  data: { "document-id": document.id.to_s.parameterize },
+  itemscope: true,
+  itemtype: document.itemtype,
+  class: "record" do %>
+  <%# The title band above the page repeats this for sighted visitors; this is the page's one real h1 %>
+  <h1 class="visually-hidden"><%= heading %></h1>
+
+  <%= render NexusCcs::DigitalAssetsComponent.new(presenter: @presenter) %>
+
+  <section class="record-summary" aria-label="Summary">
+    <div class="record-summary__inner">
+      <p class="record-summary__title"><%= heading %></p>
+      <% if byline %><p class="record-summary__byline"><%= byline %></p><% end %>
+      <% if tags.any? %>
+        <ul class="record-summary__tags" aria-label="Tags">
+          <% tags.each do |tag| %><li class="record-tag"><%= tag %></li><% end %>
+        </ul>
+      <% end %>
+    </div>
+  </section>
+
+  <div class="record-main">
+    <div class="record-main__inner">
+      <div class="record-main__details">
+        <section class="record-card record-details" aria-label="Details">
+          <dl class="record-details__list">
+            <% rows.each do |row| %>
+              <div class="record-details__row">
+                <dt><%= row.label %></dt>
+                <dd>
+                  <% if row.copy %>
+                    <span class="record-details__copyable" data-controller="clipboard">
+                      <span data-clipboard-target="source" data-copy="<%= row.values.first %>"><%= row.values.first %></span>
+                      <button type="button" class="record-copy" data-action="clipboard#copy" data-clipboard-target="button" aria-label="Copy <%= row.label %>">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1" /><path d="M5 15V5a1 1 0 0 1 1-1h10" /></svg>
+                        <span data-clipboard-target="label">Copy</span>
+                      </button>
+                      <span class="visually-hidden" role="status" data-clipboard-target="status"></span>
+                    </span>
+                  <% else %>
+                    <% row.values.each do |value| %>
+                      <span class="record-details__value">
+                        <% if link_to_value?(row) %><%= link_to value, value_path(row, value) %><% else %><%= value %><% end %>
+                      </span>
+                    <% end %>
+                  <% end %>
+                </dd>
+              </div>
+            <% end %>
+          </dl>
+        </section>
+
+        <% partials.each do |partial| %><%= partial %><% end %>
+      </div>
+
+      <% if copyright_card? %>
+        <aside class="record-card record-copyright" aria-labelledby="record-copyright-title">
+          <h2 class="record-copyright__title" id="record-copyright-title">Copyright</h2>
+          <dl class="record-copyright__list">
+            <% { "Caption" => caption, "Credit line" => credit_line, "Copyright" => copyright, "Licence" => licence }.each do |label, value| %>
+              <% next if value.blank? %>
+              <div class="record-copyright__item"><dt><%= label %></dt><dd><%= value %></dd></div>
+            <% end %>
+            <% if responsible_collection %>
+              <div class="record-copyright__item">
+                <dt>Responsible collection</dt>
+                <dd><%= link_to responsible_collection, helpers.search_action_path(f: { collection_ssim: [ responsible_collection ] }) %></dd>
+              </div>
+            <% end %>
+          </dl>
+          <p class="record-copyright__terms"><%= link_to "About copyright and terms of use", terms_path %></p>
+        </aside>
+      <% end %>
+    </div>
+  </div>
+
+  <%= footer %>
+<% end %>

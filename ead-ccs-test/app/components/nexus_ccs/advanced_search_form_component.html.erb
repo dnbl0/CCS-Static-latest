@@ -1,0 +1,119 @@
+<%= form_tag @url, method: @method, class: form_classes, role: "search", "aria-label": t("advanced_search.page_title"),
+      novalidate: true, data: { controller: "advanced-search", action: "submit->advanced-search#submit", advanced_search_max_rows_value: max_rows,
+                                advanced_search_empty_message_value: t("advanced_search.errors.empty"),
+                                advanced_search_range_message_value: t("advanced_search.errors.range_order", field: "%{field}"),
+                                advanced_search_row_label_value: t("advanced_search.search.row", number: "%{number}") } do %>
+  <%= render Blacklight::HiddenSearchStateComponent.new(params: hidden_search_state_params) %>
+
+  <div class="advanced-form__errors" role="alert" aria-live="assertive" data-advanced-search-target="errors" hidden>
+    <h2 class="advanced-form__errors-heading"><%= t("advanced_search.errors.heading") %></h2>
+    <ul data-advanced-search-target="errorList"></ul>
+  </div>
+
+  <section class="advanced-form__section" aria-labelledby="adv-terms-h">
+    <h2 id="adv-terms-h" class="advanced-form__heading"><%= t("advanced_search.search.heading") %></h2>
+    <p class="advanced-form__hint" id="adv-terms-hint"><%= t("advanced_search.search.hint") %></p>
+
+    <div class="advanced-form__rows" data-advanced-search-target="rows">
+      <% rows.each_with_index do |row, index| %>
+        <%= render "catalog/advanced_search_row", row: row, index: index, field_options: field_options, match_options: match_options %>
+      <% end %>
+    </div>
+
+    <template data-advanced-search-target="rowTemplate">
+      <%= render "catalog/advanced_search_row", row: blank_row, index: "__INDEX__", field_options: field_options, match_options: match_options %>
+    </template>
+
+    <div class="advanced-form__add">
+      <button type="button" class="advanced-form__button advanced-form__button--outline" data-action="advanced-search#addRow" data-advanced-search-target="addRow">
+        <%= t("advanced_search.search.add_row") %>
+      </button>
+      <p class="advanced-form__note" data-advanced-search-target="rowLimit" role="status" hidden><%= t("advanced_search.search.max_rows", count: max_rows) %></p>
+    </div>
+  </section>
+
+  <% if filters.any? %>
+    <section class="advanced-form__section" aria-labelledby="adv-filters-h">
+      <h2 id="adv-filters-h" class="advanced-form__heading"><%= t("advanced_search.filters.heading") %></h2>
+      <p class="advanced-form__hint"><%= t("advanced_search.filters.hint") %></p>
+
+      <div class="advanced-form__field advanced-form__field--menu" hidden data-advanced-search-target="filterMenu">
+        <label for="adv-add-filter" class="advanced-form__label"><%= t("advanced_search.filters.add") %></label>
+        <select id="adv-add-filter" class="advanced-form__control" data-advanced-search-target="filterSelect" data-action="advanced-search#addFilter">
+          <option value=""><%= t("advanced_search.filters.add_placeholder") %></option>
+          <% filters.each do |filter| %>
+            <option value="<%= filter.key %>" <%= "hidden" if filter.active? %>><%= filter.label %></option>
+          <% end %>
+        </select>
+      </div>
+
+      <% filters.each do |filter| %>
+        <fieldset class="advanced-filter" data-advanced-search-target="filter" data-filter-key="<%= filter.key %>" data-advanced-search-active="<%= filter.active? %>">
+          <legend class="advanced-filter__legend"><%= filter.label %></legend>
+          <div class="advanced-form__field advanced-filter__mode">
+            <label for="adv-mode-<%= filter.key %>" class="advanced-form__label"><%= t("advanced_search.filters.mode") %></label>
+            <select id="adv-mode-<%= filter.key %>" class="advanced-form__control" data-action="advanced-search#changeMode" data-advanced-search-target="mode">
+              <option value="any" <%= "selected" if filter.mode == "any" %>><%= t("advanced_search.filters.any") %></option>
+              <option value="all" <%= "selected" if filter.mode == "all" %>><%= t("advanced_search.filters.all") %></option>
+            </select>
+          </div>
+          <% if filter.items.size > 12 %>
+            <div class="advanced-form__field advanced-filter__find">
+              <label for="adv-find-<%= filter.key %>" class="advanced-form__label"><%= t("advanced_search.filters.find", filter: filter.label) %></label>
+              <input type="search" id="adv-find-<%= filter.key %>" class="advanced-form__control" autocomplete="off" data-action="input->advanced-search#findValue">
+            </div>
+          <% end %>
+          <ul class="advanced-filter__values">
+            <% filter.items.each_with_index do |item, i| %>
+              <li>
+                <%= check_box_tag "#{filter.mode == 'all' ? 'f_all' : 'f_inclusive'}[#{filter.key}][]", item.value, filter.selected.include?(item.value.to_s),
+                      id: "adv-#{filter.key}-#{i}", data: { advanced_search_target: "value", facet: filter.key } %>
+                <label for="adv-<%= filter.key %>-<%= i %>">
+                  <span class="advanced-filter__label"><%= item.respond_to?(:label) ? item.label : item.value %></span>
+                  <% if item.hits %><span class="advanced-filter__count"><%= number_with_delimiter(item.hits) %></span><% end %>
+                </label>
+              </li>
+            <% end %>
+          </ul>
+          <button type="button" class="advanced-form__link" data-action="advanced-search#removeFilter" hidden data-advanced-search-target="removeFilter">
+            <%= t("advanced_search.filters.remove") %><span class="visually-hidden">: <%= filter.label %></span>
+          </button>
+        </fieldset>
+      <% end %>
+    </section>
+  <% end %>
+
+  <% if date_ranges.any? %>
+    <section class="advanced-form__section" aria-labelledby="adv-dates-h">
+      <h2 id="adv-dates-h" class="advanced-form__heading"><%= t("advanced_search.dates.heading") %></h2>
+      <p class="advanced-form__hint"><%= t("advanced_search.dates.hint") %></p>
+      <% date_ranges.each do |range| %>
+        <fieldset class="advanced-range" data-advanced-search-target="range" data-label="<%= range.label %>">
+          <legend class="advanced-range__legend"><%= range.label %></legend>
+          <div class="advanced-form__field">
+            <label for="adv-<%= range.key %>-from" class="advanced-form__label"><%= t("advanced_search.dates.from") %></label>
+            <%= number_field_tag "range[#{range.key}][begin]", range.from, id: "adv-#{range.key}-from", class: "advanced-form__control", inputmode: "numeric", autocomplete: "off", placeholder: "Any", data: { advanced_search_target: "from" } %>
+          </div>
+          <div class="advanced-form__field">
+            <label for="adv-<%= range.key %>-to" class="advanced-form__label"><%= t("advanced_search.dates.to") %></label>
+            <%= number_field_tag "range[#{range.key}][end]", range.to, id: "adv-#{range.key}-to", class: "advanced-form__control", inputmode: "numeric", autocomplete: "off", placeholder: "Any", data: { advanced_search_target: "to" } %>
+          </div>
+        </fieldset>
+      <% end %>
+    </section>
+  <% end %>
+
+  <% if sort_options.any? %>
+    <section class="advanced-form__section advanced-form__section--sort">
+      <div class="advanced-form__field advanced-form__field--sort">
+        <label for="adv-sort" class="advanced-form__heading advanced-form__heading--label"><%= t("advanced_search.sort.heading") %></label>
+        <%= select_tag :sort, options_for_select(sort_options, selected_sort), id: "adv-sort", class: "advanced-form__control" %>
+      </div>
+    </section>
+  <% end %>
+
+  <div class="advanced-form__actions">
+    <%= link_to t("advanced_search.actions.start_over"), request.path, class: "advanced-form__button advanced-form__button--secondary", data: { turbo: false } %>
+    <%= submit_tag t("advanced_search.actions.search"), name: nil, id: "advanced-search-submit", class: "advanced-form__button advanced-form__button--primary" %>
+  </div>
+<% end %>

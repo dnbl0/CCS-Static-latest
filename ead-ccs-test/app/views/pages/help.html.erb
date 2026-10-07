@@ -1,0 +1,45 @@
+<% content_for :body_class, "page-help" %>
+<% if @topic %>
+  <% content_for :title, "#{@topic.title} — Help — Cultural Collections Search — University of Melbourne" %>
+  <%= render NexusCcs::PageBreadcrumbsComponent.new(trail: [ [ "Help and support", help_path ], [ @topic.title, nil ] ]) %>
+  <%= render NexusCcs::PageBannerComponent.new(title: @topic.title, description: @topic.blurb) %>
+  <main class="help-main-content help-main-content--topic" id="main-content">
+    <div class="help-layout">
+      <%= render "pages/help/side_nav", current: @topic.key %>
+      <div class="help-layout__content">
+        <%= render @topic.partial %>
+      </div>
+    </div>
+  </main>
+<% else %>
+  <% content_for :title, "Help and Support — Cultural Collections Search — University of Melbourne" %>
+  <%= render NexusCcs::PageBreadcrumbsComponent.new(trail: [ [ "Help and support", nil ] ]) %>
+  <%= render NexusCcs::PageBannerComponent.new(title: "Help and support", description: "Guidance on searching, using and requesting items from the University's cultural collections.") %>
+  <section class="ct-listing" aria-labelledby="h-topics">
+    <div class="ct-listing__inner">
+      <h2 class="ct-listing__title" id="h-topics">Help topics</h2>
+      <p class="ct-listing__lead">Choose a topic to find guidance on searching, accessing and using the University's cultural collections.</p>
+      <ul class="ccs-help ccs-help--topics">
+        <% HelpTopic.all.each do |topic| %>
+          <li class="ccs-help__item">
+            <div class="ccs-help__card">
+              <div class="ccs-help__icon"><%= image_tag "site/#{topic.icon}.svg", class: "ccs-help__image", alt: "" %></div>
+              <div class="ccs-help__body">
+                <div class="ccs-help__group">
+                  <h3 class="ccs-help__title"><%= topic.title %></h3>
+                  <p class="ccs-help__text"><%= topic.blurb %></p>
+                </div>
+                <a class="ccs-link" href="<%= topic.path(self) %>">Read guide<span class="sr-only ccs-link__text"> for <%= topic.title %></span><%= image_tag "site/icon-arrow-right.svg", class: "ccs-link__image", alt: "" %></a>
+              </div>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+      <aside class="contact-box" aria-labelledby="h-contact-box">
+        <h2 class="contact-box__title" id="h-contact-box">Still need help?</h2>
+        <p class="contact-box__text">Contact the collections team. We aim to respond to enquiries within 5 business days.</p>
+        <%= link_to "Contact the collections team", contact_path, class: "contact-box__link" %>
+      </aside>
+    </div>
+  </section>
+<% end %>

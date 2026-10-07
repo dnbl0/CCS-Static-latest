@@ -1,0 +1,72 @@
+<% content_for :title, "Contact Collections Team — Cultural Collections Search — University of Melbourne" %>
+<% content_for :body_class, "page-contact" %>
+<%= render NexusCcs::PageBreadcrumbsComponent.new(trail: [ [ "Contact", nil ] ]) %>
+<%= render NexusCcs::PageBannerComponent.new(title: "Contact Collections Team", description: "Contact the team that cares for each collection directly. Choose the collection you're interested in below to find its contact method \u2014 an email address or an external Access Request Form.") %>
+<main class="contact-main-content" id="main-content">
+<div class="collection-layout">
+<div class="collection-layout__content">
+<section aria-labelledby="h-collections" class="collection-section">
+<h2 class="collection-section__heading-contact-a-collection" id="h-collections">Contact a collection</h2>
+<p class="collection-section__text">Email the team that cares for the collection, or open its external Access Request Form. We aim to respond within 5 business days.</p>
+<h3 class="collection-section__subheading-mdhs-vernon-collections" id="h-mdhs">Medical and dental museums (MDHS Vernon collections)</h3>
+<ul aria-labelledby="h-mdhs" class="contact-cards">
+<li class="contact-cards__item">
+<h4 class="contact-cards__title">Medical History Museum</h4>
+<p class="contact-cards__label">Email</p>
+<a class="contact-cards__link" href="mailto:MDHS-museum@unimelb.edu.au">MDHS-museum@unimelb.edu.au</a>
+</li>
+<li class="contact-cards__item">
+<h4 class="contact-cards__title">Henry Forman Atkinson Dental Museum</h4>
+<p class="contact-cards__label">Email</p>
+<a class="contact-cards__link" href="mailto:MDHS-museum@unimelb.edu.au">MDHS-museum@unimelb.edu.au</a>
+</li>
+<li class="contact-cards__item">
+<h4 class="contact-cards__title">Harry Brookes Allen Museum of Anatomy and Pathology</h4>
+<p class="contact-cards__label">Email</p>
+<a class="contact-cards__link" href="mailto:MDHS-museum@unimelb.edu.au">MDHS-museum@unimelb.edu.au</a>
+</li>
+</ul>
+<h3 class="collection-section__subheading-museums-collections-m" id="h-mc">Museums &amp; Collections (M&amp;C)</h3>
+<ul aria-labelledby="h-mc" class="contact-cards">
+<li class="contact-cards__item">
+<h4 class="contact-cards__title">University Art Collection</h4>
+<p class="contact-cards__label">Access Request Form</p>
+<a class="contact-cards__link" href="https://app.smartsheet.com/b/form/ccs-access-request" rel="noopener" target="_blank">Open the form<span class="sr-only"> for University Art Collection (external, opens in a new tab)</span></a>
+</li>
+<li class="contact-cards__item">
+<h4 class="contact-cards__title">Grainger Museum Collection</h4>
+<p class="contact-cards__label">Access Request Form</p>
+<a class="contact-cards__link" href="https://app.smartsheet.com/b/form/ccs-access-request" rel="noopener" target="_blank">Open the form<span class="sr-only"> for Grainger Museum Collection (external, opens in a new tab)</span></a>
+</li>
+</ul>
+</section>
+<section aria-labelledby="h-general" class="collection-section">
+<h2 class="collection-section__heading-general-enquiries" id="h-general">General enquiries</h2>
+<dl class="def-table">
+<div class="def-table__row"><dt class="def-table__term">Phone</dt><dd class="def-table__definition"><a class="def-table__link" href="tel:136352">13 MELB (13 6352)</a><br />International: <a class="def-table__link" href="tel:+61390355511">+61 3 9035 5511</a></dd></div>
+<div class="def-table__row"><dt class="def-table__term">Address</dt><dd class="def-table__definition">The University of Melbourne<br />Grattan Street, Parkville<br />Victoria 3010, Australia</dd></div>
+<div class="def-table__row"><dt class="def-table__term">Site feedback</dt><dd class="def-table__definition">Report a broken link or suggest an improvement: <a class="def-table__link" href="mailto:ccs-feedback@unimelb.edu.au">ccs-feedback@unimelb.edu.au</a></dd></div>
+</dl>
+</section>
+</div>
+<aside aria-labelledby="h-steps" class="contact-box collection-layout__aside">
+<h2 class="contact-box__title" id="h-steps">Before you get in touch</h2>
+<ol class="steps-list">
+<li class="steps-list__item">Find the record you are asking about.</li>
+<li class="steps-list__item">Copy its persistent link or UoM ID from the record page.</li>
+<li class="steps-list__item">Email the collection, or open its form, and describe what you need.</li>
+</ol>
+<a class="contact-box__link" href="<%= help_path(topic: "access") %>">Access and information</a>
+</aside>
+</div>
+<section aria-labelledby="h-help" class="ct-listing ct-listing--alt">
+<div class="ct-listing__inner">
+<h2 class="ct-listing__title" id="h-help">Need help searching?</h2>
+<p class="ct-listing__lead">Read the guidance first. It may answer your question straight away.</p>
+<ul class="ct-listing__list ct-listing__list--pathfinder">
+<li class="ct-listing__item"><a class="pathfinder-alt__link" href="<%= help_path(topic: "search-tips") %>"><span class="pathfinder-alt__content"><span class="pathfinder-alt__title">Search tips</span><span class="pathfinder-alt__summary">How to find information, images, audio and video in the collections.</span></span></a></li>
+<li class="ct-listing__item"><a class="pathfinder-alt__link" href="<%= help_path(topic: "faq") %>"><span class="pathfinder-alt__content"><span class="pathfinder-alt__title">Frequently asked questions</span><span class="pathfinder-alt__summary">Answers to common questions about searching and using items.</span></span></a></li>
+<li class="ct-listing__item"><a class="pathfinder-alt__link" href="<%= help_path(topic: "copyright") %>"><span class="pathfinder-alt__content"><span class="pathfinder-alt__title">Copyright and terms of use</span><span class="pathfinder-alt__summary">How a collection item can be used.</span></span></a></li>
+</ul>
+</div>
+</section></main>

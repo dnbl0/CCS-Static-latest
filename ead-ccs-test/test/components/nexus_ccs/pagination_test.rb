@@ -38,7 +38,7 @@ class PaginationTest < ViewComponent::TestCase
 
   test "the pager styles are in their own stylesheet, imported once" do
     css = Rails.root.join("app/assets/stylesheets")
-    assert_includes css.join("application.css").read, 'components/pagination.css'
+    assert_includes css.join("application.css").read, "components/pagination.css"
     assert_no_match(/\.paginate-section/, css.join("components/results_toolbar.css").read)
     assert_includes css.join("components/pagination.css").read, "@media (max-width: 575.98px)"
   end

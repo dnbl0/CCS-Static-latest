@@ -10,7 +10,7 @@ The site is a prototype driven by an in-repo dataset (735 listed records), not a
 
 ## Contents
 
-1. [Recent changes](#recent-changes)
+1. [Recent changes](CHANGELOG.md)
 2. [Pages and URLs](#pages-and-urls)
 3. [Repository layout](#repository-layout)
 4. [Data: how records work](#data-how-records-work)
@@ -25,39 +25,7 @@ The site is a prototype driven by an in-repo dataset (735 listed records), not a
 
 ## Recent changes
 
-### 2026-10-03
-
-- **No inline styles in pages**: every `style="..."` attribute and `<style>` block was moved into stylesheets (`public/styles/pages/*.css`, `public/styles/components/*.css`). Runtime values (colours, paddings, positions that the page logic computes) are passed through CSS custom properties, e.g. `style="--dyn-padding:{{ padSum }}"`, and the property that uses them lives in the stylesheet. `tests/no-inline-styles.test.js` (part of `npm test`) fails if a `<style>` block, a `style-hover` attribute or a presentational `style=""` is added to a page.
-- **Semantic class names on every element**: elements in the page body carry `block__element` classes (for example `help-faq__heading`, `search-results-search-tools__button-sort`) so the markup is easy to read in dev tools. These labels have no styling of their own unless a rule exists for them.
-
-### 2026-10-02
-
-- **Homepage rebuilt from Figma** (`public/index.html`, desktop and mobile frames) using reusable **Navigation** and **Section** components (`public/styles/home.css`, see [Styling](#styling)). The hero uses the Parkville banner photo; collection cards use the collection banner images in `public/images/banners/`.
-- **New header and footer on every page** (`.ccs-nav--header` / `.ccs-nav--footer`). The header has Browse collections and Help **dropdown menus**, a UniMelb-style mobile menu drawer, and behaviour in `public/nav.js` (Esc, click outside, Tab-out close a menu). The old `.uom-page-header` rules and `styles/footer.css` were removed; the colour variables that other styles used moved into `styles/header.css`.
-- **Help**: help links use `/help?topic=faq|search-tips|copyright|access|privacy`; the FAQ topic page reuses the homepage accordion (`.ccs-acc`).
-- **Advanced Filters page rebuilt from Figma** (`/search/advanced-search`): custom dropdown, multi-select checkbox menus, "Add filter", a From/To date range with calendar, validation and error summary. Dates accept digits only and must lie between the earliest and latest dates in the records. See [Advanced Search](#advanced-search).
-- **Browser tests**: `tests/advanced-filters.test.js` (playwright-core + Chromium) runs in `npm test` and CI.
-- **Fonts**: the homepage loads the same Google Fonts families and weights as the live unimelb.edu.au site (Fraunces 300-700 incl. italic, Source Sans 3 300-700 incl. italic, Source Code Pro 400); Fraunces is requested with its SOFT and WONK axes.
-- **Tidy-up**: unused images, the empty `skills/` gitlink and the unused `src/js/utils/` copies were removed.
-
-### 2026-10-01
-
-- **Search pages renamed**: the results page is now `search/search-results.html` (`/search/search-results`) and the new stand-alone form is `search/advanced-search.html`. Old `/search/advanced` and `/search/advanced.html` URLs redirect (`vercel.json`, `.htaccess`). The results page's "Advanced Search" button opens the form pre-filled with the current search.
-- **Collections removed**: the "Faculty of Engineering and Information Technology" and "Prints and Drawing Collection, Special Collections and Archives" collections (and their records 50001-50004 and 50007 and images) were removed from the data, filters and landing-page code.
-- **Filters modal**: facet vocabularies now follow the CCS Filters sheet - Object type is every term of a record's object type (case-insensitive), Classification is the museum subject classification, Film & gaming classification is the rating only (G, PG, M, MA 15+, R 18+, X 18+, RC), Digital asset format is Image / Audio / Video / PDF; Harry Brookes Allen Museum was missing from Collection title and is now listed; empty facets are hidden.
-- **Production date slider** rebuilt (Airbnb-style): fixed 1700-2030 scale with a 10-year histogram (earlier records are grouped in the first bar), two large draggable handles (mouse, touch, keyboard), click-the-track, live-updating Earliest/Latest year fields (negative = BCE), a live "N dated records" summary and a reset link; no Apply button.
-
-- **Single data source**: `public/collection-data.js` now defines `window.CCS` and is read by both `search/search-results.html` and `collections/record.html`. The embedded copy in the search page and `public/assets/data/collections.js` are gone. Early duplicate stub records are folded into fuller records via an alias map (`SUPERSEDED`); 735 records are listed.
-- **Record page**: per-record document title, "Record not found" state for unknown ids, a single "Contact us" button opening a keyboard-accessible request dialog (General enquiry / Request to use / Request to view), and a media viewer for images, audio and video. Field labels and order follow the 1 Oct 2026 PRG spreadsheet.
-- **Collections**: landing pages moved to `collections/<slug>/index.html`; the browse page's record counts are computed from the data and browse-by-type links repaired.
-- **Accessibility**: sitewide footer contrast, labelled landmarks, heading order, dialog focus management, 404 asset fixes.
-- **Tooling**: `vercel.json` (clean URLs + legacy redirects), a test suite run by `npm test` and by CI, and a locally built Bootstrap.
-- **Deploy fix**: `.vercelignore` previously excluded `public/assets/`, so record images, audio and video returned 404 on the live site; it now ignores only the top-level `assets/` working folder. (`public/assets` is ~237 MB; consider trimming unused media.)
-- **Cleanup**: root-level `.dc.html` files, the `.reorganization/` notes, `variables.css` / `typography.css` / `components.css` and the top-level `styles/` and `images/` duplicates were deleted.
-
-Earlier history (2026-09-29 and before: SRI fix, IA restructure, header rollout, Gen 3 audit) is in `git log`.
-
----
+See [CHANGELOG.md](CHANGELOG.md).
 
 ## Pages and URLs
 
@@ -237,7 +205,7 @@ Rows combine as: every `must` row matches, at least one `should` row matches (if
 - **Accessibility**: `tests/accessibility.test.js` runs axe-core (WCAG 2.1 A/AA) plus 320px reflow and title checks; keep it passing. The manual checklist is in `jira-mvp-mapping.md` (WCAG 2.1 AA pass). Do not claim conformance without a formal audit.
 - **Fuzzy and semantic search**: `public/search/smart-search.js` (loaded by the search page) provides fuzzy, prefix and thesaurus-based matching with no backend; edit the `SYNONYMS` and `BROADER` tables there to teach it new vocabulary. `tests/smart-search.test.js` checks it against the catalogue. See `jira-mvp-mapping.md`.
 
-- **Filters modal**: the search page's Filters panel follows the Gen 3 Modal component (white panel, navy 80% blanket, Fraunces heading, top-right Close with a visible label). It adds a "Find a filter" box, a removable "Selected" chip list and a live "Show N records" button, with the header and footer fixed while the filters scroll. Its styles are the `search-results-filters-title__*` and `filters-*` rules in `public/styles/pages/search-results.css`.
+- **Filters modal**: the search page's Filters panel follows the Gen 3 Modal component (white panel, navy 80% blanket, Fraunces heading, top-right Close with a visible label). It adds a "Find a filter" box, a removable "Selected" chip list and a live "Show N records" button, with the header and footer fixed while the filters scroll. Its styles are the `search-results-filters-title__*` and `filters-*` rules in `public/styles/pages/search-results/ (split by component: layout, results, toolbar, banner, flyout, filters, facet-rail, pagination, pills)`.
 - **Mobile header and menu** (1023px and below): one 96px row (logo block with a 1px divider, site name, Menu button with a 32px icon over a 14px label), measured from the UniMelb mobile header (study.unimelb.edu.au). Menu opens a right-hand drawer (390px at most, page dimmed behind) with search, 63px rows (18px/600, light-blue right chevron for sub-menus) and the UniMelb audience links (14px sage uppercase). A row with a sub-menu drills in: a Back row, the section link, then its links indented 32px. The Back row is added by `public/nav.js`; styles are in `public/styles/home.css`.
 - **Search bar collection menu**: the "All collections" menu sits left of the search button on the homepage (`public/search-bar.js`) and the results page; choosing a collection searches only that collection (`?collection=` in the URL). The older `scope` URL parameter (title, creator, subject) still works for advanced search links but has no menu. The help landing uses the homepage help card (`ccs-help`) for its topics, and the FAQ topic is plain headings and answers, not accordions.
 - **Class naming**: `block__element` (BEM style), where the block is the nearest section, form or id and the element describes the thing (`__heading`, `__item-link`, `__button-clear-all`); repeated look-alikes with different styling get `--v1`, `--v2`. Names are labels for humans; do not rely on them from scripts.
@@ -286,6 +254,20 @@ Deployed on Vercel. The project link (`.vercel/`) is local and git-ignored.
 - `public/.htaccess`: the Apache equivalent (redirects plus clean-URL rewrites) for hosting on Apache.
 - `.vercelignore` excludes the top-level `assets/` source material, `public/assets/`, `*.dc.html` and `.reorganization/` from uploads when deploying with the CLI. Because `public/assets/` is excluded there, check that digital assets load on the deployed site after changing how deployment is done.
 
+### Generated files and the Rails app
+
+Some files are written by scripts; edit their source, then run the script (`npm test` fails if a copy is stale):
+
+| Edit | Run | Writes |
+|---|---|---|
+| `src/partials/*.html` (header, search overlay, footer) | `npm run sync:partials` | the header, overlay and footer of every page in `public/` |
+| `src/collection-landing.template.html` | `npm run build:collections` | `public/collections/<slug>/index.html` |
+| `public/styles/tokens`, `components`, `pages` and `public/images` | `npm run sync:rails` | the Rails copies in `ead-ccs-test/app/assets` |
+
+`npm run lint` runs ESLint and Stylelint. `npm run parity` (with this site on :3100 and the Rails app on :3200) compares the
+static pages with their Rails twins; it runs in `.github/workflows/rails-ci.yml`. The Rails app and the plan to keep both
+codebases clean are described in `ead-ccs-test/README.md` and `docs/code-quality-plan.md`.
+
 ---
 
 ## Known issues / follow-ups
@@ -314,7 +296,7 @@ Deployed on Vercel. The project link (`.vercel/`) is local and git-ignored.
 - The results page banner is now compact (title plus a "N results for “query”" line). The search form sits inside the banner on the navy strip.
 - Below it, one sticky `.search-results-bar` holds Sort, Filters, the Digital asset switch, the view toggle and Save this search. An IntersectionObserver sentinel adds `is-stuck` once the banner scrolls away. When stuck, the search box stays visible next to the tools on desktop and tablet.
 - On phones the bar stacks: search, then Sort | Filters, then Digital asset | view | Save (icon only). When stuck it shrinks to the search row plus Sort | Filters | Digital.
-- The per-page selector moved to sit above the pagination. CSS lives in `public/styles/pages/search-results.css`.
+- The per-page selector moved to sit above the pagination. CSS lives in `public/styles/pages/search-results/ (split by component: layout, results, toolbar, banner, flyout, filters, facet-rail, pagination, pills)`.
 - Follow-up: banner and search strip padding increased; the search form reuses the homepage `ccs-hero__search` wrapper (full width, Advanced Search underneath). When stuck, Advanced Search is hidden, the bar is one row from 1280px and two rows below, and all controls are 48px tall.
 - Scope menu and suggestions now open over the sticky bar (banner z-index above it).
 - The banner's Advanced Search link is now a toggle ("Advanced Search" / "Hide advanced search") that opens the advanced form inline: an iframe of `/search/advanced-search?embed=1` pre-filled with the current search, auto-sized through a `postMessage` of its height. In `?embed=1` mode the page hides the header, breadcrumbs, banner, help and footer and uses compact spacing (`html.is-embed` rules in `styles/advanced-filters.css`); submitting targets the top window.

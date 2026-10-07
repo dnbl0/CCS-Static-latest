@@ -2,7 +2,7 @@
 Rails.application.routes.draw do
   concern :range_searchable, BlacklightRangeLimit::Routes::RangeSearchable.new
   mount Blacklight::Engine => "/"
-  root to: "catalog#index"
+  root to: "pages#home"
   concern :searchable, Blacklight::Routes::Searchable.new
   concern :exportable, Blacklight::Routes::Exportable.new
 
@@ -23,6 +23,12 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  get "collections", to: "pages#collections", as: :collections
+  get "collections/:slug", to: "pages#collection", as: :collection, constraints: { slug: /[a-z-]+/ }
+  get "help", to: "pages#help", as: :help
+  get "help/indigenous-data", to: "pages#indigenous_data", as: :indigenous_data
+  get "contact", to: "pages#contact", as: :contact
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.

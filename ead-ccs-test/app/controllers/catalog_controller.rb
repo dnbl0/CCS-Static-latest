@@ -6,11 +6,19 @@ class CatalogController < ApplicationController
   include BlacklightRangeLimit::ControllerOverride
   include QueryRules
 
-  # If you'd like to handle errors returned by Solr in a certain way,
-  # you can use Rails rescue_from with a method you define in this controller,
-  # uncomment:
-  #
-  # rescue_from Blacklight::Exceptions::InvalidRequest, with: :my_handling_method
+  # The results open in the default view (mosaic) every time. Blacklight would remember the last view the
+  # visitor chose in the session and open every later search that way; here only ?view= in the URL changes it.
+  # (A block here, so it comes after, and wins over, the gem's own helper.)
+  helper do
+    def document_index_view_type(query_params = params || {})
+      view = query_params[:view]
+      view.present? && document_index_views.key?(view.to_sym) ? view.to_sym : default_document_index_view_type
+    end
+  end
+
+  # Solr down, slow or refusing a request: say so, instead of a stack trace. The pages that do not search (home, help...)
+  # keep working. Timeouts come from config/blacklight.yml.
+  rescue_from Blacklight::Exceptions::ECONNREFUSED, Blacklight::Exceptions::InvalidRequest, Faraday::TimeoutError, Faraday::ConnectionFailed, with: :search_unavailable
 
   # Retries a zero-result search using Solr's spelling collation
   self.search_service_class = ::SearchService
@@ -60,7 +68,7 @@ class CatalogController < ApplicationController
     # Links out to the record in its source system, behind a "you're leaving this
     # site" interstitial. Guarded here rather than by the component's render?,.
     config.add_show_tools_partial(:view_full_record, component: NexusCcs::ViewFullRecordComponent,
-      if: ->(_context, _config, options) {  #so a record with no URL doesn't leave an empty <li>
+      if: ->(_context, _config, options) {  # so a record with no URL doesn't leave an empty <li>
         NexusCcs::ViewFullRecordComponent.url_for(options[:document]).present?
       })
     config.add_show_tools_partial(:citation)
@@ -76,91 +84,20 @@ class CatalogController < ApplicationController
     # pagination. Subclasses the Blacklight component and only swaps the template.
     config.show.document_header_component = NexusCcs::DocumentHeaderComponent
 
+    # The record page body after the CCS UI "Record-detail": media, summary, details, persistent link, copyright.
+    config.show.document_component = NexusCcs::RecordDocumentComponent
+
     # Between a record's title and its details: the digital assets and a summary line.
     config.show.document_embed_component = NexusCcs::RecordEmbedComponent
 
     # After the details: the persistent link.
     config.show.partials = [ :persistent_link ]
 
-    # ================================================================
-    # Facets
-    # ================================================================
-    # The filters, sections, order, names and types come from the workbook (DataModel). A filter the
-    # data cannot support yet (see config/data_model/solr_mapping.yml) is simply not offered.
-    DataModel.filters.select(&:available?).each do |filter|
-      options = { label: filter.name, group: filter.group }
-      case filter.type
-      when :year then options[:range] = { chart_js: false, textual_facets: false } # our own histogram, see range_histogram
-      when :checkbox then options.merge!(limit: nil, item_component: NexusCcs::FacetItemComponent)
-      else options.merge!(limit: 20, index_range: "A".."Z", item_component: NexusCcs::FacetItemComponent)   # browse, with "search within this filter" in the modal
-      end
-      config.add_facet_field filter.solr, **options
+    CatalogConfig::Facets.apply(config)
 
-      # In the search results design but not in the workbook: Creator role follows the creator dates.
-      config.add_facet_field "creator_role_ssim", label: "Creator role", group: filter.group, limit: 20, index_range: "A".."Z", item_component: NexusCcs::FacetItemComponent if filter.seq == 5
-    end
+    CatalogConfig::RecordFields.apply(config)
 
-    # CCS-41: show results with or without digital assets. Not in the workbook's filter list, so it is
-    # an addition from the Jira story; it sits with the Media type filters.
-    config.add_facet_field "has_digital_asset", label: "Digital asset", group: "media_type", item_component: NexusCcs::FacetItemComponent, query: {
-      with: { label: "With a digital asset", fq: "has_digital_asset_bsi:true" },
-      without: { label: "Without a digital asset", fq: "-has_digital_asset_bsi:true" }
-    }
-
-    # Self-excluding facets. Tag each facet's fq and have that same facet's counts ignore it
-    # (Solr {!tag}/{!ex} local params). Range facets build their own filters and query facets pass
-    # their fq through verbatim, so both are skipped.
-    config.facet_fields.each_value do |facet|
-      next if facet.range || facet.query
-
-      facet.tag = facet.key
-      facet.ex  = facet.key
-      facet.filter_query_builder = OrFilterQueryBuilder
-    end
-
-    config.add_facet_fields_to_solr_request!
-
-    # ================================================================
-    # Record fields come from the workbook (DataModel): its labels, its order, and only the fields
-    # the data can carry. The title is the page heading, so it is not repeated as a field; the
-    # results list shows the fields marked `index` in config/data_model/solr_mapping.yml.
-    # access_condition_ssi and restrictions_tsi are deliberately absent.
-    # ================================================================
-    DataModel.fields.select(&:available?).reject { |field| field.seq == 1 }.each do |field|
-      config.add_index_field field.solr, label: field.label if field.index
-      config.add_show_field field.solr, label: field.label
-    end
-
-    # ================================================================
-    # Search fields
-    # The qf/pf values are defined in the /select handler in solr/conf/solrconfig.xml
-    # ================================================================
-    config.add_search_field "all_fields", label: "All Fields"
-
-    config.add_search_field("title") do |field|
-      field.solr_parameters = {
-        'spellcheck.dictionary': "title",
-        qf: "${title_qf}",
-        pf: "${title_pf}"
-      }
-    end
-
-    config.add_search_field("creator") do |field|
-      # No spellcheck.dictionary override: the "author" dictionary is built from
-      # author_spell, which is fed by author_tsim (not populated)
-      field.solr_parameters = {
-        qf: "${creator_qf}",
-        pf: "${creator_pf}"
-      }
-    end
-
-    config.add_search_field("subject") do |field|
-      field.solr_parameters = {
-        'spellcheck.dictionary': "subject",
-        qf: "${subject_qf}",
-        pf: "${subject_pf}"
-      }
-    end
+    CatalogConfig::SearchFields.apply(config)
 
     config.advanced_search.enabled = true
 
@@ -191,6 +128,27 @@ class CatalogController < ApplicationController
     config.autocomplete_path = "suggest"
   end
 
+  # The bare front page is the results page with the Digital asset switch on: every record that has a digital
+  # asset, as the mosaic. Any parameter (a search, a filter, a sort...) means the visitor chose something.
+  before_action :show_digital_assets_by_default, only: :index
+
+  def show_digital_assets_by_default
+    return unless controller_name == "catalog" && request.format.html? && request.query_parameters.empty?
+
+    redirect_to search_action_url(f: { has_digital_asset: [ "with" ] }, search_field: "all_fields", view: "masonry")
+  end
+
+  # "Includes all" filters (f_all) alone make a search too: the results page, not the home page
+  def has_search_parameters?
+    super || AllFacetFilters.pairs(search_state.params, blacklight_config).any?
+  end
+
+  # The advanced search form. Opened by Blacklight's modal (an XHR request) it is only the form, for the flyout.
+  def advanced_search
+    super
+    render layout: false if request.xhr?
+  end
+
   # JSON for the range filters' slider: the first and last year of the results, with that filter's own range
   # left out so the track keeps its full length, and a count per bar (see RangeHistogram; ?bins=N, 8 to 60,
   # defaults to 24).
@@ -200,19 +158,17 @@ class CatalogController < ApplicationController
 
     state = search_state.reset(search_state.params.deep_dup.tap { |p| p[:range]&.delete(field) })
     service = search_service_class.new(config: blacklight_config, search_state: state, **search_service_context)
-    base = service.search_builder.with(state).to_hash.merge(rows: 0, facet: false, "facet.query": nil)
-    repository = service.repository
-
-    stats = repository.search(params: base.merge(stats: true, "stats.field": field)).dig("stats", "stats_fields", field)
-    return render json: { bins: [] } unless stats && stats["min"]
-
-    min = stats["min"].to_i
-    max = stats["max"].to_i
-    edges = RangeHistogram.edges(min, max, RangeHistogram.bins_for(params[:bins]))
-    queries = edges.each_with_index.map { |(from, to), i| "{!key=b#{i}}#{field}:[#{from} TO #{to}]" }
-    counts = repository.search(params: base.merge(facet: true, "facet.query": queries)).dig("facet_counts", "facet_queries") || {}
-
-    render json: { min: min, max: max, bins: edges.each_with_index.map { |(from, to), i| { from: from, to: to, count: counts["b#{i}"].to_i } } }
+    render json: RangeHistogramQuery.new(service: service, search_state: state, field: field, bins: params[:bins])
   end
 
+  private
+
+  def search_unavailable(error)
+    Rails.logger.error("Search unavailable: #{error.class}: #{error.message}")
+    respond_to do |format|
+      format.html { render "catalog/unavailable", status: :service_unavailable }
+      format.json { render json: { error: "Search is unavailable. Please try again shortly." }, status: :service_unavailable }
+      format.any { head :service_unavailable }
+    end
+  end
 end

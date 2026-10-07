@@ -10,7 +10,7 @@ module NexusCcs
     # TODO: replace with the indexed field once the source URL reaches Solr,
     PLACEHOLDER_URL = "https://collections.mdhs.unimelb.edu.au/objects/104/microscope-lamp"
 
-    # The `if:` guard in CatalogController looks for this so the action button 
+    # The `if:` guard in CatalogController looks for this so the action button
     # drops out of the list when there's no URL.
     def self.url_for(_document)
       PLACEHOLDER_URL

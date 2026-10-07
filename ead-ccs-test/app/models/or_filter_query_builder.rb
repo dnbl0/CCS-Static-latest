@@ -11,7 +11,7 @@ class OrFilterQueryBuilder < Blacklight::Solr::AbstractFilterQueryBuilder
     return default_builder.call(filter, solr_parameters) unless values.all?(String)
 
     filter_query, subqueries = facet_inclusive_value_to_fq_string(filter.key, values)
-    [Array(filter_query), subqueries || {}]
+    [ Array(filter_query), subqueries || {} ]
   end
 
   private

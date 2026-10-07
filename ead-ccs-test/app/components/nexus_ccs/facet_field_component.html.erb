@@ -13,13 +13,12 @@
       data-bs-target="#<%= html_id %>"
       aria-expanded="false"
       aria-controls="<%= html_id %>"
-      aria-labelledby="<%= html_id %>-name <%= html_id %>-value"
-    >
+      aria-labelledby="<%= html_id %>-name <%= html_id %>-value">
       <span class="facet-summary" id="<%= html_id %>-value"><%= summary || placeholder %></span>
     </button>
   </h3>
   <div id="<%= html_id %>" role="region" aria-labelledby="<%= header_html_id %>" class="panel-collapse facet-content collapse ">
-    <div class="accordion-body"<% if slider? %> data-controller="range-slider" data-range-slider-min-value="<%= @facet_field.min %>" data-range-slider-max-value="<%= @facet_field.max %>" data-range-slider-histogram-url-value="<%= helpers.range_histogram_catalog_path(helpers.search_state.params_for_search.merge(field: @facet_field.key)) %>"<% end %>>
+    <div class="accordion-body"<% if slider? %> data-controller="range-slider" data-range-slider-min-value="<%= @facet_field.min %>" data-range-slider-max-value="<%= @facet_field.max %>" data-range-slider-applied-value="<%= range_applied? %>" data-range-slider-histogram-url-value="<%= helpers.range_histogram_catalog_path(helpers.search_state.params_for_search.merge(field: @facet_field.key)) %>"<% end %>>
       <%= body %>
 
       <% if @facet_field.modal_path %>

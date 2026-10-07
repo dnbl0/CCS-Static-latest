@@ -10,28 +10,28 @@ module NexusCcs
     # The gem's default classes size the form with grid columns; the banner sizes it in CSS.
     def search_bar_component
       search_bar_component_class.new(
-        url: helpers.search_action_url,
-        advanced_search_url: helpers.search_action_url(action: "advanced_search"),
-        params: helpers.search_state.params_for_search.except(:qt),
+        url: helpers.search_catalog_path,
+        advanced_search_url: advanced_search_url,
+        params: helpers.search_state.params_for_search.except(:qt, :view), # a new search opens in the default view
         autocomplete_path: suggest_index_catalog_path,
         classes: %w[search-query-form search-banner__form]
       )
     end
 
-    # The query the chip shows, and where removing it goes: the same search without it (filters stay)
-    def query
-      helpers.params[:q].presence
+    # The "Advanced search" link opens Blacklight's advanced form in the modal (a flyout, see
+    # advanced_flyout_controller.js and components/advanced_flyout.css); without JavaScript it is the page. The
+    # form is prefilled from the current search: its clauses, match type, filters, ranges and sort, and the
+    # current query as a first "all fields" clause when there are no clauses yet.
+    def advanced_search_url
+      state = helpers.search_state.params_for_search.except(:qt, :page, :action, :controller).to_h.with_indifferent_access
+      if state[:clause].blank? && state[:q].present?
+        state[:clause] = { "0" => { field: "all_fields", query: state.delete(:q) } }
+      end
+      helpers.advanced_search_catalog_path(state)
     end
 
-    def clear_query_url
-      helpers.search_action_url(helpers.search_state.params_for_search.except(:q, :page, :qt))
-    end
-
-    def chip_data
-      # Always attached: without a query it only puts the cursor in the box after a chip was cleared
-      return { controller: "search-chip" } unless query
-
-      { controller: "search-chip", "search-chip-query-value": query, "search-chip-clear-url-value": clear_query_url }
+    def controllers
+      { controller: "advanced-flyout select-dropdown", "select-dropdown-selector-value": "select.search-field" }
     end
 
     def summary
