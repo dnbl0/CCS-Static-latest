@@ -137,7 +137,7 @@ jobs:
           RAILS_URL: http://127.0.0.1:3200
 
   system:
-    # Browser journeys (search, filter, record, advanced search, mobile menu) against a real Solr holding the indexed records
+    # Browser journeys and axe accessibility checks against a real Solr holding the indexed records
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -175,6 +175,17 @@ jobs:
           working-directory: ead-ccs-test
           bundler-cache: true
 
+      - name: Setup Node (axe-core for the accessibility checks)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: package.json
+
+      - name: Install axe-core
+        working-directory: .
+        run: npm install
+
       - name: Cache Solr
         id: solr-cache
         uses: actions/cache@v4
@@ -197,7 +208,7 @@ jobs:
           bin/rails db:create db:schema:load
           bin/rails collections:index
 
-      - name: Run system tests
+      - name: Run system tests (journeys and accessibility)
         run: bin/rails test:system
 
       - name: Keep screenshots from failed system tests

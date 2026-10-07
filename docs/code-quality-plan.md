@@ -85,7 +85,15 @@ search bar on the home page (the Rails app keeps its Blacklight bar) and font fa
   green. The CI job itself has not run on GitHub yet. Two things the work turned up: the old Acknowledgement of Country
   test expected the dialog at `/`, which stopped being true when `/` became the home page, so the home page now shows it
   (once a day per browser) and the test is updated; and `catalog/_home_text` is dead code since the front page moved.
-- Still to do: items 9, 15, 16, 17, 20, 21, 23-28 and the pre-rendering decision in item 14. The Chromium suites could not run in the sandbox
+- **Done 2026-10-07 (item 15):** gates on both sides.
+  - Rails: `test/system/accessibility_test.rb` runs axe-core (WCAG 2.1 A and AA) on the home, browse, collection, help, help
+    topic, indigenous data, contact, search results and record pages and on the home page with the Acknowledgement of
+    Country open: all 10 clean, and a test proves the check fails when a page has a violation. They run in the `system` job.
+  - Static: `tests/browser-available.test.js` fails in CI (`CI=true`) when there is no Chromium, so the accessibility and
+    other browser suites cannot be silently skipped; `tests/budgets.test.js` caps the stylesheets (220 KB), scripts
+    (650 KB) and any one image (800 KB) a page names (current largest: 187 KB of CSS, 590 KB of scripts, a 672 KB image).
+    Lighthouse budgets are not added: they measure a build served over a network, which this site does not have yet.
+- Still to do: items 9, 16, 17, 20, 21, 23-28 and the pre-rendering decision in item 14. The Chromium suites could not run in the sandbox
   (the page runtime needs unpkg.com): they run in CI.
 
 ## Phase 1 - Stop the two sites drifting apart (highest value)
