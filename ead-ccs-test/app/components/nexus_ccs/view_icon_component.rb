@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module NexusCcs
-  # The result view buttons' icons: app/assets/images/list.svg, grid.svg and mosaic.svg inlined, with their
+  # The result view buttons' icons: app/assets/images/list.svg and mosaic.svg inlined, with their
   # fixed navy fill and size replaced by currentColor and the button's CSS, so the icon turns white on the
   # selected button. One subclass per view (below), registered as the views' `icon:` in CatalogController.
   class ViewIconComponent < Blacklight::Icons::IconComponent

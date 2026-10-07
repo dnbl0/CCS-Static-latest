@@ -8,10 +8,6 @@
     </button>
   </div>
 
-  <p class="filter-sidebar__advanced">
-    <%= link_to advanced_filters_path do %>Advanced filters <span aria-hidden="true">&rarr;</span><% end %>
-  </p>
-
   <div class="filter-sidebar__summary">
     <h2 class="filter-sidebar__heading">Search filters<%= " (#{applied_count})" if applied_count.positive? %></h2>
     <% if applied_count.positive? %>

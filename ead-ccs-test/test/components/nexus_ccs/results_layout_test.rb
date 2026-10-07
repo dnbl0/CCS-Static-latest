@@ -27,9 +27,9 @@ class ResultsLayoutTest < ActiveSupport::TestCase
     assert_match(/body\.blacklight-catalog-index #main-container \{\s+padding-inline: 0;/, css)
   end
 
-  test "grid and mosaic columns step with the width, with 24px gutters; five at 2000px" do
+  test "mosaic columns step with the width, with 24px gutters; five at 2000px" do
     css = STYLES.join("results_layout.css").read
-    columns = css.scan(/@media \(min-width: (\d+)px\) \{\s+\.documents-gallery, \.documents-masonry \{ --result-columns: repeat\((\d+), 1fr\); \}/)
+    columns = css.scan(/@media \(min-width: (\d+)px\) \{\s+\.documents-masonry \{ --result-columns: repeat\((\d+), 1fr\); \}/)
     steps = columns.map { |width, count| [ width.to_i, count.to_i ] }
 
     assert_equal [ [ 632, 2 ], [ 928, 3 ], [ 992, 2 ], [ 1248, 3 ], [ 1544, 4 ], [ 1840, 5 ], [ 2136, 6 ], [ 2432, 7 ], [ 2728, 8 ] ], steps
@@ -39,7 +39,7 @@ class ResultsLayoutTest < ActiveSupport::TestCase
 
   test "the columns are the number of 17rem tiles that fit beside the 320px sidebar and the 32px side padding" do
     css = STYLES.join("results_layout.css").read
-    steps = css.scan(/min-width: (\d+)px\) \{\s+\.documents-gallery, \.documents-masonry \{ --result-columns: repeat\((\d+)/).map { |w, n| [ w.to_i, n.to_i ] }
+    steps = css.scan(/min-width: (\d+)px\) \{\s+\.documents-masonry \{ --result-columns: repeat\((\d+)/).map { |w, n| [ w.to_i, n.to_i ] }
 
     steps.each do |width, count|
       content = width >= 992 ? width - 320 - 64 : width - 64
@@ -164,7 +164,7 @@ class ResultsLayoutTest < ActiveSupport::TestCase
     assert_not_includes page.find("a.filter-switch")[:href], "has_digital_asset"
   end
 
-  test "the sidebar leads with Advanced filters, 'Search filters (n)' and Clear all" do
+  test "the sidebar leads with 'Search filters (n)' and Clear all, with no Advanced filters link (it is in the banner)" do
     response = Blacklight::Solr::Response.new({ "response" => { "docs" => [], "numFound" => 0 } }, {})
     with_controller_class(CatalogController) do
       with_request_url("/catalog?q=art&f[collection_ssim][]=A") do
@@ -172,7 +172,7 @@ class ResultsLayoutTest < ActiveSupport::TestCase
       end
     end
 
-    assert_link "Advanced filters", href: "/catalog/advanced"
+    assert_no_link "Advanced filters"
     assert_selector ".filter-sidebar__heading", text: "Search filters (1)"
     assert_link "Clear all"
     assert_no_link "Clear filters", href: /f%5B|f\[/ # the link drops the filters but keeps the search

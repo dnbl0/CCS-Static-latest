@@ -1,5 +1,5 @@
 /*
- * The record card in the list and grid views, after the CCS UI "Card image" and "Card no media" (Figma
+ * The record card in the list and mosaic views, after the CCS UI "Card image" and "Card no media" (Figma
  * 250:21910 and 250:22182): a white card with a 1px #dddfe7 border; a 16:9 image when the record has a digital
  * asset; then 16px of padding around a 24px semibold link-blue title and three 16px lines (creator, object,
  * collection). Hover underlines the title. Markup: NexusCcs::ResultCardComponent.
@@ -114,18 +114,6 @@
   overflow-wrap: anywhere;
 }
 
-/* In the grid view Blacklight's gallery wraps each document in a .col; the card fills it */
-.documents-gallery .result-card {
-  width: 100%;
-  max-width: none;
-  margin: 0;
-}
-
-/* Grid: each card is as tall as its own content, so none has blank space under its last line */
-.documents-gallery {
-  align-items: start;
-}
-
 /* Mosaic: the same cards, laid out by the masonry polyfill; the image keeps its own proportions */
 .documents-masonry .result-card {
   width: 100%;
@@ -163,16 +151,13 @@
 
 /* Blacklight's .document rules clear the bottom border; the card has all four */
 .documents-list .result-card,
-.documents-gallery .result-card,
 .documents-masonry .result-card {
   border: 1px solid var(--ccs-border-panel);
 }
 
 .documents-list .result-card:hover,
-.documents-gallery .result-card:hover,
 .documents-masonry .result-card:hover,
 .documents-list .result-card:focus-within,
-.documents-gallery .result-card:focus-within,
 .documents-masonry .result-card:focus-within {
   border-color: var(--ccs-border-strong);
 }

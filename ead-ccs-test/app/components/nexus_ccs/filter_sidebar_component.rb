@@ -13,10 +13,6 @@ module NexusCcs
       helpers.applied_filter_count
     end
 
-    def advanced_filters_path
-      helpers.search_action_path(action: "advanced_search")
-    end
-
     DIGITAL_FILTER = "has_digital_asset"
     DIGITAL_ONLY = "with"
 

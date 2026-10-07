@@ -28,10 +28,10 @@ class CatalogController < ApplicationController
 
     config.index.title_field = "title_tsim"
 
-    # Result views: the built-in list, plus grid (gallery) and mosaic (masonry) from blacklight-gallery.
-    # Records with a digital asset show it in every view; the rest show a placeholder in grid and
-    # mosaic (and nothing in the list). Mosaic placeholders vary in shape, as real images do, so
-    # the masonry layout stays a mosaic where images are missing.
+    # Result views: the built-in list, plus the mosaic (masonry) from blacklight-gallery (no grid view).
+    # Records with a digital asset show it in both views; the rest show a placeholder in the mosaic
+    # (and nothing in the list). Mosaic placeholders vary in shape, as real images do, so the masonry
+    # layout stays a mosaic where images are missing.
     config.index.thumbnail_field = :thumbnail_path_ssi
     mosaic_placeholder = lambda do |document, image_options|
       shape = %w[placeholder-thumbnail.svg placeholder-portrait.svg placeholder-square.svg][document.id.sum % 3]
@@ -39,8 +39,6 @@ class CatalogController < ApplicationController
     end
     config.view.list.document_component = NexusCcs::ResultCardComponent
     config.view.list.icon = NexusCcs::ListViewIconComponent
-    config.view.gallery(document_component: NexusCcs::ResultCardComponent,
-      icon: NexusCcs::GalleryViewIconComponent, default_thumbnail: "placeholder-thumbnail.svg")
     config.view.masonry(document_component: NexusCcs::ResultCardComponent,
       icon: NexusCcs::MasonryViewIconComponent, default_thumbnail: mosaic_placeholder)
     config.index.display_type_field = "format"
@@ -193,7 +191,8 @@ class CatalogController < ApplicationController
   end
 
   # JSON for the range filters' slider: the first and last year of the results, with that filter's own range
-  # left out so the track keeps its full length, and a count per bar (see RangeHistogram).
+  # left out so the track keeps its full length, and a count per bar (see RangeHistogram; ?bins=N, 8 to 60,
+  # defaults to 24).
   def range_histogram
     field = params[:field].to_s
     return head :not_found unless blacklight_config.facet_fields[field]&.range
@@ -208,7 +207,7 @@ class CatalogController < ApplicationController
 
     min = stats["min"].to_i
     max = stats["max"].to_i
-    edges = RangeHistogram.edges(min, max)
+    edges = RangeHistogram.edges(min, max, RangeHistogram.bins_for(params[:bins]))
     queries = edges.each_with_index.map { |(from, to), i| "{!key=b#{i}}#{field}:[#{from} TO #{to}]" }
     counts = repository.search(params: base.merge(facet: true, "facet.query": queries)).dig("facet_counts", "facet_queries") || {}
 

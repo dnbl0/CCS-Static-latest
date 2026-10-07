@@ -5,6 +5,7 @@ module NexusCcs
   # Takes the place of Blacklight's light search band (Blacklight::SearchNavbarComponent).
   class SearchBannerComponent < Blacklight::SearchNavbarComponent
     TITLE = "Search the Collection"
+    DESCRIPTION = "Explore artworks, objects, manuscripts, photographs and recordings held across the University of Melbourne's cultural collections."
 
     # The gem's default classes size the form with grid columns; the banner sizes it in CSS.
     def search_bar_component

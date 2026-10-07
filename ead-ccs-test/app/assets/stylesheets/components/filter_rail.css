@@ -228,24 +228,7 @@
   color: var(--ccs-navy-1100);
 }
 
-/* Top of the rail: "Advanced filters", then the "Search filters" title with "Clear all" */
-.filter-sidebar__advanced {
-  margin: 0;
-  padding: var(--ccs-space-4);
-  border-bottom: 1px solid #e3e0d9;
-  font-size: var(--ccs-font-size-sm);
-  font-weight: var(--ccs-font-weight-semibold);
-  line-height: 1.43;
-}
-
-.filter-sidebar__advanced a {
-  text-decoration: none;
-}
-
-.filter-sidebar__advanced a:hover {
-  text-decoration: underline;
-}
-
+/* Top of the rail: the "Search filters" title with "Clear all" (Advanced search lives in the banner) */
 .filter-sidebar__summary {
   display: flex;
   align-items: center;
@@ -290,18 +273,25 @@
 }
 
 /* Range filters (production date, creator dates), after Airbnb's price range in UoM colours: a histogram, two
-   round handles on a rail, then Minimum / Maximum fields (controllers/range_slider_controller.js) */
+   round handles on a rail, year labels, then Minimum / Maximum fields (controllers/range_slider_controller.js).
+   --slider-handle is the handle's hit area: 28px, 44px on a phone or any coarse pointer. */
 .range-slider {
   --slider-bars: 5rem;
-  --slider-handle: 2rem;
+  --slider-handle: 1.75rem;
+  --slider-ticks: 1.5rem;
+  --slider-thumb: 1.75rem;
   position: relative;
-  height: calc(var(--slider-bars) + var(--slider-handle));
+  height: calc(var(--slider-bars) + var(--slider-handle) + var(--slider-ticks));
   margin: 0 calc(var(--slider-handle) / 2) var(--ccs-space-3);
+}
+
+.range-slider.no-bars {
+  --slider-bars: 0rem;
 }
 
 .range-slider__bars {
   position: absolute;
-  inset: 0 0 calc(var(--slider-handle) / 2 + 1px);
+  inset: 0 0 calc(var(--slider-handle) / 2 + var(--slider-ticks) + 1px);
   display: flex;
   align-items: flex-end;
   gap: 2px;
@@ -319,9 +309,19 @@
   background: var(--ccs-navy-1100);
 }
 
+/* while the histogram loads */
+.range-slider__bar.is-placeholder {
+  background: var(--ccs-navy-100);
+  animation: range-slider-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes range-slider-pulse {
+  50% { background: var(--ccs-navy-200); }
+}
+
 .range-slider__rail {
   position: absolute;
-  inset: auto 0 calc(var(--slider-handle) / 2) 0;
+  inset: auto 0 calc(var(--slider-handle) / 2 + var(--slider-ticks)) 0;
   height: 2px;
   background: var(--ccs-navy-200);
 }
@@ -332,9 +332,41 @@
   background: var(--ccs-navy-1100);
 }
 
+/* year labels, centred under their year */
+.range-slider__ticks {
+  position: absolute;
+  inset: auto 0 0;
+  height: var(--slider-ticks);
+}
+
+.range-slider__tick {
+  position: absolute;
+  top: 0.25rem;
+  transform: translateX(-50%);
+  font-size: var(--ccs-font-size-xs);
+  white-space: nowrap;
+  color: var(--ccs-text-tertiary);
+}
+
+/* a thin stem from the rail up past the handle, where the handles have been nudged apart, so the real year
+   each stands for stays clear */
+.range-slider__stem {
+  position: absolute;
+  bottom: calc(var(--slider-handle) / 2 + var(--slider-ticks));
+  width: 1px;
+  height: calc(var(--slider-handle) / 2 + 0.5rem);
+  background: var(--ccs-navy-1100);
+  opacity: 0;
+  transition: opacity var(--ccs-duration-fast);
+}
+
+.range-slider.is-nudged .range-slider__stem {
+  opacity: 1;
+}
+
 .range-slider__handle {
   position: absolute;
-  inset: auto calc(var(--slider-handle) / -2) 0;
+  inset: auto calc(var(--slider-handle) / -2) var(--slider-ticks);
   width: calc(100% + var(--slider-handle));
   height: var(--slider-handle);
   margin: 0;
@@ -343,45 +375,55 @@
   appearance: none;
 }
 
+.range-slider__handle.is-active,
+.range-slider__handle.is-dragging {
+  z-index: 2;
+}
+
 .range-slider__handle::-webkit-slider-runnable-track { background: none; }
 .range-slider__handle::-moz-range-track { background: none; }
 
+/* The thumb is --slider-handle wide (the hit area); its visible circle is --slider-thumb, drawn inside a
+   transparent border so a phone gets a 44px target around a 28px handle. --nudge moves it clear of the other. */
 .range-slider__handle::-webkit-slider-thumb {
+  box-sizing: border-box;
   width: var(--slider-handle);
   height: var(--slider-handle);
-  border: 1px solid var(--ccs-neutral-500);
+  border: calc((var(--slider-handle) - var(--slider-thumb)) / 2) solid transparent;
   border-radius: 50%;
   background: var(--ccs-white);
-  box-shadow: 0 2px 10px rgb(0 11 52 / 18%);
+  background-clip: padding-box;
+  box-shadow: inset 0 0 0 1px var(--ccs-neutral-500), 0 2px 10px rgb(0 11 52 / 18%);
   cursor: grab;
   pointer-events: auto;
   appearance: none;
-  transition: border-color var(--ccs-duration-fast), box-shadow var(--ccs-duration-fast);
+  transform: translateX(var(--nudge, 0px));
+  transition: box-shadow var(--ccs-duration-fast);
 }
 
 .range-slider__handle::-moz-range-thumb {
   box-sizing: border-box;
   width: var(--slider-handle);
   height: var(--slider-handle);
-  border: 1px solid var(--ccs-neutral-500);
+  border: calc((var(--slider-handle) - var(--slider-thumb)) / 2) solid transparent;
   border-radius: 50%;
   background: var(--ccs-white);
-  box-shadow: 0 2px 10px rgb(0 11 52 / 18%);
+  background-clip: padding-box;
+  box-shadow: inset 0 0 0 1px var(--ccs-neutral-500), 0 2px 10px rgb(0 11 52 / 18%);
   cursor: grab;
   pointer-events: auto;
+  transform: translateX(var(--nudge, 0px));
 }
 
 .range-slider__handle:hover::-webkit-slider-thumb,
 .range-slider__handle.is-dragging::-webkit-slider-thumb {
-  border: 2px solid var(--ccs-navy-1100);
-  box-shadow: 0 0 0 6px rgb(0 15 70 / 10%), 0 2px 10px rgb(0 11 52 / 18%);
+  box-shadow: inset 0 0 0 2px var(--ccs-navy-1100), 0 0 0 6px rgb(0 15 70 / 10%), 0 2px 10px rgb(0 11 52 / 18%);
   cursor: grabbing;
 }
 
 .range-slider__handle:hover::-moz-range-thumb,
 .range-slider__handle.is-dragging::-moz-range-thumb {
-  border: 2px solid var(--ccs-navy-1100);
-  box-shadow: 0 0 0 6px rgb(0 15 70 / 10%), 0 2px 10px rgb(0 11 52 / 18%);
+  box-shadow: inset 0 0 0 2px var(--ccs-navy-1100), 0 0 0 6px rgb(0 15 70 / 10%), 0 2px 10px rgb(0 11 52 / 18%);
   cursor: grabbing;
 }
 
@@ -397,6 +439,18 @@
 .range-slider__handle:focus-visible::-moz-range-thumb {
   outline: 3px solid #0b4ea2;
   outline-offset: 2px;
+}
+
+@media (max-width: 575.98px), (pointer: coarse) {
+  .range-slider {
+    --slider-handle: 2.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .range-slider__bar.is-placeholder {
+    animation: none;
+  }
 }
 
 /* With the slider, the fields apply by themselves; the button stays for the form without JavaScript */

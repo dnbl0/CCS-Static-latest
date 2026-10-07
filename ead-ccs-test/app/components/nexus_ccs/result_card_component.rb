@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module NexusCcs
-  # A record in the list and grid views: the CCS UI's "Card image" (with the first digital asset's thumbnail on
+  # A record in the list and mosaic views: the CCS UI's "Card image" (with the first digital asset's thumbnail on
   # top) or "Card no media" (without), then the title and three lines: creator, object type, collection.
-  # Registered as the list and gallery views' document_component; everything else is Blacklight's
+  # Registered as the list and mosaic views' document_component; everything else is Blacklight's
   # DocumentComponent (title slot with its link and counter, classes, ids).
   class ResultCardComponent < Blacklight::DocumentComponent
     TITLE_TAG = :h5

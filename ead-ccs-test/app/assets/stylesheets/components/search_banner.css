@@ -1,54 +1,66 @@
 /*
- * Search banner: dark band under the site header with the page title, result summary
- * and the search form. Markup: NexusCcs::SearchBannerComponent; the form itself is
- * Blacklight's SearchBarComponent, so this styles Blacklight's own classes.
+ * Search banner, matching the static site's search results banner (.search-results-banner): a dark band
+ * under the site header with the title in Fraunces, a line of copy (the result count, or what the collections
+ * hold), the 48px hero search bar (query, scope, cyan search button) and an "Advanced search" link beneath it.
+ * Markup: NexusCcs::SearchBannerComponent; the form itself is Blacklight's SearchBarComponent, so this styles
+ * Blacklight's own classes.
  */
 .search-banner {
+  position: relative;
+  z-index: 950; /* above the toolbar so the scope menu and suggestions open over what follows */
   background: var(--ccs-navy-1200);
   color: var(--ccs-text-inverse);
 }
 
 .search-banner__inner {
-  padding: var(--ccs-space-6) var(--ccs-space-4) var(--ccs-space-5);
+  padding: 3.5rem var(--ccs-space-6) var(--ccs-space-8);
 }
 
 .search-banner__title {
   margin: 0;
   font-family: var(--ccs-font-heading);
   font-weight: var(--ccs-font-weight-regular);
-  font-size: 2rem;
+  font-size: clamp(1.75rem, 3.2vw, 2.375rem);
   line-height: var(--ccs-line-height-tight);
   color: var(--ccs-text-inverse);
 }
 
-.search-banner__summary {
-  margin: var(--ccs-space-2) 0 0;
+.search-banner__desc {
   max-width: 47.5rem;
+  margin: var(--ccs-space-2) 0 0;
   font-size: var(--ccs-font-size-lg);
-  line-height: 1.55;
+  line-height: 1.75rem;
   color: rgb(255 255 255 / 92%);
+  text-wrap: pretty;
 }
 
 .search-banner__search {
-  margin-top: var(--ccs-space-3);
+  margin-top: var(--ccs-space-6);
 }
 
-/* The form, as the static site's search bar: one white 56px bar, the query, the scope on a grey cell, then a
-   cyan 56px search button. The cyan and the navy focus ring match the static page. */
+/* The search and the Advanced search link under it, in a column */
+.search-banner search {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--ccs-space-2);
+}
+
+/* The form: one white 48px bar with a navy border, at most 720px wide */
 .search-banner__form {
   width: 100%;
-  max-width: 40rem;
+  max-width: 45rem;
+  margin: 0;
 }
 
 .search-banner .input-group {
   flex-wrap: nowrap;
-  height: 3.5rem;
+  height: 3rem;
   background: var(--ccs-white);
-  border: 1px solid var(--ccs-white);
+  border: 1px solid var(--ccs-navy-1100);
 }
 
 .search-banner .input-group:focus-within {
-  border-color: var(--ccs-navy-1100);
   box-shadow: 0 0 0 3px rgb(70 200 240 / 45%);
 }
 
@@ -96,11 +108,12 @@
 .search-banner .search-btn {
   order: 2;
   flex: none;
-  width: 3.5rem;
+  width: 3rem;
   padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-left: 1px solid var(--ccs-navy-1100);
   background: var(--ccs-action-primary);
   color: var(--ccs-action-primary-text);
 }
@@ -125,28 +138,74 @@
   white-space: nowrap;
 }
 
+/* Advanced search: white label and a small right chevron, as on the static page */
 .search-banner .advanced_search {
-  /* the link lives in the filter sidebar ("Advanced filters"); this one stays for assistive technology */
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ccs-space-2);
+  min-height: 3rem;
+  padding: 0;
+  border: 0;
+  font-size: var(--ccs-font-size-md);
+  font-weight: var(--ccs-font-weight-semibold);
+  text-decoration: none;
+  color: var(--ccs-text-inverse) !important;
 }
 
+.search-banner .advanced_search::after {
+  content: "";
+  flex: none;
+  width: 0.875rem;
+  height: 0.875rem;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='2.8'%3E%3Cpolyline points='9 6 15 12 9 18'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.search-banner .advanced_search:hover {
+  color: var(--ccs-cyan-250) !important;
+  text-decoration: none;
+}
+
+.search-banner .advanced_search:focus-visible {
+  outline: 3px solid var(--ccs-cyan-250);
+  outline-offset: 2px;
+}
+
+/* Phones: the query and the search button share the top row, the scope spans a row below */
 @media (max-width: 767px) {
-  .search-banner__title {
-    font-size: var(--ccs-font-size-3xl);
+  .search-banner__inner {
+    padding: var(--ccs-space-6) var(--ccs-space-4) 1.75rem;
   }
 
-  .search-banner .search-field {
-    max-width: 7.5rem;
-    padding-inline: 0.625rem 1.75rem;
-    font-size: 0.8125rem;
+  .search-banner__desc {
+    font-size: var(--ccs-font-size-md);
+    line-height: 1.5rem;
+  }
+
+  .search-banner__search {
+    margin-top: var(--ccs-space-5);
+  }
+
+  .search-banner .input-group {
+    flex-wrap: wrap;
+    height: auto;
+  }
+
+  .search-banner .search-autocomplete-wrapper {
+    flex: 1 1 0;
+    height: 2.875rem;
   }
 
   .search-banner .search-btn {
-    width: 3rem;
+    height: 2.875rem;
+  }
+
+  .search-banner .search-field {
+    order: 3;
+    flex: 1 1 100%;
+    width: 100%;
+    max-width: none;
+    height: 2.75rem;
+    border-top: 1px solid #d9d6cf;
+    border-left: 0;
   }
 }

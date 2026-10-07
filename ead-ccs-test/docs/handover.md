@@ -8,7 +8,7 @@ git plumbing off `origin/main`, because the parent repo's checked-out branch bel
 ## State
 
 - Rails 8.1.3, Blacklight **9.0.0** (not 9.2.1), Ruby 4.0.6, Postgres 17, 99 tests passing (no Solr needed).
-- Plugins: `blacklight-gallery` (git `main`, grid and mosaic only; slideshow removed; the rubygems 6.0.0 pins `blacklight ~> 9.0.0beta1`) and
+- Plugins: `blacklight-gallery` (git `main`, mosaic only; grid and slideshow removed; the rubygems 6.0.0 pins `blacklight ~> 9.0.0beta1`) and
   `blacklight_range_limit` 9.3.0. Config-only use; see `docs/blacklight-features.md`.
 - Styling: tokens, themed Bootstrap (dartsass-rails), site header, footer, search overlay, breadcrumb
   and search banner as `NexusCcs::*` ViewComponents; see `docs/styling.md`.
@@ -61,7 +61,7 @@ gaps. The earlier pivot, query and contextual facets were removed because the wo
 
 1. **Decide the :8983 Solr** (D's call; see State).
 2. **Images.** 30 records now show real assets (see `docs/blacklight-features.md`), taken from the static
-   prototype's files; every other record shows a placeholder in grid/mosaic and nothing in the list. For
+   prototype's files; every other record shows a placeholder in the mosaic and nothing in the list. For
    all records, ask the EMu and Vernon owners for a derivative or IIIF URL, whether it is public, and
    rights/Indigenous cultural-data restrictions (`access_condition_ssi` and `restrictions_tsi` are
    deliberately not shown), then index it into `thumbnail_path_ssi` (or a URL field) instead of the YAML.

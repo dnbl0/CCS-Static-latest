@@ -9,7 +9,6 @@ en:
       # The names of the result views: button names, tooltips and the screen reader captions
       view:
         list: List view
-        gallery: Grid view
         masonry: Mosaic view
       fields:
         sort:

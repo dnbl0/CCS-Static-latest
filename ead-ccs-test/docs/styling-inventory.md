@@ -50,7 +50,7 @@ duplicated at the Bootstrap layer.
 | Header, nav | `ccs-nav__*`, `ccs-link*` | `.navbar`, `.navbar-brand`, `.topbar` | Replace `shared/_header_navbar` |
 | Footer | `ccs-foot__*` | `shared/_footer` | Replace partial |
 | Search bar, query chip | `search-bar`, `uom-search-popover__*` | `.search-query-form`, `.search-field`, `.search-btn`, `.constraint`, `.constraint-value` | Style hooks; override `SearchBarComponent` only if markup must change |
-| Result cards | `search-results-article__*`, `ccs-card__*` | `.document`, `.documents-list`, `.documents-gallery`, `.document-title-heading`, `.dl-invert` | Override the index document component; gallery view is the card grid |
+| Result cards | `search-results-article__*`, `ccs-card__*` | `.document`, `.documents-list`, `.documents-masonry`, `.document-title-heading`, `.dl-invert` | Override the index document component; gallery view is the card grid |
 | Result toolbar | `search-results-section__*` | `.sort-pagination`, `.sort-dropdown`, `.per_page-dropdown`, `.view-type` | Style hooks |
 | Facets | `facet-rail__*`, advanced-filters | `.facets`, `.facet-limit`, `.facet-field-heading`, `.facet-toggle-button` | Largest piece: static uses selects and checkboxes, Blacklight uses accordions. Style hooks first; custom facet components for the select UI |
 | Pagination | `.pagination` | `.page-item`, `.page-link` | Direct |

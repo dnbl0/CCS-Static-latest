@@ -4,10 +4,10 @@
  *   - from 992px the sidebar is a 320px column flush with the left edge and ruled on its right; the results
  *     column has 32px of padding either side;
  *     below that it is an off-canvas drawer (components/filter_drawer.css);
- *   - grid and mosaic tiles are as many 17rem-minimum columns as fit (five at 2000px, three at 1440px) with
+ *   - mosaic tiles are as many 17rem-minimum columns as fit (five at 2000px, three at 1440px) with
  *     24px gutters, one column on a phone;
  *   - list view is a grid of 20rem-minimum cards (components/result_card.css);
- * Blacklight owns the markup; blacklight-gallery supplies the grid and mosaic documents.
+ * Blacklight owns the markup; blacklight-gallery supplies the mosaic.
  */
 :root {
   --results-gutter: 1.5rem;
@@ -65,65 +65,48 @@ body.blacklight-catalog-index #content {
   padding-inline: 0;
 }
 
-/* Columns (grid and mosaic): as many 17rem-minimum columns as fit. Written out, not auto-fill, because
+/* Columns (mosaic): as many 17rem-minimum columns as fit. Written out, not auto-fill, because
    the mosaic's layout polyfill (blacklight-gallery) mis-sizes auto-fill lanes. The counts step down at
    992px because the 320px sidebar appears there; each step is the width where one more column fits
    beside the sidebar and the 32px side padding (test/components/nexus_ccs/results_layout_test.rb). */
-.documents-gallery,
 .documents-masonry {
   --result-columns: repeat(1, 1fr);
 }
 
 @media (min-width: 632px) {
-  .documents-gallery, .documents-masonry { --result-columns: repeat(2, 1fr); }
+  .documents-masonry { --result-columns: repeat(2, 1fr); }
 }
 
 @media (min-width: 928px) {
-  .documents-gallery, .documents-masonry { --result-columns: repeat(3, 1fr); }
+  .documents-masonry { --result-columns: repeat(3, 1fr); }
 }
 
 @media (min-width: 992px) {
-  .documents-gallery, .documents-masonry { --result-columns: repeat(2, 1fr); }
+  .documents-masonry { --result-columns: repeat(2, 1fr); }
 }
 
 @media (min-width: 1248px) {
-  .documents-gallery, .documents-masonry { --result-columns: repeat(3, 1fr); }
+  .documents-masonry { --result-columns: repeat(3, 1fr); }
 }
 
 @media (min-width: 1544px) {
-  .documents-gallery, .documents-masonry { --result-columns: repeat(4, 1fr); }
+  .documents-masonry { --result-columns: repeat(4, 1fr); }
 }
 
 @media (min-width: 1840px) {
-  .documents-gallery, .documents-masonry { --result-columns: repeat(5, 1fr); }
+  .documents-masonry { --result-columns: repeat(5, 1fr); }
 }
 
 @media (min-width: 2136px) {
-  .documents-gallery, .documents-masonry { --result-columns: repeat(6, 1fr); }
+  .documents-masonry { --result-columns: repeat(6, 1fr); }
 }
 
 @media (min-width: 2432px) {
-  .documents-gallery, .documents-masonry { --result-columns: repeat(7, 1fr); }
+  .documents-masonry { --result-columns: repeat(7, 1fr); }
 }
 
 @media (min-width: 2728px) {
-  .documents-gallery, .documents-masonry { --result-columns: repeat(8, 1fr); }
-}
-
-.documents-gallery {
-  --bs-gutter-x: 0;
-  --bs-gutter-y: 0;
-  display: grid;
-  grid-template-columns: var(--result-columns);
-  gap: var(--results-gutter);
-  margin: 0;
-}
-
-.documents-gallery > .col {
-  width: auto;
-  max-width: none;
-  margin: 0;
-  padding: 0;
+  .documents-masonry { --result-columns: repeat(8, 1fr); }
 }
 
 /* The layout polyfill (blacklight-gallery) reads these: plain repeat(N, 1fr) only */

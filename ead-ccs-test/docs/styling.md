@@ -87,14 +87,14 @@ informed the drawer and cards. Files: `components/results_layout.css`, `filter_r
 `ConstraintsComponent`, `ResultCardComponent`; `catalog/_sort_and_per_page.html.erb`.
 
 - **Banner**: compact: "Search the Collection" and a 2.5rem search bar (field selector left, cyan button).
-  The result count moved to the toolbar; "Advanced search" is "Advanced filters" at the top of the sidebar.
-- **Sidebar** (left, 14rem, flush with the window edge, ruled on its right): "Advanced filters", then
+  The result count moved to the toolbar; "Advanced search" is a link under the search bar in the banner, as on the static site.
+- **Sidebar** (left, 14rem, flush with the window edge, ruled on its right): "Search filters" with "Clear all", then
   "Search filters (n)" and "Clear filters" (the search stays, the filters go), then one flat list of
   filters in blue with chevrons. The workbook's section titles stay for screen readers only. Creator role
   follows the creator dates (in the design, not in the workbook).
 - **Toolbar**: "N results for" with the search and each filter as a removable pill; sort and page size as
   select-style boxes; the view buttons flush right; a Filters button replaces the sidebar below 992px.
-- **Results**: grid and mosaic columns step with the width (written out as `repeat(N, 1fr)`, because the
+- **Results**: mosaic columns step with the width (written out as `repeat(N, 1fr)`, because the
   mosaic polyfill mis-sizes `auto-fill`): six columns at 2000px, 17rem tiles, 16px gutters. List is one
   column, two from 1880px, with the collection above the title and the image right on a dark box.
 - **Pager**: small-caps Previous and Next around the page numbers, current page filled.

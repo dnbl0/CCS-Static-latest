@@ -14,7 +14,7 @@ Configuration-only use of Blacklight 9.0.0 and its official plugins, in `Catalog
 | Advanced search | `config.advanced_search.enabled` | search and facet fields |
 | Citation, search history, JSON API, did-you-mean, autocomplete | built in | n/a |
 | Bookmarks | built in, but needs a user model; `/bookmarks` redirects without one | n/a |
-| List, grid (gallery) and mosaic (masonry) views | built-in list + `blacklight-gallery` (git `main`) via `config.view.*`; slideshow removed | `thumbnail_path_ssi` |
+| List and mosaic (masonry) views | built-in list + `blacklight-gallery` (git `main`) via `config.view.*`; grid and slideshow removed | `thumbnail_path_ssi` |
 
 ## Notes
 
@@ -31,7 +31,7 @@ Configuration-only use of Blacklight 9.0.0 and its official plugins, in `Catalog
   (1600 px) are JPEGs in `public/digital-assets/thumbs` and `/large`, made from the originals by
   `bin/rails digital_assets:thumbnails` (needs `vipsthumbnail`; originals are not in this repo, they
   live in the static site's `public/assets/images/collections`). `config.index.thumbnail_field`
-  shows them in every view (the list shows one only when a record has an asset); grid and mosaic show
+  shows them in both views (the list shows one only when a record has an asset); the mosaic shows
   a placeholder otherwise, and mosaic placeholders vary in shape so the masonry still reads as a mosaic.
   On a record's page `NexusCcs::DigitalAssetsComponent` (the show page's `document_embed_component`)
   shows the first image large under the title and the rest as thumbnails that open the large image.
