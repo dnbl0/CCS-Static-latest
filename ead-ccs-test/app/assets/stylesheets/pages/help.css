@@ -1,34 +1,5 @@
 /* Copied from the static site (public/styles/pages/help.css) so the Rails pages match it. */
 /* help: styles moved out of inline style="" attributes. Class names are semantic (block__element) and scoped by the page class on <body> (page-help), which gives them the precedence the inline styles had over shared component CSS. Do not reintroduce inline styles. */
-body.page-help .bc-mobile--styled {
-  display: none;
-  align-items: center;
-  gap: var(--space-6);
-  list-style: none;
-  margin: 0;
-  font-size: var(--font-size-body-lg);
-  color: var(--white-100);
-}
-body.page-help .bc-mobile__item {
-  display: flex;
-  align-items: center;
-}
-body.page-help .bc-mobile__item-link-cultural-collections {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-6);
-  color: var(--white-100);
-  text-decoration: none;
-  min-height: 44px;
-}
-body.page-help .bc-mobile__item-link-help-support {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-6);
-  color: var(--white-100);
-  text-decoration: none;
-  min-height: 44px;
-}
 body.page-help .help-page__group {
   min-height: 100vh;
   display: flex;

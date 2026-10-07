@@ -838,6 +838,10 @@ a.contact-box__desc:hover {
   color: var(--col-text-muted);
 }
 /* Copied from the static site (public/styles/base.css and components/header.css): helpers and page link treatments. */
+/* The mobile breadcrumb (a back link to the parent page), shown by the rule below under 769px. */
+.bc-mobile--styled { display: none; align-items: center; gap: var(--space-6); list-style: none; margin: 0; padding: 0; font-size: var(--font-size-body-lg); color: var(--white-100); }
+.bc-mobile__item { display: flex; align-items: center; }
+.bc-mobile__link { display: inline-flex; align-items: center; gap: var(--space-6); min-height: 44px; color: var(--white-100); text-decoration: none; }
 /* The static base layer: links are plain navy and underline on hover (Bootstrap's default underlines them). */
 :where(body.page-home, body.page-collection-landing, body.page-collections-browse, body.page-help, body.page-contact, body.page-indigenous-data) a { color: #0b2a6b; text-decoration: none; }
 :where(body.page-home, body.page-collection-landing, body.page-collections-browse) a:hover { text-decoration: underline; }
