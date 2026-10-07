@@ -4,16 +4,14 @@
  *   - from 992px the sidebar is a 320px column flush with the left edge and ruled on its right; the results
  *     column has 32px of padding either side;
  *     below that it is an off-canvas drawer (components/filter_drawer.css);
- *   - grid and mosaic tiles are as many 17rem-minimum columns as fit (five at 2000px, three at 1440px) with
+ *   - mosaic tiles are as many 17rem-minimum columns as fit (five at 2000px, three at 1440px) with
  *     24px gutters, one column on a phone;
- *   - list view is one column, two from 1880px.
- * Blacklight owns the markup; blacklight-gallery supplies the grid and mosaic documents.
+ *   - list view is a grid of 20rem-minimum cards (components/result_card.css);
+ * Blacklight owns the markup; blacklight-gallery supplies the mosaic.
  */
 :root {
   --results-gutter: 1.5rem;
-  --results-card-shadow: 0 1px 3px 0 rgb(0 0 0 / 25%);
-  --results-card-shadow-hover: 0 4px 12px 0 rgb(0 0 0 / 40%);
-  --sidebar-width: 20rem; /* 320px */
+    --sidebar-width: 20rem; /* 320px */
   --content-gutter: 2rem; /* 32px either side of the results */
 }
 
@@ -21,7 +19,7 @@
 @media (min-width: 992px) {
   #main-container > .row {
     flex-wrap: nowrap;
-    align-items: flex-start;
+    align-items: stretch;
   }
 
   #sidebar {
@@ -67,65 +65,48 @@ body.blacklight-catalog-index #content {
   padding-inline: 0;
 }
 
-/* Columns (grid and mosaic): as many 17rem-minimum columns as fit. Written out, not auto-fill, because
+/* Columns (mosaic): as many 17rem-minimum columns as fit. Written out, not auto-fill, because
    the mosaic's layout polyfill (blacklight-gallery) mis-sizes auto-fill lanes. The counts step down at
    992px because the 320px sidebar appears there; each step is the width where one more column fits
    beside the sidebar and the 32px side padding (test/components/nexus_ccs/results_layout_test.rb). */
-.documents-gallery,
 .documents-masonry {
   --result-columns: repeat(1, 1fr);
 }
 
 @media (min-width: 632px) {
-  .documents-gallery, .documents-masonry { --result-columns: repeat(2, 1fr); }
+  .documents-masonry { --result-columns: repeat(2, 1fr); }
 }
 
 @media (min-width: 928px) {
-  .documents-gallery, .documents-masonry { --result-columns: repeat(3, 1fr); }
+  .documents-masonry { --result-columns: repeat(3, 1fr); }
 }
 
 @media (min-width: 992px) {
-  .documents-gallery, .documents-masonry { --result-columns: repeat(2, 1fr); }
+  .documents-masonry { --result-columns: repeat(2, 1fr); }
 }
 
 @media (min-width: 1248px) {
-  .documents-gallery, .documents-masonry { --result-columns: repeat(3, 1fr); }
+  .documents-masonry { --result-columns: repeat(3, 1fr); }
 }
 
 @media (min-width: 1544px) {
-  .documents-gallery, .documents-masonry { --result-columns: repeat(4, 1fr); }
+  .documents-masonry { --result-columns: repeat(4, 1fr); }
 }
 
 @media (min-width: 1840px) {
-  .documents-gallery, .documents-masonry { --result-columns: repeat(5, 1fr); }
+  .documents-masonry { --result-columns: repeat(5, 1fr); }
 }
 
 @media (min-width: 2136px) {
-  .documents-gallery, .documents-masonry { --result-columns: repeat(6, 1fr); }
+  .documents-masonry { --result-columns: repeat(6, 1fr); }
 }
 
 @media (min-width: 2432px) {
-  .documents-gallery, .documents-masonry { --result-columns: repeat(7, 1fr); }
+  .documents-masonry { --result-columns: repeat(7, 1fr); }
 }
 
 @media (min-width: 2728px) {
-  .documents-gallery, .documents-masonry { --result-columns: repeat(8, 1fr); }
-}
-
-.documents-gallery {
-  --bs-gutter-x: 0;
-  --bs-gutter-y: 0;
-  display: grid;
-  grid-template-columns: var(--result-columns);
-  gap: var(--results-gutter);
-  margin: 0;
-}
-
-.documents-gallery > .col {
-  width: auto;
-  max-width: none;
-  margin: 0;
-  padding: 0;
+  .documents-masonry { --result-columns: repeat(8, 1fr); }
 }
 
 /* The layout polyfill (blacklight-gallery) reads these: plain repeat(N, 1fr) only */
@@ -134,242 +115,4 @@ body.blacklight-catalog-index #content {
   grid-gap: var(--results-gutter);
   gap: var(--results-gutter);
   border: 0;
-}
-
-/* Cards: white, 4px radius, a small shadow that deepens on hover */
-.documents-gallery .document,
-.documents-masonry .document,
-.documents-list .document {
-  background: var(--ccs-white);
-  border: 0;
-  border-radius: var(--ccs-radius-sm);
-  box-shadow: var(--results-card-shadow);
-  transition: box-shadow var(--ccs-duration-slow) ease;
-}
-
-.documents-gallery .document:hover,
-.documents-gallery .document:focus-within,
-.documents-masonry .document:hover,
-.documents-masonry .document:focus-within,
-.documents-list .document:hover,
-.documents-list .document:focus-within {
-  box-shadow: var(--results-card-shadow-hover);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .documents-gallery .document,
-  .documents-masonry .document,
-  .documents-list .document {
-    transition: none;
-  }
-}
-
-/* Grid: image over a 16px body with a semibold title and muted details */
-.documents-gallery .document {
-  height: 100%;
-  overflow: hidden;
-}
-
-.documents-gallery .thumbnail-container {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.documents-gallery .document-thumbnail img,
-.documents-masonry .document-thumbnail img {
-  display: block;
-  width: 100%;
-  height: auto;
-  min-height: 12rem;
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-  object-fit: cover;
-}
-
-.documents-gallery .caption-area .caption {
-  margin: 0;
-  padding: var(--ccs-space-4);
-  font-size: var(--ccs-font-size-sm);
-  line-height: 1.35;
-  color: var(--ccs-text-secondary);
-}
-
-.documents-gallery .document-title-heading {
-  margin: 0 0 var(--ccs-space-2);
-  font-size: var(--ccs-font-size-md);
-  font-weight: var(--ccs-font-weight-semibold);
-  line-height: var(--ccs-line-height-normal);
-}
-
-.documents-gallery .document-metadata {
-  margin: 0;
-  padding: 0;
-  background: transparent;
-  border: 0;
-  font-size: var(--ccs-font-size-sm);
-}
-
-.documents-gallery .document-metadata dt,
-.documents-gallery .document-metadata dd {
-  padding: 0;
-}
-
-.documents-gallery .document-metadata dt {
-  text-align: start;
-  font-weight: var(--ccs-font-weight-semibold);
-}
-
-/* Mosaic: the image is the card; the caption shows on hover or focus (Blacklight's own behaviour) */
-.documents-masonry .document {
-  overflow: hidden;
-  margin: 0;
-}
-
-.documents-masonry .thumbnail-container {
-  background: var(--ccs-neutral-200);
-}
-
-/* List: a card per record, one column, two on very wide screens */
-.documents-list {
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--results-gutter) 3.2rem;
-}
-
-@media (min-width: 1880px) {
-  .documents-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-.documents-list .document {
-  padding: 1.25rem;
-}
-
-/* List card (NexusCcs::ResultCardComponent): text left, the image right on a dark box, never cropped */
-.result-card {
-  display: flex;
-  flex-direction: column;
-  gap: var(--ccs-space-4);
-}
-
-.result-card__body {
-  display: flex;
-  flex: 1 1 auto;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.result-card__eyebrow {
-  margin: 0 0 var(--ccs-space-2);
-  overflow: hidden;
-  font-size: var(--ccs-font-size-sm);
-  font-weight: var(--ccs-font-weight-semibold);
-  letter-spacing: 0.04em;
-  text-overflow: ellipsis;
-  text-transform: uppercase;
-  white-space: nowrap;
-  color: var(--ccs-text-secondary);
-}
-
-.result-card .documentHeader {
-  margin: 0 0 var(--ccs-space-3);
-}
-
-.result-card .document-title-heading {
-  display: -webkit-box;
-  margin: 0;
-  overflow: hidden;
-  font-size: var(--ccs-font-size-md);
-  font-weight: var(--ccs-font-weight-semibold);
-  line-height: 1.2;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
-}
-
-/* The collection is the eyebrow, so it is not repeated among the fields */
-.result-card .blacklight-collection_ssim {
-  display: none;
-}
-
-.result-card dl.document-metadata {
-  display: grid;
-  grid-template-columns: max-content minmax(0, 1fr);
-  column-gap: var(--ccs-space-4);
-  margin: 0;
-  padding: 0;
-  background: transparent;
-  border: 0;
-  font-size: var(--ccs-font-size-sm);
-  color: var(--ccs-text-secondary);
-}
-
-.result-card dl.document-metadata dt,
-.result-card dl.document-metadata dd {
-  flex: none;
-  width: auto;
-  max-width: none;
-  margin: 0;
-  padding: 0;
-  text-align: start;
-}
-
-.result-card dl.document-metadata dt {
-  font-weight: var(--ccs-font-weight-semibold);
-}
-
-.result-card dl.document-metadata dd + dd {
-  grid-column: 2;
-}
-
-.result-card__footer {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--ccs-space-2) var(--ccs-space-4);
-  margin: auto 0 0;
-  padding: var(--ccs-space-3) 0 0;
-  list-style: none;
-  font-size: var(--ccs-font-size-sm);
-  color: var(--ccs-text-secondary);
-}
-
-.result-card__footer li:last-child:not(:only-child) {
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.documents-list .document-thumbnail {
-  order: -1;
-  display: flex;
-  flex: none;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 13rem;
-  margin: 0;
-  border-radius: var(--ccs-radius-sm);
-  background: var(--ccs-neutral-800);
-}
-
-.documents-list .document-thumbnail img {
-  display: block;
-  width: auto;
-  max-width: 100%;
-  height: auto;
-  max-height: 100%;
-  object-fit: contain;
-}
-
-@media (min-width: 768px) {
-  .result-card {
-    flex-direction: row;
-    justify-content: space-between;
-  }
-
-  .documents-list .document-thumbnail {
-    order: 2;
-    width: 10rem;
-    height: 10rem;
-  }
 }

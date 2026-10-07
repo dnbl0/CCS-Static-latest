@@ -1,4 +1,4 @@
-<%# Blacklight's view switcher, wrapped so each button gets a tooltip (List view, Grid view, Mosaic view) %>
+<%# Blacklight's view switcher, wrapped so each button gets a tooltip (List view, Mosaic view) %>
 <div data-controller="tooltip">
   <%= render(Blacklight::Response::ViewTypeComponent.new(
         response: @response,

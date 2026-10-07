@@ -4,10 +4,13 @@ require "test_helper"
 class CatalogConfigurationTest < ActiveSupport::TestCase
   def config = CatalogController.blacklight_config
 
-  test "result views: list plus the blacklight-gallery grid and mosaic (no slideshow)" do
-    assert_equal %i[gallery list masonry], config.view.keys.map(&:to_sym).sort - %i[atom rss]
-    assert_equal Blacklight::Gallery::DocumentComponent, config.view.gallery.document_component
-    assert_equal Blacklight::Gallery::DocumentComponent, config.view.masonry.document_component
+  test "result views: list plus the blacklight-gallery mosaic (no grid, no slideshow)" do
+    assert_equal %i[list masonry], config.view.keys.map(&:to_sym).sort - %i[atom rss]
+    assert_equal NexusCcs::ResultCardComponent, config.view.masonry.document_component
+    assert_equal NexusCcs::ListViewIconComponent, config.view.list.icon
+    assert_equal NexusCcs::MasonryViewIconComponent, config.view.masonry.icon
+    assert config.view.masonry.default, "mosaic is the default view"
+    assert_not config.view.list.default
   end
 
   test "per-page options and default" do
@@ -28,9 +31,8 @@ class CatalogConfigurationTest < ActiveSupport::TestCase
     assert config.advanced_search.enabled
   end
 
-  test "digital assets are the thumbnails, with placeholders only in grid and mosaic" do
+  test "digital assets are the thumbnails, with a placeholder only in the mosaic" do
     assert_equal :thumbnail_path_ssi, config.index.thumbnail_field
-    assert_equal "placeholder-thumbnail.svg", config.view.gallery.default_thumbnail
     assert_nil config.view.list.default_thumbnail
     assert_respond_to config.view.masonry.default_thumbnail, :call
   end

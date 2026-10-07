@@ -1,0 +1,9 @@
+<%# "Previous": a sage button with the arrow before the label (CCS UI Pagination). Not shown on the first page. -%>
+<% unless current_page.first? %>
+  <li class="page-item pagination__item--previous">
+    <%= link_to url, rel: "prev", remote: remote, class: "page-link pagination__button", aria: { label: t("views.pagination.aria.go_to_previous_page") } do %>
+      <%= image_tag "pagination-arrow-left.svg", alt: "", width: 24, height: 24 %>
+      <span class="pagination__label"><%= t("views.pagination.previous") %></span>
+    <% end %>
+  </li>
+<% end %>

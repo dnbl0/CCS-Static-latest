@@ -1,18 +1,41 @@
 # frozen_string_literal: true
 
 module NexusCcs
-  # A record in the list view, after Europeana's list card: the collection as a small uppercase line above
-  # the title, the key fields, a footer with the licence and the digital asset format, and the image on the
-  # right. Registered as config.view.list's document_component; everything else is Blacklight's
-  # DocumentComponent (title, metadata and thumbnail slots, counters, classes).
+  # A record in the list and mosaic views: the CCS UI's "Card image" (with the first digital asset's thumbnail on
+  # top) or "Card no media" (without), then the title and three lines: creator, object type, collection.
+  # Registered as the list and mosaic views' document_component; everything else is Blacklight's
+  # DocumentComponent (title slot with its link and counter, classes, ids).
   class ResultCardComponent < Blacklight::DocumentComponent
-    def collection
-      Array(document["collection_ssim"]).first
+    TITLE_TAG = :h5
+
+    # The card's heading is an h5 (Blacklight's default is h3)
+    def initialize(**args)
+      super(**args, title_component: TITLE_TAG)
     end
 
-    # Short facts for the footer: the licence type and the digital asset format.
-    def footer_items
-      [ Array(document["licence_type_ssim"]).first, Array(document["digital_asset_format_ssim"]).first ].compact
+    def media_path
+      document["thumbnail_path_ssi"].presence
+    end
+
+    def media?
+      media_path.present?
+    end
+
+    def variant
+      media? ? "media" : "no-media"
+    end
+
+    def card_classes
+      classes + [ "result-card", "result-card--#{variant}" ]
+    end
+
+    def document_path
+      helpers.search_state.url_for_document(document)
+    end
+
+    # creator, object type and collection: the first of each, whichever the record has
+    def lines
+      [ document["creator_ssim"], document["object_type_ssim"], document["collection_ssim"] ].filter_map { |value| Array(value).first.presence }
     end
   end
 end

@@ -27,9 +27,9 @@ class ResultsLayoutTest < ActiveSupport::TestCase
     assert_match(/body\.blacklight-catalog-index #main-container \{\s+padding-inline: 0;/, css)
   end
 
-  test "grid and mosaic columns step with the width, with 24px gutters; five at 2000px" do
+  test "mosaic columns step with the width, with 24px gutters; five at 2000px" do
     css = STYLES.join("results_layout.css").read
-    columns = css.scan(/@media \(min-width: (\d+)px\) \{\s+\.documents-gallery, \.documents-masonry \{ --result-columns: repeat\((\d+), 1fr\); \}/)
+    columns = css.scan(/@media \(min-width: (\d+)px\) \{\s+\.documents-masonry \{ --result-columns: repeat\((\d+), 1fr\); \}/)
     steps = columns.map { |width, count| [ width.to_i, count.to_i ] }
 
     assert_equal [ [ 632, 2 ], [ 928, 3 ], [ 992, 2 ], [ 1248, 3 ], [ 1544, 4 ], [ 1840, 5 ], [ 2136, 6 ], [ 2432, 7 ], [ 2728, 8 ] ], steps
@@ -39,7 +39,7 @@ class ResultsLayoutTest < ActiveSupport::TestCase
 
   test "the columns are the number of 17rem tiles that fit beside the 320px sidebar and the 32px side padding" do
     css = STYLES.join("results_layout.css").read
-    steps = css.scan(/min-width: (\d+)px\) \{\s+\.documents-gallery, \.documents-masonry \{ --result-columns: repeat\((\d+)/).map { |w, n| [ w.to_i, n.to_i ] }
+    steps = css.scan(/min-width: (\d+)px\) \{\s+\.documents-masonry \{ --result-columns: repeat\((\d+)/).map { |w, n| [ w.to_i, n.to_i ] }
 
     steps.each do |width, count|
       content = width >= 992 ? width - 320 - 64 : width - 64
@@ -74,18 +74,27 @@ class ResultsLayoutTest < ActiveSupport::TestCase
     assert_equal NexusCcs::FilterToggleComponent, config.index.collection_actions[:filters_toggle].component
   end
 
-  test "the list card's eyebrow is the collection and its footer the licence and format" do
-    result = card("collection_ssim" => [ "Medical History Museum" ], "licence_type_ssim" => [ "Copyright - Current" ], "digital_asset_format_ssim" => [ "Image" ])
+  test "the card is the CCS UI card image, or card no media when the record has no digital asset" do
+    with_image = card("thumbnail_path_ssi" => "/digital-assets/thumbs/a.jpg", "title_tsim" => [ "Untitled" ])
+    without = card("title_tsim" => [ "Untitled" ])
 
-    assert_equal "Medical History Museum", result.collection
-    assert_equal [ "Copyright - Current", "Image" ], result.footer_items
+    assert with_image.media?
+    assert_equal "media", with_image.variant
+    assert_not without.media?
+    assert_equal "no-media", without.variant
   end
 
-  test "the list card leaves out what the record does not have" do
-    result = card("title_tsim" => [ "Untitled" ])
+  test "the card heading is an h5" do
+    assert_equal :h5, NexusCcs::ResultCardComponent::TITLE_TAG
+    assert_equal :h5, card("title_tsim" => [ "Untitled" ]).instance_variable_get(:@title_component)
+  end
 
-    assert_nil result.collection
-    assert_empty result.footer_items
+  test "the card's three lines are the creator, the object type and the collection, whichever the record has" do
+    full = card("creator_ssim" => [ "Purdie, Shirley" ], "object_type_ssim" => [ "painting" ], "collection_ssim" => [ "Medical History Museum" ])
+    sparse = card("collection_ssim" => [ "Medical History Museum" ])
+
+    assert_equal [ "Purdie, Shirley", "painting", "Medical History Museum" ], full.lines
+    assert_equal [ "Medical History Museum" ], sparse.lines
   end
 
   test "the Filters button says how many filters are applied" do
@@ -135,7 +144,27 @@ class ResultsLayoutTest < ActiveSupport::TestCase
     assert_no_selector ".constraints-container"
   end
 
-  test "the sidebar leads with Advanced filters, 'Search filters (n)' and Clear filters" do
+  test "the digital assets switch turns the Digital asset filter's 'with' value on and off" do
+    response = Blacklight::Solr::Response.new({ "response" => { "docs" => [], "numFound" => 0 } }, {})
+    render_sidebar = lambda do |url|
+      with_controller_class(CatalogController) do
+        with_request_url(url) do
+          render_inline(NexusCcs::FilterSidebarComponent.new(blacklight_config: config, response: response, view_config: config.index))
+        end
+      end
+    end
+
+    render_sidebar.call("/catalog?q=art&page=3")
+    assert_selector "a.filter-switch[role=switch][aria-checked=false]", text: "Records with digital assets"
+    assert_includes page.find("a.filter-switch")[:href], "f%5Bhas_digital_asset%5D%5B%5D=with"
+    assert_not_includes page.find("a.filter-switch")[:href], "page="
+
+    render_sidebar.call("/catalog?q=art&f[has_digital_asset][]=with")
+    assert_selector "a.filter-switch.is-on[aria-checked=true]"
+    assert_not_includes page.find("a.filter-switch")[:href], "has_digital_asset"
+  end
+
+  test "the sidebar leads with 'Search filters (n)' and Clear all, with no Advanced filters link (it is in the banner)" do
     response = Blacklight::Solr::Response.new({ "response" => { "docs" => [], "numFound" => 0 } }, {})
     with_controller_class(CatalogController) do
       with_request_url("/catalog?q=art&f[collection_ssim][]=A") do
@@ -143,11 +172,11 @@ class ResultsLayoutTest < ActiveSupport::TestCase
       end
     end
 
-    assert_link "Advanced filters", href: "/catalog/advanced"
+    assert_no_link "Advanced filters"
     assert_selector ".filter-sidebar__heading", text: "Search filters (1)"
-    assert_link "Clear filters"
+    assert_link "Clear all"
     assert_no_link "Clear filters", href: /f%5B|f\[/ # the link drops the filters but keeps the search
-    assert_selector "[data-controller=filter-drawer] .filter-drawer__close"
+    assert_selector "[data-controller~=filter-drawer] .filter-drawer__close"
   end
 
   test "a skeleton replaces the results and filter values while a search page loads" do
@@ -172,5 +201,15 @@ class ResultsLayoutTest < ActiveSupport::TestCase
     assert_includes controller, "input.range_begin"
     assert_includes controller, "Earliest year"
     assert_includes STYLES.join("filter_rail.css").read, ".range-slider__handle"
+  end
+
+  test "the toolbar: even pill gaps, equal flexible selects, a two-row grid with full labels on phones" do
+    css = STYLES.join("results_toolbar.css").read
+    assert_match(/\.constraints-container \.applied-filter \{\s+margin: 0 !important;/, css) # not Bootstrap's mx-1
+    assert_match(/\.sort-dropdown,\s+#sortAndPerPage \.per_page-dropdown \{\s+flex: 1 1 0;[^}]*max-width: 18rem;/m, css)
+    phone = css[/@media \(max-width: 767\.98px\) \{.*?\n\}\n/m]
+    assert_includes phone, "grid-template-columns: repeat(2, minmax(0, 1fr));"
+    assert_includes phone, ".sort-dropdown .dropdown-toggle .d-none"
+    assert_includes phone, ".per_page-dropdown .dropdown-toggle .visually-hidden"
   end
 end

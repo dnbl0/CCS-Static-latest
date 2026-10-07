@@ -5,6 +5,7 @@ module NexusCcs
   # Takes the place of Blacklight's light search band (Blacklight::SearchNavbarComponent).
   class SearchBannerComponent < Blacklight::SearchNavbarComponent
     TITLE = "Search the Collection"
+    DESCRIPTION = "Explore artworks, objects, manuscripts, photographs and recordings held across the University of Melbourne's cultural collections."
 
     # The gem's default classes size the form with grid columns; the banner sizes it in CSS.
     def search_bar_component
@@ -15,6 +16,22 @@ module NexusCcs
         autocomplete_path: suggest_index_catalog_path,
         classes: %w[search-query-form search-banner__form]
       )
+    end
+
+    # The query the chip shows, and where removing it goes: the same search without it (filters stay)
+    def query
+      helpers.params[:q].presence
+    end
+
+    def clear_query_url
+      helpers.search_action_url(helpers.search_state.params_for_search.except(:q, :page, :qt))
+    end
+
+    def chip_data
+      # Always attached: without a query it only puts the cursor in the box after a chip was cleared
+      return { controller: "search-chip" } unless query
+
+      { controller: "search-chip", "search-chip-query-value": query, "search-chip-clear-url-value": clear_query_url }
     end
 
     def summary

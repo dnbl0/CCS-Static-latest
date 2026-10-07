@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   # scope constraint to address Rails default :id segment stopping at dots in ids
   scope constraints: { id: %r{[^/]+} } do
     resource :catalog, only: [], as: "catalog", path: "/catalog", controller: "catalog" do
+      get "range_histogram"
       concerns :searchable
       concerns :range_searchable
     end

@@ -1,0 +1,110 @@
+/*
+ * Pagination at the foot of the results, after the CCS UI "Pagination" (Figma 254:23949 and 254:23916): sage
+ * Previous and Next buttons with an arrow, 32px square page links (white; the current page sage-200) with
+ * 4px between them, 16px between the buttons and the numbers. Previous is left out on the first page and
+ * Next on the last. Under 576px (the design's SM-XS) Previous and Next are full-width, above and below the
+ * numbers. Markup: Blacklight's Kaminari theme, overridden in app/views/kaminari/blacklight/.
+ */
+.paginate-section {
+  padding: var(--ccs-space-6) 0;
+}
+
+.paginate-section .pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ccs-space-1);
+  margin: 0;
+  padding: 0;
+}
+
+.paginate-section .page-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2rem;
+  height: 2rem;
+  padding: 0.125rem 0.25rem;
+  border: 0;
+  border-radius: 0;
+  background: var(--ccs-white);
+  font-size: var(--ccs-font-size-lg);
+  line-height: 1.4;
+  text-decoration: none;
+  color: var(--ccs-navy-1100);
+}
+
+.paginate-section .page-link:hover {
+  background: var(--ccs-sage-100);
+  color: var(--ccs-navy-1100);
+}
+
+.paginate-section .page-link:focus-visible {
+  outline: 3px solid var(--ccs-focus-ring);
+  outline-offset: 2px;
+}
+
+.paginate-section .page-item.active .page-link {
+  background: var(--ccs-sage-200);
+}
+
+/* "..." where pages are skipped: not a link */
+.paginate-section .page-item.disabled .page-link {
+  background: var(--ccs-white);
+  color: var(--ccs-navy-1100);
+}
+
+.paginate-section .pagination__button {
+  height: 3rem;
+  padding: var(--ccs-space-3);
+  background: var(--ccs-action-secondary);
+  font-weight: var(--ccs-font-weight-semibold);
+  line-height: 1.5rem;
+  color: var(--ccs-action-secondary-text);
+}
+
+.paginate-section .pagination__button:hover {
+  background: var(--ccs-action-secondary-hover);
+}
+
+.paginate-section .pagination__button:active {
+  background: var(--ccs-action-secondary-active);
+}
+
+.paginate-section .pagination__button img {
+  flex: none;
+}
+
+.paginate-section .pagination__label {
+  padding-inline: var(--ccs-space-1);
+}
+
+/* 16px between a button and the numbers (the list's 4px gap plus 12px) */
+.paginate-section .pagination__item--previous {
+  margin-inline-end: var(--ccs-space-3);
+}
+
+.paginate-section .pagination__item--next {
+  margin-inline-start: var(--ccs-space-3);
+}
+
+@media (max-width: 575.98px) {
+  .paginate-section .pagination__item--previous,
+  .paginate-section .pagination__item--next {
+    flex: 0 0 100%;
+    margin: 0;
+  }
+
+  .paginate-section .pagination__item--previous {
+    margin-bottom: var(--ccs-space-3);
+  }
+
+  .paginate-section .pagination__item--next {
+    margin-top: var(--ccs-space-3);
+  }
+
+  .paginate-section .pagination__button {
+    justify-content: flex-start;
+    width: 100%;
+  }
+}

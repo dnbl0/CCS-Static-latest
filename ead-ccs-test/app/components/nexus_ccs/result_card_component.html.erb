@@ -3,16 +3,18 @@
   data: { "document-id": document.id.to_s.parameterize, "document-counter": counter },
   itemscope: true,
   itemtype: document.itemtype,
-  class: (classes + [ "result-card" ]).join(" ") do %>
-  <div class="result-card__body">
-    <% if collection %><p class="result-card__eyebrow"><%= collection %></p><% end %>
+  class: card_classes.join(" ") do %>
+  <% if media? %>
+    <%= link_to document_path, class: "result-card__media", tabindex: -1, "aria-hidden": true do %>
+      <%= image_tag media_path, alt: "", loading: "lazy" %>
+    <% end %>
+  <% end %>
+  <div class="result-card__content">
     <%= title %>
-    <%= metadata %>
-    <% if footer_items.any? %>
-      <ul class="result-card__footer">
-        <% footer_items.each do |item| %><li><%= item %></li><% end %>
+    <% if lines.any? %>
+      <ul class="result-card__lines">
+        <% lines.each do |line| %><li><%= line %></li><% end %>
       </ul>
     <% end %>
   </div>
-  <%= thumbnail %>
 <% end %>

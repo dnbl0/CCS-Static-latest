@@ -28,20 +28,20 @@ class CatalogController < ApplicationController
 
     config.index.title_field = "title_tsim"
 
-    # Result views: the built-in list, plus grid (gallery) and mosaic (masonry) from blacklight-gallery.
-    # Records with a digital asset show it in every view; the rest show a placeholder in grid and
-    # mosaic (and nothing in the list). Mosaic placeholders vary in shape, as real images do, so
-    # the masonry layout stays a mosaic where images are missing.
+    # Result views: the built-in list, plus the mosaic (masonry) from blacklight-gallery (no grid view).
+    # Records with a digital asset show it in both views; the rest show a placeholder in the mosaic
+    # (and nothing in the list). Mosaic placeholders vary in shape, as real images do, so the masonry
+    # layout stays a mosaic where images are missing.
     config.index.thumbnail_field = :thumbnail_path_ssi
     mosaic_placeholder = lambda do |document, image_options|
       shape = %w[placeholder-thumbnail.svg placeholder-portrait.svg placeholder-square.svg][document.id.sum % 3]
       ActionController::Base.helpers.image_tag(shape, image_options)
     end
     config.view.list.document_component = NexusCcs::ResultCardComponent
-    config.view.gallery(document_component: Blacklight::Gallery::DocumentComponent,
-      icon: Blacklight::Gallery::Icons::GalleryComponent, default_thumbnail: "placeholder-thumbnail.svg")
-    config.view.masonry(document_component: Blacklight::Gallery::DocumentComponent,
-      icon: Blacklight::Gallery::Icons::MasonryComponent, default_thumbnail: mosaic_placeholder)
+    config.view.list.icon = NexusCcs::ListViewIconComponent
+    # Mosaic is the default view; List is the other button
+    config.view.masonry(document_component: NexusCcs::ResultCardComponent, default: true,
+      icon: NexusCcs::MasonryViewIconComponent, default_thumbnail: mosaic_placeholder)
     config.index.display_type_field = "format"
 
     config.add_results_document_tool(:bookmark, component: Blacklight::Document::BookmarkComponent, if: :render_bookmarks_control?)
@@ -90,19 +90,19 @@ class CatalogController < ApplicationController
     DataModel.filters.select(&:available?).each do |filter|
       options = { label: filter.name, group: filter.group }
       case filter.type
-      when :year then options[:range] = true
-      when :checkbox then options[:limit] = nil
-      else options.merge!(limit: 20, index_range: "A".."Z")   # browse, with "search within this filter" in the modal
+      when :year then options[:range] = { chart_js: false, textual_facets: false } # our own histogram, see range_histogram
+      when :checkbox then options.merge!(limit: nil, item_component: NexusCcs::FacetItemComponent)
+      else options.merge!(limit: 20, index_range: "A".."Z", item_component: NexusCcs::FacetItemComponent)   # browse, with "search within this filter" in the modal
       end
       config.add_facet_field filter.solr, **options
 
       # In the search results design but not in the workbook: Creator role follows the creator dates.
-      config.add_facet_field "creator_role_ssim", label: "Creator role", group: filter.group, limit: 20, index_range: "A".."Z" if filter.seq == 5
+      config.add_facet_field "creator_role_ssim", label: "Creator role", group: filter.group, limit: 20, index_range: "A".."Z", item_component: NexusCcs::FacetItemComponent if filter.seq == 5
     end
 
     # CCS-41: show results with or without digital assets. Not in the workbook's filter list, so it is
     # an addition from the Jira story; it sits with the Media type filters.
-    config.add_facet_field "has_digital_asset", label: "Digital asset", group: "media_type", query: {
+    config.add_facet_field "has_digital_asset", label: "Digital asset", group: "media_type", item_component: NexusCcs::FacetItemComponent, query: {
       with: { label: "With a digital asset", fq: "has_digital_asset_bsi:true" },
       without: { label: "Without a digital asset", fq: "-has_digital_asset_bsi:true" }
     }
@@ -190,4 +190,29 @@ class CatalogController < ApplicationController
     config.autocomplete_enabled = true
     config.autocomplete_path = "suggest"
   end
+
+  # JSON for the range filters' slider: the first and last year of the results, with that filter's own range
+  # left out so the track keeps its full length, and a count per bar (see RangeHistogram; ?bins=N, 8 to 60,
+  # defaults to 24).
+  def range_histogram
+    field = params[:field].to_s
+    return head :not_found unless blacklight_config.facet_fields[field]&.range
+
+    state = search_state.reset(search_state.params.deep_dup.tap { |p| p[:range]&.delete(field) })
+    service = search_service_class.new(config: blacklight_config, search_state: state, **search_service_context)
+    base = service.search_builder.with(state).to_hash.merge(rows: 0, facet: false, "facet.query": nil)
+    repository = service.repository
+
+    stats = repository.search(params: base.merge(stats: true, "stats.field": field)).dig("stats", "stats_fields", field)
+    return render json: { bins: [] } unless stats && stats["min"]
+
+    min = stats["min"].to_i
+    max = stats["max"].to_i
+    edges = RangeHistogram.edges(min, max, RangeHistogram.bins_for(params[:bins]))
+    queries = edges.each_with_index.map { |(from, to), i| "{!key=b#{i}}#{field}:[#{from} TO #{to}]" }
+    counts = repository.search(params: base.merge(facet: true, "facet.query": queries)).dig("facet_counts", "facet_queries") || {}
+
+    render json: { min: min, max: max, bins: edges.each_with_index.map { |(from, to), i| { from: from, to: to, count: counts["b#{i}"].to_i } } }
+  end
+
 end

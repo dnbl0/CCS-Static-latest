@@ -1,0 +1,212 @@
+/*
+ * The record card in the list and mosaic views, after the CCS UI "Card image" and "Card no media" (Figma
+ * 250:21910 and 250:22182): a white card with a 1px #dddfe7 border; a 16:9 image when the record has a digital
+ * asset; then 16px of padding around a 24px semibold link-blue title and three 16px lines (creator, object,
+ * collection). Hover underlines the title. Markup: NexusCcs::ResultCardComponent.
+ */
+.documents-list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  gap: var(--results-gutter);
+  margin: 0;
+}
+
+.result-card {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  overflow: hidden;
+  border: 1px solid var(--ccs-border-panel);
+  background: var(--ccs-white);
+  transition: border-color var(--ccs-duration-base);
+}
+
+.result-card:hover,
+.result-card:focus-within {
+  border-color: var(--ccs-border-strong);
+}
+
+.result-card__media {
+  display: block;
+  flex: none;
+  aspect-ratio: 240 / 135;
+  overflow: hidden;
+  background: var(--ccs-neutral-200);
+}
+
+.result-card__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* No padding or gap on the content block, so nothing is added under the last line; the title and the lines
+   carry the card's 16px themselves (16px between them) */
+.result-card__content {
+  display: block;
+  flex: 0 0 auto;
+  padding: 0;
+}
+
+.result-card__content > :first-child {
+  padding-top: var(--ccs-space-4);
+}
+
+.result-card__content > :last-child {
+  padding-bottom: var(--ccs-space-4);
+}
+
+.result-card__content > * {
+  padding-inline: var(--ccs-space-4);
+}
+
+.result-card .documentHeader {
+  display: block;
+  margin: 0;
+}
+
+.result-card .document-title-heading {
+  width: auto;
+  margin: 0;
+  padding: 0;
+  font-size: var(--ccs-font-size-2xl);
+  font-weight: var(--ccs-font-weight-semibold);
+  line-height: var(--ccs-line-height-tight);
+  overflow-wrap: anywhere;
+}
+
+.result-card .document-title-heading a {
+  text-decoration: none;
+  color: var(--ccs-text-link);
+}
+
+.result-card:hover .document-title-heading a,
+.result-card .document-title-heading a:focus-visible {
+  text-decoration: underline;
+  text-underline-position: from-font;
+}
+
+/* The design has no counter; Blacklight's stays in the page for assistive technology */
+.result-card .document-counter {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+.result-card__content > .result-card__lines {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ccs-space-1);
+  margin: 0;
+  padding-top: var(--ccs-space-4);
+  list-style: none;
+  font-size: var(--ccs-font-size-md);
+  line-height: var(--ccs-line-height-normal);
+  color: var(--ccs-text-brand);
+}
+
+.result-card__lines li {
+  overflow-wrap: anywhere;
+}
+
+/* Mosaic: the same cards, laid out by the masonry polyfill; the image keeps its own proportions */
+.documents-masonry .result-card {
+  width: 100%;
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.documents-masonry .result-card__media {
+  aspect-ratio: auto;
+}
+
+.documents-masonry .result-card__media img {
+  height: auto;
+}
+
+/* blacklight-gallery greys the mosaic's titles for its dark captions; here the title is the card's own */
+.documents-masonry .result-card .index_title {
+  font-size: var(--ccs-font-size-2xl);
+}
+
+.documents-masonry .result-card .index_title a,
+.documents-masonry .result-card .index_title a:visited,
+.documents-masonry .result-card .index_title a:active {
+  color: var(--ccs-text-link);
+}
+
+.documents-masonry .result-card .index_title a:hover {
+  color: var(--ccs-text-link-hover);
+}
+
+.documents-masonry .result-card {
+  margin-bottom: 0;
+}
+
+/* Blacklight's .document rules clear the bottom border and add 24px of padding and a top margin; the card
+   has all four borders and its content and image sit flush to them */
+.documents-list .result-card,
+.documents-masonry .result-card {
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--ccs-border-panel);
+}
+
+.documents-list .result-card:hover,
+.documents-masonry .result-card:hover,
+.documents-list .result-card:focus-within,
+.documents-masonry .result-card:focus-within {
+  border-color: var(--ccs-border-strong);
+}
+
+/*
+ * List view, after the CCS UI "List views" (Figma 254:23780): below 768px (xs-sm) the card is the vertical
+ * card, one column; from 768px (md-lg) it is the horizontal card, text on the left and the 324 x 182 image on
+ * the right, one column; from 1800px (xl-wide) two columns of them. Without a digital asset the text takes the
+ * whole width.
+ */
+@media (min-width: 768px) {
+  .documents-list .result-card {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .documents-list .result-card__content {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+  }
+
+  .documents-list .result-card__media {
+    order: 2;
+    flex: none;
+    width: 20.25rem;
+    min-height: 11.375rem;
+    aspect-ratio: auto;
+  }
+
+  /* The image fills the box (at least 182px tall, as tall as the row if the text is taller) without sizing it */
+  .documents-list .result-card__media {
+    position: relative;
+  }
+
+  .documents-list .result-card__media img {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+  }
+}
+
+@media (min-width: 1800px) {
+  .documents-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

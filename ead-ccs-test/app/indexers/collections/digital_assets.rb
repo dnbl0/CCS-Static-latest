@@ -2,7 +2,7 @@ require "yaml"
 
 module Collections
   # Attaches digital-asset fields to a document when its accession number has images listed in
-  # config/digital_assets.yml. Each image has an 800 px thumbnail (lists, grid, mosaic) and a
+  # config/digital_assets.yml. Each image has an 800 px thumbnail (list, mosaic) and a
   # 1600 px large version (record page) under public/digital-assets.
   class DigitalAssets
     THUMBNAILS = "/digital-assets/thumbs".freeze

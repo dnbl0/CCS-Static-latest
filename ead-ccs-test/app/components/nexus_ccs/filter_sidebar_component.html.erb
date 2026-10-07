@@ -1,4 +1,4 @@
-<search class="filter-sidebar" data-controller="filter-drawer"
+<search class="filter-sidebar" data-controller="filter-drawer facet-dropdowns"
         data-action="filter-drawer:open@window->filter-drawer#open keydown.esc@window->filter-drawer#escape">
   <div class="filter-drawer__header d-lg-none">
     <h2 id="filter-drawer-title" class="filter-drawer__title">Filters</h2>
@@ -8,14 +8,18 @@
     </button>
   </div>
 
-  <p class="filter-sidebar__advanced">
-    <%= link_to advanced_filters_path do %>Advanced filters <span aria-hidden="true">&rarr;</span><% end %>
-  </p>
-
   <div class="filter-sidebar__summary">
     <h2 class="filter-sidebar__heading">Search filters<%= " (#{applied_count})" if applied_count.positive? %></h2>
     <% if applied_count.positive? %>
-      <%= link_to clear_filters_path, class: "filter-sidebar__clear" do %>Clear filters <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg><% end %>
+      <%= link_to clear_filters_path, class: "filter-sidebar__clear" do %>Clear all <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg><% end %>
+    <% end %>
+  </div>
+
+  <div class="filter-sidebar__switches" role="group" aria-labelledby="digital-switch-label">
+    <span class="filter-sidebar__switch-caption" id="digital-switch-label">Show only</span>
+    <%= link_to digital_toggle_path, class: "filter-switch#{' is-on' if digital_only?}", role: "switch", "aria-checked": digital_only?.to_s do %>
+      <span class="filter-switch__track" aria-hidden="true"><span class="filter-switch__knob"></span></span>
+      <span class="filter-switch__label">Records with digital assets</span>
     <% end %>
   </div>
 
