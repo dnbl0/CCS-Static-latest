@@ -56,8 +56,8 @@
 .ccs-section { padding: var(--space-48) var(--space-24); }
 }
 /* Section — hero banner */
-.ccs-section--hero { max-width: var(--layout-page); margin-inline: auto; padding: 0; background: var(--brand-1200); color: var(--white-100); }
-.ccs-hero { display: flex; gap: var(--space-40); min-height: 543px; }
+.ccs-section--hero { padding: 0; background: var(--brand-1200); color: var(--white-100); }
+.ccs-hero { display: flex; gap: var(--space-40); min-height: 543px; max-width: var(--layout-page); margin-inline: auto; }
 /* No overflow:hidden on the hero: it clipped the search bar's collections dropdown. The image is clipped by its own box instead. */
 .ccs-hero__content { position: relative; z-index: var(--z-1); flex: none; display: flex; align-items: center; padding: 72px 0 96px var(--space-32); }
 .ccs-hero__content > div { width: 620px; max-width: 100%; display: flex; flex-direction: column; gap: var(--space-32); }
@@ -221,12 +221,11 @@
 /* Page banner — shared title banner (matches the Help page banner) */
 .page-banner {
   width: 100%;
-  max-width: var(--layout-page);
-  margin-inline: auto;
   background: var(--brand-1200);
   color: var(--white-100);
 }
 .page-banner__inner {
+  max-width: var(--layout-page);
   margin: 0 auto;
   padding: 64px var(--space-32);
   text-align: left;
