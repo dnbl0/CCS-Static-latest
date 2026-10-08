@@ -1,4 +1,4 @@
-/* about: the About page. Class names are semantic (block__element) and scoped by the page class on <body> (page-about). The sections follow the University's About page: a split hero, key facts on grey, an image beside a navy panel, a text block beside an image, a full-width band, tiles and support links. */
+/* about: the About page. Class names are semantic (block__element) and scoped by the page class on <body> (page-about). The sections follow the University's About page: a split hero, the home page's intro with key facts, an image beside a navy panel, a text block beside an image, a full-width band, the home page's Browse collections cards and support links. */
 
 body.page-about .bc-mobile--styled {
   display: none;
@@ -153,41 +153,12 @@ body.page-about .about-hero__image {
   object-fit: cover;
 }
 
-/* Key facts on grey */
-body.page-about .about-intro {
-  background: var(--background-secondary);
-}
-
-body.page-about .about-intro__inner {
-  max-width: var(--layout-wide);
-  margin: 0 auto;
-  padding: calc(var(--space-48) + var(--space-16)) var(--space-32);
-}
-
-body.page-about .about-intro__heading {
-  max-width: 20em;
-  margin: 0 0 var(--space-16);
-  font-family: var(--font-family-serif);
-  font-size: var(--font-size-title-2);
-  font-weight: var(--font-weight-regular);
-  line-height: var(--line-height-tight);
-  color: var(--col-bg-primary);
-  text-wrap: balance;
-}
-
-body.page-about .about-intro__text {
-  max-width: 62ch;
-  margin: 0 0 var(--space-32);
-  font-size: var(--font-size-body-lg);
-  line-height: 1.55;
-  text-wrap: pretty;
-}
-
+/* Key facts, inside the home page's intro section */
 body.page-about .about-stats {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--space-24);
-  margin: 0 0 var(--space-32);
+  margin: var(--space-32) 0 0;
   padding: 0;
   list-style: none;
 }
@@ -329,26 +300,10 @@ body.page-about .about-facts__item {
   text-wrap: balance;
 }
 
-/* Full-width band */
+/* Full-width band, text only */
 body.page-about .about-band {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   background: var(--brand-1200);
   color: var(--white-100);
-}
-
-body.page-about .about-band__media {
-  position: relative;
-  min-height: 360px;
-  overflow: hidden;
-}
-
-body.page-about .about-band__image {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 body.page-about .about-band__panel {
@@ -357,8 +312,10 @@ body.page-about .about-band__panel {
   align-items: flex-start;
   justify-content: center;
   gap: var(--space-16);
-  max-width: 640px;
-  padding: var(--space-48) var(--space-48);
+  box-sizing: border-box;
+  max-width: var(--layout-wide);
+  margin: 0 auto;
+  padding: calc(var(--space-48) + var(--space-16)) var(--space-32);
 }
 
 body.page-about .about-band__heading {
@@ -409,17 +366,6 @@ body.page-about .about-button:focus-visible {
   outline-color: var(--white-100);
 }
 
-/* Collection tiles */
-body.page-about .about-explore__title,
-body.page-about .about-explore__lead {
-  text-align: center;
-}
-
-body.page-about .about-explore__lead {
-  max-width: none;
-  margin-bottom: var(--space-32);
-}
-
 /* Support links */
 body.page-about .about-help__inner {
   max-width: var(--layout-wide);
@@ -455,18 +401,12 @@ body.page-about .about-help__text {
 
 @media (max-width: 1000px) {
   body.page-about .about-search__inner,
-  body.page-about .about-feature__inner,
-  body.page-about .about-band {
+  body.page-about .about-feature__inner {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  body.page-about .about-feature__media,
-  body.page-about .about-band__media {
+  body.page-about .about-feature__media {
     min-height: 260px;
-  }
-
-  body.page-about .about-band__panel {
-    max-width: none;
   }
 }
 
@@ -487,7 +427,6 @@ body.page-about .about-help__text {
     min-height: 220px;
   }
 
-  body.page-about .about-intro__inner,
   body.page-about .about-help__inner {
     padding: var(--space-40) var(--space-16);
   }
@@ -503,9 +442,12 @@ body.page-about .about-help__text {
     padding-inline: var(--space-16);
   }
 
-  body.page-about .about-feature__panel,
-  body.page-about .about-band__panel {
+  body.page-about .about-feature__panel {
     padding: var(--space-32) var(--space-24);
+  }
+
+  body.page-about .about-band__panel {
+    padding: var(--space-40) var(--space-16);
   }
 
   body.page-about .about-search__inner,
