@@ -12,7 +12,6 @@ Families: `searchbar`, `nav` (header, drawer, search overlay), `licence`, `banne
 
 Before this change there were about 1,370 custom properties across six `:root` blocks in five files, of which only 105 were used anywhere. The rest was an unmodified Figma export and the University of Melbourne Gen 3 header token set. Both exports are archived unchanged here for reference and are not linked by any page:
 
-- `figma-variables-export.css` (the old `components/fig-tokens.css`)
 - `uom-header-tokens-export.css` (the two `:root` blocks of the old `styles/header.css`)
 
 ## Naming
@@ -53,17 +52,8 @@ The old cascade gave a few tokens different values on different pages. The token
 - The remaining hard-coded values: gradients, `calc()` expressions, multi-value `transition` easings, font-family stacks that differ in quoting (changing the text changes the computed value), and one-off lengths (widths, offsets) are left as they are. Colours, font sizes, weights, radii, line heights, z-indexes, shadows, durations and the 2 to 48px spacing steps were migrated wherever the value is exactly equal.
 - Off-scale sizes (rule 1) and the near-duplicate palette entries (conflict 5) are design decisions.
 
-## Figma export
+## Enforcement
 
-`public/styles/tokens/tokens.css` is the source of truth. `npm run build:figma-tokens` (`scripts/build-figma-tokens.js`) converts it into `design-tokens/figma/`:
+`public/styles/tokens/tokens.css` is the source of truth. There is no Figma export or sync any more: the token JSON files and `build-figma-tokens.js` were removed.
 
-| File | Use |
-|---|---|
-| `primitive.tokens.json`, `semantic.tokens.json`, `component.tokens.json` | [W3C DTCG](https://tr.designtokens.org/format/) files, one per Figma variable collection (Primitives, Semantic, Component). Aliases are written as `{path.to.token}`; each token carries its CSS name under `$extensions.css.name`. |
-| `tokens-studio.json` | The same data as one Tokens Studio bundle: three sets in order primitive, semantic, component, plus a `Light` theme that enables all three. |
-
-Importing into Figma (Tokens Studio plugin): load `tokens-studio.json`, then Export to Figma > Variables with one collection per set; aliases become Figma variable aliases (component -> semantic -> primitive). Any DTCG-aware importer can instead take the three `*.tokens.json` files, imported in tier order so aliases resolve. This export has not yet been run against a live Figma file from this repo; check the first import.
-
-How names map: a CSS name becomes a path by splitting on dashes (`--searchbar-bg-surface` -> `searchbar/bg/surface`). A token that is also the prefix of longer names (for example `--palette-navy-10` and `--palette-navy-10-a72`) gets a trailing `base` segment so the tree stays valid (`palette/navy/10/base`). Values: colours as hex (with alpha when present), sizes as dimensions, unitless numbers as numbers, font stacks as font families. `--header-total-height` is a runtime value measured by record.html and is deliberately not exported.
-
-Rules enforced by `tests/tokens.test.js` (runs in `npm test`): semantic tokens may only alias primitives, component tokens may only alias semantic tokens, no upper-tier token holds a raw value, every `var(--token)` in the site resolves, and the export is up to date. After editing `tokens.css`, run `npm run build:figma-tokens` and commit `design-tokens/figma/`.
+Enforced by `tests/tokens.test.js` (runs in `npm test`): semantic tokens may only alias primitives, component tokens may only alias semantic tokens, no upper-tier token holds a raw value, every `var(--token)` in the site resolves.
