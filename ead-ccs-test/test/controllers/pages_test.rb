@@ -75,6 +75,7 @@ class PagesTest < ActionDispatch::IntegrationTest
     get "/about"
 
     assert_response :success
+    assert_select "body.page-about h1", "About Cultural Collections Search"
     assert_select "body.page-about .ccs-section--cards .ccs-card", count: 5
     assert_select "#site-nav-help ~ ul a[href='/about'], .site-nav a[href='/about']", minimum: 1
   end
