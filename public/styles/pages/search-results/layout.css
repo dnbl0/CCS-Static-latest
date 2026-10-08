@@ -238,3 +238,39 @@ body.page-search-results .search-results-layout.is-searching .facet-rail__chevro
       animation: none;
     }
 }
+
+/* ---- Desktop, as on the Blacklight results page: the filter rail runs down the left from the banner, and the results bar
+   (count, chips, sort, per page, view) sits at the top of the results column beside it. Below 960px the bar and the
+   layout simply stack, and the bar stays sticky. ---- */
+@media (min-width: 960px) {
+  body.page-search-results .search-results-body {
+    display: grid;
+    grid-template-columns: 320px minmax(0, 1fr);
+    grid-template-areas: "rail bar" "rail main";
+    grid-template-rows: auto 1fr;
+    align-items: start;
+    padding: 0 var(--space-16);
+  }
+
+  body.page-search-results .search-results-body > .search-results-layout {
+    display: contents;
+  }
+
+  body.page-search-results .search-results-body .facet-rail {
+    grid-area: rail;
+    align-self: stretch;
+    margin-top: 0;
+  }
+
+  body.page-search-results .search-results-body .search-results-main-content {
+    grid-area: main;
+  }
+
+  body.page-search-results .search-results-body .search-results-main-content {
+    padding-top: 0;
+  }
+
+  body.page-search-results .search-results-body .search-results-notices:empty {
+    display: none;
+  }
+}
