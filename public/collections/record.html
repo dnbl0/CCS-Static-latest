@@ -342,6 +342,7 @@
 <section class="record-summary" aria-label="Record summary">
   <div class="record-summary__group record-summary__group--v4">
     <div class="record-summary__group record-summary__group--v3">
+      <h2 class="record-summary__title">{{ rec.title }}</h2>
       <div class="record-summary__group record-summary__group--v1">
         <a class="record-summary__link" href="{{ typeHref }}">{{ rec.type }}</a>
         <span class="record-summary__text record-summary__text--v3" aria-hidden="true"></span>
@@ -450,6 +451,10 @@
       </section>
     </aside>
   </div>
+  <nav class="record-page-bar" aria-label="Back to search">
+    <a class="record-page-bar__link" href="/search/search-results.html">Start over</a>
+    <a class="record-page-bar__link" href="/search/search-results.html" onClick="{{ goBack }}">Back to search</a>
+  </nav>
 </main>
 </sc-if>
 
@@ -678,6 +683,10 @@ class Component extends DCLogic {
     const i = Math.min(Math.max(this.state.idx + d, 0), n - 1);
     if (i !== this.state.idx) this.setState({ idx: i });
   }
+  goBack(e) {
+    // Back to the results the visitor came from; with no history in this site, the link goes to the results page.
+    try { if (history.length > 1 && document.referrer && new URL(document.referrer).origin === location.origin) { e.preventDefault(); history.back(); } } catch (err) {}
+  }
   toggleFull() {
     const el = this.viewerRef.current; if (!el) return;
     const fs = document.fullscreenElement || document.webkitFullscreenElement;
@@ -708,7 +717,7 @@ class Component extends DCLogic {
     if (!R) return { licKey: 'Rights Reserved', notFound, found: false, pageTitle: notFound ? 'Record not found' : '', rec: { title: '', type: '', byline: '', citation: '', unit: '', assetId: '', hasDA: false, images: [], slides: [], subjects: [], advisories: [], rights: [] },
       fields: [], related: [], mediaRows: [], thumbs: [], noDA: false, showRelated: false, viewerRef: this.viewerRef,
       yes: true, cur: { src: '', label: '' }, curAlt: '', isImage: false, isVideo: false, isAudio: false, isPdf: false, curBroken: false, onImgLoad() {}, onMeta() {}, multi: false, imgCount: '', liveText: '',
-      prevImg() {}, nextImg() {}, firstImg() {}, lastImg() {}, jumpTo() {}, openUse() {}, openView() {}, caption: '', showGate: false, showMedia: true, gateTitle: '', gateTexts: [], gateIsRestricted: false, manyPages: false, pageNo: 1, pageOptions: [], atFirst: true, atLast: true, sidebarOpen: false, sidebarCls: 'im-sidebar', sidebarLabel: '', toggleSidebar() {}, closeSidebar() {}, fullLabel: '', toggleFull() {},
+      prevImg() {}, nextImg() {}, firstImg() {}, lastImg() {}, jumpTo() {}, openUse() {}, openView() {}, caption: '', showGate: false, showMedia: true, gateTitle: '', gateTexts: [], gateIsRestricted: false, manyPages: false, pageNo: 1, pageOptions: [], atFirst: true, atLast: true, sidebarOpen: false, sidebarCls: 'im-sidebar', sidebarLabel: '', toggleSidebar() {}, closeSidebar() {}, fullLabel: '', toggleFull() {}, goBack() {},
             citeText: 'Copy citation', typeHref: '/search/search-results.html', collectionHref: '/search/search-results.html' };
     const slides = R.slides, idx = Math.min(s.idx, Math.max(0, slides.length - 1));
     const cur = slides[idx] || { kind: 'image', src: '', label: '' };
@@ -765,6 +774,7 @@ class Component extends DCLogic {
       toggleSidebar: () => this.setSidebar(!s.sidebar), closeSidebar: () => this.setSidebar(false),
       fullLabel: s.full ? 'Exit full screen' : 'Full screen',
       toggleFull: () => this.toggleFull(),
+      goBack: e => this.goBack(e),
       reportIssue: e => { e.preventDefault(); this.openReq(e.currentTarget); },
       reqOpen: !!s.req, reqForm: !!s.req && !s.reqSent, reqSent: s.reqSent, stopProp: e => e.stopPropagation(),
       openContact: e => this.openReq(e && e.currentTarget),

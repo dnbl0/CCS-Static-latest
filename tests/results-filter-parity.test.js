@@ -30,14 +30,13 @@ const { PUBLIC, fail, ok, finish, fs, path } = require('./lib');
     await page.addInitScript(() => { try { localStorage.setItem('ccs-cultural-ack', '1'); } catch (e) { /* storage blocked */ } });
     await page.goto(base + '/search/search-results.html?q=', { waitUntil: 'networkidle' });
     await page.waitForSelector('.facet-rail');
-    await page.click('.facet-rail__extra');
     const titles = () => ({
       rail: page.$$eval('.facet-rail__section', els => els.map(e => e.querySelector('.facet-rail__name').childNodes[0].textContent.trim())),
       railGroups: page.$$eval('.facet-rail__section', els => els.filter(e => e.querySelector('.facet-rail__group')).map(e => e.querySelector('.facet-rail__group').textContent.trim())),
     });
     const t = await titles();
     const rail = await t.rail, railGroups = await t.railGroups;
-    await page.click('.search-results-search-tools__button-filter-btn');
+    await page.evaluate(() => document.querySelector('.search-results-search-tools__button-filter-btn').click()); // hidden beside the rail on desktop; the modal still opens
     await page.waitForSelector('.search-results-filters-title__section');
     const modal = await page.$$eval('.search-results-filters-title__section', els => els.map(e => e.querySelector('.search-results-section__text--v2').childNodes[0].textContent.trim()));
     if (JSON.stringify(rail) === JSON.stringify(modal)) ok(`rail lists the same ${modal.length} facets as the modal, in the same order`); else fail(`facet lists differ.\n rail:  ${rail.join(' | ')}\n modal: ${modal.join(' | ')}`);
@@ -53,7 +52,7 @@ const { PUBLIC, fail, ok, finish, fs, path } = require('./lib');
     for (const title of ['Collection title', 'Object type']) {
       await page.locator('.facet-rail__section').filter({ hasText: title }).first().locator('.facet-rail__toggle').click();
       const r = await optsIn(RAIL, title);
-      await page.click('.search-results-search-tools__button-filter-btn');
+      await page.evaluate(() => document.querySelector('.search-results-search-tools__button-filter-btn').click()); // hidden beside the rail on desktop; the modal still opens
       await page.waitForSelector('.search-results-filters-title__section');
       await page.locator('.search-results-filters-title__section').filter({ hasText: title }).first().locator('.search-results-section__button-toggle--v3').evaluate(b => { if (b.getAttribute('aria-expanded') !== 'true') b.click(); });
       await page.waitForTimeout(300);

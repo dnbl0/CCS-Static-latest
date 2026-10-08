@@ -65,7 +65,8 @@ const PAGES = [
         for (const v of violations) fail(`${url} @${width}px: ${v.id} (${v.help}) at ${v.nodes.join(' | ')}`);
         if (url.indexOf('/search/search-results') === 0) {
           // the Filters modal is part of this page: scan it while open too
-          await page.click('.search-results-search-tools__button-filter-btn');
+          // beside the desktop filter rail the Filters button is hidden; the modal still opens
+          await page.evaluate(() => document.querySelector('.search-results-search-tools__button-filter-btn').click());
           await page.waitForTimeout(700);
           const open = await page.evaluate(async () => (await axe.run(document, { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'] } })).violations.map(v => ({ id: v.id, help: v.help, nodes: v.nodes.slice(0, 3).map(n => n.target.join(' ')) })));
           for (const v of open) fail(`${url} (Filters modal open) @${width}px: ${v.id} (${v.help}) at ${v.nodes.join(' | ')}`);
