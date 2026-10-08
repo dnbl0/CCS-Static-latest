@@ -15,7 +15,7 @@
 
 /* ===================== TIER 1: PRIMITIVES ===================== */
 :root {
-  /* Figma Variables kept from the original export (names unchanged; archive in docs/design-tokens/figma-variables-export.css) */
+  /* Figma Variables kept from the original export (names unchanged) */
   --white-100: rgb(255,255,255);
   --neutral-100: rgb(244,244,244);
   --neutral-200: rgb(224,224,224);
