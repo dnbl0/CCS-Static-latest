@@ -66,7 +66,9 @@ class PagesTest < ActionDispatch::IntegrationTest
     get "/contact"
 
     assert_response :success
-    assert_select "body.page-contact .contact-cards__item", minimum: 5
+    assert_select "body.page-contact h1", "Contact collections team"
+    assert_select "body.page-contact .side-nav__link", minimum: 4
+    assert_select "body.page-contact .help-layout__content li a[href^=mailto], body.page-contact .help-layout__content li a[target=_blank]", minimum: 5
   end
 
   test "the site header links to the pages" do

@@ -49,3 +49,61 @@ body.page-contact .page-local-history__link-image {
 body.page-contact .contact-main-content {
   flex: 1;
 }
+
+/* UoM contact-page layout: "On this page" list beside a single reading column */
+body.page-contact .contact-layout {
+  align-items: start;
+}
+
+body.page-contact .contact-layout__nav {
+  border-top: 0;
+}
+
+body.page-contact .contact-layout__nav .side-nav__title {
+  padding: 0 0 var(--space-12);
+  border-bottom: 1px solid var(--neutral-200);
+  font-size: var(--font-size-body-lg);
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--brand-1100);
+}
+
+body.page-contact .contact-layout__nav .side-nav__item {
+  border-bottom: 0;
+}
+
+body.page-contact .contact-layout__nav .side-nav__link {
+  padding: var(--space-8) 0;
+  text-decoration: underline;
+}
+
+body.page-contact .contact-layout__content {
+  padding-left: var(--space-32);
+  border-left: 1px solid var(--neutral-200);
+}
+
+body.page-contact .contact-layout__title {
+  margin: 0 0 var(--space-24);
+  font-family: var(--font-heading);
+  font-size: var(--font-size-title-1);
+  font-weight: var(--font-weight-regular);
+  line-height: 1.2;
+  color: var(--brand-1100);
+}
+
+body.page-contact .contact-layout__lead {
+  margin: 0 0 var(--space-48);
+  font-size: var(--font-size-title-4);
+  line-height: 1.6;
+}
+
+body.page-contact .contact-layout__note {
+  font-size: var(--font-size-small);
+}
+
+@media (max-width: 900px) {
+  body.page-contact .contact-layout__content {
+    padding-left: 0;
+    border-left: 0;
+  }
+}
