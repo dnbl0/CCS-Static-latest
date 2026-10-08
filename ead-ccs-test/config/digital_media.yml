@@ -5,3 +5,5 @@
   - { kind: video, file: "MHM2014.137.2_2.mp4", type: "video/mp4", label: "McCoy Society expedition film" }
 "2018.231.046":
   - { kind: video, file: "CROOKS_Daniel_2016_STATICNO19_SHIBUYA_RORSCHACH_access_copy.mp4", type: "video/mp4", label: "Static No. 19 (shibuya rorschach), 6 min 3 sec" }
+"04.1149":
+  - { kind: audio, file: "GraingerLowRes.mp3", type: "audio/mpeg", label: "Burnett Cross interview, 17 min 15 sec" }
