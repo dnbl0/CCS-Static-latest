@@ -71,6 +71,14 @@ class PagesTest < ActionDispatch::IntegrationTest
     assert_select "body.page-contact .help-layout__content li a[href^=mailto], body.page-contact .help-layout__content li a[target=_blank]", minimum: 5
   end
 
+  test "the about page links to the collections and sits in the header" do
+    get "/about"
+
+    assert_response :success
+    assert_select "body.page-about .ccs-section--cards .ccs-card", count: 5
+    assert_select "#site-nav-help ~ ul a[href='/about'], .site-nav a[href='/about']", minimum: 1
+  end
+
   test "the site header links to the pages" do
     get "/contact"
 

@@ -1,0 +1,372 @@
+/* Generated from public/styles/pages/about.css by scripts/sync-rails-assets.js. Edit the static file, not this copy. */
+/* about: the About page. Class names are semantic (block__element) and scoped by the page class on <body> (page-about). The sections follow the University's About page: a split hero, the home page's intro with key facts, an image beside a navy panel, a text block beside an image, a full-width band, the home page's Browse collections cards and support links. */
+body.page-about .about-page__group--v1 {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+body.page-about .about-page__group--v2 {
+  width: 100%;
+  background: var(--blue-900);
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+body.page-about .about-page__icon {
+  display: none;
+}
+body.page-about .page-local-history__link-image {
+  vertical-align: middle;
+}
+body.page-about .about-main-content {
+  flex: 1;
+}
+/* Links: the footer arrow before the text, as on the pathfinder tiles */
+body.page-about .about-link {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-8);
+  font-size: var(--font-size-body-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--interactive-800);
+  text-decoration: none;
+}
+body.page-about .about-link::before {
+  content: '';
+  flex: none;
+  width: var(--space-20);
+  aspect-ratio: 1;
+  align-self: center;
+  background-color: currentcolor;
+  mask: url('../site/icon-arrow-footer.svg') center / contain no-repeat;
+  -webkit-mask: url('../site/icon-arrow-footer.svg') center / contain no-repeat;
+}
+body.page-about .about-link:hover {
+  color: var(--interactive-700);
+  text-decoration: underline;
+}
+body.page-about .about-link:focus-visible,
+body.page-about .about-button:focus-visible {
+  outline: 3px solid var(--focus-focus);
+  outline-offset: 3px;
+}
+body.page-about .about-link--inverse {
+  color: var(--white-100);
+}
+body.page-about .about-link--inverse::before {
+  background-color: var(--uom-ds-color-text-link-hover-inverse);
+}
+body.page-about .about-link--inverse:hover {
+  color: var(--uom-ds-color-text-link-hover-inverse);
+}
+body.page-about .about-link--inverse:focus-visible {
+  outline-color: var(--white-100);
+}
+body.page-about .about-eyebrow {
+  margin: 0 0 var(--space-16);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.82);
+}
+body.page-about .about-eyebrow--dark {
+  color: var(--col-text-muted);
+}
+/* Hero: title beside a photograph */
+body.page-about .about-hero {
+  background: var(--brand-1200);
+  color: var(--white-100);
+}
+body.page-about .about-hero__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  min-height: 340px;
+}
+body.page-about .about-hero__content {
+  display: flex;
+  align-items: center;
+  padding: var(--space-48) var(--space-32) var(--space-48) max(var(--space-32), calc((100vw - var(--layout-wide)) / 2));
+}
+body.page-about .about-hero__heading {
+  max-width: 11em;
+  margin: 0;
+  font-family: var(--font-family-serif);
+  font-size: var(--font-size-title-1);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-tight);
+  color: var(--white-100);
+  text-wrap: balance;
+}
+body.page-about .about-hero__media {
+  position: relative;
+  overflow: hidden;
+}
+body.page-about .about-hero__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* Key facts, inside the home page's intro section */
+body.page-about .about-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-24);
+  margin: var(--space-32) 0 0;
+  padding: 0;
+  list-style: none;
+}
+body.page-about .about-stats__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-8);
+  padding: var(--space-24) var(--space-16);
+  border: 1px solid var(--col-border-neutral);
+  text-align: center;
+}
+body.page-about .about-stats__figure {
+  font-family: var(--font-family-serif);
+  font-size: var(--font-size-title-1);
+  line-height: 1;
+  color: var(--col-bg-primary);
+}
+body.page-about .about-stats__label {
+  max-width: 24ch;
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.4;
+  color: var(--col-bg-primary);
+  text-wrap: balance;
+}
+/* Image beside a navy panel */
+body.page-about .about-feature__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  box-sizing: border-box;
+  max-width: var(--layout-wide);
+  margin: calc(var(--space-48) + var(--space-16)) auto;
+  padding-inline: var(--space-32);
+}
+body.page-about .about-feature__media {
+  position: relative;
+  min-height: 360px;
+  overflow: hidden;
+}
+body.page-about .about-feature__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+body.page-about .about-feature__panel {
+  padding: var(--space-48);
+  background: var(--brand-1200);
+  color: var(--white-100);
+}
+body.page-about .about-feature__heading {
+  margin: 0 0 var(--space-16);
+  font-family: var(--font-family-serif);
+  font-size: var(--font-size-title-2);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-tight);
+  color: var(--white-100);
+  text-wrap: balance;
+}
+body.page-about .about-feature__text {
+  margin: 0 0 var(--space-24);
+  font-size: var(--font-size-body-lg);
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+body.page-about .about-feature__links,
+body.page-about .about-search__links {
+  display: grid;
+  gap: var(--space-8);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+/* Text beside an image, with three ways to search under them */
+body.page-about .about-search__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-48);
+  align-items: center;
+  max-width: var(--layout-wide);
+  margin: 0 auto;
+  padding: 0 var(--space-32);
+}
+body.page-about .about-search__heading {
+  margin: 0 0 var(--space-16);
+  font-family: var(--font-family-serif);
+  font-size: var(--font-size-title-2);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-tight);
+  color: var(--col-bg-primary);
+  text-wrap: balance;
+}
+body.page-about .about-search__text {
+  margin: 0 0 var(--space-24);
+  font-size: var(--font-size-body-lg);
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+body.page-about .about-search__image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+body.page-about .about-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-32);
+  max-width: var(--layout-wide);
+  margin: var(--space-48) auto calc(var(--space-48) + var(--space-16));
+  padding: 0 var(--space-32);
+  list-style: none;
+}
+body.page-about .about-facts__item {
+  padding-top: var(--space-16);
+  border-top: 3px solid var(--sage-400);
+  font-size: var(--font-size-body-lg);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.4;
+  color: var(--col-bg-primary);
+  text-wrap: balance;
+}
+/* Full-width band, text only */
+body.page-about .about-band {
+  background: var(--brand-1200);
+  color: var(--white-100);
+}
+body.page-about .about-band__panel {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: var(--space-16);
+  box-sizing: border-box;
+  max-width: var(--layout-wide);
+  margin: 0 auto;
+  padding: calc(var(--space-48) + var(--space-16)) var(--space-32);
+}
+body.page-about .about-band__heading {
+  margin: 0;
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-title-3);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  color: var(--white-100);
+  text-wrap: balance;
+}
+body.page-about .about-band__text {
+  margin: 0;
+  font-size: var(--font-size-body-lg);
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+body.page-about .about-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+  margin-top: var(--space-8);
+  padding: var(--space-12) var(--space-24);
+  background: var(--sage-400);
+  color: var(--brand-1200);
+  font-size: var(--font-size-body-lg);
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+}
+body.page-about .about-button::before {
+  content: '';
+  flex: none;
+  width: var(--space-20);
+  aspect-ratio: 1;
+  background-color: currentcolor;
+  mask: url('../site/icon-arrow-footer.svg') center / contain no-repeat;
+  -webkit-mask: url('../site/icon-arrow-footer.svg') center / contain no-repeat;
+}
+body.page-about .about-button:hover {
+  background: var(--col-bg-accent-soft);
+}
+body.page-about .about-button:focus-visible {
+  outline-color: var(--white-100);
+}
+/* Support links */
+body.page-about .about-help__inner {
+  max-width: var(--layout-wide);
+  margin: 0 auto;
+  padding: calc(var(--space-48) + var(--space-16)) var(--space-32);
+}
+body.page-about .about-help__heading {
+  margin: 0 0 var(--space-24);
+  font-family: var(--font-family-serif);
+  font-size: var(--font-size-title-3);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-tight);
+  color: var(--col-bg-primary);
+}
+body.page-about .about-help__list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-32);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+body.page-about .about-help__text {
+  margin: var(--space-8) 0 0 calc(var(--space-20) + var(--space-8));
+  max-width: 36ch;
+  font-size: var(--font-size-body);
+  line-height: 1.5;
+  color: var(--col-text-muted);
+}
+@media (max-width: 1000px) {
+body.page-about .about-search__inner,
+  body.page-about .about-feature__inner {
+    grid-template-columns: minmax(0, 1fr);
+  }
+body.page-about .about-feature__media {
+    min-height: 260px;
+  }
+}
+@media (max-width: 768px) {
+body.page-about .about-hero__inner {
+    grid-template-columns: minmax(0, 1fr);
+  }
+body.page-about .about-hero__content {
+    padding: var(--space-40) var(--space-16);
+  }
+body.page-about .about-hero__heading {
+    font-size: var(--font-size-title-2);
+  }
+body.page-about .about-hero__media {
+    min-height: 220px;
+  }
+body.page-about .about-help__inner {
+    padding: var(--space-40) var(--space-16);
+  }
+body.page-about .about-stats,
+  body.page-about .about-facts,
+  body.page-about .about-help__list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+body.page-about .about-feature__inner {
+    margin-block: var(--space-40);
+    padding-inline: var(--space-16);
+  }
+body.page-about .about-feature__panel {
+    padding: var(--space-32) var(--space-24);
+  }
+body.page-about .about-band__panel {
+    padding: var(--space-40) var(--space-16);
+  }
+body.page-about .about-search__inner,
+  body.page-about .about-facts {
+    padding-inline: var(--space-16);
+  }
+}

@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   get "collections/:slug", to: "pages#collection", as: :collection, constraints: { slug: /[a-z-]+/ }
   get "help", to: "pages#help", as: :help
   get "help/indigenous-data", to: "pages#indigenous_data", as: :indigenous_data
+  get "about", to: "pages#about", as: :about
   get "contact", to: "pages#contact", as: :contact
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
