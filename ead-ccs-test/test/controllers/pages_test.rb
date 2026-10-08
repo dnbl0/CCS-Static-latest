@@ -72,4 +72,27 @@ class PagesTest < ActionDispatch::IntegrationTest
     assert_select "#site-nav-help a[href='/help?topic=faq']"
     assert_select "a.site-header__title[href='/']"
   end
+
+  test "every content page has one main landmark for the skip link, and the collection banner is a named region" do
+    paths = [ "/", "/collections", "/collections/grainger-museum", "/help", "/help?topic=faq", "/help/indigenous-data", "/contact" ]
+
+    paths.each do |path|
+      get path
+
+      assert_response :success, path
+      assert_select "a.skip-link[href='#main-content']", count: 1
+      assert_select "main#main-content", count: 1
+    end
+
+    get "/collections/grainger-museum"
+    assert_select "section.campaign-banner-split[aria-labelledby=collection-heading] h1#collection-heading"
+    assert_select "header.campaign-banner-split", count: 0
+  end
+
+  test "the Acknowledgement of Country advisory is body text colour, not the pale secondary colour" do
+    get "/"
+
+    assert_select "#country-acknowledgement p.text-body-secondary"
+    assert_select "#country-acknowledgement .text-secondary", count: 0
+  end
 end

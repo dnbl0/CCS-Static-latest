@@ -1,0 +1,60 @@
+name: Deploy to Azure Container Apps
+
+# Builds the Rails and Solr images, pushes them to Azure Container Registry and rolls out the two Container Apps.
+# Manual only for now (run it from the Actions tab). Needs the repository variables and OIDC login described in
+# infra/azure/README.md; it does nothing until those are set.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: azure-deploy
+  cancel-in-progress: false
+
+env:
+  ACR: ${{ vars.AZURE_ACR_NAME }}
+  RG: ${{ vars.AZURE_RESOURCE_GROUP }}
+  ENVNAME: ${{ vars.AZURE_CONTAINERAPPS_ENV }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Build and push images
+        run: |
+          az acr login -n "$ACR"
+          cd ead-ccs-test
+          docker build --target ead-ccs -t "$ACR.azurecr.io/ccs-web:$GITHUB_SHA" .
+          docker build --target solr -t "$ACR.azurecr.io/ccs-solr:$GITHUB_SHA" .
+          docker push "$ACR.azurecr.io/ccs-web:$GITHUB_SHA"
+          docker push "$ACR.azurecr.io/ccs-solr:$GITHUB_SHA"
+
+      - name: Deploy Solr (internal, one replica, Azure Files at /var/solr)
+        run: |
+          if az containerapp show -n ccs-solr -g "$RG" -o none 2>/dev/null; then
+            az containerapp update -n ccs-solr -g "$RG" --image "$ACR.azurecr.io/ccs-solr:$GITHUB_SHA" -o none
+          else
+            az containerapp create -n ccs-solr -g "$RG" --environment "$ENVNAME" \
+              --image "$ACR.azurecr.io/ccs-solr:$GITHUB_SHA" --registry-server "$ACR.azurecr.io" --registry-identity system \
+              --ingress internal --target-port 8983 --min-replicas 1 --max-replicas 1 -o none
+            echo "Created ccs-solr. Mount the 'solr-data' share at /var/solr (see infra/azure/README.md) before indexing."
+          fi
+
+      - name: Deploy the Rails app
+        run: |
+          if az containerapp show -n ccs-web -g "$RG" -o none 2>/dev/null; then
+            az containerapp update -n ccs-web -g "$RG" --image "$ACR.azurecr.io/ccs-web:$GITHUB_SHA" -o none
+          else
+            echo "::warning::ccs-web does not exist yet; create it once with infra/azure/README.md step 3."
+          fi

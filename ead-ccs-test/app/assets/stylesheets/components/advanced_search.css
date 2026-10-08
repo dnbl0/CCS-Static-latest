@@ -309,6 +309,11 @@
   background: var(--ccs-white);
 }
 
+.advanced-form__errors:focus-visible {
+  outline: 3px solid #0b4ea2;
+  outline-offset: 2px;
+}
+
 .advanced-form__errors[hidden] {
   display: none;
 }
