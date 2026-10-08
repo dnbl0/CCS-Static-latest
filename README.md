@@ -37,10 +37,11 @@ All pages live in `public/` (the web root). They are "DC template" HTML: `{{ }}`
 | `/search` | `public/search.html` | Redirect stub to `/search/search-results` (meta refresh, JS, and server redirect) |
 | `/search/search-results` | `public/search/search-results.html` | Search, facets (`FACETS`), results grid/list |
 | `/search/advanced-search` | `public/search/advanced-search.html` | Advanced Filters form (multi-row field search, filters, production-date range); submits to `/search/search-results` |
-| `/collections` | `public/collections/index.html` | Browse all collections |
+| `/collections` | `public/collections/index.html` | Browse all collections: the shared Browse collections cards (alphabetical), then Help and guidance |
 | `/collections/<slug>` | `public/collections/<slug>/index.html` | Five landing pages: `grainger-museum`, `harry-brookes-allen-museum`, `henry-forman-atkinson-dental-museum`, `medical-history-museum`, `university-art-collection`. They share one template with per-collection data in JS dicts, so a change to the shared structure must be made in all five files |
 | `/collections/record?id=<id>` | `public/collections/record.html` | Record detail and media viewer |
-| `/contact` | `public/contact.html` | Contact groups and collection contacts |
+| `/contact` | `public/contact.html` | Contact page in the UoM contact layout: an "On this page" list beside one column (collection contacts, general enquiries, before you get in touch, help). Reuses `help-layout` and `side-nav` |
+| `/about` | `public/about.html` | About Cultural Collections Search (hero, intro, key facts, feature panel, how to search, Indigenous cultural material, the shared Browse collections cards, contact links). In the header between Help and Contact; the Rails app has the same page at `/about` |
 | `/help` | `public/help/index.html` | Help and guidance. `?topic=faq`, `search-tips`, `copyright`, `access` or `privacy` shows one topic |
 | `/help/indigenous-data` | `public/help/indigenous-data.html` | Indigenous cultural data and access |
 
@@ -52,7 +53,7 @@ Legacy `*.dc.html` filenames (for example `Collection Search v3.dc.html`) 301-re
 
 ```
 public/                     Deployed web root
-  index.html, search.html, contact.html
+  index.html, search.html, contact.html, about.html
   nav.js                    Header behaviour: dropdown menus + mobile drawer (event-delegated; used by every page)
   search/search-results.html
   search/advanced-search.html     # advanced search form (logic in search/advanced-search-form.js)
@@ -67,11 +68,13 @@ public/                     Deployed web root
   assets/                   images/collections (digital assets), data (audio/video, metadata sheets), documents
   images/                   Optimised web images and icons used by pages (home/ = Figma homepage assets, advanced/ = Advanced Filters icons)
   .htaccess                 Apache equivalent of the vercel.json redirects
+src/partials/               Shared page chrome: header, search overlay, footer and browse-collections.html (the home page's Browse collections cards, reused on the About and Collections pages). Written into the pages by scripts/sync-partials.js
+src/collection-landing.template.html   Template for the five collection pages (scripts/build-collection-pages.js)
 src/scss/custom-bootstrap.scss   Bootstrap 5.3.3 theme source (see Styling)
 tests/                      Plain-Node test scripts (see Develop, test and deploy)
 config/redirects.json      Documentation-only list of legacy redirects (nothing reads it at runtime; vercel.json and .htaccess are authoritative)
 assets/                     Source material for content: spreadsheets, CSVs, help/landing-page copy (.docx), original images. Not deployed (listed in .vercelignore)
-.github/workflows/          ci.yml, auto-merge.yml, pages.yml (deploy to GitHub Pages)
+.github/workflows/          ci.yml, rails-ci.yml, auto-merge.yml, pages.yml (deploy to GitHub Pages), azure-deploy.yml, acr-push.yml
 .agents/rules/              PR workflow rule for coding agents
 verify-bootstrap.sh         Checks Bootstrap references in pages (run by npm test)
 vercel.json                 Clean URLs + legacy redirects; read by scripts/dev-server.js and scripts/build-pages.js (no longer deployed to Vercel)
@@ -196,7 +199,7 @@ Rows combine as: every `must` row matches, at least one `should` row matches (if
 
 ## Styling
 
-- **Bootstrap 5.3.3** is compiled locally from `src/scss/custom-bootstrap.scss` (sharp corners, no shadows, UoM colours) into `public/styles/vendor/bootstrap-uom.min.css`. This file is committed because Vercel runs no build step. Rebuild with `npm run build:css` (`build:css:dev` and `watch:css` write an unminified `bootstrap-uom.css`). After Sass compiles, `scripts/purge-css.js` removes every rule whose classes appear nowhere in the pages or scripts (the committed file is about 26 KB instead of 227 KB); **after adding a Bootstrap class to a page, run `npm run build:css` and commit the result**, otherwise the class has no CSS. Every page links the compiled file; only `index.html` also loads the Bootstrap JS bundle from jsDelivr (version-pinned with an SRI hash).
+- **Bootstrap 5.3.3** is compiled locally from `src/scss/custom-bootstrap.scss` (sharp corners, no shadows, UoM colours) into `public/styles/vendor/bootstrap-uom.min.css`. This file is committed because the deploy runs no Sass build. Rebuild with `npm run build:css` (`build:css:dev` and `watch:css` write an unminified `bootstrap-uom.css`). After Sass compiles, `scripts/purge-css.js` removes every rule whose classes appear nowhere in the pages or scripts (the committed file is about 26 KB instead of 227 KB); **after adding a Bootstrap class to a page, run `npm run build:css` and commit the result**, otherwise the class has no CSS. Every page links the compiled file; only `index.html` also loads the Bootstrap JS bundle from jsDelivr (version-pinned with an SRI hash).
 - **Live CSS**: everything under `public/styles/`: `tokens/tokens.css` (primitive, semantic and component tokens; see docs/design-tokens/README.md, including the Figma export), `base.css`, `components/` (shared pieces such as `ccs.css`, `header.css`, `collection.css`) and `pages/<page>.css`. Layout rules are in design.md and enforced by `tests/stylesheet-structure.test.js`.
 - **Page styles (no inline styles)**: each page links its own `public/styles/pages/<page>.css` (class rules, scoped by the `page-<page>` class on `<body>` so they win over shared component CSS the way the old inline styles did) (shared pieces live in `public/styles/components/`, element defaults in `base.css`, colours in `tokens/`). Do not add `style=""` attributes or `<style>` blocks; add a class and a rule instead. For a value that only the page logic knows, set a custom property inline (`style="--dyn-height:{{ b.h }}"`) and use `var(--dyn-height)` in the stylesheet. The five collection landing pages share `collection-landing*.css`.
 - **Content templates (Matrix patterns)**: `public/styles/components/content-templates.css` holds the components modelled on the University's Matrix CMS content templates (unimelb.edu.au/web/matrix-cms/content-templates and /styling-content): `ct-listing` (Page Listing: image or text lists, `--alt` grey band), `pathfinder` (the Design System Pathfinder: `grid grid--cols-3|4 grid--collapsed` of `pathfinder` tiles with `--alt` and `--inverse` modifiers, the footer arrow as the title icon), `contact-box`, `notice` (`--warning`, `--success`), `side-nav`, `def-table`, `contact-cards`, `steps-list`, and the help/collection layouts (`help-layout`, `collection-layout`). Used by Browse collections, the five collection pages, Help and Indigenous data. Reuse these before writing new page CSS; values (type sizes, colours) were measured from the Matrix pages.
@@ -244,15 +247,17 @@ Clean URLs (`/search/search-results`, `/collections/record`) only resolve on a h
 
 - `.github/workflows/ci.yml`: Node 20, `npm ci` (or `npm install` without a lockfile), installs Chromium for the browser test, then `npm test`, on every pull request and push to `main`.
 - `.github/workflows/auto-merge.yml`: pushes to `feature/**`, `bugfix/**` or `enhance/**` that change html/css/js/md files and have 3+ commits or 2+ changed files open (or reuse) a PR against `main`, run basic documentation/structure checks, approve it, and squash-merge it. It does not run `npm test` itself. Auto-approval only works if the repository setting **Settings > Actions > General > "Allow GitHub Actions to create and approve pull requests"** is enabled; otherwise the approve step logs a warning and the job continues to the merge step. See `github.md` and `.agents/rules/pr-workflow.md`.
-- `.github/workflows/vercel-deploy.yml`: on push to `main`, `vercel pull`/`build`/`deploy --prod` using the `VERCEL_TOKEN`, `VERCEL_ORG_ID` and `VERCEL_PROJECT_ID` secrets.
+- `.github/workflows/rails-ci.yml`: Rails tests, system tests, rubocop and `npm run parity` (static pages against their Rails twins). All four checks (`test`, `rails`, `system`, `parity`) must pass before a pull request is merged.
+- `.github/workflows/pages.yml`: on push to `main` of the organisation repo, builds `public/` into `dist/` (`scripts/build-pages.js`) and publishes it with GitHub Pages. It does nothing on forks or personal copies.
 
 ### Hosting
 
-Deployed on Vercel. The project link (`.vercel/`) is local and git-ignored.
+Published with GitHub Pages from the organisation repository (`Enterprise-Services-Group/CCS-2026-MVP`) by `pages.yml`; the site is public at https://enterprise-services-group.github.io/CCS-2026-MVP/. Vercel is no longer used. Changes reach it in two steps: a pull request into `main` of the personal repository (`dnbl0/CCS-Static-latest`), then a sync pull request into the organisation repository, which deploys when merged.
 
-- `vercel.json`: `cleanUrls: true`, `trailingSlash: false`, and 301 redirects from the legacy `*.dc.html` names (plain and `%20`-encoded) and from `/search` and `/search.html` to `/search/search-results`.
+- `scripts/build-pages.js` prefixes links with the Pages base path, serves `/item/:code` through `404.html` and writes redirect pages for the legacy URLs.
+- `vercel.json`: `cleanUrls: true`, `trailingSlash: false`, and 301 redirects from the legacy `*.dc.html` names and from `/search` and `/search.html` to `/search/search-results`. It is no longer deployed, but `scripts/dev-server.js` and `scripts/build-pages.js` read it.
 - `public/.htaccess`: the Apache equivalent (redirects plus clean-URL rewrites) for hosting on Apache.
-- `.vercelignore` excludes the top-level `assets/` source material, `public/assets/`, `*.dc.html` and `.reorganization/` from uploads when deploying with the CLI. Because `public/assets/` is excluded there, check that digital assets load on the deployed site after changing how deployment is done.
+- Local preview: `PORT=3000 node scripts/dev-server.js`, then open `http://localhost:3000/about.html` (any page).
 
 ### Generated files and the Rails app
 
@@ -260,7 +265,7 @@ Some files are written by scripts; edit their source, then run the script (`npm 
 
 | Edit | Run | Writes |
 |---|---|---|
-| `src/partials/*.html` (header, search overlay, footer) | `npm run sync:partials` | the header, overlay and footer of every page in `public/` |
+| `src/partials/*.html` (header, search overlay, footer, browse-collections) | `npm run sync:partials` | the header, overlay and footer of every page in `public/`, and the Browse collections cards on the home, About and Collections pages |
 | `src/collection-landing.template.html` | `npm run build:collections` | `public/collections/<slug>/index.html` |
 | `public/styles/tokens`, `components`, `pages` and `public/images` | `npm run sync:rails` | the Rails copies in `ead-ccs-test/app/assets` |
 
@@ -275,7 +280,7 @@ codebases clean are described in `ead-ccs-test/README.md` and `docs/code-quality
 - **Accession numbers**: 15 of 735 records have no accession number (the data owner needs to supply them). `npm test` reports `accession number present on 720/735 records`.
 - **Unpopulated spec fields**: Editions, Source URL, Related child record and Producer are supported by `build()` but no record sets them (reported as test warnings).
 - **`search.html`** redirect stub has no `<h1>` (test warning).
-- **Hosting behaviour unverified**: `vercel.json` redirects and `cleanUrls` have not been checked against the live Vercel deployment.
+- **Hosting behaviour unverified**: the redirects in `vercel.json` are applied by `scripts/build-pages.js` for GitHub Pages; check them on the live site after changing them.
 - **Thin audio/video data**: only two audio/video items exist, so the sound-recording and film browse tiles map to small keyword searches.
 - **Object type facet is long**: object types are free text (about 370 distinct values), so the Object type facet is long and uneven.
 - **Accessibility**: axe-core scans of the pages were clean except for the items above; there has been no formal WCAG audit, manual screen-reader pass or certification.
