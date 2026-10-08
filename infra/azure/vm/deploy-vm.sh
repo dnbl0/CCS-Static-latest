@@ -15,9 +15,12 @@ az account set --subscription "$SUBSCRIPTION"
 CI="$(mktemp)"
 sed "s#__DOMAIN__#$DOMAIN#; s#__BRANCH__#$BRANCH#" "$(dirname "$0")/cloud-init.yaml" > "$CI"
 
-for SIZE in ${VM_SIZES:-Standard_B2s Standard_B2als_v2 Standard_B2as_v2 Standard_D2s_v3 Standard_D2as_v5}; do
+for SIZE in ${VM_SIZES:-Standard_B2ps_v2 Standard_B2pls_v2 Standard_B2s Standard_B2als_v2 Standard_B2as_v2 Standard_D2s_v3}; do
   echo "Trying VM size $SIZE ..."
-  if az vm create -g "$RG" -n "$VM" -l "$LOCATION" --image Ubuntu2404 --size "$SIZE" --admin-username azureuser \
+  # Arm sizes (the "p" in Standard_B2ps_v2) need the arm64 image; the Docker images used here are multi-arch
+  IMAGE=Ubuntu2404
+  [[ $SIZE =~ ^Standard_[A-Za-z]+[0-9]+p ]] && IMAGE=Canonical:ubuntu-24_04-lts:server-arm64:latest
+  if az vm create -g "$RG" -n "$VM" -l "$LOCATION" --image "$IMAGE" --size "$SIZE" --admin-username azureuser \
        --generate-ssh-keys --public-ip-sku Standard --public-ip-address-dns-name "$LABEL" --custom-data "$CI" -o none; then
     az vm open-port -g "$RG" -n "$VM" --port 80,443 --priority 900 -o none
     echo
