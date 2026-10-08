@@ -23,3 +23,9 @@ PostgreSQL (Burstable). Images live in Azure Container Registry.
 The image's default command still runs `db:prepare` on boot, as for the existing cluster. To run migrations separately
 on Azure, override the `ccs-web` command to `bundle exec rails server -b 0.0.0.0` and run `rails db:prepare` as a
 Container Apps job.
+
+## Simpler alternative: one VM (`infra/azure/vm/`)
+The Container Apps route above needs a standard environment, and student subscriptions allow only one per region.
+`infra/azure/vm/deploy-vm.sh` instead creates a single Ubuntu VM that runs Caddy (automatic HTTPS), Rails, Solr and
+Postgres with Docker Compose. Passwords are generated on the VM (`/opt/ccs/infra/azure/vm/.env`, root only).
+Run it in Cloud Shell: `SUBSCRIPTION=<id> RG=<group> BRANCH=<branch> infra/azure/vm/deploy-vm.sh`.
