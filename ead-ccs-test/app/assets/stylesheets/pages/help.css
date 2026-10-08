@@ -48,29 +48,6 @@ body.page-help .help-search-tips__group--v1 {
   gap: var(--space-16);
   margin: 0 0 var(--space-24);
 }
-/* Topic cards on the help landing use the homepage help card (ccs-help), three across on desktop */
-body.page-help .ccs-help--topics {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  margin: 0 0 var(--space-8);
-}
-body.page-help .ccs-help--topics .ccs-help__item:nth-child(3n + 1) .ccs-help__card {
-  margin-left: 0;
-}
-body.page-help .ccs-help--topics .ccs-help__item:nth-child(n + 4) .ccs-help__card {
-  margin-top: -1px;
-}
-@media (max-width: 1023px) {
-body.page-help .ccs-help--topics {
-    grid-template-columns: minmax(0, 1fr);
-  }
-body.page-help .ccs-help--topics .ccs-help__item .ccs-help__card {
-    margin-left: 0;
-    margin-top: -1px;
-  }
-body.page-help .ccs-help--topics .ccs-help__item:first-child .ccs-help__card {
-    margin-top: 0;
-  }
-}
 /* Help topic grid; smooth scrolling for in-page anchors */
 .help-topics-grid{grid-template-columns:repeat(3,1fr)}
 @media (max-width:900px) {

@@ -39,7 +39,9 @@ class PagesTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_select "body.page-help h1", "Help and support"
-    assert_select ".ccs-help--topics .ccs-help__item", count: HelpTopic.all.size
+    assert_select ".tile-strip__item, .box-grid__item", count: HelpTopic.all.size
+    assert_select ".tile-strip__item", count: 3
+    assert_select ".box-grid__item .ct-button", count: 3
   end
 
   test "each help topic has a page with the topics side nav" do
