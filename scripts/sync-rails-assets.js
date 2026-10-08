@@ -79,8 +79,8 @@ const SHARED_EXTRAS = `
 .bc-mobile__item { display: flex; align-items: center; }
 .bc-mobile__link { display: inline-flex; align-items: center; gap: var(--space-6); min-height: 44px; color: var(--white-100); text-decoration: none; }
 /* The static base layer: body text colour (the home page sets its own in ccs.css), and links are plain navy and underline on hover (Bootstrap's default underlines them). */
-body.page-collection-landing, body.page-collections-browse, body.page-help, body.page-contact, body.page-indigenous-data { color: var(--col-text-primary); }
-:where(body.page-home, body.page-collection-landing, body.page-collections-browse, body.page-help, body.page-contact, body.page-indigenous-data) a { color: #0b2a6b; text-decoration: none; }
+body.page-collection-landing, body.page-collections-browse, body.page-help, body.page-contact, body.page-indigenous-data, body.page-about { color: var(--col-text-primary); }
+:where(body.page-home, body.page-collection-landing, body.page-collections-browse, body.page-help, body.page-contact, body.page-indigenous-data, body.page-about) a { color: #0b2a6b; text-decoration: none; }
 :where(body.page-home, body.page-collection-landing, body.page-collections-browse) a:hover { text-decoration: underline; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 .skip-link{position:absolute;top:-120px;left:16px;background:var(--col-btn-action-bg);color:var(--col-btn-action-text);padding:12px 18px;z-index:var(--z-99999);font-weight:700;text-decoration:none;border:2px solid var(--col-bg-primary);transition:top var(--duration-base) ease}
@@ -95,7 +95,7 @@ body.page-collection-landing, body.page-collections-browse, body.page-help, body
 `;
 
 const SHARED = ['ccs', 'breadcrumbs', 'page-banner', 'content-templates', 'campaign-banner', 'collection'];
-const PAGES = { home: 'home', 'collections-browse': 'collections_browse', 'collection-landing': 'collection_landing', contact: 'contact', help: 'help', 'indigenous-data': 'indigenous_data' };
+const PAGES = { home: 'home', 'collections-browse': 'collections_browse', 'collection-landing': 'collection_landing', contact: 'contact', help: 'help', 'indigenous-data': 'indigenous_data', about: 'about' };
 
 const files = new Map(); // path relative to RAILS -> Buffer | string
 files.set('stylesheets/tokens/static_site.css', read('tokens/tokens.css'));

@@ -49,6 +49,8 @@ module NexusCcs
 
     def help_home = SiteNavigation::Link.new(SiteNavigation::HELP_HOME_LABEL, helpers.help_path)
 
+    def about = SiteNavigation::Link.new(SiteNavigation::ABOUT_LABEL, helpers.about_path)
+
     def contact = SiteNavigation::Link.new(SiteNavigation::CONTACT_LABEL, helpers.contact_path)
 
     def collections_home = helpers.collections_path

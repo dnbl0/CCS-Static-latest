@@ -32,6 +32,7 @@ module NexusCcs
 
     # Labels of the help home and the contact page (the help topics are HelpTopic.all).
     HELP_HOME_LABEL = "Help and support"
+    ABOUT_LABEL = "About"
     CONTACT_LABEL = "Contact"
 
     FOOTER_ABOUT = [
