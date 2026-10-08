@@ -1,14 +1,18 @@
 require "test_helper"
 
 class PagesTest < ActionDispatch::IntegrationTest
-  test "browse collections lists the five collections, their sub-collections and the help links" do
+  test "browse collections lists the five collections alphabetically and the help links" do
     get "/collections"
 
     assert_response :success
     assert_select "body.page-collections-browse h1", "Browse collections"
-    assert_select ".ct-listing__list--image > li:not(.ct-listing__item--search)", count: 5
-    assert_select ".ct-listing__list--image a[href=?]", "/collections/grainger-museum"
-    assert_select ".ct-listing__list--text > li", count: YAML.load_file(Rails.root.join("config/pages.yml")).dig("browse", "sub_collections").size
+    assert_select ".ccs-section--cards .ccs-card", count: 5
+    assert_select ".ccs-card__link[href=?]", "/collections/grainger-museum"
+    assert_select ".ccs-card__title" do |titles|
+      names = titles.map { |title| title.text.strip }
+      assert_equal names.sort, names
+    end
+    assert_select ".ct-listing__list--text", count: 0
     assert_select "nav.page-breadcrumbs li[aria-current=page]", "Browse collections"
   end
 

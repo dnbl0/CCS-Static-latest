@@ -10,7 +10,8 @@ LOCATION="${LOCATION:-australiaeast}"
 RG="${RG:-ccs-rg}"
 SUFFIX="${SUFFIX:-$(printf '%s' "$SUBSCRIPTION" | cut -c1-6)}"
 ACR="${ACR:-ccsacr${SUFFIX//-/}}"
-ENVNAME="${ENVNAME:-ccs-env}"
+# A WorkloadProfiles environment: the "express" mode (the default here) cannot mount Azure Files, which Solr needs.
+ENVNAME="${ENVNAME:-ccs-std-env}"
 PG="${PG:-ccs-pg-${SUFFIX}}"
 STORAGE="${STORAGE:-ccsstore${SUFFIX//-/}}"
 TAG="${1:-latest}"
@@ -18,16 +19,16 @@ TAG="${1:-latest}"
 az account set --subscription "$SUBSCRIPTION"
 az extension add --name containerapp --upgrade --only-show-errors
 
-az group create -n "$RG" -l "$LOCATION" -o none
+az group show -n "$RG" -o none 2>/dev/null || az group create -n "$RG" -l "$LOCATION" -o none
 az acr show -n "$ACR" -g "$RG" -o none 2>/dev/null || az acr create -n "$ACR" -g "$RG" --sku Basic -o none
-az containerapp env show -n "$ENVNAME" -g "$RG" -o none 2>/dev/null || az containerapp env create -n "$ENVNAME" -g "$RG" -l "$LOCATION" -o none
+az containerapp env show -n "$ENVNAME" -g "$RG" -o none 2>/dev/null || az containerapp env create -n "$ENVNAME" -g "$RG" -l "$LOCATION" --environment-mode WorkloadProfiles -o none
 
 # --- Postgres (Burstable) ---
 if ! az postgres flexible-server show -n "$PG" -g "$RG" -o none 2>/dev/null; then
   PGPASS="$(openssl rand -base64 24 | tr -d '/+=')"
   az postgres flexible-server create -n "$PG" -g "$RG" -l "$LOCATION" --tier Burstable --sku-name Standard_B1ms \
     --version 17 --admin-user ead_ccs --admin-password "$PGPASS" --public-access 0.0.0.0 --yes -o none
-  az postgres flexible-server db create -g "$RG" -s "$PG" -d ead_ccs -o none
+  az postgres flexible-server db create -g "$RG" -s "$PG" -n ead_ccs -o none
   echo "Postgres created. The admin password was generated and not shown; set a known one with:"
   echo "  az postgres flexible-server update -n $PG -g $RG --admin-password <new> and store it as the ccs-web secret."
 fi
