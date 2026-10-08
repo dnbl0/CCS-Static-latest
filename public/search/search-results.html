@@ -242,6 +242,7 @@
   </div>
 </section>
 <div class="search-results-sentinel" ref="{{ sentinelRef }}" aria-hidden="true"></div>
+<div class="search-results-body">
 <div class="search-results-bar {{ barCls }}" role="region" aria-label="Search and results tools">
   <div class="search-results-bar__tools">
     <div class="search-results-bar__compact" ref="{{ compactHostRef }}"></div>
@@ -456,6 +457,7 @@
     </div>
   </sc-if>
 </main>
+</div>
 </div>
 
 
@@ -1167,7 +1169,7 @@ class Component extends DCLogic {
     const f = s.f, YMIN = YEAR_MIN, YMAX = YEAR_MAX;
     const all = this.facetSections(s, f, { open: 'sOpen', fq: 'sFq', more: 'sMore', find: '', set: fn => this.apply(fn), prefix: 'rail-' });
     all.forEach(sec => { sec.value = sec.summary || (sec.isDate || sec.isLife ? 'Select a date range' : sec.isText ? 'Enter an accession number' : 'Select ' + sec.title.toLowerCase()); sec.hasValue = !!sec.summary; });
-    const FIRST = 3, extraOpen = s.sExtra, shown = extraOpen ? all : all.slice(0, FIRST);
+    const extraOpen = true, shown = all;
     const parse = v => { const t = String(v).trim(); if (t === '') return null; return /^-?\d{1,4}$/.test(t) ? parseInt(t, 10) : NaN; };
     const commitYears = () => { const yi = s.sYIn || {}; const pf = yi.from != null ? yi.from : (f.yFrom ?? ''), pt = yi.to != null ? yi.to : (f.yTo ?? '');
       const a = parse(pf), b = parse(pt);
@@ -1176,9 +1178,8 @@ class Component extends DCLogic {
       if (a != null && b != null && a > b) return this.setState({ sYErr: 'The earliest year can’t be after the latest year.' });
       if (a === f.yFrom && b === f.yTo && !s.sYIn) return;
       this.setState({ sYIn: null, sYErr: '' }); this.apply(ff => ({ ...ff, yFrom: a, yTo: b })); };
-    const sw = (label, key) => { const on = !!f[key]; return { label, count: '', checked: on, ariaChecked: String(on), toggle: () => this.apply(ff => ({ ...ff, [key]: !ff[key] })) }; };
-    return { sideSections: shown, hasExtraFilters: all.length > FIRST, extraOpen, extraLabel: extraOpen ? '− Show fewer filters' : '+ Show additional filters', toggleExtra: () => this.setState(st => ({ sExtra: !st.sExtra })),
-      railSwitches: [sw('Only records with downloads', 'downloadable')],
+    return { sideSections: shown, hasExtraFilters: false, extraOpen, extraLabel: extraOpen ? '− Show fewer filters' : '+ Show additional filters', toggleExtra: () => this.setState(st => ({ sExtra: !st.sExtra })),
+      railSwitches: [],
       rYFrom: s.sYIn && s.sYIn.from != null ? s.sYIn.from : (f.yFrom ?? ''), rYTo: s.sYIn && s.sYIn.to != null ? s.sYIn.to : (f.yTo ?? ''),
       onRYFrom: e => { const v = e.target.value; this.setState(st => ({ sYIn: { ...(st.sYIn || {}), from: v } })); }, onRYTo: e => { const v = e.target.value; this.setState(st => ({ sYIn: { ...(st.sYIn || {}), to: v } })); },
       rYKey: e => { if (e.key === 'Enter') { e.preventDefault(); commitYears(); } }, commitRYears: commitYears, rYErr: s.sYErr,
@@ -1399,7 +1400,7 @@ class Component extends DCLogic {
       setGrid: () => this.setView('masonry'), setList: () => this.setView('list'),
       gridBg: view === 'masonry' ? '#c8d5c0' : '#fff', listBg: view === 'list' ? '#c8d5c0' : '#fff', isMasonry: view === 'masonry', isListView: view === 'list',
       barCls: s.stuck ? 'is-stuck' : '', sentinelRef: this.sentinelRef, bannerHostRef: this.bannerHostRef, compactHostRef: this.compactHostRef,
-      bannerLine: f.q ? n + (n === 1 ? ' result for ' : ' results for ') + '“' + f.q + '”' : 'Explore artworks, objects, manuscripts, photographs and recordings held across the University of Melbourne\'s cultural collections.',
+      bannerLine: n + (n === 1 ? ' result' : ' results') + (f.q ? ' for “' + f.q + '”' : ''),
       titleText: n + ' ' + (n === 1 ? 'result' : 'results') + (chips.length ? ' for' : ''),
       digitalOn: String(!!f.digital), digitalCls: f.digital ? 'is-on' : '', toggleDigital: () => this.apply(ff => ({ ...ff, digital: !ff.digital })),
       layoutCls: s.loading ? 'is-searching' : '',

@@ -728,3 +728,63 @@ body.page-search-results .search-results-bar .search-results-summary__group--v4 
   align-items: center;
   gap: var(--space-8) var(--space-12);
 }
+
+/* Desktop results bar: no sticky strip, no compact search. The count and chips sit above one row of sort, per page and view. */
+@media (min-width: 960px) {
+  body.page-search-results .search-results-body > .search-results-bar,
+  body.page-search-results .search-results-body > .search-results-bar.is-stuck {
+    grid-area: bar;
+    position: static;
+    border-bottom: 0;
+    box-shadow: none;
+  }
+
+  body.page-search-results .search-results-bar__tools {
+    flex-direction: column;
+    align-items: stretch;
+    flex-wrap: nowrap;
+    gap: var(--space-16);
+    padding: var(--space-24) 0 0 var(--space-24);
+  }
+
+  body.page-search-results .search-results-bar.is-stuck .search-results-bar__compact {
+    display: none;
+  }
+
+  body.page-search-results .search-results-bar.is-stuck .search-results-bar__count {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+  }
+
+  body.page-search-results .search-results-bar .search-results-summary__group--v2,
+  body.page-search-results .search-results-bar .search-results-search-tools__button-filter-btn {
+    display: none;
+  }
+
+  body.page-search-results .search-results-bar__controls,
+  body.page-search-results .search-results-bar.is-stuck .search-results-bar__controls {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  body.page-search-results .search-results-bar .search-results-search-tools__group-sort,
+  body.page-search-results .search-results-bar .search-results-per-page {
+    flex: 1 1 200px;
+    max-width: 288px;
+    width: auto;
+  }
+
+  body.page-search-results .search-results-bar__controls .search-results-view {
+    margin-left: auto;
+  }
+
+  body.page-search-results .search-results-bar .search-results-per-page .search-results-summary__group-pp,
+  body.page-search-results .search-results-bar .search-results-per-page .search-results-summary__button-toggle-pp {
+    width: 100%;
+  }
+}
