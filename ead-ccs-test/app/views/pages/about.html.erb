@@ -1,0 +1,73 @@
+<% content_for :title, "About — Cultural Collections Search — University of Melbourne" %>
+<% content_for :body_class, "page-about" %>
+<%= render NexusCcs::PageBreadcrumbsComponent.new(trail: [ [ "About", nil ] ]) %>
+<main id="main-content" class="about-main-content">
+<section class="ccs-section ccs-section--intro" aria-labelledby="about-intro-title">
+<div class="ccs-section__inner">
+<h2 class="sr-only" id="about-intro-title">What Cultural Collections Search is</h2>
+<p class="ccs-intro">Cultural Collections Search brings the University of Melbourne's museum and art collections together in one place, so you can search, filter and view records across all of them at once.</p>
+<ul class="about-stats">
+<li class="about-stats__item"><span class="about-stats__figure">5</span><span class="about-stats__label">cultural collections searched together</span></li>
+<li class="about-stats__item"><span class="about-stats__figure">4</span><span class="about-stats__label">kinds of media to view online: images, video, audio and documents</span></li>
+<li class="about-stats__item"><span class="about-stats__figure">2</span><span class="about-stats__label">ways to see an item: online, or by appointment with the collection</span></li>
+</ul>
+</div>
+</section>
+
+<section class="about-feature" aria-labelledby="about-collections-title">
+<div class="about-feature__inner">
+<div class="about-feature__media"><img class="about-feature__image" src="<%= asset_path("site/banners/medical-history-museum.jpg") %>" alt=""></div>
+<div class="about-feature__panel">
+<p class="about-eyebrow">Collections</p>
+<h2 class="about-feature__heading" id="about-collections-title">Five collections, cared for by the teams who know them best</h2>
+<p class="about-feature__text">The Grainger Museum Collection, the Harry Brookes Allen Museum of Anatomy and Pathology, the Henry Forman Atkinson Dental Museum, the Medical History Museum and the University Art Collection each describe and look after their own records. This site searches across all five.</p>
+<ul class="about-feature__links">
+<li><a class="about-link about-link--inverse" href="<%= collections_path %>">Browse collections</a></li>
+<li><a class="about-link about-link--inverse" href="<%= search_catalog_path %>">Search all records</a></li>
+</ul>
+</div>
+</div>
+</section>
+
+<section class="about-search" aria-labelledby="about-search-title">
+<div class="about-search__inner">
+<div class="about-search__intro">
+<p class="about-eyebrow about-eyebrow--dark">Search</p>
+<h2 class="about-search__heading" id="about-search-title">Find records by what you know</h2>
+<p class="about-search__text">Search by title, creator, subject or description, then narrow the results by collection, creator, production date, classification and more. See results as a mosaic of images or a detailed list, and open any record for its full description, rights and a persistent link you can quote.</p>
+<ul class="about-search__links">
+<li><a class="about-link" href="<%= search_catalog_path %>">Search all records</a></li>
+<li><a class="about-link" href="<%= help_path(topic: "search-tips") %>">Search tips</a></li>
+</ul>
+</div>
+<div class="about-search__media"><img class="about-search__image" src="<%= asset_path("site/banners/university-art-collection.jpg") %>" alt=""></div>
+</div>
+<ul class="about-facts">
+<li class="about-facts__item">Filter by collection, creator, production date and classification</li>
+<li class="about-facts__item">Put a phrase in quotes to search for it exactly</li>
+<li class="about-facts__item">Copy a record's persistent link to cite it or to contact the collection team</li>
+</ul>
+</section>
+
+<section class="about-band" aria-labelledby="about-care-title">
+<div class="about-band__panel">
+<h2 class="about-band__heading" id="about-care-title">Indigenous cultural material is handled with care</h2>
+<p class="about-band__text">Some records and images include the names, images and voices of Aboriginal and Torres Strait Islander people who have died, and some describe people in language from the period in which an item was made.</p>
+<p class="about-band__text">Cultural Collections Search follows the University's Indigenous priorities. Read how this material is described, protected and accessed.</p>
+<a class="about-button" href="<%= indigenous_data_path %>">Read about Indigenous cultural data and access</a>
+</div>
+</section>
+
+<%= render "pages/browse_collections" %>
+
+<section class="about-help" aria-labelledby="about-help-title">
+<div class="about-help__inner">
+<h2 class="about-help__heading" id="about-help-title">Contact and support</h2>
+<ul class="about-help__list">
+<li class="about-help__item"><a class="about-link" href="<%= contact_path %>">Contact the collections team</a><p class="about-help__text">Ask a question, or request access to a collection item.</p></li>
+<li class="about-help__item"><a class="about-link" href="<%= help_path %>">Help and support</a><p class="about-help__text">Searching, using, copyright and requesting items from the collections.</p></li>
+<li class="about-help__item"><a class="about-link" href="mailto:ccs-feedback@unimelb.edu.au">Send feedback about this site</a><p class="about-help__text">Report a broken link or suggest an improvement.</p></li>
+</ul>
+</div>
+</section>
+</main>

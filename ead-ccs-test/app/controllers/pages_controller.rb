@@ -29,5 +29,7 @@ class PagesController < ApplicationController
 
   def indigenous_data = render("pages/help/indigenous_data")
 
+  def about; end
+
   def contact; end
 end
