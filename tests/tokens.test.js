@@ -1,13 +1,29 @@
-// Design tokens: tier rules hold, every var(--token) the site uses is defined, and the Figma export matches tokens.css.
+// Design tokens: tier rules hold, every var(--token) the site uses is defined.
 const { PUBLIC, ROOT, fail, ok, walk, finish, fs, path } = require('./lib');
-const { execFileSync } = require('child_process');
-const { build, parse } = require(path.join(ROOT, 'scripts/build-figma-tokens.js'));
-
-const { errors, tokens } = build();
+// tokens.css has three tiers marked by "TIER n" banner comments: semantic may alias primitives only, component may alias semantic only
+const TIERS = ['primitive', 'semantic', 'component'];
+const ALLOWED = { primitive: [], semantic: ['primitive'], component: ['semantic'] };
+const RUNTIME = new Set(['--header-total-height']); // measured and written by record.html at runtime, not a design token
+const tokenCss = fs.readFileSync(path.join(PUBLIC, 'styles/tokens/tokens.css'), 'utf8');
+const banners = [...tokenCss.matchAll(/TIER (\d):/g)].map(m => ({ i: m.index, tier: TIERS[+m[1] - 1] }));
+const tokens = [], byName = new Map(), errors = [];
+for (const m of tokenCss.matchAll(/^\s*(--[\w-]+)\s*:\s*([^;]+);/gm)) {
+  const b = [...banners].reverse().find(x => x.i < m.index);
+  if (!b || RUNTIME.has(m[1])) continue;
+  const t = { name: m[1], raw: m[2].trim().replace(/\s+/g, ' '), tier: b.tier };
+  if (byName.has(t.name)) errors.push(`${t.name} is defined twice`);
+  byName.set(t.name, t); tokens.push(t);
+}
+for (const t of tokens) {
+  const only = /^var\((--[\w-]+)\)$/.exec(t.raw);
+  if (only) {
+    const target = byName.get(only[1]);
+    if (!target) errors.push(`${t.name} -> ${only[1]} does not exist`);
+    else if (!ALLOWED[t.tier].includes(target.tier)) errors.push(`${t.name} (${t.tier}) may not alias ${target.name} (${target.tier})`);
+  } else if (t.tier !== 'primitive' && !/var\(/.test(t.raw)) errors.push(`${t.name} (${t.tier}) holds a raw value; upper tiers must alias the tier below`);
+}
 errors.forEach(fail);
 if (!errors.length) ok(`${tokens.length} tokens: semantic only aliases primitives, component only aliases semantic`);
-try { execFileSync('node', [path.join(ROOT, 'scripts/build-figma-tokens.js'), '--check'], { stdio: 'pipe' }); ok('design-tokens/figma/* is up to date with tokens.css'); }
-catch (e) { fail(String(e.stderr || e.message).trim()); }
 
 const css = fs.readFileSync(path.join(PUBLIC, 'styles/tokens/tokens.css'), 'utf8');
 const defined = new Set([...css.matchAll(/^\s*(--[\w-]+)\s*:/gm)].map(m => m[1]));

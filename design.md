@@ -35,7 +35,7 @@
 
 All colors follow the University of Melbourne Gen 3 Design System official palette.
 
-**Where tokens live**: `public/styles/tokens/tokens.css` (primitive, semantic and component tiers); rules and the Figma export are in `docs/design-tokens/README.md`.
+**Where tokens live**: `public/styles/tokens/tokens.css` (primitive, semantic and component tiers); rules are in `docs/design-tokens/README.md`.
 
 #### Primary Colors
 
