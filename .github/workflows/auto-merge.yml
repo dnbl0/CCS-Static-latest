@@ -170,7 +170,7 @@ jobs:
           echo "📁 Checking file structure..."
 
           # Check required directories
-          required_dirs=("images" "components" "assets")
+          required_dirs=("images" "assets")
           for dir in "${required_dirs[@]}"; do
             if [ ! -d "$dir" ]; then
               echo "⚠️  Missing directory: $dir"

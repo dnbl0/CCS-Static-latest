@@ -63,7 +63,6 @@ public/                     Deployed web root
   blacklight-adapter.js     Optional live/mock adapter for a Blacklight JSON API (mock by default)
   support.js                DC template runtime (generated)
   image-slot.js             <image-slot> placeholder component (loaded by index.html)
-  components/               Figma-exported .jsx/.d.ts components (reference only; no live CSS)
   styles/                   tokens/tokens.css (the one token layer), base.css, components/*.css, pages/<page>.css, vendor/bootstrap-uom.min.css (see design.md, CSS Files Location)
   assets/                   images/collections (digital assets), data (audio/video, metadata sheets), documents
   images/                   Optimised web images and icons used by pages (home/ = Figma homepage assets, advanced/ = Advanced Filters icons)
@@ -85,7 +84,6 @@ design.md, github.md, jira-mvp-mapping.md, BOOTSTRAP-DEPENDENCIES.md   Supportin
 Notes on directories:
 
 - `public/blacklight-adapter.js` is loaded by `search/search-results.html` and `collections/record.html`. Its default mode is `mock` (local `collection-data.js`); `?api=live` switches to the Blacklight endpoint set in the adapter. It is covered by `tests/blacklight-adapter.test.js`.
-- `public/components/*.jsx` / `*.d.ts` are exported design-system component sources; pages only load the two CSS files.
 
 ---
 

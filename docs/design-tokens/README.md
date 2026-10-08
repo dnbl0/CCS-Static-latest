@@ -12,7 +12,6 @@ Families: `searchbar`, `nav` (header, drawer, search overlay), `licence`, `banne
 
 Before this change there were about 1,370 custom properties across six `:root` blocks in five files, of which only 105 were used anywhere. The rest was an unmodified Figma export and the University of Melbourne Gen 3 header token set. Both exports are archived unchanged here for reference and are not linked by any page:
 
-- `figma-variables-export.css` (the old `components/fig-tokens.css`)
 - `uom-header-tokens-export.css` (the two `:root` blocks of the old `styles/header.css`)
 
 ## Naming

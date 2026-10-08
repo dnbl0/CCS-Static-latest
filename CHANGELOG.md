@@ -4,6 +4,7 @@ Recent changes to the static site, newest first. Earlier history is in `git log`
 
 ### 2026-10-08
 
+- **Figma files removed**: the token export and sync (`scripts/build-figma-tokens.js`, `npm run build:figma-tokens`, `design-tokens/figma/`), the archived Figma variables export (`docs/design-tokens/figma-variables-export.css`) and the 114 Figma-exported `.jsx`/`.d.ts` files in `public/components/`. Nothing loaded them. `tests/tokens.test.js` still checks the token tiers and that every `var(--token)` resolves.
 - **About page** (`/about`, static and Rails): hero, intro (`ccs-section--intro`), key facts, feature panel, how to search, Indigenous cultural material, the shared Browse collections cards and contact links. A new **About** item sits between Help and Contact in the header.
 - **Shared Browse collections section**: the home page's cards are now `src/partials/browse-collections.html` (static) and `pages/_browse_collections.html.erb` (Rails), reused on the home, About and Collections pages. The "Our collections" list and the "Browse by sub-collection" section were removed from the Collections page. Collections are listed alphabetically everywhere they are all shown, including the header dropdown.
 - **Home hero text** now reads "Unrivalled among Australian universities, our collections span visual arts, medical history, zoology, archives and Aboriginal and Torres Strait Islander cultural heritage."

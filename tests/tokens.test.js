@@ -27,7 +27,7 @@ if (!errors.length) ok(`${tokens.length} tokens: semantic only aliases primitive
 
 const css = fs.readFileSync(path.join(PUBLIC, 'styles/tokens/tokens.css'), 'utf8');
 const defined = new Set([...css.matchAll(/^\s*(--[\w-]+)\s*:/gm)].map(m => m[1]));
-const files = walk(PUBLIC, p => /\.(css|html|js)$/.test(p) && !/bootstrap-uom|[\\/]components[\\/][A-Z]|collection-data\.js/.test(p) && !p.endsWith('tokens.css'));
+const files = walk(PUBLIC, p => /\.(css|html|js)$/.test(p) && !/bootstrap-uom|collection-data\.js/.test(p) && !p.endsWith('tokens.css'));
 // custom properties a stylesheet or script defines locally (--dyn-*, component-scoped vars) or that Bootstrap provides
 const local = new Set();
 for (const f of files) for (const m of fs.readFileSync(f, 'utf8').matchAll(/(--[\w-]+)\s*:/g)) local.add(m[1]);
