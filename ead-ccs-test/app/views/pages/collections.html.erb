@@ -3,40 +3,7 @@
 <%= render NexusCcs::PageBreadcrumbsComponent.new(trail: [ [ "Browse collections", nil ] ]) %>
 <%= render NexusCcs::PageBannerComponent.new(title: "Browse collections", description: @page["intro"]) %>
 <main class="collections-browse-main-content" id="main-content">
-  <section class="ct-listing" aria-labelledby="h-coll">
-    <div class="ct-listing__inner">
-      <h2 id="h-coll" class="ct-listing__title">Our collections</h2>
-      <p class="ct-listing__lead"><%= @page["collections"].size %> collections held by museums, archives and faculties across the University. Choose a collection to see its story, highlights and how to visit.</p>
-      <ul class="ct-listing__list ct-listing__list--image">
-        <% @page["collections"].each do |collection| %>
-          <li class="ct-listing__item">
-            <%= image_tag "site/tiles/#{collection["tile"]}", class: "ct-listing__image", alt: "", loading: "lazy" %>
-            <a class="ct-listing__link" href="<%= collection_path(collection["slug"]) %>"><h3 class="ct-listing__heading"><%= collection["name"] %></h3></a>
-            <% if (count = @counts[collection["slug"]]) %>
-              <p class="ct-listing__count"><%= pluralize(number_with_delimiter(count), "record") %></p>
-            <% end %>
-            <p class="ct-listing__excerpt"><%= collection["blurb"] %></p>
-          </li>
-        <% end %>
-        <%= render NexusCcs::PathfinderItemComponent.new(href: search_catalog_path, title: "Search all records", summary: "Looking for something specific? Search and filter every record across all of the collections at once.", search: true) %>
-      </ul>
-    </div>
-  </section>
-
-  <section class="ct-listing ct-listing--alt" aria-labelledby="h-sub">
-    <div class="ct-listing__inner">
-      <h2 id="h-sub" class="ct-listing__title">Browse by sub-collection</h2>
-      <p class="ct-listing__lead">Named collections and bequests held within the museums<%= ", with the number of records in each" if @named_counts.any? %>.</p>
-      <ul class="ct-listing__list ct-listing__list--text">
-        <% @page["sub_collections"].each do |sub| %>
-          <li class="ct-listing__item">
-            <a class="ct-listing__link" href="<%= search_catalog_path(f: { collection_ssim: [ sub["collection"] ], named_collection_ssim: [ sub["named"] ] }) %>"><h3 class="ct-listing__heading"><%= sub["name"] %></h3></a>
-            <p class="ct-listing__excerpt"><%= sub["collection"] %><%= " · #{pluralize(number_with_delimiter(@named_counts[sub["named"]]), "record")}" if @named_counts[sub["named"]] %></p>
-          </li>
-        <% end %>
-      </ul>
-    </div>
-  </section>
+  <%= render "pages/browse_collections" %>
 
   <section class="ct-listing" aria-labelledby="h-help">
     <div class="ct-listing__inner">
