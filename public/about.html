@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta name="description" content="About Cultural Collections Search: one place to search the University of Melbourne's museum and art collections, how the collections are cared for and how to use them.">
+<title>About — Cultural Collections Search — University of Melbourne</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Browse collections — Cultural Collections Search</title>
-<meta name="description" content="Browse the University of Melbourne&#39;s cultural collections spanning visual arts, cartography, medical history, zoology and more.">
-<script src="../runtime-libs.js"></script>
-<script src="../support.js"></script>
+<script src="runtime-libs.js"></script>
+<script src="support.js"></script>
 <link rel="stylesheet" href="/styles/vendor/bootstrap-uom.min.css">
 <link rel="stylesheet" href="/styles/tokens/tokens.css">
 <link rel="stylesheet" href="/styles/base.css">
@@ -14,18 +14,17 @@
 <link rel="stylesheet" href="/styles/components/header.css">
 <link rel="stylesheet" href="/styles/components/breadcrumbs.css">
 <link rel="stylesheet" href="/styles/components/page-banner.css">
-<link rel="stylesheet" href="/styles/components/collection.css">
 <link rel="stylesheet" href="/styles/components/content-templates.css">
-<link rel="stylesheet" href="/styles/pages/collections-browse.css">
+<link rel="stylesheet" href="/styles/pages/about.css">
 </head>
-<body class="page-collections-browse">
-<a href="#main-content" class="skip-link collections-browse-page__link-skip-main-content">Skip to main content</a>
+<body class="page-about">
+<a href="#main-content" class="skip-link about-page__link-skip-main-content">Skip to main content</a>
 <x-dc>
 <helmet><link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..700,0..100,0..1;1,9..144,300..700,0..100,0..1&family=Source+Code+Pro:ital,wght@0,400;1,400&family=Source+Sans+3:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
-<script src="../collection-data.js"></script>
+<!-- Bootstrap 5.3.3 CSS (Custom UoM Gen 3 Build) -->
 </helmet>
-<div class="collections-browse-page__group">
+<div class="about-page__group about-page__group--v1">
 <header class="ccs-nav ccs-nav--header" data-component="Header" aria-label="Site header">
   <div class="ccs-nav__brand">
     <a class="ccs-nav__link-university-melbourne-homepage" href="https://www.unimelb.edu.au" aria-label="The University of Melbourne homepage">
@@ -34,17 +33,17 @@
   </div>
   <div class="ccs-nav__main">
     <div class="ccs-nav__top">
-      <nav class="collections-browse-university-melbourne" aria-label="University of Melbourne">
-        <ul class="collections-browse-university-melbourne__list">
-          <li class="collections-browse-university-melbourne__list-item"><a class="collections-browse-university-melbourne__item-link-study" href="https://study.unimelb.edu.au">Study</a></li>
-          <li class="collections-browse-university-melbourne__list-item"><a class="collections-browse-university-melbourne__item-link-students" href="https://students.unimelb.edu.au">Students</a></li>
-          <li class="collections-browse-university-melbourne__list-item"><a class="collections-browse-university-melbourne__item-link-research" href="https://research.unimelb.edu.au">Research</a></li>
-          <li class="collections-browse-university-melbourne__list-item"><a class="collections-browse-university-melbourne__item-link-library" href="https://library.unimelb.edu.au">Library</a></li>
-          <li class="collections-browse-university-melbourne__list-item"><a class="collections-browse-university-melbourne__item-link-staff" href="https://staff.unimelb.edu.au">Staff</a></li>
-          <li class="collections-browse-university-melbourne__list-item"><a class="collections-browse-university-melbourne__item-link-alumni" href="https://www.unimelb.edu.au/alumni">Alumni</a></li>
-          <li class="collections-browse-university-melbourne__list-item"><a class="collections-browse-university-melbourne__item-link-giving" href="https://giving.unimelb.edu.au">Giving</a></li>
-          <li class="collections-browse-university-melbourne__list-item"><a class="collections-browse-university-melbourne__item-link-about" href="https://about.unimelb.edu.au">About</a></li>
-          <li class="collections-browse-university-melbourne__list-item"><a class="collections-browse-university-melbourne__item-link-contact" href="https://www.unimelb.edu.au/contact">Contact</a></li>
+      <nav class="about-university-melbourne" aria-label="University of Melbourne">
+        <ul class="about-university-melbourne__list">
+          <li class="about-university-melbourne__list-item"><a class="about-university-melbourne__item-link-study" href="https://study.unimelb.edu.au">Study</a></li>
+          <li class="about-university-melbourne__list-item"><a class="about-university-melbourne__item-link-students" href="https://students.unimelb.edu.au">Students</a></li>
+          <li class="about-university-melbourne__list-item"><a class="about-university-melbourne__item-link-research" href="https://research.unimelb.edu.au">Research</a></li>
+          <li class="about-university-melbourne__list-item"><a class="about-university-melbourne__item-link-library" href="https://library.unimelb.edu.au">Library</a></li>
+          <li class="about-university-melbourne__list-item"><a class="about-university-melbourne__item-link-staff" href="https://staff.unimelb.edu.au">Staff</a></li>
+          <li class="about-university-melbourne__list-item"><a class="about-university-melbourne__item-link-alumni" href="https://www.unimelb.edu.au/alumni">Alumni</a></li>
+          <li class="about-university-melbourne__list-item"><a class="about-university-melbourne__item-link-giving" href="https://giving.unimelb.edu.au">Giving</a></li>
+          <li class="about-university-melbourne__list-item"><a class="about-university-melbourne__item-link-about" href="https://about.unimelb.edu.au">About</a></li>
+          <li class="about-university-melbourne__list-item"><a class="about-university-melbourne__item-link-contact" href="https://www.unimelb.edu.au/contact">Contact</a></li>
         </ul>
       </nav>
       <button type="button" class="ccs-nav__search" popovertarget="uom-search-popover" data-popover-type="search" aria-label="Open search">
@@ -56,15 +55,15 @@
       <nav id="ccs-primary-nav" class="ccs-nav__primary" aria-label="Primary navigation">
         <div class="ccs-nav__drawer-search">
           <form class="ccs-nav__form-search" role="search" action="/search/search-results.html" method="get">
-            <label for="ccs-drawer-q" class="sr-only collections-browse-form__label-search-cultural-collections">Search Cultural Collections</label>
+            <label for="ccs-drawer-q" class="sr-only about-form__label-search-cultural-collections">Search Cultural Collections</label>
             <input class="ccs-drawer-q" id="ccs-drawer-q" name="q" type="text" autocomplete="off" placeholder="Search">
-            <button class="collections-browse-form__button-search" type="submit" aria-label="Search"><img class="collections-browse-form__button-image" src="/images/home/icon-search-onaccent.svg" alt=""></button>
+            <button class="about-form__button-search" type="submit" aria-label="Search"><img class="about-form__button-image" src="/images/home/icon-search-onaccent.svg" alt=""></button>
           </form>
         </div>
         <ul class="ccs-nav__list">
           <li class="ccs-nav__list-item"><a class="ccs-nav__item-link-search-all-records" href="/search/search-results.html">Search all records</a></li>
           <li class="ccs-nav__list-item">
-            <button type="button" class="ccs-nav__trigger" aria-expanded="false" aria-controls="ccs-dd-collections" aria-current="true"><span>Browse <span class="ccs-nav__label-more">all </span>collections</span><img class="ccs-nav__image" src="/images/home/icon-expand.svg" alt=""></button>
+            <button type="button" class="ccs-nav__trigger" aria-expanded="false" aria-controls="ccs-dd-collections"><span>Browse <span class="ccs-nav__label-more">all </span>collections</span><img class="ccs-nav__image" src="/images/home/icon-expand.svg" alt=""></button>
             <div id="ccs-dd-collections" class="ccs-nav__panel">
               <a class="ccs-nav__panel-title" href="/collections/index.html"><img class="ccs-nav__image" src="/images/home/icon-arrow-footer.svg" alt="">Browse <span class="ccs-nav__label-more">all </span>collections</a>
               <ul class="ccs-nav__panel-list">
@@ -210,17 +209,74 @@
 })();
 </script>
 
-<section class="collections-browse-page__section">
-  <nav class="page-breadcrumbs" aria-label="Breadcrumb"><ol class="page-local-history" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="root" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a class="page-local-history__item-link-home" href="/" itemprop="item" title="Home" aria-label="Home"><img class="page-local-history__link-image" src="../images/home.svg" alt="" width="16" height="16"><span itemprop="name" class="sr-only page-local-history__link-text">Home</span></a><meta content="1" itemprop="position"></li><li class="page-local-history__item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page"><span class="page-local-history__item-text" itemprop="name">Browse collections</span><meta content="2" itemprop="position"></li></ol><ol class="bc-mobile bc-mobile--styled"><li class="bc-mobile__item"><a class="bc-mobile__item-link-cultural-collections" href="/"><svg class="bc-mobile__link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span class="bc-mobile__link-text">Cultural Collections</span></a></li></ol></nav>
-</section>
-<section class="page-banner" aria-label="Page banner">
-  <div class="page-banner__inner">
-    <h1 class="page-banner__heading-browse-collections">Browse collections</h1>
-    <p class="page-banner__desc">The University of Melbourne's cultural collections are unrivalled among Australian universities, spanning visual arts, cartography, medical history, zoology, archives and more, including significant collections of Aboriginal and Torres Strait Islander cultural heritage.</p>
+<div class="about-page__group about-page__group--v2">
+  <nav class="page-breadcrumbs" aria-label="Breadcrumb"><ol class="page-local-history" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="root" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a class="page-local-history__item-link-home" href="/" itemprop="item" title="Home" aria-label="Home"><img class="page-local-history__link-image" src="images/home.svg" alt="" width="16" height="16"><span itemprop="name" class="sr-only page-local-history__link-text">Home</span></a><meta content="1" itemprop="position"></li><li class="page-local-history__item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page"><span class="page-local-history__item-text" itemprop="name">About</span><meta content="2" itemprop="position"></li></ol><ol class="bc-mobile bc-mobile--styled"><li class="bc-mobile__item"><a class="bc-mobile__item-link-cultural-collections" href="/"><svg class="bc-mobile__link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span class="bc-mobile__link-text">Cultural Collections</span></a></li></ol></nav>
+</div>
+<section class="about-hero" aria-labelledby="about-title">
+  <div class="about-hero__inner">
+    <div class="about-hero__content">
+      <h1 class="about-hero__heading" id="about-title">About Cultural Collections Search</h1>
+    </div>
+    <div class="about-hero__media"><img class="about-hero__image" src="/images/home/hero-parkville.jpg" alt="The University of Melbourne Parkville campus"></div>
   </div>
 </section>
-<main class="collections-browse-main-content" id="main-content">
-  
+
+<main id="main-content" class="about-main-content">
+  <section class="ccs-section ccs-section--intro" aria-labelledby="about-intro-title">
+    <div class="ccs-section__inner">
+      <h2 class="sr-only" id="about-intro-title">What Cultural Collections Search is</h2>
+      <p class="ccs-intro">Cultural Collections Search brings the University of Melbourne's museum and art collections together in one place, so you can search, filter and view records across all of them at once.</p>
+      <ul class="about-stats">
+        <li class="about-stats__item"><span class="about-stats__figure">5</span><span class="about-stats__label">cultural collections searched together</span></li>
+        <li class="about-stats__item"><span class="about-stats__figure">4</span><span class="about-stats__label">kinds of media to view online: images, video, audio and documents</span></li>
+        <li class="about-stats__item"><span class="about-stats__figure">2</span><span class="about-stats__label">ways to see an item: online, or by appointment with the collection</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="about-feature" aria-labelledby="about-collections-title">
+    <div class="about-feature__inner">
+      <div class="about-feature__media"><img class="about-feature__image" src="/images/banners/medical-history-museum.jpg" alt=""></div>
+      <div class="about-feature__panel">
+        <p class="about-eyebrow">Collections</p>
+        <h2 class="about-feature__heading" id="about-collections-title">Five collections, cared for by the teams who know them best</h2>
+        <p class="about-feature__text">The Grainger Museum Collection, the Harry Brookes Allen Museum of Anatomy and Pathology, the Henry Forman Atkinson Dental Museum, the Medical History Museum and the University Art Collection each describe and look after their own records. This site searches across all five.</p>
+        <ul class="about-feature__links">
+          <li><a class="about-link about-link--inverse" href="/collections/index.html">Browse collections</a></li>
+          <li><a class="about-link about-link--inverse" href="/search/search-results.html">Search all records</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-search" aria-labelledby="about-search-title">
+    <div class="about-search__inner">
+      <div class="about-search__intro">
+        <p class="about-eyebrow about-eyebrow--dark">Search</p>
+        <h2 class="about-search__heading" id="about-search-title">Find records by what you know</h2>
+        <p class="about-search__text">Search by title, creator, subject or description, then narrow the results by collection, creator, production date, classification and more. See results as a mosaic of images or a detailed list, and open any record for its full description, rights and a persistent link you can quote.</p>
+        <ul class="about-search__links">
+          <li><a class="about-link" href="/search/search-results.html">Search all records</a></li>
+          <li><a class="about-link" href="/help?topic=search-tips">Search tips</a></li>
+        </ul>
+      </div>
+      <div class="about-search__media"><img class="about-search__image" src="/images/banners/university-art-collection.jpg" alt=""></div>
+    </div>
+    <ul class="about-facts">
+      <li class="about-facts__item">Filter by collection, creator, production date and classification</li>
+      <li class="about-facts__item">Put a phrase in quotes to search for it exactly</li>
+      <li class="about-facts__item">Copy a record's persistent link to cite it or to contact the collection team</li>
+    </ul>
+  </section>
+
+  <section class="about-band" aria-labelledby="about-care-title">
+    <div class="about-band__panel">
+      <h2 class="about-band__heading" id="about-care-title">Indigenous cultural material is handled with care</h2>
+      <p class="about-band__text">Some records and images include the names, images and voices of Aboriginal and Torres Strait Islander people who have died, and some describe people in language from the period in which an item was made.</p>
+      <p class="about-band__text">Cultural Collections Search follows the University's Indigenous priorities. Read how this material is described, protected and accessed.</p>
+      <a class="about-button" href="/help/indigenous-data.html">Read about Indigenous cultural data and access</a>
+    </div>
+  </section>
 
     <section class="ccs-section ccs-section--cards" aria-labelledby="browse-collections">
       <div class="ccs-section__inner">
@@ -265,21 +321,17 @@
       </div>
     </section>
 
-  <section class="ct-listing" aria-labelledby="h-help">
-    <div class="ct-listing__inner">
-      <h2 id="h-help" class="ct-listing__title">Help and guidance</h2>
-      <p class="ct-listing__lead">Information on searching, accessing and respectfully using the collections.</p>
-      <div class="grid grid--cols-3 grid--collapsed">
-        <div class="pathfinder"><a class="pathfinder__link" href="/help/index.html"><div class="pathfinder__content"><h3 class="pathfinder__title">Help and support</h3><p class="pathfinder__summary">Searching, using and requesting items from the collections.</p></div></a></div>
-        <div class="pathfinder pathfinder--alt"><a class="pathfinder__link" href="/help/indigenous-data.html"><div class="pathfinder__content"><h3 class="pathfinder__title">Indigenous cultural data and access</h3><p class="pathfinder__summary">How Aboriginal and Torres Strait Islander cultural material is described, protected and accessed.</p></div></a></div>
-        <div class="pathfinder"><a class="pathfinder__link" href="/contact.html"><div class="pathfinder__content"><h3 class="pathfinder__title">Contact the collections team</h3><p class="pathfinder__summary">Ask a question or request access to a collection item.</p></div></a></div>
-      </div>
+  <section class="about-help" aria-labelledby="about-help-title">
+    <div class="about-help__inner">
+      <h2 class="about-help__heading" id="about-help-title">Contact and support</h2>
+      <ul class="about-help__list">
+        <li class="about-help__item"><a class="about-link" href="/contact.html">Contact the collections team</a><p class="about-help__text">Ask a question, or request access to a collection item.</p></li>
+        <li class="about-help__item"><a class="about-link" href="/help/index.html">Help and support</a><p class="about-help__text">Searching, using, copyright and requesting items from the collections.</p></li>
+        <li class="about-help__item"><a class="about-link" href="mailto:ccs-feedback@unimelb.edu.au">Send feedback about this site</a><p class="about-help__text">Report a broken link or suggest an improvement.</p></li>
+      </ul>
     </div>
   </section>
 </main>
-
-
-
 
 <!-- UoM Footer -->
 <footer class="ccs-nav ccs-nav--footer" aria-label="University of Melbourne footer">
@@ -338,7 +390,7 @@
       </div>
     </div>
   </footer>
-<svg class="collections-browse-page__icon" xmlns="http://www.w3.org/2000/svg">
+<svg class="about-page__icon" xmlns="http://www.w3.org/2000/svg">
   <symbol id="icon-facebook" viewBox="0 0 24 24">
     <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
   </symbol>
@@ -363,6 +415,7 @@ class Component extends DCLogic {
     return {};
   }
 }
+
 </script>
 
 

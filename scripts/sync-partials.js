@@ -15,12 +15,15 @@ const partial = (name) => fs.readFileSync(path.join(ROOT, 'src/partials', name),
 const HEADER = partial('header.html');
 const FOOTER = partial('footer.html');
 const OVERLAY = partial('search-overlay.html');
+const BROWSE = partial('browse-collections.html');
 
 // Regions of a page to replace: [start marker, end marker (kept in the region)]
 const REGIONS = {
   header: ['<header class="ccs-nav ccs-nav--header"', '</header>'],
   overlay: ['<div id="uom-search-popover"', '</script>'],
-  footer: ['<footer class="ccs-nav ccs-nav--footer"', '</footer>']
+  footer: ['<footer class="ccs-nav ccs-nav--footer"', '</footer>'],
+  // The "Browse collections" cards of the home page, reused on the pages that list the collections (only where the section is present)
+  browse: ['<section class="ccs-section ccs-section--cards"', '</section>']
 };
 
 // Which header items mark the current page, from the page's path under public/
@@ -66,6 +69,7 @@ function renderChrome(relative, original) {
   if (!original.includes(REGIONS.header[0])) return null;
   let page = replaceRegion(original, REGIONS.header, renderHeader(relative, original));
   page = replaceRegion(page, REGIONS.overlay, OVERLAY) ?? page;
+  page = replaceRegion(page, REGIONS.browse, BROWSE.replace(/^ {4}/, '')) ?? page;
   return replaceRegion(page, REGIONS.footer, FOOTER) ?? page;
 }
 module.exports = { renderChrome };
