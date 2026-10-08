@@ -28,49 +28,7 @@
       </div>
     </section>
 
-    <!-- Section component: collections (162:1276 / 162:3464) -->
-    <section class="ccs-section ccs-section--cards" aria-labelledby="home-collections">
-      <div class="ccs-section__inner">
-        <h2 id="home-collections" class="ccs-section__heading ccs-section__heading-browse-collections">Browse collections</h2>
-        <ul class="ccs-cards">
-        <li class="ccs-card">
-          <div class="ccs-card__media"><img class="ccs-card__image" src="<%= asset_path("site/banners/medical-history-museum.jpg") %>" alt=""></div>
-          <div class="ccs-card__body">
-            <h3 class="ccs-card__title"><a class="ccs-card__link" href="<%= collection_path("medical-history-museum") %>">Medical History Museum</a></h3>
-            <p class="ccs-card__text">Historical medical instruments, teaching models, pathological specimens and records documenting medical education.</p>
-          </div>
-        </li>
-        <li class="ccs-card">
-          <div class="ccs-card__media"><img class="ccs-card__image" src="<%= asset_path("site/banners/henry-forman-atkinson-dental-museum.jpg") %>" alt=""></div>
-          <div class="ccs-card__body">
-            <h3 class="ccs-card__title"><a class="ccs-card__link" href="<%= collection_path("henry-forman-atkinson-dental-museum") %>">Henry Forman Atkinson Dental Museum</a></h3>
-            <p class="ccs-card__text">Instruments, equipment and teaching materials documenting the history of dentistry and oral health education.</p>
-          </div>
-        </li>
-        <li class="ccs-card">
-          <div class="ccs-card__media"><img class="ccs-card__image" src="<%= asset_path("site/banners/harry-brookes-allen-museum.jpg") %>" alt=""></div>
-          <div class="ccs-card__body">
-            <h3 class="ccs-card__title"><a class="ccs-card__link" href="<%= collection_path("harry-brookes-allen-museum") %>">Harry Brookes Allen Museum of Anatomy and Pathology</a></h3>
-            <p class="ccs-card__text">Anatomical and pathological specimens, models and teaching collections supporting medical education and research.</p>
-          </div>
-        </li>
-        <li class="ccs-card">
-          <div class="ccs-card__media"><img class="ccs-card__image" src="<%= asset_path("site/banners/university-art-collection.jpg") %>" alt=""></div>
-          <div class="ccs-card__body">
-            <h3 class="ccs-card__title"><a class="ccs-card__link" href="<%= collection_path("university-art-collection") %>">University Art Collection</a></h3>
-            <p class="ccs-card__text">A major university art collection featuring Australian and international works spanning painting, sculpture and works on paper.</p>
-          </div>
-        </li>
-        <li class="ccs-card">
-          <div class="ccs-card__media"><img class="ccs-card__image" src="<%= asset_path("site/banners/grainger-museum.jpg") %>" alt=""></div>
-          <div class="ccs-card__body">
-            <h3 class="ccs-card__title"><a class="ccs-card__link" href="<%= collection_path("grainger-museum") %>">Grainger Museum Collection</a></h3>
-            <p class="ccs-card__text">The personal collection of composer Percy Grainger including instruments, manuscripts, correspondence and experimental machines.</p>
-          </div>
-        </li>
-        </ul>
-      </div>
-    </section>
+    <%= render "pages/browse_collections" %>
 
     <!-- Section component: help and guidance (162:1340 / 162:3465) -->
     <section class="ccs-section ccs-section--help" aria-labelledby="home-help">
