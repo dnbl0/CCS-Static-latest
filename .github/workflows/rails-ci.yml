@@ -41,7 +41,7 @@ jobs:
       PGPASSWORD: postgres
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
@@ -95,7 +95,7 @@ jobs:
       SECRET_KEY_BASE: parity-check-not-a-secret
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
@@ -169,7 +169,7 @@ jobs:
       SOLR_ULIMIT_CHECKS: "false"
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
