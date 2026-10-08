@@ -66,14 +66,14 @@ Eg:
 
 # Modifications from base Blacklight Project
 
-## Content pages (home, collections, help, contact)
+## Content pages (home, collections, help, contact, about)
 
 `PagesController` serves the pages of the static prototype (`public/` in the repository root) so the two sites match:
 `/` (home), `/collections`, `/collections/<slug>`, `/help` (`?topic=faq|search-tips|copyright|access|privacy`),
-`/help/indigenous-data` and `/contact`. The search results live at `/catalog`.
+`/help/indigenous-data`, `/contact` and `/about`. The search results live at `/catalog`.
 
 * Views are in `app/views/pages` (layout `layouts/pages`). The five collection landing pages share
-  `pages/collection.html.erb`; their text and the browse page's listings are in `config/pages.yml`. Help topic
+  `pages/collection.html.erb`; their text is in `config/pages.yml`. The Browse collections cards on the home, collections and about pages are one partial, `pages/_browse_collections.html.erb`. Help topic
   bodies are the partials in `app/views/pages/help`.
 * Record counts on the browse page come from Solr when it is reachable and are left out otherwise.
 * The styles and images are generated from the static site, which is their source: `app/assets/stylesheets/pages`,

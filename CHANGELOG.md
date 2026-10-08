@@ -2,6 +2,17 @@
 
 Recent changes to the static site, newest first. Earlier history is in `git log`. (Moved out of the README on 2026-10-07.)
 
+### 2026-10-08
+
+- **About page** (`/about`, static and Rails): hero, intro (`ccs-section--intro`), key facts, feature panel, how to search, Indigenous cultural material, the shared Browse collections cards and contact links. A new **About** item sits between Help and Contact in the header.
+- **Shared Browse collections section**: the home page's cards are now `src/partials/browse-collections.html` (static) and `pages/_browse_collections.html.erb` (Rails), reused on the home, About and Collections pages. The "Our collections" list and the "Browse by sub-collection" section were removed from the Collections page. Collections are listed alphabetically everywhere they are all shown, including the header dropdown.
+- **Home hero text** now reads "Unrivalled among Australian universities, our collections span visual arts, medical history, zoology, archives and Aboriginal and Torres Strait Islander cultural heritage."
+- **Contact page** re-laid out to match unimelb.edu.au/contact (an "On this page" list beside one column); the breadcrumb reads "Contact" on both sites.
+- **Header dropdowns** narrowed to a single column about 306px wide, like the UoM About us panel.
+- **Grainger image**: the violin banner was replaced with the supplied Grainger photo (600px wide, so soft on wide screens).
+- **Search results and record pages** follow the Blacklight pages (#176, #177); the pathfinder component follows the design system (#169).
+- **Hosting**: GitHub Pages on the organisation repo is public (https://enterprise-services-group.github.io/CCS-2026-MVP/). Vercel is no longer used.
+
 ### 2026-10-03
 
 - **No inline styles in pages**: every `style="..."` attribute and `<style>` block was moved into stylesheets (`public/styles/pages/*.css`, `public/styles/components/*.css`). Runtime values (colours, paddings, positions that the page logic computes) are passed through CSS custom properties, e.g. `style="--dyn-padding:{{ padSum }}"`, and the property that uses them lives in the stylesheet. `tests/no-inline-styles.test.js` (part of `npm test`) fails if a `<style>` block, a `style-hover` attribute or a presentational `style=""` is added to a page.
