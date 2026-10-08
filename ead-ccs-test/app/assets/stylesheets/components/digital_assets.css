@@ -232,3 +232,8 @@
     animation: none;
   }
 }
+
+.digital-assets__media { margin: 0; padding: 1rem; text-align: center; }
+.digital-assets__video { max-width: 100%; max-height: 70vh; }
+.digital-assets__audio { width: 100%; max-width: 40rem; }
+.digital-assets__media figcaption, .digital-assets__pdf { color: inherit; margin-top: 0.5rem; }

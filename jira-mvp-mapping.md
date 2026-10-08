@@ -2,7 +2,7 @@
 
 **Project**: CCS-2026 | **Jira Source**: [unimelb.atlassian.net CCS board](https://unimelb.atlassian.net/jira/software/c/projects/CCS/boards/6889?label=CCS-2026) (label `CCS-2026`, ~140 issues)
 **Audit Method**: Live Jira MCP fetch (66 frontend-relevant epics/stories/bugs, verbatim descriptions) cross-checked against a from-scratch read of the actual `public/` codebase — not against this document's own prior claims.
-**Audit Date**: 2026-09-29 (file paths and data notes refreshed 2026-10-01) | **Status**: Corrected — see "Correction Notice" below. Jira statuses and requirement rows reflect the 29 Sept audit and have not been re-fetched since.
+**Audit Date**: 2026-09-29 (file paths and data notes refreshed 2026-10-01) | **Status**: Corrected — see "Correction Notice" below. Jira statuses were re-read from the board on 2026-10-08 (see "Resync with the Jira board, 2026-10-08"); requirement rows below were last audited on the dates shown in each section.
 
 ---
 
@@ -54,13 +54,13 @@ This revision was produced by fetching the live Jira issues directly (see audit 
 | CCS-38 | Search filters | New | Type/date/format facet filters present in `search/search-results.html`. Indigenous-material-specific filter labels (per the Jira description's red-highlighted note) are **not** implemented — see Gaps below |
 | CCS-41 | Digital-assets-only filter | New | `f.digital` toggle in `search/search-results.html` (default off; when on, filters out records with no `img`) |
 | CCS-116 | Semantic search (app level) | Done | No frontend trace found; appears to be backend-scoped. Not independently verifiable from this repo — flag to backend team rather than assume |
-| CCS-123 | Fuzzy search | In Testing | No fuzzy-match logic beyond the spelling-suggestion feature added this cycle (which covers the "did you mean" UX, not general fuzzy ranking of results) |
+| CCS-123 | Fuzzy search | Done | No fuzzy-match logic beyond the spelling-suggestion feature added this cycle (which covers the "did you mean" UX, not general fuzzy ranking of results) |
 | CCS-124 | No-results messaging | New | Real implementation in `search/search-results.html` ("No records match your search" + "Clear all filters") |
 | CCS-158 | Offer spelling suggestions | Done | **Implemented this cycle** (see Fixes Applied #2) — was previously entirely absent despite Done status |
 | CCS-20 | Filter and refine public data | New | Covered by CCS-38's filters; Indigenous "subject area" sourcing from CMS not verifiable from this static repo (data-layer requirement) |
 | CCS-21 | Sensitivity notifications | New | Verified 2026-10-03: record page shows advisory banners from `advisories` (ADVISORY dict in `collection-data.js`). Only 2 of 728 records carry advisories, so Indigenous deceased-persons / language notices are not applied sitewide: **data gap**, not a UI gap |
 | CCS-22 | UoM ID surfacing | New | **Done 2026-10-03**: every record shows a copyable `UoM ID` (stable `CA-000123` asset ID) above the accession number, so the 12 records with no accession (child records) still have a visible identifier |
-| CCS-25 | Persistent URLs | In Testing | **Done 2026-10-03**: persistent link now resolves: `/item/CA-000123` rewrites (vercel.json + .htaccess) to the record page, and the displayed/copied link uses the current host. Production domain (collections.unimelb.edu.au) is a deployment concern |
+| CCS-25 | Persistent URLs | Done | **Done 2026-10-03**: persistent link now resolves: `/item/CA-000123` rewrites (vercel.json + .htaccess) to the record page, and the displayed/copied link uses the current host. Production domain (collections.unimelb.edu.au) is a deployment concern |
 | CCS-27 | Display rights information | Done | `collections/record.html` displays `licence`/`rights` fields and licence icons |
 | CCS-217 | View Collection Asset Details (with/without DAs) | New | `collections/record.html` handles both cases (records with no digital asset render without a media viewer) |
 
@@ -68,8 +68,8 @@ This revision was produced by fetching the live Jira issues directly (see audit 
 
 | Story | Summary | Jira Status | Implementation |
 |---|---|---|---|
-| CCS-64 | Link DAs and metadata with CA metadata | New | Data-layer requirement; `collection-data.js`'s single shared `ITEMS` structure is consistent with this, but the "aspect ratio without distortion" clause (item 4 in the Jira description) was not independently re-verified this cycle |
-| CCS-65 | Digital asset formats | New | 2026 priority is Images/Audio/Video/PDF per Jira; images, audio and video are supported by the record page media viewer (`ASSET_IMAGES` / `ASSET_AV` in `collection-data.js`), but only two audio/video items exist; PDF handling is not implemented |
+| CCS-64 | Link DAs and metadata with CA metadata | In Deployment | Data-layer requirement; `collection-data.js`'s single shared `ITEMS` structure is consistent with this, but the "aspect ratio without distortion" clause (item 4 in the Jira description) was not independently re-verified this cycle |
+| CCS-65 | Digital asset formats | New | 2026 priority is Images/Audio/Video/PDF per Jira; images, audio and video are supported by the record page media viewer (`ASSET_IMAGES` / `ASSET_AV` in `collection-data.js`), but only two audio/video items exist; the viewer also handles PDF (see "MVP batch" below), though no PDF is matched to a record yet. The Rails app indexes still images only (`app/indexers/collections/digital_assets.rb`) |
 | CCS-66 | Categories of content | New | Parent story for CCS-166/68/69 below |
 | CCS-68 | Content classification — Request to USE | Done | The record page's "Contact us" dialog has a "Request to use" tab (form is front-end only; submitting shows a confirmation and sends nothing). Not otherwise verified against the Jira description |
 | CCS-69 | Content classification — Request to VIEW | New | "Request to view" tab exists in the same dialog; same caveat as CCS-68 |
@@ -210,7 +210,7 @@ The CCS 2026 filter holds 82 stories. The Remarks field says "Feasibility 2026: 
 | CCS-55 | Indigenous data filter (also "data is not ready") | Not built (matches) |
 | CCS-62 | Assistive-technology compatibility | Not built (matches); CCS-51 WCAG AA stays MVP |
 | CCS-158 | Spelling suggestions | Built ahead of scope, even though Jira status is Done |
-| CCS-206 | Search history grouped by day | Not built (matches) |
+| CCS-206 | Search history grouped by day | Not built in the static site. Not on the `CCS-2026` label and has no Remarks (see the 2026-10-08 resync); the Rails app builds it |
 
 **No remarks, treated as 2026**
 
@@ -366,6 +366,33 @@ Source: filter 26999 (`project = CCS AND type = Story AND labels = CCS-2026`), r
 `api/catalog.js` is a Vercel serverless function (Hobby plan, no cost, no database) that answers `/catalog.json` and `/catalog/:id.json` in the Blacklight JSON shape the adapter already expects (`response.docs`, `numFound`, `facet_counts`). It loads the catalogue from `public/collection-data.js` and uses the same fuzzy, synonym and phrase engine as the browser, plus quoted phrases and AND / OR / NOT, collection / type / theme / licence facets, date range, sorting and paging. `vercel.json` rewrites `/catalog.json` to it. `public/blacklight-adapter.js` now defaults to `/catalog.json`; the site still starts in mock (browser) mode, and the API toggle on the results page or `?api=live` switches to it. To use a real Blacklight/Solr server later, pass `?endpoint=<url>` or set `CCS_CONFIG.apiEndpoint`. Test: `tests/catalog-api.test.js`.
 
 Why not Solr on Render's free plan: the free tier has 512 MB of memory and no disk, which is not enough to run Solr and Rails together. Solr on any host costs money (about $7 to $25 a month on Render); the repo's `blacklight-app/` stays ready for that step.
+
+## Resync with the Jira board, 2026-10-08
+
+Read live from [the CCS board, label `CCS-2026`](https://unimelb.atlassian.net/jira/software/c/projects/CCS/boards/6889?label=CCS-2026): about 140 issues (epics, stories, bugs, tasks and sub-tasks). The Remarks field (`customfield_12446`) is set on 72 of them.
+
+**What the Remarks say.** 64 say "Feasibility 2026: MVP". CCS-157 (hero image) says "This is now flagged for MVP scope". Seven are not MVP: CCS-19, 46, 52, 53, 55, 62 ("Not considered as core function or feature for the MVP, marked for review in the post-2026 implementation phase", CCS-55 adding that the data is not ready) and CCS-158 (spelling suggestions, same wording, although Jira says Done). Stories without Remarks: CCS-233 (contact page), CCS-294 to 299 (home pages), CCS-302 and 316 (DAM display sequence), CCS-272, CCS-310, and the bugs CCS-288, 292, 293, 306, 307.
+
+**Status changes since the last read (2026-10-03).** CCS-25 and CCS-123 are now Done; CCS-64 is In Deployment; CCS-157, 124, 143, 217 and CCS-38/41 are still New.
+
+**Not on the `CCS-2026` label.** CCS-57 (IIIF viewer), CCS-60 (authenticated features), CCS-67 (view and download), CCS-164 (formats for 2027) and CCS-206 (search history by day) do not carry the label, so they are outside the board's 2026 scope and were checked here for their notes only. Earlier versions of this file called CCS-206 "post-2026 per its remark"; it has no remark.
+
+**2026 scope notes written into the descriptions** (not in Remarks):
+
+| Ticket | Note | What the apps do |
+|---|---|---|
+| CCS-65 Digital asset formats | 2026 priority is images, audio, video and PDF; eBook, Office, Open Office and 3D models are 2027 (CCS-164) | Static: viewer for all four, `ASSET_PDF` is empty and only two audio/video items exist. Rails: images only, by design (`digital_assets.rb`); audio, video and PDF are **not met** in Rails |
+| CCS-157 Hero image | Hero is the asset whose DAM "DA web display sequence" is `000` (jpeg or png), else any asset; shown in search results and as a thumbnail with the other images in source order; the project team chose a maximum of 20 digital assets per record | The home and collection pages have a hero image, and results show a thumbnail. The `000` rule, the source ordering and the 20-asset cap are **not implemented** in either app, and neither repo mentions the DAM sequence field (CCS-302, CCS-316) |
+| CCS-143 Save search history | Past few searches, not logged in | Static: last five searches in the header overlay (session). Rails: same, see `ead-ccs-test/docs/jira-coverage.md` |
+| CCS-206 History by day | Today, yesterday, "N days ago" | Static: not built. Rails: built at `/search_history` |
+| CCS-57 IIIF viewer | Roadmap 2027 | Not built (matches) |
+| CCS-60 / CCS-46 Favourites | 2027 build, no wireframes (CCS-60); post-2026 (CCS-46) | Not built (matches) |
+| CCS-55 Indigenous filter | Post-2026, data not ready; DAM "DA Indigeneity data" is the source and EMu/Vernon sources are still "tbd" | Not built (matches) |
+| CCS-182 / CCS-202 MVP skinning | A deliberately lightweight kit (header, footer, typography, buttons, cards, logo placement); no full design system, which is deferred to 2027 | Matches: both apps use the University layer without a separate design system |
+| CCS-198 Accessibility baseline | A baseline note is a 2026 task; full hardening is 2027 | Automated axe checks exist; no baseline note and no manual audit. CCS-51's own criteria (WCAG 2.1 AA, "no critical issues unresolved prior to release") are stricter than CCS-198, so Jira disagrees with itself |
+| CCS-200 Known limitations register | A 2026 task listing what the MVP does not do | Not written; the gap lists in this file and in `jira-coverage.md` could seed it |
+
+**Gaps this resync adds to the MVP list:** Rails audio, video and PDF (CCS-65); hero image rules and the 20-asset cap (CCS-157); an accessibility baseline note (CCS-198); a known-limitations register (CCS-200).
 
 ## Open Items For Follow-Up
 

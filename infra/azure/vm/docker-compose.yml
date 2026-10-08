@@ -1,0 +1,55 @@
+# Runs the whole app on one VM: Caddy (HTTPS) -> Rails -> Solr + Postgres. Started by bootstrap.sh, which writes .env.
+services:
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    ports: ["80:80", "443:443"]
+    environment:
+      DOMAIN: ${DOMAIN}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+    depends_on: [web]
+
+  web:
+    build:
+      context: ../../../ead-ccs-test
+      target: ead-ccs
+    restart: unless-stopped
+    environment:
+      RAILS_ENV: production
+      RAILS_ASSUME_SSL: "true"
+      RAILS_FORCE_SSL: "true"
+      RAILS_HOSTS: ${DOMAIN}
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+      POSTGRES_HOST: postgres
+      POSTGRES_DB: ead_ccs
+      POSTGRES_USER: ead_ccs
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      SOLR_URL: http://solr:${SOLR_PASSWORD}@solr:8983/solr/blacklight-core
+    depends_on: [postgres, solr]
+
+  solr:
+    build:
+      context: ../../../ead-ccs-test
+      target: solr
+    restart: unless-stopped
+    volumes:
+      - solr-data:/var/solr
+      # Replaces the repo's security.json (whose plaintext password is not in the repo) with one generated on this VM
+      - ./security.json:/opt/solr/server/solr/security.json:ro
+
+  postgres:
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ead_ccs
+      POSTGRES_DB: ead_ccs
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+
+volumes:
+  caddy-data:
+  solr-data:
+  pg-data:

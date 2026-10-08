@@ -1,6 +1,6 @@
 # Jira coverage: search and Blacklight tickets
 
-Board: CCS project, label `CCS-2026` (133 tickets, read on 2026-10-06). The developers' team has its own
+Board: [CCS project, label `CCS-2026`](https://unimelb.atlassian.net/jira/software/c/projects/CCS/boards/6889?label=CCS-2026) (about 140 tickets, re-read on 2026-10-08; the first audit was on 2026-10-06). The Remarks field marks 64 tickets "Feasibility 2026: MVP", CCS-157 "flagged for MVP scope", and seven as not MVP (CCS-19, 46, 52, 53, 55, 62, 158). See the resync section of `jira-mvp-mapping.md` at the repository root. The developers' team has its own
 implementation, so a ticket marked **Done** there is not necessarily done in this prototype. Each ticket's
 acceptance criteria were checked against the running app (http://localhost:3002), and the ones that
 can be checked without Solr are kept as tests (`test/models/jira_search_requirements_test.rb`).
@@ -46,3 +46,13 @@ rows removed from a CSV are not deleted from the index). Nexus DAM has no export
 
 CCS-50 (Acknowledgement on the home page) is present. CCS-51 and 62 (accessibility): axe reports no WCAG 2.1 AA
 violations on the results, record and advanced search pages.
+
+## 2026 MVP recheck (2026-10-08)
+
+| Ticket | Jira | Prototype | Notes |
+|---|---|---|---|
+| CCS-65 Digital asset formats | New, MVP: images, audio, video, PDF (2027: eBook, Office, Open Office, 3D) | **Partial** | Only still images are indexed and shown (`Collections::DigitalAssets`, `FORMAT = "Image"`). Audio, video and PDF are not met in this app; the static site has viewers for all four. |
+| CCS-157 Hero image | New, flagged MVP | **Partial** | A thumbnail shows in results and the record. Not implemented: the hero chosen by DAM sequence `000` (CCS-302, CCS-316), the source ordering of the other images, and the 20-asset cap per record. |
+| CCS-206 History grouped by day | Not on the `CCS-2026` label | **Fixed** | Built ahead of the board; no Remarks apply. |
+| CCS-55 Indigenous data filter | New, not MVP, data not ready | **Gap: data** | Unchanged. |
+| CCS-158 Spelling suggestions | Done, but Remarks say not MVP | **Met** | Built regardless. |
