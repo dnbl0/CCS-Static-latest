@@ -56,7 +56,7 @@
 .ccs-section { padding: var(--space-48) var(--space-24); }
 }
 /* Section — hero banner */
-.ccs-section--hero { padding: 0; background: var(--brand-1200); color: var(--white-100); }
+.ccs-section--hero { max-width: var(--layout-page); margin-inline: auto; padding: 0; background: var(--brand-1200); color: var(--white-100); }
 .ccs-hero { display: flex; gap: var(--space-40); min-height: 543px; }
 /* No overflow:hidden on the hero: it clipped the search bar's collections dropdown. The image is clipped by its own box instead. */
 .ccs-hero__content { position: relative; z-index: var(--z-1); flex: none; display: flex; align-items: center; padding: 72px 0 96px var(--space-32); }
@@ -220,6 +220,9 @@
 /* Generated from public/styles/components/page-banner.css by scripts/sync-rails-assets.js. Edit the static file, not this copy. */
 /* Page banner — shared title banner (matches the Help page banner) */
 .page-banner {
+  width: 100%;
+  max-width: var(--layout-page);
+  margin-inline: auto;
   background: var(--brand-1200);
   color: var(--white-100);
 }
