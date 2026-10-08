@@ -1,12 +1,11 @@
 /* Page banner — shared title banner (matches the Help page banner) */
 .page-banner {
   width: 100%;
-  max-width: var(--layout-page);
-  margin-inline: auto;
   background: var(--brand-1200);
   color: var(--white-100);
 }
 .page-banner__inner {
+  max-width: var(--layout-page);
   margin: 0 auto;
   padding: 64px var(--space-32);
   text-align: left;
