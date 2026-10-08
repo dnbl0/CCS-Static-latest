@@ -1,10 +1,32 @@
 <section class="digital-assets" data-controller="media-viewer" aria-labelledby="digital-assets-heading">
-  <h2 id="digital-assets-heading" class="visually-hidden">Digital <%= "asset".pluralize(count) %></h2>
+  <h2 id="digital-assets-heading" class="visually-hidden">Digital <%= "asset".pluralize(count + media.size) %></h2>
 
   <div class="digital-assets__stage" data-media-viewer-target="stage">
-    <figure class="digital-assets__main">
-      <%= image_tag main.first, alt: alt(1), class: "digital-assets__image", data: { media_viewer_target: "image" } %>
-    </figure>
+    <% if main %>
+      <figure class="digital-assets__main">
+        <%= image_tag main.first, alt: alt(1), class: "digital-assets__image", data: { media_viewer_target: "image" } %>
+      </figure>
+    <% end %>
+
+    <% media.each do |item| %>
+      <figure class="digital-assets__media">
+        <% case item[:kind] %>
+        <% when "video" %>
+          <video controls preload="metadata" class="digital-assets__video" aria-label="<%= media_title(item) %>">
+            <source src="<%= item[:url] %>" type="<%= item[:type] %>">
+            <a href="<%= item[:url] %>">Download <%= media_title(item) %></a>
+          </video>
+        <% when "audio" %>
+          <audio controls preload="metadata" class="digital-assets__audio" aria-label="<%= media_title(item) %>">
+            <source src="<%= item[:url] %>" type="<%= item[:type] %>">
+            <a href="<%= item[:url] %>">Download <%= media_title(item) %></a>
+          </audio>
+        <% else %>
+          <%= link_to "Open #{media_title(item)} (PDF, opens in a new tab)", item[:url], target: "_blank", rel: "noopener", class: "digital-assets__pdf" %>
+        <% end %>
+        <figcaption><%= media_title(item) %></figcaption>
+      </figure>
+    <% end %>
 
     <% if metadata? %>
       <aside id="media-metadata" class="digital-assets__panel" aria-labelledby="media-metadata-heading" hidden data-media-viewer-target="panel">

@@ -68,11 +68,11 @@
             <div id="ccs-dd-collections" class="ccs-nav__panel">
               <a class="ccs-nav__panel-title" href="/collections/index.html"><img class="ccs-nav__image" src="/images/home/icon-arrow-footer.svg" alt="">Browse <span class="ccs-nav__label-more">all </span>collections</a>
               <ul class="ccs-nav__panel-list">
-                <li class="ccs-nav__item"><a class="ccs-nav__item-link-medical-history-museum" href="/collections/medical-history-museum/"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Medical History Museum</a></li>
-                <li class="ccs-nav__item"><a class="ccs-nav__item-link-henry-forman-atkinson" href="/collections/henry-forman-atkinson-dental-museum/"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Henry Forman Atkinson Dental Museum</a></li>
-                <li class="ccs-nav__item"><a class="ccs-nav__item-link-harry-brookes-allen" href="/collections/harry-brookes-allen-museum/"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Harry Brookes Allen Museum</a></li>
-                <li class="ccs-nav__item"><a class="ccs-nav__item-link-university-art-collection" href="/collections/university-art-collection/"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">University Art Collection</a></li>
                 <li class="ccs-nav__item"><a class="ccs-nav__item-link-grainger-museum-collection" href="/collections/grainger-museum/"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Grainger Museum Collection</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-harry-brookes-allen" href="/collections/harry-brookes-allen-museum/"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Harry Brookes Allen Museum</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-henry-forman-atkinson" href="/collections/henry-forman-atkinson-dental-museum/"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Henry Forman Atkinson Dental Museum</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-medical-history-museum" href="/collections/medical-history-museum/"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Medical History Museum</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-university-art-collection" href="/collections/university-art-collection/"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">University Art Collection</a></li>
               </ul>
             </div>
           </li>
@@ -222,47 +222,48 @@
 <main class="collections-browse-main-content" id="main-content">
   
 
-  <section class="ct-listing" aria-labelledby="h-coll">
-    <div class="ct-listing__inner">
-      <h2 id="h-coll" class="ct-listing__title">Our collections</h2>
-      <p class="ct-listing__lead">{{ collectionsCount }} held by museums, archives and faculties across the University. Choose a collection to see its story, highlights and how to visit.</p>
-      <ul class="ct-listing__list ct-listing__list--image">
-        <sc-for list="{{ collections }}" as="c" hint-placeholder-count="5">
-          <li class="ct-listing__item">
-            <sc-if value="{{ c.hasImg }}" hint-placeholder-val="{{ false }}"><img class="ct-listing__image" src="{{ c.imgSrc }}" alt="" loading="lazy"></sc-if>
-            <a class="ct-listing__link" href="{{ c.href }}"><h3 class="ct-listing__heading">{{ c.name }}</h3></a>
-            <p class="ct-listing__count">{{ c.count }}</p>
-            <p class="ct-listing__excerpt">{{ c.blurb }}</p>
-          </li>
-        </sc-for>
-        <li class="ct-listing__item ct-listing__item--search">
-          <div class="pathfinder pathfinder--inverse">
-            <a class="pathfinder__link" href="/search/search-results.html">
-              <div class="pathfinder__content">
-                <h3 class="pathfinder__title">Search all records</h3>
-                <p class="pathfinder__summary">Looking for something specific? Search and filter every record across all of the collections at once.</p>
-              </div>
-            </a>
+    <section class="ccs-section ccs-section--cards" aria-labelledby="browse-collections">
+      <div class="ccs-section__inner">
+        <h2 id="browse-collections" class="ccs-section__heading ccs-section__heading-browse-collections">Browse collections</h2>
+        <ul class="ccs-cards">
+        <li class="ccs-card">
+          <div class="ccs-card__media"><img class="ccs-card__image" src="/images/banners/grainger-museum.jpg" alt=""></div>
+          <div class="ccs-card__body">
+            <h3 class="ccs-card__title"><a class="ccs-card__link-grainger-museum-collection" href="/collections/grainger-museum">Grainger Museum Collection</a></h3>
+            <p class="ccs-card__text">The personal collection of composer Percy Grainger including instruments, manuscripts, correspondence and experimental machines.</p>
           </div>
         </li>
-      </ul>
-    </div>
-  </section>
-
-  <section class="ct-listing ct-listing--alt" aria-labelledby="h-sub">
-    <div class="ct-listing__inner">
-      <h2 id="h-sub" class="ct-listing__title">Browse by sub-collection</h2>
-      <p class="ct-listing__lead">Named collections and bequests held within the museums, with the number of records in each.</p>
-      <ul class="ct-listing__list ct-listing__list--text">
-        <sc-for list="{{ subCollections }}" as="n">
-          <li class="ct-listing__item">
-            <a class="ct-listing__link" href="{{ n.href }}"><h3 class="ct-listing__heading">{{ n.name }}</h3></a>
-            <p class="ct-listing__excerpt">{{ n.meta }}</p>
-          </li>
-        </sc-for>
-      </ul>
-    </div>
-  </section>
+        <li class="ccs-card">
+          <div class="ccs-card__media"><img class="ccs-card__image" src="/images/banners/harry-brookes-allen-museum.jpg" alt=""></div>
+          <div class="ccs-card__body">
+            <h3 class="ccs-card__title"><a class="ccs-card__link-harry-brookes-allen" href="/collections/harry-brookes-allen-museum">Harry Brookes Allen Museum of Anatomy and Pathology</a></h3>
+            <p class="ccs-card__text">Anatomical and pathological specimens, models and teaching collections supporting medical education and research.</p>
+          </div>
+        </li>
+        <li class="ccs-card">
+          <div class="ccs-card__media"><img class="ccs-card__image" src="/images/banners/henry-forman-atkinson-dental-museum.jpg" alt=""></div>
+          <div class="ccs-card__body">
+            <h3 class="ccs-card__title"><a class="ccs-card__link-henry-forman-atkinson" href="/collections/henry-forman-atkinson-dental-museum">Henry Forman Atkinson Dental Museum</a></h3>
+            <p class="ccs-card__text">Instruments, equipment and teaching materials documenting the history of dentistry and oral health education.</p>
+          </div>
+        </li>
+        <li class="ccs-card">
+          <div class="ccs-card__media"><img class="ccs-card__image" src="/images/banners/medical-history-museum.jpg" alt=""></div>
+          <div class="ccs-card__body">
+            <h3 class="ccs-card__title"><a class="ccs-card__link-medical-history-museum" href="/collections/medical-history-museum">Medical History Museum</a></h3>
+            <p class="ccs-card__text">Historical medical instruments, teaching models, pathological specimens and records documenting medical education.</p>
+          </div>
+        </li>
+        <li class="ccs-card">
+          <div class="ccs-card__media"><img class="ccs-card__image" src="/images/banners/university-art-collection.jpg" alt=""></div>
+          <div class="ccs-card__body">
+            <h3 class="ccs-card__title"><a class="ccs-card__link-university-art-collection" href="/collections/university-art-collection">University Art Collection</a></h3>
+            <p class="ccs-card__text">A major university art collection featuring Australian and international works spanning painting, sculpture and works on paper.</p>
+          </div>
+        </li>
+        </ul>
+      </div>
+    </section>
 
   <section class="ct-listing" aria-labelledby="h-help">
     <div class="ct-listing__inner">
@@ -357,35 +358,9 @@
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script>
-const COLLS = [
- ['Medical History Museum', '../images/tile-mhm.jpg'], ['University Art Collection', '../images/tile-uac.jpg'], ['Grainger Museum Collection', '../images/tile-gmc.jpg'],
- ['Henry Forman Atkinson Dental Museum', '../images/tile-dental.png'], ['Harry Brookes Allen Museum of Anatomy and Pathology', '../images/tile-hba.jpg']
-];
-const KEY = { 'Medical History Museum': 'MHM', 'University Art Collection': 'UAC', 'Grainger Museum Collection': 'GMC', 'Henry Forman Atkinson Dental Museum': 'DENT', 'Harry Brookes Allen Museum of Anatomy and Pathology': 'HBA' };
-const SLUG = { MHM: 'medical-history-museum', UAC: 'university-art-collection', GMC: 'grainger-museum', DENT: 'henry-forman-atkinson-dental-museum', HBA: 'harry-brookes-allen-museum' };
-const BLURBS = {
-  MHM: "Explore the social history of medicine and its role in society, including a nineteenth-century pharmacy complete with pharmaceutical jars and equipment.",
-  UAC: "Paintings, prints, sculpture and decorative arts spanning classical antiquity to contemporary Australian practice.",
-  GMC: "The personal archive, instruments and scores of composer Percy Grainger, held in trust for scholarship worldwide.",
-  DENT: "The oldest and most significant dental collection in Australia, tracing the history of dental health and education from 1884.",
-  HBA: "One of Australia's largest collections of human tissue specimens, animal anatomy specimens and historical anatomical models."
-};
 class Component extends DCLogic {
   renderVals() {
-    const CCS = window.CCS, all = CCS ? Object.values(CCS.records) : [];
-    const countOf = name => all.filter(r => r.collection === name).length;
-    return {
-      collections: COLLS.map(([name, img]) => { const n = countOf(name); return { name, imgSrc: img || '', hasImg: !!img, count: n ? n.toLocaleString('en-AU') + ' records' : 'Coming soon', blurb: BLURBS[KEY[name]] || '', href: SLUG[KEY[name]] ? '/collections/' + SLUG[KEY[name]] : '/collections' }; }),
-      subCollections: (() => {
-        const tally = {};
-        all.forEach(r => { if (r.named) { const k = r.collection + '|' + r.named; tally[k] = (tally[k] || 0) + 1; } });
-        return Object.entries(tally).sort((a, b) => b[1] - a[1]).slice(0, 12).map(([k, n]) => {
-          const [coll, name] = k.split('|');
-          return { name, meta: coll + ' · ' + n.toLocaleString('en-AU') + (n === 1 ? ' record' : ' records'), href: '/search/search-results.html?collection=' + encodeURIComponent(coll) + '&named=' + encodeURIComponent(name) };
-        });
-      })(),
-      collectionsCount: COLLS.length + ' collections'
-    };
+    return {};
   }
 }
 </script>

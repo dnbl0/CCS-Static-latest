@@ -30,7 +30,7 @@ module Collections
           next if fields.all? { |f| f.nil? || f.strip.empty? }
 
           document = build_document(Row.new(fields, index, name))
-          yield DigitalAssets.default.attach(document) if document
+          yield DigitalMedia.default.attach(DigitalAssets.default.attach(document)) if document
         end
       end
     end

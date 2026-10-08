@@ -1,0 +1,38 @@
+name: Push images to Azure Container Registry
+
+# Builds the Rails and Solr images and pushes them to the registry using the ACR_USERNAME and ACR_PASSWORD
+# repository secrets (no Azure sign-in needed). Manual only: run it from the Actions tab and give the registry's
+# login server, e.g. myregistry.azurecr.io. It does not deploy anything.
+on:
+  workflow_dispatch:
+    inputs:
+      registry:
+        description: "Registry login server, e.g. myregistry.azurecr.io"
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ${{ inputs.registry }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Build and push images
+        env:
+          REGISTRY: ${{ inputs.registry }}
+        run: |
+          cd ead-ccs-test
+          for target in "ead-ccs ccs-web" "solr ccs-solr"; do
+            set -- $target
+            docker build --target "$1" -t "$REGISTRY/$2:$GITHUB_SHA" -t "$REGISTRY/$2:latest" .
+            docker push "$REGISTRY/$2:$GITHUB_SHA"
+            docker push "$REGISTRY/$2:latest"
+          done
