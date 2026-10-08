@@ -18,7 +18,12 @@ module NexusCcs
     end
 
     def render?
-      large_paths.any?
+      large_paths.any? || media.any?
+    end
+
+    # Audio, video and PDF files: [{ kind:, type:, url:, label: }]
+    def media
+      Array(@document["digital_media_ssim"]).map { |entry| Collections::DigitalMedia.parse(entry) }
     end
 
     # Pairs of [large image path, thumbnail path], in display order.
@@ -27,6 +32,7 @@ module NexusCcs
     end
 
     def main = images.first
+    def media_title(item) = item[:label].presence || title
     def others = images.drop(1)
 
     def count = large_paths.size
