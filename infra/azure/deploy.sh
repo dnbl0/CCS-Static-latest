@@ -10,8 +10,8 @@ LOCATION="${LOCATION:-australiaeast}"
 RG="${RG:-ccs-rg}"
 SUFFIX="${SUFFIX:-$(printf '%s' "$SUBSCRIPTION" | cut -c1-6)}"
 ACR="${ACR:-ccsacr${SUFFIX//-/}}"
-# A workload-profiles environment: the newer "express" default cannot mount Azure Files, which Solr needs.
-ENVNAME="${ENVNAME:-ccs-wp-env}"
+# A WorkloadProfiles environment: the "express" mode (the default here) cannot mount Azure Files, which Solr needs.
+ENVNAME="${ENVNAME:-ccs-std-env}"
 PG="${PG:-ccs-pg-${SUFFIX}}"
 STORAGE="${STORAGE:-ccsstore${SUFFIX//-/}}"
 TAG="${1:-latest}"
@@ -21,7 +21,7 @@ az extension add --name containerapp --upgrade --only-show-errors
 
 az group show -n "$RG" -o none 2>/dev/null || az group create -n "$RG" -l "$LOCATION" -o none
 az acr show -n "$ACR" -g "$RG" -o none 2>/dev/null || az acr create -n "$ACR" -g "$RG" --sku Basic -o none
-az containerapp env show -n "$ENVNAME" -g "$RG" -o none 2>/dev/null || az containerapp env create -n "$ENVNAME" -g "$RG" -l "$LOCATION" --enable-workload-profiles true -o none
+az containerapp env show -n "$ENVNAME" -g "$RG" -o none 2>/dev/null || az containerapp env create -n "$ENVNAME" -g "$RG" -l "$LOCATION" --environment-mode WorkloadProfiles -o none
 
 # --- Postgres (Burstable) ---
 if ! az postgres flexible-server show -n "$PG" -g "$RG" -o none 2>/dev/null; then
