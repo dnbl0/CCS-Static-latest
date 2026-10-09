@@ -4,7 +4,7 @@ import { Controller } from "@hotwired/stimulus"
 // back to the top (instantly when the visitor prefers reduced motion), then moves focus to the top of the
 // page so keyboard and screen reader users start again from there.
 export default class extends Controller {
-  static values = { threshold: { type: Number, default: 400 } }
+  static values = { threshold: { type: Number, default: 200 } }
 
   connect() {
     this.update()
