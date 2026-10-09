@@ -8,8 +8,8 @@
   `NexusCcs::SiteNavigation::COLLECTIONS`, which also holds the Solr facet value (`collection_ssim`) and the menu label.
   Adding a collection means adding it in those places and in `scripts/build-collection-pages.js`; there is no single
   list yet (see "Not done" in `docs/code-quality-plan.md`).
-- **Pages** are named the same on both sites: home, collections (browse), a collection, help (with topics `faq`,
-  `search-tips`, `copyright`, `access`, `privacy`), indigenous data, contact, about. Search results are `/search/search-results`
+- **Pages** are named the same on both sites: home, collections (browse), a collection, help (one page with sections `faq`,
+  `copyright`, `access`, `privacy`), search tips, indigenous data, contact, about. Search results are `/search/search-results`
   (static) and `/catalog` (Rails).
 - **CSS classes** follow BEM (`block__element--modifier`). The static pages scope a page's rules with a `page-<name>` class
   on `<body>`; the Rails pages use the same classes (they are generated from the static styles).

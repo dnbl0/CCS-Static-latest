@@ -52,17 +52,6 @@ body.page-help .help-main-content {
   flex: 1;
 }
 
-body.page-help .help-access__group--v2 {
-  display: grid;
-  gap: var(--space-24);
-  margin-top: var(--space-24);
-}
-
-body.page-help .help-access__group--v1 {
-  display: grid;
-  gap: var(--space-4);
-}
-
 /* Matrix "Tables": header row navy, zebra rows */
 body.page-help .help-search-tips__group--v2 {
   display: grid;
@@ -91,6 +80,84 @@ body.page-help .help-search-tips__group--v1 {
   display: grid;
   gap: var(--space-16);
   margin: 0 0 var(--space-24);
+}
+
+/* Help sections: one block per topic on /help. Each has a heading, a description and a list of sub headings with their
+   descriptions. Sections are separated by a rule and 48px; the sub headings of one section sit 32px apart. */
+body.page-help .help-section {
+  scroll-margin-top: var(--space-24);
+}
+
+body.page-help .help-layout__content .help-section + .help-section {
+  margin-top: var(--space-48);
+  padding-top: var(--space-48);
+  border-top: 1px solid #c8c8c8;
+}
+
+body.page-help .help-section__header {
+  margin: 0 0 var(--space-32);
+}
+
+body.page-help .help-section__heading {
+  margin: 0 0 var(--space-12);
+}
+
+body.page-help .help-section__description {
+  margin: 0;
+}
+
+body.page-help .help-section__items {
+  display: grid;
+  gap: var(--space-32);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+body.page-help .help-layout__content .help-section__item {
+  margin: 0;
+}
+
+body.page-help .help-section__subheading {
+  margin: 0 0 var(--space-8);
+}
+
+body.page-help .help-section__text {
+  margin: 0 0 var(--space-12);
+}
+
+body.page-help .help-section__text:last-child {
+  margin-bottom: 0;
+}
+
+body.page-help .help-section__list {
+  margin: var(--space-8) 0 0;
+  padding-left: var(--space-24);
+}
+
+body.page-help .help-section__list-item {
+  margin: 0 0 var(--space-4);
+}
+
+body.page-help .help-section__contacts {
+  display: grid;
+  gap: var(--space-24);
+  margin: var(--space-16) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+body.page-help .help-layout__content .help-section__contact {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  body.page-help .help-layout__content .help-section + .help-section {
+    margin-top: var(--space-32);
+    padding-top: var(--space-32);
+  }
 }
 
 /* Help topic grid; smooth scrolling for in-page anchors */

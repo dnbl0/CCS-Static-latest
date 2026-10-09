@@ -33,7 +33,8 @@ class SiteChromeTest < ActiveSupport::TestCase
   test "header has the Help menu and the Contact link" do
     render_header
 
-    assert_selector "#site-nav-help a[href='/help?topic=faq']"
+    assert_selector "#site-nav-help a[href='/help#faq']"
+    assert_selector "#site-nav-help a[href='/help/search-tips']"
     assert_selector "#site-nav-help a[href='/help/indigenous-data']"
     assert_link "Contact", href: "/contact"
   end
