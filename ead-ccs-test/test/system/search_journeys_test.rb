@@ -67,6 +67,35 @@ class SearchJourneysTest < ApplicationSystemTestCase
     assert_selector ".result-card", minimum: 1
   end
 
+  test "the pagination is centred under the results" do
+    visit search_catalog_path(q: "skull")
+    assert_selector ".paginate-section .pagination"
+
+    offsets = page.evaluate_script(<<~JS)
+      (function () {
+        var list = document.querySelector(".paginate-section .pagination").getBoundingClientRect();
+        var items = document.querySelectorAll(".paginate-section .pagination > li");
+        var first = items[0].getBoundingClientRect(), last = items[items.length - 1].getBoundingClientRect();
+        return { left: first.left - list.left, right: list.right - last.right };
+      })()
+    JS
+    assert_in_delta offsets["left"], offsets["right"], 2, "the page links sit in the middle of the row"
+    assert_operator offsets["left"], :>, 50
+  end
+
+  test "the back to top button appears once scrolled and returns to the top" do
+    visit search_catalog_path(q: "skull")
+    assert_no_selector "button.back-to-top", visible: true
+
+    page.execute_script("window.scrollTo(0, 1500)")
+    assert_selector "button.back-to-top.is-visible[aria-label='Back to top']", visible: true
+    assert_equal "fixed", page.evaluate_script("getComputedStyle(document.querySelector('.back-to-top')).position")
+
+    find("button.back-to-top").click
+    using_wait_time(5) { assert_equal 0, page.evaluate_script("Math.round(window.scrollY)") }
+    assert_no_selector "button.back-to-top", visible: true
+  end
+
   test "on a phone the menu opens and its Help section shows the help pages" do
     page.driver.resize(390, 800)
     visit root_path
