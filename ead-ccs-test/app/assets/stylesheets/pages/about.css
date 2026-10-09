@@ -29,12 +29,14 @@ body.page-about .about-hero {
 body.page-about .about-hero__inner {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  min-height: 340px;
+  max-width: var(--layout-page);
+  min-height: 420px;
+  margin-inline: auto;
 }
 body.page-about .about-hero__content {
   display: flex;
   align-items: center;
-  padding: var(--space-48) var(--space-32) var(--space-48) max(var(--space-32), calc((100vw - var(--layout-wide)) / 2));
+  padding: var(--space-48) var(--space-32);
 }
 body.page-about .about-hero__heading {
   max-width: 11em;
