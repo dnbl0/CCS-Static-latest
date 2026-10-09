@@ -40,7 +40,7 @@ function serve() {
 const PAGES = [
   '/index.html', '/collections/index.html', '/collections/grainger-museum/index.html', '/search/search-results.html?q=kangaroo', '/search/advanced-search.html',
   '/collections/record.html?id=10116', '/collections/record.html?id=23', '/collections/record.html?id=10004',
-  '/help/index.html', '/help/index.html?topic=faq', '/help/index.html?topic=search-tips', '/help/index.html?topic=copyright', '/help/indigenous-data.html', '/contact.html', '/about.html'
+  '/help/index.html', '/help/search-tips.html', '/help/indigenous-data.html', '/contact.html', '/about.html'
 ];
 
 (async () => {

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta name="description" content="These tips help you to easily find information, images, audio, and video held in the university's cultural collections.">
+<title>Search Tips — Help — Cultural Collections Search — University of Melbourne</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Browse collections — Cultural Collections Search</title>
-<meta name="description" content="Browse the University of Melbourne&#39;s cultural collections spanning visual arts, cartography, medical history, zoology and more.">
 <script src="../runtime-libs.js"></script>
 <script src="../support.js"></script>
 <link rel="stylesheet" href="/styles/vendor/bootstrap-uom.min.css">
@@ -14,18 +14,16 @@
 <link rel="stylesheet" href="/styles/components/header.css">
 <link rel="stylesheet" href="/styles/components/breadcrumbs.css">
 <link rel="stylesheet" href="/styles/components/page-banner.css">
-<link rel="stylesheet" href="/styles/components/collection.css">
 <link rel="stylesheet" href="/styles/components/content-templates.css">
-<link rel="stylesheet" href="/styles/pages/collections-browse.css">
+<link rel="stylesheet" href="/styles/pages/help.css">
 </head>
-<body class="page-collections-browse">
-<a href="#main-content" class="skip-link collections-browse-page__link-skip-main-content">Skip to main content</a>
+<body class="page-help">
+<a href="#main-content" class="skip-link help-page__link-skip-main-content">Skip to main content</a>
 <x-dc>
 <helmet><link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..700,0..100,0..1;1,9..144,300..700,0..100,0..1&family=Source+Code+Pro:ital,wght@0,400;1,400&family=Source+Sans+3:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
-<script src="../collection-data.js"></script>
 </helmet>
-<div class="collections-browse-page__group">
+<div class="help-page__group">
 <header class="ccs-nav ccs-nav--header" data-component="Header" aria-label="Site header">
   <div class="ccs-nav__brand">
     <a class="ccs-nav__link-university-melbourne-homepage" href="https://www.unimelb.edu.au" aria-label="The University of Melbourne homepage">
@@ -34,17 +32,17 @@
   </div>
   <div class="ccs-nav__main">
     <div class="ccs-nav__top">
-      <nav class="collections-browse-university-melbourne" aria-label="University of Melbourne">
-        <ul class="collections-browse-university-melbourne__list">
-          <li class="collections-browse-university-melbourne__list-item"><a class="collections-browse-university-melbourne__item-link-study" href="https://study.unimelb.edu.au">Study</a></li>
-          <li class="collections-browse-university-melbourne__list-item"><a class="collections-browse-university-melbourne__item-link-students" href="https://students.unimelb.edu.au">Students</a></li>
-          <li class="collections-browse-university-melbourne__list-item"><a class="collections-browse-university-melbourne__item-link-research" href="https://research.unimelb.edu.au">Research</a></li>
-          <li class="collections-browse-university-melbourne__list-item"><a class="collections-browse-university-melbourne__item-link-library" href="https://library.unimelb.edu.au">Library</a></li>
-          <li class="collections-browse-university-melbourne__list-item"><a class="collections-browse-university-melbourne__item-link-staff" href="https://staff.unimelb.edu.au">Staff</a></li>
-          <li class="collections-browse-university-melbourne__list-item"><a class="collections-browse-university-melbourne__item-link-alumni" href="https://www.unimelb.edu.au/alumni">Alumni</a></li>
-          <li class="collections-browse-university-melbourne__list-item"><a class="collections-browse-university-melbourne__item-link-giving" href="https://giving.unimelb.edu.au">Giving</a></li>
-          <li class="collections-browse-university-melbourne__list-item"><a class="collections-browse-university-melbourne__item-link-about" href="https://about.unimelb.edu.au">About</a></li>
-          <li class="collections-browse-university-melbourne__list-item"><a class="collections-browse-university-melbourne__item-link-contact" href="https://www.unimelb.edu.au/contact">Contact</a></li>
+      <nav class="help-university-melbourne" aria-label="University of Melbourne">
+        <ul class="help-university-melbourne__list">
+          <li class="help-university-melbourne__list-item"><a class="help-university-melbourne__item-link-study" href="https://study.unimelb.edu.au">Study</a></li>
+          <li class="help-university-melbourne__list-item"><a class="help-university-melbourne__item-link-students" href="https://students.unimelb.edu.au">Students</a></li>
+          <li class="help-university-melbourne__list-item"><a class="help-university-melbourne__item-link-research" href="https://research.unimelb.edu.au">Research</a></li>
+          <li class="help-university-melbourne__list-item"><a class="help-university-melbourne__item-link-library" href="https://library.unimelb.edu.au">Library</a></li>
+          <li class="help-university-melbourne__list-item"><a class="help-university-melbourne__item-link-staff" href="https://staff.unimelb.edu.au">Staff</a></li>
+          <li class="help-university-melbourne__list-item"><a class="help-university-melbourne__item-link-alumni" href="https://www.unimelb.edu.au/alumni">Alumni</a></li>
+          <li class="help-university-melbourne__list-item"><a class="help-university-melbourne__item-link-giving" href="https://giving.unimelb.edu.au">Giving</a></li>
+          <li class="help-university-melbourne__list-item"><a class="help-university-melbourne__item-link-about" href="https://about.unimelb.edu.au">About</a></li>
+          <li class="help-university-melbourne__list-item"><a class="help-university-melbourne__item-link-contact" href="https://www.unimelb.edu.au/contact">Contact</a></li>
         </ul>
       </nav>
       <button type="button" class="ccs-nav__search" popovertarget="uom-search-popover" data-popover-type="search" aria-label="Open search">
@@ -56,15 +54,15 @@
       <nav id="ccs-primary-nav" class="ccs-nav__primary" aria-label="Primary navigation">
         <div class="ccs-nav__drawer-search">
           <form class="ccs-nav__form-search" role="search" action="/search/search-results.html" method="get">
-            <label for="ccs-drawer-q" class="sr-only collections-browse-form__label-search-cultural-collections">Search Cultural Collections</label>
+            <label for="ccs-drawer-q" class="sr-only help-form__label-search-cultural-collections">Search Cultural Collections</label>
             <input class="ccs-drawer-q" id="ccs-drawer-q" name="q" type="text" autocomplete="off" placeholder="Search">
-            <button class="collections-browse-form__button-search" type="submit" aria-label="Search"><img class="collections-browse-form__button-image" src="/images/home/icon-search-onaccent.svg" alt=""></button>
+            <button class="help-form__button-search" type="submit" aria-label="Search"><img class="help-form__button-image" src="/images/home/icon-search-onaccent.svg" alt=""></button>
           </form>
         </div>
         <ul class="ccs-nav__list">
           <li class="ccs-nav__list-item"><a class="ccs-nav__item-link-search-all-records" href="/search/search-results.html">Search all records</a></li>
           <li class="ccs-nav__list-item">
-            <button type="button" class="ccs-nav__trigger" aria-expanded="false" aria-controls="ccs-dd-collections" aria-current="true"><span>Browse <span class="ccs-nav__label-more">all </span>collections</span><img class="ccs-nav__image" src="/images/home/icon-expand.svg" alt=""></button>
+            <button type="button" class="ccs-nav__trigger" aria-expanded="false" aria-controls="ccs-dd-collections"><span>Browse <span class="ccs-nav__label-more">all </span>collections</span><img class="ccs-nav__image" src="/images/home/icon-expand.svg" alt=""></button>
             <div id="ccs-dd-collections" class="ccs-nav__panel">
               <a class="ccs-nav__panel-title" href="/collections/index.html"><img class="ccs-nav__image" src="/images/home/icon-arrow-footer.svg" alt="">Browse <span class="ccs-nav__label-more">all </span>collections</a>
               <ul class="ccs-nav__panel-list">
@@ -77,12 +75,12 @@
             </div>
           </li>
           <li class="ccs-nav__list-item">
-            <button type="button" class="ccs-nav__trigger" aria-expanded="false" aria-controls="ccs-dd-help">Help<img class="ccs-nav__image" src="/images/home/icon-expand.svg" alt=""></button>
+            <button type="button" class="ccs-nav__trigger" aria-expanded="false" aria-controls="ccs-dd-help" aria-current="true">Help<img class="ccs-nav__image" src="/images/home/icon-expand.svg" alt=""></button>
             <div id="ccs-dd-help" class="ccs-nav__panel">
               <a class="ccs-nav__panel-title" href="/help/index.html"><img class="ccs-nav__image" src="/images/home/icon-arrow-footer.svg" alt="">Help and support</a>
               <ul class="ccs-nav__panel-list">
                 <li class="ccs-nav__item"><a class="ccs-nav__item-link-frequently-asked-questions" href="/help/index.html#faq"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Frequently Asked Questions</a></li>
-                <li class="ccs-nav__item"><a class="ccs-nav__item-link-search-tips" href="/help/search-tips.html"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Search tips</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-search-tips" href="/help/search-tips.html" aria-current="page"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Search tips</a></li>
                 <li class="ccs-nav__item"><a class="ccs-nav__item-link-copyright-terms-use" href="/help/index.html#copyright"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Copyright and terms of use</a></li>
                 <li class="ccs-nav__item"><a class="ccs-nav__item-link-access-information" href="/help/index.html#access"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Access and information</a></li>
                 <li class="ccs-nav__item"><a class="ccs-nav__item-link-privacy" href="/help/index.html#privacy"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Privacy</a></li>
@@ -211,76 +209,106 @@
 })();
 </script>
 
-<section class="collections-browse-page__section">
-  <nav class="page-breadcrumbs" aria-label="Breadcrumb"><ol class="page-local-history" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="root" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a class="page-local-history__item-link-home" href="/" itemprop="item" title="Home" aria-label="Home"><img class="page-local-history__link-image" src="../images/home.svg" alt="" width="16" height="16"><span itemprop="name" class="sr-only page-local-history__link-text">Home</span></a><meta content="1" itemprop="position"></li><li class="page-local-history__item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page"><span class="page-local-history__item-text" itemprop="name">Browse collections</span><meta content="2" itemprop="position"></li></ol><ol class="bc-mobile bc-mobile--styled"><li class="bc-mobile__item"><a class="bc-mobile__item-link-cultural-collections" href="/"><svg class="bc-mobile__link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span class="bc-mobile__link-text">Cultural Collections</span></a></li></ol></nav>
-</section>
+<nav class="page-breadcrumbs" aria-label="Breadcrumb"><ol class="page-local-history" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="root" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a class="page-local-history__item-link-home" href="/" itemprop="item" title="Home" aria-label="Home"><img class="page-local-history__link-image" src="../images/home.svg" alt="" width="16" height="16"><span itemprop="name" class="sr-only page-local-history__link-text">Home</span></a><meta content="1" itemprop="position"></li><li class="page-local-history__item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a class="page-local-history__item-link-help-support" href="/help/index.html" itemprop="item" title="Help and support"><span class="page-local-history__link-text" itemprop="name">Help and support</span></a><meta content="2" itemprop="position"></li><li class="page-local-history__item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page"><span class="page-local-history__item-text" itemprop="name">Search Tips</span><meta content="3" itemprop="position"></li></ol><ol class="bc-mobile bc-mobile--styled"><li class="bc-mobile__item"><a class="bc-mobile__item-link-help-support" href="/help/index.html"><svg class="bc-mobile__link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span class="bc-mobile__link-text">Help and support</span></a></li></ol></nav>
 <section class="page-banner" aria-label="Page banner">
   <div class="page-banner__inner">
-    <h1 class="page-banner__heading-browse-collections">Browse collections</h1>
-    <p class="page-banner__desc">The University of Melbourne's cultural collections are unrivalled among Australian universities, spanning visual arts, cartography, medical history, zoology, archives and more, including significant collections of Aboriginal and Torres Strait Islander cultural heritage.</p>
+    <h1 class="page-banner__heading">Search Tips</h1>
+    <p class="page-banner__desc">These tips help you to easily find information, images, audio, and video held in the university's cultural collections.</p>
   </div>
 </section>
-<main class="collections-browse-main-content" id="main-content">
-  
 
-    <section class="ccs-section ccs-section--cards" aria-labelledby="browse-collections">
-      <div class="ccs-section__inner">
-        <h2 id="browse-collections" class="ccs-section__heading ccs-section__heading-browse-collections">Browse collections</h2>
-        <ul class="ccs-cards">
-        <li class="ccs-card">
-          <div class="ccs-card__media"><img class="ccs-card__image" src="/images/banners/grainger-museum.jpg" alt=""></div>
-          <div class="ccs-card__body">
-            <h3 class="ccs-card__title"><a class="ccs-card__link-grainger-museum-collection" href="/collections/grainger-museum">Grainger Museum Collection</a></h3>
-            <p class="ccs-card__text">The personal collection of composer Percy Grainger including instruments, manuscripts, correspondence and experimental machines.</p>
-          </div>
-        </li>
-        <li class="ccs-card">
-          <div class="ccs-card__media"><img class="ccs-card__image" src="/images/banners/harry-brookes-allen-museum.jpg" alt=""></div>
-          <div class="ccs-card__body">
-            <h3 class="ccs-card__title"><a class="ccs-card__link-harry-brookes-allen" href="/collections/harry-brookes-allen-museum">Harry Brookes Allen Museum of Anatomy and Pathology</a></h3>
-            <p class="ccs-card__text">Anatomical and pathological specimens, models and teaching collections supporting medical education and research.</p>
-          </div>
-        </li>
-        <li class="ccs-card">
-          <div class="ccs-card__media"><img class="ccs-card__image" src="/images/banners/henry-forman-atkinson-dental-museum.jpg" alt=""></div>
-          <div class="ccs-card__body">
-            <h3 class="ccs-card__title"><a class="ccs-card__link-henry-forman-atkinson" href="/collections/henry-forman-atkinson-dental-museum">Henry Forman Atkinson Dental Museum</a></h3>
-            <p class="ccs-card__text">Instruments, equipment and teaching materials documenting the history of dentistry and oral health education.</p>
-          </div>
-        </li>
-        <li class="ccs-card">
-          <div class="ccs-card__media"><img class="ccs-card__image" src="/images/banners/medical-history-museum.jpg" alt=""></div>
-          <div class="ccs-card__body">
-            <h3 class="ccs-card__title"><a class="ccs-card__link-medical-history-museum" href="/collections/medical-history-museum">Medical History Museum</a></h3>
-            <p class="ccs-card__text">Historical medical instruments, teaching models, pathological specimens and records documenting medical education.</p>
-          </div>
-        </li>
-        <li class="ccs-card">
-          <div class="ccs-card__media"><img class="ccs-card__image" src="/images/banners/university-art-collection.jpg" alt=""></div>
-          <div class="ccs-card__body">
-            <h3 class="ccs-card__title"><a class="ccs-card__link-university-art-collection" href="/collections/university-art-collection">University Art Collection</a></h3>
-            <p class="ccs-card__text">A major university art collection featuring Australian and international works spanning painting, sculpture and works on paper.</p>
-          </div>
-        </li>
-        </ul>
-      </div>
-    </section>
-
-  <section class="ct-listing" aria-labelledby="h-help">
-    <div class="ct-listing__inner">
-      <h2 id="h-help" class="ct-listing__title">Help and guidance</h2>
-      <p class="ct-listing__lead">Information on searching, accessing and respectfully using the collections.</p>
-      <div class="grid grid--cols-3 grid--collapsed">
-        <div class="pathfinder"><a class="pathfinder__link" href="/help/index.html"><div class="pathfinder__content"><h3 class="pathfinder__title">Help and support</h3><p class="pathfinder__summary">Searching, using and requesting items from the collections.</p></div></a></div>
-        <div class="pathfinder pathfinder--alt"><a class="pathfinder__link" href="/help/indigenous-data.html"><div class="pathfinder__content"><h3 class="pathfinder__title">Indigenous cultural data and access</h3><p class="pathfinder__summary">How Aboriginal and Torres Strait Islander cultural material is described, protected and accessed.</p></div></a></div>
-        <div class="pathfinder"><a class="pathfinder__link" href="/contact.html"><div class="pathfinder__content"><h3 class="pathfinder__title">Contact the collections team</h3><p class="pathfinder__summary">Ask a question or request access to a collection item.</p></div></a></div>
-      </div>
-    </div>
-  </section>
+<main class="help-main-content help-main-content--topic" id="main-content">
+<div class="help-layout">
+<nav class="side-nav" aria-label="Help topics">
+  <h2 class="side-nav__title">Help topics</h2>
+  <ul class="side-nav__list">
+    <li class="side-nav__item"><a class="side-nav__link" href="/help/index.html">All help topics</a></li>
+    <li class="side-nav__item"><a class="side-nav__link" href="/help/index.html#faq">Frequently Asked Questions</a></li>
+    <li class="side-nav__item"><a class="side-nav__link" href="/help/search-tips.html" aria-current="page">Search Tips</a></li>
+    <li class="side-nav__item"><a class="side-nav__link" href="/help/indigenous-data.html">Indigenous Cultural Data and Access</a></li>
+    <li class="side-nav__item"><a class="side-nav__link" href="/help/index.html#copyright">Copyright and Terms of Use</a></li>
+    <li class="side-nav__item"><a class="side-nav__link" href="/help/index.html#access">Access and Information</a></li>
+    <li class="side-nav__item"><a class="side-nav__link" href="/help/index.html#privacy">Privacy</a></li>
+  </ul>
+</nav>
+<div class="help-layout__content">
+<section class="help-search-tips" id="search-tips" aria-labelledby="h-search-tips">
+  <h2 class="help-search-tips__heading" id="h-search-tips">Search Tips</h2>
+  <p class="help-search-tips__text help-search-tips__text--v1">Here are some tips to help you to easily find collection items.</p>
+  <h3 class="help-search-tips__heading-basic-search">Basic Search</h3>
+  <p class="help-search-tips__text help-search-tips__text--v1">The search box searches everything. This is the best place to start.</p>
+  <p class="help-search-tips__text help-search-tips__text--v1">Start with a basic keyword search using two or three keywords. Search failures can result from over-specifying the search.</p>
+  <p class="help-search-tips__text help-search-tips__text--v1">Things to try when you're getting irrelevant or too many results</p>
+  <ul class="help-search-tips__list">
+    <li class="help-search-tips__list-item">Add more words.</li>
+    <li class="help-search-tips__list-item">Use the dropdown when a common word is pulling in results you don't want.</li>
+  </ul>
+  <p class="help-search-tips__text help-search-tips__text--v1">The dropdown beside the search box lets you restrict your search to a single part of the record:</p>
+  <div class="help-search-tips__group help-search-tips__group--v2">
+    <strong class="help-search-tips__strong help-search-tips__strong--v1">Dropdown option</strong><span class="help-search-tips__text help-search-tips__text--v3">Searches</span>
+    <strong class="help-search-tips__strong help-search-tips__strong--v2">All Fields</strong><span class="help-search-tips__text help-search-tips__text--v4">The whole record</span>
+    <strong class="help-search-tips__strong help-search-tips__strong--v1">Title</strong><span class="help-search-tips__text help-search-tips__text--v3">Title only</span>
+    <strong class="help-search-tips__strong help-search-tips__strong--v2">Creator</strong><span class="help-search-tips__text help-search-tips__text--v4">Creator names only</span>
+    <strong class="help-search-tips__strong help-search-tips__strong--v1">Subject</strong><span class="help-search-tips__text help-search-tips__text--v3">Subject headings only</span>
+  </div>
+  <p class="help-search-tips__text help-search-tips__text--v1">For example, searching `Melbourne` in All Fields returns anything mentioning Melbourne anywhere; searching it under Title returns only items with Melbourne in the title.</p>
+  <p class="help-search-tips__text help-search-tips__text--v1">Suggestions appear as you type. These are drawn from terms that exist in the catalogue, so picking one guarantees you'll get results.</p>
+  <p class="help-search-tips__text help-search-tips__text--v1">Type any combination of title, creator, date, place, or subject terms. All your keywords will appear in a record. This is an AND search.</p>
+  <p class="help-search-tips__text help-search-tips__text--v1">The best matches will be in the first two pages of the search results.</p>
+  <p class="help-search-tips__text help-search-tips__text--v1">Results are ranked by their relevance to your search terms, based on:</p>
+  <ul class="help-search-tips__list">
+    <li class="help-search-tips__list-item">where the words appear in the record (words in the title, or creator are ranked the highest)</li>
+    <li class="help-search-tips__list-item">number of occurrences of the term within the record</li>
+  </ul>
+  <h3 class="help-search-tips__heading-faceted-search">Faceted Search</h3>
+  <p class="help-search-tips__text help-search-tips__text--v1">The filter terms in Faceted Search allow you to refine your search results by presenting structured and extended data (format type, collection, date ranges, and subject) and the number of results per field grouping (images – 2,000). If your result set is large, review the filters to see what Format, Creators, or Subjects are represented. Select appropriate filters to view only the most relevant to your query.</p>
+  <p class="help-search-tips__text help-search-tips__text--v1">Because filters depend on the item metadata, they might not be a complete representation of all the collection items available. These are under continuous review and update to provide the more powerful filters.</p>
+  <p class="help-search-tips__text help-search-tips__text--v1">Once you select a field limit, it remains in effect until you remove it. That is, if you enter a new search using the Basic Search box the results will be limited by the selected values.</p>
+  <h3 class="help-search-tips__heading-refining-results">Refining results</h3>
+  <p class="help-search-tips__text help-search-tips__text--v1">Active filters appear as chips above the results. Remove a chip to drop that filter or choose Clear all to start again. Sort by relevance, date or title, and switch between grid and list views.</p>
+  <div class="help-search-tips__group help-search-tips__group--v1">
+    <p class="help-search-tips__text help-search-tips__text--v2"><strong class="help-search-tips__text-strong">Collection.</strong> Limit the list of results to include only the holdings of a specific collection. New collections and items are increasingly being made available.</p>
+    <p class="help-search-tips__text help-search-tips__text--v2"><strong class="help-search-tips__text-strong">Date.</strong> A histogram shows the distribution of your results by year, decade, or century, depending on the size of the range. To narrow the date range of your results, use the slider, or enter a start and end year, and click Apply.</p>
+    <p class="help-search-tips__text help-search-tips__text--v2"><strong class="help-search-tips__text-strong">Creator.</strong> Artists, Authors, Collectors, Designers, Manufacturers, and contributors to works in your results. Disambiguating a creator's name from hundreds of results by using the filter and select from among the list - full name or birth/death dates - to only see the one/s you want.</p>
+    <p class="help-search-tips__text help-search-tips__text--v2"><strong class="help-search-tips__text-strong">Organization (as Creator).</strong> Corporate or government entities that are identified as creator or are otherwise responsible for content.</p>
+    <p class="help-search-tips__text help-search-tips__text--v2"><strong class="help-search-tips__text-strong">Accession Number.</strong> Shows how your results are distributed across major disciplines. There are several standards used. Most common is uses a prefix acronym of the collection followed by the year of acquisition.</p>
+    <p class="help-search-tips__text help-search-tips__text--v2"><strong class="help-search-tips__text-strong">Object type.</strong> This is the category or physical format of the collection item. Use the search option to find all results for a particular type - for example, book, photograph, musical instrument, scientific equipment, or specimen.</p>
+    <p class="help-search-tips__text help-search-tips__text--v2"><strong class="help-search-tips__text-strong">Language.</strong> Select results created in or translated to a specific language.</p>
+    <p class="help-search-tips__text help-search-tips__text--v2"><strong class="help-search-tips__text-strong">Format.</strong> The digital format of works in your list of results – for example, image, pdf, audio, and video.</p>
+    <p class="help-search-tips__text help-search-tips__text--v2"><strong class="help-search-tips__text-strong">Access.</strong> Limit by works available online with a "Digital Asset", or physically 'On Access' or "On Display".</p>
+  </div>
+  <h3 class="help-search-tips__heading-automatic-stemming">Automatic stemming</h3>
+  <p class="help-search-tips__text help-search-tips__text--v1">Your search automatically includes plural and singular forms of your search terms, as well as common suffix and tense variations.</p>
+  <p class="help-search-tips__text help-search-tips__text--v1">For example: 'broad' will match records with the term 'broader' or 'broadest' but not 'broadly'</p>
+  <p class="help-search-tips__text help-search-tips__text--v1">Stemming applies within phrase searches as well as keyword searches.</p>
+  <h3 class="help-search-tips__heading-truncation-wildcards">Truncation and wildcards</h3>
+  <p class="help-search-tips__text help-search-tips__text--v1">Use an asterisk to truncate terms that aren't handled by stemming.</p>
+  <p class="help-search-tips__text help-search-tips__text--v1">For example, non-English variations - créat* will find création(s), créateur(s), créatrice(s), etc.</p>
+  <p class="help-search-tips__text help-search-tips__text--v1">You can truncate from the beginning as well - *science finds science, conscience, geoscience, omniscience.</p>
+  <p class="help-search-tips__text help-search-tips__text--v1">Use a question mark [?] to find variations of a single letter in a word - kvet?h will find kvetch or kvetsh.</p>
+  <h3 class="help-search-tips__heading-exact-phrase">Exact phrase</h3>
+  <p class="help-search-tips__text help-search-tips__text--v1">Use double quotation marks around your terms to match words in the exact order you typed them. For example, "architectural plan".</p>
+  <h3 class="help-search-tips__heading-advanced-search">Advanced Search</h3>
+  <p class="help-search-tips__text help-search-tips__text--v1">Want to search a single field — Title, Creator, Subject or Date range?</p>
+  <p class="help-search-tips__text help-search-tips__text--v1">Or to combine several fields use Contains all (AND), Contains any (OR) or Does not contain (NOT).</p>
+  <p class="help-search-tips__text help-search-tips__text--v1">Use advanced search when you need to:</p>
+  <ul class="help-search-tips__list">
+    <li class="help-search-tips__list-item">combine two or more specific fields</li>
+    <li class="help-search-tips__list-item">combine two or more values of a limit</li>
+    <li class="help-search-tips__list-item">items in two select collections</li>
+  </ul>
+  <p class="help-search-tips__text help-search-tips__text--v1">The results will not include the term if they appear in unselected fields. Basic search will return results across all fields but the items you are looking for may not be ranked highly.</p>
+  <h3 class="help-search-tips__heading-boolean">Boolean</h3>
+  <p class="help-search-tips__text help-search-tips__text--v1">You can create complex Boolean logic using AND, OR, and NOT (all in upper-case) and parentheses for nesting.</p>
+</section>
+<aside class="contact-box" aria-labelledby="h-contact-box-topic">
+  <h2 class="contact-box__title" id="h-contact-box-topic">Still need help?</h2>
+  <p class="contact-box__text">Contact the collections team. We aim to respond to enquiries within 5 business days.</p>
+  <a class="contact-box__link" href="/contact.html">Contact the collections team</a>
+</aside>
+</div>
+</div>
 </main>
-
-
-
 
 <!-- UoM Footer -->
 <footer class="ccs-nav ccs-nav--footer" aria-label="University of Melbourne footer">
@@ -339,7 +367,7 @@
       </div>
     </div>
   </footer>
-<svg class="collections-browse-page__icon" xmlns="http://www.w3.org/2000/svg">
+<svg class="help-page__icon" xmlns="http://www.w3.org/2000/svg">
   <symbol id="icon-facebook" viewBox="0 0 24 24">
     <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
   </symbol>

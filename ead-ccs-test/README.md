@@ -69,12 +69,12 @@ Eg:
 ## Content pages (home, collections, help, contact, about)
 
 `PagesController` serves the pages of the static prototype (`public/` in the repository root) so the two sites match:
-`/` (home), `/collections`, `/collections/<slug>`, `/help` (`?topic=faq|search-tips|copyright|access|privacy`),
-`/help/indigenous-data`, `/contact` and `/about`. The search results live at `/catalog`.
+`/` (home), `/collections`, `/collections/<slug>`, `/help` (one page; sections `#faq`, `#copyright`, `#access`, `#privacy`),
+`/help/search-tips`, `/help/indigenous-data`, `/contact` and `/about`. The search results live at `/catalog`.
 
 * Views are in `app/views/pages` (layout `layouts/pages`). The five collection landing pages share
-  `pages/collection.html.erb`; their text is in `config/pages.yml`. The Browse collections cards on the home, collections and about pages are one partial, `pages/_browse_collections.html.erb`. Help topic
-  bodies are the partials in `app/views/pages/help`.
+  `pages/collection.html.erb`; their text is in `config/pages.yml`. The Browse collections cards on the home, collections and about pages are one partial, `pages/_browse_collections.html.erb`. The help sections are
+  `pages/help/_sections.html.erb`.
 * Record counts on the browse page come from Solr when it is reachable and are left out otherwise.
 * The styles and images are generated from the static site, which is their source: `app/assets/stylesheets/pages`,
   `tokens/static_site.css` and `app/assets/images/site/` are written by `node scripts/sync-rails-assets.js` (run

@@ -25,8 +25,9 @@ const PAGES = [
     '.campaign-banner-split__content a.button', '.collection-section__text', '.def-table__term', '.def-table__text', '.contact-box__title',
     '.contact-box__term', '.contact-box__para', '.ct-listing__title']],
   ['/contact', '/contact', ['.page-banner h1', '.page-banner__desc', '.side-nav__title', '.side-nav__link', '.help-layout__content h2', '.help-layout__content h3', '.help-layout__content li']],
-  ['/help/index.html?topic=faq', '/help?topic=faq', ['.page-banner h1', '.side-nav__title', '.side-nav__link', '.help-faq__question',
-    '.help-faq__answer', '.contact-box__title']],
+  ['/help/index.html', '/help', ['.page-banner h1', '.side-nav__title', '.side-nav__link', '.help-section__heading', '.help-section__description',
+    '.help-section__subheading', '.help-section__text', '.cta-band__heading']],
+  ['/help/search-tips.html', '/help/search-tips', ['.page-banner h1', '.side-nav__link', '.help-search-tips__heading', '.contact-box__title']],
   ['/help/indigenous-data', '/help/indigenous-data', ['.page-banner h1', '.side-nav__link', '.help-layout__content h2', '.help-layout__content p']]
 ];
 

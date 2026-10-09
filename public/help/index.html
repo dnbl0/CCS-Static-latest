@@ -79,11 +79,11 @@
             <div id="ccs-dd-help" class="ccs-nav__panel">
               <a class="ccs-nav__panel-title" href="/help/index.html"><img class="ccs-nav__image" src="/images/home/icon-arrow-footer.svg" alt="">Help and support</a>
               <ul class="ccs-nav__panel-list">
-                <li class="ccs-nav__item"><a class="ccs-nav__item-link-frequently-asked-questions" href="/help?topic=faq"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Frequently Asked Questions</a></li>
-                <li class="ccs-nav__item"><a class="ccs-nav__item-link-search-tips" href="/help?topic=search-tips"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Search tips</a></li>
-                <li class="ccs-nav__item"><a class="ccs-nav__item-link-copyright-terms-use" href="/help?topic=copyright"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Copyright and terms of use</a></li>
-                <li class="ccs-nav__item"><a class="ccs-nav__item-link-access-information" href="/help?topic=access"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Access and information</a></li>
-                <li class="ccs-nav__item"><a class="ccs-nav__item-link-privacy" href="/help?topic=privacy"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Privacy</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-frequently-asked-questions" href="/help/index.html#faq"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Frequently Asked Questions</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-search-tips" href="/help/search-tips.html"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Search tips</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-copyright-terms-use" href="/help/index.html#copyright"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Copyright and terms of use</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-access-information" href="/help/index.html#access"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Access and information</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-privacy" href="/help/index.html#privacy"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Privacy</a></li>
                 <li class="ccs-nav__item"><a class="ccs-nav__item-link-indigenous-cultural-data" href="/help/indigenous-data.html"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Indigenous cultural data and access</a></li>
               </ul>
             </div>
@@ -209,49 +209,156 @@
 })();
 </script>
 
-<nav class="page-breadcrumbs" aria-label="Breadcrumb"><ol class="page-local-history" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="root" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a class="page-local-history__item-link-home" href="/" itemprop="item" title="Home" aria-label="Home"><img class="page-local-history__link-image" src="../images/home.svg" alt="" width="16" height="16"><span itemprop="name" class="sr-only page-local-history__link-text">Home</span></a><meta content="1" itemprop="position"></li><sc-if value="{{ topic }}" hint-placeholder-val="{{ false }}"><li class="page-local-history__item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a class="page-local-history__item-link-help-support" href="/help/index.html" itemprop="item" title="Help and support"><span class="page-local-history__link-text" itemprop="name">Help and support</span></a><meta content="2" itemprop="position"></li><li class="page-local-history__item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page"><span class="page-local-history__item-text" itemprop="name">{{ topic.title }}</span><meta content="3" itemprop="position"></li></sc-if><sc-if value="{{ notTopic }}" hint-placeholder-val="{{ true }}"><li class="page-local-history__item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page"><span class="page-local-history__item-text" itemprop="name">Help and support</span><meta content="2" itemprop="position"></li></sc-if></ol><sc-if value="{{ topic }}" hint-placeholder-val="{{ false }}"><ol class="bc-mobile bc-mobile--styled"><li class="bc-mobile__item"><a class="bc-mobile__item-link-help-support" href="/help/index.html"><svg class="bc-mobile__link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span class="bc-mobile__link-text">Help and support</span></a></li></ol></sc-if><sc-if value="{{ notTopic }}" hint-placeholder-val="{{ true }}"><ol class="bc-mobile bc-mobile--styled"><li class="bc-mobile__item"><a class="bc-mobile__item-link-cultural-collections" href="/"><svg class="bc-mobile__link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span class="bc-mobile__link-text">Cultural Collections</span></a></li></ol></sc-if></nav>
+<nav class="page-breadcrumbs" aria-label="Breadcrumb"><ol class="page-local-history" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="root" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a class="page-local-history__item-link-home" href="/" itemprop="item" title="Home" aria-label="Home"><img class="page-local-history__link-image" src="../images/home.svg" alt="" width="16" height="16"><span itemprop="name" class="sr-only page-local-history__link-text">Home</span></a><meta content="1" itemprop="position"></li><li class="page-local-history__item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page"><span class="page-local-history__item-text" itemprop="name">Help and support</span><meta content="2" itemprop="position"></li></ol><ol class="bc-mobile bc-mobile--styled"><li class="bc-mobile__item"><a class="bc-mobile__item-link-help-support" href="/"><svg class="bc-mobile__link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span class="bc-mobile__link-text">Cultural Collections</span></a></li></ol></nav>
 <section class="page-banner" aria-label="Page banner">
   <div class="page-banner__inner">
-    <h1 class="page-banner__heading"><sc-if value="{{ topic }}">{{ topic.title }}</sc-if><sc-if value="{{ notTopic }}">Help and support</sc-if></h1>
-    <p class="page-banner__desc"><sc-if value="{{ topic }}">{{ topic.blurb }}</sc-if><sc-if value="{{ notTopic }}">Guidance on searching, using and requesting items from the University's cultural collections.</sc-if></p>
+    <h1 class="page-banner__heading">Help and support</h1>
+    <p class="page-banner__desc">Guidance on searching, using and requesting items from the University's cultural collections.</p>
   </div>
 </section>
 
-
-<main class="help-main-content {{ mainClass }}" id="main-content">
-
-<sc-if value="{{ notTopic }}" hint-placeholder-val="{{ true }}">
-<section class="tile-strip-band" aria-labelledby="h-start">
-  <h2 class="sr-only" id="h-start">Start here</h2>
-  <ul class="tile-strip">
-    <sc-for list="{{ startTopics }}" as="t" hint-placeholder-count="3">
-      <li class="tile-strip__item">
-        <a class="tile-strip__link" href="{{ t.href }}">
-          <h3 class="tile-strip__title">{{ t.title }}</h3>
-          <p class="tile-strip__text">{{ t.blurb }}</p>
-        </a>
-      </li>
-    </sc-for>
+<main class="help-main-content help-main-content--topic" id="main-content">
+<div class="help-layout">
+<nav class="side-nav" aria-label="Help topics">
+  <h2 class="side-nav__title">Help topics</h2>
+  <ul class="side-nav__list">
+    <li class="side-nav__item"><a class="side-nav__link" href="/help/index.html" aria-current="page">All help topics</a></li>
+    <li class="side-nav__item"><a class="side-nav__link" href="/help/index.html#faq">Frequently Asked Questions</a></li>
+    <li class="side-nav__item"><a class="side-nav__link" href="/help/search-tips.html">Search Tips</a></li>
+    <li class="side-nav__item"><a class="side-nav__link" href="/help/indigenous-data.html">Indigenous Cultural Data and Access</a></li>
+    <li class="side-nav__item"><a class="side-nav__link" href="/help/index.html#copyright">Copyright and Terms of Use</a></li>
+    <li class="side-nav__item"><a class="side-nav__link" href="/help/index.html#access">Access and Information</a></li>
+    <li class="side-nav__item"><a class="side-nav__link" href="/help/index.html#privacy">Privacy</a></li>
+  </ul>
+</nav>
+<div class="help-layout__content">
+<section class="help-section" id="faq" aria-labelledby="h-faq">
+  <header class="help-section__header">
+    <h2 class="help-section__heading" id="h-faq">Frequently Asked Questions</h2>
+    <p class="help-section__description">Having problems when searching for items across the cultural collections? Here are some frequently asked questions to help.</p>
+  </header>
+  <ul class="help-section__items">
+    <li class="help-section__item">
+      <h3 class="help-section__subheading">How do I search across multiple collections at once?</h3>
+      <p class="help-section__text">By default, searches run across every collection in Cultural Collections Search. Use the filters on the results page to narrow a single collection, or to further refine your results by object type, access condition, or date.</p>
+    </li>
+    <li class="help-section__item">
+      <h3 class="help-section__subheading">What collections are currently included?</h3>
+      <p class="help-section__text">The platform is continuously being improved to include items from across the University's museums, archives, art, and scientific collections. Use Browse Collections to see the contributing collections. Please revisit frequently to discover new added items and collections.</p>
+    </li>
+    <li class="help-section__item">
+      <h3 class="help-section__subheading">Can I download images from my search results?</h3>
+      <p class="help-section__text">It depends on the item's copyright and terms of use. If a download icon appears near the preview window, you know the image, audio, or video can be used non-commercially. Respectful of the terms of use by always attributing the creator and the University of Melbourne.</p>
+    </li>
+    <li class="help-section__item">
+      <h3 class="help-section__subheading">How do I request digital access to a collection item?</h3>
+      <p class="help-section__text">Contact the Collection Team for digital access. It makes the process easier if you include the item's persistent identifier and a description of your intended use.</p>
+    </li>
+    <li class="help-section__item">
+      <h3 class="help-section__subheading">How do I report any incorrect or incomplete metadata?</h3>
+      <p class="help-section__text">We welcome community knowledge to help improve the accuracy of our records. Contact the Collection Team and include the item's persistent identifier to make the process easier.</p>
+    </li>
+    <li class="help-section__item">
+      <h3 class="help-section__subheading">What can I do if I have problems accessing the search?</h3>
+      <p class="help-section__text">Try clearing your cache in the browser you are using. Browsers often save outdated information, which is the most common cause of access errors. Here is more information on how to clear your cache on PC or Mac.</p>
+    </li>
+    <li class="help-section__item">
+      <h3 class="help-section__subheading">What can I do when there is a broken link on the website</h3>
+      <p class="help-section__text">If you come across a link that is not working or has taken you somewhere unexpected, retrace your steps from the homepage.</p>
+    </li>
+    <li class="help-section__item">
+      <h3 class="help-section__subheading">When all else fails …</h3>
+      <p class="help-section__text">Contact us. To help us fix your problem as quickly as possible, describe the exact steps you took to get the error, and remember, screenshots are worth a thousand words.</p>
+    </li>
   </ul>
 </section>
 
-<section class="ct-section" aria-labelledby="h-more">
-  <div class="ct-section__inner">
-    <h2 class="ct-section__heading" id="h-more">More guidance</h2>
-    <p class="ct-section__lead">Using, requesting and respecting the University's cultural collections.</p>
-    <ul class="box-grid">
-      <sc-for list="{{ moreTopics }}" as="t" hint-placeholder-count="3">
-        <li class="box-grid__item">
-          <div>
-            <h3 class="box-grid__title">{{ t.title }}</h3>
-            <p class="box-grid__text">{{ t.blurb }}</p>
-          </div>
-          <a class="ct-button" href="{{ t.href }}">Read guide<span class="sr-only"> for {{ t.title }}</span></a>
-        </li>
-      </sc-for>
-    </ul>
-  </div>
+<section class="help-section" id="copyright" aria-labelledby="h-copyright">
+  <header class="help-section__header">
+    <h2 class="help-section__heading" id="h-copyright">Copyright and Terms of Use</h2>
+    <p class="help-section__description">How a collection item can be used varies depending on the conditions of its copyright license, intellectual property or cultural advice. Please check the License type and Terms of Use on individual record for further information.</p>
+  </header>
+  <ul class="help-section__items">
+    <li class="help-section__item">
+      <h3 class="help-section__subheading">Free Access</h3>
+      <p class="help-section__text">Collection items available to download may be reused for personal, research, educational or non-commercial purposes. Attribution to the creator and acknowledgement of University of Melbourne is requested.</p>
+    </li>
+    <li class="help-section__item">
+      <h3 class="help-section__subheading">Licensed</h3>
+      <p class="help-section__text">Some collection items are available for use under Creative Commons or other licence types. Please follow the specific licence terms shown on the individual record.</p>
+    </li>
+    <li class="help-section__item">
+      <h3 class="help-section__subheading">Cultural Conditions</h3>
+      <p class="help-section__text">Where collection items carrying a cultural or advisory notice, engage respectfully with the content. For more information see <a class="help-copyright__item-link-indigenous-cultural-data" href="/help/indigenous-data.html">Indigenous Cultural Data and Access</a>.</p>
+    </li>
+    <li class="help-section__item">
+      <h3 class="help-section__subheading">Contact the Collection</h3>
+      <p class="help-section__text">Contact the Collection when copyright terms are unclear, or when seeking permission to use collection items in publications, online, and commercial use. To assist in the query, note the information in Cite this item and prepare a description of your intended use.</p>
+    </li>
+    <li class="help-section__item">
+      <h3 class="help-section__subheading">University Copyright Office</h3>
+      <p class="help-section__text">To learn more about copyright and licensing, see the University Copyright Office website, including information on:</p>
+      <ul class="help-section__list">
+        <li class="help-section__list-item">Basic principles of copyright</li>
+        <li class="help-section__list-item">Understanding publishing agreements</li>
+        <li class="help-section__list-item">Licences and contracts</li>
+        <li class="help-section__list-item">Protecting your work</li>
+        <li class="help-section__list-item">Using copyright material</li>
+        <li class="help-section__list-item">Copyright and research</li>
+      </ul>
+    </li>
+  </ul>
 </section>
+
+<section class="help-section" id="access" aria-labelledby="h-access">
+  <header class="help-section__header">
+    <h2 class="help-section__heading" id="h-access">Access and Information</h2>
+    <p class="help-section__description">Do you need to request access or further information on a collection item? Do you want to access and use an image, audio or video?</p>
+  </header>
+  <ul class="help-section__items">
+    <li class="help-section__item">
+      <h3 class="help-section__subheading">Contact the relevant collection</h3>
+      <p class="help-section__text">Contact the relevant collection and include the information from Cite this Item.</p>
+      <ul class="help-section__contacts">
+        <li class="help-section__contact">
+          <span class="help-section__contact-name">Harry Brookes Allen Museum of Anatomy and Pathology (HBA)<br>Henry Forman Atkinson Dental Museum (HFA)<br>Medical History Museum (MHM)</span>
+          <span class="help-section__contact-detail">Email: <a href="mailto:MDHS-museum@unimelb.edu.au">MDHS-museum@unimelb.edu.au</a></span>
+        </li>
+        <li class="help-section__contact">
+          <span class="help-section__contact-name">Grainger Museum Collection (GMC)<br>University Art Collection (UAC)</span>
+          <span class="help-section__contact-detail">Request Form: <a href="#">Open form</a></span>
+        </li>
+      </ul>
+    </li>
+    <li class="help-section__item">
+      <h3 class="help-section__subheading">Response times</h3>
+      <p class="help-section__text">We will aim to respond to your enquiries within 5 business days. Please note, more complex requests may take additional time.</p>
+    </li>
+    <li class="help-section__item">
+      <h3 class="help-section__subheading">Feedback</h3>
+      <p class="help-section__text">We also welcome feedback on how to improve our user experience.</p>
+    </li>
+  </ul>
+</section>
+
+<section class="help-section" id="privacy" aria-labelledby="h-privacy">
+  <header class="help-section__header">
+    <h2 class="help-section__heading" id="h-privacy">Privacy</h2>
+    <p class="help-section__description">The University respects the privacy of anyone who interacts with us and is committed to protecting and managing personal and health information fairly and lawfully.</p>
+  </header>
+  <ul class="help-section__items">
+    <li class="help-section__item">
+      <h3 class="help-section__subheading">Privacy laws</h3>
+      <p class="help-section__text">University of Melbourne (University) is governed by the Privacy and Data Protection Act 2014 (Vic) and Health Records Act 2000 (Vic) (together, Privacy Laws). The University is also considered to be a data controller for the purposes of the EU General Data Protection Regulation 2016/679 (GDPR) in relation to the collection of personal information from individuals located in the EU.</p>
+    </li>
+    <li class="help-section__item">
+      <h3 class="help-section__subheading">How we handle personal information</h3>
+      <p class="help-section__text">The University is committed to protecting your privacy and processing your personal information fairly and lawfully in compliance with the Privacy Laws and the GDPR, as applicable. Please refer to our <a class="help-privacy__text-link-privacy-policy" href="https://policy.unimelb.edu.au/MPF1104/">Privacy Policy</a> and our <a class="help-privacy__text-link-privacy-webpage" href="https://about.unimelb.edu.au/strategy/governance/compliance-obligations/privacy">Privacy webpage</a> for information about how we handle personal information.</p>
+    </li>
+  </ul>
+</section>
+</div>
+</div>
 
 <section class="cta-band" aria-labelledby="h-contact-box">
   <div class="cta-band__inner">
@@ -260,169 +367,7 @@
     <a class="ct-button" href="/contact.html">Contact the collections team</a>
   </div>
 </section>
-</sc-if>
-
-
-<sc-if value="{{ topic }}" hint-placeholder-val="{{ false }}">
-<div class="help-layout">
-<nav class="side-nav" aria-label="Help topics">
-  <h2 class="side-nav__title">Help topics</h2>
-  <ul class="side-nav__list">
-    <li class="side-nav__item"><a class="side-nav__link" href="/help/index.html">All help topics</a></li>
-    <sc-for list="{{ sideNav }}" as="n">
-      <li class="side-nav__item"><a class="side-nav__link" href="{{ n.href }}" aria-current="{{ n.current }}">{{ n.title }}</a></li>
-    </sc-for>
-  </ul>
-</nav>
-<div class="help-layout__content">
-
-<sc-if value="{{ showFaq }}" hint-placeholder-val="{{ true }}">
-  <div class="help-faq" id="faq">
-  <h2 class="help-faq__heading-frequently-asked-questions">Frequently Asked Questions</h2>
-  <p class="help-faq__text">Having problems when searching for items across the cultural collections? Here are some frequently asked questions to help.</p>
-  <sc-for list="{{ faqs }}" as="q" hint-placeholder-count="6">
-    <h3 class="help-faq__question">{{ q.q }}</h3>
-    <p class="help-faq__answer">{{ q.a }}</p>
-  </sc-for>
-  </div>
-</sc-if>
-
-<sc-if value="{{ showSearchTips }}" hint-placeholder-val="{{ true }}">
-<section class="help-search-tips" id="search-tips" aria-labelledby="h-search-tips">
-  <h2 class="help-search-tips__heading" id="h-search-tips">Search Tips</h2>
-  <p class="help-search-tips__text help-search-tips__text--v1">Here are some tips to help you to easily find collection items.</p>
-  <h3 class="help-search-tips__heading-basic-search">Basic Search</h3>
-  <p class="help-search-tips__text help-search-tips__text--v1">The search box searches everything. This is the best place to start.</p>
-  <p class="help-search-tips__text help-search-tips__text--v1">Start with a basic keyword search using two or three keywords. Search failures can result from over-specifying the search.</p>
-  <p class="help-search-tips__text help-search-tips__text--v1">Things to try when you're getting irrelevant or too many results</p>
-  <ul class="help-search-tips__list">
-    <li class="help-search-tips__list-item">Add more words.</li>
-    <li class="help-search-tips__list-item">Use the dropdown when a common word is pulling in results you don't want.</li>
-  </ul>
-  <p class="help-search-tips__text help-search-tips__text--v1">The dropdown beside the search box lets you restrict your search to a single part of the record:</p>
-  <div class="help-search-tips__group help-search-tips__group--v2">
-    <strong class="help-search-tips__strong help-search-tips__strong--v1">Dropdown option</strong><span class="help-search-tips__text help-search-tips__text--v3">Searches</span>
-    <strong class="help-search-tips__strong help-search-tips__strong--v2">All Fields</strong><span class="help-search-tips__text help-search-tips__text--v4">The whole record</span>
-    <strong class="help-search-tips__strong help-search-tips__strong--v1">Title</strong><span class="help-search-tips__text help-search-tips__text--v3">Title only</span>
-    <strong class="help-search-tips__strong help-search-tips__strong--v2">Creator</strong><span class="help-search-tips__text help-search-tips__text--v4">Creator names only</span>
-    <strong class="help-search-tips__strong help-search-tips__strong--v1">Subject</strong><span class="help-search-tips__text help-search-tips__text--v3">Subject headings only</span>
-  </div>
-  <p class="help-search-tips__text help-search-tips__text--v1">For example, searching `Melbourne` in All Fields returns anything mentioning Melbourne anywhere; searching it under Title returns only items with Melbourne in the title.</p>
-  <p class="help-search-tips__text help-search-tips__text--v1">Suggestions appear as you type. These are drawn from terms that exist in the catalogue, so picking one guarantees you'll get results.</p>
-  <p class="help-search-tips__text help-search-tips__text--v1">Type any combination of title, creator, date, place, or subject terms. All your keywords will appear in a record. This is an AND search.</p>
-  <p class="help-search-tips__text help-search-tips__text--v1">The best matches will be in the first two pages of the search results.</p>
-  <p class="help-search-tips__text help-search-tips__text--v1">Results are ranked by their relevance to your search terms, based on:</p>
-  <ul class="help-search-tips__list">
-    <li class="help-search-tips__list-item">where the words appear in the record (words in the title, or creator are ranked the highest)</li>
-    <li class="help-search-tips__list-item">number of occurrences of the term within the record</li>
-  </ul>
-  <h3 class="help-search-tips__heading-faceted-search">Faceted Search</h3>
-  <p class="help-search-tips__text help-search-tips__text--v1">The filter terms in Faceted Search allow you to refine your search results by presenting structured and extended data (format type, collection, date ranges, and subject) and the number of results per field grouping (images – 2,000). If your result set is large, review the filters to see what Format, Creators, or Subjects are represented. Select appropriate filters to view only the most relevant to your query.</p>
-  <p class="help-search-tips__text help-search-tips__text--v1">Because filters depend on the item metadata, they might not be a complete representation of all the collection items available. These are under continuous review and update to provide the more powerful filters.</p>
-  <p class="help-search-tips__text help-search-tips__text--v1">Once you select a field limit, it remains in effect until you remove it. That is, if you enter a new search using the Basic Search box the results will be limited by the selected values.</p>
-  <h3 class="help-search-tips__heading-refining-results">Refining results</h3>
-  <p class="help-search-tips__text help-search-tips__text--v1">Active filters appear as chips above the results. Remove a chip to drop that filter or choose Clear all to start again. Sort by relevance, date or title, and switch between grid and list views.</p>
-  <div class="help-search-tips__group help-search-tips__group--v1">
-    <p class="help-search-tips__text help-search-tips__text--v2"><strong class="help-search-tips__text-strong">Collection.</strong> Limit the list of results to include only the holdings of a specific collection. New collections and items are increasingly being made available.</p>
-    <p class="help-search-tips__text help-search-tips__text--v2"><strong class="help-search-tips__text-strong">Date.</strong> A histogram shows the distribution of your results by year, decade, or century, depending on the size of the range. To narrow the date range of your results, use the slider, or enter a start and end year, and click Apply.</p>
-    <p class="help-search-tips__text help-search-tips__text--v2"><strong class="help-search-tips__text-strong">Creator.</strong> Artists, Authors, Collectors, Designers, Manufacturers, and contributors to works in your results. Disambiguating a creator's name from hundreds of results by using the filter and select from among the list - full name or birth/death dates - to only see the one/s you want.</p>
-    <p class="help-search-tips__text help-search-tips__text--v2"><strong class="help-search-tips__text-strong">Organization (as Creator).</strong> Corporate or government entities that are identified as creator or are otherwise responsible for content.</p>
-    <p class="help-search-tips__text help-search-tips__text--v2"><strong class="help-search-tips__text-strong">Accession Number.</strong> Shows how your results are distributed across major disciplines. There are several standards used. Most common is uses a prefix acronym of the collection followed by the year of acquisition.</p>
-    <p class="help-search-tips__text help-search-tips__text--v2"><strong class="help-search-tips__text-strong">Object type.</strong> This is the category or physical format of the collection item. Use the search option to find all results for a particular type - for example, book, photograph, musical instrument, scientific equipment, or specimen.</p>
-    <p class="help-search-tips__text help-search-tips__text--v2"><strong class="help-search-tips__text-strong">Language.</strong> Select results created in or translated to a specific language.</p>
-    <p class="help-search-tips__text help-search-tips__text--v2"><strong class="help-search-tips__text-strong">Format.</strong> The digital format of works in your list of results – for example, image, pdf, audio, and video.</p>
-    <p class="help-search-tips__text help-search-tips__text--v2"><strong class="help-search-tips__text-strong">Access.</strong> Limit by works available online with a "Digital Asset", or physically 'On Access' or "On Display".</p>
-  </div>
-  <h3 class="help-search-tips__heading-automatic-stemming">Automatic stemming</h3>
-  <p class="help-search-tips__text help-search-tips__text--v1">Your search automatically includes plural and singular forms of your search terms, as well as common suffix and tense variations.</p>
-  <p class="help-search-tips__text help-search-tips__text--v1">For example: 'broad' will match records with the term 'broader' or 'broadest' but not 'broadly'</p>
-  <p class="help-search-tips__text help-search-tips__text--v1">Stemming applies within phrase searches as well as keyword searches.</p>
-  <h3 class="help-search-tips__heading-truncation-wildcards">Truncation and wildcards</h3>
-  <p class="help-search-tips__text help-search-tips__text--v1">Use an asterisk to truncate terms that aren't handled by stemming.</p>
-  <p class="help-search-tips__text help-search-tips__text--v1">For example, non-English variations - créat* will find création(s), créateur(s), créatrice(s), etc.</p>
-  <p class="help-search-tips__text help-search-tips__text--v1">You can truncate from the beginning as well - *science finds science, conscience, geoscience, omniscience.</p>
-  <p class="help-search-tips__text help-search-tips__text--v1">Use a question mark [?] to find variations of a single letter in a word - kvet?h will find kvetch or kvetsh.</p>
-  <h3 class="help-search-tips__heading-exact-phrase">Exact phrase</h3>
-  <p class="help-search-tips__text help-search-tips__text--v1">Use double quotation marks around your terms to match words in the exact order you typed them. For example, "architectural plan".</p>
-  <h3 class="help-search-tips__heading-advanced-search">Advanced Search</h3>
-  <p class="help-search-tips__text help-search-tips__text--v1">Want to search a single field — Title, Creator, Subject or Date range?</p>
-  <p class="help-search-tips__text help-search-tips__text--v1">Or to combine several fields use Contains all (AND), Contains any (OR) or Does not contain (NOT).</p>
-  <p class="help-search-tips__text help-search-tips__text--v1">Use advanced search when you need to:</p>
-  <ul class="help-search-tips__list">
-    <li class="help-search-tips__list-item">combine two or more specific fields</li>
-    <li class="help-search-tips__list-item">combine two or more values of a limit</li>
-    <li class="help-search-tips__list-item">items in two select collections</li>
-  </ul>
-  <p class="help-search-tips__text help-search-tips__text--v1">The results will not include the term if they appear in unselected fields. Basic search will return results across all fields but the items you are looking for may not be ranked highly.</p>
-  <h3 class="help-search-tips__heading-boolean">Boolean</h3>
-  <p class="help-search-tips__text help-search-tips__text--v1">You can create complex Boolean logic using AND, OR, and NOT (all in upper-case) and parentheses for nesting.</p>
-</section>
-</sc-if>
-
-<sc-if value="{{ showCopyright }}" hint-placeholder-val="{{ true }}">
-<section class="help-copyright" id="copyright" aria-labelledby="h-copyright">
-  <h2 class="help-copyright__heading-copyright-terms-use" id="h-copyright">Copyright and Terms of Use</h2>
-  <p class="help-copyright__text">How a collection item can be used varies depending on the conditions of its copyright license, intellectual property or cultural advice. Please check the License type and Terms of Use on individual record for further information.</p>
-  <ol class="help-copyright__list">
-    <li class="help-copyright__list-item"><strong class="help-copyright__item-strong">Free Access.</strong> Collection items available to download may be reused for personal, research, educational or non-commercial purposes. Attribution to the creator and acknowledgement of University of Melbourne is requested.</li>
-    <li class="help-copyright__list-item"><strong class="help-copyright__item-strong">Licensed.</strong> Some collection items are available for use under Creative Commons or other licence types. Please follow the specific licence terms shown on the individual record.</li>
-    <li class="help-copyright__list-item"><strong class="help-copyright__item-strong">Cultural Conditions.</strong> Where collection items carrying a cultural or advisory notice, engage respectfully with the content. For more information see <a class="help-copyright__item-link-indigenous-cultural-data" href="/help/indigenous-data.html">Indigenous Cultural Data and Access</a>.</li>
-    <li class="help-copyright__list-item"><strong class="help-copyright__item-strong">Contact the Collection</strong> when copyright terms are unclear, or when seeking permission to use collection items in publications, online, and commercial use. To assist in the query, note the information in Cite this item and prepare a description of your intended use.</li>
-    <li class="help-copyright__list-item"><strong class="help-copyright__item-strong">University Copyright Office.</strong> To learn more about copyright and licensing, see the University Copyright Office website, including information on:
-      <ul class="help-copyright__item-list">
-        <li class="help-copyright__list-item">Basic principles of copyright</li>
-        <li class="help-copyright__list-item">Understanding publishing agreements</li>
-        <li class="help-copyright__list-item">Licences and contracts</li>
-        <li class="help-copyright__list-item">Protecting your work</li>
-        <li class="help-copyright__list-item">Using copyright material</li>
-        <li class="help-copyright__list-item">Copyright and research</li>
-      </ul>
-    </li>
-  </ol>
-</section>
-</sc-if>
-
-<sc-if value="{{ showAccess }}" hint-placeholder-val="{{ true }}">
-<section class="help-access" id="access" aria-labelledby="h-access">
-  <h2 class="help-access__heading-access-information" id="h-access">Access and Information</h2>
-  <p class="help-access__text help-access__text--v2">Do you need to request access or further information on a collection item?</p>
-  <p class="help-access__text help-access__text--v2">Do you want to access and use an image, audio or video?</p>
-  <p class="help-access__text help-access__text--v2">Contact the relevant collection and include the information from Cite this Item.</p>
-  <p class="notice help-access__notice">We will aim to respond to your enquiries within 5 business days. Please note, more complex requests may take additional time.</p>
-  <p class="help-access__text help-access__text--v2">We also welcome feedback on how to improve our user experience.</p>
-  <div class="help-access__group help-access__group--v2">
-    <div class="help-access__group help-access__group--v1">
-      <span class="help-access__text help-access__text--v1">Harry Brookes Allen Museum of Anatomy and Pathology (HBA)<br>Henry Forman Atkinson Dental Museum (HFA)<br>Medical History Museum (MHM)</span>
-      <span class="help-access__text help-access__text--v1">Email: <a class="help-access__text-link-mdhs-museum-unimelb" href="mailto:MDHS-museum@unimelb.edu.au">MDHS-museum@unimelb.edu.au</a></span>
-    </div>
-    <div class="help-access__group help-access__group--v1">
-      <span class="help-access__text help-access__text--v1">Grainger Museum Collection (GMC)<br>University Art Collection (UAC)</span>
-      <span class="help-access__text help-access__text--v1">Request Form: <a class="help-access__text-link-open-form" href="#">Open form</a></span>
-    </div>
-  </div>
-</section>
-</sc-if>
-
-<sc-if value="{{ showPrivacy }}" hint-placeholder-val="{{ true }}">
-<section class="help-privacy" id="privacy" aria-labelledby="h-privacy">
-  <h2 class="help-privacy__heading" id="h-privacy">Privacy</h2>
-  <p class="help-privacy__text">The University respects the privacy of anyone who interacts with us and is committed to protecting and managing personal and health information fairly and lawfully.</p>
-  <p class="help-privacy__text">University of Melbourne (University) is governed by the Privacy and Data Protection Act 2014 (Vic) and Health Records Act 2000 (Vic) (together, Privacy Laws). The University is also considered to be a data controller for the purposes of the EU General Data Protection Regulation 2016/679 (GDPR) in relation to the collection of personal information from individuals located in the EU.</p>
-  <p class="help-privacy__text">The University is committed to protecting your privacy and processing your personal information fairly and lawfully in compliance with the Privacy Laws and the GDPR, as applicable. Please refer to our <a class="help-privacy__text-link-privacy-policy" href="https://policy.unimelb.edu.au/MPF1104/">Privacy Policy</a> and our <a class="help-privacy__text-link-privacy-webpage" href="https://about.unimelb.edu.au/strategy/governance/compliance-obligations/privacy">Privacy webpage</a> for information about how we handle personal information.</p>
-</section>
-</sc-if>
-<aside class="contact-box" aria-labelledby="h-contact-box-topic">
-  <h2 class="contact-box__title" id="h-contact-box-topic">Still need help?</h2>
-  <p class="contact-box__text">Contact the collections team. We aim to respond to enquiries within 5 business days.</p>
-  <a class="contact-box__link" href="/contact.html">Contact the collections team</a>
-</aside>
-</div>
-</div>
-</sc-if>
 </main>
-
-
-
 
 <!-- UoM Footer -->
 <footer class="ccs-nav ccs-nav--footer" aria-label="University of Melbourne footer">
@@ -501,45 +446,9 @@
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script>
-const FAQS = [
- ['How do I search across multiple collections at once?', 'By default, searches run across every collection in Cultural Collections Search. Use the filters on the results page to narrow a single collection, or to further refine your results by object type, access condition, or date.'],
- ['What collections are currently included?', "The platform is continuously being improved to include items from across the University's museums, archives, art, and scientific collections. Use Browse Collections to see the contributing collections. Please revisit frequently to discover new added items and collections."],
- ["Can I download images from my search results?", "It depends on the item's copyright and terms of use. If a download icon appears near the preview window, you know the image, audio, or video can be used non-commercially. Respectful of the terms of use by always attributing the creator and the University of Melbourne."],
- ['How do I request digital access to a collection item?', "Contact the Collection Team for digital access. It makes the process easier if you include the item's persistent identifier and a description of your intended use."],
- ['How do I report any incorrect or incomplete metadata?', "We welcome community knowledge to help improve the accuracy of our records. Contact the Collection Team and include the item's persistent identifier to make the process easier."],
- ['What can I do if I have problems accessing the search?', 'Try clearing your cache in the browser you are using. Browsers often save outdated information, which is the most common cause of access errors. Here is more information on how to clear your cache on PC or Mac.'],
- ['What can I do when there is a broken link on the website', 'If you come across a link that is not working or has taken you somewhere unexpected, retrace your steps from the homepage.'],
- ['When all else fails …', 'Contact us. To help us fix your problem as quickly as possible, describe the exact steps you took to get the error, and remember, screenshots are worth a thousand words.']
-];
-const TOPICS = [
- ['faq', 'Frequently Asked Questions', "Answers to common questions about searching and using items from the university's cultural collections.", 'M9 9a3 3 0 1 1 4 2.83c-.6.24-1 .85-1 1.5V14 M12 17.5h.01'],
- ['search-tips', 'Search Tips', "These tips help you to easily find information, images, audio, and video held in the university's cultural collections.", 'M10.5 3a7.5 7.5 0 1 0 0 15 7.5 7.5 0 0 0 0-15z M16 16l5 5'],
- ['indigenous', 'Indigenous Cultural Data and Access', 'Information on respectful discovery of Aboriginal and Torres Strait Islander cultural heritage and knowledge.', 'M12 3l9 16H3z M12 10v4 M12 16.5h.01'],
- ['copyright', 'Copyright and Terms of Use', 'How a collection item can be used varies depending on the conditions of its copyright license, intellectual property or cultural advice.', 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z M15 9.5c-.5-1-1.5-1.5-3-1.5-2 0-3.5 1.5-3.5 4s1.5 4 3.5 4c1.5 0 2.5-.5 3-1.5'],
- ['access', 'Access and Information', 'How to submit a request to access an item or for further information from the Collections team.', 'M4 6h16v13H4z M4 6l8 7 8-7'],
- ['privacy', 'Privacy', 'How the University respects the privacy of protecting and managing personal information.', 'M12 2 4 5v6c0 5 3.4 9 8 11 4.6-2 8-6 8-11V5z']
-];
-const asTopic = ([key, title, blurb]) => ({ title, blurb, href: key === 'indigenous' ? '/help/indigenous-data.html' : '/help?topic=' + key });
-const iconEl = d => React.createElement('svg', { width: 22, height: 22, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round', strokeLinejoin: 'round' }, React.createElement('path', { d }));
 class Component extends DCLogic {
-  state = { open: 0 };
   renderVals() {
-    const key = new URLSearchParams(location.search).get('topic');
-    const found = TOPICS.find(([k]) => k === key && k !== 'indigenous');
-    try { if (found) document.title = found[1] + ' — Help — Cultural Collections Search — University of Melbourne'; } catch (e) { /* title only */ }
-    const topic = found ? { key: found[0], title: found[1], blurb: found[2] } : null;
-    return {
-      topic, notTopic: !topic,
-      startTopics: ['faq', 'search-tips', 'access'].map(k => asTopic(TOPICS.find(([key]) => key === k))),
-      moreTopics: ['copyright', 'privacy', 'indigenous'].map(k => asTopic(TOPICS.find(([key]) => key === k))),
-      mainClass: topic ? 'help-main-content--topic' : 'help-main-content--index',
-      showFaq: !!topic && topic.key === 'faq', showSearchTips: !!topic && topic.key === 'search-tips',
-      showCopyright: !!topic && topic.key === 'copyright',
-      showAccess: !!topic && topic.key === 'access', showPrivacy: !!topic && topic.key === 'privacy',
-      sideNav: TOPICS.map(([key, title]) => ({ href: key === 'indigenous' ? '/help/indigenous-data.html' : '/help?topic=' + key, title, current: topic && topic.key === key ? 'page' : 'false' })),
-      topics: TOPICS.map(([key, title, blurb, d]) => ({ iconSrc: '/images/home/' + ({ faq: 'help-faq', 'search-tips': 'help-search-tips', indigenous: 'help-indigenous', copyright: 'help-rights', access: 'help-access', privacy: 'help-privacy' })[key] + '.svg', href: key === 'indigenous' ? '/help/indigenous-data.html' : '/help?topic=' + key, title, blurb, icon: iconEl(d) })),
-      faqs: FAQS.map(([q, a], i) => ({ q, a, open: this.state.open === i, chev: this.state.open === i ? 'rotate(180deg)' : 'none', toggle: () => this.setState(s => ({ open: s.open === i ? -1 : i })), btnId: 'faq-btn-' + i, panelId: 'faq-panel-' + i }))
-    };
+    return {};
   }
 }
 </script>
