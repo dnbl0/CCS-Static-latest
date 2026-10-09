@@ -177,7 +177,8 @@
     var self = { root: null, open: false };
     var panelId = id + '-menu', lblId = id + '-lbl';
     var valueSpan = el('span', { 'class': 'ccs-combo__value is-placeholder', text: o.placeholder });
-    var iconImg = img(IMG + 'icon-select-closed.svg');
+    var addStyle = /ccs-combo--add/.test(o.className || ''), closedIcon = IMG + (addStyle ? 'icon-add.svg' : 'icon-select-closed.svg'), openIcon = IMG + (addStyle ? 'icon-add.svg' : 'icon-select-open.svg');
+    var iconImg = img(closedIcon);
     var btn = el('button', { type: 'button', id: id, 'class': 'ccs-combo__field', 'aria-haspopup': 'true', 'aria-expanded': 'false', 'aria-controls': panelId, 'aria-labelledby': lblId + ' ' + id },
       [valueSpan, el('span', { 'class': 'ccs-combo__icon' }, [iconImg])]);
     var menu = el('div', { id: panelId, 'class': 'ccs-combo__menu', role: 'group', 'aria-labelledby': lblId, hidden: true });
@@ -224,7 +225,7 @@
     self.close = function (refocus) {
       if (!self.open) return;
       self.open = false; menu.hidden = true; btn.setAttribute('aria-expanded', 'false');
-      iconImg.src = IMG + 'icon-select-closed.svg'; root.classList.remove('is-open');
+      iconImg.src = closedIcon; root.classList.remove('is-open');
       if (openMenu === self) openMenu = null;
       if (refocus) btn.focus();
     };
@@ -232,7 +233,7 @@
       if (self.open) return;
       setOpen(self);
       self.open = true; menu.hidden = false; btn.setAttribute('aria-expanded', 'true'); keepInView(menu);
-      iconImg.src = IMG + 'icon-select-open.svg'; root.classList.add('is-open');
+      iconImg.src = openIcon; root.classList.add('is-open');
       var first = search || visible()[0];
       if (first) first.focus();
     };
@@ -498,7 +499,7 @@
       var q = $('[data-role=query]', row); q.name = 'clause[' + i + '][query]';
       $('label.sr-only[for="' + q.id + '"]', row).textContent = 'Search terms, row ' + n;
       var del = $('.ccs-delete', row); del.setAttribute('aria-label', 'Delete row ' + n);
-      del.disabled = rows.length <= 1;      // the form always keeps at least one search row
+      del.hidden = rows.length <= 1;      // the form always keeps at least one search row, so a lone row has nothing to delete
     });
     var add = $('#adv-add-row');
     if (add) add.disabled = rows.length >= MAX_ROWS;
@@ -725,6 +726,9 @@
     });
     if (addMount) addMount.appendChild(addFilterMulti.root);
     prefill();
+    // Blacklight's hidden search state: the results view the visitor was using is carried over to the new search
+    var view = new URLSearchParams(location.search).get('view');
+    if (view === 'list' || view === 'masonry') form.appendChild(el('input', { type: 'hidden', name: 'view', value: view }));
     form.addEventListener('submit', onSubmit);
     if (!bound) {
       bound = true;

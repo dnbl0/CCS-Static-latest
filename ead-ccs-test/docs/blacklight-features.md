@@ -44,3 +44,19 @@ Configuration-only use of Blacklight 9.0.0 and its official plugins, in `Catalog
 - **Facets only render when they have values.** The facets, sections and record fields now come from the
   workbooks (`docs/data-model.md`); the earlier pivot, "Record includes" query facets and contextual
   `if:` facets are no longer configured because the workbook does not define them.
+
+## Advanced search against Blacklight's own
+
+Compared with `blacklight/app/views/catalog/_advanced_search_form.html.erb` (9.0.0):
+
+| Blacklight default | This app | Why |
+|---|---|---|
+| Route `/catalog/advanced`, `config.advanced_search.enabled`, `AdvancedSearchFormComponent`, `copy_search_field_config_to_advanced!`, `copy_facet_field_config_to_advanced!` | Same; the form is a subclass of the component | Keeps Blacklight's field, facet and response handling |
+| One "match all / any of the fields" menu (`op`) and one fixed row per search field | Rows the visitor adds (up to 8), each with its own field and match type (`clause[i][field\|op\|query]`, `op` = must / should / must_not). `op` in a link still sets the default for rows that have none | Blacklight 9 already reads `op` per clause; the static prototype and the Jira requirements want "Does not contain" |
+| Facet limits in an accordion (`f_inclusive[facet][]`, with counts) | Same parameters and counts, shown as a card per filter with Includes any / Includes all (`f_all`, see `AllFacetFilters`) | "Includes all" is not something Blacklight offers |
+| Range limit plugin | Same (`range[field][begin\|end]`) | none |
+| Sort menu | Same (`sort`) | none |
+| Hidden search state (`view`, `per_page`) | Same | none |
+| Search + Start over | Same; Start over is a link to the empty form; in the flyout both stay at the foot of the panel | none |
+
+Not done: Blacklight's "within search" constraints block above the form (the form shows the current search itself).

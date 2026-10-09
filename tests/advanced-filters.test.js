@@ -67,7 +67,7 @@ const truthy = (v, msg) => { if (v) ok(msg); else fail(msg); };
     const cols = await p.evaluate(() => { const f = document.querySelector('#adv-form').getBoundingClientRect(), a = document.querySelector('.ccs-instructions').getBoundingClientRect(); return { sideBySide: a.left > f.right - 1 && Math.abs(a.top - f.top) < 40 }; });
     truthy(cols.sideBySide, 'desktop: guidance panel sits beside the form');
     const row3 = await p.$eval('.adv-term .ccs-field-row__controls', e => getComputedStyle(e).gridTemplateColumns.split(' ').length);
-    eq(row3, 3, 'desktop search row has three columns');
+    eq(row3, 2, 'desktop search row: field and match type side by side, terms on their own line above');
     await p.close();
 
     p = await open(390, 800);
@@ -156,7 +156,7 @@ const truthy = (v, msg) => { if (v) ok(msg); else fail(msg); };
     eq(await p.$eval('.adv-term:nth-child(2) [data-role=query]', e => e.value), 'gamma', 'remaining rows keep independent values after a delete');
     eq(await p.$eval('.adv-term:nth-child(2) input[name$="[query]"]', e => e.name), 'clause[1][query]', 'row names are renumbered');
     await p.click('.adv-term:nth-child(2) .ccs-delete');
-    eq(await p.$eval('.adv-term .ccs-delete', e => e.disabled), true, 'deleting is disabled when one row remains');
+    eq(await p.$eval('.adv-term .ccs-delete', e => e.hidden), true, 'a lone search row has no Delete row control');
     for (let i = 0; i < 9; i++) { if (!(await p.$eval('#adv-add-row', e => e.disabled))) await p.click('#adv-add-row'); }
     eq(await rows(p, '.adv-term'), 8, 'search rows are capped at eight');
     eq(await p.$eval('#adv-add-row', e => e.disabled), true, 'Add row is disabled at the cap');
