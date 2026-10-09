@@ -30,6 +30,69 @@ const PAGES = [
   ['/help/indigenous-data', '/help/indigenous-data', ['.page-banner h1', '.side-nav__link', '.help-layout__content h2', '.help-layout__content p']]
 ];
 
+// Header navigation labels: the static `.ccs-nav*` and Rails `.site-nav*` classes differ, so they are compared in pairs. Both must
+// match the UniMelb navigation (e.g. students.unimelb.edu.au): 16px / 600 / -0.16px primary labels with a pale-blue hover, a
+// 2px inset blue focus ring, and 18px dropdown items. The font stack is left out like the other font-family checks.
+const NAV_PROPS = ['fontSize', 'fontWeight', 'lineHeight', 'letterSpacing', 'textTransform', 'color', 'backgroundColor', 'textDecorationLine',
+  'paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft', 'columnGap', 'minHeight', 'boxShadow', 'outlineStyle', 'outlineOffset'];
+const NAV_PAIRS = [
+  ['nav link', '.ccs-nav__primary > ul > li > a', '.site-nav > ul > li > a'],
+  ['nav trigger', '.ccs-nav__trigger', '.site-nav__trigger'],
+  ['nav trigger label', '.ccs-nav__trigger > span', '.site-nav__trigger > span'],
+  ['dropdown title', '.ccs-nav__panel-title', '.site-nav__panel-title'],
+  ['dropdown item', '.ccs-nav__panel-list a', '.site-nav__panel-list a'],
+  ['audience link', '.ccs-nav__top a', '.site-header__utility a'],
+  ['site title', '.ccs-nav__title', '.site-header__title']
+];
+const closeDialogs = (page) => page.evaluate(() => document.querySelectorAll('dialog[open]').forEach((d) => d.close()));
+async function navStyles(page, url, width) {
+  await page.goto(url, { waitUntil: 'networkidle' });
+  await closeDialogs(page);
+  const read = (selector) => page.locator(selector).first().evaluate((el, props) => {
+    const style = getComputedStyle(el); return Object.fromEntries(props.map((p) => [p, style[p]]));
+  }, NAV_PROPS);
+  return { read };
+}
+async function checkNav(browser, width) {
+  let failures = 0;
+  const context = await browser.newContext({ viewport: { width, height: 900 } });
+  const page = await context.newPage();
+  const sides = [];
+  for (const [i, base] of [STATIC, RAILS].entries()) {
+    const { read } = await navStyles(page, base + '/', width);
+    const out = {};
+    for (const [label, a, b] of NAV_PAIRS) out[label] = await read(i ? b : a);
+    if (width >= 1024) {
+      const trigger = i ? '.site-nav__trigger' : '.ccs-nav__trigger', link = i ? '.site-nav > ul > li > a' : '.ccs-nav__primary > ul > li > a';
+      await page.locator(trigger).first().hover(); await page.waitForTimeout(250); out['trigger hover'] = await read(trigger);
+      await page.mouse.move(5, 800);
+      await page.locator(link).first().hover(); await page.waitForTimeout(250); out['link hover'] = await read(link);
+      await page.mouse.move(5, 800);
+      await page.locator(trigger).first().focus(); await page.keyboard.press('Shift+Tab'); await page.keyboard.press('Tab'); await page.waitForTimeout(250);
+      out['trigger focus'] = await read(trigger);
+      await page.locator(trigger).first().click(); await page.waitForTimeout(250); out['trigger open'] = await read(trigger);
+      await page.mouse.move(5, 800);
+    }
+    sides.push(out);
+  }
+  // Values measured on students.unimelb.edu.au (desktop): primary labels, their hover, and dropdown items.
+  const UNIMELB = { 'nav trigger': { fontSize: '16px', fontWeight: '600', letterSpacing: '-0.16px', lineHeight: '16px', color: 'rgb(255, 255, 255)', paddingTop: '8px', paddingLeft: '12px' },
+    'trigger hover': { backgroundColor: 'rgb(163, 228, 247)', color: 'rgb(0, 15, 70)' },
+    'dropdown item': { fontSize: '18px', fontWeight: '600', letterSpacing: '-0.135px' } };
+  if (width >= 1024) {
+    for (const [side, out] of [['static', sides[0]], ['Rails', sides[1]]]) for (const [label, want] of Object.entries(UNIMELB)) {
+      const diffs = Object.keys(want).filter((p) => out[label][p] !== want[p]).map((p) => `${p}: ${side} ${out[label][p]}, UniMelb ${want[p]}`);
+      if (diffs.length) { console.error(`FAIL: ${width}px header ${label} differs from UniMelb\n   ${diffs.join('\n   ')}`); failures++; }
+    }
+  }
+  for (const label of Object.keys(sides[0])) {
+    const diffs = NAV_PROPS.filter((p) => sides[0][label][p] !== sides[1][label][p]).map((p) => `${p}: static ${sides[0][label][p]}, Rails ${sides[1][label][p]}`);
+    if (diffs.length) { console.error(`FAIL: ${width}px header ${label}\n   ${diffs.join('\n   ')}`); failures++; }
+  }
+  await context.close();
+  return failures;
+}
+
 async function snapshot(page, url, selectors) {
   await page.goto(url, { waitUntil: 'networkidle' });
   await page.waitForTimeout(300);
@@ -68,6 +131,7 @@ async function snapshot(page, url, selectors) {
     }
     await context.close();
   }
+  for (const width of WIDTHS) failures += await checkNav(browser, width);
   await browser.close();
   console.log(`\nparity: ${failures} failure(s)`);
   process.exit(failures ? 1 : 0);
