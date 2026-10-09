@@ -840,6 +840,7 @@ function advancedFormHref(f) {
   if (f.yFrom != null) p.set('range[year][begin]', f.yFrom);
   if (f.yTo != null) p.set('range[year][end]', f.yTo);
   const so = Object.keys(ADV_SORTS).find(k => ADV_SORTS[k] === f.sort); if (so) p.set('sort', so);
+  try { const v = new URLSearchParams(location.search).get('view'); if (v === 'list' || v === 'masonry') p.set('view', v); } catch (e) { /* no URL */ }   // like Blacklight, the form carries the results view over
   const qs = p.toString(); return 'advanced-search.html' + (qs ? '?' + qs : '');
 }
 
