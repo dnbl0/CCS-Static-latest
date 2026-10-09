@@ -18,7 +18,7 @@
   <% start_topics = %w[faq search-tips access].map { |key| HelpTopic.find(key) } %>
   <% more_topics = %w[copyright privacy indigenous].map { |key| HelpTopic.find(key) } %>
   <main class="help-main-content" id="main-content">
-    <section aria-labelledby="h-start">
+    <section class="tile-strip-band" aria-labelledby="h-start">
       <h2 class="sr-only" id="h-start">Start here</h2>
       <ul class="tile-strip">
         <% start_topics.each do |topic| %>

@@ -491,6 +491,7 @@
   --layout-content: var(--size-1224);
   --layout-content-wide: var(--size-1240);
   --layout-page: var(--size-1440);
+  --layout-container: calc(var(--size-1200) + 64px); /* content column plus a 32px gutter each side: every page container uses this so content lines up */
   /* Runtime layout value: record.html measures the header and overwrites this on <html>; 212px is the default (tall desktop header) */
   --header-total-height: 212px;
 }
