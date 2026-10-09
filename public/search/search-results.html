@@ -12,6 +12,7 @@
 <script src="/search/smart-search.js"></script>
 <script src="/search/range-slider.js"></script>
 <script src="/search-bar.js"></script>
+<script src="/search/back-to-top.js" defer></script>
 <link rel="stylesheet" href="/styles/vendor/bootstrap-uom.min.css">
 <link rel="stylesheet" href="/styles/tokens/tokens.css">
 <link rel="stylesheet" href="/styles/base.css">
@@ -32,6 +33,7 @@
 <link rel="stylesheet" href="/styles/pages/search-results/facet-rail.css">
 <link rel="stylesheet" href="/styles/pages/search-results/pagination.css">
 <link rel="stylesheet" href="/styles/pages/search-results/pills.css">
+<link rel="stylesheet" href="/styles/pages/search-results/back-to-top.css">
 </head>
 <body class="page-search-results">
 <a href="#main-content" class="skip-link search-results-page__link-skip-main-content">Skip to main content</a>
@@ -454,7 +456,6 @@
         <sc-for list="{{ pages }}" as="pg"><button class="search-results-pagination__button-go" onClick="{{ pg.go }}" aria-current="{{ pg.current }}" style="--dyn-background:{{ pg.bg }};--dyn-color:{{ pg.color }};--dyn-cursor:{{ pg.cursor }}">{{ pg.n }}</button></sc-for>
         <button class="search-results-pagination__button-next-page" onClick="{{ nextPage }}" aria-label="Next page" rel="next" disabled="{{ !hasNext }}" style="--dyn-background:{{ nextBg }};--dyn-color:{{ nextColor }};--dyn-cursor:{{ nextCursor }}">Next<svg class="search-results-pagination__button-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false"><line x1="4" y1="12" x2="20" y2="12"></line><polyline points="14 6 20 12 14 18"></polyline></svg></button>
       </nav>
-      <button class="search-results-main-content__button-top" onClick="{{ toTop }}"><svg class="search-results-main-content__button-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 15 12 9 18 15"></polyline></svg>Back to top</button>
     </div>
   </sc-if>
 </main>
@@ -1418,7 +1419,6 @@ class Component extends DCLogic {
       hasPrev: page > 1, hasNext: page < pageCount,
       prevColor: page > 1 ? 'var(--col-bg-primary)' : '#c3c6cd',
       nextBg: page < pageCount ? '#c8d5c0' : '#e4e7ec', nextColor: page < pageCount ? 'var(--col-bg-primary)' : '#9aa1af', nextCursor: page < pageCount ? 'pointer' : 'default',
-      toTop: () => window.scrollTo({ top: 0, behavior: 'smooth' }),
       ppOpts: [12, 24, 40, 96].map(v => ({ label: v + ' per page', sel: s.perPage === v, bg: s.perPage === v ? '#b3e5f5' : '#fff', pick: () => { this.setState({ ppOpen: false, perPage: v }); this.apply(ff => ff); } })),
       sortOpen: s.sortOpen, sortRef: this.sortRef, toggleSort: () => this.setState(st => ({ sortOpen: !st.sortOpen })),
       sortLabel: (SORTS.find(x => x[0] === f.sort) || [0, 'Sort by'])[1], sortColor: f.sort ? 'var(--col-text-primary)' : '#6b7080', sortChev: s.sortOpen ? 'rotate(180deg)' : 'none',
