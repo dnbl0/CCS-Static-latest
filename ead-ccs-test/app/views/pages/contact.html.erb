@@ -1,6 +1,7 @@
 <% content_for :title, "Contact Collections Team — Cultural Collections Search — University of Melbourne" %>
 <% content_for :body_class, "page-contact" %>
 <%= render NexusCcs::PageBreadcrumbsComponent.new(trail: [ [ "Contact", nil ] ]) %>
+<%= render NexusCcs::PageBannerComponent.new(title: "Contact collections team", description: "Contact the team that cares for each collection directly. Choose the collection you're interested in below to find its contact method: an email address or an external Access Request Form.") %>
 <main id="main-content" class="contact-main-content">
 <div class="help-layout contact-layout">
 <nav class="side-nav contact-layout__nav" aria-label="On this page">
@@ -13,8 +14,6 @@
 </ul>
 </nav>
 <div class="help-layout__content contact-layout__content">
-<h1 class="contact-layout__title">Contact collections team</h1>
-<p class="contact-layout__lead">Contact the team that cares for each collection directly. Choose the collection you're interested in below to find its contact method: an email address or an external Access Request Form.</p>
 
 <section aria-labelledby="h-collections">
 <h2 id="h-collections">Contact a collection</h2>

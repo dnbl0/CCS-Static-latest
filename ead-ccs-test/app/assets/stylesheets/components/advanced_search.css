@@ -56,10 +56,6 @@
   color: var(--ccs-text-brand);
 }
 
-.advanced-form__heading--label {
-  font-size: var(--ccs-font-size-2xl);
-}
-
 .advanced-form__hint,
 .advanced-form__note {
   margin: 0;
@@ -103,15 +99,20 @@
   outline-offset: 1px;
 }
 
-/* A row: three fields side by side, Delete row under them */
+/* A row: the terms box on its own line, the field and the match type side by side under it, Delete row last
+   (the same order as the static site's form and its flyout) */
 .advanced-row {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--ccs-space-4);
-  align-items: flex-end;
+  align-items: end;
   margin: 0;
   padding: var(--ccs-space-4);
   border: 1px solid var(--ccs-border-panel);
+}
+
+.advanced-row .advanced-form__field--terms {
+  grid-column: 1 / -1;
 }
 
 .advanced-row__legend,
@@ -127,7 +128,7 @@
 }
 
 .advanced-row__delete {
-  flex: 0 0 100%;
+  grid-column: 1 / -1;
   justify-self: start;
   text-align: start;
 }
@@ -376,7 +377,10 @@
 
 /* Narrow: the three fields of a row stack */
 @media (max-width: 575.98px) {
-  .advanced-row,
+  .advanced-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   .advanced-form__actions {
     flex-direction: column;
     align-items: stretch;
@@ -396,7 +400,10 @@
 }
 
 /* In the flyout the form is one narrow column */
-.advanced-form--modal .advanced-row,
+.advanced-form--modal .advanced-row {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .advanced-form--modal .advanced-range {
   flex-direction: column;
   align-items: stretch;
@@ -410,6 +417,17 @@
 
 .advanced-form--modal .advanced-form__heading {
   font-size: var(--ccs-font-size-2xl);
+}
+
+/* The flyout's Start over / Search stay in view at the foot of the scrolling panel, never over a section */
+.advanced-form--modal .advanced-form__actions {
+  position: sticky;
+  bottom: calc(-1 * var(--ccs-space-4));
+  z-index: 1;
+  margin: 0 calc(-1 * var(--ccs-space-4)) calc(-1 * var(--ccs-space-4));
+  padding: var(--ccs-space-3) var(--ccs-space-4);
+  border-top: 1px solid var(--ccs-border-panel);
+  background: var(--ccs-white);
 }
 
 .advanced-form--modal .advanced-filter__values {
