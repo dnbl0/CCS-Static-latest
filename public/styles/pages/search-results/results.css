@@ -253,18 +253,6 @@ body.page-search-results .search-results-main-content__button-remove:hover {
   background: #d8e0ef;
 }
 
-body.page-search-results .search-results-main-content__button-top {
-  display: flex;
-  align-items: center;
-  gap: var(--space-6);
-  border: 0;
-  background: none;
-  color: var(--col-bg-primary);
-  font-size: var(--font-size-13);
-  font-weight: var(--font-weight-semibold);
-  cursor: pointer;
-}
-
 body.page-search-results .search-results-main-content__group--v1 {
   background: var(--white-100);
   border: 1px solid #e3e0d9;
