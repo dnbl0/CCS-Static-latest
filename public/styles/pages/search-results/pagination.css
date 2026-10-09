@@ -4,7 +4,7 @@ body.page-search-results .search-results-pagination {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: center;
   gap: var(--space-4);
 }
 
@@ -89,6 +89,7 @@ body.page-search-results .search-results-pagination__button-icon {
   body.page-search-results .search-results-pagination__button-prev-page,
     body.page-search-results .search-results-pagination__button-next-page {
       flex: 1 1 100%;
+      justify-content: center;
     }
   body.page-search-results .search-results-pagination__button-prev-page {
       order: -1;
