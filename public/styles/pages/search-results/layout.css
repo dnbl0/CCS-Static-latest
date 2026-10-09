@@ -249,7 +249,10 @@ body.page-search-results .search-results-layout.is-searching .facet-rail__chevro
     grid-template-areas: "rail bar" "rail main";
     grid-template-rows: auto 1fr;
     align-items: start;
-    padding: 0 var(--space-16);
+    box-sizing: border-box;
+    max-width: var(--layout-container);
+    margin-inline: auto;
+    padding: 0 var(--space-32);
   }
 
   body.page-search-results .search-results-body > .search-results-layout {
