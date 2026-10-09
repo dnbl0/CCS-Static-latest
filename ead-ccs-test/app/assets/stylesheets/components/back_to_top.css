@@ -1,0 +1,57 @@
+/*
+ * Floating "back to top" button, after the University Library Search's (librarysearch.unimelb.edu.au, studied
+ * 2026-10-09): a 40px sage square with 12px corners and a navy up-chevron, fixed 24px from the bottom and right
+ * edges, under the site header (z-index 100), fading in over 0.5s once the page is scrolled. The Library Search
+ * hides it on phones (under 600px); so do we (576px, the breakpoint the pagination uses), where the filter
+ * drawer and toolbar already use the thumb zone. Behaviour: controllers/back_to_top_controller.js.
+ */
+.back-to-top {
+  position: fixed;
+  inset-block-end: max(var(--ccs-space-5), env(safe-area-inset-bottom));
+  inset-inline-end: var(--ccs-space-5);
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--ccs-radius-lg);
+  background: var(--ccs-action-secondary);
+  box-shadow: var(--ccs-shadow-md);
+  color: var(--ccs-action-secondary-text);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.5s, background-color var(--ccs-duration-base);
+}
+
+@media (min-width: 576px) {
+  /* the script sets the hidden attribute while the page is near the top */
+  .back-to-top:not([hidden]) {
+    display: inline-flex;
+  }
+}
+
+.back-to-top.is-visible {
+  opacity: 1;
+}
+
+.back-to-top:hover {
+  background: var(--ccs-action-secondary-hover);
+}
+
+.back-to-top:active {
+  background: var(--ccs-action-secondary-active);
+}
+
+.back-to-top:focus-visible {
+  outline: 3px solid var(--ccs-focus-ring);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .back-to-top {
+    transition: none;
+  }
+}
