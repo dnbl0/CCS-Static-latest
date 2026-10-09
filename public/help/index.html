@@ -218,37 +218,50 @@
 </section>
 
 
+<main class="help-main-content {{ mainClass }}" id="main-content">
+
 <sc-if value="{{ notTopic }}" hint-placeholder-val="{{ true }}">
-<section class="ct-listing" aria-labelledby="h-topics">
-  <div class="ct-listing__inner">
-    <h2 class="ct-listing__title" id="h-topics">Help topics</h2>
-    <p class="ct-listing__lead">Choose a topic to find guidance on searching, accessing and using the University's cultural collections.</p>
-    <ul class="ccs-help ccs-help--topics">
-      <sc-for list="{{ topics }}" as="t" hint-placeholder-count="6">
-        <li class="ccs-help__item">
-          <div class="ccs-help__card">
-            <div class="ccs-help__icon"><img class="ccs-help__image" src="{{ t.iconSrc }}" alt=""></div>
-            <div class="ccs-help__body">
-              <div class="ccs-help__group">
-                <h3 class="ccs-help__title">{{ t.title }}</h3>
-                <p class="ccs-help__text">{{ t.blurb }}</p>
-              </div>
-              <a class="ccs-link" href="{{ t.href }}">Read guide<span class="sr-only ccs-link__text"> for {{ t.title }}</span><img class="ccs-link__image" src="/images/home/icon-arrow-right.svg" alt=""></a>
-            </div>
+<section aria-labelledby="h-start">
+  <h2 class="sr-only" id="h-start">Start here</h2>
+  <ul class="tile-strip">
+    <sc-for list="{{ startTopics }}" as="t" hint-placeholder-count="3">
+      <li class="tile-strip__item">
+        <a class="tile-strip__link" href="{{ t.href }}">
+          <h3 class="tile-strip__title">{{ t.title }}</h3>
+          <p class="tile-strip__text">{{ t.blurb }}</p>
+        </a>
+      </li>
+    </sc-for>
+  </ul>
+</section>
+
+<section class="ct-section" aria-labelledby="h-more">
+  <div class="ct-section__inner">
+    <h2 class="ct-section__heading" id="h-more">More guidance</h2>
+    <p class="ct-section__lead">Using, requesting and respecting the University's cultural collections.</p>
+    <ul class="box-grid">
+      <sc-for list="{{ moreTopics }}" as="t" hint-placeholder-count="3">
+        <li class="box-grid__item">
+          <div>
+            <h3 class="box-grid__title">{{ t.title }}</h3>
+            <p class="box-grid__text">{{ t.blurb }}</p>
           </div>
+          <a class="ct-button" href="{{ t.href }}">Read guide<span class="sr-only"> for {{ t.title }}</span></a>
         </li>
       </sc-for>
     </ul>
-    <aside class="contact-box" aria-labelledby="h-contact-box">
-      <h2 class="contact-box__title" id="h-contact-box">Still need help?</h2>
-      <p class="contact-box__text">Contact the collections team. We aim to respond to enquiries within 5 business days.</p>
-      <a class="contact-box__link" href="/contact.html">Contact the collections team</a>
-    </aside>
+  </div>
+</section>
+
+<section class="cta-band" aria-labelledby="h-contact-box">
+  <div class="cta-band__inner">
+    <h2 class="cta-band__heading" id="h-contact-box">Still need help?</h2>
+    <p class="cta-band__text">Contact the collections team. We aim to respond to enquiries within 5 business days.</p>
+    <a class="ct-button" href="/contact.html">Contact the collections team</a>
   </div>
 </section>
 </sc-if>
 
-<main class="help-main-content {{ mainClass }}" id="main-content">
 
 <sc-if value="{{ topic }}" hint-placeholder-val="{{ false }}">
 <div class="help-layout">
@@ -506,6 +519,7 @@ const TOPICS = [
  ['access', 'Access and Information', 'How to submit a request to access an item or for further information from the Collections team.', 'M4 6h16v13H4z M4 6l8 7 8-7'],
  ['privacy', 'Privacy', 'How the University respects the privacy of protecting and managing personal information.', 'M12 2 4 5v6c0 5 3.4 9 8 11 4.6-2 8-6 8-11V5z']
 ];
+const asTopic = ([key, title, blurb]) => ({ title, blurb, href: key === 'indigenous' ? '/help/indigenous-data.html' : '/help?topic=' + key });
 const iconEl = d => React.createElement('svg', { width: 22, height: 22, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round', strokeLinejoin: 'round' }, React.createElement('path', { d }));
 class Component extends DCLogic {
   state = { open: 0 };
@@ -516,6 +530,8 @@ class Component extends DCLogic {
     const topic = found ? { key: found[0], title: found[1], blurb: found[2] } : null;
     return {
       topic, notTopic: !topic,
+      startTopics: ['faq', 'search-tips', 'access'].map(k => asTopic(TOPICS.find(([key]) => key === k))),
+      moreTopics: ['copyright', 'privacy', 'indigenous'].map(k => asTopic(TOPICS.find(([key]) => key === k))),
       mainClass: topic ? 'help-main-content--topic' : 'help-main-content--index',
       showFaq: !!topic && topic.key === 'faq', showSearchTips: !!topic && topic.key === 'search-tips',
       showCopyright: !!topic && topic.key === 'copyright',
