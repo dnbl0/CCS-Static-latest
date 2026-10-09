@@ -1,6 +1,11 @@
 require "test_helper"
 
 class SitePagesTest < ActiveSupport::TestCase
+  test "the header menu lists the collections alphabetically by label" do
+    labels = NexusCcs::SiteNavigation.collections.map(&:first)
+    assert_equal labels.sort, labels
+  end
+
   test "every collection of the header menu has a landing page and the browse page lists it" do
     NexusCcs::SiteNavigation.collections.each do |_label, _facet_value, slug|
       assert SitePages.collection(slug), "no landing page data for #{slug}"
