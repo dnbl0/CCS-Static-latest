@@ -223,7 +223,7 @@ body.page-record .record-main-content__group--v1 {
 }
 
 body.page-record .record-main-content__group--v2 {
-  max-width: var(--layout-wide);
+  max-width: var(--layout-container);
   margin: 0 auto;
   padding: var(--space-40) var(--space-32) 56px;
   display: flex;
@@ -233,7 +233,7 @@ body.page-record .record-main-content__group--v2 {
 }
 
 body.page-record .record-main-content__group--v3 {
-  max-width: var(--layout-wide);
+  max-width: var(--layout-container);
   margin: 0 auto;
   padding: 56px var(--space-32) 72px;
 }
@@ -351,7 +351,7 @@ body.page-record .record-related-items__group--v2 {
 }
 
 body.page-record .record-related-items__group--v3 {
-  max-width: var(--layout-wide);
+  max-width: var(--layout-container);
   margin: 0 auto;
   padding: var(--space-48) var(--space-32) 72px;
   display: flex;
@@ -840,7 +840,7 @@ body.page-record .record-summary__group--v3 {
 }
 
 body.page-record .record-summary__group--v4 {
-  max-width: var(--layout-wide);
+  max-width: var(--layout-container);
   margin: 0 auto;
   padding: var(--space-40) var(--space-32) 28px;
   display: flex;
@@ -929,7 +929,7 @@ body.page-record .im-caption {
 
 body.page-record .im-access {
   margin: 0;
-  padding: var(--space-12) var(--space-32);
+  padding: var(--space-12) max(var(--space-32), calc((100% - var(--layout-wide)) / 2));
   background: #f1f1f1;
   border-top: 1px solid #dcdcdc;
   font-size: var(--font-size-small);
@@ -1024,6 +1024,7 @@ body.page-record .im-pdf__link {
 /* WCAG 1.4.10 reflow: the media bar and notice panel must fit a 320px viewport */
 body.page-record .im-bar {
   flex-wrap: wrap;
+  padding-inline: max(var(--space-32), calc((100% - var(--layout-wide)) / 2));
 }
 
 body.page-record .im-gate {
@@ -1115,7 +1116,7 @@ button,input{font-family:inherit}
   .im-stage{height:min(62vh,440px);padding:var(--space-16)}
   .im-thumbs{padding:var(--space-12) var(--space-16) var(--space-16)}
   .im-thumb{width:64px;height:64px}
-  .im-bar,body.page-record .im-access{padding-inline:var(--space-16)}
+  body.page-record .im-bar,body.page-record .im-access{padding-inline:var(--space-16)}
   .im-sidebar{top:auto;left:0;right:0;width:100%;max-height:60%;transform:translateY(100%);box-shadow:0 -6px 18px rgba(0,0,0,.28)}
   .im-sidebar.open{transform:none}
 }
@@ -1125,10 +1126,6 @@ button,input{font-family:inherit}
 }
 
 /* Record summary, as on the Blacklight record page: title, byline, then chips for the type and collection. */
-body.page-record .page-banner__inner {
-  text-align: center;
-}
-
 body.page-record .record-summary__title {
   order: 0;
   margin: 0;

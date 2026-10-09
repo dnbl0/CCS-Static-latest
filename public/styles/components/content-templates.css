@@ -9,7 +9,7 @@
 }
 
 .ct-listing__inner {
-  max-width: var(--layout-content);
+  max-width: var(--layout-container);
   margin: 0 auto;
   padding: var(--space-48) var(--space-32);
 }
@@ -323,7 +323,7 @@
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .ct-listing__inner {
     padding: var(--space-40) var(--space-16);
   }
@@ -447,7 +447,7 @@
   display: grid;
   grid-template-columns: 280px minmax(0, 1fr);
   gap: var(--space-48);
-  max-width: var(--layout-content);
+  max-width: var(--layout-container);
   margin: 0 auto;
   padding: var(--space-48) var(--space-32) 80px;
 }
@@ -505,7 +505,13 @@
   .help-layout {
     grid-template-columns: minmax(0, 1fr);
     gap: var(--space-32);
-    padding: var(--space-32) var(--space-16) 56px;
+    padding: var(--space-32) var(--space-32) 56px;
+  }
+}
+
+@media (max-width: 768px) {
+  .help-layout {
+    padding-inline: var(--space-16);
   }
 }
 
@@ -526,7 +532,7 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) 360px;
   gap: var(--space-48);
-  max-width: var(--layout-content);
+  max-width: var(--layout-container);
   margin: 0 auto;
   padding: var(--space-48) var(--space-32) 56px;
   align-items: start;
@@ -619,7 +625,7 @@
   .collection-layout {
     grid-template-columns: minmax(0, 1fr);
     gap: var(--space-32);
-    padding: var(--space-32) var(--space-16) var(--space-40);
+    padding: var(--space-32) var(--space-32) var(--space-40);
   }
 
   .def-table__row {
@@ -819,10 +825,16 @@
 }
 
 /* Navy tiles side by side, each with an arrow, a serif title and a short text (unimelb.edu.au) */
+.tile-strip-band {
+  padding-inline: var(--space-32);
+  background: var(--brand-1200);
+}
+
 .tile-strip {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  margin: 0;
+  max-width: var(--layout-wide);
+  margin: 0 auto;
   padding: 0;
   list-style: none;
 }
@@ -849,6 +861,10 @@
   padding: var(--space-32);
   color: var(--white-100);
   text-decoration: none;
+}
+
+.tile-strip__item:first-child .tile-strip__link {
+  padding-left: 0;
 }
 
 .tile-strip__title {
@@ -998,10 +1014,18 @@
     grid-template-columns: minmax(0, 1fr);
   }
 
+  .tile-strip-band {
+    padding-inline: var(--space-16);
+  }
+
   .tile-strip__item,
   .tile-strip__item:first-child {
     border-left: 0;
     border-top: 1px solid var(--brand-900);
+  }
+
+  .tile-strip__link {
+    padding-left: 0;
   }
 
   .box-grid__item + .box-grid__item {
@@ -1016,6 +1040,12 @@
 
   .link-strip__list {
     justify-content: flex-start;
+    padding-inline: var(--space-16);
+  }
+}
+
+@media (max-width: 768px) {
+  .collection-layout {
     padding-inline: var(--space-16);
   }
 }

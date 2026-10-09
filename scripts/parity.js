@@ -24,7 +24,7 @@ const PAGES = [
   ['/collections/grainger-museum/', '/collections/grainger-museum', ['.campaign-banner-split__heading', '.campaign-banner-split__text',
     '.campaign-banner-split__content a.button', '.collection-section__text', '.def-table__term', '.def-table__text', '.contact-box__title',
     '.contact-box__term', '.contact-box__para', '.ct-listing__title']],
-  ['/contact', '/contact', ['.contact-layout__title', '.contact-layout__lead', '.side-nav__title', '.side-nav__link', '.help-layout__content h2', '.help-layout__content h3', '.help-layout__content li']],
+  ['/contact', '/contact', ['.page-banner h1', '.page-banner__desc', '.side-nav__title', '.side-nav__link', '.help-layout__content h2', '.help-layout__content h3', '.help-layout__content li']],
   ['/help/index.html?topic=faq', '/help?topic=faq', ['.page-banner h1', '.side-nav__title', '.side-nav__link', '.help-faq__question',
     '.help-faq__answer', '.contact-box__title']],
   ['/help/indigenous-data', '/help/indigenous-data', ['.page-banner h1', '.side-nav__link', '.help-layout__content h2', '.help-layout__content p']]

@@ -45,7 +45,7 @@ body.blacklight-catalog-show #main-container .page-sidebar {
 }
 
 .record-banner__inner {
-  max-width: calc(90rem + 2 * var(--record-gutter));
+  max-width: calc(75rem + 2 * var(--record-gutter));
   margin-inline: auto;
   padding: 2.25rem var(--record-gutter);
 }
@@ -56,7 +56,7 @@ body.blacklight-catalog-show #main-container .page-sidebar {
   font-size: 2.375rem;
   font-weight: var(--ccs-font-weight-regular);
   line-height: 1.2;
-  text-align: center;
+  text-align: left;
   text-wrap: balance;
   overflow-wrap: anywhere;
 }
@@ -64,7 +64,7 @@ body.blacklight-catalog-show #main-container .page-sidebar {
 /* Summary: the title again (the band is decorative), the creator and date, tags */
 .record-summary__inner,
 .record-main__inner {
-  max-width: calc(90rem + 2 * var(--record-gutter));
+  max-width: calc(75rem + 2 * var(--record-gutter));
   margin-inline: auto;
   padding-inline: var(--record-gutter);
 }
@@ -376,7 +376,7 @@ body.blacklight-catalog-show #main-container .page-sidebar {
 
 /* Previous / next record and back to search, under the page */
 .record-nav {
-  max-width: calc(90rem + 2 * var(--record-gutter));
+  max-width: calc(75rem + 2 * var(--record-gutter));
   margin-inline: auto;
   padding: 0 var(--record-gutter) var(--ccs-space-7);
 }
