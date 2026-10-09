@@ -32,6 +32,7 @@
    Navigation — header
    ========================================================================== */
 /* Primary navigation (links + dropdown triggers share the UniMelb interactive states) */
+/* UniMelb focus: a 2px inset blue ring (an invisible outline keeps it visible in forced-colours mode) */
 /* Dropdown panel (modelled on the UniMelb mega-menu panel: dark, 2px light-blue top rule, shadow) */
 /* Mobile-only pieces (Menu button, drawer search, drawer top links, Back row) are hidden on desktop */
 /* Mobile and tablet header, following the UniMelb mobile header: one 96px row (logo block, site name, Menu button),
