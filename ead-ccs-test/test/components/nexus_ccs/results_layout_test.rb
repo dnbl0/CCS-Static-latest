@@ -27,29 +27,30 @@ class ResultsLayoutTest < ActiveSupport::TestCase
     assert_match(/body\.blacklight-catalog-index #main-container \{\s+padding-inline: 0;/, css)
   end
 
-  test "from 992px the sidebar and results sit in the one page container, 16px gutters on a phone" do
+  test "the results page has no maximum width, on the main container or the search banner; 16px gutters on a phone" do
     css = STYLES.join("results_layout.css").read
 
-    assert_match(/@media \(min-width: 992px\) \{\s+body\.blacklight-catalog-index #main-container \{\s+max-width: var\(--layout-container\);\s+margin-inline: auto;\s+padding-inline: var\(--space-32\);/, css)
+    assert_match(/body\.blacklight-catalog-index #main-container \{\s+width: 100%;\s+max-width: none;\s+margin-inline: 0;\s+padding-inline: 0;/, css)
+    assert_match(/body\.blacklight-catalog-index \.search-banner__inner \{\s+max-width: none;/, css)
     assert_match(/@media \(max-width: 768px\) \{\s+body\.blacklight-catalog-index #content \{\s+padding-inline: var\(--space-16\);/, css)
   end
 
-  test "mosaic columns step with the width, with 24px gutters; two at 2000px, where the container stops growing" do
+  test "mosaic columns step with the width, with 24px gutters, and keep growing on a wide window" do
     css = STYLES.join("results_layout.css").read
     columns = css.scan(/@media \(min-width: (\d+)px\) \{\s+\.documents-masonry \{ --result-columns: repeat\((\d+), 1fr\); \}/)
     steps = columns.map { |width, count| [ width.to_i, count.to_i ] }
 
-    assert_equal [ [ 632, 2 ], [ 928, 3 ], [ 992, 2 ] ], steps
-    assert_equal 2, steps.reverse.find { |width, _| width <= 2000 }.last
+    assert_equal [ [ 632, 2 ], [ 928, 3 ], [ 992, 2 ], [ 1264, 3 ], [ 1560, 4 ], [ 1856, 5 ], [ 2152, 6 ] ], steps
+    assert_equal 4, steps.reverse.find { |width, _| width <= 1600 }.last
     assert_includes css, "--results-gutter: 1.5rem;"
   end
 
-  test "the columns are the number of 17rem tiles that fit beside the 320px sidebar and the side padding, in a container of at most 1200px of content" do
+  test "the columns are the number of 17rem tiles that fit beside the 320px sidebar and the side padding" do
     css = STYLES.join("results_layout.css").read
     steps = css.scan(/min-width: (\d+)px\) \{\s+\.documents-masonry \{ --result-columns: repeat\((\d+)/).map { |w, n| [ w.to_i, n.to_i ] }
 
     steps.each do |width, count|
-      content = width >= 992 ? [ width - 64, 1200 ].min - 320 - 32 : width - 64
+      content = width >= 992 ? width - 320 - 64 : width - 64
       fits = ((content + 24) / (272 + 24)).floor
       assert_equal fits, count, "at #{width}px #{fits} columns fit"
     end

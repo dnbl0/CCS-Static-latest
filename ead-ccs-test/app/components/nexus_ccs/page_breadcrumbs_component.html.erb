@@ -1,21 +1,24 @@
-<nav class="page-breadcrumbs" aria-label="Breadcrumb">
-  <ol class="page-local-history" itemscope itemtype="https://schema.org/BreadcrumbList">
-    <li class="root" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-      <a class="page-local-history__item-link-home" href="<%= helpers.root_path %>" itemprop="item" title="Home" aria-label="Home"><%= helpers.image_tag "site/home.svg", class: "page-local-history__link-image", alt: "", width: 16, height: 16 %><span itemprop="name" class="sr-only page-local-history__link-text">Home</span></a>
-      <meta content="1" itemprop="position">
-    </li>
-    <% trail.each_with_index do |(label, href), index| %>
-      <% if href %>
-        <li class="page-local-history__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-          <a href="<%= href %>" itemprop="item" title="<%= label %>"><span class="page-local-history__link-text" itemprop="name"><%= label %></span></a>
-          <meta content="<%= index + 2 %>" itemprop="position">
-        </li>
-      <% else %>
-        <li class="page-local-history__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" aria-current="page">
-          <span class="page-local-history__item-text" itemprop="name"><%= label %></span>
-          <meta content="<%= index + 2 %>" itemprop="position">
-        </li>
+<div class="breadcrumb-strip">
+  <nav class="page-breadcrumbs" aria-label="Breadcrumb">
+    <ol class="page-local-history" itemscope itemtype="https://schema.org/BreadcrumbList">
+      <li class="root" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a class="page-local-history__item-link-home" href="<%= helpers.root_path %>" itemprop="item" title="Home" aria-label="Home"><%= helpers.image_tag "site/home.svg", class: "page-local-history__link-image", alt: "", width: 16, height: 16 %><span itemprop="name" class="sr-only page-local-history__link-text">Home</span></a>
+        <meta content="1" itemprop="position">
+      </li>
+      <% trail.each_with_index do |(label, href), index| %>
+        <% if href %>
+          <li class="page-local-history__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+            <a href="<%= href %>" itemprop="item" title="<%= label %>"><span class="page-local-history__link-text" itemprop="name"><%= label %></span></a>
+            <meta content="<%= index + 2 %>" itemprop="position">
+          </li>
+        <% else %>
+          <li class="page-local-history__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" aria-current="page">
+            <span class="page-local-history__item-text" itemprop="name"><%= label %></span>
+            <meta content="<%= index + 2 %>" itemprop="position">
+          </li>
+        <% end %>
       <% end %>
-    <% end %>
-  </ol>
-</nav>
+    </ol>
+  </nav>
+  <%= render NexusCcs::SavedBarComponent.new %>
+</div>

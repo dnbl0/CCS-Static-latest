@@ -1,5 +1,5 @@
 // Saved records (bookmarks) in real Chromium: the Save/Saved toggle on results cards (mosaic and list) and the record page,
-// persistence across pages and tabs, the header count, the Saved records page, removing, clearing and the empty state.
+// persistence across pages and tabs, the bar count, the Saved records page, removing, clearing and the empty state.
 // Skipped gracefully when playwright-core or Chromium is not installed.
 const http = require('http');
 const { PUBLIC, fail, ok, finish, fs, path } = require('./lib');
@@ -35,9 +35,9 @@ const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css
     await page.goto(base + '/search/bookmarks.html');
     await page.waitForSelector('.bookmarks-body__empty:not([hidden])');
     eq(await page.$eval('h1', h => h.textContent), 'Saved records', 'the page heading is Saved records');
-    eq(await headerText(page), ['0 saved records', '0 saved records'], 'the header bar shows 0 saved records (desktop and drawer copies)');
-    eq(await page.$eval('[data-bookmarks-link]', a => a.getAttribute('href')), '/search/bookmarks.html', 'the header bar links to the Saved records page');
-    eq(await page.$eval('[data-bookmarks-link]', a => a.getAttribute('aria-current')), 'page', 'the header bar is marked as the current page on that page');
+    eq(await headerText(page), ['0 saved records'], 'the saved records bar shows 0 saved records (one bar)');
+    eq(await page.$eval('[data-bookmarks-link]', a => a.getAttribute('href')), '/search/bookmarks.html', 'the saved records bar links to the Saved records page');
+    eq(await page.$eval('[data-bookmarks-link]', a => a.getAttribute('aria-current')), 'page', 'the saved records bar is marked as the current page on that page');
     eq(await page.$eval('.bookmarks-body__empty-link', a => a.getAttribute('href')), '/search/search-results.html', 'the empty state links to search');
     eq(await page.$eval('.bookmarks-body__bar', e => e.hidden), true, 'Clear saved records is hidden while the list is empty');
 
@@ -45,9 +45,9 @@ const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css
     await page.evaluate(() => { localStorage.clear(); window.CCSBookmarks.add(1, 'One'); window.CCSBookmarks.add(1, 'One'); window.CCSBookmarks.add(2, 'Two'); });
     eq(await stored(page), ['2', '1'], 'a record is saved once, newest first');
     eq(await page.evaluate(() => typeof JSON.parse(localStorage.getItem('ccs-bookmarks-v1'))[0].t), 'number', 'each saved record has a saved time');
-    eq(await headerText(page), ['2 saved records', '2 saved records'], 'the header count follows the list');
+    eq(await headerText(page), ['2 saved records'], 'the bar count follows the list');
     await page.evaluate(() => { window.CCSBookmarks.remove(2); window.CCSBookmarks.remove(1); });
-    eq(await headerText(page), ['0 saved records', '0 saved records'], 'the header count returns to 0');
+    eq(await headerText(page), ['0 saved records'], 'the bar count returns to 0');
 
     // Results page, mosaic: Save toggles, with a name, a pressed state and the singular count
     await page.evaluate(() => localStorage.removeItem('ccs-bookmarks-v1'));
@@ -63,8 +63,8 @@ const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css
     eq(await first.getAttribute('aria-pressed'), 'true', 'clicking Save presses the toggle');
     eq(await first.locator('.ccs-save__label').textContent(), 'Saved', 'its visible label becomes Saved');
     eq((await first.textContent()).replace(/\s+/g, ' ').trim(), 'Saved record: ' + title, 'its accessible name starts with Saved');
-    eq(await headerText(page), ['1 saved record', '1 saved record'], 'the header says 1 saved record');
-    eq(await page.$eval('[data-bookmarks-link]', a => a.classList.contains('has-saved')), true, 'the header bar shows the saved (check) state');
+    eq(await headerText(page), ['1 saved record'], 'the bar says 1 saved record');
+    eq(await page.$eval('[data-bookmarks-link]', a => a.classList.contains('has-saved')), true, 'the saved records bar shows the saved (check) state');
     const id1 = (await stored(page))[0];
     eq(await page.$eval('#ccs-bookmarks-status', e => e.getAttribute('aria-live')), 'polite', 'a polite live region exists');
     await page.waitForFunction(t => document.getElementById('ccs-bookmarks-status').textContent.startsWith('Saved: ' + t), title);
@@ -80,7 +80,7 @@ const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css
     await page.goto(base + '/collections/record.html?id=' + id1);
     await page.waitForSelector('.record-page__save');
     eq(await page.$eval('.record-page__save', b => b.getAttribute('aria-pressed')), 'true', 'the record page shows the record as saved');
-    eq(await headerText(page), ['1 saved record', '1 saved record'], 'the header count is the same on another page');
+    eq(await headerText(page), ['1 saved record'], 'the bar count is the same on another page');
     const tab2 = await ctx.newPage();
     tab2.on('pageerror', e => errors.push(e.message));
     await tab2.goto(base + '/collections/record.html?id=' + id1);
@@ -110,7 +110,7 @@ const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css
     await page.locator('.bookmarks-list__item .ccs-save').first().click();
     eq(await page.$$eval('.bookmarks-list__item', a => a.map(x => x.getAttribute('data-bookmark-item'))), [String(id1)], 'removing a record takes it off the list');
     eq(await stored(page), [String(id1)], 'and out of the browser\'s store');
-    eq(await headerText(page), ['1 saved record', '1 saved record'], 'the header count drops');
+    eq(await headerText(page), ['1 saved record'], 'the bar count drops');
     eq(await page.evaluate(() => document.activeElement.classList.contains('ccs-save')), true, 'the focus moves to the next Save button');
 
     // Clear saved records asks first; dismissing keeps the list, accepting empties it and shows the empty state
@@ -124,7 +124,7 @@ const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css
     await page.click('.bookmarks-body__clear');
     eq(await stored(page), [], 'confirming Clear saved records empties the list');
     eq(await page.$eval('.bookmarks-body__empty', e => e.hidden), false, 'the empty state is shown after clearing');
-    eq(await headerText(page), ['0 saved records', '0 saved records'], 'the header count is back to 0');
+    eq(await headerText(page), ['0 saved records'], 'the bar count is back to 0');
 
     // Bad stored data does not break the pages
     await page.evaluate(() => localStorage.setItem('ccs-bookmarks-v1', '{not json'));
@@ -132,16 +132,40 @@ const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css
     await page.waitForSelector('.bookmarks-body__empty:not([hidden])');
     ok('unreadable stored data is treated as an empty list');
 
-    // Mobile: the bar is in the menu drawer and the Save control is a 44px target
+    // The bar lives in the breadcrumb strip: same height as the strip, flush to its right edge, at every width
+    const geometry = p => p.evaluate(() => {
+      const s = document.querySelector('.page-breadcrumbs'), a = document.querySelector('[data-bookmarks-link]'), r = e => e.getBoundingClientRect();
+      return { inStrip: a.parentElement === s, inHeader: !!document.querySelector('.ccs-nav--header [data-bookmarks-link]'), count: document.querySelectorAll('[data-bookmarks-link]').length,
+        sameHeight: r(a).height === r(s).height, tall: r(a).height >= 44, top: r(a).top === r(s).top, right: r(a).right === r(s).right, flush: r(s).right === window.innerWidth };
+    });
+    for (const [w, h] of [[1440, 900], [1000, 800], [390, 844]]) {
+      const c = await browser.newContext({ viewport: { width: w, height: h }, hasTouch: w < 500 });
+      await c.addInitScript(() => { try { localStorage.setItem('ccs-cultural-ack', '1'); localStorage.setItem('ccs-bookmarks-v1', JSON.stringify([{ id: 2, t: Date.now(), title: 'x' }])); } catch (e) { /* none */ } });
+      const m = await c.newPage();
+      m.on('pageerror', e => errors.push(e.message));
+      for (const url of ['/search/search-results.html?q=microscope', '/collections/record.html?id=2', '/search/bookmarks.html', '/help/index.html', '/contact.html']) {
+        await m.goto(base + url);
+        await m.waitForSelector('.page-breadcrumbs [data-bookmarks-link]');
+        eq(await geometry(m), { inStrip: true, inHeader: false, count: 1, sameHeight: true, tall: true, top: true, right: true, flush: true }, w + 'px ' + url.split('?')[0] + ': the bar is the breadcrumb strip\'s height (min 44px), flush right, and not in the header');
+      }
+      eq(await m.$eval('[data-bookmarks-text]', a => a.textContent), '1 saved record', w + 'px: the bar shows the count');
+      await c.close();
+    }
+    // Home has no breadcrumb: the bar stays in the header top strip (desktop), and there is none in the drawer
+    {
+      const h = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+      await h.addInitScript(() => { try { localStorage.setItem('ccs-cultural-ack', '1'); } catch (e) { /* none */ } });
+      await h.goto(base + '/index.html');
+      await h.waitForSelector('.ccs-nav__top [data-bookmarks-link]');
+      eq(await h.$$eval('[data-bookmarks-link]', a => a.length), 1, 'home: one bar, in the header top strip');
+      eq(await h.$eval('.ccs-nav__drawer-saved, .ccs-nav__primary [data-bookmarks-link]', () => 1).catch(() => 0), 0, 'home: no bar in the drawer');
+      await h.close();
+    }
+    // Mobile: the list does not scroll sideways
     const phone = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true });
     await phone.addInitScript(() => { try { localStorage.setItem('ccs-cultural-ack', '1'); localStorage.setItem('ccs-bookmarks-v1', JSON.stringify([{ id: 2, t: Date.now(), title: 'x' }])); } catch (e) { /* none */ } });
     const m = await phone.newPage();
     m.on('pageerror', e => errors.push(e.message));
-    await m.goto(base + '/index.html');
-    eq(await m.$$eval('[data-bookmarks-link]', a => a.map(x => x.getBoundingClientRect().width > 0)), [false, false], 'the bar is inside the closed menu on a phone');
-    await m.click('.ccs-nav__menu');
-    eq(await m.$$eval('[data-bookmarks-link]', a => a.map(x => x.getBoundingClientRect().width > 0)), [false, true], 'opening the menu shows the saved records bar');
-    eq(await m.$$eval('[data-bookmarks-text]', a => a.map(x => x.textContent)), ['1 saved record', '1 saved record'], 'the phone shows the count');
     await m.goto(base + '/search/bookmarks.html');
     await m.waitForSelector('.bookmarks-list__item');
     eq(await m.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), true, 'the list does not scroll sideways on a phone');

@@ -18,7 +18,7 @@
     </button>
   </h3>
   <div id="<%= html_id %>" role="region" aria-labelledby="<%= header_html_id %>" class="panel-collapse facet-content collapse ">
-    <div class="accordion-body"<% if slider? %> data-controller="range-slider" data-range-slider-min-value="<%= @facet_field.min %>" data-range-slider-max-value="<%= @facet_field.max %>" data-range-slider-applied-value="<%= range_applied? %>" data-range-slider-histogram-url-value="<%= helpers.range_histogram_catalog_path(helpers.search_state.params_for_search.merge(field: @facet_field.key)) %>"<% end %>>
+    <div class="accordion-body"<% if value_list? %> data-controller="facet-panel" data-facet-panel-limit-value="<%= panel_limit %>" data-facet-panel-search-value="<%= panel_search? %>" data-facet-panel-label-value="<%= panel_search_label %>"<% end %><% if slider? %> data-controller="range-slider" data-range-slider-min-value="<%= @facet_field.min %>" data-range-slider-max-value="<%= @facet_field.max %>" data-range-slider-applied-value="<%= range_applied? %>" data-range-slider-histogram-url-value="<%= helpers.range_histogram_catalog_path(helpers.search_state.params_for_search.merge(field: @facet_field.key)) %>"<% end %>>
       <%= body %>
 
       <% if @facet_field.modal_path %>

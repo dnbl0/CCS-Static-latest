@@ -1,11 +1,11 @@
 /*
  * Search results layout, after the search results design (Europeana's open-source front end informed the
  * drawer and the cards), with the filter sidebar on the LEFT:
- *   - from 992px the sidebar is a 320px column at the left edge of the page container (--layout-container, the
- *     same as the banner and footer), ruled on its right; the results column has 32px of padding on its left;
+ *   - from 992px the sidebar is a 320px column at the left edge of the page container (the page has no maximum
+ *     width), ruled on its right; the results column has 32px of padding on its left;
  *     below that it is an off-canvas drawer (components/filter_drawer.css);
- *   - mosaic tiles are as many 17rem-minimum columns as fit (two from 992px, as the container stops growing at
- *     1264px) with 24px gutters, one column on a phone;
+ *   - mosaic tiles are as many 17rem-minimum columns as fit (two from 992px, up to six on a very wide window) with
+ *     24px gutters, one column on a phone;
  *   - list view is a grid of 20rem-minimum cards (components/result_card.css);
  * Blacklight owns the markup; blacklight-gallery supplies the mosaic.
  */
@@ -59,19 +59,19 @@ body.blacklight-catalog-index #content {
   }
 }
 
-/* From 992px the sidebar and results sit in the one page container (--layout-container: 1200px of content and 32px
-   gutters, as the banner, footer and every static page), so their left and right edges line up with the banner's
-   and the footer's; the results column's right side then has no padding of its own. */
-@media (min-width: 992px) {
-  body.blacklight-catalog-index #main-container {
-    max-width: var(--layout-container);
-    margin-inline: auto;
-    padding-inline: var(--space-32);
-  }
+/* The results page uses the whole width of the window: no maximum width on the main container (the filters and the
+   results) or on the search banner above it (components/search_banner.css). Bootstrap's .container steps its
+   max-width up at each breakpoint, so it is overridden here. The sidebar sits against the left edge and the
+   results column keeps its own gutter on the right. */
+body.blacklight-catalog-index #main-container {
+  width: 100%;
+  max-width: none;
+  margin-inline: 0;
+  padding-inline: 0;
+}
 
-  body.blacklight-catalog-index #content {
-    padding-inline-end: 0;
-  }
+body.blacklight-catalog-index .search-banner__inner {
+  max-width: none;
 }
 
 /* The results column already has its gutter; a .container inside it would add another */
@@ -83,7 +83,7 @@ body.blacklight-catalog-index #content {
 /* Columns (mosaic): as many 17rem-minimum columns as fit. Written out, not auto-fill, because
    the mosaic's layout polyfill (blacklight-gallery) mis-sizes auto-fill lanes. The counts step down at
    992px because the 320px sidebar appears there; each step is the width where one more column fits
-   beside the sidebar and the side padding (test/components/nexus_ccs/results_layout_test.rb). */
+   beside the sidebar and the side padding (the page has no maximum width, so the columns keep growing) (test/components/nexus_ccs/results_layout_test.rb). */
 .documents-masonry {
   --result-columns: repeat(1, 1fr);
 }
@@ -98,6 +98,22 @@ body.blacklight-catalog-index #content {
 
 @media (min-width: 992px) {
   .documents-masonry { --result-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 1264px) {
+  .documents-masonry { --result-columns: repeat(3, 1fr); }
+}
+
+@media (min-width: 1560px) {
+  .documents-masonry { --result-columns: repeat(4, 1fr); }
+}
+
+@media (min-width: 1856px) {
+  .documents-masonry { --result-columns: repeat(5, 1fr); }
+}
+
+@media (min-width: 2152px) {
+  .documents-masonry { --result-columns: repeat(6, 1fr); }
 }
 
 /* The layout polyfill (blacklight-gallery) reads these: plain repeat(N, 1fr) only */
