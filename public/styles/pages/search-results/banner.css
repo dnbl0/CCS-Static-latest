@@ -32,6 +32,7 @@ body.page-search-results .search-results-banner .search-results-search-tools__li
   display: inline-flex;
   align-items: center;
   gap: var(--space-4);
+  height: auto; /* the toolbar's 48px link box does not apply to the banner link */
   min-height: 44px;
   padding: 0;
   border: 0;
