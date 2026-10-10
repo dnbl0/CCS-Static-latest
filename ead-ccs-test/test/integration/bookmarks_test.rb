@@ -12,7 +12,7 @@ class BookmarksTest < ActionDispatch::IntegrationTest
   end
 
   def saved_bar_count
-    css_select(".saved-bar [data-role=bookmark-counter]").first.text.to_i
+    css_select(".site-nav__saved [data-role=bookmark-counter]").first.text.to_i
   end
 
   test "browsing creates no guest user and the saved bar says 0 saved records" do
@@ -21,7 +21,7 @@ class BookmarksTest < ActionDispatch::IntegrationTest
       get "/"
     end
 
-    assert_select ".saved-bar--empty .saved-bar__link[href='/bookmarks']", text: /0\s+saved records/
+    assert_select "a.site-nav__saved--empty[href='/bookmarks']", text: /0\s+saved records/
   end
 
   test "the saved list is empty, without a login redirect, for a new visitor" do
@@ -44,7 +44,7 @@ class BookmarksTest < ActionDispatch::IntegrationTest
 
     get "/catalog", params: { q: "skull" }
     assert_equal 1, saved_bar_count
-    assert_select ".saved-bar .saved-bar__text", text: /1\s+saved record\b/
+    assert_select ".site-nav__saved .site-nav__saved-text", text: /1\s+saved record\b/
     assert_select ".result-card[data-document-id='#{id.parameterize}'] form.save-control" do
       assert_select "input[type=hidden][name=_method][value=delete]"
       assert_select ".toggle-bookmark-label.checked", text: /Saved/

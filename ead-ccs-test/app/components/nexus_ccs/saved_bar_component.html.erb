@@ -1,13 +1,9 @@
-<div class="saved-bar <%= modifier %>" data-controller="saved-bar"
-     data-saved-bar-one-value="<%= noun(1) %>" data-saved-bar-other-value="<%= noun(2) %>">
-  <div class="saved-bar__inner">
-    <%= link_to helpers.bookmarks_path, class: "saved-bar__link" do %>
-      <%= icon %>
-      <%# A live region, so a screen reader hears the new count after a Save or Saved click -%>
-      <span class="saved-bar__text" role="status" aria-live="polite" aria-atomic="true">
-        <span data-role="bookmark-counter" data-saved-bar-target="count"><%= count %></span>
-        <span data-saved-bar-target="noun"><%= noun(count) %></span>
-      </span>
-    <% end %>
-  </div>
-</div>
+<%= link_to helpers.bookmarks_path, class: "site-nav__saved #{modifier}", data: { controller: "saved-bar", saved_bar_one_value: noun(1), saved_bar_other_value: noun(2) },
+            aria: { current: (helpers.current_page?(helpers.bookmarks_path) ? "page" : nil) } do %>
+  <%= icon %>
+  <%# A live region, so a screen reader hears the new count after a Save or Saved click -%>
+  <span class="site-nav__saved-text" role="status" aria-live="polite" aria-atomic="true">
+    <span data-role="bookmark-counter" data-saved-bar-target="count"><%= count %></span>
+    <span data-saved-bar-target="noun"><%= noun(count) %></span>
+  </span>
+<% end %>

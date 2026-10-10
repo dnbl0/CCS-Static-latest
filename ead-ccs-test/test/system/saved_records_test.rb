@@ -6,11 +6,11 @@ class SavedRecordsTest < ApplicationSystemTestCase
     page.driver.set_cookie("country_acknowledged", "1")
   end
 
-  def bar = find(".saved-bar__text")
+  def bar = find(".site-nav__saved-text")
 
   test "Save becomes Saved without a reload, the header count follows, and the list page shows the record" do
     visit search_catalog_path(q: "skull", view: "list")
-    assert_selector ".saved-bar--empty"
+    assert_selector ".site-nav__saved--empty"
     assert_text "0 saved records"
     page.execute_script("window.sameDocument = true")
 
@@ -22,7 +22,7 @@ class SavedRecordsTest < ApplicationSystemTestCase
       assert_selector ".toggle-bookmark-label.checked", text: /\ASaved\s+record: #{Regexp.escape(title)}\z/
     end
 
-    assert_selector ".saved-bar:not(.saved-bar--empty)"
+    assert_selector ".site-nav__saved:not(.site-nav__saved--empty)"
     assert_equal "1 saved record", bar.text
     assert page.evaluate_script("window.sameDocument"), "the page reloaded"
 
@@ -58,7 +58,7 @@ class SavedRecordsTest < ApplicationSystemTestCase
 
     visit root_path
     assert_text "1 saved record"
-    assert_selector ".saved-bar:not(.saved-bar--empty)"
+    assert_selector ".site-nav__saved:not(.site-nav__saved--empty)"
   end
 
   test "the saved list and the bar have no accessibility violations" do

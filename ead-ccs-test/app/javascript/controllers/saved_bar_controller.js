@@ -19,6 +19,6 @@ export default class extends Controller {
   update() {
     const count = parseInt(this.countTarget.textContent, 10) || 0
     this.nounTarget.textContent = count === 1 ? this.oneValue : this.otherValue
-    this.element.classList.toggle("saved-bar--empty", count === 0)
+    this.element.classList.toggle("site-nav__saved--empty", count === 0)
   }
 }
