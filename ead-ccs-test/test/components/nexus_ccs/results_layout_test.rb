@@ -21,7 +21,7 @@ class ResultsLayoutTest < ActiveSupport::TestCase
 
     assert_includes css, "--sidebar-width: 20rem;"
     assert_includes css, "--content-gutter: 2rem;"
-    assert_match(/body\.blacklight-catalog-index #content \{\s+padding: var\(--ccs-space-4\) var\(--content-gutter\);/, css)
+    assert_match(/body\.blacklight-catalog-index #content \{\s+padding: var\(--ccs-space-4\) var\(--content-gutter\) var\(--ccs-space-8\);/, css)
     assert_match(/@media \(min-width: 992px\) \{\s+#main-container > \.row \{\s+flex-wrap: nowrap;/, css)
     assert_includes css, "border-right: 1px solid var(--ccs-border-panel);"
     assert_match(/body\.blacklight-catalog-index #main-container \{\s+padding-inline: 0;/, css)
