@@ -16,7 +16,7 @@ class ResultsLayoutTest < ActiveSupport::TestCase
 
   def card(fields) = NexusCcs::ResultCardComponent.new(document: Presenter.new(SolrDocument.new(fields)))
 
-  test "the sidebar is a 320px column flush with the window's left edge, ruled on its right; the results have 32px sides" do
+  test "the sidebar is a 320px column at the page container's left edge, ruled on its right; the results have 32px sides" do
     css = STYLES.join("results_layout.css").read
 
     assert_includes css, "--sidebar-width: 20rem;"
@@ -27,22 +27,29 @@ class ResultsLayoutTest < ActiveSupport::TestCase
     assert_match(/body\.blacklight-catalog-index #main-container \{\s+padding-inline: 0;/, css)
   end
 
-  test "mosaic columns step with the width, with 24px gutters; five at 2000px" do
+  test "from 992px the sidebar and results sit in the one page container, 16px gutters on a phone" do
+    css = STYLES.join("results_layout.css").read
+
+    assert_match(/@media \(min-width: 992px\) \{\s+body\.blacklight-catalog-index #main-container \{\s+max-width: var\(--layout-container\);\s+margin-inline: auto;\s+padding-inline: var\(--space-32\);/, css)
+    assert_match(/@media \(max-width: 768px\) \{\s+body\.blacklight-catalog-index #content \{\s+padding-inline: var\(--space-16\);/, css)
+  end
+
+  test "mosaic columns step with the width, with 24px gutters; two at 2000px, where the container stops growing" do
     css = STYLES.join("results_layout.css").read
     columns = css.scan(/@media \(min-width: (\d+)px\) \{\s+\.documents-masonry \{ --result-columns: repeat\((\d+), 1fr\); \}/)
     steps = columns.map { |width, count| [ width.to_i, count.to_i ] }
 
-    assert_equal [ [ 632, 2 ], [ 928, 3 ], [ 992, 2 ], [ 1248, 3 ], [ 1544, 4 ], [ 1840, 5 ], [ 2136, 6 ], [ 2432, 7 ], [ 2728, 8 ] ], steps
-    assert_equal 5, steps.reverse.find { |width, _| width <= 2000 }.last
+    assert_equal [ [ 632, 2 ], [ 928, 3 ], [ 992, 2 ] ], steps
+    assert_equal 2, steps.reverse.find { |width, _| width <= 2000 }.last
     assert_includes css, "--results-gutter: 1.5rem;"
   end
 
-  test "the columns are the number of 17rem tiles that fit beside the 320px sidebar and the 32px side padding" do
+  test "the columns are the number of 17rem tiles that fit beside the 320px sidebar and the side padding, in a container of at most 1200px of content" do
     css = STYLES.join("results_layout.css").read
     steps = css.scan(/min-width: (\d+)px\) \{\s+\.documents-masonry \{ --result-columns: repeat\((\d+)/).map { |w, n| [ w.to_i, n.to_i ] }
 
     steps.each do |width, count|
-      content = width >= 992 ? width - 320 - 64 : width - 64
+      content = width >= 992 ? [ width - 64, 1200 ].min - 320 - 32 : width - 64
       fits = ((content + 24) / (272 + 24)).floor
       assert_equal fits, count, "at #{width}px #{fits} columns fit"
     end

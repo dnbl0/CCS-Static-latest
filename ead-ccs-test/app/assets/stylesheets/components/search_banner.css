@@ -13,7 +13,15 @@
 }
 
 .search-banner__inner {
-  padding: 3.5rem var(--ccs-space-6) var(--ccs-space-8);
+  max-width: var(--layout-container); /* the one page container: content lines up with the footer and the results */
+  margin-inline: auto;
+  padding: 3.5rem var(--space-32) var(--ccs-space-8);
+}
+
+@media (max-width: 768px) {
+  .search-banner__inner {
+    padding-inline: var(--space-16);
+  }
 }
 
 .search-banner__title {

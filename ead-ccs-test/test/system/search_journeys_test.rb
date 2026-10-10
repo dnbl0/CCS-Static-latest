@@ -96,6 +96,44 @@ class SearchJourneysTest < ApplicationSystemTestCase
     assert_no_selector "button.back-to-top", visible: true
   end
 
+  test "the banner, sidebar, results and footer share the page container's edges, as the static pages" do
+    # [window width, expected left edge of the content]: 1200px of content centred, 32px gutters (16px on a phone)
+    [ [ 1440, 120 ], [ 2000, 400 ], [ 1000, 32 ], [ 390, 16 ] ].each do |width, left|
+      page.driver.resize(width, 900)
+      visit search_catalog_path(q: "skull")
+      assert_selector ".result-card", minimum: 1
+
+      edges = page.evaluate_script(<<~JS)
+        (() => {
+          const l = (sel) => Math.round(document.querySelector(sel).getBoundingClientRect().left);
+          const rightGap = (sel) => Math.round(innerWidth - document.querySelector(sel).getBoundingClientRect().right);
+          return { title: l(".search-banner__title"), footer: l(".site-footer__acknowledgement h2"),
+                   sidebar: document.querySelector("#sidebar") && innerWidth >= 992 ? l("#sidebar") : null,
+                   results: innerWidth >= 992 ? rightGap("#content") : null, overflow: document.documentElement.scrollWidth - innerWidth };
+        })()
+      JS
+
+      assert_equal left, edges["title"], "banner title at #{width}px"
+      assert_equal left, edges["footer"], "footer at #{width}px"
+      assert_equal left, edges["sidebar"], "sidebar at #{width}px" if width >= 992
+      assert_equal left, edges["results"], "right edge of the results at #{width}px" if width >= 992
+      assert_equal 0, edges["overflow"], "no horizontal scroll at #{width}px"
+    end
+  end
+
+  test "with reduced motion the back to top button returns to the top at once" do
+    page.driver.resize(1000, 900)
+    page.driver.browser.page.command("Emulation.setEmulatedMedia", features: [ { name: "prefers-reduced-motion", value: "reduce" } ])
+    visit search_catalog_path(q: "skull")
+    page.execute_script("window.scrollTo(0, 1500)")
+    assert_selector "button.back-to-top.is-visible", visible: true
+
+    assert_equal "auto", page.evaluate_script("getComputedStyle(document.documentElement).scrollBehavior")
+    assert_equal "0s", page.evaluate_script("getComputedStyle(document.querySelector('.back-to-top')).transitionDuration")
+    # click and read the position in the same task: a smooth scroll would not have moved yet
+    assert_equal 0, page.evaluate_script("(() => { document.querySelector('.back-to-top').click(); return Math.round(window.scrollY) })()")
+  end
+
   test "on a phone the menu opens and its Help section shows the help pages" do
     page.driver.resize(390, 800)
     visit root_path

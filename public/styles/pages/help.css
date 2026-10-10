@@ -101,4 +101,4 @@ body.page-help .help-search-tips__group--v1 {
 @media (max-width:560px){
   .help-topics-grid{grid-template-columns:1fr}
 }
-html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
