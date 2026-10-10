@@ -2,7 +2,7 @@
   <nav class="page-breadcrumbs" aria-label="Breadcrumb">
     <ol class="page-local-history" itemscope itemtype="https://schema.org/BreadcrumbList">
       <li class="root" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-        <a class="page-local-history__item-link-home" href="<%= helpers.root_path %>" itemprop="item" title="Home" aria-label="Home"><%= helpers.image_tag "site/home.svg", class: "page-local-history__link-image", alt: "", width: 16, height: 16 %><span itemprop="name" class="sr-only page-local-history__link-text">Home</span></a>
+        <a class="page-local-history__item-link-home" href="<%= helpers.root_path %>" itemprop="item" title="Home" aria-label="Home"><%= helpers.image_tag "site/home.svg", class: "page-local-history__link-image", alt: "", width: 24, height: 24 %><span itemprop="name" class="sr-only page-local-history__link-text">Home</span></a>
         <meta content="1" itemprop="position">
       </li>
       <% trail.each_with_index do |(label, href), index| %>
