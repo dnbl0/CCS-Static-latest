@@ -106,9 +106,9 @@ class SearchJourneysTest < ApplicationSystemTestCase
     assert_no_selector "button.back-to-top", visible: true
   end
 
-  test "the banner, sidebar, results and footer share the page container's edges, as the static pages" do
-    # [window width, expected left edge of the content]: 1200px of content centred, 32px gutters (16px on a phone)
-    [ [ 1440, 120 ], [ 2000, 400 ], [ 1000, 32 ], [ 390, 16 ] ].each do |width, left|
+  test "the results page and its banner have no maximum width: the sidebar touches the left edge and the footer keeps the page container" do
+    # [window width, banner title left edge (32px gutter, 16px on a phone), footer left edge (1200px of content centred)]
+    [ [ 1440, 32, 120 ], [ 2000, 32, 400 ], [ 1000, 32, 32 ], [ 390, 16, 16 ] ].each do |width, banner_left, footer_left|
       page.driver.resize(width, 900)
       visit search_catalog_path(q: "skull")
       assert_selector ".result-card", minimum: 1
@@ -118,15 +118,17 @@ class SearchJourneysTest < ApplicationSystemTestCase
           const l = (sel) => Math.round(document.querySelector(sel).getBoundingClientRect().left);
           const rightGap = (sel) => Math.round(innerWidth - document.querySelector(sel).getBoundingClientRect().right);
           return { title: l(".search-banner__title"), footer: l(".site-footer__acknowledgement h2"),
+                   main: Math.round(document.querySelector("#main-container").getBoundingClientRect().width),
                    sidebar: document.querySelector("#sidebar") && innerWidth >= 992 ? l("#sidebar") : null,
-                   results: innerWidth >= 992 ? rightGap("#content") : null, overflow: document.documentElement.scrollWidth - innerWidth };
+                   results: innerWidth >= 992 ? rightGap("#content") + parseInt(getComputedStyle(document.querySelector("#content")).paddingRight) : null, overflow: document.documentElement.scrollWidth - innerWidth };
         })()
       JS
 
-      assert_equal left, edges["title"], "banner title at #{width}px"
-      assert_equal left, edges["footer"], "footer at #{width}px"
-      assert_equal left, edges["sidebar"], "sidebar at #{width}px" if width >= 992
-      assert_equal left, edges["results"], "right edge of the results at #{width}px" if width >= 992
+      assert_equal banner_left, edges["title"], "banner title at #{width}px"
+      assert_equal footer_left, edges["footer"], "footer at #{width}px"
+      assert_equal width, edges["main"], "the results fill the window at #{width}px"
+      assert_equal 0, edges["sidebar"], "sidebar at #{width}px" if width >= 992
+      assert_equal 32, edges["results"], "the results end 32px from the right edge at #{width}px" if width >= 992
       assert_equal 0, edges["overflow"], "no horizontal scroll at #{width}px"
     end
   end

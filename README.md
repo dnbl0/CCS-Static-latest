@@ -6,6 +6,8 @@ A static front-end prototype for searching and browsing the University of Melbou
 
 The site is a prototype driven by an in-repo dataset (735 listed records), not a live catalogue. Accessibility work has been done and checked with axe-core scans (clean apart from the items listed under [Known issues](#known-issues--follow-ups)), but the site has **not** had a formal WCAG audit or certification.
 
+**Running the Rails/Blacklight app** (`ead-ccs-test/`) on your computer: see [ead-ccs-test/docs/running-the-app.md](ead-ccs-test/docs/running-the-app.md). Rules for Claude agents working here: [CLAUDE.md](CLAUDE.md).
+
 ---
 
 ## Contents
