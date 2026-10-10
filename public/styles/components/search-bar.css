@@ -8,6 +8,7 @@
 .ccs-searchbar__chip svg { flex: none; }
 .ccs-searchbar__chip:not([hidden]) + input[name="q"] { padding-left: var(--space-10); }
 .ccs-searchbar__scope { position: relative; flex: none; display: flex; }
+.ccs-searchbar__scope-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
 .ccs-searchbar__scope-btn { display: flex; align-items: center; gap: var(--space-8); height: 100%; max-width: 200px; padding: 0 var(--space-14); border: 0; border-left: 1px solid var(--col-border-neutral-mid); overflow: hidden; text-overflow: ellipsis; background: #f4f5f8; color: var(--col-bg-primary); font: inherit; font-size: var(--font-size-small); font-weight: var(--font-weight-semibold); white-space: nowrap; cursor: pointer; }
 .ccs-searchbar__menu { position: absolute; right: -1px; left: auto; top: calc(100% + 1px); z-index: var(--z-60); min-width: 220px; max-width: min(340px, 90vw); display: flex; flex-direction: column; background: var(--white-100); border: 1px solid var(--col-bg-primary); }
 .ccs-searchbar__menu[hidden], .ccs-searchbar__panel[hidden] { display: none; }

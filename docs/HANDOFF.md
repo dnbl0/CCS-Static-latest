@@ -1,29 +1,26 @@
-# Handoff (2026-10-10)
+# Handoff (2026-10-10, evening)
 
-For the next Claude agent (any account) continuing Dean's work. Dean is non-technical: decide, do, report briefly; ask only what blocks you. Read `CLAUDE.md` (agent coordination) first.
+For the next Claude agent (any account) continuing Dean's work. Dean is non-technical: decide, do, report briefly; ask only what blocks you. Dean's standing rule: do routine tasks (PRs, merges on green checks, org syncs, rollouts) without asking; still ask before destructive actions. Read `CLAUDE.md` (agent coordination) first.
 
 ## State
-- Repos: `origin` = dnbl0/CCS-Static-latest (work happens here, squash-merge PRs), `org` = Enterprise-Services-Group/CCS-2026-MVP (GitHub Pages, public site). Everything up to PR #216 is merged on both (org PR #42).
-- Static site: `public/` (+ `src/partials`). Rails/Blacklight 9.2.1 prototype: `ead-ccs-test/`. Azure runs the Rails app; another session (`ccs-static-7d`) owns Azure/Docker and redeploys only after Dean approves. Tell it when things merge; never run `az`/acr-push yourself.
-- Recent work: search history by day, Blacklight bookmarks (Rails) + saved records (static), saved bar in the breadcrumb strip, results parity, dependency bumps, record page tweaks.
-
-## Do these next (round 4, not started; no branches/PRs exist)
-Do static and Rails separately (worktree per task, branch from origin/main), keep them looking the same.
-1. Breadcrumb home icon must be exactly 24x24px (currently 16px: static `images/home.svg` in each page's breadcrumb + `.page-local-history__link-image` rules in `public/styles/pages/*.css`; Rails `NexusCcs::BreadcrumbComponent` and `PageBreadcrumbsComponent` + `app/assets/stylesheets/pages/*.css`). Keep the strip 44px high with the saved-records bar flush right, same height.
-2. Save on search result cards must toggle to Saved in place, not navigate to the record page (seen on Rails: `NexusCcs::SaveControlComponent`, `.result-card`; check static `search-results.html` too). Find the cause (card link/click bubbling), fix, add a test (URL unchanged, reads Saved, header count updates, Space/Enter work).
-3. Advanced search flyout dropdowns (Rails shows a native-style select "Search field: All Fields") must use the same dropdown as the facet sidebar ("Select collection title" 48px trigger: `NexusCcs::FacetFieldComponent`, `facet_panel_controller.js`, `filter_rail.css`; sort/per-page box: `.ccs-select` + `select_dropdown_controller.js` + `results_toolbar.css`). Menus must not clip in the flyout; form params unchanged. Static: `public/search/advanced-search*.{html,js}` and its CSS.
-4. Record page: move the Save button to the top right of `.record-summary__inner` (Rails: `record_document_component.html.erb`, `record_page.css`; static: `.record-page__save` in `public/collections/record.html`), not stacked under the tags.
+- Repos: `origin` = dnbl0/CCS-Static-latest (work happens here, squash-merge PRs), `org` = Enterprise-Services-Group/CCS-2026-MVP (GitHub Pages, the public site). Everything through PR #224 is on both (org PRs #43, #44). PR #225 (Advanced Search link, scope chevron) and the test-hardening PR after it are newer than that: sync the org when they merge.
+- Static site: `public/` (+ `src/partials`). Rails/Blacklight 9.2.1 prototype: `ead-ccs-test/`. Azure runs the Rails app; session `Fix Azure deployment on laptop` (or `ccs-static-7d`) owns Azure/Docker and now rolls out merged Rails changes without asking Dean. Tell it whenever a PR that touches `ead-ccs-test/` merges; never run `az`/acr-push yourself.
+- Round 4 is complete on both sides: 24px breadcrumb home icon (#218), Save on Rails mosaic cards (#219: blacklight-gallery's stretched title link sat over the control; it now sits above, z-index 2), record page Save top right (#220 static, #222 Rails), advanced-search dropdowns like the facet rail (#221 static, #222 Rails), saved-records link in the phone menu on the home page (#223), size test for the dropdowns (#224).
 
 ## Open items for Dean
-- Home page on phones has no saved-records link (no breadcrumb strip there; header strip hidden below 1024px). Options: bar under the header on home, link in the mobile menu, or leave.
-- The "Advanced search" button under the search input is a sage button (same as pagination Next, PR #216). Dean wanted it to match "Browse all courses" on study.unimelb.edu.au/dashboard, which could not be viewed; ask for a screenshot.
-- Azure needs another rollout (only #216 is not deployed); `ccs-static-7d` asks Dean.
-- I read Dean's "move the border left" on the Rails dropdown chevron as "remove the left border" (removed in #216); confirm.
+- Confirm that "move the border left" on the Rails dropdown chevron meant removing the chevron's left border (done in #216).
+- The Advanced Search link is now a footer-style link (blue arrow left, bold white label) per Dean's screenshot (#225); confirm it is what he wanted.
+
+## Known flaky checks
+- `tests/bookmarks.test.js` "Save button is at least 44px tall" flaked once in CI; now retries until the layout settles. If it still flakes, the results page redraws its cards while loading.
+- Rails `SavedRecordsTest` "Save becomes Saved without a reload..." failed once in a full system run at `click_link "2 saved records"` (the click did not navigate); passes alone. A rerun fixes it.
+- `SearchJourneysTest` "the view buttons switch between the mosaic and the list" flaked once locally.
 
 ## How to work here
 - Per task: `git worktree add -B <branch> /tmp/<dir> origin/main`; never switch branches in /Users/nobled/CCS-Static (shared, stay on main).
-- Checks (all four must pass before merge): parity, rails, system, test. Merge: `gh pr merge N --squash` (rule allowed in `.claude/settings.local.json`); force-pushing to another session's branch is blocked, use a new branch.
-- Static: `npm install --no-package-lock` (or symlink root node_modules into the worktree, remove before committing), `npm run sync:partials`, `npm run sync:rails` after static CSS, `npm test` (browser tests may time out once; rerun). Rails: `SOLR_URL=http://127.0.0.1:8984/solr/blacklight-core bin/rails test` and `test:system`, `bin/rubocop`, `bin/erb_lint --lint-all`, `bin/rails dartsass:build` once. Solr 8984 is ours; 8983 is another project's: never pkill by pattern.
-- Org sync after merging: worktree on `org/main`, `git merge --no-commit origin/main`, `git read-tree --reset -u origin/main`, commit, push branch to `org`, PR, wait for four checks, `gh pr merge --merge`, confirm "Deploy to GitHub Pages" success, remove temp worktree/branch.
-- Limits: study.unimelb.edu.au is behind Cloudflare (automation blocked; do not bypass), the Claude in Chrome extension was not connectable (account mismatch), so use Playwright (`scripts/lib/chromium.js`) and Dean's screenshots.
+- Checks (all four must pass before merge): parity, rails, system, test. Merge: `gh pr merge N --squash` (allowed in `.claude/settings.local.json`). Look at the CI conclusion before merging; rerun a flaky failed job with `gh run rerun <run> --failed`.
+- Static: `npm install --no-package-lock` (or symlink root node_modules into the worktree, remove before committing), `npm run sync:partials` after editing `src/partials/*`, `npm run sync:rails` after static CSS, `npm test`. `package.json`'s test script is one long line, so two PRs adding a test collide there: rebase after the first merges. Rails: `SOLR_URL=http://127.0.0.1:8984/solr/blacklight-core bin/rails test` and `test:system`, `bin/rubocop`, `bin/erb_lint --lint-all`, `bin/rails dartsass:build` once per worktree (system tests are unstyled without it). The axe system test needs the root node_modules symlinked. Solr 8984 is ours; 8983 is another project's: never pkill by pattern.
+- Org sync after merging: `git fetch org`, worktree on `org/main`, `git merge --no-commit origin/main`, `git read-tree --reset -u origin/main`, commit, push the branch to `org`, `gh pr create -R Enterprise-Services-Group/CCS-2026-MVP`, wait for four checks, `gh pr merge N -R ... --merge`, confirm "Deploy to GitHub Pages" success, remove the temp worktree/branch.
+- Limits: study.unimelb.edu.au is behind Cloudflare (automation blocked; do not bypass); the Claude in Chrome extension was not connectable, so use Playwright (`scripts/lib/chromium.js`) and Dean's screenshots.
 - Style rules enforced by tests: tokens only (no hard-coded colours), no inline styles, BEM names.
+- Tests that compare against the live facet rail (`tests/combo-dropdowns.test.js`) fail when either side drifts; change both together.
