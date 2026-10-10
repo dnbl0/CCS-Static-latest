@@ -54,7 +54,10 @@ class CatalogController < ApplicationController
       icon: NexusCcs::MasonryViewIconComponent, default_thumbnail: mosaic_placeholder)
     config.index.display_type_field = "format"
 
-    config.add_results_document_tool(:bookmark, component: Blacklight::Document::BookmarkComponent, if: :render_bookmarks_control?)
+    # Bookmarks are the "Save / Saved" control (visitors need no login: GuestBookmarks). The result cards place it
+    # themselves (NexusCcs::ResultCardComponent), so the tool is registered for Blacklight but not drawn by the title.
+    config.bookmark_icon_component = NexusCcs::Icons::BookmarkComponent
+    config.add_results_document_tool(:bookmark, component: NexusCcs::SaveControlComponent, if: :render_bookmarks_control?)
 
     # Below 992px the sidebar is a drawer; this button opens it.
     config.index.sidebar_component = NexusCcs::FilterSidebarComponent
@@ -64,7 +67,8 @@ class CatalogController < ApplicationController
     config.add_results_collection_tool(:per_page_widget)
     config.add_results_collection_tool(:view_type_group)
 
-    config.add_show_tools_partial(:bookmark, component: Blacklight::Document::BookmarkComponent, if: :render_bookmarks_control?)
+    # The record page draws the control in its summary (NexusCcs::RecordDocumentComponent); the sidebar of show tools
+    # is hidden on the redesigned page, so it is not registered there a second time.
     # config.add_show_tools_partial(:email, callback: :email_action, validator: :email_params_valid?)
     # config.add_show_tools_partial(:sms, if: :render_sms_action?, callback: :sms_action, validator: :sms_params_valid?)
     # Links out to the record in its source system, behind a "you're leaving this
@@ -75,7 +79,7 @@ class CatalogController < ApplicationController
       })
     config.add_show_tools_partial(:citation)
 
-    config.add_nav_action(:bookmark, partial: "blacklight/nav/bookmark", if: :render_bookmarks_control?)
+    # (The nav's bookmark link is the saved bar, NexusCcs::SavedBarComponent.)
     config.add_nav_action(:search_history, partial: "blacklight/nav/search_history")
 
     # solr field configuration for document/show views

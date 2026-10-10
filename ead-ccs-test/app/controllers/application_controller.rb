@@ -2,6 +2,8 @@ class ApplicationController < ActionController::Base
   # Adds a few additional behaviors into the application controller
   include Blacklight::Controller
   include CountryAcknowledgement
+  include GuestBookmarks
+  helper_method :saved_records_count
   layout :determine_layout if respond_to? :layout
 
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.

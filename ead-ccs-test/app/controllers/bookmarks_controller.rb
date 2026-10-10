@@ -6,7 +6,19 @@
 class BookmarksController < CatalogController
   include Blacklight::Bookmarks
 
+  # The saved list is laid out like the content pages (page banner, container), not Blacklight's results layout
+  layout "pages"
+
+  before_action :remember_guest_user, only: %i[create update]
+
   private
+
+  # Create the guest's row on the first save and remember it in the (30-day) session cookie.
+  def remember_guest_user
+    user = current_or_guest_user
+    user.save! unless user.persisted?
+    session[:blacklight_guest_user_id] = user.id
+  end
 
   def verify_user
     unless current_or_guest_user || (action_name == "index" && token_or_current_or_guest_user)

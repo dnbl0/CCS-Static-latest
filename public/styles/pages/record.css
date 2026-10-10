@@ -1178,3 +1178,7 @@ body.page-record .record-page-bar__link {
   font-weight: var(--font-weight-semibold);
   color: #003f8b;
 }
+
+body.page-record .record-page__save {
+  margin-top: var(--space-8);
+}

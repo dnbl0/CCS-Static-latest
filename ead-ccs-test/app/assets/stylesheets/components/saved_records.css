@@ -1,0 +1,55 @@
+/*
+ * The saved records page (/bookmarks, views/bookmarks/index.html.erb): the page banner, then the saved records as
+ * result cards in the one page container (--layout-container: 1200px of content and a 32px gutter each side;
+ * 16px on a phone). Each card carries the Save / Saved toggle (components/save_control.css).
+ */
+.saved-main {
+  background: var(--ccs-white);
+}
+
+.saved-main__inner {
+  max-width: var(--layout-container);
+  margin-inline: auto;
+  padding: var(--ccs-space-6) var(--space-32) var(--ccs-space-8);
+}
+
+.saved-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ccs-space-4);
+  margin-bottom: var(--ccs-space-5);
+}
+
+.saved-toolbar__count {
+  margin: 0;
+  font-size: var(--ccs-font-size-lg);
+  font-weight: var(--ccs-font-weight-semibold);
+  color: var(--ccs-text-brand);
+}
+
+.saved-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--ccs-space-4);
+  padding-block: var(--ccs-space-5);
+}
+
+.saved-empty__text {
+  margin: 0;
+  font-size: var(--ccs-font-size-lg);
+  color: var(--ccs-text-primary);
+}
+
+/* The list is one column of the horizontal cards from 768px, as on the results page */
+.page-saved .documents-list {
+  margin-bottom: var(--ccs-space-6);
+}
+
+@media (max-width: 768px) {
+  .saved-main__inner {
+    padding-inline: var(--space-16);
+  }
+}
