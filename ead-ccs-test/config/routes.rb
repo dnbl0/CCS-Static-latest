@@ -27,6 +27,7 @@ Rails.application.routes.draw do
   get "collections", to: "pages#collections", as: :collections
   get "collections/:slug", to: "pages#collection", as: :collection, constraints: { slug: /[a-z-]+/ }
   get "help", to: "pages#help", as: :help
+  get "help/search-tips", to: "pages#search_tips", as: :search_tips
   get "help/indigenous-data", to: "pages#indigenous_data", as: :indigenous_data
   get "about", to: "pages#about", as: :about
   get "contact", to: "pages#contact", as: :contact
