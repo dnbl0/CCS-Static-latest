@@ -121,7 +121,7 @@
 
 /* The site's dropdown (the sort and per-page buttons, and any <select> turned into one by
    controllers/select_dropdown_controller.js, which gives it the .ccs-select class): a 48px white box with a navy outline, the value, then a 44px cell with a
-   navy rule and a small chevron; the menu opens flush beneath with the same outline and a pale-blue hover */
+   small chevron; the menu opens flush beneath with the same outline and a pale-blue hover */
 :is(#sortAndPerPage .btn-group, .ccs-select) > .dropdown-toggle {
   position: relative;
   display: block;
@@ -152,7 +152,6 @@
   inset: 0 0 0 auto;
   margin: 0;
   border: 0;
-  border-left: 1px solid var(--ccs-navy-1100);
   width: 2.75rem;
   height: auto;
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000f46' stroke-width='2.8'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") center / 0.875rem no-repeat;
