@@ -67,7 +67,7 @@
 .site-nav__panel-list a[aria-current] { color: var(--ccs-cyan-400); }
 
 /* Mobile-only pieces (Menu button, drawer search, drawer top links, Back row) are hidden on desktop */
-.site-nav__label-more, .site-header__menu, .site-nav__search, .site-nav__drawer-saved, .site-nav > ul.site-nav__audience, .site-nav__back { display: none; }
+.site-nav__label-more, .site-header__menu, .site-nav__search, .site-nav > ul.site-nav__audience, .site-nav__back { display: none; }
 
 /* Mobile and tablet header, following the UniMelb mobile header: one 96px row (logo block, site name, Menu button),
    with search, navigation and the UniMelb audience links inside a right-hand drawer. */
@@ -94,8 +94,6 @@
   .site-nav { display: none; position: absolute; top: 100%; right: 0; left: auto; z-index: 2; width: min(390px, 100%); height: calc(100vh - 96px); height: calc(100dvh - 96px); overflow-y: auto; background: var(--ccs-navy-1200); box-shadow: none; flex-direction: column; }
   .site-nav.is-open { display: block; border-top: 1px solid var(--ccs-navy-750); }
   .site-nav__label-more { display: inline; }
-  .site-nav__drawer-saved { display: block; }
-  .site-nav__drawer-saved .site-nav__saved { display: flex; width: 100%; min-height: 64px; padding: var(--ccs-space-4); font-size: var(--ccs-font-size-xl); border-bottom: 1px solid var(--ccs-navy-750); }
   .site-nav__search { display: block; padding: var(--ccs-space-4); border-bottom: 1px solid var(--ccs-navy-750); }
   .site-nav__search form { display: flex; height: 48px; margin: 0; }
   .site-nav__search input { flex: 1; min-width: 0; padding: var(--ccs-space-3); border: 0; background: var(--ccs-white); color: var(--ccs-neutral-1000); font: inherit; font-size: var(--ccs-font-size-lg); }
@@ -113,7 +111,6 @@
 
   /* Drilled-in view: the chosen item replaces the list, with a Back row, its own link, then its children indented */
   .site-nav:has(.site-nav__trigger[aria-expanded="true"]) .site-nav__search,
-  .site-nav:has(.site-nav__trigger[aria-expanded="true"]) .site-nav__drawer-saved,
   .site-nav:has(.site-nav__trigger[aria-expanded="true"]) .site-nav__audience,
   .site-nav > ul > li:not(:has(.site-nav__trigger[aria-expanded="true"])):has(~ li .site-nav__trigger[aria-expanded="true"]),
   .site-nav:has(.site-nav__trigger[aria-expanded="true"]) > ul > li:not(:has(.site-nav__trigger[aria-expanded="true"])) { display: none; }
