@@ -12,9 +12,8 @@ For the next Claude agent (any account) continuing Dean's work. Dean is non-tech
 - The Advanced Search link is now a footer-style link (blue arrow left, bold white label) per Dean's screenshot (#225); confirm it is what he wanted.
 
 ## Known flaky checks
-- `tests/bookmarks.test.js` "Save button is at least 44px tall" flaked once in CI; now retries until the layout settles. If it still flakes, the results page redraws its cards while loading.
-- Rails `SavedRecordsTest` "Save becomes Saved without a reload..." failed once in a full system run at `click_link "2 saved records"` (the click did not navigate); passes alone. A rerun fixes it.
-- `SearchJourneysTest` "the view buttons switch between the mosaic and the list" flaked once locally.
+- The Rails system tests `SavedRecordsTest` ("Save becomes Saved...", at `click_link "2 saved records"`) and `SearchJourneysTest` ("the view buttons switch...") each failed once in a full run and passed alone, on a busy machine; I could not reproduce either even with 12 busy loops running. Both gave up while a Turbo page change was still in flight, so `ApplicationSystemTestCase` now sets `Capybara.default_max_wait_time = 6` (the default is 2 s). If either still flakes, look at that first, then at the layout shift when the saved bar's text changes width.
+- `tests/bookmarks.test.js` "Save button is at least 44px tall" failed on about half of CI runs until #226 made it poll until the layout settles.
 
 ## How to work here
 - Per task: `git worktree add -B <branch> /tmp/<dir> origin/main`; never switch branches in /Users/nobled/CCS-Static (shared, stay on main).
