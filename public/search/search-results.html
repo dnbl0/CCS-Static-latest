@@ -24,6 +24,7 @@
 <link rel="stylesheet" href="/styles/components/hero-search.css">
 <link rel="stylesheet" href="/styles/components/content-templates.css">
 <link rel="stylesheet" href="/styles/components/range-slider.css">
+<link rel="stylesheet" href="/styles/components/save-button.css">
 <link rel="stylesheet" href="/styles/pages/search-results/layout.css">
 <link rel="stylesheet" href="/styles/pages/search-results/results.css">
 <link rel="stylesheet" href="/styles/pages/search-results/toolbar.css">
@@ -64,6 +65,11 @@
           <li class="search-results-university-melbourne__list-item"><a class="search-results-university-melbourne__item-link-contact" href="https://www.unimelb.edu.au/contact">Contact</a></li>
         </ul>
       </nav>
+      <a class="ccs-nav__saved" href="/search/bookmarks.html" data-bookmarks-link>
+        <svg class="ccs-nav__saved-icon ccs-nav__saved-icon--empty" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 3h12v18l-6-4-6 4z"/><path class="ccs-nav__saved-mark" d="M12 7.5v6M9 10.5h6"/></svg>
+        <svg class="ccs-nav__saved-icon ccs-nav__saved-icon--some" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 3h12v18l-6-4-6 4z"/><path class="ccs-nav__saved-mark" d="M8.8 10.4l2.3 2.3 4.2-4.6"/></svg>
+        <span data-bookmarks-text>0 saved records</span>
+      </a>
       <button type="button" class="ccs-nav__search" popovertarget="uom-search-popover" data-popover-type="search" aria-label="Open search">
         <img class="ccs-nav__image" src="/images/home/icon-search-onaccent.svg" alt="">
       </button>
@@ -77,6 +83,13 @@
             <input class="ccs-drawer-q" id="ccs-drawer-q" name="q" type="text" autocomplete="off" placeholder="Search">
             <button class="search-results-form__button-search" type="submit" aria-label="Search"><img class="search-results-form__button-image" src="/images/home/icon-search-onaccent.svg" alt=""></button>
           </form>
+        </div>
+        <div class="ccs-nav__drawer-saved">
+      <a class="ccs-nav__saved" href="/search/bookmarks.html" data-bookmarks-link>
+        <svg class="ccs-nav__saved-icon ccs-nav__saved-icon--empty" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 3h12v18l-6-4-6 4z"/><path class="ccs-nav__saved-mark" d="M12 7.5v6M9 10.5h6"/></svg>
+        <svg class="ccs-nav__saved-icon ccs-nav__saved-icon--some" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 3h12v18l-6-4-6 4z"/><path class="ccs-nav__saved-mark" d="M8.8 10.4l2.3 2.3 4.2-4.6"/></svg>
+        <span data-bookmarks-text>0 saved records</span>
+      </a>
         </div>
         <ul class="ccs-nav__list">
           <li class="ccs-nav__list-item"><a class="ccs-nav__item-link-search-all-records" href="/search/search-results.html" aria-current="page">Search all records</a></li>
@@ -413,6 +426,7 @@
                   <span class="search-results-article__line">{{ r.type }}</span>
                   <a class="search-results-article__line search-results-article__line--link" href="/collections/index.html">{{ r.collection }}</a>
                 </p>
+                <button type="button" class="ccs-save search-results-article__save" data-bookmark-id="{{ r.id }}" data-bookmark-title="{{ r.title }}"></button>
                 <sc-if value="{{ r.matchLabel }}"><span class="search-results-article__text search-results-article__text--match">{{ r.matchLabel }}</span></sc-if>
                 <div class="search-results-article__group search-results-article__group--v1">
                   <sc-if value="{{ r.webAccess }}"><span class="search-results-article__text search-results-article__text--web-access">{{ r.webAccess }}</span></sc-if>
@@ -441,6 +455,7 @@
                   <span class="search-results-article__line">{{ r.type }}</span>
                   <a class="search-results-article__line search-results-article__line--link" href="/collections/index.html">{{ r.collection }}</a>
                 </p>
+                <button type="button" class="ccs-save search-results-article__save" data-bookmark-id="{{ r.id }}" data-bookmark-title="{{ r.title }}"></button>
               </div>
             </article>
           </sc-for>

@@ -16,5 +16,6 @@
         <% lines.each do |line| %><li><%= line %></li><% end %>
       </ul>
     <% end %>
+    <div class="result-card__save"><%= render NexusCcs::SaveControlComponent.new(document: document) %></div>
   </div>
 <% end %>

@@ -18,6 +18,7 @@
           <% tags.each do |tag| %><li class="record-tag"><%= tag %></li><% end %>
         </ul>
       <% end %>
+      <div class="record-summary__save"><%= render NexusCcs::SaveControlComponent.new(document: document) %></div>
     </div>
   </section>
 

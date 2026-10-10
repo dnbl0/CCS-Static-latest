@@ -1,0 +1,25 @@
+<%# Blacklight's bookmarks page (documents come from BookmarksController / Blacklight::Bookmarks), laid out like the
+    other pages: the page banner, then the saved records as the result cards, each with its Save / Saved toggle
+    and a link to open it. Rendered in the "pages" layout (see BookmarksController). %>
+<% content_for :title, "#{t('nexus_ccs.saved.list_title')} — Cultural Collections Search — University of Melbourne" %>
+<% content_for :body_class, "page-saved" %>
+<%= render NexusCcs::PageBannerComponent.new(title: t("nexus_ccs.saved.list_title"), description: t("nexus_ccs.saved.list_description")) %>
+
+<main class="saved-main" id="main-content">
+  <div class="saved-main__inner">
+    <% if current_or_guest_user.blank? || @response.documents.blank? %>
+      <div class="saved-empty">
+        <p class="saved-empty__text"><%= t("nexus_ccs.saved.empty") %></p>
+        <%= link_to t("nexus_ccs.saved.empty_link"), search_catalog_path, class: "btn btn-primary" %>
+      </div>
+    <% else %>
+      <div class="saved-toolbar">
+        <p class="saved-toolbar__count"><%= t("nexus_ccs.saved_noun", count: @response.total).then { |noun| "#{@response.total} #{noun}" } %></p>
+        <%= render "bookmarks/clear_bookmarks_widget" %>
+      </div>
+      <h2 class="visually-hidden"><%= t("blacklight.bookmarks.list_title") %></h2>
+      <%= render_document_index_with_view :list, @response.documents %>
+      <%= render "results_pagination" %>
+    <% end %>
+  </div>
+</main>

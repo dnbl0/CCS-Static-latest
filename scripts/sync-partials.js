@@ -33,6 +33,7 @@ function current(relative) {
   if (relative === 'contact.html') items.add('contact');
   else if (relative === 'about.html') items.add('about');
   else if (relative === 'search/search-results.html' || relative === 'collections/record.html') items.add('search');
+  else if (relative === 'search/bookmarks.html') items.add('bookmarks');
   else if (relative === 'collections/index.html') items.add('collections');
   else if ((m = relative.match(/^collections\/([a-z-]+)\/index\.html$/))) items.add('collections').add(`coll-${m[1]}`);
   else if (relative === 'help/index.html') items.add('help');
