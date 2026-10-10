@@ -32,5 +32,12 @@ for (const s of sheets) {
   const bytes = fs.statSync(path.join(STYLES, s)).size;
   if (bytes > MAX_BYTES) fail(`styles/${s} is ${Math.round(bytes / 1024)} KB: split it by component (limit ${MAX_BYTES / 1024} KB)`);
 }
+// Smooth scrolling must be opt-in (reduced motion is respected): the back-to-top buttons rely on it being instant then.
+for (const s of sheets) {
+  const css = fs.readFileSync(path.join(STYLES, s), 'utf8').replace(/@media\s*\(prefers-reduced-motion:\s*no-preference\)\s*\{[^{}]*\{[^{}]*\}\s*\}/g, '');
+  if (/scroll-behavior\s*:\s*smooth/.test(css)) fail(`styles/${s}: scroll-behavior: smooth outside @media (prefers-reduced-motion: no-preference)`);
+}
+// The results body is a flex item that centres itself: without width:100% it shrinks to its content and misses the page container
+if (!/\.search-results-body\s*\{[^}]*width:\s*100%[^}]*max-width:\s*var\(--layout-container\)/s.test(fs.readFileSync(path.join(STYLES, 'pages/search-results/layout.css'), 'utf8'))) fail('search-results/layout.css: .search-results-body must be width: 100% up to var(--layout-container)');
 ok(`${sheets.length} stylesheets, ${pages.length} pages: structure and load order consistent`);
 finish('stylesheet-structure');

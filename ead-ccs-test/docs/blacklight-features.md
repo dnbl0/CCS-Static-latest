@@ -12,7 +12,8 @@ Configuration-only use of Blacklight 9.0.0 and its official plugins, in `Catalog
 | Sort: relevance, title A-Z / Z-A, date newest / oldest | `add_sort_field` | `title_si`, `date_start_isi` |
 | Per page 12 / 24 / 40 / 96 (default 40) | `config.per_page`, `default_per_page` | n/a |
 | Advanced search | `config.advanced_search.enabled` | search and facet fields |
-| Citation, search history, JSON API, did-you-mean, autocomplete | built in | n/a |
+| Citation, JSON API, did-you-mean, autocomplete | built in | n/a |
+| Search history (CCS-143, CCS-206) | Blacklight's own: searches saved in the session and listed at `/search_history`, with Clear history and a 100-search cap. We add only the day headings (`app/views/search_history/index.html.erb`, `SearchHistoryHelper`), the overlay's last-5 list and a 30-day session cookie (`config/initializers/session_store.rb`) | n/a |
 | Bookmarks | built in, but needs a user model; `/bookmarks` redirects without one | n/a |
 | List and mosaic (masonry) views | built-in list + `blacklight-gallery` (git `main`) via `config.view.*`; grid and slideshow removed | `thumbnail_path_ssi` |
 

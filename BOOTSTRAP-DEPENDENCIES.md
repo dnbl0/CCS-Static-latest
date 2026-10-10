@@ -18,7 +18,7 @@ CCS uses **Bootstrap 5.3.3** for the grid, utilities and some base component sty
 | Dev dependencies | `bootstrap@^5.3.3`, `sass@^1.105.1` (`package.json`) |
 | Version check | `verify-bootstrap.sh` (constant `OFFICIAL_VERSION="5.3.3"`) |
 
-The compiled file is committed (and explicitly un-ignored in `.gitignore`) because the Vercel deployment has no build step.
+The compiled file is committed (and explicitly un-ignored in `.gitignore`) because the GitHub Pages deployment does not build the vendor CSS.
 
 ---
 

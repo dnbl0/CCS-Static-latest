@@ -18,6 +18,22 @@
       {
         "severity": "warning"
       }
+    ],
+    "property-no-deprecated": [
+      true,
+      {
+        "ignoreProperties": [
+          "clip"
+        ]
+      }
+    ],
+    "declaration-property-value-keyword-no-deprecated": [
+      true,
+      {
+        "ignoreKeywords": [
+          "break-word"
+        ]
+      }
     ]
   }
 }

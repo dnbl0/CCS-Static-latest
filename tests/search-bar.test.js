@@ -16,7 +16,7 @@ const G = 'Grainger Museum Collection', U = 'University Art Collection', M = 'Me
 const HARNESS = `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>search bar harness</title>
 <link rel="stylesheet" href="/styles/tokens/tokens.css"><link rel="stylesheet" href="/styles/components/search-bar.css"></head><body>
 <div id="host-a"></div><div id="host-b"></div>
-<script src="/collection-data.js"></script><script src="/search-bar.js"></script></body></html>`;
+<script src="/collection-data.js"></script><script src="/nav.js"></script><script src="/search-bar.js"></script></body></html>`;
 
 (async () => {
   let chromium; try { ({ chromium } = require('playwright-core')); } catch (e) { console.log('SKIP search-bar browser checks: playwright-core is not installed'); return finish('search-bar'); }
@@ -44,7 +44,7 @@ const HARNESS = `<!doctype html><html lang="en"><head><meta charset="utf-8"><tit
   const open = async (url, seedHistory) => {
     const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
     page.on('pageerror', e => errors.push(e.message));
-    await page.addInitScript(h => { try { localStorage.setItem('ccs-cultural-ack', '1'); if (h && !sessionStorage.getItem('seeded')) { sessionStorage.setItem('ccs-search-history', JSON.stringify(h)); sessionStorage.setItem('seeded', '1'); } } catch (e) { /* none */ } }, seedHistory || null);
+    await page.addInitScript(h => { try { localStorage.setItem('ccs-cultural-ack', '1'); if (h && !sessionStorage.getItem('seeded')) { localStorage.setItem('ccs-search-history-v2', JSON.stringify(h.map((q, i) => ({ q, t: Date.now() - i })))); sessionStorage.setItem('seeded', '1'); } } catch (e) { /* none */ } }, seedHistory || null);
     await page.goto(base + url, { waitUntil: 'domcontentloaded' });
     return page;
   };
@@ -81,7 +81,7 @@ const HARNESS = `<!doctype html><html lang="en"><head><meta charset="utf-8"><tit
 
     page = await open('/'); await page.fill('#hero-search', 'cat'); await Promise.all([page.waitForURL(/search-results/), page.keyboard.press('Enter')]);
     eq(new URL(page.url()).searchParams.has('collection'), false, 'no collection param when All collections is chosen');
-    eq(await page.evaluate(() => JSON.parse(sessionStorage.getItem('ccs-search-history'))), ['cat'], 'a submitted term is saved to the shared session history');
+    eq(await page.evaluate(() => JSON.parse(localStorage.getItem('ccs-search-history-v2')).map(x => x.q)), ['cat'], 'a submitted term is saved to the shared history');
     await page.close();
 
     page = await open('/?collection=' + encodeURIComponent(G) + '&collection=Nonsense');
@@ -109,9 +109,9 @@ const HARNESS = `<!doctype html><html lang="en"><head><meta charset="utf-8"><tit
     eq(await page.evaluate(p => [...document.querySelectorAll(p + ' .ccs-searchbar__row span')].map(s => s.textContent), P), ['beta two'], 'typing filters recent searches');
     await page.fill(IN, '');
     await page.click(P + ' [data-rm="beta two"]');
-    eq(await page.evaluate(() => JSON.parse(sessionStorage.getItem('ccs-search-history'))), ['alpha one', 'gamma'], 'the x button removes one recent search');
+    eq(await page.evaluate(() => JSON.parse(localStorage.getItem('ccs-search-history-v2')).map(x => x.q)), ['alpha one', 'gamma'], 'the x button removes one recent search');
     await page.click(P + ' [data-act="clear"]');
-    eq(await page.evaluate(() => sessionStorage.getItem('ccs-search-history')), null, '"Clear all" empties the history');
+    eq(await page.evaluate(() => localStorage.getItem('ccs-search-history-v2')), null, '"Clear all" empties the history');
     eq(await page.evaluate(p => document.querySelector(p).hidden, P), true, 'panel closes when there is nothing to show');
     const sample = await page.evaluate(() => window.CCS.items.find(i => i.title && i.title.length > 6).title);
     const word = sample.slice(0, 4);
@@ -197,7 +197,7 @@ const HARNESS = `<!doctype html><html lang="en"><head><meta charset="utf-8"><tit
     eq(await page.evaluate(() => log.submits), [['sheet music', ['Grainger Museum Collection']]], 'onSubmit receives the term and the current scope');
     eq([page.url(), await page.inputValue(IA)], [url0, ''], 'with onSubmit the page does not navigate and the box is cleared');
     eq(await page.evaluate(() => log.inputs), [''], 'onInput(\'\') tells the page the box was cleared');
-    eq(await page.evaluate(() => JSON.parse(sessionStorage.getItem('ccs-search-history'))), ['sheet music'], 'an in-place search is still saved to history');
+    eq(await page.evaluate(() => JSON.parse(localStorage.getItem('ccs-search-history-v2')).map(x => x.q)), ['sheet music'], 'an in-place search is still saved to history');
     await page.fill(IA, '   '); await page.keyboard.press('Enter');
     eq(await page.evaluate(() => log.submits.length), 1, 'blank submit does not call onSubmit');
     await page.evaluate(() => { log.submits.length = 0; });
@@ -207,12 +207,12 @@ const HARNESS = `<!doctype html><html lang="en"><head><meta charset="utf-8"><tit
     eq(await page.evaluate(() => log.submits.map(s => s[0])), ['x'], 'the submit button calls onSubmit');
 
     // history row picked in place goes through onSubmit as well
-    await page.evaluate(() => { log.submits.length = 0; sessionStorage.setItem('ccs-search-history', JSON.stringify(['old term'])); });
+    await page.evaluate(() => { log.submits.length = 0; localStorage.setItem('ccs-search-history-v2', JSON.stringify([{ q: 'old term', t: Date.now() }])); });
     await page.focus(IA); await page.click(A + ' .ccs-searchbar__row > button[role="option"]');
     eq(await page.evaluate(() => log.submits.map(s => s[0])), ['old term'], 'picking a recent search runs it through onSubmit');
 
     // filterTerm
-    await page.evaluate(() => { sessionStorage.clear(); });
+    await page.evaluate(() => { localStorage.removeItem('ccs-search-history-v2'); });
     await page.fill(IA, 'th');
     const all = await page.evaluate(() => document.querySelectorAll('.bar-a .ccs-searchbar__sug').length);
     await page.evaluate(() => { state.allow = t => t.cat === 'Title'; });
