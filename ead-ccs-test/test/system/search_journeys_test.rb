@@ -84,7 +84,11 @@ class SearchJourneysTest < ApplicationSystemTestCase
     using_wait_time(40) { assert_selector "dialog#blacklight-modal.advanced-flyout .ccs-select--field", minimum: 2, visible: :all }
 
     # the panel slides in; wait for that to finish before clicking inside it
-    using_wait_time(10) { assert page.evaluate_script("document.querySelector('#blacklight-modal .modal-dialog').getAnimations().length === 0") }
+    settled = 100.times.any? do
+      sleep 0.1
+      page.evaluate_script("document.querySelector('#blacklight-modal .modal-dialog').getAnimations().length === 0")
+    end
+    assert settled, "the panel finished sliding in"
     field = find("dialog#blacklight-modal .ccs-select--field", match: :first)
     assert_equal 48, field.find(".dropdown-toggle").evaluate_script("Math.round(this.getBoundingClientRect().height)")
     # triggered, not clicked: the headless browser's hit test reports the transparent full-screen <dialog> over the panel
