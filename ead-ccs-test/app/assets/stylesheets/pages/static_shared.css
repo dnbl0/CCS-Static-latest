@@ -31,6 +31,8 @@
 /* ==========================================================================
    Navigation — header
    ========================================================================== */
+/* Saved records bar (bookmarks): slate-teal, bold white text, bookmark icon with a plus when empty and a check otherwise.
+   Desktop: in the top strip beside the search button. Mobile: a full-width bar at the top of the drawer. */
 /* Primary navigation (links + dropdown triggers share the UniMelb interactive states) */
 /* UniMelb focus: a 2px inset blue ring (an invisible outline keeps it visible in forced-colours mode) */
 /* Dropdown panel (modelled on the UniMelb mega-menu panel: dark, 2px light-blue top rule, shadow) */
