@@ -5,6 +5,10 @@ require "capybara/cuprite"
 # Chromium that is not on the PATH. They search the Solr core at SOLR_URL, which must hold the indexed records
 # (see docs/solr-dev.md).
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
+  # Capybara waits this long for a page to change before an assertion fails. The 2 s default is too short when the machine
+  # or the CI runner is busy: a Turbo page change (view switch, a link to /bookmarks) has failed assertions that pass on rerun.
+  Capybara.default_max_wait_time = 6
+
   driven_by :cuprite, screen_size: [ 1440, 900 ], options: { browser_options: { "no-sandbox" => nil }, process_timeout: 30, timeout: 15 }
 
   # axe-core comes from the static site's dependencies (npm install at the repository root)
