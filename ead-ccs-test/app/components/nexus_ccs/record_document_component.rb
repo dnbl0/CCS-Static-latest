@@ -72,6 +72,6 @@ module NexusCcs
       [ credit_line, copyright, licence, responsible_collection ].any?(&:present?)
     end
 
-    def terms_path = "/help?topic=copyright"
+    def terms_path = "/help#copyright"
   end
 end

@@ -1,61 +1,13 @@
 <% content_for :body_class, "page-help" %>
-<% if @topic %>
-  <% content_for :title, "#{@topic.title} — Help — Cultural Collections Search — University of Melbourne" %>
-  <%= render NexusCcs::PageBreadcrumbsComponent.new(trail: [ [ "Help and support", help_path ], [ @topic.title, nil ] ]) %>
-  <%= render NexusCcs::PageBannerComponent.new(title: @topic.title, description: @topic.blurb) %>
-  <main class="help-main-content help-main-content--topic" id="main-content">
-    <div class="help-layout">
-      <%= render "pages/help/side_nav", current: @topic.key %>
-      <div class="help-layout__content">
-        <%= render @topic.partial %>
-      </div>
+<% content_for :title, "Help and Support — Cultural Collections Search — University of Melbourne" %>
+<%= render NexusCcs::PageBreadcrumbsComponent.new(trail: [ [ "Help and support", nil ] ]) %>
+<%= render NexusCcs::PageBannerComponent.new(title: "Help and support", description: "Guidance on searching, using and requesting items from the University's cultural collections.") %>
+<main class="help-main-content help-main-content--topic" id="main-content">
+  <div class="help-layout">
+    <%= render "pages/help/side_nav", current: "all" %>
+    <div class="help-layout__content">
+      <%= render "pages/help/sections" %>
     </div>
-  </main>
-<% else %>
-  <% content_for :title, "Help and Support — Cultural Collections Search — University of Melbourne" %>
-  <%= render NexusCcs::PageBreadcrumbsComponent.new(trail: [ [ "Help and support", nil ] ]) %>
-  <%= render NexusCcs::PageBannerComponent.new(title: "Help and support", description: "Guidance on searching, using and requesting items from the University's cultural collections.") %>
-  <% start_topics = %w[faq search-tips access].map { |key| HelpTopic.find(key) } %>
-  <% more_topics = %w[copyright privacy indigenous].map { |key| HelpTopic.find(key) } %>
-  <main class="help-main-content" id="main-content">
-    <section class="tile-strip-band" aria-labelledby="h-start">
-      <h2 class="sr-only" id="h-start">Start here</h2>
-      <ul class="tile-strip">
-        <% start_topics.each do |topic| %>
-          <li class="tile-strip__item">
-            <a class="tile-strip__link" href="<%= topic.path(self) %>">
-              <h3 class="tile-strip__title"><%= topic.title %></h3>
-              <p class="tile-strip__text"><%= topic.blurb %></p>
-            </a>
-          </li>
-        <% end %>
-      </ul>
-    </section>
-
-    <section class="ct-section" aria-labelledby="h-more">
-      <div class="ct-section__inner">
-        <h2 class="ct-section__heading" id="h-more">More guidance</h2>
-        <p class="ct-section__lead">Using, requesting and respecting the University's cultural collections.</p>
-        <ul class="box-grid">
-          <% more_topics.each do |topic| %>
-            <li class="box-grid__item">
-              <div>
-                <h3 class="box-grid__title"><%= topic.title %></h3>
-                <p class="box-grid__text"><%= topic.blurb %></p>
-              </div>
-              <a class="ct-button" href="<%= topic.path(self) %>">Read guide<span class="sr-only"> for <%= topic.title %></span></a>
-            </li>
-          <% end %>
-        </ul>
-      </div>
-    </section>
-
-    <section class="cta-band" aria-labelledby="h-contact-box">
-      <div class="cta-band__inner">
-        <h2 class="cta-band__heading" id="h-contact-box">Still need help?</h2>
-        <p class="cta-band__text">Contact the collections team. We aim to respond to enquiries within 5 business days.</p>
-        <%= link_to "Contact the collections team", contact_path, class: "ct-button" %>
-      </div>
-    </section>
-  </main>
-<% end %>
+  </div>
+  <%= render "pages/help/cta_band" %>
+</main>

@@ -1,0 +1,11 @@
+#!/bin/bash
+# Fills the Solr core from the bundled CSV exports once Solr answers. collections:index skips itself when the core
+# already holds documents, so this is safe on every start. Used where Solr has no persistent disk (Azure Container Apps).
+for attempt in $(seq 1 60); do
+  if bundle exec rails collections:index; then
+    exit 0
+  fi
+  echo "index attempt $attempt failed; retrying in 20s"
+  sleep 20
+done
+exit 1

@@ -44,7 +44,8 @@ EXPOSE 3000
 ENTRYPOINT ["/app/bin/docker-entrypoint.sh"]
 
 ## Simple start (TODO: move migrations/seeds to an init container)
-CMD ["bash", "-lc", "bundle exec rails db:prepare && bundle exec rails server -b 0.0.0.0"]
+## AUTO_INDEX=true also fills an empty Solr core in the background (for hosts where Solr has no persistent disk)
+CMD ["bash", "-lc", "bundle exec rails db:prepare && { [ \"$AUTO_INDEX\" = true ] && bin/index-when-ready & } && bundle exec rails server -b 0.0.0.0"]
 
 # Image 2. Apache Solr
 FROM solr:10.0 AS solr

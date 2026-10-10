@@ -37,6 +37,7 @@ function current(relative) {
   else if ((m = relative.match(/^collections\/([a-z-]+)\/index\.html$/))) items.add('collections').add(`coll-${m[1]}`);
   else if (relative === 'help/index.html') items.add('help');
   else if (relative === 'help/indigenous-data.html') items.add('help').add('help-indigenous');
+  else if (relative === 'help/search-tips.html') items.add('help').add('help-search-tips');
   return items;
 }
 const ATTRIBUTES = { collections: ' aria-current="true"', help: ' aria-current="true"' };

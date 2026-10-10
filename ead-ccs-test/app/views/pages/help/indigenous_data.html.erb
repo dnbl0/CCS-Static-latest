@@ -7,7 +7,7 @@
     <%= render "pages/help/side_nav", current: "indigenous" %>
     <div class="help-layout__content">
 <p class="indigenous-data-main-content__text">
-<a class="indigenous-data-main-content__text-link-read-about-indigenous" href="<%= help_path(topic: "access") %>">Read about our Indigenous priorities</a>
+<a class="indigenous-data-main-content__text-link-read-about-indigenous" href="<%= help_path(anchor: "access") %>">Read about our Indigenous priorities</a>
 <a class="indigenous-data-main-content__text-link-read-full-acknowledgement" href="https://www.unimelb.edu.au/indigenous/acknowledgement-of-country">Read our full Acknowledgement of Country</a>
 </p>
 <section aria-labelledby="h-images-voices" class="indigenous-data-images-voices">
@@ -24,7 +24,7 @@
 </section>
 <section aria-labelledby="h-contact" class="indigenous-data-contact">
 <h2 class="indigenous-data-contact__heading" id="h-contact">Contact</h2>
-<p class="indigenous-data-contact__text">If you have questions about Indigenous cultural materials, cultural protocols or access conditions, or wish to provide feedback about a record, please contact the relevant <a class="indigenous-data-contact__text-link-collection-team" href="<%= help_path(topic: "access") %>">collection team</a>.</p>
+<p class="indigenous-data-contact__text">If you have questions about Indigenous cultural materials, cultural protocols or access conditions, or wish to provide feedback about a record, please contact the relevant <a class="indigenous-data-contact__text-link-collection-team" href="<%= help_path(anchor: "access") %>">collection team</a>.</p>
 </section>
     </div>
   </div>
