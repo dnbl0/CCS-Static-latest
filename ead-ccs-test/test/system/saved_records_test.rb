@@ -43,6 +43,47 @@ class SavedRecordsTest < ApplicationSystemTestCase
     assert_selector ".saved-main .result-card", count: 1
   end
 
+  # The bar is exactly as tall as the breadcrumb strip and flush to its top, bottom and right edge, at every width.
+  test "the saved bar fills the breadcrumb strip at 1440, 1000 and 390 wide" do
+    [ [ 1440, 900 ], [ 1000, 800 ], [ 390, 844 ] ].each do |width, height|
+      page.driver.resize(width, height)
+      [ search_catalog_path(q: "skull"), bookmarks_path, about_path ].each do |path|
+        visit path
+        assert_selector ".breadcrumb-strip a.site-nav__saved"
+        box = page.evaluate_script(<<~JS)
+          (function () {
+            var strip = document.querySelector(".breadcrumb-strip").getBoundingClientRect();
+            var bar = document.querySelector(".breadcrumb-strip .site-nav__saved").getBoundingClientRect();
+            return { strip: strip.height, bar: bar.height, top: bar.top - strip.top, right: strip.right - bar.right, edge: document.documentElement.clientWidth - bar.right };
+          })()
+        JS
+        label = "#{width}px #{path}"
+        assert_in_delta box["strip"], box["bar"], 0.5, "#{label}: bar height #{box["bar"]} vs strip #{box["strip"]}"
+        assert_operator box["bar"], :>=, 44, label
+        assert_in_delta 0, box["top"], 0.5, label
+        assert_in_delta 0, box["right"], 0.5, label
+        assert_in_delta 0, box["edge"], 0.5, label
+      end
+    end
+  ensure
+    page.driver.resize(1440, 900)
+  end
+
+  test "the saved bar has aria-current on the saved list and a visible focus ring" do
+    visit bookmarks_path
+    assert_selector ".breadcrumb-strip a.site-nav__saved[aria-current=page]"
+
+    find(".breadcrumb-strip a.site-nav__saved").execute_script("this.focus()")
+    shadow = page.evaluate_script("getComputedStyle(document.querySelector('.breadcrumb-strip .site-nav__saved')).boxShadow")
+    assert_not_equal "none", shadow
+  end
+
+  test "the home page keeps the bar in the header top strip" do
+    visit root_path
+    assert_selector ".site-header__utility a.site-nav__saved", count: 1
+    assert_no_selector ".breadcrumb-strip"
+  end
+
   test "the record page control is a real checkbox that takes keyboard focus, and the count survives navigation" do
     visit search_catalog_path(q: "skull", view: "list")
     visit first(".result-card .document-title-heading a")[:href]

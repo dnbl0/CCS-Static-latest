@@ -1,4 +1,4 @@
-<%= link_to helpers.bookmarks_path, class: "site-nav__saved #{modifier}", data: { controller: "saved-bar", saved_bar_one_value: noun(1), saved_bar_other_value: noun(2) },
+<%= link_to helpers.bookmarks_path, class: classes, data: { controller: "saved-bar", saved_bar_one_value: noun(1), saved_bar_other_value: noun(2) },
             aria: { current: (helpers.current_page?(helpers.bookmarks_path) ? "page" : nil) } do %>
   <%= icon %>
   <%# A live region, so a screen reader hears the new count after a Save or Saved click -%>

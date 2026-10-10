@@ -1,5 +1,9 @@
 # README
 
+**New here? Start with [docs/running-the-app.md](docs/running-the-app.md)**: step-by-step instructions to run this app on your computer
+(Ruby, PostgreSQL, Solr), check it works and fix common problems. How it runs on Azure is in
+[../infra/azure/README.md](../infra/azure/README.md).
+
 # System dependencies
 
 Ruby version 

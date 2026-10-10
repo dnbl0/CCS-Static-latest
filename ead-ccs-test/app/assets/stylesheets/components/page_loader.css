@@ -1,0 +1,61 @@
+/*
+ * Page loading screen: a full-window navy cover with a spinner and "Loading Cultural Collections Search" that
+ * shows from the first paint until the page has finished loading (app/javascript/page_loader.js adds
+ * .page-ready to <html> on the window's load event). It is drawn with the <html> element's pseudo-elements so it
+ * needs no markup and works in every layout, Blacklight's own included.
+ *
+ * If the script never runs (JavaScript off or blocked) the cover removes itself after 15 seconds, so the page is
+ * never left covered. With reduced motion the spinner is a still ring and the cover does not fade.
+ */
+html:not(.page-ready)::before {
+  content: "Loading Cultural Collections Search";
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-block-end: calc(50vh - 4.5rem);
+  background: var(--ccs-navy-1200, #000f46);
+  font-family: var(--ccs-font-body, "Source Sans 3", Helvetica, Arial, sans-serif);
+  font-size: 1.125rem;
+  color: var(--ccs-text-inverse, #fff);
+  animation: page-loader-fallback 0s 15s forwards;
+}
+
+html:not(.page-ready)::after {
+  content: "";
+  position: fixed;
+  z-index: 3001;
+  top: calc(50vh - 2.5rem);
+  left: calc(50% - 1.5rem);
+  box-sizing: border-box;
+  width: 3rem;
+  height: 3rem;
+  border: 0.25rem solid rgb(255 255 255 / 25%);
+  border-top-color: var(--ccs-text-inverse, #fff);
+  border-radius: 50%;
+  animation: page-loader-spin 0.9s linear infinite, page-loader-fallback 0s 15s forwards;
+}
+
+@keyframes page-loader-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes page-loader-fallback {
+  to { visibility: hidden; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:not(.page-ready)::after {
+    animation: page-loader-fallback 0s 15s forwards;
+  }
+}
+
+/* Nothing to wait for in print */
+@media print {
+  html:not(.page-ready)::before,
+  html:not(.page-ready)::after {
+    display: none;
+  }
+}

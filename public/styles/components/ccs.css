@@ -53,15 +53,17 @@
 .ccs-nav__title:hover { color: var(--blue-400); text-decoration: underline; }
 
 /* Saved records bar (bookmarks): slate-teal, bold white text, bookmark icon with a plus when empty and a check otherwise.
-   Desktop: in the top strip beside the search button. Mobile: a full-width bar at the top of the drawer. */
-.ccs-nav__top .ccs-nav__saved, .ccs-nav__saved { display: inline-flex; align-items: center; gap: var(--space-8); min-height: 44px; padding: var(--space-8) var(--space-16); background: var(--nav-bg-saved); color: var(--nav-text-inverse); font-size: var(--font-size-body-lg); font-weight: var(--font-weight-bold); letter-spacing: 0; line-height: 1.2; text-transform: none; text-decoration: none; }
-.ccs-nav__top .ccs-nav__saved:hover, .ccs-nav__saved:hover { color: var(--nav-text-inverse); text-decoration: underline; }
-.ccs-nav__saved:focus-visible { outline: 2px solid transparent; outline-offset: -4px; box-shadow: inset 0 0 0 2px var(--nav-text-inverse); }
-.ccs-nav__saved-icon { flex: none; width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
-.ccs-nav__saved-icon--some { display: none; fill: currentColor; }
-.ccs-nav__saved-icon--some .ccs-nav__saved-mark { stroke: var(--nav-bg-saved); }
-.ccs-nav__saved.has-saved .ccs-nav__saved-icon--empty { display: none; }
-.ccs-nav__saved.has-saved .ccs-nav__saved-icon--some { display: block; }
+   nav.js puts it at the right end of the breadcrumb strip (--breadcrumb, as on the Study site's saved courses), filling the
+   strip's full height; on a page with no breadcrumb (the home page) it sits in the header top strip (--header). */
+.ccs-nav__top .saved-bar, .saved-bar { display: inline-flex; align-items: center; gap: var(--space-8); box-sizing: border-box; min-height: 44px; padding: var(--space-8) var(--space-16); background: var(--nav-bg-saved); color: var(--nav-text-inverse); font-size: var(--font-size-body-lg); font-weight: var(--font-weight-bold); letter-spacing: 0; line-height: 1.2; text-transform: none; text-decoration: none; }
+.saved-bar--breadcrumb { flex: none; align-self: stretch; }
+.ccs-nav__top .saved-bar:hover, .saved-bar:hover { color: var(--nav-text-inverse); text-decoration: underline; }
+.saved-bar:focus-visible { outline: 2px solid transparent; outline-offset: -4px; box-shadow: inset 0 0 0 2px var(--nav-text-inverse); }
+.saved-bar__icon { flex: none; width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.saved-bar__icon--some { display: none; fill: currentColor; }
+.saved-bar__icon--some .saved-bar__mark { stroke: var(--nav-bg-saved); }
+.saved-bar.has-saved .saved-bar__icon--empty { display: none; }
+.saved-bar.has-saved .saved-bar__icon--some { display: block; }
 
 /* Primary navigation (links + dropdown triggers share the UniMelb interactive states) */
 .ccs-nav__primary { display: flex; }
@@ -89,7 +91,7 @@
 .ccs-nav__panel-list a[aria-current] { color: var(--blue-400); }
 
 /* Mobile-only pieces (Menu button, drawer search, drawer top links, Back row) are hidden on desktop */
-.ccs-nav__label-more, .ccs-nav__menu, .ccs-nav__drawer-search, .ccs-nav__drawer-saved, .ccs-nav__primary > ul.ccs-nav__drawer-top, .ccs-nav__back { display: none; }
+.ccs-nav__label-more, .ccs-nav__menu, .ccs-nav__drawer-search, .ccs-nav__primary > ul.ccs-nav__drawer-top, .ccs-nav__back { display: none; }
 
 /* Mobile and tablet header, following the UniMelb mobile header: one 96px row (logo block, site name, Menu button),
    with search, navigation and the UniMelb audience links inside a right-hand drawer. */
@@ -116,8 +118,6 @@
   .ccs-nav__primary { display: none; position: absolute; top: 100%; right: 0; left: auto; z-index: var(--z-2); width: min(390px, 100%); height: calc(100vh - 96px); height: calc(100dvh - 96px); overflow-y: auto; background: var(--brand-1200); box-shadow: none; flex-direction: column; }
   .ccs-nav__primary.is-open { display: block; border-top: 1px solid #404b74; }
   .ccs-nav__label-more { display: inline; }
-  .ccs-nav__drawer-saved { display: block; }
-  .ccs-nav__drawer-saved .ccs-nav__saved { display: flex; width: 100%; min-height: 64px; padding: var(--space-16); font-size: var(--font-size-20, 1.25rem); border-bottom: 1px solid var(--nav-border-on-dark); }
   .ccs-nav__drawer-search { display: block; padding: var(--space-16); border-bottom: 1px solid #404b74; }
   .ccs-nav__drawer-search form { display: flex; height: 48px; margin: 0; }
   .ccs-nav__drawer-search input { flex: 1; min-width: 0; padding: var(--space-12); border: 0; background: var(--white-100); color: var(--neutral-1000); font: inherit; font-size: var(--font-size-body-lg); }
@@ -135,7 +135,6 @@
 
   /* Drilled-in view: the chosen item replaces the list, with a Back row, its own link, then its children indented */
   .ccs-nav__primary:has(.ccs-nav__trigger[aria-expanded="true"]) .ccs-nav__drawer-search,
-  .ccs-nav__primary:has(.ccs-nav__trigger[aria-expanded="true"]) .ccs-nav__drawer-saved,
   .ccs-nav__primary:has(.ccs-nav__trigger[aria-expanded="true"]) .ccs-nav__drawer-top,
   .ccs-nav__primary > ul > li:not(:has(.ccs-nav__trigger[aria-expanded="true"])):has(~ li .ccs-nav__trigger[aria-expanded="true"]),
   .ccs-nav__primary:has(.ccs-nav__trigger[aria-expanded="true"]) > ul > li:not(:has(.ccs-nav__trigger[aria-expanded="true"])) { display: none; }

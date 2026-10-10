@@ -6,6 +6,8 @@ A static front-end prototype for searching and browsing the University of Melbou
 
 The site is a prototype driven by an in-repo dataset (735 listed records), not a live catalogue. Accessibility work has been done and checked with axe-core scans (clean apart from the items listed under [Known issues](#known-issues--follow-ups)), but the site has **not** had a formal WCAG audit or certification.
 
+**Running the Rails/Blacklight app** (`ead-ccs-test/`) on your computer: see [ead-ccs-test/docs/running-the-app.md](ead-ccs-test/docs/running-the-app.md). Rules for Claude agents working here: [CLAUDE.md](CLAUDE.md).
+
 ---
 
 ## Contents
@@ -37,7 +39,7 @@ All pages live in `public/` (the web root). They are "DC template" HTML: `{{ }}`
 | `/search` | `public/search.html` | Redirect stub to `/search/search-results` (meta refresh, JS, and server redirect) |
 | `/search/search-results` | `public/search/search-results.html` | Search, facets (`FACETS`), results grid/list |
 | `/search/advanced-search` | `public/search/advanced-search.html` | Advanced Filters form (multi-row field search, filters, production-date range); submits to `/search/search-results` |
-| `/search/bookmarks` | `public/search/bookmarks.html` | Saved records: the records saved in this browser (no sign-in), newest first, each with a Saved toggle to remove it, and Clear saved records. Logic in `public/search/bookmarks.js`; the Save toggle and the list are `window.CCSBookmarks` in `public/nav.js` (localStorage key `ccs-bookmarks-v1`) |
+| `/search/bookmarks` | `public/search/bookmarks.html` | Saved records: the records saved in this browser (no sign-in), newest first, each with a Saved toggle to remove it, and Clear saved records. Logic in `public/search/bookmarks.js`; the Save toggle, the list and the "N saved records" bar (added at the right end of the breadcrumb strip, or the header top strip on the home page) are `window.CCSBookmarks` in `public/nav.js` (localStorage key `ccs-bookmarks-v1`) |
 | `/collections` | `public/collections/index.html` | Browse all collections: the shared Browse collections cards (alphabetical), then Help and guidance |
 | `/collections/<slug>` | `public/collections/<slug>/index.html` | Five landing pages: `grainger-museum`, `harry-brookes-allen-museum`, `henry-forman-atkinson-dental-museum`, `medical-history-museum`, `university-art-collection`. They share one template with per-collection data in JS dicts, so a change to the shared structure must be made in all five files |
 | `/collections/record?id=<id>` | `public/collections/record.html` | Record detail and media viewer |

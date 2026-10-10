@@ -1,3 +1,25 @@
+/*
+ * The breadcrumb strip: the breadcrumb on the left and the saved-records bar (NexusCcs::SavedBarComponent) flush to the
+ * right edge. Both stretch to the strip's height, so the bar is exactly as tall as the breadcrumb (44px at least).
+ */
+.breadcrumb-strip {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  background: var(--ccs-cyan-900);
+}
+
+.breadcrumb-strip > nav {
+  flex: 1 1 auto;
+  min-width: 0;
+  width: auto;
+}
+
+.breadcrumb-strip > .site-nav__saved {
+  flex: none;
+  align-self: stretch;
+}
+
 /* Gen 3 breadcrumb bar. Markup: NexusCcs::BreadcrumbComponent. */
 .breadcrumb-bar {
   width: 100%;

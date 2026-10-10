@@ -73,6 +73,19 @@ class RecordPageTest < ActiveSupport::TestCase
     assert_selector "[role=status][data-clipboard-target=status]", visible: :all
   end
 
+  test "the persistent link tells the visitor to quote the record's accession number" do
+    document = SolrDocument.new(id: "emu-1", accession_number_ssim: [ "1996.3014.000.000" ])
+    render_inline(NexusCcs::PersistentLinkComponent.new(url: "http://example.test/catalog/emu-1", document: document))
+
+    assert_selector ".persistent-link__note", text: "Quote the accession number 1996.3014.000.000 when contacting the collection team."
+  end
+
+  test "the persistent link note falls back to the link when the record has no accession number" do
+    render_inline(NexusCcs::PersistentLinkComponent.new(url: "http://example.test/catalog/x", document: SolrDocument.new(id: "x")))
+
+    assert_selector ".persistent-link__note", text: "Quote this link when contacting the collection team."
+  end
+
   test "the persistent link is a show partial" do
     assert_equal [ :persistent_link ], CatalogController.blacklight_config.view_config(:show).partials
   end

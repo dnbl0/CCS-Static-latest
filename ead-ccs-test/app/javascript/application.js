@@ -1,4 +1,5 @@
 // Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
+import "page_loader" // first, so the loading screen always comes off even if a later import fails
 import "@hotwired/turbo-rails"
 import "controllers"
 import "search_loading"

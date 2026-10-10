@@ -32,6 +32,20 @@ class BookmarksTest < ActionDispatch::IntegrationTest
     assert_select "a.site-nav__saved--empty[href='/bookmarks']", text: /0\s+saved records/
   end
 
+  test "the saved bar is in the breadcrumb strip of the results page and the saved list, with aria-current on the list" do
+    get "/catalog", params: { q: "skull" }
+    assert_select ".breadcrumb-strip > a.site-nav__saved[href='/bookmarks']", count: 1
+    assert_select ".site-header a.site-nav__saved", count: 0
+    assert_select "a.site-nav__saved[aria-current]", count: 0
+
+    get "/bookmarks"
+    assert_select ".breadcrumb-strip > a.site-nav__saved[href='/bookmarks'][aria-current=page]", count: 1
+
+    get "/about"
+    assert_select ".breadcrumb-strip > a.site-nav__saved", count: 1
+    assert_select ".site-header a.site-nav__saved", count: 0
+  end
+
   test "the saved list is empty, without a login redirect, for a new visitor" do
     needs_solr
     get "/bookmarks"

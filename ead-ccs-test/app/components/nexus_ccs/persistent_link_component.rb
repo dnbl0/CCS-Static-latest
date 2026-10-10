@@ -11,5 +11,14 @@ module NexusCcs
     end
 
     attr_reader :url, :document
+
+    # The record's accession number (Solr accession_number_ssim), which the visitor quotes to the collection team
+    def accession_number
+      document&.first("accession_number_ssim").presence
+    end
+
+    def note
+      accession_number ? "Quote the accession number #{accession_number} when contacting the collection team." : "Quote this link when contacting the collection team."
+    end
   end
 end

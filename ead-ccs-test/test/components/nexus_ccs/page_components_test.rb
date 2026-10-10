@@ -9,6 +9,7 @@ class PageComponentsTest < ViewComponent::TestCase
     assert_selector "li a[href='/help'][title='Help and support']"
     assert_no_selector ".bc-mobile"
     assert_selector "nav.page-breadcrumbs ol", count: 1
+    assert_selector ".breadcrumb-strip > nav.page-breadcrumbs + a.site-nav__saved[href='/bookmarks']", text: /0\s+saved records/
   end
 
   test "the banner has the page heading and its description" do
