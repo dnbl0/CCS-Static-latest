@@ -1,0 +1,5 @@
+en:
+  blacklight:
+    advanced_search:
+      # The link under the search bar, styled like the footer links
+      more_options: Advanced Search
