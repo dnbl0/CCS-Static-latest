@@ -43,6 +43,33 @@ class SavedRecordsTest < ApplicationSystemTestCase
     assert_selector ".saved-main .result-card", count: 1
   end
 
+  # Save on a result card toggles in place in both views and never opens the record, by pointer or keyboard.
+  %w[masonry list].each do |view|
+    test "Save on a #{view} card toggles in place without leaving the results (click, Space, Enter)" do
+      visit search_catalog_path(q: "skull", view: view)
+      results_url = current_url
+      page.execute_script("window.sameDocument = true")
+
+      # a real pointer click at the label's centre, so anything laid over it (the mosaic's stretched title link) takes the click
+      first(".result-card .toggle-bookmark-label").execute_script("this.scrollIntoView({ block: 'center' })")
+      pt = page.evaluate_script("(function () { var r = document.querySelector('.result-card .toggle-bookmark-label').getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; })()")
+      page.driver.browser.mouse.click(x: pt[0], y: pt[1])
+      assert_selector ".result-card:nth-of-type(1) .toggle-bookmark-label.checked", text: /Saved/
+      assert_text "1 saved record"
+
+      [ [ 1, :Space ], [ 2, :Enter ] ].each_with_index do |(index, key), n|
+        box = all(".result-card")[index].find(".save-control__input", visible: :all)
+        box.execute_script("this.focus()")
+        page.driver.browser.keyboard.type(key)
+        assert_selector ".result-card:nth-of-type(#{index + 1}) .toggle-bookmark-label.checked", text: /Saved/
+        assert_text "#{n + 2} saved records"
+      end
+
+      assert_equal results_url, current_url
+      assert page.evaluate_script("window.sameDocument"), "the page navigated"
+    end
+  end
+
   # The bar is exactly as tall as the breadcrumb strip and flush to its top, bottom and right edge, at every width.
   test "the saved bar fills the breadcrumb strip at 1440, 1000 and 390 wide" do
     [ [ 1440, 900 ], [ 1000, 800 ], [ 390, 844 ] ].each do |width, height|

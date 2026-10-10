@@ -76,25 +76,23 @@
 
 /* ---- Combo (Select + Multi) ----------------------------------------------------------------- */
 .ccs-combo { position: relative; min-width: 0; }
-.ccs-combo__field { display: flex; align-items: stretch; justify-content: space-between; width: 100%; height: 48px; margin: 0; padding: 0; border: 1px solid var(--input-stroke-default); border-radius: var(--radius-none); background: var(--input-fill-default); font: inherit; font-size: var(--font-size-body-lg); line-height: 24px; text-align: left; color: var(--text-primary); cursor: pointer; }
-.ccs-combo__field:hover { background: var(--input-fill-hover); }
-.ccs-combo__field:active { background: var(--input-fill-down); }
+/* The same box as the facet rail on the results page: 48px, a pale stone border that turns navy on hover and while open, 14px text, a 16px chevron inside the right edge */
+.ccs-combo__field { display: flex; align-items: center; justify-content: space-between; gap: var(--space-8); width: 100%; height: 48px; margin: 0; padding: 0 var(--space-12); border: 1px solid var(--col-border-neutral); border-radius: var(--radius-none); background: var(--white-100); font: inherit; font-size: var(--font-size-small); line-height: var(--line-height-compact); text-align: left; color: var(--text-primary); cursor: pointer; }
+.ccs-combo__field:hover, .ccs-combo.is-open .ccs-combo__field { border-color: var(--col-bg-primary); }
 .ccs-combo__field:disabled, .ccs-input:disabled { background: var(--input-fill-disabled); color: var(--text-tertiary); cursor: not-allowed; }
-.ccs-combo__value { flex: 1; min-width: 0; padding: 11px var(--space-12); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-primary); }
-.ccs-combo__value.is-placeholder { color: var(--text-tertiary); }
-.ccs-combo__icon { flex: none; display: flex; align-items: center; justify-content: center; width: 46px; border-left: 1px solid var(--input-stroke-default); }
-.ccs-combo__icon img { width: 24px; height: 24px; }
-.ccs-combo.is-open .ccs-combo__field { background: var(--input-fill-default); }
+.ccs-combo__value { flex: 1; min-width: 0; padding: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-primary); }
+.ccs-combo__value.is-placeholder { color: var(--col-text-muted); }
+.ccs-combo__icon { flex: none; display: flex; align-items: center; justify-content: center; }
+.ccs-combo__icon img { width: 16px; height: 16px; }
 
 /* Menu: white panel with the field's own 1px stroke and a soft shadow; 48px rows divided by hairlines, hover / keyboard row
    in light blue, the chosen row marked by a navy bar and semibold text (never a solid fill that hides the other states) */
-.ccs-combo__menu { position: absolute; z-index: var(--z-30); left: 0; right: 0; top: 100%; margin: 0; padding: 0; background: var(--background-elevation-1); border: 1px solid var(--input-stroke-default); border-top: 0; box-shadow: var(--shadow-md); list-style: none; max-height: 392px; overflow-y: auto; }
+.ccs-combo__menu { position: absolute; z-index: var(--z-30); left: 0; right: 0; top: 100%; margin: -1px 0 0; padding: 0; background: var(--white-100); border: 1px solid var(--col-bg-primary); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18); list-style: none; max-height: min(18rem, 50vh); overflow-y: auto; }
 .ccs-combo__menu[hidden] { display: none; }
-.ccs-combo__option { display: flex; align-items: center; gap: var(--space-12); min-height: 48px; padding: var(--space-12) var(--space-16); margin: 0; font-size: var(--font-size-body-lg); line-height: 24px; color: var(--text-primary); cursor: pointer; }
+.ccs-combo__option { display: flex; align-items: center; gap: var(--space-12); padding: var(--space-6) var(--space-12); margin: 0; font-size: var(--font-size-15); line-height: var(--line-height-compact); color: var(--text-primary); cursor: pointer; }
 ul.ccs-combo__menu > .ccs-combo__option { list-style: none; }
-ul.ccs-combo__menu > .ccs-combo__option + .ccs-combo__option, .ccs-combo__item + .ccs-combo__item .ccs-combo__option { border-top: 1px solid var(--stroke-weaker); }
 .ccs-combo__option:hover, .ccs-combo__option.is-active { background: var(--input-fill-hover); }
-.ccs-combo__option[aria-selected="true"] { box-shadow: inset 4px 0 0 var(--brand-1100); font-weight: var(--font-weight-semibold); }
+.ccs-combo__option[aria-selected="true"] { font-weight: var(--font-weight-semibold); }
 .ccs-combo__option[aria-selected="true"].is-active, .ccs-combo__option[aria-selected="true"]:hover { background: var(--input-fill-hover); }
 .ccs-combo__option-text { flex: 1; min-width: 0; overflow-wrap: anywhere; }
 .ccs-combo__count { flex: none; margin-left: auto; padding: 0 var(--space-8); font-size: var(--font-size-small); line-height: 24px; color: var(--text-secondary); background: var(--neutral-100); }
@@ -115,7 +113,7 @@ ul.ccs-combo__menu > .ccs-combo__option + .ccs-combo__option, .ccs-combo__item +
 
 /* "Add filter" (multi-select) looks and sizes exactly like "Add row": UoM secondary (outline) button, plus icon, centred text */
 .ccs-combo--add { align-self: flex-start; width: fit-content; min-width: 176px; max-width: 100%; }
-.ccs-combo--add .ccs-combo__field { flex-direction: row-reverse; align-items: center; justify-content: center; gap: var(--space-8); height: 48px; padding: 0 var(--space-16); background: transparent; border: 2px solid var(--brand-1100); color: var(--brand-1100); font-weight: var(--font-weight-semibold); }
+.ccs-combo--add .ccs-combo__field { font-size: var(--font-size-body-lg); line-height: 24px; flex-direction: row-reverse; align-items: center; justify-content: center; gap: var(--space-8); height: 48px; padding: 0 var(--space-16); background: transparent; border: 2px solid var(--brand-1100); color: var(--brand-1100); font-weight: var(--font-weight-semibold); }
 .ccs-combo--add .ccs-combo__field:hover { background: var(--input-fill-hover); }
 .ccs-combo--add .ccs-combo__field:active, .ccs-combo--add.is-open .ccs-combo__field { background: var(--input-fill-selected); }
 .ccs-combo--add .ccs-combo__value, .ccs-combo--add.is-complete .ccs-combo__value { flex: none; padding: 0; color: var(--brand-1100); font-weight: var(--font-weight-semibold); }
@@ -217,7 +215,6 @@ html.is-embed .adv-term .ccs-field-row__controls > :nth-child(3) { grid-column: 
 html.is-embed .adv-term .ccs-delete, html.is-embed .adv-filter .ccs-delete { position: absolute; top: var(--space-8); right: var(--space-16); align-self: auto; min-height: 40px; }
 html.is-embed .adv-filter .ccs-delete { grid-column: auto; }
 html.is-embed .ccs-btn--add, html.is-embed .ccs-combo--add { align-self: stretch; width: 100%; }
-html.is-embed .ccs-combo, html.is-embed .ccs-combo__field { font-size: var(--font-size-body-lg); }
 html.is-embed .ccs-adv__sort { max-width: none; }
 html.is-embed .ccs-adv__sort .ccs-combo { width: 100%; }
 html.is-embed .ccs-adv__sort .ccs-combo__menu { top: auto; bottom: 100%; border-top: 1px solid var(--input-stroke-default); border-bottom: 0; }
