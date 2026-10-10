@@ -426,7 +426,7 @@
             <button class="record-section__button-copy-link" onClick="{{ copyLink }}" aria-label="{{ linkText }} (persistent link)"><svg class="record-section__button-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="12"></rect><path d="M16 8V4H4v12h4"></path></svg>{{ linkText }}</button>
           </div>
           <div class="record-section__group record-section__group--v7">
-            <span class="record-section__text record-section__text--v1">Quote this link when contacting the collection team.</span>
+            <span class="record-section__text record-section__text--v1">Quote the accession number {{ accessionNumber }} when contacting the collection team.</span>
             <div class="record-section__group record-section__group--v4">
               <a class="record-section__link-view-collection-browser" href="/collections/index.html">View in collection browser</a>
             </div>
@@ -466,10 +466,6 @@
       </section>
     </aside>
   </div>
-  <nav class="record-page-bar" aria-label="Back to search">
-    <a class="record-page-bar__link" href="/search/search-results.html">Start over</a>
-    <a class="record-page-bar__link" href="/search/search-results.html" onClick="{{ goBack }}">Back to search</a>
-  </nav>
 </main>
 </sc-if>
 
@@ -698,10 +694,6 @@ class Component extends DCLogic {
     const i = Math.min(Math.max(this.state.idx + d, 0), n - 1);
     if (i !== this.state.idx) this.setState({ idx: i });
   }
-  goBack(e) {
-    // Back to the results the visitor came from; with no history in this site, the link goes to the results page.
-    try { if (history.length > 1 && document.referrer && new URL(document.referrer).origin === location.origin) { e.preventDefault(); history.back(); } } catch (err) {}
-  }
   toggleFull() {
     const el = this.viewerRef.current; if (!el) return;
     const fs = document.fullscreenElement || document.webkitFullscreenElement;
@@ -732,7 +724,7 @@ class Component extends DCLogic {
     if (!R) return { licKey: 'Rights Reserved', notFound, found: false, pageTitle: notFound ? 'Record not found' : '', rec: { title: '', type: '', byline: '', citation: '', unit: '', assetId: '', hasDA: false, images: [], slides: [], subjects: [], advisories: [], rights: [] },
       fields: [], related: [], mediaRows: [], thumbs: [], noDA: false, showRelated: false, viewerRef: this.viewerRef,
       yes: true, cur: { src: '', label: '' }, curAlt: '', isImage: false, isVideo: false, isAudio: false, isPdf: false, curBroken: false, onImgLoad() {}, onMeta() {}, multi: false, imgCount: '', liveText: '',
-      prevImg() {}, nextImg() {}, firstImg() {}, lastImg() {}, jumpTo() {}, openUse() {}, openView() {}, caption: '', showGate: false, showMedia: true, gateTitle: '', gateTexts: [], gateIsRestricted: false, manyPages: false, pageNo: 1, pageOptions: [], atFirst: true, atLast: true, sidebarOpen: false, sidebarCls: 'im-sidebar', sidebarLabel: '', toggleSidebar() {}, closeSidebar() {}, fullLabel: '', toggleFull() {}, goBack() {},
+      prevImg() {}, nextImg() {}, firstImg() {}, lastImg() {}, jumpTo() {}, openUse() {}, openView() {}, caption: '', showGate: false, showMedia: true, gateTitle: '', gateTexts: [], gateIsRestricted: false, manyPages: false, pageNo: 1, pageOptions: [], atFirst: true, atLast: true, sidebarOpen: false, sidebarCls: 'im-sidebar', sidebarLabel: '', toggleSidebar() {}, closeSidebar() {}, fullLabel: '', toggleFull() {},
             citeText: 'Copy citation', typeHref: '/search/search-results.html', collectionHref: '/search/search-results.html' };
     const slides = R.slides, idx = Math.min(s.idx, Math.max(0, slides.length - 1));
     const cur = slides[idx] || { kind: 'image', src: '', label: '' };
@@ -741,6 +733,8 @@ class Component extends DCLogic {
     const restricted = R.viewRestricted;
     const showGate = R.hasDA && restricted;
     const permalinkShort = location.host + '/item/' + R.assetId;
+    const accessionField = (R.fields || []).find(f => f.label === 'Accession number');
+    const accessionNumber = accessionField ? accessionField.value : R.assetId;   // the record's accession number, else its item code
     const dim = cur.kind === 'image' ? s.dims[cur.src] : null;
     const dur = s.dur[cur.src];
     const fmtDur = t => { t = Math.round(t); const h = Math.floor(t / 3600), m = Math.floor(t % 3600 / 60), sec = t % 60; return (h ? h + ':' + String(m).padStart(2, '0') : m) + ':' + String(sec).padStart(2, '0'); };
@@ -789,7 +783,6 @@ class Component extends DCLogic {
       toggleSidebar: () => this.setSidebar(!s.sidebar), closeSidebar: () => this.setSidebar(false),
       fullLabel: s.full ? 'Exit full screen' : 'Full screen',
       toggleFull: () => this.toggleFull(),
-      goBack: e => this.goBack(e),
       reportIssue: e => { e.preventDefault(); this.openReq(e.currentTarget); },
       reqOpen: !!s.req, reqForm: !!s.req && !s.reqSent, reqSent: s.reqSent, stopProp: e => e.stopPropagation(),
       openContact: e => this.openReq(e && e.currentTarget),
@@ -810,7 +803,7 @@ class Component extends DCLogic {
       reqSummary: s.reqData ? [['Request type', s.reqData.type], ['Name', s.reqData.name], ['Email', s.reqData.email], ['Record', permalinkShort], ['Message', s.reqData.message]].map(([k, v]) => ({ k, v })) : [],
       citeStyles: [['apa', 'APA 7'], ['mla', 'MLA 9'], ['chicago', 'Chicago 17'], ['harvard', 'Harvard']].map(([k, label]) => ({ label, pick: () => this.setState({ cite: k }), bg: s.cite === k ? 'var(--col-bg-primary)' : '#fff', color: s.cite === k ? '#fff' : 'var(--col-text-primary)', border: s.cite === k ? 'var(--col-bg-primary)' : 'var(--col-border-neutral)' })),
       citation: R.citations[s.cite], copyCite: () => this.flash('cite', R.citations[s.cite]), citeText: s.copied === 'cite' ? 'Copied' : 'Copy citation',
-      permalink: location.origin + '/item/' + R.assetId, permalinkShort, copyLink: () => this.flash('link', location.origin + '/item/' + R.assetId), linkText: s.copied === 'link' ? 'Copied' : 'Copy link'
+      permalink: location.origin + '/item/' + R.assetId, permalinkShort, accessionNumber, copyLink: () => this.flash('link', location.origin + '/item/' + R.assetId), linkText: s.copied === 'link' ? 'Copied' : 'Copy link'
     };
   }
 }
