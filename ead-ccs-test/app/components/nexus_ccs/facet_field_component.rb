@@ -19,6 +19,29 @@ module NexusCcs
       @facet_field.respond_to?(:selected_range) && @facet_field.selected_range.present?
     end
 
+    # Filters whose values are short phrases show twelve before "Show all", the rest six (the static search page's
+    # "chips" and "list" filters); a few have no search box because they only ever have a handful of values.
+    SHORT_VALUE_FIELDS = %w[creator_role classification object_type language region period theme licen access film format].freeze
+    NO_SEARCH_FIELDS = %w[theme licen access film format].freeze
+
+    # Whether the panel is a plain list of values that gets the search box and "Show all" link (not a range slider
+    # or a yes/no query filter)
+    def value_list?
+      !slider? && !@facet_field.facet_field.range && @facet_field.facet_field.query.blank?
+    end
+
+    def panel_limit
+      SHORT_VALUE_FIELDS.any? { |name| @facet_field.key.to_s.include?(name) } ? 12 : 6
+    end
+
+    def panel_search?
+      NO_SEARCH_FIELDS.none? { |name| @facet_field.key.to_s.include?(name) }
+    end
+
+    def panel_search_label
+      "Search #{@facet_field.label.to_s.downcase}…"
+    end
+
     # Every filter starts closed, even one with values selected: the box shows what is chosen
     def collapsed?
       true
