@@ -36,6 +36,9 @@
   --ccs-navy-1100: #000f46;
   --ccs-navy-1200: #000b34;
 
+  /* Colour: slate teal (the saved-records bar) */
+  --ccs-slate-teal-500: #4f7385;
+
   /* Colour: cyan (primary actions) */
   --ccs-cyan-100: #e3f6fd;
   --ccs-cyan-150: #d1f1fb;

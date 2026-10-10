@@ -1,0 +1,56 @@
+/*
+ * The saved-records link in the site header (NexusCcs::SavedBarComponent), modelled on the University of Melbourne
+ * Study site's saved-courses block and matching the static site's .ccs-nav__saved: a slate-teal block in the desktop
+ * top strip beside the search button, and a full-width bar at the top of the mobile menu drawer (layout in
+ * site_header.css). Bold white text with a bookmark icon, linking to the saved list. Empty it shows "0 saved records"
+ * with the plus bookmark; otherwise "N saved records" with the check bookmark (the site-nav__saved--empty modifier is
+ * toggled by controllers/saved_bar_controller.js).
+ */
+.site-header .site-nav__saved {
+  --save-check: var(--ccs-slate-teal-500);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ccs-space-2);
+  min-height: 44px;
+  padding: var(--ccs-space-2) var(--ccs-space-4);
+  background: var(--ccs-slate-teal-500);
+  color: var(--ccs-text-inverse);
+  font-size: var(--ccs-font-size-lg);
+  font-weight: var(--ccs-font-weight-bold);
+  letter-spacing: 0;
+  line-height: 1.2;
+  text-transform: none;
+  text-decoration: none;
+}
+
+.site-header .site-nav__saved:hover {
+  color: var(--ccs-text-inverse);
+  text-decoration: underline;
+}
+
+.site-header .site-nav__saved:focus-visible {
+  outline: 2px solid transparent;
+  outline-offset: -4px;
+  box-shadow: inset 0 0 0 2px var(--ccs-text-inverse);
+}
+
+.site-nav__saved .blacklight-icons {
+  display: inline-flex;
+  flex: none;
+}
+
+.site-nav__saved .blacklight-icons svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--ccs-text-inverse);
+}
+
+/* Empty: the plus bookmark. Otherwise: the check bookmark. */
+.site-nav__saved .blacklight-icons svg.bookmark-unchecked,
+.site-nav__saved--empty .blacklight-icons svg.bookmark-checked {
+  display: none;
+}
+
+.site-nav__saved--empty .blacklight-icons svg.bookmark-unchecked {
+  display: inline;
+}
