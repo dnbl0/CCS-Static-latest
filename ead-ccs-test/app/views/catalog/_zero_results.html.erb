@@ -1,0 +1,7 @@
+<%# The empty state, after the static search page's "No records match your search": a serif title (the wording is the
+    Jira requirement kept in the locale file), a hint and a button that clears the search and every filter %>
+<div id="documents" class="noresults results-empty">
+  <h3 class="results-empty__title"><%= t("blacklight.search.zero_results.title") %></h3>
+  <p class="results-empty__text">Try removing a filter or broadening your search terms.</p>
+  <%= link_to "Clear all filters", search_action_url, class: "results-empty__button" %>
+</div>

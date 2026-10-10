@@ -31,7 +31,7 @@
   font-family: var(--ccs-font-body);
   font-size: var(--ccs-font-size-sm);
   font-weight: var(--ccs-font-weight-semibold);
-  color: var(--ccs-text-secondary);
+  color: var(--col-text-primary);
 }
 
 /* Bootstrap's mx-1 on the pills made the gaps uneven; the container's gap spaces them */
@@ -40,8 +40,8 @@
   display: inline-flex;
   max-width: 100%;
   overflow: hidden;
-  border-radius: var(--ccs-radius-sm);
-  background: var(--ccs-sage-200);
+  border-radius: 0;
+  background: var(--col-bg-accent-soft);
 }
 
 .constraints-container .applied-filter .btn {
@@ -61,7 +61,7 @@
 
 .constraints-container .applied-filter .constraint-value {
   min-width: 0;
-  padding-inline: var(--ccs-space-2) var(--ccs-space-1);
+  padding: var(--space-2) var(--space-4) var(--space-2) var(--space-8);
 }
 
 .constraints-container .applied-filter .remove {
@@ -70,7 +70,14 @@
 
 .constraints-container .applied-filter .remove:hover,
 .constraints-container .applied-filter .remove:focus-visible {
-  background: var(--ccs-sage-300);
+  background: var(--color-bg-sage-80);
+}
+
+/* Bootstrap's glow is replaced by a ring inside the pill */
+.constraints-container .applied-filter .remove:focus-visible {
+  outline: 3px solid var(--ccs-focus-ring);
+  outline-offset: -3px;
+  box-shadow: none;
 }
 
 /* Controls: one row of [Filters (small screens)] [Sort] [Per page], equal flexible boxes up to 18rem, then the
@@ -133,6 +140,7 @@
   color: var(--ccs-text-primary);
 }
 
+/* the open menu's button and the pointer over it tint the box; the static page does not tint the pointer */
 :is(#sortAndPerPage .btn-group, .ccs-select) > .dropdown-toggle:hover,
 :is(#sortAndPerPage .btn-group, .ccs-select) > .dropdown-toggle.show {
   background: #f0f2f7;
@@ -178,7 +186,13 @@
   font-weight: var(--ccs-font-weight-semibold);
 }
 
-:is(#sortAndPerPage .btn-group, .ccs-select) > .dropdown-toggle:focus-visible,
+/* the same ring as the static page's buttons: 2px, 3px outside the edge */
+:is(#sortAndPerPage .btn-group, .ccs-select) > .dropdown-toggle:focus-visible {
+  outline: 2px solid var(--ccs-focus-ring);
+  outline-offset: 3px;
+  box-shadow: none;
+}
+
 :is(#sortAndPerPage .btn-group, .ccs-select) > .dropdown-menu .dropdown-item:focus-visible {
   outline: 3px solid #0b4ea2;
   outline-offset: -3px;
@@ -191,8 +205,22 @@
   width: 3rem;
   height: 3rem;
   padding: 0;
-  border-color: var(--ccs-border-panel);
+  border-color: var(--color-border-grey-91);
   border-radius: 0;
+  background: var(--ccs-white);
+  color: var(--ccs-text-brand);
+}
+
+/* The static buttons do not change under the pointer; the selected one stays navy */
+#sortAndPerPage .view-type-group .btn:not(.active):hover {
+  background: var(--ccs-white);
+  color: var(--ccs-text-brand);
+}
+
+#sortAndPerPage .view-type-group .btn:focus-visible {
+  outline: 2px solid var(--ccs-focus-ring);
+  outline-offset: 3px;
+  box-shadow: none;
 }
 
 /* The buttons are joined: neighbours share one border */
@@ -203,6 +231,7 @@
 #sortAndPerPage .view-type-group .btn.active {
   border-color: var(--ccs-navy-1200);
   background: var(--ccs-navy-1200);
+  color: var(--ccs-text-inverse);
 }
 
 /* Blacklight leaves the icon's wrapper as an inline box with a line height, which pushes the icon up */

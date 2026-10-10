@@ -19,6 +19,16 @@ class SearchJourneysTest < ApplicationSystemTestCase
     assert_selector ".documents-masonry"
   end
 
+  test "a search with no matches shows the empty state, and its button clears the search" do
+    visit search_catalog_path(q: "zzzqxqxnomatch")
+    assert_selector ".results-empty .results-empty__title"
+    assert_text "Try removing a filter or broadening your search terms."
+
+    click_link "Clear all filters"
+    assert_no_selector ".results-empty"
+    assert_no_current_path(/zzzqxqx/)
+  end
+
   test "the view buttons switch between the mosaic and the list" do
     visit search_catalog_path(q: "skull")
     assert_selector ".documents-masonry"

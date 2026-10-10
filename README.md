@@ -268,7 +268,7 @@ Some files are written by scripts; edit their source, then run the script (`npm 
 | `public/styles/tokens`, `components`, `pages` and `public/images` | `npm run sync:rails` | the Rails copies in `ead-ccs-test/app/assets` |
 
 `npm run lint` runs ESLint and Stylelint. `npm run parity` (with this site on :3100 and the Rails app on :3200) compares the
-static pages with their Rails twins; it runs in `.github/workflows/rails-ci.yml`. The Rails app and the plan to keep both
+static pages with their Rails twins (content pages, header navigation and the search results page: card, toolbar, chips, filter rail, pagination, back-to-top and empty state, with the intentional differences listed in `scripts/parity.js`); it runs in `.github/workflows/rails-ci.yml`. The Rails app and the plan to keep both
 codebases clean are described in `ead-ccs-test/README.md` and `docs/code-quality-plan.md`.
 
 ---
