@@ -52,6 +52,109 @@
   };
 })();
 
+// Saved records (bookmarks): a single list of the records saved in this browser, like Blacklight's bookmarks for a guest.
+// Kept in localStorage as [{ id, t, title }], newest first. Everything goes through window.CCSBookmarks. Any element
+// <button class="ccs-save" data-bookmark-id data-bookmark-title> is a Save/Saved toggle, and the header "saved records"
+// links ([data-bookmarks-link]) show the live count; both are kept in step with the list, also across tabs.
+(function () {
+  var KEY = 'ccs-bookmarks-v1', MAX = 500, EVENT = 'ccs:bookmarks';
+  var PATH = 'M6 3h12v18l-6-4-6 4z';
+  function read() {
+    var list = [];
+    try { var raw = JSON.parse(localStorage.getItem(KEY) || '[]'); if (Array.isArray(raw)) list = raw; } catch (e) {}
+    return list.filter(function (x) { return x && x.id != null && String(x.id) !== ''; })
+      .map(function (x) { return { id: String(x.id), t: +x.t || 0, title: typeof x.title === 'string' ? x.title : '' }; });
+  }
+  function write(list) {
+    try { localStorage.setItem(KEY, JSON.stringify(list.slice(0, MAX))); } catch (e) {}
+    changed();
+  }
+  function has(id) { id = String(id); return read().some(function (x) { return x.id === id; }); }
+  function countText(n) { return n + (n === 1 ? ' saved record' : ' saved records'); }
+  function changed() { document.dispatchEvent(new CustomEvent(EVENT)); sync(); }
+
+  window.CCSBookmarks = {
+    all: read,
+    count: function () { return read().length; },
+    has: has,
+    countText: countText,
+    add: function (id, title) {
+      id = String(id);
+      if (has(id)) return;
+      var list = read(); list.unshift({ id: id, t: Date.now(), title: title || '' }); write(list);
+    },
+    remove: function (id) { id = String(id); write(read().filter(function (x) { return x.id !== id; })); },
+    toggle: function (id, title) {
+      if (has(id)) { window.CCSBookmarks.remove(id); return false; }
+      window.CCSBookmarks.add(id, title); return true;
+    },
+    clear: function () { try { localStorage.removeItem(KEY); } catch (e) {} changed(); },
+    announce: function (text) {
+      var live = document.getElementById('ccs-bookmarks-status');
+      if (!live) {
+        live = document.createElement('div'); live.id = 'ccs-bookmarks-status'; live.className = 'sr-only';
+        live.setAttribute('role', 'status'); live.setAttribute('aria-live', 'polite'); document.body.appendChild(live);
+      }
+      live.textContent = '';
+      setTimeout(function () { live.textContent = text; }, 50);
+    }
+  };
+
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function icon(kind) {   // kind: 'add' (bookmark with a plus) or 'saved' (filled bookmark with a check)
+    var ns = 'http://www.w3.org/2000/svg', svg = document.createElementNS(ns, 'svg');
+    svg.setAttribute('class', 'ccs-save__icon ccs-save__icon--' + kind); svg.setAttribute('viewBox', '0 0 24 24');
+    svg.setAttribute('aria-hidden', 'true'); svg.setAttribute('focusable', 'false');
+    var a = document.createElementNS(ns, 'path'); a.setAttribute('d', PATH);
+    var b = document.createElementNS(ns, 'path'); b.setAttribute('class', 'ccs-save__mark');
+    b.setAttribute('d', kind === 'add' ? 'M12 7.5v6M9 10.5h6' : 'M8.8 10.4l2.3 2.3 4.2-4.6');
+    svg.appendChild(a); svg.appendChild(b); return svg;
+  }
+  function setText(node, text) { if (node.textContent !== text) node.textContent = text; }
+
+  function syncButton(btn) {
+    var id = btn.getAttribute('data-bookmark-id');
+    if (!id) return;
+    var title = btn.getAttribute('data-bookmark-title') || '';
+    if (!btn.querySelector('.ccs-save__label')) {
+      btn.textContent = ''; btn.type = 'button';
+      btn.appendChild(icon('add')); btn.appendChild(icon('saved'));
+      btn.appendChild(el('span', 'ccs-save__label')); btn.appendChild(el('span', 'sr-only ccs-save__name'));
+    }
+    var saved = has(id);
+    if (btn.getAttribute('aria-pressed') !== String(saved)) btn.setAttribute('aria-pressed', String(saved));
+    setText(btn.querySelector('.ccs-save__label'), saved ? 'Saved' : 'Save');
+    setText(btn.querySelector('.ccs-save__name'), ' record' + (title ? ': ' + title : ''));
+  }
+  function sync() {
+    var n = read().length, text = countText(n);
+    document.querySelectorAll('[data-bookmarks-link]').forEach(function (a) {
+      a.classList.toggle('has-saved', n > 0);
+      var t = a.querySelector('[data-bookmarks-text]'); if (t) setText(t, text);
+    });
+    document.querySelectorAll('.ccs-save[data-bookmark-id]').forEach(syncButton);
+  }
+
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest && e.target.closest('.ccs-save[data-bookmark-id]');
+    if (!btn) return;
+    e.preventDefault();
+    var title = btn.getAttribute('data-bookmark-title') || '';
+    var nowSaved = window.CCSBookmarks.toggle(btn.getAttribute('data-bookmark-id'), title);
+    window.CCSBookmarks.announce((nowSaved ? 'Saved' : 'Removed from saved records') + (title ? ': ' + title : '') + '. ' + countText(window.CCSBookmarks.count()) + '.');
+  });
+  window.addEventListener('storage', function (e) { if (e.key === KEY || e.key === null) { document.dispatchEvent(new CustomEvent(EVENT)); sync(); } });
+
+  // Pages draw (and redraw) their markup after this script runs, so keep the buttons and header counts in step with what is on the page
+  var queued = false;
+  function queue() { if (queued) return; queued = true; requestAnimationFrame(function () { queued = false; sync(); }); }
+  function start() {
+    sync();
+    if (window.MutationObserver) new MutationObserver(queue).observe(document.body, { childList: true, subtree: true });
+  }
+  if (document.body) start(); else document.addEventListener('DOMContentLoaded', start);
+})();
+
 // Header navigation behaviour (desktop dropdown panels + mobile drawer), modelled on the UniMelb header.
 // Everything is event-delegated and elements are looked up live, because the template layer used by some
 // pages can re-render the header after this script has run.

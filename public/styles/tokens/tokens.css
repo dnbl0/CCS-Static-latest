@@ -146,6 +146,7 @@
   --palette-sage-93: #eaefe9;
   --palette-sage-93-2: #f2f6e2;
   --palette-slate-35: #404b74;
+  --palette-slate-teal-47: #4f7385;
   --palette-slate-38: #4a5577;
   --palette-slate-40: #5b6070;
   --palette-slate-46: #6b7080;
@@ -308,6 +309,7 @@
 
   /* Colour roles: curated names first, then every other colour by role-family-lightness */
   --color-bg-action-hover: var(--palette-cyan-51);
+  --color-bg-saved: var(--palette-slate-teal-47);
   --color-bg-action-soft: var(--palette-cyan-80);
   --color-bg-action-softer: var(--palette-cyan-90);
   --color-bg-advisory: var(--palette-amber-90);
@@ -510,6 +512,7 @@
   --searchbar-text-red-51: var(--color-text-red-51);
   --searchbar-text-subtle: var(--color-text-subtle);
   /* nav */
+  --nav-bg-saved: var(--color-bg-saved);
   --nav-bg-action-soft: var(--color-bg-action-soft);
   --nav-bg-action-softer: var(--color-bg-action-softer);
   --nav-bg-scrim: var(--color-bg-scrim);
@@ -518,6 +521,12 @@
   --nav-border-on-dark: var(--color-border-on-dark);
   --nav-text-inverse: var(--color-text-inverse);
   --nav-text-sage-93: var(--color-text-sage-93);
+  /* save button and saved records (bookmarks) */
+  --save-text: var(--color-text-brand);
+  --save-text-on-dark: var(--color-text-inverse);
+  --save-bg-hover: var(--color-bg-action-softer);
+  --save-border-subtle: var(--color-border-subtle);
+  --save-bg-surface: var(--color-bg-surface);
   /* licence */
   --licence-bg-black-00: var(--color-bg-black-00);
   --licence-bg-stone-94: var(--color-bg-stone-94);

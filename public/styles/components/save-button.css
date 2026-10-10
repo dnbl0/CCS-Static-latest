@@ -1,0 +1,78 @@
+/* Save / Saved toggle for a record (bookmarks), shared by the results cards, the record page and the Saved records page.
+   Unsaved: bookmark with a plus and the word "Save". Saved: filled bookmark with a check and the word "Saved", underlined.
+   The button's markup is written by window.CCSBookmarks (nav.js). Do not add inline styles. */
+
+.ccs-save {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-6);
+  min-height: 44px;
+  margin: 0;
+  padding: var(--space-4) var(--space-8) var(--space-4) 0;
+  border: 0;
+  background: none;
+  color: var(--save-text);
+  font: inherit;
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.ccs-save:hover .ccs-save__label {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.ccs-save[aria-pressed="true"] .ccs-save__label {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.ccs-save__icon {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.ccs-save__icon--saved {
+  display: none;
+  fill: currentColor;
+}
+
+.ccs-save__icon--saved .ccs-save__mark {
+  stroke: var(--save-bg-surface);
+}
+
+.ccs-save[aria-pressed="true"] .ccs-save__icon--add {
+  display: none;
+}
+
+.ccs-save[aria-pressed="true"] .ccs-save__icon--saved {
+  display: block;
+}
+
+/* On a dark banner the control is white */
+.ccs-save--on-dark {
+  color: var(--save-text-on-dark);
+}
+
+.ccs-save--on-dark .ccs-save__icon--saved .ccs-save__mark {
+  stroke: var(--save-text);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ccs-save__icon {
+    transition: transform var(--duration-fast) ease;
+  }
+
+  .ccs-save:active .ccs-save__icon {
+    transform: scale(0.9);
+  }
+}
