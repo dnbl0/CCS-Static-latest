@@ -37,7 +37,7 @@
   },
   "homepage": "https://github.com/dnbl0/CCS-Static-latest#readme",
   "devDependencies": {
-    "@eslint/js": "^9.39.5",
+    "@eslint/js": "^10.0.1",
     "axe-core": "^4.13.0",
     "bootstrap": "^5.3.3",
     "eslint": "^10.12.0",
