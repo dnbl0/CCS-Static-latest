@@ -202,6 +202,13 @@ body.page-search-results .search-results-layout {
   padding: 0 var(--space-16);
 }
 
+/* Tablets: 32px gutters like the banner and footer above (16px on phones, and from 960px the body's own 32px). */
+@media (min-width: 769px) and (max-width: 959.98px) {
+  body.page-search-results .search-results-layout {
+    padding-inline: var(--space-32);
+  }
+}
+
 body.page-search-results .search-results-layout > .search-results-main-content {
   flex: 1 1 0;
   min-width: 0;
@@ -250,6 +257,7 @@ body.page-search-results .search-results-layout.is-searching .facet-rail__chevro
     grid-template-rows: auto 1fr;
     align-items: start;
     box-sizing: border-box;
+    width: 100%; /* it is a flex item of the page group: without this it shrinks to its content instead of filling the container */
     max-width: var(--layout-container);
     margin-inline: auto;
     padding: 0 var(--space-32);
