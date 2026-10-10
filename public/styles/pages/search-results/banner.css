@@ -27,24 +27,27 @@ body.page-search-results .search-results-banner .page-banner__desc {
   line-height: 28px;
 }
 
-/* Fly-out trigger: label, then a right chevron */
+/* Fly-out trigger: styled like the footer links (a blue arrow, then a bold white label) */
 body.page-search-results .search-results-banner .search-results-search-tools__link-advanced-search {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-8);
-  min-height: 48px;
-  padding: var(--space-12) var(--space-24);
+  gap: var(--space-4);
+  min-height: 44px;
+  padding: 0;
   border: 0;
-  background: var(--sage-400);
-  color: var(--col-bg-primary);
+  background: none;
+  color: var(--white-100);
   font-family: inherit;
-  font-size: var(--font-size-body);
+  font-size: var(--font-size-body-lg);
   font-weight: var(--font-weight-semibold);
+  line-height: 24px;
   cursor: pointer;
 }
 
 body.page-search-results .search-results-banner .search-results-search-tools__link-advanced-search .search-results-search-tools__link-icon {
   flex: none;
+  width: 24px;
+  height: 24px;
 }
 
 body.page-search-results .search-results-banner .search-results-search-tools__link-advanced-search:focus-visible {
@@ -53,8 +56,9 @@ body.page-search-results .search-results-banner .search-results-search-tools__li
 }
 
 body.page-search-results .search-results-banner .search-results-search-tools__link-advanced-search:hover {
-  background: var(--sage-300);
-  color: var(--col-bg-primary);
+  background: none;
+  color: var(--blue-400);
+  text-decoration: underline;
 }
 
 /* Phones */

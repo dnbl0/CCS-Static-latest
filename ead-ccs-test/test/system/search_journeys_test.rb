@@ -66,7 +66,7 @@ class SearchJourneysTest < ApplicationSystemTestCase
 
   test "the advanced search link loads the form into a panel without leaving the results" do
     visit search_catalog_path(q: "skull")
-    click_link "Advanced search"
+    click_link "Advanced Search"
 
     # The panel's own visibility depends on its slide-in, so look at the DOM: the form is in the flyout dialog
     using_wait_time(10) do
@@ -80,7 +80,7 @@ class SearchJourneysTest < ApplicationSystemTestCase
   test "the advanced search dropdowns are the site's own, open fully inside the panel and submit the same parameters" do
     page.driver.resize(1440, 900)
     visit search_catalog_path(q: "skull")
-    click_link "Advanced search"
+    click_link "Advanced Search"
     using_wait_time(40) { assert_selector "dialog#blacklight-modal.advanced-flyout .ccs-select--field", minimum: 2, visible: :all }
 
     # the panel slides in; wait for that to finish before clicking inside it
