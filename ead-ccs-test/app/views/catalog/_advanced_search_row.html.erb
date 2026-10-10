@@ -5,11 +5,11 @@
     <label for="adv-query-<%= index %>" class="advanced-form__label"><%= t("advanced_search.search.terms") %></label>
     <%= text_field_tag "clause[#{index}][query]", row.query, id: "adv-query-#{index}", class: "advanced-form__control", maxlength: QueryRules::MAX_LENGTH, autocomplete: "off", data: { advanced_search_target: "query" } %>
   </div>
-  <div class="advanced-form__field">
+  <div class="advanced-form__field" data-controller="select-dropdown" data-select-dropdown-variant-value="field">
     <label for="adv-field-<%= index %>" class="advanced-form__label"><%= t("advanced_search.search.field") %></label>
     <%= select_tag "clause[#{index}][field]", options_for_select(field_options, row.field), id: "adv-field-#{index}", class: "advanced-form__control" %>
   </div>
-  <div class="advanced-form__field">
+  <div class="advanced-form__field" data-controller="select-dropdown" data-select-dropdown-variant-value="field">
     <label for="adv-op-<%= index %>" class="advanced-form__label"><%= t("advanced_search.search.match") %></label>
     <%= select_tag "clause[#{index}][op]", options_for_select(match_options, row.op), id: "adv-op-#{index}", class: "advanced-form__control" %>
   </div>

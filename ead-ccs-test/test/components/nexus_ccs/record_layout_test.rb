@@ -58,6 +58,13 @@ class RecordLayoutTest < ActiveSupport::TestCase
     assert_empty c.tags
   end
 
+  test "the Save button is at the top right of the summary, in a second column beside the title, byline and tags" do
+    css = Rails.root.join("app/assets/stylesheets/components/record_page.css").read
+
+    assert_match(/\.record-summary__inner \{\s+display: grid;\s+grid-template-columns: minmax\(0, 1fr\) auto;/, css)
+    assert_match(/\.record-summary__save \{\s+grid-column: 2;\s+grid-row: 1 \/ span 3;\s+justify-self: end;/, css)
+  end
+
   test "the document component for a record is registered with Blacklight" do
     assert_equal NexusCcs::RecordDocumentComponent, CatalogController.blacklight_config.view_config(:show).document_component
   end

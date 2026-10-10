@@ -96,7 +96,7 @@
   margin-inline-start: calc(-1 * var(--ccs-space-1));
 }
 
-/* On the record page it sits under the byline and tags */
+/* On the record page it sits at the top right of the summary (components/record_page.css lays it out) */
 .record-summary__save {
-  margin-top: var(--ccs-space-4);
+  margin: 0;
 }

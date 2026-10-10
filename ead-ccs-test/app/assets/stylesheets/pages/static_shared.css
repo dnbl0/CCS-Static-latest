@@ -47,11 +47,13 @@
 /* UniMelb focus: a 2px inset blue ring (an invisible outline keeps it visible in forced-colours mode) */
 /* Dropdown panel (modelled on the UniMelb mega-menu panel: dark, 2px light-blue top rule, shadow) */
 /* Mobile-only pieces (Menu button, drawer search, drawer top links, Back row) are hidden on desktop */
+/* The saved-records link in the drawer: only the home page needs it (every other page has the bar in its breadcrumb strip), and only on phones */
 /* Mobile and tablet header, following the UniMelb mobile header: one 96px row (logo block, site name, Menu button),
    with search, navigation and the UniMelb audience links inside a right-hand drawer. */
 @media (max-width: 1023px) {
 /* Menu button: 32px icon over a 14px label, like the UniMelb mobile header */
 /* Drawer: slides in from the right under the header (390px wide at most), page dimmed behind it */
+body.page-home .ccs-nav__list-item--saved { display: block; }
 /* Items that open a sub-menu show a light-blue right chevron instead of the desktop down arrow */
 /* Drilled-in view: the chosen item replaces the list, with a Back row, its own link, then its children indented */
 /* UniMelb audience links under the list: 14px, sage, uppercase, letter-spaced */

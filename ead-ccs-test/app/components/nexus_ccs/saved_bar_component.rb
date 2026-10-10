@@ -20,7 +20,7 @@ module NexusCcs
       @count ||= helpers.respond_to?(:saved_records_count) ? helpers.saved_records_count.to_i : 0
     end
 
-    def classes = [ "site-nav__saved", (placement == :header ? "site-nav__saved--header" : nil), (empty? ? "site-nav__saved--empty" : nil) ].compact.join(" ")
+    def classes = [ "site-nav__saved", (placement == :header ? "site-nav__saved--header" : nil), (placement == :drawer ? "site-nav__saved--drawer" : nil), (empty? ? "site-nav__saved--empty" : nil) ].compact.join(" ")
 
     attr_reader :placement
 
