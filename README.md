@@ -76,7 +76,7 @@ assets/                     Source material for content: spreadsheets, CSVs, hel
 .github/workflows/          ci.yml, rails-ci.yml, auto-merge.yml, pages.yml (deploy to GitHub Pages), azure-deploy.yml, acr-push.yml
 .agents/rules/              PR workflow rule for coding agents
 verify-bootstrap.sh         Checks Bootstrap references in pages (run by npm test)
-vercel.json                 Clean URLs + legacy redirects; read by scripts/dev-server.js and scripts/build-pages.js (no longer deployed to Vercel)
+vercel.json                 Clean URLs + legacy redirects; read by scripts/dev-server.js and scripts/build-pages.js (Vercel is no longer used; the file is kept as the redirect configuration)
 scripts/build-pages.js      Builds public/ into dist/ for GitHub Pages (base-path prefixing, /item/:code via 404.html, redirect pages); `npm run build:pages`
 design.md, github.md, jira-mvp-mapping.md, BOOTSTRAP-DEPENDENCIES.md   Supporting docs
 ```
@@ -268,7 +268,7 @@ Some files are written by scripts; edit their source, then run the script (`npm 
 | `public/styles/tokens`, `components`, `pages` and `public/images` | `npm run sync:rails` | the Rails copies in `ead-ccs-test/app/assets` |
 
 `npm run lint` runs ESLint and Stylelint. `npm run parity` (with this site on :3100 and the Rails app on :3200) compares the
-static pages with their Rails twins; it runs in `.github/workflows/rails-ci.yml`. The Rails app and the plan to keep both
+static pages with their Rails twins (content pages, header navigation and the search results page: card, toolbar, chips, filter rail, pagination, back-to-top and empty state, with the intentional differences listed in `scripts/parity.js`); it runs in `.github/workflows/rails-ci.yml`. The Rails app and the plan to keep both
 codebases clean are described in `ead-ccs-test/README.md` and `docs/code-quality-plan.md`.
 
 ---
@@ -286,7 +286,7 @@ codebases clean are described in `ead-ccs-test/README.md` and `docs/code-quality
 - **Jira mapping**: several requirement rows in `jira-mvp-mapping.md` are marked as not re-verified.
 
 ### Free catalog API (2026-10-04)
-- `api/catalog.js` serves `/catalog.json` and `/catalog/:id.json` in the Blacklight JSON shape from the same Vercel project at no cost (see `jira-mvp-mapping.md`). The adapter defaults to it; `?api=live` switches the results page to it.
+- `api/catalog.js` is a serverless function that serves `/catalog.json` and `/catalog/:id.json` in the Blacklight JSON shape (see `jira-mvp-mapping.md`). It is not deployed: GitHub Pages hosts static files only, so the results page defaults to the local catalogue and `npm run dev` serves the function for local use.
 
 ### Search acceptance criteria (2026-10-04)
 - CCS-158: a "Did you mean" notice appears above results for misspelt or partial words and runs the corrected search.

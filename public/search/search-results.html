@@ -907,31 +907,11 @@ function spellingSuggestion(q) {
   return changed ? corrected.join(' ') : null;
 }
 
-// CCS-143: history is scoped to the guest user's active browser session only
-// (confirmed on the ticket - "session only for guest user"; a persistent,
-// multi-day history is the separate, later CCS-206 story) - sessionStorage,
-// not localStorage, is the correct mechanism here since it's cleared when
-// the session/tab ends.
-const SEARCH_HISTORY_KEY = 'ccs-search-history';
-function getSearchHistory() {
-  try {
-    const raw = sessionStorage.getItem(SEARCH_HISTORY_KEY);
-    if (!raw) return [];
-    const arr = JSON.parse(raw);
-    return Array.isArray(arr) ? arr.filter(x => typeof x === 'string' && x.trim()) : [];
-  } catch (e) { return []; }
-}
+// CCS-143, CCS-206: the search history is kept by window.CCSHistory (nav.js): terms and their times, 30 days, listed by day
+// on /search/search-history.html.
 function saveSearchHistory(term) {
-  if (!term || typeof term !== 'string') return;
-  const t = term.trim();
-  if (!t) return;
-  try {
-    let list = getSearchHistory();
-    list = list.filter(item => item.toLowerCase() !== t.toLowerCase());
-    list.unshift(t);
-    if (list.length > 10) list = list.slice(0, 10);
-    sessionStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(list));
-  } catch (e) {}
+  if (window.CCSHistory) window.CCSHistory.save(term);
+  else window.addEventListener('load', () => window.CCSHistory && window.CCSHistory.save(term));   // nav.js loads after this script on first paint
 }
 class Component extends DCLogic {
   state = { stuck: false, advOpen: false, f:EMPTYF(), loading:false, view:null, modal:false, mFind:'', draft:null, mOpen:{coll:true,type:true,date:true}, sOpen:{}, sMore:{}, sFq:{}, sExtra:false, sYIn:null, sYErr:'', fq:{}, more:{}, sortOpen:false, perPage:40, ppOpen:false, page:1, yIn:null, yErr:'', counting:false, ackOpen:false, vw: typeof window !== 'undefined' ? window.innerWidth : 1200, liveItems: null, liveTotal: null, liveError: null };

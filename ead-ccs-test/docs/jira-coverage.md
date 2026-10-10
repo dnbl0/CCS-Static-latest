@@ -27,8 +27,8 @@ is ambiguous), **Not in prototype** (different environment or custom work, parke
 | CCS-288, 292, 293 Spelling bugs | Done | **Met** | Last word misspelled, phrase with a misspelling, partial phrase: all correct and offer alternatives. |
 | CCS-124 No results message | New | **Fixed** | Now "No results found and no suggestions are available for this search phrase." |
 | CCS-271 Empty search | Done | **Met** | Superseded by CCS-33's updated criterion: an empty search returns everything. |
-| CCS-143 Save search history | New | **Fixed** | The search overlay lists the visitor's last 5 searches (session based, no login). |
-| CCS-206 History grouped by day | New | **Fixed** | `/search_history` groups by Today, Yesterday, "N days ago", in Melbourne time. |
+| CCS-143 Save search history | New | **Fixed** | Blacklight's built-in search history (saved in the session, no login), kept for 30 days. The search overlay lists the last 5. |
+| CCS-206 History grouped by day | New | **Fixed** | Blacklight's `/search_history` page with day headings added: Today, Yesterday, "N days ago", in Melbourne time. |
 | CCS-46 Favourite lists | New | **Not in prototype** | Needs several named lists for guests (cookie) and logged-in users. Blacklight's bookmarks are a single list and need a user model; `/bookmarks` redirects. |
 | CCS-19 Explore collections | New | **Partial** | The header lists the five collections and filters by them. Collection landing pages with introductory text are parked custom work. |
 | CCS-44 Viewing classification | New | **Gap: data** | Source is "DA Advisory Classification" in Nexus DAM. |

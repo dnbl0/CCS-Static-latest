@@ -18,7 +18,8 @@ class AllFacetFiltersTest < ActiveSupport::TestCase
 
   test "the search builder adds one filter per value, so a record has to have all of them" do
     builder = SearchBuilder.new(nil)
-    builder.define_singleton_method(:blacklight_params) { { f_all: { "collection_ssim" => [ "A", "B" ] } }.with_indifferent_access }
+    params = { f_all: { "collection_ssim" => [ "A", "B" ] } }.with_indifferent_access
+    builder.define_singleton_method(:search_state) { Struct.new(:params).new(params) }
     builder.define_singleton_method(:blacklight_config) { CatalogController.blacklight_config }
     solr = {}
     builder.add_all_facet_filters(solr)

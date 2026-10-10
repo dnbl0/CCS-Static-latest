@@ -16,7 +16,7 @@ class SearchBuilder < Blacklight::SearchBuilder
   # "Includes all" in the advanced search form: f_all[facet][]=value, one filter per value, so a record has to
   # have every one. (Ticked values in the sidebar and "Includes any" are OR'd; see OrFilterQueryBuilder.)
   def add_all_facet_filters(solr_parameters)
-    AllFacetFilters.each(blacklight_params, blacklight_config) do |config, value|
+    AllFacetFilters.each(search_state.params, blacklight_config) do |config, value|
       (solr_parameters[:fq] ||= []) << "{!term f=#{config.field}}#{value}"
     end
   end
@@ -24,7 +24,7 @@ class SearchBuilder < Blacklight::SearchBuilder
   def add_minimum_should_match_to_solr(solr_parameters)
     return unless dismax?(solr_parameters)
 
-    solr_parameters[:mm] = QuerySyntax.explicit?(blacklight_params[:q]) ? BOOLEAN_MM : KEYWORD_MM
+    solr_parameters[:mm] = QuerySyntax.explicit?(search_state.params[:q]) ? BOOLEAN_MM : KEYWORD_MM
   end
 
   private

@@ -30,7 +30,7 @@ dist/
 build/
 *.min.js
 *.min.css
-# Vercel deploy has no build step, so the compiled vendor CSS must be committed
+# The deploy does not build the vendor CSS, so the compiled file must be committed
 !public/styles/vendor/bootstrap-uom.min.css
 
 # Logs

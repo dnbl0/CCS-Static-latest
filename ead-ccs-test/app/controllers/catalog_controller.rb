@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "faraday"
+
 # Blacklight controller that handles searches and document requests
 class CatalogController < ApplicationController
   include Blacklight::Catalog
