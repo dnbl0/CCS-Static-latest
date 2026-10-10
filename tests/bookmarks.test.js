@@ -58,7 +58,9 @@ const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css
     eq(await first.getAttribute('aria-pressed'), 'false', 'a result card starts unsaved (aria-pressed=false)');
     eq((await first.textContent()).replace(/\s+/g, ' ').trim(), 'Save record: ' + title, 'its accessible name is "Save record: <title>"');
     eq(await first.locator('.ccs-save__label').textContent(), 'Save', 'its visible label is Save');
-    eq(await first.evaluate(b => b.getBoundingClientRect().height >= 44), true, 'the Save button is at least 44px tall');
+    // The results page redraws its cards while it loads, so wait for the layout to settle instead of reading once (this flaked in CI)
+    const tall = await page.waitForFunction(() => { const b = document.querySelector('.search-results-main-content__article .ccs-save'); return !!b && b.getBoundingClientRect().height >= 44; }, null, { timeout: 5000 }).then(() => true, () => false);
+    eq(tall, true, 'the Save button is at least 44px tall');
     await first.click();
     eq(await first.getAttribute('aria-pressed'), 'true', 'clicking Save presses the toggle');
     eq(await first.locator('.ccs-save__label').textContent(), 'Saved', 'its visible label becomes Saved');
