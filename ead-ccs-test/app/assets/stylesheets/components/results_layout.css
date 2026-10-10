@@ -112,7 +112,6 @@ body.blacklight-catalog-index #content {
 /* The layout polyfill (blacklight-gallery) reads these: plain repeat(N, 1fr) only */
 .documents-masonry {
   grid-template-columns: var(--result-columns);
-  grid-gap: var(--results-gutter);
   gap: var(--results-gutter);
   border: 0;
 }
