@@ -95,6 +95,8 @@
   </button>
 </header>
 
+<%= render NexusCcs::SavedBarComponent.new(count: saved_count) %>
+
 <%= render NexusCcs::SearchOverlayComponent.new %>
 
 <%= render NexusCcs::BreadcrumbComponent.new(items: breadcrumbs) %>

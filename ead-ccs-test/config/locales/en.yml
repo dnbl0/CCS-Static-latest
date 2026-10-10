@@ -30,8 +30,42 @@ en:
   blacklight:
     tools:
       title: "Actions"      # Blacklight ships "Tools"
+    # Bookmarks are "saved records" on this site (Blacklight ships "Bookmarks")
+    bookmarks:
+      title: "Saved records"
+      page_title: "Saved records - %{application_name}"
+      list_title: "Your saved records"
+      no_bookmarks: "You have not saved any records yet."
+      clear:
+        action_title: "Clear saved records"
+        action_confirm: "Remove every record from your saved list?"
+        success: "Your saved records have been cleared."
+        failure: "Sorry, there was a problem clearing your saved records."
+      add:
+        button: "Save"
+        failure: "Sorry, there was a problem saving the record."
+        success:
+          one: "Record saved."
+          other: "Records saved."
+      remove:
+        button: "Remove"
+        failure: "Sorry, there was a problem removing the record."
+        success: "Record removed from your saved list."
 
   nexus_ccs:
+    save:
+      absent: "Save"
+      present: "Saved"
+      inprogress: "Saving…"
+      record: "record"
+    saved_noun:
+      one: "saved record"
+      other: "saved records"
+    saved:
+      list_title: "Saved records"
+      list_description: "The records you have saved on this device. Open one to see it in full, or select Saved to remove it from the list."
+      empty: "You have not saved any records yet."
+      empty_link: "Search all records"
     view_full_record:
       label: "View full record"
       title: "You're leaving this site"

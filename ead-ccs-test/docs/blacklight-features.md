@@ -14,10 +14,16 @@ Configuration-only use of Blacklight 9.0.0 and its official plugins, in `Catalog
 | Advanced search | `config.advanced_search.enabled` | search and facet fields |
 | Citation, JSON API, did-you-mean, autocomplete | built in | n/a |
 | Search history (CCS-143, CCS-206) | Blacklight's own: searches saved in the session and listed at `/search_history`, with Clear history and a 100-search cap. We add only the day headings (`app/views/search_history/index.html.erb`, `SearchHistoryHelper`), the overlay's last-5 list and a 30-day session cookie (`config/initializers/session_store.rb`) | n/a |
-| Bookmarks | built in, but needs a user model; `/bookmarks` redirects without one | n/a |
+| Bookmarks, shown as "Save / Saved" and "saved records" (CCS-46) | Blacklight's own: `BookmarksController`, `/bookmarks` routes, `Bookmark` model, the bookmark JavaScript (no page reload, updates every `data-role="bookmark-counter"`), `current_or_guest_user`, `config.add_results_document_tool :bookmark`, Clear bookmarks. We add: a minimal `users` table + `User` model (guests only, no login, no email or password), `GuestBookmarks` (the guest row is only created on the first save, so browsing writes nothing; tied to the 30-day session cookie), `NexusCcs::SaveControlComponent` (the Save / Saved toggle, a real checkbox named "Save record: <title>"), `NexusCcs::Icons::BookmarkComponent` (`config.bookmark_icon_component`), `NexusCcs::SavedBarComponent` + `saved_bar_controller.js` (the teal count bar under the header, live region), the `/bookmarks` view and `blacklight.bookmarks` wording in `config/locales/en.yml` | n/a |
 | List and mosaic (masonry) views | built-in list + `blacklight-gallery` (git `main`) via `config.view.*`; grid and slideshow removed | `thumbnail_path_ssi` |
 
 ## Notes
+
+- **Saved records / guests.** There is no login: a visitor's bookmarks belong to a `User` row (just an id and timestamps)
+  that is created on their first Save and remembered in the session cookie (`blacklight_guest_user_id`, 30 days). Clearing
+  cookies, or another browser or device, starts an empty list; there is no transfer between devices. Stale guest rows
+  (no activity for a long time) are not pruned yet. Deploy needs `db:migrate`; the image's start command already runs `db:prepare`.
+  The result cards render the control themselves (the title's own tool actions are turned off) and the record page renders it in its summary, so the control is not repeated in the hidden show-tools sidebar.
 
 - **Results page width.** `BlacklightHelper#container_classes` makes the results page `container-fluid`
   (no max width); other pages keep the fixed container.

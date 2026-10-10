@@ -13,6 +13,12 @@ module NexusCcs
       super(**args, title_component: TITLE_TAG)
     end
 
+    # The card places the Save control itself (below the lines), so the title does not also draw Blacklight's tools
+    def before_render
+      with_title(actions: false) unless title?
+      super
+    end
+
     def media_path
       document["thumbnail_path_ssi"].presence
     end

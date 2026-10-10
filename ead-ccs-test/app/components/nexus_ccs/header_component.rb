@@ -22,9 +22,13 @@ module NexusCcs
         when "advanced_search" then [ [ "Advanced search", nil ] ]
         else []
         end
+      when "bookmarks" then [ [ I18n.t("nexus_ccs.saved.list_title"), nil ] ]
       else []
       end
     end
+
+    # Records the visitor has saved (Blacklight bookmarks); 0 where the page has no session, e.g. a component test.
+    def saved_count = helpers.respond_to?(:saved_records_count) ? helpers.saved_records_count : 0
 
     # A record's page has its title band instead of the search banner, and the advanced search page its own
     # banner (catalog/advanced_search.html.erb): the form is the search.

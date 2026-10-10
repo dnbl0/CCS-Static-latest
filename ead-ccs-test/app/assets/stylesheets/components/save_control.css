@@ -1,0 +1,95 @@
+/*
+ * The Save / Saved toggle on a record (NexusCcs::SaveControlComponent, Blacklight's bookmark control): a bookmark
+ * with a small plus and the word "Save" in bold navy with no background; once saved, a filled navy bookmark with a
+ * check and "Saved", underlined. The checkbox inside is visually hidden but is the focusable control, so the
+ * label shows the focus ring when it has focus.
+ */
+.save-control {
+  --save-check: var(--ccs-white);
+  display: inline-block;
+  margin: 0;
+}
+
+.save-control .toggle-bookmark .toggle-bookmark-label {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ccs-space-1);
+  min-width: 0;
+  min-height: 44px;
+  padding: var(--ccs-space-1) var(--ccs-space-2) var(--ccs-space-1) 0;
+  font-size: var(--ccs-font-size-md);
+  font-weight: var(--ccs-font-weight-bold);
+  line-height: var(--ccs-line-height-tight);
+  color: var(--ccs-text-brand);
+  background: none;
+  cursor: pointer;
+}
+
+.save-control .toggle-bookmark-label[disabled] {
+  cursor: progress;
+  opacity: 0.7;
+}
+
+.save-control .blacklight-icons {
+  display: inline-flex;
+  flex: none;
+}
+
+.save-control .toggle-bookmark .toggle-bookmark-label .blacklight-icons svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  overflow: visible;
+  fill: none;
+  color: var(--ccs-text-brand);
+}
+
+/* The real checkbox, transparent and covering the label */
+.save-control .save-control__input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Save shows the plus bookmark; Saved (the .checked class Blacklight's script toggles) the check bookmark */
+.save-control .toggle-bookmark .toggle-bookmark-label .blacklight-icons svg.bookmark-checked,
+.save-control .toggle-bookmark .toggle-bookmark-label.checked .blacklight-icons svg.bookmark-unchecked {
+  display: none;
+}
+
+.save-control .toggle-bookmark .toggle-bookmark-label.checked .blacklight-icons svg.bookmark-checked {
+  display: inline;
+}
+
+.save-control .toggle-bookmark-label.checked .save-control__text {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.save-control .toggle-bookmark-label:hover .save-control__text {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.save-control .toggle-bookmark-label:has(.save-control__input:focus-visible) {
+  outline: 2px solid var(--ccs-focus-ring);
+  outline-offset: 2px;
+}
+
+/* On a result card the control sits under the lines, in the card's 16px padding */
+.result-card__content > .result-card__save {
+  padding-top: var(--ccs-space-2);
+}
+
+.result-card__save .toggle-bookmark-label {
+  margin-inline-start: calc(-1 * var(--ccs-space-1));
+}
+
+/* On the record page it sits under the byline and tags */
+.record-summary__save {
+  margin-top: var(--ccs-space-4);
+}

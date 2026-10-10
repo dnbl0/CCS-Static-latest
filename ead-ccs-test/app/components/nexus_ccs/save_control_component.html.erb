@@ -1,0 +1,26 @@
+<%# Blacklight's catalog/_bookmark_control markup: one form, PUT to save and DELETE to remove at the same URL.
+    The checkbox is transparent and laid over the label (not display:none), so it is the focusable, clickable control. -%>
+<%= form_tag(bookmark_path,
+             authenticity_token: false,
+             method: bookmarked? ? :delete : :put,
+             class: "bookmark-toggle save-control",
+             data: {
+               present: t("nexus_ccs.save.present"),
+               absent: t("nexus_ccs.save.absent"),
+               inprogress: t("nexus_ccs.save.inprogress")
+             }) do %>
+  <div class="toggle-bookmark">
+    <label class="toggle-bookmark-label save-control__label <%= state_class %>" data-checkboxsubmit-target="label">
+      <input type="checkbox" class="toggle-bookmark-input save-control__input" data-checkboxsubmit-target="checkbox" <%= "checked=checked" if bookmarked? %>>
+      <%= bookmark_icon %>
+      <span class="save-control__text">
+        <span data-checkboxsubmit-target="span"><%= bookmarked? ? t("nexus_ccs.save.present") : t("nexus_ccs.save.absent") %></span>
+        <span class="visually-hidden"> <%= t("nexus_ccs.save.record") %>: <%= title %></span>
+      </span>
+    </label>
+  </div>
+
+  <%# Without JavaScript (the `no-js` class) Blacklight shows this button instead of the toggle -%>
+  <%= submit_tag(t(bookmarked? ? "remove.button" : "add.button", scope: "blacklight.bookmarks"),
+                 class: "bookmark-#{bookmarked? ? 'remove' : 'add'} btn btn-outline-secondary") %>
+<% end %>
