@@ -54,8 +54,10 @@
 
 // Saved records (bookmarks): a single list of the records saved in this browser, like Blacklight's bookmarks for a guest.
 // Kept in localStorage as [{ id, t, title }], newest first. Everything goes through window.CCSBookmarks. Any element
-// <button class="ccs-save" data-bookmark-id data-bookmark-title> is a Save/Saved toggle, and the header "saved records"
-// links ([data-bookmarks-link]) show the live count; both are kept in step with the list, also across tabs.
+// <button class="ccs-save" data-bookmark-id data-bookmark-title> is a Save/Saved toggle, and the "saved records" bar
+// ([data-bookmarks-link], .saved-bar) shows the live count; both are kept in step with the list, also across tabs.
+// The bar is not in the page markup: it is added here at the right end of the breadcrumb strip (.page-breadcrumbs), or in
+// the header top strip on a page with no breadcrumb (the home page).
 (function () {
   var KEY = 'ccs-bookmarks-v1', MAX = 500, EVENT = 'ccs:bookmarks';
   var PATH = 'M6 3h12v18l-6-4-6 4z';
@@ -126,7 +128,30 @@
     setText(btn.querySelector('.ccs-save__label'), saved ? 'Saved' : 'Save');
     setText(btn.querySelector('.ccs-save__name'), ' record' + (title ? ': ' + title : ''));
   }
+  var SVG = 'http://www.w3.org/2000/svg';
+  function barIcon(kind, mark) {   // kind: 'empty' (plus) or 'some' (check)
+    var svg = document.createElementNS(SVG, 'svg');
+    svg.setAttribute('class', 'saved-bar__icon saved-bar__icon--' + kind); svg.setAttribute('viewBox', '0 0 24 24');
+    svg.setAttribute('aria-hidden', 'true'); svg.setAttribute('focusable', 'false');
+    var a = document.createElementNS(SVG, 'path'); a.setAttribute('d', PATH);
+    var b = document.createElementNS(SVG, 'path'); b.setAttribute('class', 'saved-bar__mark'); b.setAttribute('d', mark);
+    svg.appendChild(a); svg.appendChild(b); return svg;
+  }
+  // Adds the bar when the page has none and there is somewhere to put it. Elements are looked up live: a page's template
+  // layer can redraw the breadcrumb or the header after this script has run, which drops the bar, so it is added again.
+  function ensureBar() {
+    if (document.querySelector('[data-bookmarks-link]')) return;
+    var crumbs = document.querySelector('.page-breadcrumbs'), top = document.querySelector('.ccs-nav--header .ccs-nav__top');
+    if (!crumbs && !top) return;
+    var a = el('a', 'saved-bar ' + (crumbs ? 'saved-bar--breadcrumb' : 'saved-bar--header'));
+    a.href = '/search/bookmarks.html'; a.setAttribute('data-bookmarks-link', '');
+    if (/^\/search\/bookmarks(\.html)?\/?$/.test(location.pathname)) a.setAttribute('aria-current', 'page');
+    var label = el('span', null, countText(read().length)); label.setAttribute('data-bookmarks-text', '');
+    a.appendChild(barIcon('empty', 'M12 7.5v6M9 10.5h6')); a.appendChild(barIcon('some', 'M8.8 10.4l2.3 2.3 4.2-4.6')); a.appendChild(label);
+    if (crumbs) crumbs.appendChild(a); else top.insertBefore(a, top.querySelector('.ccs-nav__search'));
+  }
   function sync() {
+    ensureBar();
     var n = read().length, text = countText(n);
     document.querySelectorAll('[data-bookmarks-link]').forEach(function (a) {
       a.classList.toggle('has-saved', n > 0);

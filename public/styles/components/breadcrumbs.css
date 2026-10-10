@@ -11,6 +11,16 @@
   line-height: var(--lh, var(--uom-ds-typography-line-height-body, 1.5em));
   letter-spacing: var(--ls, var(--uom-ds-typography-letter-spacing-100, normal));
   width: 100%;
+  /* The strip is a row: the trail on the left, the saved records bar (nav.js) flush right at the strip's full height.
+     44px at least, so the bar is a touch target and the strip does not change height when the bar is added. */
+  display: flex;
+  align-items: stretch;
+  min-height: 44px;
+}
+
+.page-breadcrumbs > ol {
+  flex: 1 1 0;
+  min-width: 0;
 }
 
 .page-breadcrumbs {

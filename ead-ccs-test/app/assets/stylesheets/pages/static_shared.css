@@ -32,7 +32,17 @@
    Navigation — header
    ========================================================================== */
 /* Saved records bar (bookmarks): slate-teal, bold white text, bookmark icon with a plus when empty and a check otherwise.
-   Desktop: in the top strip beside the search button. Mobile: a full-width bar at the top of the drawer. */
+   nav.js puts it at the right end of the breadcrumb strip (--breadcrumb, as on the Study site's saved courses), filling the
+   strip's full height; on a page with no breadcrumb (the home page) it sits in the header top strip (--header). */
+.ccs-nav__top .saved-bar, .saved-bar { display: inline-flex; align-items: center; gap: var(--space-8); box-sizing: border-box; min-height: 44px; padding: var(--space-8) var(--space-16); background: var(--nav-bg-saved); color: var(--nav-text-inverse); font-size: var(--font-size-body-lg); font-weight: var(--font-weight-bold); letter-spacing: 0; line-height: 1.2; text-transform: none; text-decoration: none; }
+.saved-bar--breadcrumb { flex: none; align-self: stretch; }
+.ccs-nav__top .saved-bar:hover, .saved-bar:hover { color: var(--nav-text-inverse); text-decoration: underline; }
+.saved-bar:focus-visible { outline: 2px solid transparent; outline-offset: -4px; box-shadow: inset 0 0 0 2px var(--nav-text-inverse); }
+.saved-bar__icon { flex: none; width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.saved-bar__icon--some { display: none; fill: currentColor; }
+.saved-bar__icon--some .saved-bar__mark { stroke: var(--nav-bg-saved); }
+.saved-bar.has-saved .saved-bar__icon--empty { display: none; }
+.saved-bar.has-saved .saved-bar__icon--some { display: block; }
 /* Primary navigation (links + dropdown triggers share the UniMelb interactive states) */
 /* UniMelb focus: a 2px inset blue ring (an invisible outline keeps it visible in forced-colours mode) */
 /* Dropdown panel (modelled on the UniMelb mega-menu panel: dark, 2px light-blue top rule, shadow) */
@@ -157,6 +167,15 @@
   line-height: var(--lh, var(--uom-ds-typography-line-height-body, 1.5em));
   letter-spacing: var(--ls, var(--uom-ds-typography-letter-spacing-100, normal));
   width: 100%;
+  /* The strip is a row: the trail on the left, the saved records bar (nav.js) flush right at the strip's full height.
+     44px at least, so the bar is a touch target and the strip does not change height when the bar is added. */
+  display: flex;
+  align-items: stretch;
+  min-height: 44px;
+}
+.page-breadcrumbs > ol {
+  flex: 1 1 0;
+  min-width: 0;
 }
 .page-breadcrumbs {
   --breadcrumb-padding-x: calc(var(--spacing-075) * 1px);
