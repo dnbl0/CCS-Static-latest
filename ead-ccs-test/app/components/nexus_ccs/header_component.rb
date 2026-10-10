@@ -27,8 +27,9 @@ module NexusCcs
       end
     end
 
-    # Records the visitor has saved (Blacklight bookmarks); 0 where the page has no session, e.g. a component test.
-    def saved_count = helpers.respond_to?(:saved_records_count) ? helpers.saved_records_count : 0
+    # The saved-records bar sits in the breadcrumb strip. A page with no breadcrumb (the home page, the bare search
+    # page) keeps it in the header's top strip instead; the content pages draw their own strip (PageBreadcrumbsComponent).
+    def saved_in_header? = breadcrumbs.empty? && (helpers.controller_name != "pages" || helpers.action_name == "home")
 
     # A record's page has its title band instead of the search banner, and the advanced search page its own
     # banner (catalog/advanced_search.html.erb): the form is the search.

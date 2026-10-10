@@ -1,17 +1,17 @@
 /*
- * The saved-records link in the site header (NexusCcs::SavedBarComponent), modelled on the University of Melbourne
- * Study site's saved-courses block and matching the static site's .ccs-nav__saved: a slate-teal block in the desktop
- * top strip beside the search button, and a full-width bar at the top of the mobile menu drawer (layout in
- * site_header.css). Bold white text with a bookmark icon, linking to the saved list. Empty it shows "0 saved records"
- * with the plus bookmark; otherwise "N saved records" with the check bookmark (the site-nav__saved--empty modifier is
- * toggled by controllers/saved_bar_controller.js).
+ * The saved-records link (NexusCcs::SavedBarComponent), modelled on the University of Melbourne Study site's saved-courses
+ * block and matching the static site's .ccs-nav__saved: a slate-teal block with a bookmark icon and bold white text,
+ * linking to the saved list. It sits at the right end of the breadcrumb strip and fills the strip's full height (see
+ * .breadcrumb-strip in breadcrumb_bar.css); on a page with no breadcrumb it sits in the header's top strip instead
+ * (.site-nav__saved--header). Empty it shows "0 saved records" with the plus bookmark; otherwise "N saved records" with
+ * the check bookmark (the site-nav__saved--empty modifier is toggled by controllers/saved_bar_controller.js).
  */
-.site-header .site-nav__saved {
+a.site-nav__saved {
   --save-check: var(--ccs-slate-teal-500);
   display: inline-flex;
   align-items: center;
   gap: var(--ccs-space-2);
-  min-height: 44px;
+  min-height: 44px; /* touch target; the strip grows to match */
   padding: var(--ccs-space-2) var(--ccs-space-4);
   background: var(--ccs-slate-teal-500);
   color: var(--ccs-text-inverse);
@@ -23,12 +23,12 @@
   text-decoration: none;
 }
 
-.site-header .site-nav__saved:hover {
+a.site-nav__saved:hover {
   color: var(--ccs-text-inverse);
   text-decoration: underline;
 }
 
-.site-header .site-nav__saved:focus-visible {
+a.site-nav__saved:focus-visible {
   outline: 2px solid transparent;
   outline-offset: -4px;
   box-shadow: inset 0 0 0 2px var(--ccs-text-inverse);
@@ -53,4 +53,12 @@
 
 .site-nav__saved--empty .blacklight-icons svg.bookmark-unchecked {
   display: inline;
+}
+
+/* Phone: a little tighter so the back link and the bar share the strip. */
+@media (max-width: 767px) {
+  .breadcrumb-strip .site-nav__saved {
+    padding: var(--ccs-space-2) var(--ccs-space-3);
+    font-size: var(--ccs-font-size-md);
+  }
 }
