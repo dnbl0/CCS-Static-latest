@@ -1,6 +1,6 @@
 // CCS search bar enhancement — gives any <form data-ccs-searchbar> the same behaviour as the search bar on the
 // search results page: an "All collections" menu next to the search button (limits the search to one collection), recent searches kept for
-// the browser session (same sessionStorage key as the results page), suggested terms drawn from the records,
+// 30 days in this browser (window.CCSHistory in nav.js, shared with the results page and the header), suggested terms drawn from the records,
 // arrow-key / Enter / Esc navigation, and a submit that opens the results page with ?q=…&collection=….
 // Without JavaScript the form still works as a plain ?q= search.
 //
@@ -12,17 +12,14 @@
 // mount() returns { sync(), setValue(v) }: call sync() after the page state changes so the menu label, chip and placeholder follow.
 (function () {
   const SCOPES = [['all', 'All collections'], ['Medical History Museum', 'Medical History Museum'], ['University Art Collection', 'University Art Collection'], ['Grainger Museum Collection', 'Grainger Museum Collection'], ['Henry Forman Atkinson Dental Museum', 'Henry Forman Atkinson Dental Museum'], ['Harry Brookes Allen Museum of Anatomy and Pathology', 'Harry Brookes Allen Museum of Anatomy and Pathology']];
-  const HISTORY_KEY = 'ccs-search-history';   // shared with /search/search-results.html
   const RESULTS = '/search/search-results.html';
 
+  // The history is kept by window.CCSHistory (nav.js): terms with their times, kept for 30 days
   const history = {
-    get() { try { const a = JSON.parse(sessionStorage.getItem(HISTORY_KEY) || '[]'); return Array.isArray(a) ? a.filter(x => typeof x === 'string' && x.trim()) : []; } catch (e) { return []; } },
-    save(term) {
-      const t = (term || '').trim(); if (!t) return;
-      try { const l = this.get().filter(x => x.toLowerCase() !== t.toLowerCase()); l.unshift(t); sessionStorage.setItem(HISTORY_KEY, JSON.stringify(l.slice(0, 10))); } catch (e) {}
-    },
-    remove(term) { try { sessionStorage.setItem(HISTORY_KEY, JSON.stringify(this.get().filter(x => x.toLowerCase() !== term.toLowerCase()))); } catch (e) {} },
-    clear() { try { sessionStorage.removeItem(HISTORY_KEY); } catch (e) {} }
+    get() { return window.CCSHistory ? window.CCSHistory.all().map(x => x.q) : []; },
+    save(term) { if (window.CCSHistory) window.CCSHistory.save(term); },
+    remove(term) { if (window.CCSHistory) window.CCSHistory.remove(term); },
+    clear() { if (window.CCSHistory) window.CCSHistory.clear(); }
   };
 
   let TERMS = null;

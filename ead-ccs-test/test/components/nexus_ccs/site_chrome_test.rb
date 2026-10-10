@@ -97,6 +97,7 @@ class SiteChromeTest < ActiveSupport::TestCase
 
     assert_selector "nav.search-overlay__recent[aria-label='Recent searches'] a", text: "harp"
     assert_no_selector ".search-overlay__recent", text: other.query_params["q"]
+    assert_selector ".search-overlay__recent a.search-overlay__recent-all[href='/search_history']", text: "All recent searches"
   end
 
   test "the search overlay has no recent searches list when there is no history" do

@@ -135,3 +135,11 @@
   color: var(--white-100);
   text-decoration: underline;
 }
+
+.uom-search-recent__all {
+  display: inline-block;
+  margin-top: var(--space-12);
+  color: var(--white-100);
+  font-size: var(--font-size-small);
+  text-decoration: underline;
+}

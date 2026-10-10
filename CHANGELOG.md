@@ -2,6 +2,10 @@
 
 Recent changes to the static site, newest first. Earlier history is in `git log`. (Moved out of the README on 2026-10-07.)
 
+### 2026-10-10
+
+- **Search history by day (CCS-143, CCS-206)**: the static site keeps each search with its time for 30 days (up to 100) in the browser (`window.CCSHistory` in `public/nav.js`, shared by the header overlay, the search bar and the results page) and lists them on `/search/search-history` grouped as Today, Yesterday, "N days ago" (Melbourne days), with Clear history. The header search overlay links to it ("All recent searches", on Rails too). On Rails the history is Blacklight's own `/search_history` with day headings and a 30-day session cookie. Tests: `tests/search-history.test.js`.
+
 ### 2026-10-08
 
 - **Figma files removed**: the token export and sync (`scripts/build-figma-tokens.js`, `npm run build:figma-tokens`, `design-tokens/figma/`), the archived Figma variables export (`docs/design-tokens/figma-variables-export.css`) and the 114 Figma-exported `.jsx`/`.d.ts` files in `public/components/`. Nothing loaded them. `tests/tokens.test.js` still checks the token tiers and that every `var(--token)` resolves.

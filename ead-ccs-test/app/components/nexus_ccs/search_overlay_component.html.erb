@@ -21,6 +21,7 @@
             <li><%= link_to_search(search) %></li>
           <% end %>
         </ul>
+        <%= link_to "All recent searches", helpers.blacklight.search_history_path, class: "search-overlay__recent-all" %>
       </nav>
     <% end %>
     <button type="button" class="search-overlay__close" aria-label="Close search" data-action="search-overlay#close">
