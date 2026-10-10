@@ -23,6 +23,11 @@ module EadCcs
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.1
 
+    # The app stores no images, so it makes no Active Storage variants. Without a processor Rails does not load
+    # ruby-vips at boot, which would otherwise need the libvips system library on every machine that runs the app
+    # (image_processing 2.x no longer brings ruby-vips along).
+    config.active_storage.variant_processor = :disabled
+
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
     # Common ones are `templates`, `generators`, or `middleware`, for example.
