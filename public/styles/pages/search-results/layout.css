@@ -260,7 +260,7 @@ body.page-search-results .search-results-layout.is-searching .facet-rail__chevro
     width: 100%; /* it is a flex item of the page group: without this it shrinks to its content instead of filling the container */
     max-width: var(--layout-container);
     margin-inline: auto;
-    padding: 0 var(--space-32);
+    padding: 0 var(--space-32) var(--space-48);
   }
 
   body.page-search-results .search-results-body > .search-results-layout {

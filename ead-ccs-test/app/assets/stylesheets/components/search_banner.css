@@ -146,18 +146,19 @@
   white-space: nowrap;
 }
 
-/* Advanced search: white label and a small right chevron, as on the static page */
+/* Advanced search: a button under the search bar, like the University's secondary button (sage with a navy label), with a small right chevron, as on the static page */
 :is(.search-banner, .ccs-hero__search) .advanced_search {
   display: inline-flex;
   align-items: center;
   gap: var(--ccs-space-2);
   min-height: 3rem;
-  padding: 0;
+  padding: var(--ccs-space-3) var(--ccs-space-5);
   border: 0;
+  background: var(--ccs-action-secondary);
   font-size: var(--ccs-font-size-md);
   font-weight: var(--ccs-font-weight-semibold);
   text-decoration: none;
-  color: var(--ccs-text-inverse) !important;
+  color: var(--ccs-action-secondary-text) !important;
 }
 
 :is(.search-banner, .ccs-hero__search) .advanced_search::after {
@@ -165,11 +166,12 @@
   flex: none;
   width: 0.875rem;
   height: 0.875rem;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='2.8'%3E%3Cpolyline points='9 6 15 12 9 18'/%3E%3C/svg%3E") center / contain no-repeat;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000f46' stroke-width='2.8'%3E%3Cpolyline points='9 6 15 12 9 18'/%3E%3C/svg%3E") center / contain no-repeat;
 }
 
 :is(.search-banner, .ccs-hero__search) .advanced_search:hover {
-  color: var(--ccs-cyan-250) !important;
+  background: var(--ccs-action-secondary-hover);
+  color: var(--ccs-action-secondary-text) !important;
   text-decoration: none;
 }
 

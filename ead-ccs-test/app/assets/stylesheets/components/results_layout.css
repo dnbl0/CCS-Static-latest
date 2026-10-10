@@ -50,7 +50,7 @@ body.blacklight-catalog-index #main-container > .row {
 }
 
 body.blacklight-catalog-index #content {
-  padding: var(--ccs-space-4) var(--content-gutter);
+  padding: var(--ccs-space-4) var(--content-gutter) var(--ccs-space-8);
 }
 
 @media (max-width: 768px) {
