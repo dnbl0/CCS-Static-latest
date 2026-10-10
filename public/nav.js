@@ -1,3 +1,57 @@
+// Search history (CCS-143, CCS-206): the terms searched in this browser with the time of each, kept for 30 days (at most 100,
+// like Blacklight's own history). Shared by the header search overlay, the search bar and the search results page, which
+// all go through window.CCSHistory, and listed by day on /search/search-history.html.
+(function () {
+  var KEY = 'ccs-search-history-v2', OLD_KEY = 'ccs-search-history', KEEP_MS = 30 * 864e5, MAX = 100;
+  var TZ = 'Australia/Melbourne';   // days are Melbourne's, as on the Rails app
+  var dayFormat = new Intl.DateTimeFormat('en-CA', { timeZone: TZ, year: 'numeric', month: '2-digit', day: '2-digit' });
+  function dayNumber(ms) {   // whole days since 1970 for the Melbourne calendar date of ms
+    var p = dayFormat.formatToParts(new Date(ms)).reduce(function (o, x) { o[x.type] = x.value; return o; }, {});
+    return Date.UTC(+p.year, +p.month - 1, +p.day) / 864e5;
+  }
+  function read() {
+    var list = [];
+    try {
+      var raw = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (Array.isArray(raw)) list = raw;
+      else {   // first use: bring over the terms the earlier per-tab history held
+        var old = JSON.parse(sessionStorage.getItem(OLD_KEY) || '[]'), now = Date.now();
+        if (Array.isArray(old)) list = old.map(function (q, i) { return { q: q, t: now - i }; });
+      }
+    } catch (e) {}
+    var cutoff = Date.now() - KEEP_MS;
+    return list.filter(function (x) { return x && typeof x.q === 'string' && x.q.trim() && x.t > cutoff; });
+  }
+  function write(list) { try { localStorage.setItem(KEY, JSON.stringify(list.slice(0, MAX))); } catch (e) {} }
+  function same(a, b) { return a.toLowerCase() === b.toLowerCase(); }
+  window.CCSHistory = {
+    all: read,
+    recent: function (n) { return read().slice(0, n); },
+    save: function (term) {
+      var q = (term || '').trim();
+      if (!q) return;
+      var list = read().filter(function (x) { return !same(x.q, q); });
+      list.unshift({ q: q, t: Date.now() });
+      write(list);
+    },
+    remove: function (term) { write(read().filter(function (x) { return !same(x.q, term); })); },
+    clear: function () { try { localStorage.removeItem(KEY); sessionStorage.removeItem(OLD_KEY); } catch (e) {} },
+    label: function (ms, now) {   // "Today", "Yesterday", "2 days ago" ... for the day a search was made
+      var days = Math.max(0, dayNumber(now || Date.now()) - dayNumber(ms));
+      return days === 0 ? 'Today' : days === 1 ? 'Yesterday' : days + ' days ago';
+    },
+    groups: function (now) {   // [{ label, items: [{ q, t }] }], newest day first
+      var out = [], byLabel = {};
+      read().forEach(function (x) {
+        var label = window.CCSHistory.label(x.t, now);
+        if (!byLabel[label]) { byLabel[label] = { label: label, items: [] }; out.push(byLabel[label]); }
+        byLabel[label].items.push(x);
+      });
+      return out;
+    }
+  };
+})();
+
 // Header navigation behaviour (desktop dropdown panels + mobile drawer), modelled on the UniMelb header.
 // Everything is event-delegated and elements are looked up live, because the template layer used by some
 // pages can re-render the header after this script has run.
@@ -85,11 +139,11 @@
   });
 })();
 
-/* Recent searches (CCS-143): when the header search overlay opens, list the last few search terms saved this session
-   (the search page stores them under 'ccs-search-history'). Built here so every page gets it without extra markup. */
+/* Recent searches (CCS-143): when the header search overlay opens, list the last few search terms
+   (kept by window.CCSHistory above). Built here so every page gets it without extra markup. */
 (function () {
   function recent() {
-    try { var l = JSON.parse(sessionStorage.getItem('ccs-search-history') || '[]'); return Array.isArray(l) ? l.slice(0, 5) : []; } catch (e) { return []; }
+    return window.CCSHistory.recent(5).map(function (x) { return x.q; });
   }
   function render() {
     var inner = document.querySelector('#uom-search-popover .uom-search-popover__inner');
@@ -108,7 +162,9 @@
       var a = document.createElement('a'); a.className = 'uom-search-recent__link'; a.href = '/search/search-results.html?q=' + encodeURIComponent(t); a.textContent = t;
       li.appendChild(a); ul.appendChild(li);
     });
-    box.appendChild(ul); inner.appendChild(box);
+    box.appendChild(ul);
+    var all = document.createElement('a'); all.className = 'uom-search-recent__all'; all.href = '/search/search-history.html'; all.textContent = 'All recent searches';
+    box.appendChild(all); inner.appendChild(box);
   }
   document.addEventListener('click', function (e) {
     if (e.target.closest && e.target.closest('[popovertarget="uom-search-popover"]')) setTimeout(render, 0);

@@ -119,3 +119,11 @@
   color: var(--ccs-text-inverse);
   text-decoration: underline;
 }
+
+.search-overlay__recent-all {
+  display: inline-block;
+  margin-top: var(--ccs-space-3);
+  color: var(--ccs-text-inverse);
+  font-size: var(--ccs-font-size-sm);
+  text-decoration: underline;
+}
