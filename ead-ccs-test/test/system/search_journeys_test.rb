@@ -77,6 +77,31 @@ class SearchJourneysTest < ApplicationSystemTestCase
     assert_selector ".result-card", minimum: 1
   end
 
+  test "the advanced search dropdowns are the site's own, open fully inside the panel and submit the same parameters" do
+    page.driver.resize(1440, 900)
+    visit search_catalog_path(q: "skull")
+    click_link "Advanced search"
+    using_wait_time(40) { assert_selector "dialog#blacklight-modal.advanced-flyout .ccs-select--field", minimum: 2, visible: :all }
+
+    # the panel slides in; wait for that to finish before clicking inside it
+    using_wait_time(10) { assert page.evaluate_script("document.querySelector('#blacklight-modal .modal-dialog').getAnimations().length === 0") }
+    field = find("dialog#blacklight-modal .ccs-select--field", match: :first)
+    assert_equal 48, field.find(".dropdown-toggle").evaluate_script("Math.round(this.getBoundingClientRect().height)")
+    # triggered, not clicked: the headless browser's hit test reports the transparent full-screen <dialog> over the panel
+    field.find(".dropdown-toggle").trigger("click")
+    menu = field.find(".dropdown-menu.show")
+    inside = menu.evaluate_script("(() => { const r = this.getBoundingClientRect(); return r.left >= 0 && r.right <= innerWidth && r.bottom <= innerHeight })()")
+    assert inside, "the open menu is not cut off by the panel or the window"
+    assert_equal field.find(".dropdown-toggle").evaluate_script("Math.round(this.getBoundingClientRect().width)"), menu.evaluate_script("Math.round(this.getBoundingClientRect().width)")
+
+    menu.find("button.dropdown-item", text: "Title", exact_text: true).trigger("click")
+    assert_equal "Title", field.find(".dropdown-toggle").text
+    assert_equal "title", find("select[name='clause[0][field]']", visible: :all).value
+
+    find("dialog#blacklight-modal form.advanced").evaluate_script("this.requestSubmit()")
+    assert_current_path(%r{clause%5B0%5D%5Bfield%5D=title|clause\[0\]\[field\]=title})
+  end
+
   test "the pagination is centred under the results" do
     visit search_catalog_path(q: "skull")
     assert_selector ".paginate-section .pagination"

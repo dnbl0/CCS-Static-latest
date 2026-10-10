@@ -37,7 +37,7 @@
       <h2 id="adv-filters-h" class="advanced-form__heading"><%= t("advanced_search.filters.heading") %></h2>
       <p class="advanced-form__hint"><%= t("advanced_search.filters.hint") %></p>
 
-      <div class="advanced-form__field advanced-form__field--menu" hidden data-advanced-search-target="filterMenu">
+      <div class="advanced-form__field advanced-form__field--menu" hidden data-advanced-search-target="filterMenu" data-controller="select-dropdown" data-select-dropdown-variant-value="field">
         <label for="adv-add-filter" class="advanced-form__label"><%= t("advanced_search.filters.add") %></label>
         <select id="adv-add-filter" class="advanced-form__control" data-advanced-search-target="filterSelect" data-action="advanced-search#addFilter">
           <option value=""><%= t("advanced_search.filters.add_placeholder") %></option>
@@ -50,7 +50,7 @@
       <% filters.each do |filter| %>
         <fieldset class="advanced-filter" data-advanced-search-target="filter" data-filter-key="<%= filter.key %>" data-advanced-search-active="<%= filter.active? %>">
           <legend class="advanced-filter__legend"><%= filter.label %></legend>
-          <div class="advanced-form__field advanced-filter__mode">
+          <div class="advanced-form__field advanced-filter__mode" data-controller="select-dropdown" data-select-dropdown-variant-value="field">
             <label for="adv-mode-<%= filter.key %>" class="advanced-form__label"><%= t("advanced_search.filters.mode") %></label>
             <select id="adv-mode-<%= filter.key %>" class="advanced-form__control" data-action="advanced-search#changeMode" data-advanced-search-target="mode">
               <option value="any" <%= "selected" if filter.mode == "any" %>><%= t("advanced_search.filters.any") %></option>
@@ -105,7 +105,7 @@
 
   <% if sort_options.any? %>
     <section class="advanced-form__section advanced-form__section--sort">
-      <div class="advanced-form__field advanced-form__field--sort">
+      <div class="advanced-form__field advanced-form__field--sort" data-controller="select-dropdown" data-select-dropdown-variant-value="field">
         <label for="adv-sort" class="advanced-form__heading advanced-form__heading--label"><%= t("advanced_search.sort.heading") %></label>
         <%= select_tag :sort, options_for_select(sort_options, selected_sort), id: "adv-sort", class: "advanced-form__control" %>
       </div>

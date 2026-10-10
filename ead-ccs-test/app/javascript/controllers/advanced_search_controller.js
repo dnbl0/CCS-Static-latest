@@ -30,7 +30,8 @@ export default class extends Controller {
     const html = this.rowTemplateTarget.innerHTML.replaceAll("__INDEX__", this.rowTargets.length).replaceAll("__NUMBER__", this.rowTargets.length + 1)
     this.rowsTarget.insertAdjacentHTML("beforeend", html)
     this.renumber()
-    this.rowTargets.at(-1).querySelector("select")?.focus()
+    const row = this.rowTargets.at(-1)
+    requestAnimationFrame(() => this.focusSelect(row))
   }
 
   deleteRow(event) {
@@ -39,7 +40,12 @@ export default class extends Controller {
     const next = this.rowTargets[this.rowTargets.indexOf(row) + 1] || this.rowTargets[this.rowTargets.indexOf(row) - 1]
     row.remove()
     this.renumber()
-    next?.querySelector("select")?.focus()
+    if (next) this.focusSelect(next)
+  }
+
+  // The selects are shown as the site's dropdowns (controllers/select_dropdown_controller.js): focus its button
+  focusSelect(container) {
+    (container.querySelector(".ccs-select > .dropdown-toggle") || container.querySelector("select"))?.focus()
   }
 
   // Row i is clause[i]: names, ids and labels follow the order on the page, and row 1 cannot be deleted
@@ -80,7 +86,7 @@ export default class extends Controller {
     const filter = event.target.closest("[data-advanced-search-target~=filter]")
     filter.querySelectorAll("input[type=checkbox]").forEach((box) => { box.checked = false })
     this.showFilter(filter, false)
-    this.filterSelectTarget.focus()
+    this.focusSelect(this.filterSelectTarget.closest(".advanced-form__field"))
   }
 
   showFilter(filter, visible) {
