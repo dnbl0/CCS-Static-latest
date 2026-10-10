@@ -92,6 +92,8 @@
 
 /* Mobile-only pieces (Menu button, drawer search, drawer top links, Back row) are hidden on desktop */
 .ccs-nav__label-more, .ccs-nav__menu, .ccs-nav__drawer-search, .ccs-nav__primary > ul.ccs-nav__drawer-top, .ccs-nav__back { display: none; }
+/* The saved-records link in the drawer: only the home page needs it (every other page has the bar in its breadcrumb strip), and only on phones */
+.ccs-nav__list-item--saved { display: none; }
 
 /* Mobile and tablet header, following the UniMelb mobile header: one 96px row (logo block, site name, Menu button),
    with search, navigation and the UniMelb audience links inside a right-hand drawer. */
@@ -125,6 +127,7 @@
   .ccs-nav__drawer-search button img { width: 24px; height: 24px; }
   .ccs-nav__primary > ul { flex-direction: column; border-top: 0; }
   .ccs-nav__primary > ul > li { border-bottom: 1px solid #404b74; }
+  body.page-home .ccs-nav__list-item--saved { display: block; }
   .ccs-nav__primary > ul > li > a, .ccs-nav__trigger { width: 100%; justify-content: space-between; min-height: 63px; padding: var(--space-16) var(--space-10) var(--space-16) var(--space-16); font-size: var(--font-size-body-lg); font-weight: var(--font-weight-semibold); letter-spacing: -0.18px; line-height: 24px; color: var(--white-100); text-align: left; }
   .ccs-nav__primary > ul > li > a:hover, .ccs-nav__trigger:hover, .ccs-nav__trigger[aria-expanded="true"] { background: none; color: var(--white-100); text-decoration: underline; }
   .ccs-nav__primary > ul > li > a:active, .ccs-nav__trigger:active { background: none; color: var(--white-100); }

@@ -111,6 +111,26 @@ class SavedRecordsTest < ApplicationSystemTestCase
     assert_no_selector ".breadcrumb-strip"
   end
 
+  test "on phones the home page menu has a saved-records link; desktop and other pages do not" do
+    visit root_path
+    assert_no_selector "a.site-nav__saved--drawer"
+
+    page.driver.resize(390, 844)
+    visit root_path
+    find(".site-header__menu").click
+    within("#site-nav") do
+      assert_selector "a.site-nav__saved--drawer", text: "0 saved records"
+      click_link "0 saved records"
+    end
+    assert_current_path bookmarks_path
+
+    visit about_path
+    find(".site-header__menu").click
+    assert_no_selector "#site-nav a.site-nav__saved--drawer", visible: :all
+  ensure
+    page.driver.resize(1440, 900)
+  end
+
   test "the record page control is a real checkbox that takes keyboard focus, and the count survives navigation" do
     visit search_catalog_path(q: "skull", view: "list")
     visit first(".result-card .document-title-heading a")[:href]
