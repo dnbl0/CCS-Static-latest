@@ -77,6 +77,10 @@
           </li>
           <li><%= link_to about.label, about.href, aria: { current: (helpers.current_page?(about.href) ? "page" : nil) } %></li>
           <li><%= link_to contact.label, contact.href %></li>
+          <%# Phones only: the header's top strip is hidden there, and the home page has no breadcrumb strip to hold the bar -%>
+          <% if saved_in_header? %>
+            <li class="site-nav__saved-item"><%= render NexusCcs::SavedBarComponent.new(placement: :drawer) %></li>
+          <% end %>
         </ul>
 
         <ul class="site-nav__audience" aria-label="University of Melbourne">

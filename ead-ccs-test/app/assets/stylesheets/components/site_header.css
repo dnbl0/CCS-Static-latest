@@ -67,7 +67,7 @@
 .site-nav__panel-list a[aria-current] { color: var(--ccs-cyan-400); }
 
 /* Mobile-only pieces (Menu button, drawer search, drawer top links, Back row) are hidden on desktop */
-.site-nav__label-more, .site-header__menu, .site-nav__search, .site-nav > ul.site-nav__audience, .site-nav__back { display: none; }
+.site-nav__label-more, .site-header__menu, .site-nav__search, .site-nav > ul.site-nav__audience, .site-nav__back, .site-nav__saved-item { display: none; }
 
 /* Mobile and tablet header, following the UniMelb mobile header: one 96px row (logo block, site name, Menu button),
    with search, navigation and the UniMelb audience links inside a right-hand drawer. */
@@ -101,9 +101,12 @@
   .site-nav__search button img { width: 24px; height: 24px; }
   .site-nav > ul { flex-direction: column; border-top: 0; }
   .site-nav > ul > li { border-bottom: 1px solid var(--ccs-navy-750); }
+  .site-nav > ul > li.site-nav__saved-item { display: block; }
   .site-nav > ul > li > a, .site-nav__trigger { width: 100%; justify-content: space-between; min-height: 63px; padding: var(--ccs-space-4) 10px var(--ccs-space-4) var(--ccs-space-4); font-size: var(--ccs-font-size-lg); font-weight: var(--ccs-font-weight-semibold); letter-spacing: -0.18px; line-height: 24px; color: var(--ccs-white); text-align: left; }
   .site-nav > ul > li > a:hover, .site-nav__trigger:hover, .site-nav__trigger[aria-expanded="true"] { background: none; color: var(--ccs-white); text-decoration: underline; }
   .site-nav > ul > li > a:active, .site-nav__trigger:active { background: none; color: var(--ccs-white); }
+  /* The saved-records link in the drawer is a plain row like the others, with its bookmark icon */
+  .site-nav > ul > li > a.site-nav__saved--drawer { justify-content: flex-start; gap: var(--ccs-space-2); background: none; }
 
   /* Items that open a sub-menu show a light-blue right chevron instead of the desktop down arrow */
   .site-nav .site-nav__trigger img { display: none; }
