@@ -29,3 +29,9 @@ The Container Apps route above needs a standard environment, and student subscri
 `infra/azure/vm/deploy-vm.sh` instead creates a single Ubuntu VM that runs Caddy (automatic HTTPS), Rails, Solr and
 Postgres with Docker Compose. Passwords are generated on the VM (`/opt/ccs/infra/azure/vm/.env`, root only).
 Run it in Cloud Shell: `SUBSCRIPTION=<id> RG=<group> BRANCH=<branch> infra/azure/vm/deploy-vm.sh`.
+
+## Container Apps without storage mounts (`containerapps.sh`)
+On Azure for Students "Express" environments there are no storage mounts, so Solr's index lives on the container disk and
+the web app re-fills it on start (`AUTO_INDEX=true`). Solr runs `--user-managed` with a generated password; the web app
+reaches it over its https address with the password held in a secret. Pin `TAG` to a commit SHA: a changed tag is what
+makes Azure start a new replica. See the header of `containerapps.sh` for details.
