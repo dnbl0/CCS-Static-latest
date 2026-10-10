@@ -13,7 +13,7 @@
     </button>
   </div>
   <div class="persistent-link__footer">
-    <p class="persistent-link__note">Quote this link when contacting the collection team.</p>
+    <p class="persistent-link__note"><%= note %></p>
     <% if document %><div class="persistent-link__browser"><%= render NexusCcs::ViewFullRecordComponent.new(document: document, action: nil) %></div><% end %>
   </div>
   <p class="visually-hidden" role="status" data-clipboard-target="status"></p>
