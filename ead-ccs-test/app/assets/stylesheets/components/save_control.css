@@ -85,6 +85,13 @@
   padding-top: var(--ccs-space-2);
 }
 
+/* The mosaic's title link stretches over the whole card (blacklight-gallery); the control stays above it so a
+   click on Save toggles in place instead of opening the record */
+.result-card__save .save-control {
+  position: relative;
+  z-index: 2;
+}
+
 .result-card__save .toggle-bookmark-label {
   margin-inline-start: calc(-1 * var(--ccs-space-1));
 }
