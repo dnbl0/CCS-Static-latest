@@ -4,6 +4,7 @@
 //
 // Usage: STATIC_URL=http://localhost:3100 RAILS_URL=http://localhost:3200 node scripts/parity.js
 //   PLAYWRIGHT_CHROMIUM_PATH   Chromium to use (default: Playwright's own)
+//   PARITY_RESULTS             'required' fails (instead of skipping the search results checks) when Rails has no Solr records
 //   PARITY_ONLY                'results' runs only the search results checks (quicker to iterate on)
 //   PARITY_LIBS                directory holding react, react-dom and @babel/standalone node_modules, served in place
 //                              of unpkg.com for the static pages' template runtime (only needed offline)
@@ -219,6 +220,16 @@ async function measurePair(page, selector, [label, , , opts], out, skips) {
 }
 // Colours within 1 of each channel count as equal (the Rails token set rounds a few palette entries by one)
 const same = (a, b) => a === b || (/^rgba?\(/.test(a) && /^rgba?\(/.test(b) && a.match(/[\d.]+/g).every((n, i) => Math.abs(n - b.match(/[\d.]+/g)[i]) <= 1));
+// The Rails results page needs Solr. Without it (CI's parity job has none) no cards or facets render, so the results checks are
+// skipped with a note; PARITY_RESULTS=required turns that into a failure.
+async function railsHasResults(browser) {
+  const context = await browser.newContext();
+  const page = await context.newPage();
+  try {
+    await page.goto(RAILS + SCENES.results.rails, { waitUntil: 'networkidle' });
+    return (await page.locator('.result-card').count()) > 0 && (await page.locator('.facet-field-heading .accordion-button').count()) > 0;
+  } catch (e) { return false; } finally { await context.close(); }
+}
 async function checkResults(browser, width) {
   let failures = 0;
   const context = await browser.newContext({ viewport: { width, height: 900 } });
@@ -283,7 +294,9 @@ async function snapshot(page, url, selectors) {
     await context.close();
   }
   if (!only) for (const width of WIDTHS) failures += await checkNav(browser, width);
-  for (const width of WIDTHS) failures += await checkResults(browser, width);
+  if (await railsHasResults(browser)) for (const width of WIDTHS) failures += await checkResults(browser, width);
+  else if (process.env.PARITY_RESULTS === 'required') { console.error('FAIL: the Rails results page shows no records or filters (is Solr running?) and PARITY_RESULTS=required'); failures++; }
+  else console.log('SKIP: search results checks: the Rails results page shows no records or filters (no Solr?). Set PARITY_RESULTS=required to fail instead.');
   await browser.close();
   console.log(`\nparity: ${failures} failure(s)`);
   process.exit(failures ? 1 : 0);
