@@ -96,6 +96,19 @@ class SiteChromeTest < ActiveSupport::TestCase
     assert_selector ".site-header__utility a.site-nav__saved--header", count: 1
   end
 
+  test "the phone menu has the saved-records link only on a page with no breadcrumb strip" do
+    render_header(url: "/catalog", action: "index")
+
+    assert_selector "#site-nav li.site-nav__saved-item > a.site-nav__saved.site-nav__saved--drawer[href='/bookmarks']", count: 1
+    assert_selector "#site-nav a.site-nav__saved--drawer .site-nav__saved-text", text: /saved record/
+    assert_selector "a.site-nav__saved", count: 2 # the header's top strip (desktop) and the menu (phones)
+
+    render_header(url: "/catalog/abc", action: "show")
+
+    assert_no_selector ".site-nav__saved-item"
+    assert_no_selector "a.site-nav__saved--drawer"
+  end
+
   test "breadcrumb renders nothing without items" do
     render_inline(NexusCcs::BreadcrumbComponent.new(items: []))
     assert_no_selector "nav"
