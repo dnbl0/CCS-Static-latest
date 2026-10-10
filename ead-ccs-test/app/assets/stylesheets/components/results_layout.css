@@ -106,3 +106,39 @@ body.blacklight-catalog-index #content {
   gap: var(--results-gutter);
   border: 0;
 }
+
+/* The empty state, after the static search page: a serif title, a muted hint and a cyan button */
+.results-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--ccs-space-2);
+}
+
+.results-empty__title {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: var(--font-size-title-4);
+  font-weight: var(--font-weight-medium);
+}
+
+.results-empty__text {
+  margin: 0;
+  font-size: var(--font-size-15);
+  color: var(--col-text-muted);
+}
+
+.results-empty__button {
+  margin-top: var(--ccs-space-2);
+  padding: var(--space-10) var(--space-18);
+  background: var(--col-btn-action-bg);
+  font-size: var(--font-size-15);
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+  color: var(--col-btn-action-text);
+}
+
+.results-empty__button:focus-visible {
+  outline: 2px solid var(--ccs-focus-ring);
+  outline-offset: 3px;
+}

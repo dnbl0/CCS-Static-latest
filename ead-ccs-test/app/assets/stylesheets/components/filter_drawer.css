@@ -11,10 +11,21 @@
   height: 2.5rem;
   padding: 0 var(--ccs-space-4);
   border: 1px solid var(--ccs-navy-1100);
-  border-radius: var(--ccs-radius-sm);
+  border-radius: 0;
   background: var(--ccs-white);
   font-weight: var(--ccs-font-weight-semibold);
   color: var(--ccs-text-brand);
+}
+
+.filters-toggle:focus-visible {
+  outline: 2px solid var(--ccs-focus-ring);
+  outline-offset: 3px;
+}
+
+@media (max-width: 767.98px) {
+  .filters-toggle {
+    padding: 0 var(--ccs-space-2);
+  }
 }
 
 .filters-toggle:hover {

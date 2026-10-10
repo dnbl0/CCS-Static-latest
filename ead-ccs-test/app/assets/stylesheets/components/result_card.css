@@ -17,7 +17,7 @@
   flex-direction: column;
   height: auto;
   overflow: hidden;
-  border: 1px solid var(--ccs-border-panel);
+  border: 1px solid var(--color-border-grey-91);
   background: var(--ccs-white);
   transition: border-color var(--ccs-duration-base);
 }
@@ -142,7 +142,12 @@
 }
 
 .documents-masonry .result-card .index_title a:hover {
-  color: var(--ccs-text-link-hover);
+  color: var(--ccs-text-link); /* the static card keeps the link colour and underlines it */
+}
+
+.result-card .document-title-heading a:focus-visible {
+  outline: 2px solid var(--ccs-focus-ring);
+  outline-offset: 3px;
 }
 
 .documents-masonry .result-card {
@@ -155,7 +160,7 @@
 .documents-masonry .result-card {
   margin: 0;
   padding: 0;
-  border: 1px solid var(--ccs-border-panel);
+  border: 1px solid var(--color-border-grey-91);
 }
 
 .documents-list .result-card:hover,
