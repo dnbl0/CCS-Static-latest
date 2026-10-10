@@ -161,6 +161,22 @@ const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css
       eq(await h.$eval('.ccs-nav__drawer-saved, .ccs-nav__primary [data-bookmarks-link]', () => 1).catch(() => 0), 0, 'home: no bar in the drawer');
       await h.close();
     }
+    // Phones: the home page has no breadcrumb strip and the header strip is hidden, so the drawer carries a saved-records link
+    for (const [w, url, expectVisible] of [[390, '/index.html', true], [1440, '/index.html', false], [390, '/about.html', false]]) {
+      const c = await browser.newContext({ viewport: { width: w, height: 844 } });
+      await c.addInitScript(() => { try { localStorage.setItem('ccs-cultural-ack', '1'); localStorage.setItem('ccs-bookmarks-v1', JSON.stringify([{ id: 1, t: 1 }, { id: 2, t: 2 }])); } catch (e) { /* none */ } });
+      const d = await c.newPage();
+      await d.goto(base + url);
+      if (w < 1024) { await d.waitForSelector('.ccs-nav__menu'); await d.click('.ccs-nav__menu'); }
+      const link = d.locator('.ccs-nav__item-link-saved');
+      eq(await link.isVisible(), expectVisible, w + 'px ' + url + ': the drawer saved-records link is ' + (expectVisible ? 'shown' : 'hidden'));
+      if (expectVisible) {
+        eq((await link.textContent()).trim(), '2 saved records', 'the drawer link shows the count');
+        eq(await link.getAttribute('href'), '/search/bookmarks.html', 'the drawer link opens the saved list');
+        eq(await link.evaluate(a => a.getBoundingClientRect().height >= 44), true, 'the drawer link is a 44px touch target');
+      }
+      await c.close();
+    }
     // Mobile: the list does not scroll sideways
     const phone = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true });
     await phone.addInitScript(() => { try { localStorage.setItem('ccs-cultural-ack', '1'); localStorage.setItem('ccs-bookmarks-v1', JSON.stringify([{ id: 2, t: Date.now(), title: 'x' }])); } catch (e) { /* none */ } });

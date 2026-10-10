@@ -157,6 +157,7 @@
       a.classList.toggle('has-saved', n > 0);
       var t = a.querySelector('[data-bookmarks-text]'); if (t) setText(t, text);
     });
+    document.querySelectorAll('[data-bookmarks-drawer-text]').forEach(function (t) { setText(t, text); });
     document.querySelectorAll('.ccs-save[data-bookmark-id]').forEach(syncButton);
   }
 
