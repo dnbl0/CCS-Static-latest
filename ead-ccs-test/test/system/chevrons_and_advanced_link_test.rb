@@ -56,6 +56,17 @@ class ChevronsAndAdvancedLinkTest < ApplicationSystemTestCase
       assert_operator look["weight"], :>=, 600, path
       assert_equal [ "24px", "24px" ], look["arrow"], path
       assert look["arrowImage"], "#{path}: the arrow is drawn before the label"
+
+      # The footer links are the reference: same type, spacing and height, read live from the page's own footer
+      measure = <<~JS
+        (function (a) {
+          var c = getComputedStyle(a), r = a.getBoundingClientRect();
+          return { size: c.fontSize, weight: c.fontWeight, line: c.lineHeight, spacing: c.letterSpacing, gap: c.columnGap,
+                   underline: c.textDecorationLine, minHeight: c.minHeight, height: r.height };
+        })(this)
+      JS
+      footer = first(".site-footer a.arrow-link--inverse", minimum: 1)
+      assert_equal footer.evaluate_script(measure), link.evaluate_script(measure), "#{path}: matches the footer links"
     end
   end
 end

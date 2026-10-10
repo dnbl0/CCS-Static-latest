@@ -44,6 +44,12 @@ const FLIPPED = 'matrix(-1, 0, 0, -1, 0, 0)';
       eq(look.img, '/images/home/icon-arrow-footer.svg', name + ': the arrow is the footer links\' arrow');
       eq(look.size, [24, 24], name + ': the arrow is 24px');
       eq(look.arrowLeftOfLabel, true, name + ': the arrow sits on the left of the label');
+      // The footer links are the reference: the same type, spacing and arrow, read live from the page's own footer
+      const props = ['fontFamily', 'fontSize', 'fontWeight', 'lineHeight', 'letterSpacing', 'columnGap', 'textDecorationLine', 'minHeight'];
+      const pick = el => el.evaluate((a, ps) => { const c = getComputedStyle(a), o = {}; ps.forEach(q => { o[q] = c[q]; }); const r = a.getBoundingClientRect(); o.height = r.height; return o; }, props);
+      const mine = await pick(link), foot = await pick(p.locator('.ccs-foot__item a.ccs-link').first());
+      delete mine.fontFamily; delete foot.fontFamily; // the stacks differ only in their fallbacks
+      eq(mine, foot, name + ': type, spacing, underline and height match the footer links');
       await p.close();
     }
 
