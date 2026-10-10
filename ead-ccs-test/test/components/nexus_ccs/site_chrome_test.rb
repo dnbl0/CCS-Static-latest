@@ -71,6 +71,31 @@ class SiteChromeTest < ActiveSupport::TestCase
     assert_no_selector "li[aria-current=page] a"
   end
 
+  test "the saved-records bar is the last child of the breadcrumb strip, and nowhere else on a page with a breadcrumb" do
+    render_header(url: "/catalog/abc", action: "show")
+
+    assert_selector ".breadcrumb-strip > nav.breadcrumb-bar + a.site-nav__saved[href='/bookmarks']", count: 1
+    assert_selector "a.site-nav__saved", count: 1
+    assert_no_selector ".site-header .site-nav__saved"
+    assert_no_selector ".site-nav__drawer-saved"
+  end
+
+  test "the saved-records bar says 0, 1 and 2 saved records, with the plus icon when empty" do
+    { 0 => "0 saved records", 1 => "1 saved record", 2 => "2 saved records" }.each do |count, words|
+      render_inline(NexusCcs::SavedBarComponent.new(count: count))
+      assert_selector "a.site-nav__saved .site-nav__saved-text[role=status]", text: /\A\s*#{count}\s+#{words.sub(/\A\d+ /, "")}\s*\z/
+      assert_selector "a.site-nav__saved.site-nav__saved--empty", count: count.zero? ? 1 : 0
+      assert_selector "[data-role=bookmark-counter]", text: count.to_s
+    end
+  end
+
+  test "the saved-records bar keeps the header top strip on a page with no breadcrumb" do
+    render_header(url: "/catalog", action: "index")
+
+    assert_no_selector ".breadcrumb-strip"
+    assert_selector ".site-header__utility a.site-nav__saved--header", count: 1
+  end
+
   test "breadcrumb renders nothing without items" do
     render_inline(NexusCcs::BreadcrumbComponent.new(items: []))
     assert_no_selector "nav"
