@@ -34,30 +34,46 @@ class PagesTest < ActionDispatch::IntegrationTest
     assert_response :not_found
   end
 
-  test "the help index lists every topic" do
+  test "the help page has a section for each topic that has no page of its own" do
     get "/help"
 
     assert_response :success
     assert_select "body.page-help h1", "Help and support"
-    assert_select ".tile-strip__item, .box-grid__item", count: HelpTopic.all.size
-    assert_select ".tile-strip__item", count: 3
-    assert_select ".box-grid__item .ct-button", count: 3
+    sections = HelpTopic.all.reject(&:standalone?)
+    assert_select ".help-layout__content section.help-section", count: sections.size
+    sections.each do |topic|
+      assert_select "section.help-section##{topic.key} h2.help-section__heading", topic.title
+      assert_select "section.help-section##{topic.key} .help-section__description", count: 1
+      assert_select "section.help-section##{topic.key} .help-section__item h3.help-section__subheading", minimum: 1
+    end
+    assert_select ".side-nav a[aria-current=page]", "All help topics"
+    assert_select ".side-nav a[href='/help#faq']"
+    assert_select ".side-nav a[href='/help/search-tips']"
+    assert_select ".side-nav a[href='/help/indigenous-data']"
   end
 
-  test "each help topic has a page with the topics side nav" do
-    HelpTopic.all.reject { |topic| topic.key == "indigenous" }.each do |topic|
-      get "/help", params: { topic: topic.key }
+  test "search tips has its own page with the topics side nav" do
+    get "/help/search-tips"
 
-      assert_response :success
-      assert_select "h1", topic.title
-      assert_select ".side-nav a[aria-current=page]", topic.title
+    assert_response :success
+    assert_select "body.page-help h1", "Search Tips"
+    assert_select ".side-nav a[aria-current=page]", "Search Tips"
+    assert_select "section.help-section", count: 0
+  end
+
+  test "the old help topic links go to the topic's page or section" do
+    { "faq" => "/help#faq", "copyright" => "/help#copyright", "access" => "/help#access", "privacy" => "/help#privacy",
+      "search-tips" => "/help/search-tips", "indigenous" => "/help/indigenous-data" }.each do |topic, location|
+      get "/help", params: { topic: topic }
+
+      assert_redirected_to location
     end
+
+    get "/help", params: { topic: "nope" }
+    assert_response :success
   end
 
   test "the indigenous cultural data topic has its own page" do
-    get "/help", params: { topic: "indigenous" }
-    assert_redirected_to "/help/indigenous-data"
-
     get "/help/indigenous-data"
     assert_response :success
     assert_select "body.page-indigenous-data h1", "Indigenous Cultural Data and Access"
@@ -86,12 +102,12 @@ class PagesTest < ActionDispatch::IntegrationTest
     get "/contact"
 
     assert_select "#site-nav-collections li a[href^='/collections/']", count: 5
-    assert_select "#site-nav-help a[href='/help?topic=faq']"
+    assert_select "#site-nav-help a[href='/help#faq']"
     assert_select "a.site-header__title[href='/']"
   end
 
   test "every content page has one main landmark for the skip link, and the collection banner is a named region" do
-    paths = [ "/", "/collections", "/collections/grainger-museum", "/help", "/help?topic=faq", "/help/indigenous-data", "/contact" ]
+    paths = [ "/", "/collections", "/collections/grainger-museum", "/help", "/help/search-tips", "/help/indigenous-data", "/contact" ]
 
     paths.each do |path|
       get path

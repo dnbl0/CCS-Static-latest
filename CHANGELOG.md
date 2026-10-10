@@ -18,6 +18,10 @@ Recent changes to the static site, newest first. Earlier history is in `git log`
 - **Search results and record pages** follow the Blacklight pages (#176, #177); the pathfinder component follows the design system (#169).
 - **Hosting**: GitHub Pages on the organisation repo is public (https://enterprise-services-group.github.io/CCS-2026-MVP/). Vercel is no longer used.
 
+### 2026-10-09
+
+- **Help restructured**: `/help` is one page with a section each for FAQ, Copyright and Terms of Use, Access and Information, and Privacy (`help-section`: heading, description, list of sub headings and descriptions). Search tips moved to its own page, `/help/search-tips`; Indigenous data stays at `/help/indigenous-data`. The old `/help?topic=` links are now `/help#<section>` and `/help/search-tips` (the Rails app redirects the old URLs). Done in the static site and the Rails app together.
+
 ### 2026-10-03
 
 - **No inline styles in pages**: every `style="..."` attribute and `<style>` block was moved into stylesheets (`public/styles/pages/*.css`, `public/styles/components/*.css`). Runtime values (colours, paddings, positions that the page logic computes) are passed through CSS custom properties, e.g. `style="--dyn-padding:{{ padSum }}"`, and the property that uses them lives in the stylesheet. `tests/no-inline-styles.test.js` (part of `npm test`) fails if a `<style>` block, a `style-hover` attribute or a presentational `style=""` is added to a page.

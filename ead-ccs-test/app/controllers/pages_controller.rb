@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 # The pages of the static prototype (public/ in the repository root): home, browse collections, a page per collection,
-# help and contact. Their text is in config/pages.yml (SitePages) and the help topics (HelpTopic) are partials under
-# app/views/pages/help.
+# help and contact. Their text is in config/pages.yml (SitePages); the help sections are in app/views/pages/help.
 class PagesController < ApplicationController
   layout "pages"
 
@@ -20,12 +19,13 @@ class PagesController < ApplicationController
     @facet_value = NexusCcs::SiteNavigation.facet_value(params[:slug])
   end
 
-  # /help shows the topics; /help?topic=faq one of them
+  # /help is one page with a section for each topic. The old /help?topic=<key> links go to the topic's own page or section.
   def help
-    return redirect_to indigenous_data_path if HelpTopic.find(params[:topic])&.indigenous?
-
-    @topic = HelpTopic.find_shown(params[:topic])
+    topic = HelpTopic.find(params[:topic])
+    redirect_to topic.path(helpers), status: :moved_permanently if topic
   end
+
+  def search_tips; end
 
   def indigenous_data = render("pages/help/indigenous_data")
 

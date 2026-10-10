@@ -9,7 +9,7 @@ class AccessibilityTest < ApplicationSystemTestCase
     "browse collections" => "/collections",
     "a collection" => "/collections/grainger-museum",
     "help" => "/help",
-    "a help topic" => "/help?topic=faq",
+    "search tips" => "/help/search-tips",
     "indigenous cultural data" => "/help/indigenous-data",
     "contact" => "/contact"
   }.freeze
