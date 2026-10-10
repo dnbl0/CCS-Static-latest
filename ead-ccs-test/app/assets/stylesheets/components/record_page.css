@@ -69,8 +69,23 @@ body.blacklight-catalog-show #main-container .page-sidebar {
   padding-inline: var(--record-gutter);
 }
 
+/* Two columns: the title, creator and tags, and the Save button at the top right (it does not stack under the tags) */
 .record-summary__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: var(--ccs-space-4);
+  align-items: start;
   padding-top: var(--ccs-space-5);
+}
+
+.record-summary__inner > :not(.record-summary__save) {
+  grid-column: 1;
+}
+
+.record-summary__save {
+  grid-column: 2;
+  grid-row: 1 / span 3;
+  justify-self: end;
 }
 
 .record-summary__title {

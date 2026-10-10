@@ -26,6 +26,16 @@ class AdvancedSearchFormTest < ActiveSupport::TestCase
     end
   end
 
+  test "every select in the form is turned into the site's field dropdown (the filter rail's box), the form's own parameters unchanged" do
+    render_form("/catalog/advanced")
+
+    %w[clause[0][field] clause[0][op] sort].each do |name|
+      assert_selector "[data-controller='select-dropdown'][data-select-dropdown-variant-value='field'] select[name='#{name}']"
+    end
+    assert_selector "[data-controller='select-dropdown'][data-select-dropdown-variant-value='field'] select#adv-add-filter", visible: :all
+    assert_selector "[data-controller='select-dropdown'][data-select-dropdown-variant-value='field'] select#adv-mode-collection_ssim", visible: :all
+  end
+
   test "a search field for the description, with the others, is offered in every row" do
     render_form("/catalog/advanced")
 
