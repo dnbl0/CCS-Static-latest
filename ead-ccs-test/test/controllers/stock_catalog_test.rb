@@ -82,6 +82,14 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     assert_nil config["zoomInButton"]
     assert_equal true, config.key?("fullPageButton")
     assert_equal false, config.dig("gestureSettingsMouse", "scrollToZoom")
+    # the thumbnail strip stays, and full page brings the toolbar with it
+    assert_equal false, config["autoHideControls"]
+    assert_select ".osd-toolbar[id$=-toolbar]", 1
+    assert_equal css_select(".osd-toolbar").first["id"], config["toolbar"]
+    assert_select ".osd-toolbar a[role=button]", minimum: 1
+    assert_select "picture.osd-image.d-block"
+    assert_select "picture.osd-image.row", false
+    assert_includes response.body, %("stock_osd_viewer_fixes":) # pinned, and imported by both pages' scripts
   end
 
   test "the record has the full width: no empty sidebar column, even with view annotations on" do

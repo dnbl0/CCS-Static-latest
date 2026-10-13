@@ -13,12 +13,22 @@ class StockOpenseadragonEmbedComponent < Blacklight::Gallery::OpenseadragonEmbed
     super(presenter: presenter, view_config: view_config, classes: classes + %w[col-12], **kwargs)
   end
 
-  # The toolbar keeps previous/next and full page; zoom in, zoom out and home are dropped, and the mouse wheel no longer zooms. The gem's template draws
-  # those three buttons, so this component has its own copy of it without them; here OpenSeadragon is told not to
-  # build them (it would otherwise add its own) and not to look for the ones that are gone. Pinch, double-click and
-  # keyboard zoom are OpenSeadragon's own gestures and stay; scrolling the page over the image is left to the page.
+  # The gem's template and options, as they are, except:
+  # - zoom in, zoom out and home are dropped, and the mouse wheel no longer zooms. The gem's template draws those
+  #   buttons, so this component has its own copy of it without them; OpenSeadragon is told not to build them (it
+  #   would otherwise add its own) and not to look for the ones that are gone. Pinch, double-click and keyboard zoom
+  #   stay; scrolling the page over the image is left to the page.
+  # - autoHideControls false: OpenSeadragon fades the thumbnail strip out as soon as the mouse is still for two
+  #   seconds, which leaves the viewer with no thumbnails to navigate by (and none at all on touch screens).
+  # - toolbar: the id of the toolbar the template draws. In full page OpenSeadragon takes every other element off the
+  #   page, toolbar included, leaving no button to leave full page with (only Escape); given its id it moves the
+  #   toolbar above the viewer instead. The template's toolbar is a .row with no margins or gutters (mx-0 gx-0):
+  #   a plain .row's negative margins have no column around them in full page and clip the toolbar at the window's edge.
   def osd_config
-    super.except(:zoomInButton, :zoomOutButton, :homeButton).merge(showZoomControl: false, showHomeControl: false, gestureSettingsMouse: { scrollToZoom: false })
+    super.except(:zoomInButton, :zoomOutButton, :homeButton).merge(
+      showZoomControl: false, showHomeControl: false, gestureSettingsMouse: { scrollToZoom: false },
+      autoHideControls: false, toolbar: "#{@id_prefix}-toolbar"
+    )
   end
 
   def image
