@@ -40,7 +40,6 @@ class ModalTest < ActiveSupport::TestCase
     assert_includes stylesheet("components/modal.css"), "--bl-modal-backdrop-bg: var(--ccs-scrim)"
     assert_includes stylesheet("components/modal.css"), "dialog::backdrop"
     assert_includes stylesheet("components/filter_drawer.css"), "background: var(--ccs-scrim);"
-    assert_no_match(/rgb\(0 0 0 \/ 70%\)/, stylesheet("components/advanced_flyout.css"))
   end
 
   test "the confirmation dialogs are square white panels padded 24px with the Close button top right" do

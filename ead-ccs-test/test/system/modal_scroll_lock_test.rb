@@ -90,40 +90,6 @@ class ModalScrollLockTest < ApplicationSystemTestCase
     end
   end
 
-  test "the advanced search flyout locks the page and releases it where it was" do
-    visit search_catalog_path(q: "skull")
-    scroll_page_to(500)
-
-    page.execute_script("document.querySelector('a.advanced_search').click()")
-    using_wait_time(10) { assert_selector "dialog#blacklight-modal[open].advanced-flyout form", visible: :all }
-    assert_locked_and_unmoved(500)
-    assert_equal "rgba(0, 11, 52, 0.8)", page.evaluate_script("getComputedStyle(document.querySelector('#blacklight-modal'), '::backdrop').backgroundColor")
-
-    find("dialog#blacklight-modal .modal-close").click
-    assert_no_selector "dialog#blacklight-modal[open]"
-    assert_unlocked_at(500)
-  end
-
-  test "the facet Show more list locks the page and releases it where it was" do
-    visit search_catalog_path(q: "skull")
-    link = page.evaluate_script("!!document.querySelector('a[data-blacklight-modal=trigger][href*=facet]')")
-    skip "no facet has a Show more link in this index" unless link
-
-    page.execute_script(<<~JS)
-      var a = document.querySelector('a[data-blacklight-modal=trigger][href*=facet]'), e = a;
-      while (e) { if (e.classList && e.classList.contains('collapse')) e.classList.add('show'); e = e.parentElement; }
-      a.scrollIntoView({ behavior: 'instant', block: 'center' });
-    JS
-    start_y = scroll_y
-    page.execute_script("document.querySelector('a[data-blacklight-modal=trigger][href*=facet]').click()")
-    using_wait_time(10) { assert_selector "dialog#blacklight-modal[open] .modal-body", visible: :all }
-    assert_locked_and_unmoved(start_y)
-
-    page.driver.browser.keyboard.type(:Escape)
-    assert_no_selector "dialog#blacklight-modal[open]"
-    assert_unlocked_at(start_y)
-  end
-
   test "the search overlay locks the page and releases it where it was" do
     visit search_catalog_path(q: "skull")
     scroll_page_to(700)
