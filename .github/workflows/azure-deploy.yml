@@ -1,8 +1,26 @@
 name: Deploy to Azure Container Apps
 
 # Builds the Rails and Solr images, pushes them to Azure Container Registry and rolls out the two Container Apps.
-# Manual only for now (run it from the Actions tab). Needs the repository variables and OIDC login described in
-# infra/azure/README.md; it does nothing until those are set.
+# Manual only for now (run it from the Actions tab).
+#
+# Everything is set EXCEPT the OIDC identity this workflow signs in as (azure/login below). AZURE_TENANT_ID,
+# AZURE_SUBSCRIPTION_ID, AZURE_ACR_NAME, AZURE_RESOURCE_GROUP and AZURE_CONTAINERAPPS_ENV are all set as
+# repository variables; AZURE_CLIENT_ID is not, so this workflow fails at the login step until it is. To finish
+# the one-time setup (needs Owner or User Access Administrator on the ccs-service-experience-app resource
+# group -- Contributor is not enough to grant another identity access):
+#   1. az ad app create --display-name ccs-github-actions-deploy
+#      (note the appId it prints -- that is AZURE_CLIENT_ID)
+#   2. az ad sp create --id <appId>
+#   3. az ad app federated-credential create --id <appId> --parameters '{
+#        "name": "ccs-2026-mvp-main", "issuer": "https://token.actions.githubusercontent.com",
+#        "subject": "repo:Enterprise-Services-Group/CCS-2026-MVP:ref:refs/heads/main",
+#        "audiences": ["api://AzureADTokenExchange"] }'
+#      (lets this repo's main-branch runs sign in as the app, with no stored secret)
+#   4. az role assignment create --assignee <appId> --role Contributor \
+#        --resource-group ccs-service-experience-app
+#   5. gh variable set AZURE_CLIENT_ID --repo Enterprise-Services-Group/CCS-2026-MVP --body <appId>
+# After that this workflow (or a copy of it triggered on push, if full automation is wanted) deploys without
+# anyone running az by hand.
 on:
   workflow_dispatch:
 

@@ -89,7 +89,7 @@ informed the drawer and cards. Files: `components/results_layout.css`, `filter_d
 - **Sidebar** (left, 14rem, flush with the window edge, ruled on its right): "Search filters" with "Clear all", then
   "Search filters (n)" and "Clear filters" (the search stays, the filters go), then one flat list of
   filters in blue with chevrons. The workbook's section titles stay for screen readers only. Creator role
-  follows the creator dates (in the design, not in the workbook).
+  sits above Creator name (in the design, not in the workbook).
 - **Toolbar**: "N results for" with the search and each filter as a removable pill; sort and page size as
   select-style boxes; the view buttons flush right; a Filters button replaces the sidebar below 992px.
 - **Results**: mosaic columns step with the width (written out as `repeat(N, 1fr)`, because the

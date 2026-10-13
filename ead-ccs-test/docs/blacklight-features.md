@@ -1,6 +1,6 @@
 # Blacklight features and plugins
 
-Configuration-only use of Blacklight 9.0.0 and its official plugins, in `CatalogController`
+Configuration-only use of Blacklight 9.2.1 and its official plugins, in `CatalogController`
 (`config/locales/blacklight.en.yml` for labels). No custom facet UI.
 
 | Feature | Mechanism | Solr field(s) |
@@ -52,18 +52,27 @@ Configuration-only use of Blacklight 9.0.0 and its official plugins, in `Catalog
   workbooks (`docs/data-model.md`); the earlier pivot, "Record includes" query facets and contextual
   `if:` facets are no longer configured because the workbook does not define them.
 
-## Advanced search against Blacklight's own
+## Advanced search is stock Blacklight
 
-Compared with `blacklight/app/views/catalog/_advanced_search_form.html.erb` (9.0.0):
+`/catalog/advanced` is Blacklight's own `Blacklight::AdvancedSearchFormComponent` and its own views
+(`blacklight/app/views/catalog/advanced_search.html.erb`, `_advanced_search_form.html.erb`,
+`_advanced_search_help.html.erb`), unmodified: config-only (`config.advanced_search.enabled`,
+`copy_search_field_config_to_advanced!`, `copy_facet_field_config_to_advanced!`), the same way the rest of this
+doc's features are config-only. It sits inside the site's normal header/footer layout like every other page, but
+the form itself — the single "match all/any" menu, one fixed row per search field, the facet checkbox accordion,
+Search + Start over — is exactly what the gem renders.
 
-| Blacklight default | This app | Why |
-|---|---|---|
-| Route `/catalog/advanced`, `config.advanced_search.enabled`, `AdvancedSearchFormComponent`, `copy_search_field_config_to_advanced!`, `copy_facet_field_config_to_advanced!` | Same; the form is a subclass of the component | Keeps Blacklight's field, facet and response handling |
-| One "match all / any of the fields" menu (`op`) and one fixed row per search field | Rows the visitor adds (up to 8), each with its own field and match type (`clause[i][field\|op\|query]`, `op` = must / should / must_not). `op` in a link still sets the default for rows that have none | Blacklight 9 already reads `op` per clause; the static prototype and the Jira requirements want "Does not contain" |
-| Facet limits in an accordion (`f_inclusive[facet][]`, with counts) | Same parameters and counts, shown as a card per filter with Includes any / Includes all (`f_all`, see `AllFacetFilters`) | "Includes all" is not something Blacklight offers |
-| Range limit plugin | Same (`range[field][begin\|end]`) | none |
-| Sort menu | Same (`sort`) | none |
-| Hidden search state (`view`, `per_page`) | Same | none |
-| Search + Start over | Same; Start over is a link to the empty form; in the flyout both stay at the foot of the panel | none |
+An earlier version added a dynamic row builder (must/should/must_not per row, up to 8 rows), an "Includes
+any/all" toggle per facet (`f_all`), a flyout modal, and a reinstated "within search" summary. All of that was
+removed (2026-10-13) to match stock Blacklight, per https://catalogue.nla.gov.au/catalog/advanced as the
+reference for what "default" should look like. `test/models/search_builder_test.rb` keeps one test of
+Blacklight's own `must_not` query building (a real capability of the search builder, just never exposed by the
+stock form), in case a future UI needs it — nothing in this app builds a must_not clause today.
 
-Not done: Blacklight's "within search" constraints block above the form (the form shows the current search itself).
+## Facets are stock Blacklight
+
+The results sidebar renders Blacklight's own `Blacklight::FacetComponent` for every facet, and each facet is
+plain config (label, group, limit, `index_range`, range limit plugin for years, one query facet for digital
+assets). There is no custom facet component, filter query builder (multiple values in one facet combine the
+default way: AND), `{!tag}/{!ex}` self-exclusion, or hand-built range slider/histogram. Only the styling
+(`unimelb.css`) differs. `test/controllers/catalog_configuration_test.rb` guards the config.

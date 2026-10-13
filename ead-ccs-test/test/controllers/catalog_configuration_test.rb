@@ -43,8 +43,11 @@ class CatalogConfigurationTest < ActiveSupport::TestCase
     assert_operator shapes.uniq.size, :>, 1
   end
 
-  test "range facets keep Blacklight's own filter handling; list facets use the OR builder" do
-    assert_not config.facet_fields["date_start_isi"].filter_query_builder
-    assert_equal OrFilterQueryBuilder, config.facet_fields["subject_ssim"].filter_query_builder
+  test "facets use Blacklight's default filter handling (no custom builder, no tag/exclude)" do
+    config.facet_fields.each_value do |facet|
+      assert_nil facet.filter_query_builder, "#{facet.key} has a custom filter query builder"
+      assert_nil facet.tag, "#{facet.key} is tagged"
+      assert_nil facet.ex, "#{facet.key} excludes a tag"
+    end
   end
 end

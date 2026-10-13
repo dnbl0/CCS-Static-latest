@@ -2,34 +2,39 @@
   <h2 id="digital-assets-heading" class="visually-hidden">Digital <%= "asset".pluralize(count + media.size) %></h2>
 
   <div class="digital-assets__stage" data-media-viewer-target="stage">
-    <% if main %>
-      <figure class="digital-assets__main">
-        <%= image_tag main.first, alt: alt(1), class: "digital-assets__image", data: { media_viewer_target: "image" } %>
-      </figure>
-    <% end %>
+    <%# Centring and clipping live on this inner area, not the stage itself: the Media metadata panel below is a
+        sibling of it, not a child, so opening the panel (a position: absolute slide) can never feed back into
+        the centred image's layout (see digital_assets.css). %>
+    <div class="digital-assets__media-area">
+      <% if main %>
+        <figure class="digital-assets__main">
+          <%= image_tag main.first, alt: alt(1), class: "digital-assets__image", data: { media_viewer_target: "image" } %>
+        </figure>
+      <% end %>
 
-    <% media.each do |item| %>
-      <figure class="digital-assets__media">
-        <% case item[:kind] %>
-        <% when "video" %>
-          <video controls preload="metadata" class="digital-assets__video" aria-label="<%= media_title(item) %>">
-            <source src="<%= item[:url] %>" type="<%= item[:type] %>">
-            <a href="<%= item[:url] %>">Download <%= media_title(item) %></a>
-          </video>
-        <% when "audio" %>
-          <audio controls preload="metadata" class="digital-assets__audio" aria-label="<%= media_title(item) %>">
-            <source src="<%= item[:url] %>" type="<%= item[:type] %>">
-            <a href="<%= item[:url] %>">Download <%= media_title(item) %></a>
-          </audio>
-        <% else %>
-          <%= link_to "Open #{media_title(item)} (PDF, opens in a new tab)", item[:url], target: "_blank", rel: "noopener", class: "digital-assets__pdf" %>
-        <% end %>
-        <figcaption><%= media_title(item) %></figcaption>
-      </figure>
-    <% end %>
+      <% media.each do |item| %>
+        <figure class="digital-assets__media">
+          <% case item[:kind] %>
+          <% when "video" %>
+            <video controls preload="metadata" class="digital-assets__video" aria-label="<%= media_title(item) %>">
+              <source src="<%= item[:url] %>" type="<%= item[:type] %>">
+              <a href="<%= item[:url] %>">Download <%= media_title(item) %></a>
+            </video>
+          <% when "audio" %>
+            <audio controls preload="metadata" class="digital-assets__audio" aria-label="<%= media_title(item) %>">
+              <source src="<%= item[:url] %>" type="<%= item[:type] %>">
+              <a href="<%= item[:url] %>">Download <%= media_title(item) %></a>
+            </audio>
+          <% else %>
+            <%= link_to "Open #{media_title(item)} (PDF, opens in a new tab)", item[:url], target: "_blank", rel: "noopener", class: "digital-assets__pdf" %>
+          <% end %>
+          <figcaption><%= media_title(item) %></figcaption>
+        </figure>
+      <% end %>
+    </div>
 
     <% if metadata? %>
-      <aside id="media-metadata" class="digital-assets__panel" aria-labelledby="media-metadata-heading" hidden data-media-viewer-target="panel">
+      <aside id="media-metadata" class="digital-assets__panel" aria-labelledby="media-metadata-heading" aria-hidden="true" data-media-viewer-target="panel">
         <div class="digital-assets__panel-head">
           <h3 id="media-metadata-heading" class="digital-assets__panel-title">Media metadata</h3>
           <button type="button" class="digital-assets__button" data-action="media-viewer#closePanel" aria-label="Close media metadata">

@@ -27,10 +27,15 @@ module NexusCcs
       [ creators.presence, Array(document["production_date_ssim"]).first ].compact.join(" · ").presence
     end
 
-    # Small chips under the byline: the record's format and its collection
+    Tag = Struct.new(:field, :value)
+
+    # Small chips under the byline: the record's format and its collection, each a link to that filter
     def tags
-      [ Array(document["format"]).first, Array(document["collection_ssim"]).first ].compact_blank
+      [ Tag.new("format", Array(document["format"]).first), Tag.new("collection_ssim", Array(document["collection_ssim"]).first) ]
+        .select { |tag| tag.value.present? }
     end
+
+    def tag_path(tag) = helpers.search_action_path(f: { tag.field => [ tag.value ] })
 
     # The details list: Title, then every workbook field the record has a value for, the UoM ID (the record's own
     # id, with a Copy button) just before the collection
