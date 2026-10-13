@@ -132,7 +132,7 @@
 
 :is(.search-banner, .ccs-hero__search, .sticky-search) .input-group button:focus-visible,
 :is(.search-banner, .ccs-hero__search, .sticky-search) .input-group select:focus-visible {
-  outline: 3px solid #0b4ea2;
+  outline: 3px solid var(--ccs-focus-ring);
   outline-offset: -3px;
 }
 
