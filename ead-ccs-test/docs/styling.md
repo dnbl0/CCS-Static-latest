@@ -69,10 +69,8 @@ header omits those items (in development it defaults to `http://localhost:3000`)
 
 ## Filter rail and record page
 
-- **Filter rail** (`components/filter_rail.css`): Blacklight's facet groups, one per section of the Filters
-  sheet, styled after the static "Search filters" rail: small-capital section titles over a rule, flat
-  hairline filter rows, checkbox values (ticked when selected) with right-aligned counts, "+ Show more".
-  Pure CSS on Blacklight's markup; the rail as a whole is sticky on wide screens (not each section).
+- **Filter rail**: Blacklight's default facets (default components, markup and range limit plugin), unstyled by the app
+  beyond the sidebar column and the mobile drawer (`filter_drawer.css`).
 - **Record page** (`components/record_page.css`, `digital_assets.css`): `RecordBannerComponent` (dark title
   band, hidden from assistive technology because Blacklight's own h1 stays), `RecordEmbedComponent` (the
   digital assets on a dark band, then type and collection, creator and date, licence), Blacklight's details
@@ -82,7 +80,7 @@ header omits those items (in development it defaults to `http://localhost:3000`)
 ## Search results layout
 
 Designed in `search-results-bl.png` (the search results design); Europeana's open-source front end
-informed the drawer and cards. Files: `components/results_layout.css`, `filter_rail.css`, `filter_drawer.css`,
+informed the drawer and cards. Files: `components/results_layout.css`, `filter_drawer.css`,
 `results_toolbar.css`, `search_banner.css`; `NexusCcs::FilterSidebarComponent`, `FilterToggleComponent`,
 `ConstraintsComponent`, `ResultCardComponent`; `catalog/_sort_and_per_page.html.erb`.
 

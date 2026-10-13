@@ -152,27 +152,7 @@ class ResultsLayoutTest < ActiveSupport::TestCase
     assert_no_selector ".constraints-container"
   end
 
-  test "the digital assets switch turns the Digital asset filter's 'with' value on and off" do
-    response = Blacklight::Solr::Response.new({ "response" => { "docs" => [], "numFound" => 0 } }, {})
-    render_sidebar = lambda do |url|
-      with_controller_class(CatalogController) do
-        with_request_url(url) do
-          render_inline(NexusCcs::FilterSidebarComponent.new(blacklight_config: config, response: response, view_config: config.index))
-        end
-      end
-    end
-
-    render_sidebar.call("/catalog?q=art&page=3")
-    assert_selector "a.filter-switch[role=switch][aria-checked=false]", text: "Records with digital assets"
-    assert_includes page.find("a.filter-switch")[:href], "f%5Bhas_digital_asset%5D%5B%5D=with"
-    assert_not_includes page.find("a.filter-switch")[:href], "page="
-
-    render_sidebar.call("/catalog?q=art&f[has_digital_asset][]=with")
-    assert_selector "a.filter-switch.is-on[aria-checked=true]"
-    assert_not_includes page.find("a.filter-switch")[:href], "has_digital_asset"
-  end
-
-  test "the sidebar leads with 'Search filters (n)' and Clear all, with no Advanced filters link (it is in the banner)" do
+  test "the sidebar leads with 'Search filters (n)', with no Advanced filters link (it is in the banner)" do
     response = Blacklight::Solr::Response.new({ "response" => { "docs" => [], "numFound" => 0 } }, {})
     with_controller_class(CatalogController) do
       with_request_url("/catalog?q=art&f[collection_ssim][]=A") do
@@ -182,8 +162,6 @@ class ResultsLayoutTest < ActiveSupport::TestCase
 
     assert_no_link "Advanced filters"
     assert_selector ".filter-sidebar__heading", text: "Search filters (1)"
-    assert_link "Clear all"
-    assert_no_link "Clear filters", href: /f%5B|f\[/ # the link drops the filters but keeps the search
     assert_selector "[data-controller~=filter-drawer] .filter-drawer__close"
   end
 
@@ -196,19 +174,10 @@ class ResultsLayoutTest < ActiveSupport::TestCase
     assert_includes Rails.root.join("app/javascript/search_loading.js").read, "is-searching"
   end
 
-  test "filter sections show a count badge and a summary of what is selected" do
-    template = Rails.root.join("app/components/nexus_ccs/facet_field_component.html.erb").read
-    assert_includes template, "facet-title__badge"
-    assert_includes template, "facet-summary"
-    assert_equal NexusCcs::FacetFieldComponent, Blacklight::Facets::ListComponent.new(facet_field: nil).instance_variable_get(:@layout)
-  end
-
-  test "range filters get a two-handle slider over the plugin's Begin and End fields" do
-    assert_includes Rails.root.join("app/components/nexus_ccs/facet_field_component.html.erb").read, 'data-controller="range-slider"'
-    controller = Rails.root.join("app/javascript/controllers/range_slider_controller.js").read
-    assert_includes controller, "input.range_begin"
-    assert_includes controller, "Earliest year"
-    assert_includes STYLES.join("filter_rail.css").read, ".range-slider__handle"
+  test "facets are Blacklight's own: no custom facet field or item components" do
+    config.facet_fields.each_value { |facet| assert_nil facet.item_component, facet.key }
+    assert_not defined?(NexusCcs::FacetFieldComponent)
+    assert_not defined?(NexusCcs::FacetItemComponent)
   end
 
   test "the toolbar: even pill gaps, equal flexible selects, a two-row grid with full labels on phones" do

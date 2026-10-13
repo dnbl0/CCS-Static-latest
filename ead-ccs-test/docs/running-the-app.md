@@ -84,7 +84,7 @@ Browser tests (`bin/rails test:system`) need Solr indexed at `SOLR_URL` and Chro
 
 | To change | Look in |
 |---|---|
-| The filter rail (sidebar) | `app/components/nexus_ccs/facet_field_component.*`, `app/assets/stylesheets/components/filter_rail.css` |
+| The filter sidebar | `app/components/nexus_ccs/filter_sidebar_component.*` (facets are Blacklight's own), `app/assets/stylesheets/components/filter_drawer.css` |
 | The results page layout | `app/assets/stylesheets/components/results_layout.css` |
 | The page loading screen | `app/assets/stylesheets/components/page_loader.css`, `app/javascript/page_loader.js` |
 | Facets and fields | `app/controllers/catalog_controller.rb`, `config/data_model/` |

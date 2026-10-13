@@ -176,7 +176,7 @@ dialog.modal {
   --bs-accordion-active-color: var(--uom-navy);
 }
 
-/* Facet sidebar: see components/filter_rail.css */
+/* Facet sidebar: Blacklight default facets */
 
 /* Pagination -------------------------------------- */
 .pagination {
