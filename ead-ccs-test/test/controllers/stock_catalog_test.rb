@@ -34,6 +34,18 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     assert_not_includes response.body, %(import "application")
   end
 
+  test "the details sit under an Object details heading, labelled from the CCS Field labels - Updated sheet" do
+    get "/stock/vernon-MHM00394"
+    assert_select "section[aria-labelledby=object-details-heading] > h2#object-details-heading", text: "Object details"
+    assert_operator response.body.index("Object details"), :<, response.body.index("document-metadata")
+    assert_select "dl.document-metadata dt", text: "Creator"
+    assert_select "dl.document-metadata dt", text: "Collection"
+    # the sheet's own order: Object Type (2), Creator (4), Collection (19)
+    labels = css_select("dl.document-metadata dt").map { |dt| dt.text.strip }
+    assert_equal [ "Creator", "Collection" ], labels - [ "Object Type" ]
+    assert_select "dl.document-metadata dt", text: "Related Parent Record", count: 0
+  end
+
   test "the branded page has the UoM header, breadcrumb and footer around Blacklight's own record" do
     get "/branded-stock/vernon-MHM00394"
     assert_response :success

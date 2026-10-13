@@ -14,7 +14,7 @@ class StockCatalogController < ActionController::Base
 
   # The app's helpers/blacklight_helper.rb widens the record page's container; this is the gem's own definition.
   helper do
-    def container_classes = blacklight_config.full_width_layout ? "container-fluid" : "container"
+    def container_classes = "#{blacklight_config.full_width_layout ? "container-fluid" : "container"} py-4"
   end
 
   # The gem's own views come first, so the app's overrides of them (catalog/show, shared/footer...) are not used.
@@ -35,27 +35,22 @@ class StockCatalogController < ActionController::Base
     # The viewer is the gem's own component; the subclass only gives it the record's image URLs.
     config.show.document_embed_component = StockOpenseadragonEmbedComponent
 
-    # Plain show fields, as the generator's catalog controller declares them: one per field of the CCS field labels
-    # workbook (seq # in brackets) that the data can carry today (config/data_model/solr_mapping.yml), in its order,
-    # with its labels. The title (1) is the heading. Not carried yet: Editions (9), Dimensions (11), Inscription (12),
-    # Language (13), Access (20), Source URL (23), and the DAM fields Advisory, Terms of Use, Producer (28-30).
-    config.add_show_field "object_type_ssim", label: "Object Type" # 2
-    config.add_show_field "production_date_ssim", label: "Date" # 3
-    config.add_show_field "creator_display_ssim", label: "Creator" # 4
-    config.add_show_field "associated_entity_ssim", label: "Associated Entity" # 5
-    config.add_show_field "production_place_ssim", label: "Place" # 6
-    config.add_show_field "description_tsim", label: "Description" # 7
-    config.add_show_field "series_ssim", label: "Series" # 8
-    config.add_show_field "material_ssim", label: "Material" # 10
-    config.add_show_field "cultural_group_ssim", label: "Cultural Affiliation" # 14
-    config.add_show_field "accession_number_ssim", label: "Accession Number" # 15
-    config.add_show_field "rights_ssim", label: "Copyright" # 16
-    config.add_show_field "credit_line_tsim", label: "Credit Line" # 17
-    config.add_show_field "named_collection_ssim", label: "Named Collection" # 18
-    config.add_show_field "collection_ssim", label: "Collection" # 19
-    config.add_show_field "classification_ssim", label: "Classification" # 21
-    config.add_show_field "subject_ssim", label: "Subject" # 22
-    config.add_show_field "parent_record_ssi", label: "Related Parent Record" # 24
-    config.add_show_field "licence_type_ssim", label: "Licence Type" # 27 (derived from the rights note)
+    # Plain show fields, as the generator's catalog controller declares them: one per field of the "CCS Field labels -
+    # Updated" sheet of "CCS Field labels and filters - updated - 8 October 2026.xlsx" (data/CCS-Field-labels-and-filters.xlsx,
+    # via DataModel: seq, label and order are the sheet's, the Solr field is config/data_model/solr_mapping.yml's) that
+    # the data can carry today. The title (1) is the heading, so it is not repeated; fields the data cannot carry yet
+    # (DataModel.field_gaps) are left out, and the sheet says a field with no value shows no label either.
+    DataModel.fields.select(&:available?).reject { |field| field.seq == 1 }.each do |field|
+      options = { label: field.label }
+      # Sheet 24, Related Record: "each line will be identified with a relation type (parent or child)"; the data
+      # carries the parent only.
+      options[:values] = ->(_config, document, _context) { Array(document[field.solr]).map { |value| "Parent - #{value}" } } if field.seq == 24
+      config.add_show_field field.solr, **options
+    end
+
+    # The details list under an "Object details" heading, laid out as rows of a table, from Blacklight's own
+    # components and Bootstrap's utility classes.
+    config.show.document_metadata_component = StockObjectDetailsComponent
+    config.show.document_component = StockDocumentComponent
   end
 end

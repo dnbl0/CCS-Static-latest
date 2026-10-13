@@ -1,0 +1,8 @@
+<section aria-labelledby="object-details-heading">
+  <h2 id="object-details-heading" class="h4 mb-3"><%= t("blacklight.search.show.object_details", default: "Object details") %></h2>
+  <dl class="<%= @classes.join(" ") %>">
+    <% fields.each do |field| %>
+      <%= field %>
+    <% end %>
+  </dl>
+</section>
