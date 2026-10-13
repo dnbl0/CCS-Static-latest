@@ -1,7 +1,7 @@
 /*
  * Filter drawer: below 992px the sidebar leaves the page and slides in from the left (Europeana's
- * pattern, mirrored because our sidebar is on the left): 320px wide at most, 75vw at most, 300ms, over a
- * dark scrim. Markup: NexusCcs::FilterSidebarComponent and FilterToggleComponent; behaviour:
+ * pattern, mirrored because our sidebar is on the left): 320px wide at most, 75vw at most, 300ms, over the
+ * navy scrim (the page scroll is locked by modal_lock.js). Markup: NexusCcs::FilterSidebarComponent and FilterToggleComponent; behaviour:
  * controllers/filter_drawer_controller.js.
  */
 .filters-toggle {
@@ -94,6 +94,7 @@
     max-width: 75vw;
     padding: 0 var(--ccs-space-4) var(--ccs-space-5);
     overflow-y: auto;
+    overscroll-behavior: contain;
     background: var(--ccs-white);
     box-shadow: var(--ccs-shadow-lg);
     transform: translateX(-100%);
@@ -112,7 +113,7 @@
     position: fixed;
     inset: 0;
     z-index: 1049;
-    background: rgb(0 0 0 / 70%);
+    background: var(--ccs-scrim);
     opacity: 0;
     visibility: hidden;
     transition: opacity var(--ccs-duration-slow) ease-in-out, visibility 0s linear var(--ccs-duration-slow);
@@ -122,10 +123,6 @@
     opacity: 1;
     visibility: visible;
     transition-delay: 0s;
-  }
-
-  body.filter-drawer-open {
-    overflow: hidden;
   }
 
   /* The drawer replaces the per-section "Show facets" toggles: every section is always open in it */

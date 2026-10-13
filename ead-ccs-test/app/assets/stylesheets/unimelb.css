@@ -146,6 +146,7 @@ h3, h4, h5, h6, .h3, .h4, .h5, .h6 {
 dialog.modal {
   padding: 0;
 }
+/* The Gen 3 modal look and the scroll lock are in components/modal.css */
 
 /* Home page hero (app/views/catalog/_home_text.html.erb) */
 .uom-hero {
@@ -298,8 +299,6 @@ dialog.modal {
 
 /* Interstitial dialog ----------------------------- */
 .uom-dialog {
-  --bs-modal-border-radius: var(--uom-panel-radius);
-  --bs-modal-border-width: 0;
   --bs-modal-width: 520px;
 }
 
@@ -328,13 +327,7 @@ color: var(--uom-link-hover);
 /* Acknowledgement of Country -------------------- */
 
 #country-acknowledgement {
-  --bs-modal-border-radius: var(--uom-radius);
-  --bs-modal-border-width: 0;
   --bs-modal-width: 620px;
-}
-
-#country-acknowledgement .modal-content {
-  box-shadow: 0 12px 32px rgba(0, 15, 70, 0.28);
 }
 
 .uom-ack-quote {

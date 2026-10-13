@@ -208,7 +208,6 @@
     if (!pop) return;
     lastSearchTrigger = trigger || null;
     pop.classList.add('is-open');
-    document.body.style.overflow = 'hidden';
     var input = document.getElementById('uom-search-overlay-input');
     if (input) input.focus();
   }
@@ -216,8 +215,7 @@
     var pop = document.getElementById('uom-search-popover');
     if (!pop) return;
     pop.classList.remove('is-open');
-    document.body.style.overflow = '';
-    if (lastSearchTrigger) lastSearchTrigger.focus();
+    if (lastSearchTrigger) lastSearchTrigger.focus({ preventScroll: true });   // back to the opener without moving the page
   }
 
   document.addEventListener('click', function(e){
@@ -491,7 +489,7 @@
     <div class="record-req-title" ref="{{ dialogRef }}" role="dialog" aria-modal="true" aria-labelledby="req-title" onClick="{{ stopProp }}" onKeyDown="{{ reqKey }}">
       <div class="record-req-title__group record-req-title__group--v2">
         <div class="record-req-title__group record-req-title__group--v1"><h2 class="record-req-title__heading" id="req-title" tabindex="-1">{{ reqTitle }}</h2><span class="record-req-title__text record-req-title__text--v1">{{ rec.title }} · {{ rec.unit }}</span></div>
-        <button class="record-req-title__button-close-req record-req-title__button-close-req--v2" onClick="{{ closeReq }}" aria-label="Close"><svg class="record-req-title__button-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--col-text-primary)" stroke-width="2.6"><line x1="5" y1="5" x2="19" y2="19"></line><line x1="19" y1="5" x2="5" y2="19"></line></svg></button>
+        <button class="record-req-title__button-close-req record-req-title__button-close-req--v2" onClick="{{ closeReq }}" ><svg class="record-req-title__button-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true" focusable="false"><line x1="5" y1="5" x2="19" y2="19"></line><line x1="19" y1="5" x2="5" y2="19"></line></svg><span class="record-req-title__button-label">Close</span></button>
       </div>
       <sc-if value="{{ reqForm }}">
         <form class="record-req-title__form-submit-req" onSubmit="{{ submitReq }}">
@@ -610,6 +608,7 @@ class Component extends DCLogic {
     this.onFs = () => this.setState({ full: !!(document.fullscreenElement || document.webkitFullscreenElement) });
     this.onKey = e => {
       if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.altKey) return;
+      if (e.key === 'Escape' && this.state.req) { e.preventDefault(); this.closeReqDlg(); return; }   // the request dialog closes on Escape wherever focus is
       const t = e.target, tag = t && t.tagName;
       if (['INPUT', 'TEXTAREA', 'SELECT'].includes(tag) || (t && t.isContentEditable)) return;
       const v = this.viewerRef.current;
@@ -665,7 +664,7 @@ class Component extends DCLogic {
     this.setState({ req: null, reqSent: false });
     setTimeout(() => {
       const o = this.reqOpener && document.contains(this.reqOpener) ? this.reqOpener : null;
-      if (o) o.focus();
+      if (o) o.focus({ preventScroll: true });   // back to the opener without moving the page
       this.reqOpener = null;
     }, 30);
   }

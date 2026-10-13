@@ -1,7 +1,8 @@
 import { Controller } from "@hotwired/stimulus"
+import { lockScroll, unlockScroll } from "modal_lock"
 
 // The results sidebar as an off-canvas drawer below 992px (from 992px it is an ordinary column and this
-// does nothing). Opening locks page scroll, shows a scrim, moves focus into the drawer and keeps Tab
+// does nothing). Opening locks page scroll (modal_lock.js), shows a scrim, moves focus into the drawer and keeps Tab
 // inside it; Escape, the Close button or the scrim close it and focus returns to the Filters button.
 const MOBILE = "(max-width: 991.98px)"
 const FOCUSABLE = "a[href], button:not([disabled]), input:not([disabled]), select, textarea, [tabindex]:not([tabindex='-1'])"
@@ -24,7 +25,7 @@ export default class extends Controller {
   disconnect() {
     this.query.removeEventListener("change", this.onWidthChange)
     this.backdrop.remove()
-    document.body.classList.remove("filter-drawer-open")
+    unlockScroll(this)
   }
 
   open(event) {
@@ -32,7 +33,7 @@ export default class extends Controller {
     this.opener = event.detail?.opener || document.activeElement
     this.sidebar.classList.add("is-open")
     this.backdrop.classList.add("is-open")
-    document.body.classList.add("filter-drawer-open")
+    lockScroll(this)
     this.sidebar.setAttribute("role", "dialog")
     this.sidebar.setAttribute("aria-modal", "true")
     this.sidebar.setAttribute("aria-labelledby", "filter-drawer-title")
@@ -44,12 +45,12 @@ export default class extends Controller {
     if (!this.isOpen) return
     this.sidebar.classList.remove("is-open")
     this.backdrop.classList.remove("is-open")
-    document.body.classList.remove("filter-drawer-open")
+    unlockScroll(this)
     this.sidebar.removeAttribute("role")
     this.sidebar.removeAttribute("aria-modal")
     this.sidebar.removeAttribute("aria-labelledby")
     this.element.removeEventListener("keydown", this.onKeydown)
-    if (restoreFocus) this.opener?.focus()
+    if (restoreFocus) this.opener?.focus({ preventScroll: true })
   }
 
   escape() {
