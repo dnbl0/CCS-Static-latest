@@ -68,3 +68,11 @@ removed (2026-10-13) to match stock Blacklight, per https://catalogue.nla.gov.au
 reference for what "default" should look like. `test/models/search_builder_test.rb` keeps one test of
 Blacklight's own `must_not` query building (a real capability of the search builder, just never exposed by the
 stock form), in case a future UI needs it — nothing in this app builds a must_not clause today.
+
+## Facets are stock Blacklight
+
+The results sidebar renders Blacklight's own `Blacklight::FacetComponent` for every facet, and each facet is
+plain config (label, group, limit, `index_range`, range limit plugin for years, one query facet for digital
+assets). There is no custom facet component, filter query builder (multiple values in one facet combine the
+default way: AND), `{!tag}/{!ex}` self-exclusion, or hand-built range slider/histogram. Only the styling
+(`unimelb.css`) differs. `test/controllers/catalog_configuration_test.rb` guards the config.
