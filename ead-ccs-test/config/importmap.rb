@@ -2,6 +2,8 @@
 pin "application"
 pin "search_loading"
 pin "page_loader"
+pin "stock_application"
+pin "branded_stock_application"
 pin "@hotwired/turbo-rails", to: "turbo.min.js"
 pin "@hotwired/stimulus", to: "stimulus.min.js"
 pin "@hotwired/stimulus-loading", to: "stimulus-loading.js"
@@ -15,3 +17,5 @@ pin "@github/combobox-nav", to: "combobox-nav.js"
 # jsDelivr ES builds so the site makes no CDN requests; update versions together.
 pin "chart.js", to: "chart.js"
 pin "@kurkle/color", to: "kurkle-color.js"
+# OpenSeadragon (vendored ES module); its Rails glue ("openseadragon-rails") is pinned by the openseadragon gem
+pin "openseadragon", to: "openseadragon.js"
