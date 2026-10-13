@@ -37,7 +37,7 @@
         </div>
 
         <ul>
-          <li><%= link_to "Search all records", all_records_path, aria: { current: (helpers.current_page?(all_records_path) ? "page" : nil) } %></li>
+          <li><%= link_to "Search all records", all_records_link_path, aria: { current: (helpers.current_page?(all_records_path) ? "page" : nil) } %></li>
 
           <li>
             <button type="button" class="site-nav__trigger" aria-expanded="false" aria-controls="site-nav-collections"
