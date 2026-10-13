@@ -11,34 +11,23 @@ module CatalogConfig
       # data cannot support yet (see config/data_model/solr_mapping.yml) is simply not offered.
       DataModel.filters.select(&:available?).each do |filter|
         # In the search results design but not in the workbook: Creator role sits above Creator name.
-        config.add_facet_field "creator_role_ssim", label: "Creator role", group: filter.group, limit: 20, index_range: "A".."Z", item_component: NexusCcs::FacetItemComponent if filter.seq == 3
+        config.add_facet_field "creator_role_ssim", label: "Creator role", group: filter.group, limit: 20, index_range: "A".."Z" if filter.seq == 3
 
         options = { label: filter.name, group: filter.group }
         case filter.type
-        when :year then options[:range] = { chart_js: false, textual_facets: false } # our own histogram, see range_histogram
-        when :checkbox then options.merge!(limit: nil, item_component: NexusCcs::FacetItemComponent)
-        else options.merge!(limit: 20, index_range: "A".."Z", item_component: NexusCcs::FacetItemComponent)   # browse, with "search within this filter" in the modal
+        when :year then options[:range] = true # the range limit plugin's own form and histogram
+        when :checkbox then options.merge!(limit: nil)
+        else options.merge!(limit: 20, index_range: "A".."Z")   # browse, with "search within this filter" in the modal
         end
         config.add_facet_field filter.solr, **options
       end
 
       # CCS-41: show results with or without digital assets. Not in the workbook's filter list, so it is
       # an addition from the Jira story; it sits with the Media type filters.
-      config.add_facet_field "has_digital_asset", label: "Digital asset", group: "media_type", item_component: NexusCcs::FacetItemComponent, query: {
+      config.add_facet_field "has_digital_asset", label: "Digital asset", group: "media_type", query: {
         with: { label: "With a digital asset", fq: "has_digital_asset_bsi:true" },
         without: { label: "Without a digital asset", fq: "-has_digital_asset_bsi:true" }
       }
-
-      # Self-excluding facets. Tag each facet's fq and have that same facet's counts ignore it
-      # (Solr {!tag}/{!ex} local params). Range facets build their own filters and query facets pass
-      # their fq through verbatim, so both are skipped.
-      config.facet_fields.each_value do |facet|
-        next if facet.range || facet.query
-
-        facet.tag = facet.key
-        facet.ex  = facet.key
-        facet.filter_query_builder = OrFilterQueryBuilder
-      end
 
       config.add_facet_fields_to_solr_request!
     end
