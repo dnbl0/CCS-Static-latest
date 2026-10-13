@@ -27,6 +27,13 @@ class StockCatalogController < ActionController::Base
   configure_blacklight do |config|
     config.show.title_field = "title_tsim"
     config.show.display_type_field = "format"
+    # The record's digital asset, as Blacklight's own thumbnail on the record page (a plain <img>, no viewer script).
+    # The show view has no thumbnail component by default, so Blacklight's own is named.
+    config.show.document_thumbnail_component = Blacklight::Document::ThumbnailComponent
+    # The thumbnail links to its record through search-session tracking, which this page has no route for:
+    # the real catalog's does the same job.
+    config.track_search_session.url_helper = "track_catalog_path"
+    config.show.thumbnail_field = :thumbnail_path_ssi
 
     # Plain show fields, as the generator's catalog controller declares them: one per field of the CCS field labels
     # workbook (seq # in brackets) that the data can carry today (config/data_model/solr_mapping.yml), in its order,

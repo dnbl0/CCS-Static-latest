@@ -4,7 +4,7 @@ require "test_helper"
 # the document is handed to the controller.
 class StockCatalogTest < ActionDispatch::IntegrationTest
   DOC = SolrDocument.new("id" => "vernon-MHM00394", "title_tsim" => [ "Test record" ], "format" => [ "Image" ],
-    "creator_display_ssim" => [ "Someone" ], "collection_ssim" => [ "Museum" ],
+    "creator_display_ssim" => [ "Someone" ], "collection_ssim" => [ "Museum" ], "thumbnail_path_ssi" => "/digital-assets/thumbs/mhm00394.jpg",
     "response" => nil).tap { |doc| doc.instance_variable_set(:@response, Blacklight::Solr::Response.new({ "response" => { "docs" => [] } }, {})) }
 
   FakeService = Struct.new(:doc) do
@@ -24,6 +24,7 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     assert_select "main#main-container.container"
     assert_select "#document.document h1"
     assert_select "dl.document-metadata"
+    assert_select "#document img[src*=mhm00394]"
     assert_select ".site-header, .record-banner, .record-summary, .digital-assets, .persistent-link", false
     assert_select "link[href*='stock_blacklight']"
     assert_includes response.body, %(import "stock_application")
