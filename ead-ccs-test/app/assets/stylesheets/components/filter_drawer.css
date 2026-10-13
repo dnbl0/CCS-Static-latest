@@ -144,3 +144,34 @@
     transition: none;
   }
 }
+
+/*
+ * Filter sidebar spacing: the heading, each facet group and the accordion rows sit on one 24px side inset
+ * (matching the results column's top padding) with a 24px rhythm between groups. In the drawer (below 992px)
+ * #sidebar already pads itself, so the extra inset applies from 992px only.
+ */
+.filter-sidebar__summary {
+  margin-bottom: var(--ccs-space-4);
+}
+
+.filter-sidebar__heading {
+  margin: 0;
+}
+
+.filter-sidebar .facets {
+  margin-bottom: var(--ccs-space-5);
+}
+
+.filter-sidebar .facets:last-child {
+  margin-bottom: 0;
+}
+
+.filter-sidebar .facets-heading {
+  margin-bottom: var(--ccs-space-3);
+}
+
+@media (min-width: 992px) {
+  .filter-sidebar {
+    padding: var(--ccs-space-4) var(--ccs-space-5) var(--ccs-space-8);
+  }
+}
