@@ -80,6 +80,8 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     assert_equal false, config["showHomeControl"]
     assert_nil config["zoomInButton"]
     assert_equal true, config.key?("fullPageButton")
+  end
+
   test "the record has the full width: no empty sidebar column, even with view annotations on" do
     get "/branded-stock/vernon-MHM00394"
     assert_select "#sidebar", false
