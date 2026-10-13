@@ -18,13 +18,20 @@ module NexusCcs
       when "catalog"
         case helpers.action_name
         when "index" then helpers.has_search_parameters? ? [ [ "Search results", nil ] ] : []
-        when "show" then [ [ "Search results", search_action_url ], [ record_title, nil ] ]
+        when "show" then [ [ "Search results", results_url ], [ record_title, nil ] ]
         when "advanced_search" then [ [ "Advanced search", nil ] ]
         else []
         end
       when "bookmarks" then [ [ I18n.t("nexus_ccs.saved.list_title"), nil ] ]
       else []
       end
+    end
+
+    # Back to the visitor's last search; with none, the records that have a digital asset as the mosaic (a bare
+    # /catalog goes to the home page).
+    def results_url
+      params = helpers.current_search_session&.query_params.presence
+      search_action_url(params || { f: { has_digital_asset: [ "with" ] }, search_field: "all_fields", view: "masonry" })
     end
 
     # The saved-records bar sits in the breadcrumb strip. A page with no breadcrumb (the home page, the bare search

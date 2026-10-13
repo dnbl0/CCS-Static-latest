@@ -62,7 +62,7 @@ class ResultsLayoutTest < ActiveSupport::TestCase
     assert_no_match(/auto-fill/, css.gsub(%r{/\*.*?\*/}m, ""), "auto-fill breaks the polyfill")
   end
 
-  test "below 992px the sidebar is a drawer that slides from the left, 320px at most and 75vw at most" do
+  test "below 992px the sidebar is a drawer that slides from the left, 352px at most and 88vw at most" do
     css = STYLES.join("filter_drawer.css").read
 
     drawer = css[/@media \(max-width: 991\.98px\) \{.*?\n  #sidebar \{(.*?)\n  \}/m, 1]
@@ -70,8 +70,8 @@ class ResultsLayoutTest < ActiveSupport::TestCase
     assert_includes drawer, "position: fixed;"
     assert_includes drawer, "inset: 0 auto 0 0;" # the left edge
     assert_includes drawer, "z-index: 1050;"
-    assert_includes drawer, "width: 20rem;"
-    assert_includes drawer, "max-width: 75vw;"
+    assert_includes drawer, "width: 22rem;"
+    assert_includes drawer, "max-width: 88vw;"
     assert_includes drawer, "transform: translateX(-100%);"
     assert_includes css, "rgb(0 0 0 / 70%)"
   end

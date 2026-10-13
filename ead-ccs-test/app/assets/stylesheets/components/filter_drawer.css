@@ -90,9 +90,9 @@
     position: fixed;
     inset: 0 auto 0 0;
     z-index: 1050; /* above the site header (1040), below modals */
-    width: 20rem;
-    max-width: 75vw;
-    padding: 0 var(--ccs-space-4) var(--ccs-space-5);
+    width: 22rem;
+    max-width: 88vw;
+    padding: 0 var(--ccs-space-4) var(--ccs-space-6);
     overflow-y: auto;
     background: var(--ccs-white);
     box-shadow: var(--ccs-shadow-lg);
@@ -126,6 +126,55 @@
 
   body.filter-drawer-open {
     overflow: hidden;
+  }
+
+  /* Spacing and type inside the drawer: smaller headings, even gaps between sections, one border between filters */
+  #sidebar .filter-sidebar__summary {
+    min-height: 0;
+    padding: 0;
+    border-bottom: 0;
+    margin-bottom: var(--ccs-space-5);
+  }
+
+  #sidebar .filter-sidebar__heading {
+    margin: 0;
+    font-size: var(--ccs-font-size-xl);
+    line-height: 1.3;
+  }
+
+  #sidebar .facets {
+    margin-bottom: var(--ccs-space-6);
+  }
+
+  #sidebar .facets:last-child {
+    margin-bottom: 0;
+  }
+
+  #sidebar .facets-heading {
+    margin: 0 0 var(--ccs-space-2);
+    font-size: var(--ccs-font-size-lg);
+    line-height: 1.3;
+  }
+
+  #sidebar .facets-header {
+    height: auto;
+  }
+
+  #sidebar .accordion-item + .accordion-item {
+    border-top: 0;
+  }
+
+  #sidebar .accordion-button {
+    min-height: 3rem;
+    padding: var(--ccs-space-3) var(--ccs-space-4);
+  }
+
+  #sidebar .accordion-body {
+    padding: var(--ccs-space-3) var(--ccs-space-4);
+  }
+
+  #sidebar .facet-values li {
+    padding-block: var(--ccs-space-1);
   }
 
   /* The drawer replaces the per-section "Show facets" toggles: every section is always open in it */
