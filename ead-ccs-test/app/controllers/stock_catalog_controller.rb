@@ -25,7 +25,13 @@ class StockCatalogController < ActionController::Base
 
   # This page has no search of its own: the search box and "Back to search" go to the real catalog, the same way
   # the gem's own Blacklight::Bookmarks does.
-  def search_action_url(*) = search_catalog_url(*)
+  # (Blacklight adds only_path to the options of search_action_path; the catalog's own helpers do not take it.)
+  def search_action_url(options = {}) = search_catalog_url(search_action_options(options))
+
+  def search_action_path(options = {}) = search_catalog_path(search_action_options(options))
+
+  def search_action_options(options) = (options.respond_to?(:to_h) ? options.to_h : {}).except(:only_path, :controller, :action)
+  private :search_action_options
 
   configure_blacklight do |config|
     config.show.title_field = "title_tsim"
@@ -45,12 +51,30 @@ class StockCatalogController < ActionController::Base
     # of text". Other fields list each value on its own line, Blacklight's default (Related Record (24) says so too).
     joins = { 3 => "; ", 6 => ", ", 21 => " - " }
 
+    # Classification (21) and Subject (22): "preferred" as links that search for records with that value. Blacklight's
+    # own link_to_facet needs the field to be a facet; these are not shown (the record page has no facet sidebar), they
+    # only tell link_to_facet where the link goes: the real catalog's filters of the same name.
+    links = [ 21, 22 ]
+    config.add_facet_field "classification_ssim", label: "Classification", show: false
+    config.add_facet_field "subject_ssim", label: "Subject", show: false
+
     DataModel.fields.select(&:available?).reject { |field| field.seq == 1 }.each do |field|
       options = { label: field.label }
+      options[:link_to_facet] = true if links.include?(field.seq)
       options[:separator_options] = { words_connector: joins[field.seq], two_words_connector: joins[field.seq], last_word_connector: joins[field.seq] } if joins[field.seq]
       # Sheet 24, Related Record: "each line will be identified with a relation type (parent or child)"; the data
       # carries the parent only.
       options[:values] = ->(_config, document, _context) { Array(document[field.solr]).map { |value| "Parent - #{value}" } } if field.seq == 24
+      # Sheet 4, Creator: a person is "Full name (b. <born> - d. <died>) role". The exports have no person/organisation
+      # flag and no nationality, so only a name in EMu's person form ("Family, Given") is given the sheet's "b."/"d."
+      # form; an organisation's "(estab. - closed)" needs a flag the data lacks, and so keeps its plain "(from - to)".
+      if field.seq == 4
+        options[:values] = lambda do |_config, document, _context|
+          Array(document[field.solr]).map do |creator|
+            creator.include?(",") ? creator.sub(/\(([^()]+?) \u2013 ([^()]+?)\)/, '(b. \\1 - d. \\2)') : creator
+          end
+        end
+      end
       config.add_show_field field.solr, **options
     end
 

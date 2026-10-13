@@ -4,7 +4,8 @@ require "test_helper"
 # the document is handed to the controller.
 class StockCatalogTest < ActionDispatch::IntegrationTest
   DOC = SolrDocument.new("id" => "vernon-MHM00394", "title_tsim" => [ "Test record" ], "format" => [ "Image" ],
-    "creator_display_ssim" => [ "Someone" ], "collection_ssim" => [ "Museum" ], "production_place_ssim" => [ "Paris", "France" ],
+    "creator_display_ssim" => [ "Dolmetsch, Arnold (24 February 1858 \u2013 28-Feb-40) Creator", "Estey Organ Company (1852 \u2013 1961) Maker" ],
+    "subject_ssim" => [ "Music" ], "collection_ssim" => [ "Museum" ], "production_place_ssim" => [ "Paris", "France" ],
     "classification_ssim" => [ "Primary", "Secondary" ], "digital_asset_large_paths_ssim" => [ "/digital-assets/large/mhm00394.jpg" ],
     "response" => nil).tap { |doc| doc.instance_variable_set(:@response, Blacklight::Solr::Response.new({ "response" => { "docs" => [] } }, {})) }
 
@@ -43,10 +44,16 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     assert_operator response.body.index("Object details"), :<, response.body.index("document-metadata")
     assert_select "dl.document-metadata dt", text: "Creator"
     assert_select "dl.document-metadata dt", text: "Collection"
-    # the sheet's own order: Object Type (2), Creator (4), Place (6), Collection (19), Classification (21)
+    # the sheet's own order: Object Type (2), Creator (4), Place (6), Collection (19), Classification (21), Subject (22)
     labels = css_select("dl.document-metadata dt").map { |dt| dt.text.strip }
-    assert_equal [ "Creator", "Place", "Collection", "Classification" ], labels - [ "Object Type" ]
+    assert_equal [ "Creator", "Place", "Collection", "Classification", "Subject" ], labels - [ "Object Type" ]
     assert_select "dl.document-metadata dt", text: "Related Parent Record", count: 0
+    # Creator: a person (EMu's "Family, Given") gets the sheet's b./d. form; an organisation keeps its plain dates
+    assert_select "dl.document-metadata dd.blacklight-creator_display_ssim", text: "Dolmetsch, Arnold (b. 24 February 1858 - d. 28-Feb-40) Creator"
+    assert_select "dl.document-metadata dd.blacklight-creator_display_ssim", text: "Estey Organ Company (1852 \u2013 1961) Maker"
+    # Classification and Subject are links to the real catalog's filters
+    assert_select "dd.blacklight-classification_ssim a[href^='/catalog'][href*='f%5Bclassification_ssim%5D%5B%5D=']", 2
+    assert_select "dd.blacklight-subject_ssim a[href^='/catalog'][href*='f%5Bsubject_ssim%5D%5B%5D=Music']", 1
     # the sheet's joins: Place "with a comma", Classification hyphenated on one line
     assert_select "dl.document-metadata dd.blacklight-production_place_ssim", text: "Paris, France"
     assert_select "dl.document-metadata dd.blacklight-classification_ssim", text: "Primary - Secondary"
