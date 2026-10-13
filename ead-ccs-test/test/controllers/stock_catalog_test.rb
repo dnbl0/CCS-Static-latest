@@ -42,22 +42,30 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
 
   test "the details sit under an Object details heading, labelled from the CCS Field labels - Updated sheet" do
     get "/stock/vernon-MHM00394"
-    # Europeana's item page: the title, who provides the item, then two tabs of fields. "Good to know" (creator, date, place,
-    # object type, collection) and "All metadata" (every sheet field the record has a value for, in the sheet's order); a
-    # field with no value has no row, and the title (the heading) is not repeated
+    # Europeana's item page: the title, who provides the item, then four tabs. "Good to know" (creator, date, place, object type,
+    # collection), "Object details" (every other sheet field the record has a value for, in the sheet's order), "Copyright"
+    # (the caption, credit line, copyright, licence, advisory and terms of use) and "Permalink"; a field with no value has no
+    # row, and the title (the heading) is not repeated
     assert_select "#document h1", text: "Test record"
-    assert_select ".nav-tabs button[data-bs-target='#good-to-know-pane']", text: "Good to know"
-    assert_select ".nav-tabs button[data-bs-target='#all-metadata-pane']", text: "All metadata"
+    %w[good-to-know object-details copyright permalink].each { |id| assert_select ".nav-tabs button[data-bs-target='##{id}-pane']" }
     good = css_select("#good-to-know-pane th").map { |th| th.text.strip }
-    all = css_select("#all-metadata-pane th").map { |th| th.text.strip }
+    details = css_select("#object-details-pane th").map { |th| th.text.strip }
+    copyright = css_select("#copyright-pane th").map { |th| th.text.strip }
     assert_equal [ "Creator", "Place", "Collection" ], good
-    assert_equal [ "Creator", "Place", "Copyright", "Credit Line", "Collection", "Classification", "Subject", "Licence Type", "Advisory", "Terms of Use", "Caption" ], all
+    assert_equal [ "Creator", "Place", "Collection", "Classification", "Subject" ], details
+    assert_equal [ "Copyright", "Credit Line", "Licence Type", "Advisory", "Terms of Use", "Caption" ], copyright
+    assert_select "#copyright-pane a[href='/help#copyright']", text: "About copyright and terms of use"
+    # the permalink: the record's page in the site's catalog, a copy button, the accession-number note and a link to the record
+    assert_select "#permalink-pane input[readonly][value$='/catalog/vernon-MHM00394']"
+    assert_select "#permalink-pane button[data-action='clipboard#copy']", text: "Copy link"
+    assert_select "#permalink-pane a[href$='/catalog/vernon-MHM00394']", text: "View full record"
     assert_select "p", text: /provided and maintained by\s*Museum/
     assert_select "section[aria-labelledby=related-collections-heading] a[href^='/catalog'][href*='collection_ssim']", minimum: 1
-    # the viewer is on a full-width black stage above the page's container, the rights badge and pager in the row under it
+    # the viewer is on a full-width black stage above the page's container, a black bar of controls under it; the licence badge is in the page
     assert_select "div.bg-black .openseadragon-container picture.osd-image"
+    assert_select "div.bg-black .osd-toolbar a[id$=-full-page]"
     assert_operator response.body.index("bg-black"), :<, response.body.index('id="main-container"')
-    assert_select ".osd-toolbar .badge", text: "Copyright - Current"
+    assert_select "#main-container .badge", text: "Copyright - Current"
     # the Copyright card's data is in the table: copyright, credit line, licence, terms of use, advisory, caption
     assert_select "td.blacklight-rights_ssim", text: "[Copyright - Current] Used with permission."
     assert_select "td.blacklight-credit_line_tsim", text: "Gift of Someone, 1970"
@@ -76,8 +84,8 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     assert_select "table.document-metadata td.blacklight-production_place_ssim", text: "Paris, France"
     assert_select "table.document-metadata td.blacklight-classification_ssim", text: "Primary - Secondary"
     # a Bootstrap table that scrolls sideways when narrow, a row header per field, label left and value right
-    assert_select ".table-responsive > table.table.document-metadata"
-    assert_select "td.text-end", minimum: 1
+    assert_select ".table-responsive > table.table.table-borderless.document-metadata"
+    assert_select "td.border-bottom", minimum: 1
     assert_select "table.document-metadata th[scope=row]", minimum: 1
     assert_select "table.document-metadata th:not([scope=row])", false
   end

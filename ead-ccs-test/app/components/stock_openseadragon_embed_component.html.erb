@@ -1,22 +1,20 @@
-<%# The viewer goes to the layout's full-width black stage (content_for :hero); what is drawn here, in the page, is the row under it: the rights badge on the left, the pager and full page on the right. %>
+<%# Goes to the layout's full-width black stage (content_for :hero): the viewer, and under it a black control bar (previous, "1 of 10", next, full page) as Europeana's viewer has. What is drawn here, in the page, is the row under the stage: the licence badge. %>
 <% hero = capture do %>
   <div class="openseadragon-container">
     <%= helpers.openseadragon_picture_tag image, class: 'osd-image d-block border-0 bg-black', style: 'height: 560px', data: { openseadragon: count > 1 ? osd_config_referencestrip.merge(osd_config) : osd_config } %>
+    <div id="<%= @id_prefix %>-toolbar" class="osd-toolbar bg-black d-flex flex-wrap justify-content-center align-items-center gap-3 py-2">
+      <% if count > 1 %>
+        <a id="<%= @id_prefix %>-previous" role="button" class="btn btn-light btn-sm py-0" title="Previous image"><%= render Blacklight::Gallery::Icons::ChevronLeftComponent.new %></a>
+        <span class="text-white"><span id="<%= @id_prefix %>-page" aria-live="polite">1</span> of <%= count %></span>
+        <a id="<%= @id_prefix %>-next" role="button" class="btn btn-light btn-sm py-0" title="Next image"><%= render Blacklight::Gallery::Icons::ChevronRightComponent.new %></a>
+      <% end %>
+      <a id="<%= @id_prefix %>-full-page" role="button" class="btn btn-light btn-sm py-0" title="Full screen"><%= render Blacklight::Gallery::Icons::CustomFullscreenComponent.new %></a>
+    </div>
   </div>
 <% end %>
 <% helpers.content_for(:hero, hero) %>
-<div id="<%= @id_prefix %>-toolbar" class="osd-toolbar row mx-0 gx-0 align-items-center justify-content-between py-3">
-  <div class="col-auto">
-    <% if rights_text.present? %>
-      <span class="badge rounded-pill text-bg-light border fw-normal px-3 py-2"><%= rights_text %></span>
-    <% end %>
+<% if rights_text.present? %>
+  <div class="py-3">
+    <span class="badge rounded-pill text-bg-light border fw-normal px-3 py-2"><%= rights_text %></span>
   </div>
-  <div class="col-auto d-flex align-items-center gap-2">
-    <% if count > 1 %>
-      <a id="<%= @id_prefix %>-previous" role="button"><%= render Blacklight::Gallery::Icons::ChevronLeftComponent.new %></a>
-      <span><span id="<%= @id_prefix %>-page" aria-live="polite">1</span> of <%= count %></span>
-      <a id="<%= @id_prefix %>-next" role="button"><%= render Blacklight::Gallery::Icons::ChevronRightComponent.new %></a>
-    <% end %>
-    <a id="<%= @id_prefix %>-full-page" role="button"><%= render Blacklight::Gallery::Icons::CustomFullscreenComponent.new %></a>
-  </div>
-</div>
+<% end %>
