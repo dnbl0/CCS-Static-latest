@@ -175,7 +175,7 @@ class ResultsLayoutTest < ActiveSupport::TestCase
   end
 
   test "facets are Blacklight's own: no custom facet field or item components" do
-    config.facet_fields.each_value { |facet| assert_nil facet.item_component, facet.key }
+    config.facet_fields.each_value { |facet| assert_equal Blacklight::Facets::ItemComponent, facet.item_component, facet.key }
     assert_not defined?(NexusCcs::FacetFieldComponent)
     assert_not defined?(NexusCcs::FacetItemComponent)
   end
