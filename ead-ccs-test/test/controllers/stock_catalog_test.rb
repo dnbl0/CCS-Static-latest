@@ -71,6 +71,17 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     assert_select "dl.document-metadata dt:not(.text-md-start)", false
   end
 
+  test "the viewer toolbar has full page but no zoom in, zoom out or home" do
+    get "/stock/vernon-MHM00394"
+    assert_select ".osd-toolbar a[id$=-full-page]", 1
+    assert_select ".osd-toolbar a[id$=-zoom-in], .osd-toolbar a[id$=-zoom-out], .osd-toolbar a[id$=-home]", false
+    config = JSON.parse(css_select("[data-openseadragon]").first["data-openseadragon"])
+    assert_equal false, config["showZoomControl"]
+    assert_equal false, config["showHomeControl"]
+    assert_nil config["zoomInButton"]
+    assert_equal true, config.key?("fullPageButton")
+  end
+
   test "the record has the full width: no empty sidebar column, even with view annotations on" do
     get "/branded-stock/vernon-MHM00394"
     assert_select "#sidebar", false
