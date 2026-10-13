@@ -4,7 +4,8 @@ require "test_helper"
 # the document is handed to the controller.
 class StockCatalogTest < ActionDispatch::IntegrationTest
   DOC = SolrDocument.new("id" => "vernon-MHM00394", "title_tsim" => [ "Test record" ], "format" => [ "Image" ],
-    "creator_display_ssim" => [ "Someone" ], "collection_ssim" => [ "Museum" ], "digital_asset_large_paths_ssim" => [ "/digital-assets/large/mhm00394.jpg" ],
+    "creator_display_ssim" => [ "Someone" ], "collection_ssim" => [ "Museum" ], "production_place_ssim" => [ "Paris", "France" ],
+    "classification_ssim" => [ "Primary", "Secondary" ], "digital_asset_large_paths_ssim" => [ "/digital-assets/large/mhm00394.jpg" ],
     "response" => nil).tap { |doc| doc.instance_variable_set(:@response, Blacklight::Solr::Response.new({ "response" => { "docs" => [] } }, {})) }
 
   FakeService = Struct.new(:doc) do
@@ -24,11 +25,8 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     assert_select "main#main-container.container"
     assert_select "#document.document h1"
     assert_select "dl.document-metadata"
-    # spacing and table rows come from Bootstrap utility classes through Blacklight's own options
     assert_select "main#main-container.py-4"
-    assert_select "h1.mb-4"
-    assert_select "dl.document-metadata.border-top dt.border-bottom.py-2"
-    assert_select "dl.document-metadata dd.border-bottom.py-2.mb-0"
+    assert_select "header .py-4", false # the header shares container_classes; it must not be padded
     assert_select "#document .openseadragon-container picture[data-openseadragon] source[media=openseadragon]", 1
     assert_includes response.body, "/digital-assets/large/mhm00394.jpg"
     # the viewer comes before the details
@@ -37,6 +35,24 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     assert_select "link[href*='stock_blacklight']"
     assert_includes response.body, %(import "stock_application")
     assert_not_includes response.body, %(import "application")
+  end
+
+  test "the details sit under an Object details heading, labelled from the CCS Field labels - Updated sheet" do
+    get "/stock/vernon-MHM00394"
+    assert_select "section[aria-labelledby=object-details-heading] > h2#object-details-heading", text: "Object details"
+    assert_operator response.body.index("Object details"), :<, response.body.index("document-metadata")
+    assert_select "dl.document-metadata dt", text: "Creator"
+    assert_select "dl.document-metadata dt", text: "Collection"
+    # the sheet's own order: Object Type (2), Creator (4), Place (6), Collection (19), Classification (21)
+    labels = css_select("dl.document-metadata dt").map { |dt| dt.text.strip }
+    assert_equal [ "Creator", "Place", "Collection", "Classification" ], labels - [ "Object Type" ]
+    assert_select "dl.document-metadata dt", text: "Related Parent Record", count: 0
+    # the sheet's joins: Place "with a comma", Classification hyphenated on one line
+    assert_select "dl.document-metadata dd.blacklight-production_place_ssim", text: "Paris, France"
+    assert_select "dl.document-metadata dd.blacklight-classification_ssim", text: "Primary - Secondary"
+    # labels are left-aligned: Blacklight's .dl-invert right-aligns them, Bootstrap's text-md-start overrides it
+    assert_select "dl.document-metadata dt.text-md-start", minimum: 1
+    assert_select "dl.document-metadata dt:not(.text-md-start)", false
   end
 
   test "the branded page has the UoM header, breadcrumb and footer around Blacklight's own record" do

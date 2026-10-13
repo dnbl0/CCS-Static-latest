@@ -7,10 +7,10 @@
 class StockOpenseadragonEmbedComponent < Blacklight::Gallery::OpenseadragonEmbedComponent
   IMAGES_FIELD = "digital_asset_large_paths_ssim"
 
-  # col-12 (the viewer's toolbar and image are Bootstrap rows, which need a column around them to line up with the
-  # title) and a bottom margin, both Bootstrap utilities.
+  # col-12: the viewer's toolbar and image are Bootstrap rows, which need a column around them to line up with the
+  # title. The spacing around it is StockDocumentComponent's stack.
   def initialize(presenter:, view_config: nil, classes: [], **kwargs)
-    super(presenter: presenter, view_config: view_config, classes: classes + %w[col-12 mb-4], **kwargs)
+    super(presenter: presenter, view_config: view_config, classes: classes + %w[col-12], **kwargs)
   end
 
   def image
