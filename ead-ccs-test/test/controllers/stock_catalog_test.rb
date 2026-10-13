@@ -27,7 +27,7 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "main#main-container.container"
     assert_select "#document.document h1"
-    assert_select "dl.document-metadata"
+    assert_select "table.document-metadata"
     assert_select "main#main-container.py-4"
     assert_select "header .py-4", false # the header shares container_classes; it must not be padded
     assert_select "#document .openseadragon-container picture[data-openseadragon] source[media=openseadragon]", 1
@@ -46,29 +46,30 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     assert_operator response.body.index("Object details"), :<, response.body.index("document-metadata")
     # a row for each sheet field the record has a value for, in the sheet's order (Title (1) first, Measurements named as
     # its display rule 2 has it), then the caption; a field with no value has no row
-    labels = css_select("dl.document-metadata dt").map { |dt| dt.text.strip }
+    labels = css_select("table.document-metadata th").map { |dt| dt.text.strip }
     assert_equal [ "Title", "Creator", "Place", "Copyright", "Credit Line", "Collection", "Classification", "Subject",
                    "Licence Type", "Advisory", "Terms of Use", "Caption" ], labels
     # the Copyright card's data is in the table: copyright, credit line, licence, terms of use, advisory, caption
-    assert_select "dd.blacklight-rights_ssim", text: "[Copyright - Current] Used with permission."
-    assert_select "dd.blacklight-credit_line_tsim", text: "Gift of Someone, 1970"
-    assert_select "dd.blacklight-licence_type_ssim", text: "Copyright - Current"
-    assert_select "dd.blacklight-gap_29_derived", text: "Used with permission."
-    assert_select "dd.blacklight-gap_28_derived", text: /not appropriate today/
-    assert_select "dd.blacklight-caption", text: /Test record\..*Used with permission\.\.?/
+    assert_select "td.blacklight-rights_ssim", text: "[Copyright - Current] Used with permission."
+    assert_select "td.blacklight-credit_line_tsim", text: "Gift of Someone, 1970"
+    assert_select "td.blacklight-licence_type_ssim", text: "Copyright - Current"
+    assert_select "td.blacklight-gap_29_derived", text: "Used with permission."
+    assert_select "td.blacklight-gap_28_derived", text: /not appropriate today/
+    assert_select "td.blacklight-caption", text: /Test record\..*Used with permission\.\.?/
     assert_not_includes response.body, "Not available"
     # Creator: a person (EMu's "Family, Given") gets the sheet's b./d. form; an organisation keeps its plain dates
-    assert_select "dl.document-metadata dd.blacklight-creator_display_ssim", text: "Dolmetsch, Arnold (b. 24 February 1858 - d. 28-Feb-40) Creator"
-    assert_select "dl.document-metadata dd.blacklight-creator_display_ssim", text: "Estey Organ Company (1852 \u2013 1961) Maker"
+    assert_select "table.document-metadata td.blacklight-creator_display_ssim div", text: "Dolmetsch, Arnold (b. 24 February 1858 - d. 28-Feb-40) Creator"
+    assert_select "table.document-metadata td.blacklight-creator_display_ssim div", text: "Estey Organ Company (1852 \u2013 1961) Maker"
     # Classification and Subject are links to the real catalog's filters
-    assert_select "dd.blacklight-classification_ssim a[href^='/catalog'][href*='f%5Bclassification_ssim%5D%5B%5D=']", 2
-    assert_select "dd.blacklight-subject_ssim a[href^='/catalog'][href*='f%5Bsubject_ssim%5D%5B%5D=Music']", 1
+    assert_select "td.blacklight-classification_ssim a[href^='/catalog'][href*='f%5Bclassification_ssim%5D%5B%5D=']", 2
+    assert_select "td.blacklight-subject_ssim a[href^='/catalog'][href*='f%5Bsubject_ssim%5D%5B%5D=Music']", 1
     # the sheet's joins: Place "with a comma", Classification hyphenated on one line
-    assert_select "dl.document-metadata dd.blacklight-production_place_ssim", text: "Paris, France"
-    assert_select "dl.document-metadata dd.blacklight-classification_ssim", text: "Primary - Secondary"
-    # labels are left-aligned: Blacklight's .dl-invert right-aligns them, Bootstrap's text-md-start overrides it
-    assert_select "dl.document-metadata dt.text-md-start", minimum: 1
-    assert_select "dl.document-metadata dt:not(.text-md-start)", false
+    assert_select "table.document-metadata td.blacklight-production_place_ssim", text: "Paris, France"
+    assert_select "table.document-metadata td.blacklight-classification_ssim", text: "Primary - Secondary"
+    # Bootstrap's bordered, responsive table: a table with a row header per field
+    assert_select ".table-responsive > table.table.table-bordered.document-metadata"
+    assert_select "table.document-metadata th[scope=row]", minimum: 1
+    assert_select "table.document-metadata th:not([scope=row])", false
   end
 
   test "the viewer toolbar has full page but no zoom in, zoom out or home" do
@@ -80,6 +81,7 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     assert_equal false, config["showHomeControl"]
     assert_nil config["zoomInButton"]
     assert_equal true, config.key?("fullPageButton")
+    assert_equal false, config.dig("gestureSettingsMouse", "scrollToZoom")
   end
 
   test "the record has the full width: no empty sidebar column, even with view annotations on" do
@@ -96,7 +98,7 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     assert_select ".breadcrumb-bar [aria-current=page]", text: "Test record"
     assert_select "footer, .site-footer"
     assert_select "#document.document h1"
-    assert_select "dl.document-metadata"
+    assert_select "table.document-metadata"
     assert_select ".record-banner, .record-summary, .digital-assets, .persistent-link", false
   end
 end
