@@ -1,16 +1,22 @@
-<div class="openseadragon-container <%= class_names(classes) %>">
-  <div id="<%= @id_prefix %>-toolbar" class="osd-toolbar row mx-0 gx-0">
-    <div class="col-md-6 pagination m-0 p-0 text-start">
-      <% if count > 1 %>
-        <% multi_page_osd_config = osd_config_referencestrip.merge(osd_config) %>
-        <a id="<%= @id_prefix %>-previous" role="button" class="mx-1"><%= render Blacklight::Gallery::Icons::ChevronLeftComponent.new %></a>
-        <span id="<%= @id_prefix %>-page" aria-live="polite">1</span>&nbsp; of <%= count %>
-        <a id="<%= @id_prefix %>-next" role="button" class="mx-1"><%= render Blacklight::Gallery::Icons::ChevronRightComponent.new %></a>
-      <% end %>
-    </div>
-    <div class="col-md-6 controls p-0 text-end">
-      <a id="<%= @id_prefix %>-full-page" role="button" class="mx-1"><%= render Blacklight::Gallery::Icons::CustomFullscreenComponent.new %></a>
-    </div>
+<%# The viewer goes to the layout's full-width black stage (content_for :hero); what is drawn here, in the page, is the row under it: the rights badge on the left, the pager and full page on the right. %>
+<% hero = capture do %>
+  <div class="openseadragon-container">
+    <%= helpers.openseadragon_picture_tag image, class: 'osd-image d-block border-0 bg-black', style: 'height: 560px', data: { openseadragon: count > 1 ? osd_config_referencestrip.merge(osd_config) : osd_config } %>
   </div>
-  <%= helpers.openseadragon_picture_tag image, class: 'osd-image d-block border-0 bg-black rounded', style: 'height: 560px', data: { openseadragon: multi_page_osd_config ? multi_page_osd_config : osd_config } %>
+<% end %>
+<% helpers.content_for(:hero, hero) %>
+<div id="<%= @id_prefix %>-toolbar" class="osd-toolbar row mx-0 gx-0 align-items-center justify-content-between py-3">
+  <div class="col-auto">
+    <% if rights_text.present? %>
+      <span class="badge rounded-pill text-bg-light border fw-normal px-3 py-2"><%= rights_text %></span>
+    <% end %>
+  </div>
+  <div class="col-auto d-flex align-items-center gap-2">
+    <% if count > 1 %>
+      <a id="<%= @id_prefix %>-previous" role="button"><%= render Blacklight::Gallery::Icons::ChevronLeftComponent.new %></a>
+      <span><span id="<%= @id_prefix %>-page" aria-live="polite">1</span> of <%= count %></span>
+      <a id="<%= @id_prefix %>-next" role="button"><%= render Blacklight::Gallery::Icons::ChevronRightComponent.new %></a>
+    <% end %>
+    <a id="<%= @id_prefix %>-full-page" role="button"><%= render Blacklight::Gallery::Icons::CustomFullscreenComponent.new %></a>
+  </div>
 </div>

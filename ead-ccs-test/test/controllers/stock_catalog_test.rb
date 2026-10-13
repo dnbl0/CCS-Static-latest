@@ -30,7 +30,7 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     assert_select "table.document-metadata"
     assert_select "main#main-container.py-4"
     assert_select "header .py-4", false # the header shares container_classes; it must not be padded
-    assert_select "#document .openseadragon-container picture[data-openseadragon] source[media=openseadragon]", 1
+    assert_select ".openseadragon-container picture[data-openseadragon] source[media=openseadragon]", 1
     assert_includes response.body, "/digital-assets/large/mhm00394.jpg"
     # the viewer comes before the details
     assert_operator response.body.index("openseadragon-container"), :<, response.body.index("document-metadata")
@@ -42,21 +42,22 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
 
   test "the details sit under an Object details heading, labelled from the CCS Field labels - Updated sheet" do
     get "/stock/vernon-MHM00394"
-    assert_select "section.card[aria-labelledby=object-details-heading] h2#object-details-heading", text: "Object details"
-    assert_operator response.body.index("Object details"), :<, response.body.index("document-metadata")
-    # two cards side by side, as on the site's record page: the details (a row for each sheet field the record has a value
-    # for, in the sheet's order, Title (1) first) and the Copyright card (the caption, credit line, copyright, licence,
-    # advisory and terms of use); a field with no value has no row
-    details = css_select("[aria-labelledby=object-details-heading] th").map { |th| th.text.strip }
-    copyright = css_select("[aria-labelledby=copyright-heading] th").map { |th| th.text.strip }
-    assert_equal [ "Title", "Creator", "Place", "Collection", "Classification", "Subject" ], details
-    assert_equal [ "Copyright", "Credit Line", "Licence Type", "Advisory", "Terms of Use", "Caption" ], copyright
-    assert_select ".row > .col-lg-7 section.card[aria-labelledby=object-details-heading]"
-    assert_select ".row > .col-lg-5 section.card[aria-labelledby=copyright-heading] h2", text: "Copyright"
-    # the title in a navy band, white and centred
-    assert_select "#document header.documentHeader.bg-primary.text-center h1.text-white", text: "Test record"
-    # the viewer on a dark stage
-    assert_select ".openseadragon-container picture.osd-image.bg-black"
+    # Europeana's item page: the title, who provides the item, then two tabs of fields. "Good to know" (creator, date, place,
+    # object type, collection) and "All metadata" (every sheet field the record has a value for, in the sheet's order); a
+    # field with no value has no row, and the title (the heading) is not repeated
+    assert_select "#document h1", text: "Test record"
+    assert_select ".nav-tabs button[data-bs-target='#good-to-know-pane']", text: "Good to know"
+    assert_select ".nav-tabs button[data-bs-target='#all-metadata-pane']", text: "All metadata"
+    good = css_select("#good-to-know-pane th").map { |th| th.text.strip }
+    all = css_select("#all-metadata-pane th").map { |th| th.text.strip }
+    assert_equal [ "Creator", "Place", "Collection" ], good
+    assert_equal [ "Creator", "Place", "Copyright", "Credit Line", "Collection", "Classification", "Subject", "Licence Type", "Advisory", "Terms of Use", "Caption" ], all
+    assert_select "p", text: /provided and maintained by\s*Museum/
+    assert_select "section[aria-labelledby=related-collections-heading] a[href^='/catalog'][href*='collection_ssim']", minimum: 1
+    # the viewer is on a full-width black stage above the page's container, the rights badge and pager in the row under it
+    assert_select "div.bg-black .openseadragon-container picture.osd-image"
+    assert_operator response.body.index("bg-black"), :<, response.body.index('id="main-container"')
+    assert_select ".osd-toolbar .badge", text: "Copyright - Current"
     # the Copyright card's data is in the table: copyright, credit line, licence, terms of use, advisory, caption
     assert_select "td.blacklight-rights_ssim", text: "[Copyright - Current] Used with permission."
     assert_select "td.blacklight-credit_line_tsim", text: "Gift of Someone, 1970"
@@ -74,8 +75,9 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     # the sheet's joins: Place "with a comma", Classification hyphenated on one line
     assert_select "table.document-metadata td.blacklight-production_place_ssim", text: "Paris, France"
     assert_select "table.document-metadata td.blacklight-classification_ssim", text: "Primary - Secondary"
-    # Bootstrap's bordered, responsive table: a table with a row header per field
-    assert_select ".table-responsive > table.table.table-bordered.document-metadata"
+    # a Bootstrap table that scrolls sideways when narrow, a row header per field, label left and value right
+    assert_select ".table-responsive > table.table.document-metadata"
+    assert_select "td.text-end", minimum: 1
     assert_select "table.document-metadata th[scope=row]", minimum: 1
     assert_select "table.document-metadata th:not([scope=row])", false
   end

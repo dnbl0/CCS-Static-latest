@@ -1,17 +1,29 @@
 # frozen_string_literal: true
 
-# Blacklight::DocumentComponent with the title, viewer and details set apart with Bootstrap's vertical stack, and the
-# details in two cards side by side as the site's record page has them: "Object details" and "Copyright" (the caption,
-# credit line, copyright, licence, advisory and terms of use). Blacklight's metadata slot holds the first card; the second
-# is drawn by the template. Both are the same StockObjectDetailsComponent, with the fields they are given.
+# Blacklight::DocumentComponent laid out as Europeana's item page is: under the full-width viewer (the embed component
+# sends that to the layout) a centred column with the title, who provides the item, two tabs of fields ("Good to know",
+# then "All metadata") and the collections it belongs to. The fields are Blacklight's field presenters, split here; the
+# tabs are Bootstrap's. The title (the heading) is not repeated in the tabs.
 class StockDocumentComponent < Blacklight::DocumentComponent
-  COPYRIGHT_FIELDS = %w[caption credit_line_tsim rights_ssim licence_type_ssim gap_28_derived gap_29_derived gap_30_derived].freeze
+  GOOD_TO_KNOW = %w[creator_display_ssim production_date_ssim production_place_ssim object_type_ssim collection_ssim].freeze
+  TITLE = "title_tsim"
 
-  attr_reader :copyright_fields
+  attr_reader :good_to_know_fields, :all_fields
 
   def before_render
-    @copyright_fields, details = presenter.field_presenters.partition { |field| COPYRIGHT_FIELDS.include?(field.key) }
-    with_metadata(fields: details, show: @show) unless metadata
+    @all_fields = presenter.field_presenters.reject { |field| field.key == TITLE }
+    @good_to_know_fields = all_fields.select { |field| GOOD_TO_KNOW.include?(field.key) }
     super
   end
+
+  # The collection(s) the record belongs to, as links to the real catalog's filter.
+  def collections
+    Array(document["collection_ssim"]).compact_blank
+  end
+
+  def named_collections
+    Array(document["named_collection_ssim"]).compact_blank
+  end
+
+  def collection_path(field, value) = helpers.search_action_path(f: { field => [ value ] })
 end

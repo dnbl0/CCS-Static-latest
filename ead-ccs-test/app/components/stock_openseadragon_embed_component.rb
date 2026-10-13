@@ -31,6 +31,11 @@ class StockOpenseadragonEmbedComponent < Blacklight::Gallery::OpenseadragonEmbed
     )
   end
 
+  # The licence the record carries (the sheet's Licence Type), for the badge under the viewer; none when it has none.
+  def rights_text
+    Array(presenter.field_presenters.find { |field| field.key == "licence_type_ssim" }&.render).join("; ").presence
+  end
+
   def image
     @image ||= begin
       urls = Array(presenter.document[IMAGES_FIELD]).compact_blank

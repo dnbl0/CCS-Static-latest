@@ -12,14 +12,54 @@
     <%= body %>
   <% else %>
     <div class="document-main-section vstack gap-4">
-      <%= title %>
       <%= embed %>
-      <%= content %>
-      <div class="row g-4">
-        <div class="col-lg-7"><%= metadata %></div>
-        <% if copyright_fields.any? %>
-          <div class="col-lg-5"><%= render StockObjectDetailsComponent.new(heading: "Copyright", fields: copyright_fields, show: true) %></div>
-        <% end %>
+      <div class="row justify-content-center">
+        <div class="col-lg-10 vstack gap-4">
+          <%= title %>
+          <%= content %>
+
+          <% if collections.any? %>
+            <p class="m-0">
+              This item is provided and maintained by
+              <% collections.each do |collection| %>
+                <a href="<%= collection_path("collection_ssim", collection) %>" class="btn btn-light btn-sm rounded-pill ms-1"><%= collection %></a>
+              <% end %>
+            </p>
+          <% end %>
+
+          <div>
+            <ul class="nav nav-tabs" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="good-to-know-tab" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#good-to-know-pane" aria-controls="good-to-know-pane" aria-selected="true">Good to know</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="all-metadata-tab" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#all-metadata-pane" aria-controls="all-metadata-pane" aria-selected="false">All metadata</button>
+              </li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane fade show active" id="good-to-know-pane" role="tabpanel" aria-labelledby="good-to-know-tab" tabindex="0">
+                <%= render StockObjectDetailsComponent.new(fields: good_to_know_fields, show: true) %>
+              </div>
+              <div class="tab-pane fade" id="all-metadata-pane" role="tabpanel" aria-labelledby="all-metadata-tab" tabindex="0">
+                <%= render StockObjectDetailsComponent.new(fields: all_fields, show: true) %>
+              </div>
+            </div>
+          </div>
+
+          <% if collections.any? || named_collections.any? %>
+            <section aria-labelledby="related-collections-heading">
+              <h2 id="related-collections-heading" class="h6 text-uppercase mb-3">Discover related collections</h2>
+              <div class="d-flex flex-wrap gap-2">
+                <% collections.each do |collection| %>
+                  <a href="<%= collection_path("collection_ssim", collection) %>" class="btn btn-light rounded-pill"><%= collection %></a>
+                <% end %>
+                <% named_collections.each do |collection| %>
+                  <a href="<%= collection_path("named_collection_ssim", collection) %>" class="btn btn-light rounded-pill"><%= collection %></a>
+                <% end %>
+              </div>
+            </section>
+          <% end %>
+        </div>
       </div>
 
       <% partials.each do |partial| %>

@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-# Blacklight::DocumentTitleComponent with the record's title in a navy band, white and centred, as the site's record page
-# has it. Blacklight's own show view passes classes: '' to the title, so the h1's white text is set here.
+# Blacklight::DocumentTitleComponent with the record's title as a plain left-aligned heading (no margins of its own;
+# the page's stack spaces it). Blacklight's own show view passes classes: '' to the title, so the class is set here.
 class StockTitleComponent < Blacklight::DocumentTitleComponent
   def initialize(*args, classes: nil, **kwargs)
-    super(*args, classes: "text-white m-0", **kwargs)
+    super(*args, classes: "m-0", **kwargs)
   end
 end

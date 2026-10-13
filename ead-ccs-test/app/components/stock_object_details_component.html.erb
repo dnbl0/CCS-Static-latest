@@ -1,14 +1,9 @@
-<section class="card h-100" aria-labelledby="<%= heading_id %>">
-  <div class="card-body">
-    <h2 id="<%= heading_id %>" class="h4 mb-3"><%= heading == "Object details" ? t("blacklight.search.show.object_details", default: heading) : heading %></h2>
-    <div class="table-responsive">
-      <table class="<%= @classes.join(" ") %>">
-        <tbody>
-          <% fields.each do |field| %>
-            <%= field %>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
+<div class="table-responsive">
+  <table class="<%= @classes.join(" ") %>">
+    <tbody>
+      <% fields.each do |field| %>
+        <%= field %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
