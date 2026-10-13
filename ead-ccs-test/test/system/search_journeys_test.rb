@@ -64,37 +64,27 @@ class SearchJourneysTest < ApplicationSystemTestCase
     assert_selector ".result-card", minimum: 1
   end
 
-  test "the advanced search link is a standalone page, with its own header, breadcrumb and banner, not a modal" do
+  test "the advanced search link is a standalone page, Blacklight's own form, not a modal" do
     visit search_catalog_path(q: "skull")
     click_link "Advanced Search"
 
     assert_current_path(%r{\A/catalog/advanced\?.*clause.*skull})
     assert_no_selector "dialog#blacklight-modal[open]"
-    assert_selector "h1", text: "Advanced Search"
+    assert_selector "h1", text: "Advanced search"
     assert_selector "nav.breadcrumb-bar li", text: "Advanced search"
     assert_selector "form.advanced"
   end
 
-  test "the advanced search dropdowns are the site's own, open fully on the page and submit the same parameters" do
-    page.driver.resize(1440, 900)
+  test "the advanced search form is Blacklight's own: one fixed row per search field, a plain match-all/any select" do
     visit search_catalog_path(q: "skull")
     click_link "Advanced Search"
-    assert_selector ".ccs-select--field", minimum: 2
 
-    field = find(".ccs-select--field", match: :first)
-    assert_equal 48, field.find(".dropdown-toggle").evaluate_script("Math.round(this.getBoundingClientRect().height)")
-    field.find(".dropdown-toggle").click
-    menu = field.find(".dropdown-menu.show")
-    inside = menu.evaluate_script("(() => { const r = this.getBoundingClientRect(); return r.left >= 0 && r.right <= innerWidth && r.bottom <= innerHeight })()")
-    assert inside, "the open menu is not cut off by the window"
-    assert_equal field.find(".dropdown-toggle").evaluate_script("Math.round(this.getBoundingClientRect().width)"), menu.evaluate_script("Math.round(this.getBoundingClientRect().width)")
+    op = find("select#op", visible: :all)
+    assert_equal %w[must should], op.all("option", visible: :all).map { |o| o["value"] }
 
-    menu.find("button.dropdown-item", text: "Title", exact_text: true).click
-    assert_equal "Title", field.find(".dropdown-toggle").text
-    assert_equal "title", find("select[name='clause[0][field]']", visible: :all).value
-
+    fill_in "Title", with: "portrait"
     find("form.advanced").evaluate_script("this.requestSubmit()")
-    assert_current_path(%r{clause%5B0%5D%5Bfield%5D=title|clause\[0\]\[field\]=title})
+    assert_current_path(%r{clause%5B\d%5D%5Bfield%5D=title|clause\[\d\]\[field\]=title})
   end
 
   test "the pagination is centred under the results" do

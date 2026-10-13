@@ -52,29 +52,19 @@ Configuration-only use of Blacklight 9.2.1 and its official plugins, in `Catalog
   workbooks (`docs/data-model.md`); the earlier pivot, "Record includes" query facets and contextual
   `if:` facets are no longer configured because the workbook does not define them.
 
-## Advanced search against Blacklight's own
+## Advanced search is stock Blacklight
 
-Audited against the installed gem, `blacklight-9.2.1` (`Blacklight::AdvancedSearchFormComponent`,
-`Blacklight::Solr::SearchBuilderBehavior#add_adv_search_clauses`, `blacklight/app/views/catalog/_advanced_search_form.html.erb`),
-not just the GitHub repo at head, so the "Why" column reflects what the installed version actually does.
+`/catalog/advanced` is Blacklight's own `Blacklight::AdvancedSearchFormComponent` and its own views
+(`blacklight/app/views/catalog/advanced_search.html.erb`, `_advanced_search_form.html.erb`,
+`_advanced_search_help.html.erb`), unmodified: config-only (`config.advanced_search.enabled`,
+`copy_search_field_config_to_advanced!`, `copy_facet_field_config_to_advanced!`), the same way the rest of this
+doc's features are config-only. It sits inside the site's normal header/footer layout like every other page, but
+the form itself — the single "match all/any" menu, one fixed row per search field, the facet checkbox accordion,
+Search + Start over — is exactly what the gem renders.
 
-| Blacklight default | This app | Why |
-|---|---|---|
-| Route `/catalog/advanced`, `config.advanced_search.enabled`, `AdvancedSearchFormComponent`, `copy_search_field_config_to_advanced!`, `copy_facet_field_config_to_advanced!` | Same; the form is a subclass of the component | Keeps Blacklight's field, facet and response handling |
-| A standalone page (Blacklight's `advanced_search` action just renders a view) | Same: a real page with the site's header, breadcrumbs (`NexusCcs::HeaderComponent#breadcrumbs`) and its own banner. There used to be an XHR path into Blacklight's `<dialog id="blacklight-modal">` as a right-hand flyout (`advanced_flyout_controller.js`); removed, so the "Advanced search" link in the search banner and the home hero is now a plain navigation to the page | The modal duplicated page chrome (its own header/close button) instead of using the site's; a standalone page is what Blacklight already does by default |
-| One "match all / any of the fields" menu (`op`) and one fixed row per search field | Rows the visitor adds (up to 8), each with its own field and match type (`clause[i][field\|op\|query]`, `op` = must / should / must_not). `op` in a link still sets the default for rows that have none | The search builder (`add_adv_search_clauses`) already builds a `must`/`should`/`must_not` Solr JSON Query DSL bool query per clause — Blacklight's own form just never exposes `must_not` as a per-row choice. CCS's row UI surfaces a capability the query engine already had, it does not add one. See `test/models/search_builder_test.rb` for the Solr query this actually produces. |
-| Facet limits in an accordion (`f_inclusive[facet][]`, with counts) | Same parameters and counts, shown as a card per filter with Includes any / Includes all (`f_all`, see `AllFacetFilters`) | "Includes all" is not something Blacklight offers; it is CCS's own filter-query path (`SearchBuilder#add_all_facet_filters`), isolated from and tested alongside Blacklight's own `f`/`f_inclusive` handling rather than replacing it |
-| Range limit plugin | Same (`range[field][begin\|end]`) | none |
-| Sort menu | Same (`sort`) | none |
-| Hidden search state (`view`, `per_page`) | Same | none |
-| Search + Start over | Same; Start over is a link to the empty form | none |
-| "Within search" constraints block (the query and filters the form was opened with, Blacklight's own search-history layout) | Same: `NexusCcs::AdvancedSearchFormComponent#constraints` renders `Blacklight::ConstraintsComponent.for_search_history` (plus a pill per `f_all` value, which isn't a native Blacklight filter) above the form, read-only, when the form was opened from an already-filtered search | Previously not done (the form showed the current search only by prefilling its own fields, which looks like a fresh search when opened from a filtered results page); reinstated rather than rebuilt, so it keeps whatever Blacklight does with query/facet labelling on upgrade |
-| `blacklight.advanced_search.op.{must,should}` labels ("all" / "any") | Same scope, fuller wording ("Contains all (AND)" / "Contains any (OR)"), plus `must_not` ("Does not contain (NOT)") added to it, in `config/locales/advanced_search.en.yml` | One i18n namespace for the operator labels instead of a second, CCS-only `advanced_search.match.*` scope duplicating the same three strings |
-
-What is still CCS's own, deliberately (not a gap to close): the dynamic add/remove rows and their JavaScript
-(`controllers/advanced_search_controller.js`), the filter-visibility menu and Includes any/all toggle, and the
-whole form template. Blacklight's default form is a single static block (one row per search field, a facet
-accordion, no JS); matching CCS's design (a dynamic row builder, per-filter AND/OR) through Blacklight's
-`search_field_controls`/`search_filter_controls` slot API would mean re-deriving most of that custom behaviour
-inside the slots anyway, for no behavioural gain — so the template stays a full override, documented here
-instead of forced through machinery it doesn't fit.
+An earlier version added a dynamic row builder (must/should/must_not per row, up to 8 rows), an "Includes
+any/all" toggle per facet (`f_all`), a flyout modal, and a reinstated "within search" summary. All of that was
+removed (2026-10-13) to match stock Blacklight, per https://catalogue.nla.gov.au/catalog/advanced as the
+reference for what "default" should look like. `test/models/search_builder_test.rb` keeps one test of
+Blacklight's own `must_not` query building (a real capability of the search builder, just never exposed by the
+stock form), in case a future UI needs it — nothing in this app builds a must_not clause today.

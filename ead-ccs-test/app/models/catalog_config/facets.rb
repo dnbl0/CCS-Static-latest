@@ -41,10 +41,6 @@ module CatalogConfig
       end
 
       config.add_facet_fields_to_solr_request!
-
-      # The advanced search form's "Includes all" filters (see AllFacetFilters) are carried in the search state
-      # like f and f_inclusive: Blacklight drops any parameter that is not listed here
-      config.search_state_fields = config.search_state_fields + [ { AllFacetFilters::PARAM => config.facet_fields.keys.index_with { [] } } ]
     end
   end
 end

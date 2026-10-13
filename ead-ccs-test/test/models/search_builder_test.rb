@@ -17,11 +17,11 @@ class SearchBuilderTest < ActiveSupport::TestCase
     assert_equal SearchBuilder::BOOLEAN_MM, mm_for("anatomy AND botany OR zoology")
   end
 
-  # The advanced search form's per-row match type (Must / Should / Must not): Blacklight's own search builder
-  # already turns clause[i][op] into a Solr JSON Query DSL bool query with all three operators
-  # (Blacklight::Solr::SearchBuilderBehavior#add_adv_search_clauses); CCS's row UI (the match type dropdown,
-  # see NexusCcs::AdvancedSearchFormComponent) is the only part that is CCS's own. This checks the query
-  # Blacklight actually builds from a must_not row, not just that the form renders one.
+  # Blacklight's own search builder turns clause[i][op] into a Solr JSON Query DSL bool query with all three
+  # operators (Blacklight::Solr::SearchBuilderBehavior#add_adv_search_clauses), including must_not, even though
+  # the stock advanced search form never offers a row-level control for it (only a single "match all/any" menu
+  # for the whole form). Nothing in this app builds a must_not clause today; this just checks Blacklight's own
+  # query building is intact, in case a future UI needs it.
   test "a Does not contain (must_not) row excludes its term from the results, unlike Must or Should" do
     clause = { "0" => { field: "all_fields", op: "must_not", query: "skull" } }
     solr = SearchBuilder.new(CatalogController.new).with(clause: clause).to_h

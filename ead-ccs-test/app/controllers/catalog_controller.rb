@@ -144,11 +144,6 @@ class CatalogController < ApplicationController
     redirect_to search_action_url(f: { has_digital_asset: [ "with" ] }, search_field: "all_fields", view: "masonry")
   end
 
-  # "Includes all" filters (f_all) alone make a search too: the results page, not the home page
-  def has_search_parameters?
-    super || AllFacetFilters.pairs(search_state.params, blacklight_config).any?
-  end
-
   # JSON for the range filters' slider: the first and last year of the results, with that filter's own range
   # left out so the track keeps its full length, and a count per bar (see RangeHistogram; ?bins=N, 8 to 60,
   # defaults to 24).
