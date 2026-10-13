@@ -23,6 +23,13 @@ Rails.application.routes.draw do
     end
   end
 
+  # A record page that is Blacklight out of the box, to compare the real one against (StockCatalogController).
+  scope constraints: { id: %r{[^/]+} } do
+    resources :stock_documents, only: [ :show ], path: "/stock", controller: "stock_catalog" do
+      concerns :exportable
+    end
+  end
+
   get "collections", to: "pages#collections", as: :collections
   get "collections/:slug", to: "pages#collection", as: :collection, constraints: { slug: /[a-z-]+/ }
   get "help", to: "pages#help", as: :help
