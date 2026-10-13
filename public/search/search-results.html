@@ -197,7 +197,6 @@
     if (!pop) return;
     lastSearchTrigger = trigger || null;
     pop.classList.add('is-open');
-    document.body.style.overflow = 'hidden';
     var input = document.getElementById('uom-search-overlay-input');
     if (input) input.focus();
   }
@@ -205,8 +204,7 @@
     var pop = document.getElementById('uom-search-popover');
     if (!pop) return;
     pop.classList.remove('is-open');
-    document.body.style.overflow = '';
-    if (lastSearchTrigger) lastSearchTrigger.focus();
+    if (lastSearchTrigger) lastSearchTrigger.focus({ preventScroll: true });   // back to the opener without moving the page
   }
 
   document.addEventListener('click', function(e){
@@ -569,8 +567,9 @@
 <sc-if value="{{ ackOpen }}">
   <div class="search-results-page__group search-results-page__group--v3" onClick="{{ closeAck }}">
     <div class="search-results-ack-title" ref="{{ ackRef }}" role="dialog" aria-modal="true" aria-labelledby="ack-title" onClick="{{ stop }}" onKeyDown="{{ ackTrapKey }}">
-      <button class="search-results-ack-title__button-close-ack" onClick="{{ closeAck }}" aria-label="Close notification">
-        <svg class="search-results-ack-title__button-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><line x1="5" y1="5" x2="19" y2="19"></line><line x1="19" y1="5" x2="5" y2="19"></line></svg>
+      <button class="search-results-ack-title__button-close-ack" onClick="{{ closeAck }}">
+        <svg class="search-results-ack-title__button-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true" focusable="false"><line x1="5" y1="5" x2="19" y2="19"></line><line x1="19" y1="5" x2="5" y2="19"></line></svg>
+        <span class="search-results-ack-title__button-label">Close</span>
       </button>
       <div class="search-results-ack-title__group search-results-ack-title__group--v2">
         <span class="search-results-ack-title__text search-results-ack-title__text--v1">Indigenous Cultural Notification</span>
@@ -1043,7 +1042,7 @@ class Component extends DCLogic {
     (this.ranges || []).forEach(r => r.inst.destroy());
     window.removeEventListener('pointerdown', this.onDown); window.removeEventListener('pointermove', this.onMove);
     window.removeEventListener('pointerup', this.onUp); window.removeEventListener('keydown', this.onKey); window.removeEventListener('resize', this.onResize);
-    clearTimeout(this.t); clearTimeout(this.ct); clearTimeout(this.bt); document.body.style.overflow = '';
+    clearTimeout(this.t); clearTimeout(this.ct); clearTimeout(this.bt);
   }
   matchF(it, f, except) {
     if (f.digital && !(it.formats && it.formats.length)) return false;
@@ -1103,14 +1102,14 @@ class Component extends DCLogic {
       boxBg: (checked || extra.partial) ? 'var(--col-bg-primary)' : '#fff', boxBorder: (checked || extra.partial) ? 'var(--col-bg-primary)' : (dis ? '#c3c6cd' : '#6b7080'), color: dis ? '#9a9ea8' : 'var(--col-text-primary)',
       pillBg: checked ? 'var(--col-bg-primary)' : '#fff', pillColor: checked ? '#fff' : (dis ? '#9a9ea8' : 'var(--col-text-primary)'), pillBorder: checked ? 'var(--col-bg-primary)' : (dis ? '#e3e0d9' : 'var(--col-border-neutral)') };
   }
-  openModal() { document.body.style.overflow = 'hidden'; this.setState(s => ({ modal: true, draft: clone(s.f), yIn: null, yErr: '' }));
+  openModal() { this.setState(s => ({ modal: true, draft: clone(s.f), yIn: null, yErr: '' }));
     setTimeout(() => { const el = this.dialogRef.current && this.dialogRef.current.querySelector(FOCUSABLE); el && el.focus(); }, 30); }
-  closeModal() { document.body.style.overflow = ''; this.setState({ modal: false }); setTimeout(() => this.filterBtnRef.current && this.filterBtnRef.current.focus(), 30); }
+  closeModal() { this.setState({ modal: false }); setTimeout(() => this.filterBtnRef.current && this.filterBtnRef.current.focus({ preventScroll: true }), 30); }
   // the chosen view goes in the URL (?view=) so a link or reload keeps it; it is not stored anywhere else
   setView(v) { this.setState({ view: v }); try { const u = new URL(location.href); u.searchParams.set('view', v); history.replaceState(null, '', u); } catch (e) {} }
   closeAck() { try { localStorage.setItem('ccs-cultural-ack', '1'); } catch (e) {} this.setState({ ackOpen: false }); }
-  openAdv() { document.body.style.overflow = 'hidden'; this.setState({ advOpen: true }); setTimeout(() => this.advCloseRef.current && this.advCloseRef.current.focus(), 30); }
-  closeAdv() { document.body.style.overflow = ''; this.setState({ advOpen: false }); setTimeout(() => this.advBtnRef.current && this.advBtnRef.current.focus(), 30); }
+  openAdv() { this.setState({ advOpen: true }); setTimeout(() => this.advCloseRef.current && this.advCloseRef.current.focus(), 30); }
+  closeAdv() { this.setState({ advOpen: false }); setTimeout(() => this.advBtnRef.current && this.advBtnRef.current.focus({ preventScroll: true }), 30); }
   // Tab from the Close button backwards goes to the last control in the form; the form sends Tab-past-the-end back to Close
   advTrap = e => { if (e.key === 'Tab' && e.shiftKey && document.activeElement === this.advCloseRef.current && this.advFrameRef.current) { e.preventDefault(); this.advFrameRef.current.contentWindow.postMessage({ ccsAdvFocusLast: true }, location.origin); } };
   makeTrapKey(ref) {
