@@ -11,13 +11,16 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     "classification_ssim" => [ "Primary", "Secondary" ], "digital_asset_large_paths_ssim" => [ "/digital-assets/large/mhm00394.jpg" ],
     "response" => nil).tap { |doc| doc.instance_variable_set(:@response, Blacklight::Solr::Response.new({ "response" => { "docs" => [] } }, {})) }
 
+  MULTI = SolrDocument.new(DOC.to_h.merge("id" => "multi", "digital_asset_large_paths_ssim" => %w[/digital-assets/large/a.jpg /digital-assets/large/b.jpg /digital-assets/large/c.jpg],
+    "digital_asset_paths_ssim" => %w[/digital-assets/thumbs/a.jpg /digital-assets/thumbs/b.jpg /digital-assets/thumbs/c.jpg])).tap { |doc| doc.instance_variable_set(:@response, DOC.response) }
+
   FakeService = Struct.new(:doc) do
     def fetch(*) = doc
   end
 
   # Stands in for Solr on this controller only
   module FakeSolr
-    def search_service = FakeService.new(DOC)
+    def search_service = FakeService.new(params[:id] == "multi" ? MULTI : DOC)
   end
   StockCatalogController.prepend(FakeSolr)
   BrandedStockCatalogController.prepend(FakeSolr)
@@ -30,10 +33,10 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     assert_select "table.document-metadata"
     assert_select "main#main-container.py-4"
     assert_select "header .py-4", false # the header shares container_classes; it must not be padded
-    assert_select ".openseadragon-container picture[data-openseadragon] source[media=openseadragon]", 1
+    assert_select "picture[data-openseadragon] source[media=openseadragon]", 1
     assert_includes response.body, "/digital-assets/large/mhm00394.jpg"
     # the viewer comes before the details
-    assert_operator response.body.index("openseadragon-container"), :<, response.body.index("document-metadata")
+    assert_operator response.body.index("data-openseadragon"), :<, response.body.index("document-metadata")
     assert_select ".site-header, .record-banner, .record-summary, .digital-assets, .persistent-link", false
     assert_select "link[href*='stock_blacklight']"
     assert_includes response.body, %(import "stock_application")
@@ -55,7 +58,10 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     details = css_select("#object-details-pane th").map { |th| th.text.strip }
     copyright = css_select("#copyright-pane th").map { |th| th.text.strip }
     assert_equal [ "Creator", "Place", "Collection", "Classification", "Subject" ], details
-    assert_equal [ "Copyright", "Credit Line", "Licence Type", "Advisory", "Terms of Use", "Caption" ], copyright
+    assert_equal [ "Copyright", "Credit Line", "Caption" ], copyright
+    # the media metadata (the sheet's DAM fields: licence type, advisory, terms of use, producer) is in the media band's modal
+    assert_equal [ "Licence Type", "Advisory", "Terms of Use" ], css_select(".modal th").map { |th| th.text.strip }
+    assert_select ".modal .modal-title", text: "Media metadata"
     assert_select "#copyright-pane a[href='/help#copyright']", text: "About copyright and terms of use"
     # the permalink, as one Bootstrap card: the record's page in the site's catalog and a copy button in the body, the
     # accession-number note and "View full record" in the card's footer (not outside it)
@@ -65,7 +71,7 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     assert_select "#permalink-pane article.card footer.card-footer a[href$='/catalog/vernon-MHM00394']", text: "View full record"
     assert_select "#permalink-pane > a", false
     assert_select "p", text: /provided and maintained by\s*Museum/
-    assert_select "main .badge", text: "Copyright - Current"
+    assert_select "section[aria-label='Media toolbar'] .badge", text: "Copyright - Current"
     # the Copyright card's data is in the table: copyright, credit line, licence, terms of use, advisory, caption
     assert_select "td.blacklight-rights_ssim", text: "[Copyright - Current] Used with permission."
     assert_select "td.blacklight-credit_line_tsim", text: "Gift of Someone, 1970"
@@ -90,16 +96,37 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     assert_select "table.document-metadata th:not([scope=row])", false
   end
 
-  test "the viewer is blacklight-gallery's own, as the gem ships it" do
-    get "/stock/vernon-MHM00394"
-    assert_select ".openseadragon-container.col-12 .osd-toolbar.row a[id$=-full-page]", 1
-    assert_select ".osd-toolbar a[id$=-zoom-in], .osd-toolbar a[id$=-zoom-out], .osd-toolbar a[id$=-home]", 3
-    assert_select "picture.osd-image.row[data-openseadragon]"
+  test "the media band follows the CCS design: dark band with the title, the image, a light toolbar with the licence, info and full screen" do
+    get "/branded-stock/vernon-MHM00394"
+    # a full-width band above the page container, in the layout's slot; one wrapper for band, toolbar and modal (OpenSeadragon's full screen needs the toolbar's parent not to be the body)
+    assert_operator response.body.index("Media viewer"), :<, response.body.index('id="main-container"')
+    assert_select "article[aria-label=Media] > section.bg-black[aria-label='Media viewer'] header p", text: "Test record"
+    assert_select "article[aria-label=Media] picture.osd-image[data-openseadragon]"
+    assert_select "article[aria-label=Media] > section[aria-label='Media toolbar'] button[id$=-full-page]", 1
+    assert_select "section[aria-label='Media toolbar'] button[data-bs-toggle=modal][aria-label='Media metadata']", 1
+    assert_select ".modal.fade[aria-labelledby]", 1
+    # one image: nothing to page through
+    assert_select "button[id$=-previous], button[id$=-next], [data-media-thumbnails]", false
+    # no zoom in the first release: no zoom or home buttons, the mouse and keyboard do not navigate
+    assert_select "[id$=-zoom-in], [id$=-zoom-out], [id$=-home]", false
     config = JSON.parse(css_select("[data-openseadragon]").first["data-openseadragon"])
-    %w[zoomInButton zoomOutButton homeButton fullPageButton].each { |key| assert config.key?(key), "#{key} is the gem's" }
-    assert_not_includes config.keys, "toolbar"
-    assert_not_includes response.body, "stock_osd_viewer_fixes"
-    assert_select "div.bg-black", false
+    assert_equal false, config["showZoomControl"]
+    assert_equal false, config["mouseNavEnabled"]
+    assert_equal css_select("section[aria-label='Media toolbar']").first["id"], config["toolbar"]
+    assert_not_includes response.body, "div.bg-black"
+  end
+
+  test "a record with several images has round previous and next buttons and a row of 80px thumbnails" do
+    get "/branded-stock/multi"
+    assert_select "article[aria-label=Media] button[id$=-previous].rounded-circle[aria-label='Previous image']", 1
+    assert_select "article[aria-label=Media] button[id$=-next].rounded-circle[aria-label='Next image']", 1
+    assert_select "nav[data-media-thumbnails][aria-label=Images] button[data-page]", 3
+    assert_select "nav[data-media-thumbnails] img[width='80'][height='80'][src='/digital-assets/thumbs/b.jpg']", 1
+    config = JSON.parse(css_select("[data-openseadragon]").first["data-openseadragon"])
+    assert_equal true, config["sequenceMode"]
+    assert_equal false, config.key?("showReferenceStrip")
+    assert_equal css_select("nav[data-media-thumbnails]").first["data-viewer"], css_select("picture[data-openseadragon]").first["id"]
+    assert_includes response.body, %("stock_media_viewer":)
   end
 
   test "the record has the full width: no empty sidebar column, even with view annotations on" do
