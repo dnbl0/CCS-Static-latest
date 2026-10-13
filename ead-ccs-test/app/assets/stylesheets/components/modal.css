@@ -1,8 +1,7 @@
 /*
  * Modals: scroll lock and the University of Melbourne Gen 3 modal look (designsystem.web.unimelb.edu.au/components/modal/).
  * Every modal-like surface shares this:
- *   - the dialogs (<dialog>: Acknowledgement of Country, "You're leaving this site", Blacklight's #blacklight-modal for the
- *     advanced search flyout and the facet "Show more" lists) lock the page through :has(dialog[open]);
+ *   - the dialogs (<dialog>: Acknowledgement of Country, "You're leaving this site", Blacklight's #blacklight-modal) lock the page through :has(dialog[open]);
  *   - the surfaces that are not a <dialog> (the search overlay, the mobile filter drawer) set html.has-open-modal through
  *     app/javascript/modal_lock.js, which counts them so the lock stays until the last one has closed.
  * While locked the root does not scroll (wheel, touch, keyboard) and keeps its scrollbar gutter, so the page does not shift;
