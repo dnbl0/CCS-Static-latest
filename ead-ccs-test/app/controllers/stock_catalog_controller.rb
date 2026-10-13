@@ -9,6 +9,9 @@ class StockCatalogController < ActionController::Base
 
   layout "stock_blacklight"
 
+  # openseadragon_picture_tag, used by blacklight-gallery's OpenSeadragon viewer
+  helper Openseadragon::OpenseadragonHelper
+
   # The app's helpers/blacklight_helper.rb widens the record page's container; this is the gem's own definition.
   helper do
     def container_classes = blacklight_config.full_width_layout ? "container-fluid" : "container"
@@ -27,14 +30,10 @@ class StockCatalogController < ActionController::Base
   configure_blacklight do |config|
     config.show.title_field = "title_tsim"
     config.show.display_type_field = "format"
-    # The record's digital asset, as Blacklight's own thumbnail (a plain <img>, one image: the field's first value,
-    # no viewer script), above the details. The show view has no thumbnail component by default and Blacklight puts
-    # its thumbnail slot after the metadata, so the thumbnail is drawn in the embed slot, between title and metadata.
-    config.show.thumbnail_field = :thumbnail_path_ssi
-    config.show.document_embed_component = StockThumbnailEmbedComponent
-    # The thumbnail links to its record through search-session tracking, which this page has no route for:
-    # the real catalog's does the same job.
-    config.track_search_session.url_helper = "track_catalog_path"
+    # The record's digital assets in blacklight-gallery's OpenSeadragon viewer (zoom, pan, full page; a paging strip
+    # when there are several images), above the details: the embed slot sits between the title and the metadata.
+    # The viewer is the gem's own component; the subclass only gives it the record's image URLs.
+    config.show.document_embed_component = StockOpenseadragonEmbedComponent
 
     # Plain show fields, as the generator's catalog controller declares them: one per field of the CCS field labels
     # workbook (seq # in brackets) that the data can carry today (config/data_model/solr_mapping.yml), in its order,
