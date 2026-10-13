@@ -155,18 +155,6 @@ class CatalogController < ApplicationController
     render layout: false if request.xhr?
   end
 
-  # JSON for the range filters' slider: the first and last year of the results, with that filter's own range
-  # left out so the track keeps its full length, and a count per bar (see RangeHistogram; ?bins=N, 8 to 60,
-  # defaults to 24).
-  def range_histogram
-    field = params[:field].to_s
-    return head :not_found unless blacklight_config.facet_fields[field]&.range
-
-    state = search_state.reset(search_state.params.deep_dup.tap { |p| p[:range]&.delete(field) })
-    service = search_service_class.new(config: blacklight_config, search_state: state, **search_service_context)
-    render json: RangeHistogramQuery.new(service: service, search_state: state, field: field, bins: params[:bins])
-  end
-
   private
 
   def search_unavailable(error)
