@@ -7,6 +7,12 @@
 class StockOpenseadragonEmbedComponent < Blacklight::Gallery::OpenseadragonEmbedComponent
   IMAGES_FIELD = "digital_asset_large_paths_ssim"
 
+  # col-12 (the viewer's toolbar and image are Bootstrap rows, which need a column around them to line up with the
+  # title) and a bottom margin, both Bootstrap utilities.
+  def initialize(presenter:, view_config: nil, classes: [], **kwargs)
+    super(presenter: presenter, view_config: view_config, classes: classes + %w[col-12 mb-4], **kwargs)
+  end
+
   def image
     @image ||= begin
       urls = Array(presenter.document[IMAGES_FIELD]).compact_blank

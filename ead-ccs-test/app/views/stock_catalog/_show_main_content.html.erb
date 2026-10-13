@@ -1,0 +1,21 @@
+<%# locals: (presenter: nil) %>
+<%# Blacklight 9.2.1's catalog/_show_main_content, verbatim except for Bootstrap spacing classes passed through
+    Blacklight's own component options (title classes; metadata classes and field layout). No stylesheet rules. %>
+<% presenter ||= document_presenter(@document) %>
+
+<% @page_title = t('blacklight.search.show.title', document_title: presenter.html_title, application_name: application_name).html_safe %>
+<% content_for(:head) { render_link_rel_alternates } %>
+
+<%= render presenter.view_config.document_header_component.new(document: @document, search_context: @search_context, search_session: search_session) %>
+
+<% document_component = presenter.view_config.document_component -%>
+<%= render document_component.new(id: 'document', document: presenter, component: :div, show: true, partials: presenter.view_config.partials) do |component| %>
+  <% component.with_title(as: 'h1', classes: 'mb-4', link_to_document: false, actions: false) %>
+  <% component.with_metadata(fields: presenter.field_presenters, show: true, field_layout: StockMetadataFieldLayoutComponent, classes: %w[document-metadata dl-invert row border-top mb-5]) %>
+  <% component.with_footer do %>
+    <% if @document.respond_to?(:export_as_openurl_ctx_kev) %>
+      <!-- COinS, for Zotero among others. -->
+      <span class="Z3988" title="<%= @document.export_as_openurl_ctx_kev(presenter.display_type) %>"></span>
+    <% end %>
+  <% end %>
+<% end %>

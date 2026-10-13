@@ -24,6 +24,11 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     assert_select "main#main-container.container"
     assert_select "#document.document h1"
     assert_select "dl.document-metadata"
+    # spacing and table rows come from Bootstrap utility classes through Blacklight's own options
+    assert_select "main#main-container.py-4"
+    assert_select "h1.mb-4"
+    assert_select "dl.document-metadata.border-top dt.border-bottom.py-2"
+    assert_select "dl.document-metadata dd.border-bottom.py-2.mb-0"
     assert_select "#document .openseadragon-container picture[data-openseadragon] source[media=openseadragon]", 1
     assert_includes response.body, "/digital-assets/large/mhm00394.jpg"
     # the viewer comes before the details

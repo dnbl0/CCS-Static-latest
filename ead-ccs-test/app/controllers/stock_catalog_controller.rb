@@ -20,8 +20,8 @@ class StockCatalogController < ActionController::Base
   # The gem's own views come first, so the app's overrides of them (catalog/show, shared/footer...) are not used.
   prepend_view_path Blacklight::Engine.root.join("app/views")
 
-  # Blacklight's views live under catalog/, not stock_catalog/.
-  def self.local_prefixes = [ controller_path, "catalog" ]
+  # Blacklight's views live under catalog/, not stock_catalog/; the stock page's own (and its subclasses') come first.
+  def self.local_prefixes = [ controller_path, "stock_catalog", "catalog" ].uniq
 
   # This page has no search of its own: the search box and "Back to search" go to the real catalog, the same way
   # the gem's own Blacklight::Bookmarks does.
@@ -57,5 +57,11 @@ class StockCatalogController < ActionController::Base
     config.add_show_field "subject_ssim", label: "Subject" # 22
     config.add_show_field "parent_record_ssi", label: "Related Parent Record" # 24
     config.add_show_field "licence_type_ssim", label: "Licence Type" # 27 (derived from the rights note)
+
+    # Blacklight's own way to show a field with several values: one value, joined (not a row per value), so each
+    # field is one row of the details.
+    config.show_fields.each_value do |field|
+      field.separator_options = { words_connector: "; ", two_words_connector: "; ", last_word_connector: "; " }
+    end
   end
 end

@@ -1,4 +1,4 @@
-<%# Blacklight's own layouts/blacklight + layouts/blacklight/base, unchanged except: the stylesheet and scripts are the site's (UoM theme, header and footer, as in layouts/pages), and the footer is the site's. %>
+<%# Blacklight's own layouts/blacklight + layouts/blacklight/base, unchanged except: the main container's Bootstrap padding (py-4), the stylesheet and scripts are the site's (UoM theme, header and footer, as in layouts/pages), and the footer is the site's. %>
 <% content_for(:content) do %>
   <% if content_for? :sidebar %>
     <section id="content" class="<%= main_content_classes %> order-last" aria-label="<%= t('blacklight.search.documents.aria.search_results') %>">
@@ -59,7 +59,7 @@
 
     <%= render blacklight_config.header_component.new(blacklight_config: blacklight_config) %>
 
-    <main id="main-container" class="<%= container_classes %>" aria-label="<%= t('blacklight.main.aria.main_container') %>">
+    <main id="main-container" class="<%= container_classes %> py-4" aria-label="<%= t('blacklight.main.aria.main_container') %>">
       <%= content_for(:container_header) %>
 
       <%= render 'shared/flash_msg', layout: 'shared/flash_messages' if flash.any? %>
