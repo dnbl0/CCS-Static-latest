@@ -2,4 +2,3 @@
 // viewer of the record page (not loaded by the rest of the site).
 import "application"
 import "openseadragon-rails"
-import "stock_osd_viewer_fixes"

@@ -58,10 +58,6 @@
 
     <%= render blacklight_config.header_component.new(blacklight_config: blacklight_config) %>
 
-    <% if content_for?(:hero) %>
-      <div class="bg-black"><%= yield :hero %></div>
-    <% end %>
-
     <main id="main-container" class="<%= container_classes %> py-4" aria-label="<%= t('blacklight.main.aria.main_container') %>">
       <%= content_for(:container_header) %>
 

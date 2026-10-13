@@ -42,30 +42,30 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
 
   test "the details sit under an Object details heading, labelled from the CCS Field labels - Updated sheet" do
     get "/stock/vernon-MHM00394"
-    # Europeana's item page: the title, who provides the item, then four tabs. "Good to know" (creator, date, place, object type,
-    # collection), "Object details" (every other sheet field the record has a value for, in the sheet's order), "Copyright"
-    # (the caption, credit line, copyright, licence, advisory and terms of use) and "Permalink"; a field with no value has no
-    # row, and the title (the heading) is not repeated
+    # Europeana's item page: the viewer, the title, who provides the item, then three tabs. "Object details" (every sheet field
+    # the record has a value for except the copyright ones, in the sheet's order), "Copyright" (the caption, credit line,
+    # copyright, licence, advisory and terms of use) and "Permalink"; a field with no value has no row, and the title (the
+    # heading) is not repeated. No "Good to know" tab and no related-collections section.
     assert_select "#document h1", text: "Test record"
-    %w[good-to-know object-details copyright permalink].each { |id| assert_select ".nav-tabs button[data-bs-target='##{id}-pane']" }
-    good = css_select("#good-to-know-pane th").map { |th| th.text.strip }
+    %w[object-details copyright permalink].each { |id| assert_select ".nav-tabs button[data-bs-target='##{id}-pane']" }
+    assert_select ".nav-tabs button", 3
+    assert_select "#good-to-know-pane", false
+    assert_select "[aria-labelledby=related-collections-heading]", false
+    assert_not_includes response.body, "Discover related collections"
     details = css_select("#object-details-pane th").map { |th| th.text.strip }
     copyright = css_select("#copyright-pane th").map { |th| th.text.strip }
-    assert_equal [ "Creator", "Place", "Collection" ], good
     assert_equal [ "Creator", "Place", "Collection", "Classification", "Subject" ], details
     assert_equal [ "Copyright", "Credit Line", "Licence Type", "Advisory", "Terms of Use", "Caption" ], copyright
     assert_select "#copyright-pane a[href='/help#copyright']", text: "About copyright and terms of use"
-    # the permalink: the record's page in the site's catalog, a copy button, the accession-number note and a link to the record
-    assert_select "#permalink-pane input[readonly][value$='/catalog/vernon-MHM00394']"
-    assert_select "#permalink-pane button[data-action='clipboard#copy']", text: "Copy link"
-    assert_select "#permalink-pane a[href$='/catalog/vernon-MHM00394']", text: "View full record"
+    # the permalink, as one Bootstrap card: the record's page in the site's catalog and a copy button in the body, the
+    # accession-number note and "View full record" in the card's footer (not outside it)
+    assert_select "#permalink-pane article.card input[readonly][value$='/catalog/vernon-MHM00394']"
+    assert_select "#permalink-pane article.card button[data-action='clipboard#copy']", text: "Copy link"
+    assert_select "#permalink-pane article.card footer.card-footer p", text: /contacting the collection team/
+    assert_select "#permalink-pane article.card footer.card-footer a[href$='/catalog/vernon-MHM00394']", text: "View full record"
+    assert_select "#permalink-pane > a", false
     assert_select "p", text: /provided and maintained by\s*Museum/
-    assert_select "section[aria-labelledby=related-collections-heading] a[href^='/catalog'][href*='collection_ssim']", minimum: 1
-    # the viewer is on a full-width black stage above the page's container, a black bar of controls under it; the licence badge is in the page
-    assert_select "div.bg-black .openseadragon-container picture.osd-image"
-    assert_select "div.bg-black .osd-toolbar a[id$=-full-page]"
-    assert_operator response.body.index("bg-black"), :<, response.body.index('id="main-container"')
-    assert_select "#main-container .badge", text: "Copyright - Current"
+    assert_select "main .badge", text: "Copyright - Current"
     # the Copyright card's data is in the table: copyright, credit line, licence, terms of use, advisory, caption
     assert_select "td.blacklight-rights_ssim", text: "[Copyright - Current] Used with permission."
     assert_select "td.blacklight-credit_line_tsim", text: "Gift of Someone, 1970"
@@ -90,24 +90,16 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     assert_select "table.document-metadata th:not([scope=row])", false
   end
 
-  test "the viewer toolbar has full page but no zoom in, zoom out or home" do
+  test "the viewer is blacklight-gallery's own, as the gem ships it" do
     get "/stock/vernon-MHM00394"
-    assert_select ".osd-toolbar a[id$=-full-page]", 1
-    assert_select ".osd-toolbar a[id$=-zoom-in], .osd-toolbar a[id$=-zoom-out], .osd-toolbar a[id$=-home]", false
+    assert_select ".openseadragon-container.col-12 .osd-toolbar.row a[id$=-full-page]", 1
+    assert_select ".osd-toolbar a[id$=-zoom-in], .osd-toolbar a[id$=-zoom-out], .osd-toolbar a[id$=-home]", 3
+    assert_select "picture.osd-image.row[data-openseadragon]"
     config = JSON.parse(css_select("[data-openseadragon]").first["data-openseadragon"])
-    assert_equal false, config["showZoomControl"]
-    assert_equal false, config["showHomeControl"]
-    assert_nil config["zoomInButton"]
-    assert_equal true, config.key?("fullPageButton")
-    assert_equal false, config.dig("gestureSettingsMouse", "scrollToZoom")
-    # the thumbnail strip stays, and full page brings the toolbar with it
-    assert_equal false, config["autoHideControls"]
-    assert_select ".osd-toolbar[id$=-toolbar]", 1
-    assert_equal css_select(".osd-toolbar").first["id"], config["toolbar"]
-    assert_select ".osd-toolbar a[role=button]", minimum: 1
-    assert_select "picture.osd-image.d-block"
-    assert_select "picture.osd-image.row", false
-    assert_includes response.body, %("stock_osd_viewer_fixes":) # pinned, and imported by both pages' scripts
+    %w[zoomInButton zoomOutButton homeButton fullPageButton].each { |key| assert config.key?(key), "#{key} is the gem's" }
+    assert_not_includes config.keys, "toolbar"
+    assert_not_includes response.body, "stock_osd_viewer_fixes"
+    assert_select "div.bg-black", false
   end
 
   test "the record has the full width: no empty sidebar column, even with view annotations on" do
