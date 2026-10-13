@@ -204,7 +204,7 @@
 }
 
 .digital-assets__button:focus-visible {
-  outline: 3px solid #0b4ea2;
+  outline: 3px solid var(--ccs-focus-ring);
   outline-offset: -3px;
 }
 

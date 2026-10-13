@@ -17,7 +17,7 @@ ccs-licence { position: relative; display: inline-block; vertical-align: middle;
   transition: box-shadow var(--duration-slow) ease-in-out, color var(--duration-slow) ease-in-out;
 }
 .licence-badge:hover { color: #0b4ea2; text-decoration: none; box-shadow: var(--shadow-card); }
-.licence-badge:focus-visible { outline: 3px solid #0b4ea2; outline-offset: 2px; }
+.licence-badge:focus-visible { outline: 3px solid var(--focus-focus); outline-offset: 2px; }
 .licence-badge__icons { display: inline-flex; align-items: center; gap: var(--space-3); }
 .licence-badge__icons img { display: block; width: 16px; height: 16px; }
 .licence-badge__tip {
