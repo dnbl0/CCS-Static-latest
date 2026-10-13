@@ -299,3 +299,18 @@
     if (e.target.closest && e.target.closest('[popovertarget="uom-search-popover"]')) setTimeout(render, 0);
   });
 })();
+
+// Modal scroll lock: sets html.has-open-modal (base.css: overflow hidden + stable scrollbar gutter) while any modal surface is on
+// screen, so the page behind cannot scroll, and clears it as soon as the last one has gone (Escape, backdrop, Close button, a
+// re-render or leaving the page). The state is derived from the DOM rather than counted, so nested or stacked modals keep the
+// lock until the last closes and nothing can leave it stuck. Surfaces: the header search overlay (.is-open), and any
+// [role=dialog][aria-modal=true] (the filters, advanced search, Indigenous notification and request dialogs, rendered only while open).
+(function () {
+  var OPEN = '.uom-search-popover.is-open, [role="dialog"][aria-modal="true"]:not(.uom-search-popover), dialog[open]';
+  var root = document.documentElement;
+  function sync() { root.classList.toggle('has-open-modal', !!document.querySelector(OPEN)); }
+  new MutationObserver(sync).observe(root, { subtree: true, childList: true, attributes: true, attributeFilter: ['class', 'open', 'hidden', 'aria-modal'] });
+  window.addEventListener('pageshow', sync);
+  sync();
+  window.CCSModalLock = { sync: sync };
+})();
