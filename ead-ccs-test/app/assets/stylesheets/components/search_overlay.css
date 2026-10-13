@@ -13,6 +13,8 @@
   border: 0;
   width: 100%;
   height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   z-index: var(--ccs-z-overlay);
 }
 
