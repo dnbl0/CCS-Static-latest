@@ -29,9 +29,8 @@ fields:
   21: { solr: classification_ssim }
   22: { solr: subject_ssim }                    # EMu only
   23: { gap: "No source URL column in either export (the record page uses a placeholder link)." }
-  24: { solr: parent_record_ssi }
-  25: { gap: "A child link is the inverse of the parent link; it is not derived yet." }
-  26: { solr: related_object_ssim }
+  24: { solr: parent_record_ssi }              # the 8 Oct 2026 workbook update drops the old 25 (Related Child
+                                                # Record) and 26 (related_object_ssim): both rows are marked Remove
   27: { gap: "DAM field: no Nexus DAM export yet." }
   28: { gap: "DAM field: no Nexus DAM export yet." }
   29: { gap: "DAM field: no Nexus DAM export yet." }

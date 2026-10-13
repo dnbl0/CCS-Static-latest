@@ -10,6 +10,13 @@
     <ul data-advanced-search-target="errorList"></ul>
   </div>
 
+  <% if constraints %>
+    <p class="advanced-form__constraints">
+      <span class="advanced-form__constraints-label"><%= t("blacklight.advanced_search.form.search_context") %></span>
+      <%= constraints %>
+    </p>
+  <% end %>
+
   <section class="advanced-form__section" aria-labelledby="adv-terms-h">
     <h2 id="adv-terms-h" class="advanced-form__heading"><%= t("advanced_search.search.heading") %></h2>
     <p class="advanced-form__hint" id="adv-terms-hint"><%= t("advanced_search.search.hint") %></p>

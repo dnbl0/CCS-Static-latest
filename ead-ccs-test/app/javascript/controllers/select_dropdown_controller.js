@@ -6,8 +6,8 @@ import * as bootstrap from "bootstrap"
 // hidden, and is still what the form submits, so the form works without JavaScript and the value is the same.
 // Attach to an element containing the select; `data-select-dropdown-selector-value` picks it (default "select").
 // `data-select-dropdown-variant-value="field"` gives it the look of the filter rail's boxes (a 48px box with a
-// quiet outline and a chevron inside it) for use in forms, such as the advanced search flyout; its menu is
-// positioned against the window so a scrolling panel around it cannot clip it.
+// quiet outline and a chevron inside it) for use in forms, such as the advanced search page; its menu is
+// positioned against the window so a scrolling container around it cannot clip it.
 export default class extends Controller {
   static values = { selector: { type: String, default: "select" }, variant: { type: String, default: "" } }
 

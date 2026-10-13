@@ -34,7 +34,7 @@ class MediaSectionTest < ActiveSupport::TestCase
   test "the metadata panel is closed until opened, with licence type, advisory and terms of use" do
     render_for(FIELDS)
 
-    assert_selector "aside#media-metadata[hidden]", visible: :all
+    assert_selector "aside#media-metadata[aria-hidden=true]:not(.is-open)", visible: :all
     panel = page.find("aside#media-metadata", visible: :all)
     assert_equal [ "Licence type", "Advisory", "Terms of use" ], panel.all("dt", visible: :all).map(&:text).map(&:strip).then { |t| t.empty? ? panel.all("dt", visible: :all).map { |n| n.text(:all).strip } : t }
     assert_includes panel.text(:all), "WARNING This material is All Rights Reserved."
@@ -46,6 +46,17 @@ class MediaSectionTest < ActiveSupport::TestCase
 
     assert_no_selector ".digital-assets__licence"
     assert_includes page.find("aside#media-metadata", visible: :all).text(:all), "not appropriate today"
+  end
+
+  test "a producer shows as the panel's last row; absent, it just does not appear" do
+    render_for(FIELDS.merge("producer_ssim" => [ "Nexus Digitisation Studio" ]))
+    panel = page.find("aside#media-metadata", visible: :all)
+
+    assert_equal [ "Licence type", "Advisory", "Terms of use", "Producer" ], panel.all("dt", visible: :all).map { |n| n.text(:all).strip }
+    assert_includes panel.text(:all), "Nexus Digitisation Studio"
+
+    render_for(FIELDS)
+    assert_not_includes page.find("aside#media-metadata", visible: :all).text(:all), "Producer"
   end
 
   test "icons are inlined in the text colour" do

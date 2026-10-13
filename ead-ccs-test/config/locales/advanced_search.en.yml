@@ -1,4 +1,15 @@
 en:
+  # Overrides Blacklight's own blacklight.advanced_search.op.{must,should} ("all" / "any") with CCS's fuller
+  # wording, and adds must_not, which Blacklight's own form never offers a row-level control for even though
+  # its search builder already supports it (Blacklight::Solr::SearchBuilderBehavior#add_adv_search_clauses).
+  # NexusCcs::AdvancedSearchFormComponent#match_options reads this scope so a single set of labels covers both
+  # the per-row dropdown here and anywhere Blacklight itself renders an advanced-search operator.
+  blacklight:
+    advanced_search:
+      op:
+        must: Contains all (AND)
+        should: Contains any (OR)
+        must_not: Does not contain (NOT)
   advanced_search:
     page_title: Advanced search
     banner_title: Advanced Search
@@ -13,10 +24,6 @@ en:
       add_row: Add row
       delete_row: Delete row
       max_rows: You can add up to %{count} rows.
-    match:
-      must: Contains all (AND)
-      should: Contains any (OR)
-      must_not: Does not contain (NOT)
     filters:
       heading: Filters
       hint: Narrow your results by collection, object type, creator and more. Select Add filter to choose other filters, and remove any you do not need.

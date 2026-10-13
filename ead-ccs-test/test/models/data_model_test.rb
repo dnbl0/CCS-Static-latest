@@ -9,7 +9,7 @@ class DataModelTest < ActiveSupport::TestCase
   end
 
   test "every workbook field and filter is mapped, and nothing else is" do
-    assert_equal (1..30).to_a, DataModel::MAPPING["fields"].keys.sort
+    assert_equal (1..24).to_a + (27..30).to_a, DataModel::MAPPING["fields"].keys.sort
     assert_equal (1..22).to_a, DataModel::MAPPING["filters"].keys.sort
     assert_equal DataModel::FIELD_LABELS.map { |row| row["seq"] }.sort, DataModel::MAPPING["fields"].keys.sort
     assert_equal DataModel::FILTER_ROWS.map { |row| row["seq"] }.sort, DataModel::MAPPING["filters"].keys.sort
@@ -28,7 +28,8 @@ class DataModelTest < ActiveSupport::TestCase
   end
 
   # CCS-41 asks for a with/without digital assets option, which is not in the workbook's filter list.
-  # Beyond the workbook: CCS-41's with/without digital assets, and Creator role from the search results design.
+  # Beyond the workbook: CCS-41's with/without digital assets, and Creator role (search results design,
+  # placed above Creator name).
   JIRA_ADDITIONS = %w[creator_role_ssim has_digital_asset].freeze
 
   test "facets are the workbook's available filters: same order, names, sections and types" do
@@ -43,7 +44,7 @@ class DataModelTest < ActiveSupport::TestCase
     end
   end
 
-  test "the facets beyond the workbook: Creator role after the creator dates, and CCS-41's digital asset option" do
+  test "the facets beyond the workbook: Creator role above Creator name, and CCS-41's digital asset option" do
     extra = config.facet_fields.values.select { |facet| JIRA_ADDITIONS.include?(facet.key) }.index_by(&:key)
 
     assert_equal "creator", extra["creator_role_ssim"].group
@@ -51,7 +52,7 @@ class DataModelTest < ActiveSupport::TestCase
     assert_equal "media_type", extra["has_digital_asset"].group
 
     order = config.facet_fields.keys
-    assert_equal "creator_death_isim", order[order.index("creator_role_ssim") - 1]
+    assert_equal "creator_ssim", order[order.index("creator_role_ssim") + 1]
   end
 
   test "filter sections appear in the workbook's order with titles" do

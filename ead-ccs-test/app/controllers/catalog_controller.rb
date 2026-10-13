@@ -149,12 +149,6 @@ class CatalogController < ApplicationController
     super || AllFacetFilters.pairs(search_state.params, blacklight_config).any?
   end
 
-  # The advanced search form. Opened by Blacklight's modal (an XHR request) it is only the form, for the flyout.
-  def advanced_search
-    super
-    render layout: false if request.xhr?
-  end
-
   # JSON for the range filters' slider: the first and last year of the results, with that filter's own range
   # left out so the track keeps its full length, and a count per bar (see RangeHistogram; ?bins=N, 8 to 60,
   # defaults to 24).

@@ -17,11 +17,11 @@ class AdvancedSearchFormTest < ActiveSupport::TestCase
     Blacklight::Solr::Response.new(docs, {}, blacklight_config: config)
   end
 
-  def render_form(url, facets: { "collection_ssim" => [ "Grainger Museum Collection", 5, "Medical History Museum", 3 ] }, modal: false)
+  def render_form(url, facets: { "collection_ssim" => [ "Grainger Museum Collection", 5, "Medical History Museum", 3 ] })
     with_controller_class(CatalogController) do
       with_request_url(url) do
         render_inline(NexusCcs::AdvancedSearchFormComponent.new(url: "/catalog", classes: [ "advanced" ], params: Rack::Utils.parse_nested_query(URI(url).query.to_s).with_indifferent_access,
-                                                                 response: response_with(facets), modal: modal))
+                                                                 response: response_with(facets)))
       end
     end
   end
@@ -89,6 +89,17 @@ class AdvancedSearchFormTest < ActiveSupport::TestCase
     assert_selector "select[name=sort] option[selected][value=date-desc]"
   end
 
+  test "opened fresh there is no within-search summary; opened from a filtered search there is" do
+    render_form("/catalog/advanced")
+    assert_no_selector ".advanced-form__constraints"
+
+    render_form("/catalog/advanced?q=skull&f[collection_ssim][]=Grainger+Museum+Collection&f_all[collection_ssim][]=Medical+History+Museum")
+    assert_selector ".advanced-form__constraints", text: "Within search"
+    assert_selector ".advanced-form__constraints .constraint", text: "Grainger Museum Collection"
+    assert_selector ".advanced-form__constraints .constraint", text: "Medical History Museum"
+    assert_no_selector ".advanced-form__constraints .remove, .advanced-form__constraints a"
+  end
+
   test "the form is a GET to the results page, with an error summary and Start over" do
     render_form("/catalog/advanced")
 
@@ -96,12 +107,6 @@ class AdvancedSearchFormTest < ActiveSupport::TestCase
     assert_selector ".advanced-form__errors[role=alert]", visible: :all
     assert_link "Start over"
     assert_selector "input[type=submit][value=Search]"
-  end
-
-  test "in the flyout the form has the modal class" do
-    render_form("/catalog/advanced", modal: true)
-
-    assert_selector "form.advanced-form--modal"
   end
 
   test "a failed check moves focus to the error summary, which is a focusable alert" do

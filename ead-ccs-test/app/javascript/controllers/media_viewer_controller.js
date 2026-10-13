@@ -4,11 +4,16 @@ import { Controller } from "@hotwired/stimulus"
 // focus going to the panel's close button and back to the info button), full screen for the band, and the
 // thumbnails swapping the large image. Without JavaScript the panel stays closed, the thumbnails are links to
 // the full-size images, and the full screen button never appears.
+//
+// The panel is always rendered (never [hidden]/display:none): it is an absolutely positioned child of the
+// stage's flex layout, and toggling a flex child's display briefly counted it back into the stage's
+// justify-content centring, jolting the large image. Opening and closing it only ever toggles the "is-open"
+// class (transform/visibility, both paint-only) and aria-hidden, which never touches that layout.
 export default class extends Controller {
   static targets = [ "stage", "image", "panel", "infoButton", "fullscreenButton" ]
 
   connect() {
-    this.onKey = (event) => { if (event.key === "Escape" && this.hasPanelTarget && !this.panelTarget.hidden) this.closePanel() }
+    this.onKey = (event) => { if (event.key === "Escape" && this.isOpen) this.closePanel() }
     this.onFullscreen = () => this.syncFullscreen()
     this.element.addEventListener("keydown", this.onKey)
     document.addEventListener("fullscreenchange", this.onFullscreen)
@@ -20,18 +25,24 @@ export default class extends Controller {
     document.removeEventListener("fullscreenchange", this.onFullscreen)
   }
 
+  get isOpen() {
+    return this.hasPanelTarget && this.panelTarget.classList.contains("is-open")
+  }
+
   togglePanel() {
-    this.panelTarget.hidden ? this.openPanel() : this.closePanel()
+    this.isOpen ? this.closePanel() : this.openPanel()
   }
 
   openPanel() {
-    this.panelTarget.hidden = false
+    this.panelTarget.classList.add("is-open")
+    this.panelTarget.removeAttribute("aria-hidden")
     this.infoButtonTarget.setAttribute("aria-expanded", "true")
     this.panelTarget.querySelector("button")?.focus()
   }
 
   closePanel() {
-    this.panelTarget.hidden = true
+    this.panelTarget.classList.remove("is-open")
+    this.panelTarget.setAttribute("aria-hidden", "true")
     this.infoButtonTarget.setAttribute("aria-expanded", "false")
     this.infoButtonTarget.focus()
   }

@@ -12,8 +12,8 @@ Sources (in data/, not tracked in git; copied from the static CCS repo's extract
       "AH sequencing"                -> sequencing.json
       "Copyright Advice"             -> copyright-advice.json
       ("CCS Data Inventory - 18 Aug" and "- Superseeded" are older versions and are not used)
-  data/CCS-Field-labels-and-filters.xlsx
-      "CCS Field labels"             -> field-labels.json
+  data/CCS-Field-labels-and-filters.xlsx (the 8 Oct 2026 update; sheet renamed, columns reordered)
+      "CCS Field labels - Updated"   -> field-labels.json
       "CCS Filters"                  -> filters.json
 """
 import json, os, re, sys
@@ -45,19 +45,22 @@ def num(v):
 lab = openpyxl.load_workbook(LAB, data_only=True)
 inv = openpyxl.load_workbook(INV, data_only=True)
 
-# ---- field labels (30 display fields) ----
+# ---- field labels (28: the 8 Oct 2026 update leaves two superseded "Related ... Record" rows in the
+# sheet -- same Display Order as the row above, "Remove" in the review-comments column -- so a row marked
+# Remove is dropped rather than kept as a duplicate or phantom seq) ----
 fl = []
-for r in rows(lab['CCS Field labels'])[1:]:
+for r in rows(lab['CCS Field labels - Updated'])[1:]:
     if not r[0] or num(r[0]) is None: continue
-    fl.append({'seq': num(r[0]), 'label': r[1], 'encompasses': r[2], 'description': r[3], 'dataType': r[4], 'source': r[5], 'transformRequired': r[6], 'displaySpec': r[7], 'examples': r[8], 'questions': r[9]})
+    if (r[7] or '').strip().lower() == 'remove': continue
+    fl.append({'seq': num(r[0]), 'label': r[1], 'encompasses': r[2], 'description': r[3], 'transformRequired': r[4], 'displaySpec': r[5], 'examples': r[6], 'questions': r[7], 'dataType': r[8], 'source': r[9]})
 write('field_labels.json', fl)
 
-# ---- filters (22) ----
+# ---- filters (22; the 8 Oct 2026 update dropped the "Additional Functionality" column) ----
 ft, section = [], None
 for r in rows(lab['CCS Filters'])[1:]:
     if num(r[0]) is None: continue
     section = r[1] or section
-    ft.append({'seq': num(r[0]), 'section': section, 'name': r[2], 'type': r[3], 'additional': r[4], 'options': r[5], 'dataModelRef': r[6], 'questions': r[7]})
+    ft.append({'seq': num(r[0]), 'section': section, 'name': r[2], 'type': r[3], 'options': r[4], 'dataModelRef': r[5], 'questions': r[6]})
 write('filters.json', ft)
 
 # ---- datatypes ----

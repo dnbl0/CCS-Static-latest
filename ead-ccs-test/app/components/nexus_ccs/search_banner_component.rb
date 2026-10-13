@@ -18,10 +18,10 @@ module NexusCcs
       )
     end
 
-    # The "Advanced search" link opens Blacklight's advanced form in the modal (a flyout, see
-    # advanced_flyout_controller.js and components/advanced_flyout.css); without JavaScript it is the page. The
-    # form is prefilled from the current search: its clauses, match type, filters, ranges and sort, and the
-    # current query as a first "all fields" clause when there are no clauses yet.
+    # The "Advanced search" link is a plain navigation to the standalone page (NexusCcs::AdvancedSearchFormComponent),
+    # with its own header, breadcrumbs and banner; there is no modal. The form is prefilled from the current
+    # search: its clauses, match type, filters, ranges and sort, and the current query as a first "all fields"
+    # clause when there are no clauses yet.
     def advanced_search_url
       state = helpers.search_state.params_for_search.except(:qt, :page, :action, :controller).to_h.with_indifferent_access
       if state[:clause].blank? && state[:q].present?
@@ -31,7 +31,7 @@ module NexusCcs
     end
 
     def controllers
-      { controller: "advanced-flyout select-dropdown", "select-dropdown-selector-value": "select.search-field" }
+      { controller: "select-dropdown", "select-dropdown-selector-value": "select.search-field" }
     end
 
     def summary

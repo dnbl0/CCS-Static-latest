@@ -1,7 +1,8 @@
 /*
  * The advanced search page and form (NexusCcs::AdvancedSearchFormComponent), after the static site's advanced
- * search: a banner, then the form beside a grey "Search help" panel. The same form is the results page's flyout
- * (components/advanced_flyout.css), where it stacks.
+ * search: a banner, then the form beside a grey "Search help" panel. A standalone page at /catalog/advanced,
+ * with the site's own header, breadcrumbs and page chrome; the "Advanced search" link in the search banner and
+ * the home hero just navigates to it (no modal).
  */
 /* The page sits in Blacklight's container; the banner runs the full width of the window */
 .advanced-banner {
@@ -336,6 +337,32 @@
   color: var(--ccs-text-error);
 }
 
+/* "Within search": the query and filters the form was opened with (Blacklight's own search-history
+   constraint layout, read-only, no remove buttons). See NexusCcs::AdvancedSearchFormComponent#constraints. */
+.advanced-form__constraints {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 var(--ccs-space-2);
+  margin: 0 0 var(--ccs-space-4);
+  font-size: var(--ccs-font-size-sm);
+  color: var(--record-text-muted, #3b4050);
+}
+
+.advanced-form__constraints-label {
+  font-weight: var(--ccs-font-weight-semibold);
+}
+
+.advanced-form__constraints .constraint {
+  padding: 2px var(--ccs-space-2);
+  background: var(--ccs-navy-100);
+  color: var(--ccs-navy-1100);
+}
+
+.advanced-form__constraints .filter-name::after {
+  content: ": ";
+}
+
 /* Search help */
 .advanced-help {
   padding: var(--ccs-space-5);
@@ -399,54 +426,19 @@
   }
 }
 
-/* In the flyout the form is one narrow column */
-.advanced-form--modal .advanced-row {
-  grid-template-columns: minmax(0, 1fr);
-}
-
-.advanced-form--modal .advanced-range {
-  flex-direction: column;
-  align-items: stretch;
-}
-
-.advanced-form--modal .advanced-form__field,
-.advanced-form--modal .advanced-range .advanced-form__field {
-  flex-basis: auto;
-  max-width: none;
-}
-
-.advanced-form--modal .advanced-form__heading {
-  font-size: var(--ccs-font-size-2xl);
-}
-
-/* The flyout's Start over / Search stay in view at the foot of the scrolling panel, never over a section */
-.advanced-form--modal .advanced-form__actions {
-  position: sticky;
-  bottom: calc(-1 * var(--ccs-space-4));
-  z-index: 1;
-  margin: 0 calc(-1 * var(--ccs-space-4)) calc(-1 * var(--ccs-space-4));
-  padding: var(--ccs-space-3) var(--ccs-space-4);
-  border-top: 1px solid var(--ccs-border-panel);
-  background: var(--ccs-white);
-}
-
-.advanced-form--modal .advanced-filter__values {
-  grid-template-columns: minmax(0, 1fr);
-}
-
 /*
- * The flyout's selects (field, match type, filter mode, add filter, sort) are the filter rail's boxes: the same
- * 48px box with a quiet outline that turns navy when open, the chevron inside it, and a menu that opens as the
- * rail's panel does (white, navy outline, shadow). controllers/select_dropdown_controller.js builds them with
- * variant "field" (.ccs-select--field); the menu is positioned against the window, so the flyout's own scrolling
- * does not clip it, and scrolls itself if it is long.
+ * The advanced search page's selects (field, match type, filter mode, add filter, sort) are the filter rail's
+ * boxes: the same 48px box with a quiet outline that turns navy when open, the chevron inside it, and a menu
+ * that opens as the rail's panel does (white, navy outline, shadow). controllers/select_dropdown_controller.js
+ * builds them with variant "field" (.ccs-select--field); the menu is positioned against the window so the
+ * page's own scrolling does not clip it, and scrolls itself if it is long.
  */
-#blacklight-modal .ccs-select--field {
+.advanced-page .ccs-select--field {
   display: block;
   width: 100%;
 }
 
-#blacklight-modal .ccs-select.ccs-select--field > .dropdown-toggle {
+.advanced-page .ccs-select.ccs-select--field > .dropdown-toggle {
   height: 3rem;
   padding: 0 2.5rem 0 var(--ccs-space-3);
   border: 1px solid #cfcac0;
@@ -456,14 +448,14 @@
   color: var(--ccs-text-primary);
 }
 
-#blacklight-modal .ccs-select.ccs-select--field > .dropdown-toggle:hover,
-#blacklight-modal .ccs-select.ccs-select--field > .dropdown-toggle.show {
+.advanced-page .ccs-select.ccs-select--field > .dropdown-toggle:hover,
+.advanced-page .ccs-select.ccs-select--field > .dropdown-toggle.show {
   border-color: var(--ccs-navy-1100);
   background: var(--ccs-white);
 }
 
 /* the rail's chevron: 16px, inside the box, in the text colour */
-#blacklight-modal .ccs-select.ccs-select--field > .dropdown-toggle::after {
+.advanced-page .ccs-select.ccs-select--field > .dropdown-toggle::after {
   inset: 50% var(--ccs-space-3) auto auto;
   width: 1rem;
   height: 1rem;
@@ -472,11 +464,11 @@
   transform: translateY(-50%);
 }
 
-#blacklight-modal .ccs-select.ccs-select--field > .dropdown-toggle.show::after {
+.advanced-page .ccs-select.ccs-select--field > .dropdown-toggle.show::after {
   transform: translateY(-50%) rotate(180deg);
 }
 
-#blacklight-modal .ccs-select.ccs-select--field > .dropdown-menu {
+.advanced-page .ccs-select.ccs-select--field > .dropdown-menu {
   --bs-dropdown-border-color: var(--ccs-navy-1100);
   --bs-dropdown-padding-y: 0.375rem;
   --bs-dropdown-item-padding-x: var(--ccs-space-3);
@@ -490,11 +482,11 @@
   line-height: 1.4;
 }
 
-#blacklight-modal .ccs-select.ccs-select--field > .dropdown-menu .dropdown-item {
+.advanced-page .ccs-select.ccs-select--field > .dropdown-menu .dropdown-item {
   white-space: normal;
   overflow-wrap: anywhere;
 }
 
-#blacklight-modal .ccs-select.ccs-select--field > .dropdown-menu .dropdown-item[hidden] {
+.advanced-page .ccs-select.ccs-select--field > .dropdown-menu .dropdown-item[hidden] {
   display: none;
 }
