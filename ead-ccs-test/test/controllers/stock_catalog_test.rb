@@ -80,6 +80,11 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     assert_equal false, config["showHomeControl"]
     assert_nil config["zoomInButton"]
     assert_equal true, config.key?("fullPageButton")
+  test "the record has the full width: no empty sidebar column, even with view annotations on" do
+    get "/branded-stock/vernon-MHM00394"
+    assert_select "#sidebar", false
+    assert_select "section#content", false
+    assert_select "main#main-container .row > section.col-md-12 #document"
   end
 
   test "the branded page has the UoM header, breadcrumb and footer around Blacklight's own record" do
