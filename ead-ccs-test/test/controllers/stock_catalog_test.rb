@@ -5,7 +5,9 @@ require "test_helper"
 class StockCatalogTest < ActionDispatch::IntegrationTest
   DOC = SolrDocument.new("id" => "vernon-MHM00394", "title_tsim" => [ "Test record" ], "format" => [ "Image" ],
     "creator_display_ssim" => [ "Dolmetsch, Arnold (24 February 1858 \u2013 28-Feb-40) Creator", "Estey Organ Company (1852 \u2013 1961) Maker" ],
-    "subject_ssim" => [ "Music" ], "collection_ssim" => [ "Museum" ], "production_place_ssim" => [ "Paris", "France" ],
+    "subject_ssim" => [ "Music" ], "collection_ssim" => [ "Museum" ], "rights_ssim" => [ "[Copyright - Current] Used with permission." ],
+    "credit_line_tsim" => [ "Gift of Someone, 1970" ],
+    "licence_type_ssim" => [ "Copyright - Current" ], "production_place_ssim" => [ "Paris", "France" ],
     "classification_ssim" => [ "Primary", "Secondary" ], "digital_asset_large_paths_ssim" => [ "/digital-assets/large/mhm00394.jpg" ],
     "response" => nil).tap { |doc| doc.instance_variable_set(:@response, Blacklight::Solr::Response.new({ "response" => { "docs" => [] } }, {})) }
 
@@ -42,12 +44,19 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     get "/stock/vernon-MHM00394"
     assert_select "section[aria-labelledby=object-details-heading] > h2#object-details-heading", text: "Object details"
     assert_operator response.body.index("Object details"), :<, response.body.index("document-metadata")
-    assert_select "dl.document-metadata dt", text: "Creator"
-    assert_select "dl.document-metadata dt", text: "Collection"
-    # the sheet's own order: Object Type (2), Creator (4), Place (6), Collection (19), Classification (21), Subject (22)
+    # a row for each sheet field the record has a value for, in the sheet's order (Title (1) first, Measurements named as
+    # its display rule 2 has it), then the caption; a field with no value has no row
     labels = css_select("dl.document-metadata dt").map { |dt| dt.text.strip }
-    assert_equal [ "Creator", "Place", "Collection", "Classification", "Subject" ], labels - [ "Object Type" ]
-    assert_select "dl.document-metadata dt", text: "Related Parent Record", count: 0
+    assert_equal [ "Title", "Creator", "Place", "Copyright", "Credit Line", "Collection", "Classification", "Subject",
+                   "Licence Type", "Advisory", "Terms of Use", "Caption" ], labels
+    # the Copyright card's data is in the table: copyright, credit line, licence, terms of use, advisory, caption
+    assert_select "dd.blacklight-rights_ssim", text: "[Copyright - Current] Used with permission."
+    assert_select "dd.blacklight-credit_line_tsim", text: "Gift of Someone, 1970"
+    assert_select "dd.blacklight-licence_type_ssim", text: "Copyright - Current"
+    assert_select "dd.blacklight-gap_29_derived", text: "Used with permission."
+    assert_select "dd.blacklight-gap_28_derived", text: /not appropriate today/
+    assert_select "dd.blacklight-caption", text: /Test record\..*Used with permission\.\.?/
+    assert_not_includes response.body, "Not available"
     # Creator: a person (EMu's "Family, Given") gets the sheet's b./d. form; an organisation keeps its plain dates
     assert_select "dl.document-metadata dd.blacklight-creator_display_ssim", text: "Dolmetsch, Arnold (b. 24 February 1858 - d. 28-Feb-40) Creator"
     assert_select "dl.document-metadata dd.blacklight-creator_display_ssim", text: "Estey Organ Company (1852 \u2013 1961) Maker"

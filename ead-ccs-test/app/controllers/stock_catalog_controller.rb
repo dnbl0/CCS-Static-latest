@@ -41,42 +41,9 @@ class StockCatalogController < ActionController::Base
     # The viewer is the gem's own component; the subclass only gives it the record's image URLs.
     config.show.document_embed_component = StockOpenseadragonEmbedComponent
 
-    # Plain show fields, as the generator's catalog controller declares them: one per field of the "CCS Field labels -
-    # Updated" sheet of "CCS Field labels and filters - updated - 8 October 2026.xlsx" (data/CCS-Field-labels-and-filters.xlsx,
-    # via DataModel: seq, label and order are the sheet's, the Solr field is config/data_model/solr_mapping.yml's) that
-    # the data can carry today. The title (1) is the heading, so it is not repeated; fields the data cannot carry yet
-    # (DataModel.field_gaps) are left out, and the sheet says a field with no value shows no label either.
-    # How the sheet says several values of a field are joined into one line (Blacklight's separator_options): Date
-    # (3) separated with "; " as its examples show, Place (6) "with a comma", Classification (21) hyphenated, "one line
-    # of text". Other fields list each value on its own line, Blacklight's default (Related Record (24) says so too).
-    joins = { 3 => "; ", 6 => ", ", 21 => " - " }
-
-    # Classification (21) and Subject (22): "preferred" as links that search for records with that value. Blacklight's
-    # own link_to_facet needs the field to be a facet; these are not shown (the record page has no facet sidebar), they
-    # only tell link_to_facet where the link goes: the real catalog's filters of the same name.
-    links = [ 21, 22 ]
-    config.add_facet_field "classification_ssim", label: "Classification", show: false
-    config.add_facet_field "subject_ssim", label: "Subject", show: false
-
-    DataModel.fields.select(&:available?).reject { |field| field.seq == 1 }.each do |field|
-      options = { label: field.label }
-      options[:link_to_facet] = true if links.include?(field.seq)
-      options[:separator_options] = { words_connector: joins[field.seq], two_words_connector: joins[field.seq], last_word_connector: joins[field.seq] } if joins[field.seq]
-      # Sheet 24, Related Record: "each line will be identified with a relation type (parent or child)"; the data
-      # carries the parent only.
-      options[:values] = ->(_config, document, _context) { Array(document[field.solr]).map { |value| "Parent - #{value}" } } if field.seq == 24
-      # Sheet 4, Creator: a person is "Full name (b. <born> - d. <died>) role". The exports have no person/organisation
-      # flag and no nationality, so only a name in EMu's person form ("Family, Given") is given the sheet's "b."/"d."
-      # form; an organisation's "(estab. - closed)" needs a flag the data lacks, and so keeps its plain "(from - to)".
-      if field.seq == 4
-        options[:values] = lambda do |_config, document, _context|
-          Array(document[field.solr]).map do |creator|
-            creator.include?(",") ? creator.sub(/\(([^()]+?) \u2013 ([^()]+?)\)/, '(b. \\1 - d. \\2)') : creator
-          end
-        end
-      end
-      config.add_show_field field.solr, **options
-    end
+    # One row for every field of the CCS Field labels - Updated sheet, a muted "Not available" where the record has no
+    # value (see StockRecordFields), plus the Copyright card's caption.
+    StockRecordFields.apply(config)
 
     # The details list under an "Object details" heading, laid out as rows of a table, from Blacklight's own
     # components and Bootstrap's utility classes.
