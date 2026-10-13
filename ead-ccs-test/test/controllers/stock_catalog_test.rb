@@ -16,6 +16,7 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     def search_service = FakeService.new(DOC)
   end
   StockCatalogController.prepend(FakeSolr)
+  BrandedStockCatalogController.prepend(FakeSolr)
 
   test "renders Blacklight's own record page, none of the site's components" do
     get "/stock/vernon-MHM00394"
@@ -27,5 +28,16 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     assert_select "link[href*='stock_blacklight']"
     assert_includes response.body, %(import "stock_application")
     assert_not_includes response.body, %(import "application")
+  end
+
+  test "the branded page has the UoM header, breadcrumb and footer around Blacklight's own record" do
+    get "/branded-stock/vernon-MHM00394"
+    assert_response :success
+    assert_select ".site-header"
+    assert_select ".breadcrumb-bar [aria-current=page]", text: "Test record"
+    assert_select "footer, .site-footer"
+    assert_select "#document.document h1"
+    assert_select "dl.document-metadata"
+    assert_select ".record-banner, .record-summary, .digital-assets, .persistent-link", false
   end
 end

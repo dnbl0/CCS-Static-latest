@@ -30,6 +30,13 @@ Rails.application.routes.draw do
     end
   end
 
+  # The same page in the UoM header, breadcrumb and footer (BrandedStockCatalogController).
+  scope constraints: { id: %r{[^/]+} } do
+    resources :branded_stock_documents, only: [ :show ], path: "/branded-stock", controller: "branded_stock_catalog" do
+      concerns :exportable
+    end
+  end
+
   get "collections", to: "pages#collections", as: :collections
   get "collections/:slug", to: "pages#collection", as: :collection, constraints: { slug: /[a-z-]+/ }
   get "help", to: "pages#help", as: :help
