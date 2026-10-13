@@ -134,16 +134,15 @@ class CatalogController < ApplicationController
     config.autocomplete_path = "suggest"
   end
 
-  # The bare front page is the results page with the Digital asset switch on: every record that has a digital
-  # asset, as the mosaic. Any parameter (a search, a filter, a sort...) means the visitor chose something.
-  before_action :show_digital_assets_by_default, only: :index
+  # A bare /catalog (no search, filter or sort) has nothing to show, so it goes to the home page: the hero banner
+  # with the search bar. Any parameter means the visitor chose something and gets the results.
+  before_action :show_home_page_when_bare, only: :index
 
-  def show_digital_assets_by_default
+  def show_home_page_when_bare
     return unless controller_name == "catalog" && request.format.html? && request.query_parameters.empty?
 
-    redirect_to search_action_url(f: { has_digital_asset: [ "with" ] }, search_field: "all_fields", view: "masonry")
+    redirect_to root_path
   end
-
 
   private
 

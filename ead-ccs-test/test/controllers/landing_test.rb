@@ -11,9 +11,9 @@ class LandingTest < ActionDispatch::IntegrationTest
     assert_select ".ccs-card__title a", count: 5
   end
 
-  test "the bare search page is every record with a digital asset, as the mosaic" do
+  test "a bare search page goes to the home page with the hero search" do
     get "/catalog"
 
-    assert_redirected_to "/catalog?f%5Bhas_digital_asset%5D%5B%5D=with&search_field=all_fields&view=masonry"
+    assert_redirected_to "/"
   end
 end

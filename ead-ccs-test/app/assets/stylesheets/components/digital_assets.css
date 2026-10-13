@@ -14,6 +14,8 @@
 
 .digital-assets__stage {
   position: relative;
+  display: flex; /* the media area fills the stage's minimum height, so the image sits with equal space above and below */
+  flex-direction: column;
   min-height: 40.5rem; /* 648px: the panel's height in the design */
   padding: var(--ccs-space-4);
 }
@@ -26,8 +28,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex: 1 1 auto;
   width: 100%;
-  height: 100%;
   overflow: hidden;
 }
 

@@ -82,9 +82,15 @@ body.blacklight-catalog-show #main-container .page-sidebar {
   grid-column: 1;
 }
 
+/* The tags run the full width under the title and byline, so they wrap side by side rather than stacking in the
+   narrow column beside the Save button */
+.record-summary__inner > .record-summary__tags {
+  grid-column: 1 / -1;
+}
+
 .record-summary__save {
   grid-column: 2;
-  grid-row: 1 / span 3;
+  grid-row: 1 / span 2;
   justify-self: end;
 }
 
