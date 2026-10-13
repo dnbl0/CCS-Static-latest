@@ -24,7 +24,9 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     assert_select "main#main-container.container"
     assert_select "#document.document h1"
     assert_select "dl.document-metadata"
-    assert_select "#document img[src*=mhm00394]"
+    assert_select "#document .document-thumbnail img[src*=mhm00394]", 1
+    # the thumbnail comes before the details
+    assert_operator response.body.index("document-thumbnail"), :<, response.body.index("document-metadata")
     assert_select ".site-header, .record-banner, .record-summary, .digital-assets, .persistent-link", false
     assert_select "link[href*='stock_blacklight']"
     assert_includes response.body, %(import "stock_application")
