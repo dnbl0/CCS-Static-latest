@@ -31,8 +31,8 @@ module NexusCcs
     # page) keeps it in the header's top strip instead; the content pages draw their own strip (PageBreadcrumbsComponent).
     def saved_in_header? = breadcrumbs.empty? && (helpers.controller_name != "pages" || helpers.action_name == "home")
 
-    # A record's page has its title band instead of the search banner, and the advanced search page its own
-    # banner (catalog/advanced_search.html.erb): the form is the search.
+    # A record's page has its title band instead of the search banner, and Blacklight's own advanced search page
+    # (unmodified) is the search, so the site's search banner does not repeat above it.
     def show_search_banner? = helpers.controller_name == "catalog" && !%w[show advanced_search].include?(helpers.action_name)
 
     def show_record_banner? = helpers.controller_name == "catalog" && helpers.action_name == "show"

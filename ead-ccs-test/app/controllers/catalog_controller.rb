@@ -144,16 +144,6 @@ class CatalogController < ApplicationController
     redirect_to search_action_url(f: { has_digital_asset: [ "with" ] }, search_field: "all_fields", view: "masonry")
   end
 
-  # "Includes all" filters (f_all) alone make a search too: the results page, not the home page
-  def has_search_parameters?
-    super || AllFacetFilters.pairs(search_state.params, blacklight_config).any?
-  end
-
-  # The advanced search form. Opened by Blacklight's modal (an XHR request) it is only the form, for the flyout.
-  def advanced_search
-    super
-    render layout: false if request.xhr?
-  end
 
   private
 

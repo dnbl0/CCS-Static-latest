@@ -15,7 +15,9 @@
       <% if byline %><p class="record-summary__byline"><%= byline %></p><% end %>
       <% if tags.any? %>
         <ul class="record-summary__tags" aria-label="Tags">
-          <% tags.each do |tag| %><li class="record-tag"><%= tag %></li><% end %>
+          <% tags.each do |tag| %>
+            <li><%= link_to tag.value, tag_path(tag), class: "record-tag" %></li>
+          <% end %>
         </ul>
       <% end %>
       <div class="record-summary__save"><%= render NexusCcs::SaveControlComponent.new(document: document) %></div>
@@ -25,7 +27,8 @@
   <div class="record-main">
     <div class="record-main__inner">
       <div class="record-main__details">
-        <section class="record-card record-details" aria-label="Details">
+        <section class="record-card record-details" aria-labelledby="record-details-title">
+          <h2 class="record-details__title" id="record-details-title">Object details</h2>
           <dl class="record-details__list">
             <% rows.each do |row| %>
               <div class="record-details__row">
@@ -40,6 +43,13 @@
                       </button>
                       <span class="visually-hidden" role="status" data-clipboard-target="status"></span>
                     </span>
+                  <% elsif row.field == "description_tsim" %>
+                    <% row.values.each do |value| %>
+                      <div class="record-details__truncate" data-controller="truncate">
+                        <span class="record-details__value" data-truncate-target="text"><%= value %></span>
+                        <button type="button" class="record-details__truncate-toggle" data-truncate-target="toggle" data-action="truncate#toggle" hidden>Show more</button>
+                      </div>
+                    <% end %>
                   <% else %>
                     <% row.values.each do |value| %>
                       <span class="record-details__value">

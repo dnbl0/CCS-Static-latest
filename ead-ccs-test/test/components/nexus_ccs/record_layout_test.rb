@@ -28,7 +28,8 @@ class RecordLayoutTest < ActiveSupport::TestCase
     c = component(FIELDS)
 
     assert_equal "Grainger, Percy Aldridge · 1952", c.byline
-    assert_equal [ "Object", "Grainger Museum Collection" ], c.tags
+    assert_equal [ "Object", "Grainger Museum Collection" ], c.tags.map(&:value)
+    assert_equal [ "format", "collection_ssim" ], c.tags.map(&:field)
     assert_equal "Kangaroo-pouch tone-tool", c.heading
   end
 

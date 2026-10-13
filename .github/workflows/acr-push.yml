@@ -1,14 +1,25 @@
 name: Push images to Azure Container Registry
 
-# Builds the Rails and Solr images and pushes them to the registry using the ACR_USERNAME and ACR_PASSWORD
-# repository secrets (no Azure sign-in needed). Manual only: run it from the Actions tab and give the registry's
-# login server, e.g. myregistry.azurecr.io. It does not deploy anything.
+# Builds the Rails and Solr images and pushes them to the registry (tagged with the commit SHA and :latest) using
+# the ACR_USERNAME and ACR_PASSWORD repository secrets (no Azure sign-in needed). Runs automatically on every
+# push to main that touches ead-ccs-test, and can also be run manually from the Actions tab.
+#
+# It only pushes images -- it does not roll them out. Azure Container Apps keeps running whatever image it was
+# last told to use, even after a newer one lands in the registry (and :latest alone does not trigger a new
+# replica), so finish a deploy with:
+#   az containerapp update -n ccs-web -g ccs-service-experience-app --image ${{ vars.ACR_REGISTRY }}/ccs-web:<sha>
+#   az containerapp update -n ccs-solr -g ccs-service-experience-app --image ${{ vars.ACR_REGISTRY }}/ccs-solr:<sha>
+# (only needed for ccs-solr if solr/ or the Solr half of the Dockerfile changed). The commit's SHA is the tag this
+# workflow just pushed, shown in its own log and in the Actions run's URL.
 on:
+  push:
+    branches: [main]
+    paths: ["ead-ccs-test/**"]
   workflow_dispatch:
     inputs:
       registry:
-        description: "Registry login server, e.g. myregistry.azurecr.io"
-        required: true
+        description: "Registry login server, e.g. myregistry.azurecr.io. Defaults to the ACR_REGISTRY repository variable."
+        required: false
 
 permissions:
   contents: read
@@ -21,13 +32,13 @@ jobs:
 
       - uses: docker/login-action@v3
         with:
-          registry: ${{ inputs.registry }}
+          registry: ${{ inputs.registry || vars.ACR_REGISTRY }}
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
 
       - name: Build and push images
         env:
-          REGISTRY: ${{ inputs.registry }}
+          REGISTRY: ${{ inputs.registry || vars.ACR_REGISTRY }}
         run: |
           cd ead-ccs-test
           for target in "ead-ccs ccs-web" "solr ccs-solr"; do
@@ -36,3 +47,5 @@ jobs:
             docker push "$REGISTRY/$2:$GITHUB_SHA"
             docker push "$REGISTRY/$2:latest"
           done
+          echo "### Images pushed, tagged \`$GITHUB_SHA\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "Roll them out with \`az containerapp update\` -- see this workflow's own comment for the exact commands." >> "$GITHUB_STEP_SUMMARY"

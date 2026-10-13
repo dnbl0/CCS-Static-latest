@@ -14,11 +14,20 @@
 
 .digital-assets__stage {
   position: relative;
+  min-height: 40.5rem; /* 648px: the panel's height in the design */
+  padding: var(--ccs-space-4);
+}
+
+/* The centred, clipped image/media area is a child of the stage, not the stage itself: the Media metadata
+   panel is the stage's other child, an absolutely positioned sibling of this area rather than a child of it,
+   so opening the panel (sliding it in with a transform) can never feed back into recentring the image -- that
+   coupling, through this area's own centring and clipping, was jolting the image open/close. */
+.digital-assets__media-area {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 40.5rem; /* 648px: the panel's height in the design */
-  padding: var(--ccs-space-4);
+  width: 100%;
+  height: 100%;
   overflow: hidden;
 }
 
@@ -65,7 +74,11 @@
   object-fit: cover;
 }
 
-/* Media metadata: over the band's right edge */
+/* Media metadata: over the band's right edge. It stays in place and in the DOM at all times (positioned
+   off-stage by its own transform) rather than being toggled with [hidden]/display: switching an absolutely
+   positioned flex child's display was momentarily counted back into the stage's "justify-content: center",
+   making the large image jump and settle (a jolt) the instant the panel opened. Sliding it with transform and
+   hiding it with visibility, both paint-only, never touches the stage's layout. */
 .digital-assets__panel {
   position: absolute;
   inset: 0 0 0 auto;
@@ -76,16 +89,16 @@
   max-width: 100%;
   background: var(--ccs-white);
   box-shadow: -6px 0 9px rgb(0 0 0 / 28%);
-  animation: media-panel-in var(--ccs-duration-base) ease-out;
+  visibility: hidden;
+  transform: translateX(100%);
+  transition: transform var(--ccs-duration-base) ease-out, visibility 0s linear var(--ccs-duration-base);
+  will-change: transform;
 }
 
-.digital-assets__panel[hidden] {
-  display: none;
-}
-
-@keyframes media-panel-in {
-  from { transform: translateX(100%); }
-  to { transform: translateX(0); }
+.digital-assets__panel.is-open {
+  visibility: visible;
+  transform: translateX(0);
+  transition: transform var(--ccs-duration-base) ease-out;
 }
 
 .digital-assets__panel-head {
@@ -229,7 +242,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .digital-assets__panel {
-    animation: none;
+    transition: none;
   }
 }
 

@@ -57,9 +57,14 @@ module NexusCcs
       note.presence
     end
 
+    # Person or organisation responsible for creating the digital asset (DataModel field 30; no DAM export yet)
+    def producer
+      Array(@document["producer_ssim"]).first.presence
+    end
+
     # [label, text] rows of the Media metadata panel
     def metadata
-      [ [ "Licence type", licence ], [ "Advisory", ADVISORY ], [ "Terms of use", terms ] ].select { |_, text| text.present? }
+      [ [ "Licence type", licence ], [ "Advisory", ADVISORY ], [ "Terms of use", terms ], [ "Producer", producer ] ].select { |_, text| text.present? }
     end
 
     def metadata?

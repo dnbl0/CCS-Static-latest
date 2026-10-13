@@ -189,58 +189,13 @@ dialog.modal {
   --bs-pagination-active-border-color: var(--uom-navy);
 }
 
-.sort-pagination, .pagination-search-widgets {
+.sort-pagination {
   align-items: center;
   background-color: var(--uom-bg-secondary);
   border: 1px solid var(--uom-border);
   border-radius: var(--uom-radius);
   padding: 0.5rem 0.75rem;
   padding-bottom: 0.5rem !important; /* to override Blacklight's default */
-}
-
-/* On a record page Blacklight emits .pagination-search-widgets whenever a
-   search session exists, but if you arrive by direct link, or refresh and
-   the wrapper is there with an empty div. Using :has() to test for occupants. */
-.pagination-search-widgets:not(:has(.page-links, .header-tools, .constraints-container)) {
-  display: none;
-}
-
-/* Record page header ------------------------------ */
-/* One row: prev/next on the left, search-context links on the right.
-   See app/components/nexus_ccs/document_header_component.html.erb. */
-.uom-record-nav {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem 1.5rem;
-}
-
-.uom-record-nav .constraints-container {
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
-  margin-bottom: 0;
-}
-
-.uom-record-nav .constraints-container .btn {
-  --bs-btn-bg: transparent;
-  --bs-btn-border-color: transparent;
-  --bs-btn-color: var(--uom-link);
-  --bs-btn-hover-bg: transparent;
-  --bs-btn-hover-border-color: transparent;
-  --bs-btn-hover-color: var(--uom-link-hover);
-  --bs-btn-active-bg: transparent;
-  --bs-btn-active-border-color: transparent;
-  --bs-btn-active-color: var(--uom-link-hover);
-  --bs-btn-padding-x: 0;
-  --bs-btn-padding-y: 0;
-  font-weight: 600;
-  text-decoration: underline;
-}
-
-.uom-record-nav .page-links {
-  padding: 0;
 }
 
 /* Applied filters --------------------------------- */
