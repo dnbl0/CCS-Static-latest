@@ -31,8 +31,8 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     assert_select "main#main-container.container"
     assert_select "#document.document h1"
     assert_select "table.document-metadata"
-    assert_select "main#main-container.py-4"
-    assert_select "header .py-4", false # the header shares container_classes; it must not be padded
+    assert_select "main#main-container.py-5" # 3rem above and below
+    assert_select "header .py-5", false # the header shares container_classes; it must not be padded
     assert_select "picture[data-openseadragon] source[media=openseadragon]", 1
     assert_includes response.body, "/digital-assets/large/mhm00394.jpg"
     # the viewer comes before the details
@@ -127,6 +127,16 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     assert_equal false, config.key?("showReferenceStrip")
     assert_equal css_select("nav[data-media-thumbnails]").first["data-viewer"], css_select("picture[data-openseadragon]").first["id"]
     assert_includes response.body, %("stock_media_viewer":)
+  end
+
+  test "the search constraints and Back to search / Previous / Next above a record are left out" do
+    assert_equal StockPageHeaderComponent, StockCatalogController.blacklight_config.show.document_header_component
+    assert_equal StockPageHeaderComponent, BrandedStockCatalogController.blacklight_config.show.document_header_component
+    # even when the record was reached from a search (a search context), the header is not drawn
+    header = StockPageHeaderComponent.new(document: DOC, search_context: { "next" => "x" }, search_session: { "id" => 1 })
+    assert_not header.render?
+    get "/branded-stock/vernon-MHM00394"
+    assert_select "#appliedParams, .pagination-search-widgets", false
   end
 
   test "the record has the full width: no empty sidebar column, even with view annotations on" do
