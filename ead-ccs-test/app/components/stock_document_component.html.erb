@@ -15,10 +15,12 @@
       <%= title %>
       <%= embed %>
       <%= content %>
-      <%= metadata %>
-      <% metadata_sections.each do |section| %>
-        <%= section %>
-      <% end %>
+      <div class="row g-4">
+        <div class="col-lg-7"><%= metadata %></div>
+        <% if copyright_fields.any? %>
+          <div class="col-lg-5"><%= render StockObjectDetailsComponent.new(heading: "Copyright", fields: copyright_fields, show: true) %></div>
+        <% end %>
+      </div>
 
       <% partials.each do |partial| %>
         <%= partial %>

@@ -42,13 +42,21 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
 
   test "the details sit under an Object details heading, labelled from the CCS Field labels - Updated sheet" do
     get "/stock/vernon-MHM00394"
-    assert_select "section[aria-labelledby=object-details-heading] > h2#object-details-heading", text: "Object details"
+    assert_select "section.card[aria-labelledby=object-details-heading] h2#object-details-heading", text: "Object details"
     assert_operator response.body.index("Object details"), :<, response.body.index("document-metadata")
-    # a row for each sheet field the record has a value for, in the sheet's order (Title (1) first, Measurements named as
-    # its display rule 2 has it), then the caption; a field with no value has no row
-    labels = css_select("table.document-metadata th").map { |dt| dt.text.strip }
-    assert_equal [ "Title", "Creator", "Place", "Copyright", "Credit Line", "Collection", "Classification", "Subject",
-                   "Licence Type", "Advisory", "Terms of Use", "Caption" ], labels
+    # two cards side by side, as on the site's record page: the details (a row for each sheet field the record has a value
+    # for, in the sheet's order, Title (1) first) and the Copyright card (the caption, credit line, copyright, licence,
+    # advisory and terms of use); a field with no value has no row
+    details = css_select("[aria-labelledby=object-details-heading] th").map { |th| th.text.strip }
+    copyright = css_select("[aria-labelledby=copyright-heading] th").map { |th| th.text.strip }
+    assert_equal [ "Title", "Creator", "Place", "Collection", "Classification", "Subject" ], details
+    assert_equal [ "Copyright", "Credit Line", "Licence Type", "Advisory", "Terms of Use", "Caption" ], copyright
+    assert_select ".row > .col-lg-7 section.card[aria-labelledby=object-details-heading]"
+    assert_select ".row > .col-lg-5 section.card[aria-labelledby=copyright-heading] h2", text: "Copyright"
+    # the title in a navy band, white and centred
+    assert_select "#document header.documentHeader.bg-primary.text-center h1.text-white", text: "Test record"
+    # the viewer on a dark stage
+    assert_select ".openseadragon-container picture.osd-image.bg-black"
     # the Copyright card's data is in the table: copyright, credit line, licence, terms of use, advisory, caption
     assert_select "td.blacklight-rights_ssim", text: "[Copyright - Current] Used with permission."
     assert_select "td.blacklight-credit_line_tsim", text: "Gift of Someone, 1970"

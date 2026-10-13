@@ -49,6 +49,7 @@ class StockCatalogController < ActionController::Base
     # components and Bootstrap's utility classes.
     config.show.document_metadata_component = StockObjectDetailsComponent
     config.show.document_component = StockDocumentComponent
+    config.show.document_title_component = StockTitleComponent
     config.show.sidebar_component = StockSidebarComponent
   end
 end

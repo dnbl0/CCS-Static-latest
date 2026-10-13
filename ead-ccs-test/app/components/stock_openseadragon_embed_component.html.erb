@@ -12,5 +12,5 @@
       <a id="<%= @id_prefix %>-full-page" role="button" class="mx-1"><%= render Blacklight::Gallery::Icons::CustomFullscreenComponent.new %></a>
     </div>
   </div>
-  <%= helpers.openseadragon_picture_tag image, class: 'osd-image d-block', data: { openseadragon: multi_page_osd_config ? multi_page_osd_config : osd_config } %>
+  <%= helpers.openseadragon_picture_tag image, class: 'osd-image d-block border-0 bg-black rounded', style: 'height: 560px', data: { openseadragon: multi_page_osd_config ? multi_page_osd_config : osd_config } %>
 </div>

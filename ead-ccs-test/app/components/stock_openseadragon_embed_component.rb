@@ -7,10 +7,10 @@
 class StockOpenseadragonEmbedComponent < Blacklight::Gallery::OpenseadragonEmbedComponent
   IMAGES_FIELD = "digital_asset_large_paths_ssim"
 
-  # col-12: the viewer's toolbar and image are Bootstrap rows, which need a column around them to line up with the
-  # title. The spacing around it is StockDocumentComponent's stack.
-  def initialize(presenter:, view_config: nil, classes: [], **kwargs)
-    super(presenter: presenter, view_config: view_config, classes: classes + %w[col-12], **kwargs)
+  # The thumbnail strip along the bottom, as on the site's record page (the gem's own is a vertical one down the side);
+  # OpenSeadragon's own option, the rest of the gem's strip settings are kept.
+  def osd_config_referencestrip
+    super.merge(referenceStripScroll: "horizontal", referenceStripSizeRatio: 0.16)
   end
 
   # The gem's template and options, as they are, except:
