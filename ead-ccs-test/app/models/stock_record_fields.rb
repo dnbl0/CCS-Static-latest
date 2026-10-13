@@ -13,6 +13,9 @@ module StockRecordFields
   # Classification (21) and Subject (22): "preferred" as links that search for records with that value.
   LINKS = [ 21, 22 ].freeze
 
+  # Copyright (16): the licence, as a badge with its icon (Europeana's licence label), above the rights note.
+  RIGHTS = 16
+
   # Fields the indexer carries under a name the data model's mapping does not give them (a DAM field in the sheet,
   # though the licence is derived from the rights note, and the producer is read if an export ever has it).
   SOLR_FIELDS = { 27 => "licence_type_ssim", 30 => "producer_ssim" }.freeze
@@ -63,6 +66,13 @@ module StockRecordFields
         if: ->(_context, _config, document) { caption(document).any? }
     end
 
+    # Each rights note under the record's licence badge (none when the record has no licence).
+    def rights_with_badge(notes, document, context)
+      licence = Array(document["licence_type_ssim"]).first
+      badge = context.render(StockLicenceBadgeComponent.new(licence: licence))
+      notes.map { |note| context.safe_join([ (context.tag.p(badge, class: "mb-2") if badge.present?), note ].compact) }
+    end
+
     def digital_assets?(document)
       Array(document["digital_asset_large_paths_ssim"]).any? || Array(document["digital_media_ssim"]).any?
     end
@@ -88,6 +98,7 @@ module StockRecordFields
     def value_options(field, values)
       options = { label: label_for(field), values: ->(_config, document, _context) { values.call(document) },
                   if: ->(_context, _config, document) { values.call(document).any? } }
+      options[:values] = ->(_config, document, context) { rights_with_badge(values.call(document), document, context) } if field.seq == RIGHTS
       options[:link_to_facet] = true if LINKS.include?(field.seq)
       join = JOINS[field.seq]
       options[:separator_options] = { words_connector: join, two_words_connector: join, last_word_connector: join } if join

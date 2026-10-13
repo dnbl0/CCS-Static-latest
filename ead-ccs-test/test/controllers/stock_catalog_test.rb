@@ -14,13 +14,16 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
   MULTI = SolrDocument.new(DOC.to_h.merge("id" => "multi", "digital_asset_large_paths_ssim" => %w[/digital-assets/large/a.jpg /digital-assets/large/b.jpg /digital-assets/large/c.jpg],
     "digital_asset_paths_ssim" => %w[/digital-assets/thumbs/a.jpg /digital-assets/thumbs/b.jpg /digital-assets/thumbs/c.jpg])).tap { |doc| doc.instance_variable_set(:@response, DOC.response) }
 
+  PD = SolrDocument.new(DOC.to_h.merge("id" => "pd", "licence_type_ssim" => [ "Public domain - Copyright expired" ],
+    "rights_ssim" => [ "[Public domain - Copyright expired] Public Domain / no known copyright restrictions" ])).tap { |doc| doc.instance_variable_set(:@response, DOC.response) }
+
   FakeService = Struct.new(:doc) do
     def fetch(*) = doc
   end
 
   # Stands in for Solr on this controller only
   module FakeSolr
-    def search_service = FakeService.new(params[:id] == "multi" ? MULTI : DOC)
+    def search_service = FakeService.new({ "multi" => MULTI, "pd" => PD }.fetch(params[:id], DOC))
   end
   StockCatalogController.prepend(FakeSolr)
   BrandedStockCatalogController.prepend(FakeSolr)
@@ -71,9 +74,12 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     assert_select "#permalink-pane article.card footer.card-footer a[href$='/catalog/vernon-MHM00394']", text: "View full record"
     assert_select "#permalink-pane > a", false
     assert_select "p", text: /provided and maintained by\s*Museum/
-    assert_select "section[aria-label='Media toolbar'] .badge", text: "Copyright - Current"
+    # the licence is a badge with its icon in the Copyright row (not in the media toolbar), above the rights note
+    assert_select "section[aria-label='Media toolbar'] .badge", false
+    assert_select "#copyright-pane td.blacklight-rights_ssim p .badge svg path", 1
+    assert_select "#copyright-pane td.blacklight-rights_ssim p .badge", text: /Copyright - Current/
     # the Copyright card's data is in the table: copyright, credit line, licence, terms of use, advisory, caption
-    assert_select "td.blacklight-rights_ssim", text: "[Copyright - Current] Used with permission."
+    assert_select "td.blacklight-rights_ssim", text: /\[Copyright - Current\] Used with permission\./
     assert_select "td.blacklight-credit_line_tsim", text: "Gift of Someone, 1970"
     assert_select "td.blacklight-licence_type_ssim", text: "Copyright - Current"
     assert_select "td.blacklight-gap_29_derived", text: "Used with permission."
@@ -127,6 +133,29 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     assert_equal false, config.key?("showReferenceStrip")
     assert_equal css_select("nav[data-media-thumbnails]").first["data-viewer"], css_select("picture[data-openseadragon]").first["id"]
     assert_includes response.body, %("stock_media_viewer":)
+  end
+
+  test "a public domain record's licence badge has the Public Domain Mark icon and links to its page" do
+    get "/branded-stock/pd"
+    assert_select "#copyright-pane td.blacklight-rights_ssim a.badge[href='https://creativecommons.org/publicdomain/mark/1.0/'][target=_blank][rel=noopener]" do
+      assert_select "svg[viewBox='0 0 496 512']", 1
+      assert_select "span", text: "Public domain - Copyright expired"
+      assert_select ".visually-hidden", text: "(opens in new window)"
+    end
+  end
+
+  test "the licence badge picks its icons as Europeana's rights statements do" do
+    icons = ->(licence) { StockLicenceBadgeComponent.new(licence: licence).statement }
+    assert_equal({ icons: %w[pd], url: StockLicenceBadgeComponent::PUBLIC_DOMAIN_MARK }, icons.("Public domain - Copyright expired"))
+    assert_equal %w[zero], icons.("CC0").fetch(:icons)
+    assert_equal({ icons: %w[cc by], url: "https://creativecommons.org/licenses/by/4.0/" }, icons.("CC BY"))
+    assert_equal({ icons: %w[cc by sa], url: "https://creativecommons.org/licenses/by-sa/4.0/" }, icons.("CC BY-SA"))
+    assert_equal %w[cc by nc nd], icons.("CC BY-NC-ND").fetch(:icons)
+    assert_equal({ icons: %w[copyright], url: nil }, icons.("Copyright - Current"))
+    assert_equal({ icons: %w[copyright], url: nil }, icons.("Reproduction Licence - Current"))
+    assert_equal({ icons: [], url: nil }, icons.("Something else"))
+    assert_not StockLicenceBadgeComponent.new(licence: "").render?
+    assert(StockLicenceIcons::PATHS.values.all? { |view_box, path| view_box.present? && path.start_with?("M") })
   end
 
   test "the search constraints and Back to search / Previous / Next above a record are left out" do

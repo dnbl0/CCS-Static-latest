@@ -2,7 +2,7 @@
 
 # blacklight-gallery's OpenSeadragon viewer (Blacklight::Gallery::OpenseadragonEmbedComponent) laid out as the CCS design's
 # media viewer (Figma, "RecordTemplate"): a full-width dark band with the title, the image with round previous and next
-# buttons either side and a row of 80px thumbnails, then a light toolbar with the licence, an info button (a modal of the
+# buttons either side and a row of 80px thumbnails, then a light toolbar with an info button and full screen (a modal of the
 # record's media metadata) and full screen. The gem's component still does the viewing: its OpenSeadragon, its image
 # sources, its page and full-page buttons (here Bootstrap buttons, found by the ids the gem gives them). The gem's own
 # template is replaced by this component's, which sends the band to the layout (content_for :hero). No zoom (not in the
@@ -39,11 +39,6 @@ class StockOpenseadragonEmbedComponent < Blacklight::Gallery::OpenseadragonEmbed
 
   def media_fields
     presenter.field_presenters.select { |field| MEDIA_FIELDS.include?(field.key) }
-  end
-
-  # The licence the record carries (the sheet's Licence Type), for the chip in the toolbar; none when it has none.
-  def rights_text
-    Array(media_fields.find { |field| field.key == "licence_type_ssim" }&.render).join("; ").presence
   end
 
   def viewer_id = "#{@id_prefix}-viewer"

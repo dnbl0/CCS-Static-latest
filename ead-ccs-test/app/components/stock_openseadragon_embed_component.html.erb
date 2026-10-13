@@ -39,12 +39,7 @@
   </section>
 
   <section id="<%= @id_prefix %>-toolbar" class="bg-body-tertiary" aria-label="Media toolbar">
-    <div class="container d-flex align-items-center justify-content-between py-2">
-      <% if rights_text.present? %>
-        <p class="badge text-bg-light fw-normal px-3 py-2 m-0"><%= rights_text %></p>
-      <% else %>
-        <span></span>
-      <% end %>
+    <div class="container d-flex align-items-center justify-content-end py-2">
       <menu class="list-unstyled d-flex gap-1 m-0 p-0">
         <% if media_fields.any? %>
           <li>
