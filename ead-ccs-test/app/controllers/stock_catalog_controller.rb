@@ -20,12 +20,18 @@ class StockCatalogController < ActionController::Base
   # The gem's own views come first, so the app's overrides of them (catalog/show, shared/footer...) are not used.
   prepend_view_path Blacklight::Engine.root.join("app/views")
 
-  # Blacklight's views live under catalog/, not stock_catalog/.
-  def self.local_prefixes = [ controller_path, "catalog" ]
+  # Blacklight's views live under catalog/, not stock_catalog/; the stock page's own (and its subclasses') come first.
+  def self.local_prefixes = [ controller_path, "stock_catalog", "catalog" ].uniq
 
   # This page has no search of its own: the search box and "Back to search" go to the real catalog, the same way
   # the gem's own Blacklight::Bookmarks does.
-  def search_action_url(*) = search_catalog_url(*)
+  # (Blacklight adds only_path to the options of search_action_path; the catalog's own helpers do not take it.)
+  def search_action_url(options = {}) = search_catalog_url(search_action_options(options))
+
+  def search_action_path(options = {}) = search_catalog_path(search_action_options(options))
+
+  def search_action_options(options) = (options.respond_to?(:to_h) ? options.to_h : {}).except(:only_path, :controller, :action)
+  private :search_action_options
 
   configure_blacklight do |config|
     config.show.title_field = "title_tsim"
@@ -35,27 +41,13 @@ class StockCatalogController < ActionController::Base
     # The viewer is the gem's own component; the subclass only gives it the record's image URLs.
     config.show.document_embed_component = StockOpenseadragonEmbedComponent
 
-    # Plain show fields, as the generator's catalog controller declares them: one per field of the CCS field labels
-    # workbook (seq # in brackets) that the data can carry today (config/data_model/solr_mapping.yml), in its order,
-    # with its labels. The title (1) is the heading. Not carried yet: Editions (9), Dimensions (11), Inscription (12),
-    # Language (13), Access (20), Source URL (23), and the DAM fields Advisory, Terms of Use, Producer (28-30).
-    config.add_show_field "object_type_ssim", label: "Object Type" # 2
-    config.add_show_field "production_date_ssim", label: "Date" # 3
-    config.add_show_field "creator_display_ssim", label: "Creator" # 4
-    config.add_show_field "associated_entity_ssim", label: "Associated Entity" # 5
-    config.add_show_field "production_place_ssim", label: "Place" # 6
-    config.add_show_field "description_tsim", label: "Description" # 7
-    config.add_show_field "series_ssim", label: "Series" # 8
-    config.add_show_field "material_ssim", label: "Material" # 10
-    config.add_show_field "cultural_group_ssim", label: "Cultural Affiliation" # 14
-    config.add_show_field "accession_number_ssim", label: "Accession Number" # 15
-    config.add_show_field "rights_ssim", label: "Copyright" # 16
-    config.add_show_field "credit_line_tsim", label: "Credit Line" # 17
-    config.add_show_field "named_collection_ssim", label: "Named Collection" # 18
-    config.add_show_field "collection_ssim", label: "Collection" # 19
-    config.add_show_field "classification_ssim", label: "Classification" # 21
-    config.add_show_field "subject_ssim", label: "Subject" # 22
-    config.add_show_field "parent_record_ssi", label: "Related Parent Record" # 24
-    config.add_show_field "licence_type_ssim", label: "Licence Type" # 27 (derived from the rights note)
+    # One row for every field of the CCS Field labels - Updated sheet, a muted "Not available" where the record has no
+    # value (see StockRecordFields), plus the Copyright card's caption.
+    StockRecordFields.apply(config)
+
+    # The details list under an "Object details" heading, laid out as rows of a table, from Blacklight's own
+    # components and Bootstrap's utility classes.
+    config.show.document_metadata_component = StockObjectDetailsComponent
+    config.show.document_component = StockDocumentComponent
   end
 end
