@@ -58,6 +58,11 @@ class SiteChromeTest < ActiveSupport::TestCase
     assert_no_selector "nav.topbar" # Blacklight's own top navbar is replaced
   end
 
+  test "Search all records opens the catalog on the All Fields search" do
+    render_header(url: "/catalog")
+    assert_selector "a[href='/catalog?search_field=all_fields']", text: "Search all records"
+  end
+
   test "the bare search page has no breadcrumb" do
     render_header(url: "/catalog")
     assert_no_selector "nav.breadcrumb-bar"

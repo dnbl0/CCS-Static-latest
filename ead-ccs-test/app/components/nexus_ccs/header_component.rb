@@ -69,6 +69,9 @@ module NexusCcs
 
     def all_records_path = helpers.search_catalog_path
 
+    # The nav link opens the catalog on the All Fields search; the search form needs the bare path as its action.
+    def all_records_link_path = helpers.search_catalog_path(search_field: "all_fields")
+
     # "<" icon and label of the row that leaves a drilled-in menu section on mobile.
     def back_label
       safe_join([ tag.svg(tag.polyline(points: "15 5 8 12 15 19"), viewBox: "0 0 24 24", aria: { hidden: true }), "Back" ])

@@ -78,6 +78,9 @@ gem "blacklight", "~> 9.2"
 # so use its main branch, whose gemspec allows ~> 9.0.
 gem "blacklight-gallery", github: "projectblacklight/blacklight-gallery", branch: "main"
 gem "blacklight_range_limit"
+# Zoom/pan image viewer: the Rails side of OpenSeadragon, which blacklight-gallery's OpenseadragonEmbedComponent uses.
+# Its JavaScript (the openseadragon npm package) is vendored in vendor/javascript, so the page loads nothing from a CDN.
+gem "openseadragon", "~> 1.0"
 
 # Bootstrap source (Sass) for the themed build; Blacklight 9 requires Bootstrap >= 5.3.5, < 6
 gem "bootstrap", "~> 5.3.5"
