@@ -105,70 +105,106 @@ class AccessibilityTest < ApplicationSystemTestCase
     end
   end
 
-  # The existing record page (/catalog/:id): its media band is blacklight-gallery's OpenSeadragon viewer, in the band's own layout. The viewer
-  # is on the page and shows the first image, a thumbnail shows its image (and is marked as the current one), and axe is clean throughout.
-  test "a catalog record page's gallery viewer shows the image a thumbnail chooses, with no axe violations, and its metadata panel opens" do
-    StockSolr.documents = { "emu-9044" => stock_document("emu-9044", %w[a b c]) }
+  # The record page's media band (/catalog/:id), after the CCS UI "Record" (Figma 429:36672): the title, byline and tags on the left and, when the record
+  # has digital assets, blacklight-gallery's viewer on the right. The three designed states are checked here: no asset, one asset, several assets.
+  def band_geometry
+    page.evaluate_script(<<~JS)
+      (() => {
+        const rect = (selector) => { const e = document.querySelector(selector); if (!e) return null; const b = e.getBoundingClientRect(); return { left: b.left, width: b.width, height: b.height, bottom: b.bottom } }
+        return { band: rect('.digital-assets'), text: rect('.digital-assets__text'), column: rect('.digital-assets__viewer-column'), display: rect('.digital-assets__display'),
+                 page: { clientWidth: document.documentElement.clientWidth, scrollWidth: document.documentElement.scrollWidth } }
+      })()
+    JS
+  end
+
+  test "no asset: the band is the title, byline and tags alone, with no axe violations" do
+    StockSolr.documents = { "emu-9044" => stock_document("emu-9044", []) }
+    visit "/catalog/emu-9044"
+    assert_selector ".digital-assets h1#record-title", text: "Untitled [Timber eucalypt specimen cabinet]"
+    assert_selector ".digital-assets .record-tag", count: 2
+    assert_no_selector ".digital-assets__viewer-column"
+    assert_no_selector ".record-banner"
+    assert_equal 1, page.all("h1").size
+    assert_accessible
+  end
+
+  test "one asset: the viewer in a 3:2 box on the right of the title, with no thumbnails, no previous and next, and no axe violations" do
+    page.driver.resize(1440, 900)
+    StockSolr.documents = { "vernon-MHM00394" => stock_document("vernon-MHM00394", %w[1973_0004_000_000_1]) }
+    visit "/catalog/vernon-MHM00394"
+    assert_selector "picture.digital-assets__viewer canvas"
+    assert_no_selector ".digital-assets__others"
+    assert_no_selector "button[aria-label=Previous]"
+
+    geometry = band_geometry
+    assert_in_delta 0.4611, geometry["text"]["width"] / geometry["band"]["width"], 0.01, "the title column is not the design's 664 of 1440"
+    assert_in_delta 1.5, geometry["display"]["width"] / geometry["display"]["height"], 0.02, "the viewer's box is not 3:2"
+    assert_operator geometry["display"]["left"], :>, geometry["text"]["left"] + geometry["text"]["width"] - 1, "the viewer is not to the right of the title"
+    assert_accessible
+  end
+
+  test "several assets: the viewer, the thumbnails beside it, previous and next that step through them, and no axe violations" do
+    page.driver.resize(1440, 900)
+    media = [ "video|video/mp4|/m/interview.mp4|Interview", "audio|audio/mpeg|/m/oral.mp3|Oral history", "pdf|application/pdf|/m/catalogue.pdf|Catalogue entry" ]
+    StockSolr.documents = { "emu-9044" => stock_document("emu-9044", %w[1973_0004_000_000_1 1973_0071_000_000], media) }
     visit "/catalog/emu-9044"
     assert_selector "picture.digital-assets__viewer canvas"
-    assert_selector "a.digital-assets__other", count: 3
+    assert_selector "a.digital-assets__other", count: 5
     assert_selector "a.digital-assets__other[aria-current=true]", count: 1
+    assert_selector "button[aria-label=Previous][disabled]"
+    assert_no_selector "figure.digital-assets__media", visible: :visible
     assert_accessible
 
-    all("a.digital-assets__other")[2].click
-    assert_selector "picture.digital-assets__viewer[aria-label$='image 3 of 3']"
-    assert_equal 2, page.evaluate_script("document.querySelector('.digital-assets__viewer').osdViewer.currentPage()")
-    assert_selector "a.digital-assets__other[aria-current=true][data-media-viewer-page='2']"
+    current = -> { page.evaluate_script("[...document.querySelectorAll('.digital-assets__other')].findIndex(a => a.getAttribute('aria-current') === 'true')") }
+    click_on "Next"
+    assert_equal 1, current.call
+    assert_equal 1, page.evaluate_script("document.querySelector('.digital-assets__viewer').osdViewer.currentPage()")
+    assert_selector "button[aria-label=Previous]:not([disabled])"
+
+    click_on "Next"
+    assert_equal 2, current.call
+    assert_selector "figure.digital-assets__media video", visible: :visible
+    assert_no_selector "figure.digital-assets__main", visible: :visible
+    assert_accessible
+
+    click_on "Next"
+    click_on "Next"
+    assert_equal 4, current.call
+    assert_selector "figure.digital-assets__media object", visible: :visible
+    assert_selector "button[aria-label=Next][disabled]"
+    assert_accessible
+
+    click_on "Previous"
+    assert_equal 3, current.call
+    all("a.digital-assets__other").first.click
+    assert_selector "figure.digital-assets__main", visible: :visible
+    assert_no_selector "figure.digital-assets__media", visible: :visible
+    assert_selector "button[aria-label=Previous][disabled]"
 
     find("button[aria-controls=media-metadata]").click
     assert_selector "#media-metadata.is-open"
     assert_accessible
   end
 
-  # Audio, video and PDF files sit in the same gallery as the images: a thumbnail tile for each, and the stage shows the one chosen.
-  test "a catalog record's gallery switches between its images and its audio, video and PDF files, with no axe violations" do
-    media = [ "video|video/mp4|/m/interview.mp4|Interview", "audio|audio/mpeg|/m/oral.mp3|Oral history", "pdf|application/pdf|/m/catalogue.pdf|Catalogue entry" ]
-    StockSolr.documents = { "emu-9044" => stock_document("emu-9044", %w[a b], media) }
-    visit "/catalog/emu-9044"
-    assert_selector "picture.digital-assets__viewer canvas"
-    assert_selector "a.digital-assets__other", count: 5
-    assert_no_selector "figure.digital-assets__media", visible: :visible
-    assert_accessible
-
-    { "Video" => "video", "Audio" => "audio", "PDF" => "object" }.each do |kind, element|
-      find("a.digital-assets__other[data-media-viewer-kind=#{kind.downcase}]").click
-      assert_selector "figure.digital-assets__media #{element}", visible: :all
-      assert_selector "figure.digital-assets__media", count: 1, visible: :visible
-      assert_no_selector "figure.digital-assets__main", visible: :visible
-      assert_selector "a.digital-assets__other[aria-current=true][data-media-viewer-kind=#{kind.downcase}]"
-      assert_accessible
-    end
-
-    all("a.digital-assets__other")[1].click
-    assert_selector "figure.digital-assets__main", visible: :visible
-    assert_no_selector "figure.digital-assets__media", visible: :visible
-    assert_equal 1, page.evaluate_script("document.querySelector('.digital-assets__viewer').osdViewer.currentPage()")
-  end
-
-  # The band fits the screen: the header, breadcrumb, title strip and the whole band are on a laptop-sized screen without scrolling, and the
-  # closed Media metadata panel (waiting off the band's right edge) does not widen the page.
+  # The band, with the site header and breadcrumb above it, is on a laptop-sized screen without scrolling, and the closed Media metadata panel (waiting
+  # off the band's right edge) does not widen the page.
   test "a catalog record's media band fits a laptop screen with no sideways scrolling" do
     page.driver.resize(1280, 800)
-    StockSolr.documents = { "emu-9044" => stock_document("emu-9044", %w[a b c]), "vernon-MHM00394" => stock_document("vernon-MHM00394", %w[a]) }
+    StockSolr.documents = { "emu-9044" => stock_document("emu-9044", %w[1973_0004_000_000_1 1973_0071_000_000 1973_0084_000_000]), "vernon-MHM00394" => stock_document("vernon-MHM00394", %w[1973_0004_000_000_1]) }
 
     %w[emu-9044 vernon-MHM00394].each do |id|
       visit "/catalog/#{id}"
       assert_selector "picture.digital-assets__viewer canvas"
-      bottom = page.evaluate_script("document.querySelector('.digital-assets').getBoundingClientRect().bottom")
-      assert_operator bottom, :<=, 800, "#{id}: the media band ends at #{bottom}px on an 800px screen"
-      assert_equal page.evaluate_script("document.documentElement.clientWidth"), page.evaluate_script("document.documentElement.scrollWidth"), "#{id}: the page scrolls sideways"
+      geometry = band_geometry
+      assert_operator geometry["band"]["bottom"], :<=, 800, "#{id}: the media band ends at #{geometry["band"]["bottom"]}px on an 800px screen"
+      assert_equal geometry["page"]["clientWidth"], geometry["page"]["scrollWidth"], "#{id}: the page scrolls sideways"
     end
   end
 
   # openseadragon-rails writes the viewer's height at start as fixed pixels and OpenSeadragon only notices the window, so a screen of another size, or
-  # a window dragged to one, left the image the size it was (a small image in a tall band). The viewer follows the page, and the image is refitted.
+  # a window dragged to one, left the image the size it was. The viewer follows the page, and the image is refitted.
   test "a catalog record's image is refitted when the window changes size" do
-    StockSolr.documents = { "emu-9044" => stock_document("emu-9044", %w[a b c]) }
+    StockSolr.documents = { "emu-9044" => stock_document("emu-9044", %w[1973_0004_000_000_1 1973_0071_000_000]) }
     page.driver.resize(1280, 800)
     visit "/catalog/emu-9044"
     assert_selector "picture.digital-assets__viewer canvas"
@@ -176,91 +212,17 @@ class AccessibilityTest < ApplicationSystemTestCase
     fitted = "(() => { const p = document.querySelector('.digital-assets__viewer'), v = p.osdViewer; const size = v.viewport.getContainerSize();
                  return { styled: p.style.height, picture: [p.offsetWidth, p.offsetHeight], viewer: [size.x, size.y],
                           home: Math.abs(v.viewport.getZoom() - v.viewport.getHomeZoom()) < 0.001 } })()"
-    small = page.evaluate_script(fitted)
-    assert_equal "", small["styled"], "the viewer's height is fixed in pixels"
-    assert_equal small["picture"], small["viewer"]
+    before = page.evaluate_script(fitted)
+    assert_equal "", before["styled"], "the viewer's height is fixed in pixels"
+    assert_equal before["picture"], before["viewer"]
 
-    page.driver.resize(1280, 1200)
-    Timeout.timeout(5) { sleep 0.1 until page.evaluate_script("document.querySelector('.digital-assets__viewer').offsetHeight") > small["picture"][1] }
+    page.driver.resize(1700, 1200)
+    Timeout.timeout(5) { sleep 0.1 until page.evaluate_script("document.querySelector('.digital-assets__viewer').offsetWidth") > before["picture"][0] }
     Timeout.timeout(5) { sleep 0.1 until page.evaluate_script(fitted)["viewer"] == page.evaluate_script(fitted)["picture"] }
-    tall = page.evaluate_script(fitted)
-    assert_operator tall["picture"][1], :>, small["picture"][1]
-    assert_equal tall["picture"], tall["viewer"], "OpenSeadragon was not told the viewer's new size"
-    assert tall["home"], "the image was not fitted to the new size"
-  end
-
-  # The mosaic layout of the same gallery (?layout=mosaic): a tile opens the gallery window at that item.
-  test "a catalog record's mosaic opens the gallery at the item chosen, with no axe violations" do
-    media = [ "video|video/mp4|/m/interview.mp4|Interview", "audio|audio/mpeg|/m/oral.mp3|Oral history" ]
-    StockSolr.documents = { "emu-9044" => stock_document("emu-9044", %w[a b c], media) }
-    visit "/catalog/emu-9044?layout=mosaic"
-    assert_selector ".digital-assets-mosaic__tile", count: 5
-    assert_no_selector "#digital-assets-gallery.show"
-    assert_accessible
-
-    fits = page.evaluate_script("[...document.querySelectorAll('.digital-assets-mosaic__tile img')].map(i => getComputedStyle(i).objectFit)")
-    assert_equal [ "contain" ] * 3, fits, "an image is cropped by its tile"
-    assert_equal "rgb(255, 255, 255)", page.evaluate_script("getComputedStyle(document.querySelector('.digital-assets-mosaic__tile')).backgroundColor")
-
-    find("button.digital-assets-mosaic__tile[aria-label='Open Video: Interview']").click
-    assert_selector "#digital-assets-gallery.show"
-    assert_selector "#digital-assets-gallery figure.digital-assets__media video", visible: :visible
-    assert_selector "#digital-assets-gallery a.digital-assets__other[aria-current=true][data-media-viewer-kind=video]"
-    wait_until_opaque("#digital-assets-gallery")
-    assert_accessible
-
-    find("#digital-assets-gallery .btn-close").click
-    assert_no_selector "#digital-assets-gallery.show"
-
-    click_on "Photos 3"
-    assert_selector "#digital-assets-gallery.show"
-    assert_selector "#digital-assets-gallery a.digital-assets__other[aria-current=true][data-media-viewer-page='0']"
-    wait_until_opaque("#digital-assets-gallery")
-    assert_equal 0, page.evaluate_script("document.querySelector('#digital-assets-gallery .digital-assets__viewer').osdViewer.currentPage()")
-    # the window has no site header above the gallery: it fits the window
-    bottom = page.evaluate_script("document.querySelector('#digital-assets-gallery .digital-assets').getBoundingClientRect().bottom")
-    assert_operator bottom, :<=, page.evaluate_script("window.innerHeight")
-  end
-
-  # No image is cropped or boxed in: each tile is its image's shape (to within its 1px stroke), the tiles of a row are the same height, and the rows fit
-  # the screen. The files are real, of different shapes, as the tile takes its shape from the image once it has loaded.
-  test "a catalog record's mosaic tiles are the shape of their images and fit the screen" do
-    page.driver.resize(1280, 800)
-    StockSolr.documents = { "emu-9044" => stock_document("emu-9044", %w[1973_0004_000_000_1 1973_0071_000_000 1973_0084_000_000 1973_0755-1_pf 1973_0755_b_pf]) }
-    visit "/catalog/emu-9044?layout=mosaic"
-    assert_selector ".digital-assets-mosaic__tile img", count: 5
-    Timeout.timeout(5) { sleep 0.1 until page.evaluate_script("[...document.querySelectorAll('.digital-assets-mosaic__tile img')].every(i => i.complete && i.naturalWidth)") }
-    sleep 0.3
-
-    rows = page.evaluate_script(<<~JS)
-      [...document.querySelectorAll('.digital-assets-mosaic__row')].map(row => [...row.querySelectorAll('.digital-assets-mosaic__tile')].map(tile => {
-        const box = tile.getBoundingClientRect(), image = tile.querySelector('img')
-        return { shape: box.width / box.height, image: image.naturalWidth / image.naturalHeight, height: box.height }
-      }))
-    JS
-    assert_equal [ 2, 3 ], rows.map(&:size)
-    rows.flatten.each { |tile| assert_in_delta tile["image"], tile["shape"], tile["image"] * 0.04, "a tile is not its image's shape" }
-    rows.each { |row| assert_in_delta row.first["height"], row.last["height"], 2, "the tiles of a row are not the same height" }
-    assert_operator page.evaluate_script("document.querySelector('.digital-assets-mosaic__grid').getBoundingClientRect().bottom"), :<=, 800
-  end
-
-  # The split layout (?layout=split), after realestate.com.au: the title and details on the left, the gallery on the right.
-  test "a catalog record's split layout opens the gallery from the +N tile, with no axe violations" do
-    page.driver.resize(1280, 800)
-    StockSolr.documents = { "emu-9044" => stock_document("emu-9044", %w[1973_0004_000_000_1 1973_0071_000_000 1973_0084_000_000 1973_0755-1_pf 1973_0755_b_pf 1973_0755-2_pf]) }
-    visit "/catalog/emu-9044?layout=split"
-    assert_selector ".digital-assets-mosaic__tile", count: 4
-    assert_selector ".digital-assets-mosaic__tile", text: "+2"
-    assert_accessible
-
-    left, right = page.evaluate_script("[document.querySelector('.digital-assets-mosaic--split article').getBoundingClientRect().width, document.querySelector('.digital-assets-mosaic--split .col-lg-8').getBoundingClientRect().width]")
-    assert_in_delta 0.33, left.to_f / (left + right), 0.04, "the details are not about a third of the width"
-
-    find(".digital-assets-mosaic__tile", text: "+2").click
-    assert_selector "#digital-assets-gallery.show"
-    assert_selector "#digital-assets-gallery a.digital-assets__other[aria-current=true][data-media-viewer-page='3']"
-    wait_until_opaque("#digital-assets-gallery")
-    assert_accessible
+    after = page.evaluate_script(fitted)
+    assert_operator after["picture"][0], :>, before["picture"][0]
+    assert_equal after["picture"], after["viewer"], "OpenSeadragon was not told the viewer's new size"
+    assert after["home"], "the image was not fitted to the new size"
   end
 
   test "the home page with the Acknowledgement of Country open has no axe violations" do

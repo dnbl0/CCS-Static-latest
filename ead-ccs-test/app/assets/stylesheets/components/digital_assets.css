@@ -1,32 +1,69 @@
 /*
- * A record's media (NexusCcs::DigitalAssetsComponent; behaviour: controllers/media_viewer_controller.js), after the CCS UI "Record-detail" media
- * section (Figma 258:25197): a dark band with the image, video, audio or PDF on show, a "Media metadata" panel over its right edge, a thumbnail
- * for each item and a toolbar. The markup is Bootstrap's classes; what is here is what Bootstrap has no class for: the sizes that make the whole
- * band fit the screen, and the panel's slide.
+ * A record's media band (NexusCcs::DigitalAssetsComponent; behaviour: controllers/media_viewer_controller.js), after the CCS UI "Record" (Figma
+ * 429:36672): a dark band with the record's title, byline and tags on the left and, when it has digital assets, the viewer on the right (an image in a
+ * 3:2 box with its info, full screen, previous and next buttons under it, and a column of thumbnails beside it). The markup is Bootstrap's classes;
+ * what is here is what Bootstrap has no class for: the band's colour, the viewer's box and the height that makes the band fit the screen, the
+ * thumbnails' size and the Media metadata panel's slide.
  */
 .digital-assets {
-  /* The whole band fits the screen without scrolling: what is on show (image, video, PDF) is as tall as what is left of the viewport after the
-     site header, breadcrumb and title strip above the band (15.5rem) and the band's own padding, thumbnails and toolbar (12rem in all with its
-     row of thumbnails, 5.8rem without), within 15rem and the design's 38.5rem (616px). */
-  --digital-assets-above: 15.5rem;
-  --digital-assets-chrome: 12rem;
+  /* The viewer is as tall as what is left of the screen after the site header and breadcrumb above the band (9.6rem) and the band's own padding and
+     buttons (6.5rem), within 15rem and the design's 38.5rem (616px). */
+  --digital-assets-above: 9.6rem;
+  --digital-assets-chrome: 6.5rem;
   --digital-assets-height: clamp(15rem, calc(100vh - var(--digital-assets-above) - var(--digital-assets-chrome)), 38.5rem);
+  background: var(--ccs-text-primary, #222);
 }
 
-.digital-assets:not(:has(.digital-assets__others)) { --digital-assets-chrome: 5.8rem; }
+.digital-assets__stage {
+  max-width: 90rem; /* the design's 1440px */
+  min-height: 10.875rem; /* 174px: the band of a record with no digital assets */
+}
 
-.digital-assets__stage { min-height: calc(var(--digital-assets-height) + 2rem); }
+/* The title and byline sizes of the design (36px and 18px), as tokens */
+.digital-assets__title { font-size: var(--ccs-font-size-4xl, 2.25rem); line-height: 1.2; }
+.digital-assets__byline { font-size: var(--ccs-font-size-lg, 1.125rem); line-height: 1.5; }
 
-.digital-assets__viewer { height: var(--digital-assets-height); }
+/* The design's split of the 1440px band: the title column 664px (its text 532px after 120px on the left and 12px on the right), the viewer 776px */
+@media (min-width: 992px) {
+  .digital-assets__text { flex: 0 0 46.11%; }
+  .digital-assets__viewer-column { flex: 0 0 53.89%; }
+}
+
+/* The title column's left edge: 120px on the design's 1440px, less on a smaller screen */
+@media (min-width: 992px) {
+  .digital-assets__text { padding-left: clamp(1rem, 8.33vw, 7.5rem) !important; }
+}
+
+/* The viewer's box is 3:2, no taller than what fits the screen; what it shows is fitted into it whole */
+.digital-assets__display {
+  aspect-ratio: 3 / 2;
+  max-height: var(--digital-assets-height);
+}
+
 .digital-assets__noscript { max-height: var(--digital-assets-height); }
 
-/* A file takes the room of an image, less its caption */
-.digital-assets__video,
-.digital-assets__document { height: calc(var(--digital-assets-height) - 3rem); }
+/* A thumbnail is its image's shape, within 80px, with a file's tile 80px square */
+.digital-assets__thumbnail {
+  width: auto;
+  height: auto;
+  max-width: 5rem;
+  max-height: 5rem;
+}
 
-/* Media metadata: over the band's right edge. It stays in the DOM at all times, off the stage by its own transform, rather than being toggled with
-   [hidden]/display: switching an absolutely positioned flex child's display was counted back into the stage's centring and made the image jump.
-   Sliding it with transform and hiding it with visibility, both paint-only, never touches the stage's layout. */
+.digital-assets__tile {
+  width: 5rem;
+  height: 5rem;
+}
+
+@media (min-width: 992px) {
+  .digital-assets__others { max-height: var(--digital-assets-height); }
+}
+
+/* Previous and next at either end of the row of items: the one that cannot be used is dimmed (it is disabled, so it is also out of the tab order) */
+.digital-assets .btn-link:disabled { opacity: 0.4; }
+
+/* Media metadata: over the band's right edge. It stays in the DOM at all times, off the band by its own transform, rather than being toggled with
+   [hidden]/display, so opening it never touches the layout; sliding it with transform and hiding it with visibility are both paint-only. */
 .digital-assets__panel {
   width: 21.25rem; /* 340px */
   visibility: hidden;
@@ -41,49 +78,22 @@
   transition: transform var(--ccs-duration-base, 0.2s) ease-out;
 }
 
-/* Full screen: the band fills the screen and what is on show is as large as it can be */
+/* Full screen: the band is the screen, the title column goes and what is on show is as large as it can be */
 .digital-assets.is-fullscreen {
-  --digital-assets-height: calc(100vh - 12rem);
+  --digital-assets-height: calc(100vh - 8rem);
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 
-.digital-assets.is-fullscreen .digital-assets__stage { flex: 1 1 auto; }
+.digital-assets.is-fullscreen .digital-assets__text { display: none; }
+.digital-assets.is-fullscreen .digital-assets__stage { width: 100%; }
+.digital-assets.is-fullscreen .digital-assets__viewer-column { flex: 1 1 auto; }
+.digital-assets.is-fullscreen .digital-assets__display { aspect-ratio: auto; height: var(--digital-assets-height); }
 
-/* In the full-screen window of the mosaic there is no site header above the band, only the window's own title bar */
-.modal .digital-assets { --digital-assets-above: 4rem; }
-
-/* The mosaic: as tall as what fits the screen under the site header, banner and its own buttons. A tile is its asset's shape (--ratio, its width over its
-   height, set from the asset) and a row shares its width among its tiles in that proportion, so they are the same height with no room around the asset.
-   The grid is as wide as lets all its rows fit that height (--mosaic-inverse: see mosaic_controller.js), and no wider than the page. */
-.digital-assets-mosaic__grid {
-  --mosaic-height: clamp(16rem, calc(100vh - 24rem), 32rem);
-  --mosaic-inverse: 0.75;
-  --mosaic-inverse-first: 0.75;
-  width: min(100%, calc(var(--mosaic-height) / var(--mosaic-inverse)));
-}
-
-/* The split layout's title and details are beside the gallery, not above it, so the gallery may be taller: what is left under the site header and banner */
-.digital-assets-mosaic--split .digital-assets-mosaic__grid { --mosaic-height: clamp(20rem, calc(100vh - 19rem), 40rem); }
-
-.digital-assets-mosaic__tile {
-  flex: var(--ratio) 1 0%;
-  min-width: 0;
-  aspect-ratio: var(--ratio);
-}
-
-/* A thumbnail is its image's shape at a fixed height (a file's tile is square) */
-.digital-assets__thumbnail { height: 5rem; width: auto; max-width: 10rem; }
-.digital-assets__tile { width: 5rem; }
-
-@media (max-width: 991.98px) {
-  .digital-assets-mosaic__grid { width: min(100%, calc(var(--mosaic-height) / var(--mosaic-inverse-first))); }
-}
-
-/* A phone's header and title strip are taller and its thumbnails wrap: the band is 18rem high and the page scrolls */
+/* A phone: the title above the viewer, the thumbnails in a row under it */
 @media (max-width: 575.98px) {
   .digital-assets { --digital-assets-height: 18rem; }
-  .digital-assets-mosaic__grid { --mosaic-height: 16rem; }
   .digital-assets__panel { width: 100%; }
 }
 

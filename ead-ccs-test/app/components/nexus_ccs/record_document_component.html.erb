@@ -4,22 +4,11 @@
   itemscope: true,
   itemtype: document.itemtype,
   class: "record" do %>
-  <%# The title band above the page repeats this for sighted visitors; this is the page's one real h1 %>
-  <h1 class="visually-hidden"><%= heading %></h1>
-
   <%= render NexusCcs::DigitalAssetsComponent.new(presenter: @presenter) %>
 
-  <section class="record-summary" aria-label="Summary">
+  <%# The title, byline and tags are in the media band above; the summary row keeps what is left of the design's: Save %>
+  <section class="record-summary" aria-label="Save">
     <div class="record-summary__inner">
-      <p class="record-summary__title"><%= heading %></p>
-      <% if byline %><p class="record-summary__byline"><%= byline %></p><% end %>
-      <% if tags.any? %>
-        <ul class="record-summary__tags" aria-label="Tags">
-          <% tags.each do |tag| %>
-            <li><%= link_to tag.value, tag_path(tag), class: "record-tag" %></li>
-          <% end %>
-        </ul>
-      <% end %>
       <div class="record-summary__save"><%= render NexusCcs::SaveControlComponent.new(document: document) %></div>
     </div>
   </section>

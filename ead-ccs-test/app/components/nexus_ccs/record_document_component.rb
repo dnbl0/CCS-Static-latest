@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 module NexusCcs
-  # A record's page body, after the CCS UI "Record-detail" (Figma 258:25075): the digital assets, a summary
-  # (title, creator and date, tags), then the details as a ruled list in a card with the persistent link below it,
-  # and a Copyright card beside them. Registered as the show page's document_component; the title band and the
-  # breadcrumb above it are HeaderComponent's. The fields, their labels and their order come from the workbook
+  # A record's page body, after the CCS UI "Record-detail" (Figma 258:25075): the media band (title, creator
+  # and date, tags and the digital assets), then the details as a ruled list in a card with the persistent link below it,
+  # and a Copyright card beside them. Registered as the show page's document_component; the breadcrumb above
+  # it is HeaderComponent's. The fields, their labels and their order come from the workbook
   # (config.show_fields, see DataModel); the copyright card gathers the rights fields.
   class RecordDocumentComponent < Blacklight::DocumentComponent
     # Shown in the Copyright card, so not repeated in the details list
@@ -20,22 +20,6 @@ module NexusCcs
     def media?
       Array(document["digital_asset_large_paths_ssim"]).any?
     end
-
-    # "Grainger, Percy Aldridge · 1952"
-    def byline
-      creators = Array(document["creator_ssim"]).first(2).join("; ")
-      [ creators.presence, Array(document["production_date_ssim"]).first ].compact.join(" · ").presence
-    end
-
-    Tag = Struct.new(:field, :value)
-
-    # Small chips under the byline: the record's format and its collection, each a link to that filter
-    def tags
-      [ Tag.new("format", Array(document["format"]).first), Tag.new("collection_ssim", Array(document["collection_ssim"]).first) ]
-        .select { |tag| tag.value.present? }
-    end
-
-    def tag_path(tag) = helpers.search_action_path(f: { tag.field => [ tag.value ] })
 
     # The details list: Title, then every workbook field the record has a value for, the UoM ID (the record's own
     # id, with a Copy button) just before the collection

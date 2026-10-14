@@ -11,7 +11,7 @@ import OpenSeadragon from "openseadragon"
 // justify-content centring, jolting the large image. Opening and closing it only ever toggles the "is-open"
 // class (transform/visibility, both paint-only) and aria-hidden, which never touches that layout.
 export default class extends Controller {
-  static targets = [ "stage", "main", "viewer", "media", "panel", "infoButton", "fullscreenButton" ]
+  static targets = [ "stage", "main", "viewer", "media", "panel", "infoButton", "fullscreenButton", "previousButton", "nextButton" ]
 
   connect() {
     this.onKey = (event) => { if (event.key === "Escape" && this.isOpen) this.closePanel() }
@@ -93,6 +93,25 @@ export default class extends Controller {
     }
   }
 
+  // Previous and next go to the item before and after the one on show, in the order of the thumbnails (the images, then the files)
+  previous() { this.step(-1) }
+  next() { this.step(1) }
+
+  step(direction) {
+    const thumbnails = [ ...this.element.querySelectorAll(".digital-assets__other") ]
+    const current = thumbnails.findIndex((thumbnail) => thumbnail.getAttribute("aria-current") === "true")
+    thumbnails[current + direction]?.click()
+  }
+
+  // the end of the row: there is no previous before the first item and no next after the last
+  syncPager() {
+    if (!this.hasPreviousButtonTarget) return
+    const thumbnails = [ ...this.element.querySelectorAll(".digital-assets__other") ]
+    const current = thumbnails.findIndex((thumbnail) => thumbnail.getAttribute("aria-current") === "true")
+    this.previousButtonTarget.disabled = current <= 0
+    this.nextButtonTarget.disabled = current >= thumbnails.length - 1
+  }
+
   // a thumbnail shows its item in the stage: an image in the OpenSeadragon viewer, an audio, video or PDF file in its own player
   // (a modified click still opens the file in a new tab)
   show(event) {
@@ -114,9 +133,10 @@ export default class extends Controller {
     }
     this.element.querySelectorAll(".digital-assets__other").forEach((other) => {
       const current = other === link
-      other.classList.toggle("border-info", current)
+      other.classList.toggle("border-white", current)
       other.classList.toggle("border-transparent", !current)
       current ? other.setAttribute("aria-current", "true") : other.removeAttribute("aria-current")
     })
+    this.syncPager()
   }
 }

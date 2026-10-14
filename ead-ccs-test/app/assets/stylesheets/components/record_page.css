@@ -3,7 +3,7 @@
  * followed, the sizes adapted): a navy title band (centred), the digital asset section (digital_assets.css), a
  * summary (title, creator and date, tags), then in a 1440px column the details as a ruled list in a card with the
  * persistent link card below it, and a Copyright card beside them. Stacks below 1024px.
- * Markup: NexusCcs::RecordBannerComponent, NexusCcs::RecordDocumentComponent, NexusCcs::PersistentLinkComponent.
+ * Markup: NexusCcs::RecordDocumentComponent, NexusCcs::PersistentLinkComponent.
  */
 :root {
   --record-gutter: var(--ccs-space-6); /* 32px beside the 1440px column; 16px on a phone */
@@ -36,29 +36,6 @@ body.blacklight-catalog-show #main-container .show-document {
 
 body.blacklight-catalog-show #main-container .page-sidebar {
   display: none;
-}
-
-/* Title band under the breadcrumb */
-.record-banner {
-  background: var(--ccs-navy-1200);
-  color: var(--ccs-text-inverse);
-}
-
-.record-banner__inner {
-  max-width: calc(75rem + 2 * var(--record-gutter));
-  margin-inline: auto;
-  padding: var(--ccs-space-5) var(--record-gutter);
-}
-
-.record-banner__title {
-  margin: 0;
-  font-family: var(--ccs-font-heading);
-  font-size: 2.375rem;
-  font-weight: var(--ccs-font-weight-regular);
-  line-height: 1.2;
-  text-align: center;
-  text-wrap: balance;
-  overflow-wrap: anywhere;
 }
 
 /* Summary: the title again (the band is decorative), the creator and date, tags */
@@ -443,9 +420,6 @@ body.blacklight-catalog-show #main-container .page-sidebar {
     --record-gutter: var(--ccs-space-4);
   }
 
-  .record-banner__title {
-    font-size: var(--ccs-font-size-3xl);
-  }
 
   .record-summary__title {
     font-size: var(--ccs-font-size-2xl);

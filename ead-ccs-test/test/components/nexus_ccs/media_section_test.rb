@@ -23,12 +23,12 @@ class MediaSectionTest < ActiveSupport::TestCase
     "rights_ssim" => [ "[In copyright] WARNING This material is All Rights Reserved." ]
   }.freeze
 
-  test "the toolbar has the licence chip, the metadata button and the full screen button" do
+  test "under the image: the metadata and full screen buttons on the left" do
     render_for(FIELDS)
 
-    assert_selector ".digital-assets__toolbar .digital-assets__licence", text: "In copyright"
     assert_selector "button[aria-controls=media-metadata][aria-expanded=false][aria-label='Media metadata']"
     assert_selector "button[aria-label='Full screen'][hidden]", visible: :all
+    assert_no_selector ".digital-assets__licence"
   end
 
   test "the metadata panel is closed until opened, with licence type, advisory and terms of use" do
@@ -41,10 +41,9 @@ class MediaSectionTest < ActiveSupport::TestCase
     assert_not_includes panel.text(:all), "[In copyright]"
   end
 
-  test "a record with no licence still has the advisory panel and no licence chip" do
+  test "a record with no licence still has the advisory panel" do
     render_for(FIELDS.except("licence_type_ssim", "rights_ssim"))
 
-    assert_no_selector ".digital-assets__licence"
     assert_includes page.find("aside#media-metadata", visible: :all).text(:all), "not appropriate today"
   end
 

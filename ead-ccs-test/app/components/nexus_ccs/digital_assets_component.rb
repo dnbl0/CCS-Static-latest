@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
 module NexusCcs
-  # A record's media on its page, after the CCS UI "Record-detail" media section: a dark band with the large
-  # image (a row of thumbnails under it when there are several), a "Media metadata" panel that slides over the
-  # band's right edge, and a toolbar with the licence and the buttons for that panel and for full screen.
-  # Renders nothing for a record without assets. Registered, through NexusCcs::RecordEmbedComponent, as the show
-  # page's document_embed_component. Behaviour: controllers/media_viewer_controller.js.
+  # A record's media band, after the CCS UI "Record" (Figma 429:36672): a dark band with the record's title, byline and tags on the left and, when it
+  # has digital assets, the viewer on the right: the image in a 3:2 box (blacklight-gallery's OpenSeadragon viewer; an audio, video or PDF file in its
+  # player), the info and full screen buttons under it on the left and previous and next on the right, and a thumbnail for each item in a column beside it.
+  # The "Media metadata" panel slides over the band's right edge. A record without assets is the title alone. Behaviour: controllers/media_viewer_controller.js.
   class DigitalAssetsComponent < Blacklight::Component
     include Openseadragon::OpenseadragonHelper # openseadragon_picture_tag: the gallery's OpenSeadragon viewer element
 
@@ -13,7 +12,7 @@ module NexusCcs
     ADVISORY = "Some collection items include terms and views that are not appropriate today. They reflect the " \
                "period in which they were created and are not the views of the University of Melbourne."
 
-    ICONS = %w[media-copyright media-info media-fullscreen].freeze
+    ICONS = %w[media-info media-fullscreen].freeze
 
     KIND_NAMES = { "video" => "Video", "audio" => "Audio", "pdf" => "PDF" }.freeze
 
@@ -26,23 +25,15 @@ module NexusCcs
 
     attr_reader :presenter
 
-    # layout: "stage" (the band: the image or file on show, thumbnails below), "mosaic" (a large image and four tiles, "Show all" opening the band in
-    # a full-screen window) or "split" (the title and details on the left, a large image with a row of three under it on the right); when not given, the page's ?layout= says (the band when it says nothing)
-    def initialize(presenter:, document_counter: nil, layout: nil, **)
+    def initialize(presenter:, document_counter: nil, **)
       @presenter = presenter
       @document = presenter.document
-      @layout = layout
     end
 
-    def layout = (@layout || helpers.params[:layout]).to_s
+    # The band is always there: it holds the record's title
+    def render? = true
 
-    def split? = layout == "split"
-
-    def mosaic? = layout == "mosaic" || split?
-
-    def render?
-      large_paths.any? || media.any?
-    end
+    def assets? = large_paths.any? || media.any?
 
     # Audio, video and PDF files: [{ kind:, type:, url:, label: }]
     def media
@@ -63,31 +54,22 @@ module NexusCcs
         media.each_with_index.map { |item, index| item.merge(index: index) }
     end
 
-    # The mosaic's rows of tiles, each tile an item with its position in items: up to five items, in one row, or two (1, 2, 1+2, 2+2, 2+3)
-    ROW_SPLITS = { 1 => [ 1 ], 2 => [ 2 ], 3 => [ 1, 2 ], 4 => [ 2, 2 ], 5 => [ 2, 3 ] }.freeze
-
-    # The split layout's: one large item, then a row of up to three (1, 1+1, 1+2, 1+3)
-    SPLIT_ROWS = { 1 => [ 1 ], 2 => [ 1, 1 ], 3 => [ 1, 2 ], 4 => [ 1, 3 ] }.freeze
-
-    def mosaic_rows
-      shown = items.each_with_index.map { |item, position| item.merge(position: position) }.first(split? ? 4 : 5)
-      (split? ? SPLIT_ROWS : ROW_SPLITS).fetch(shown.size, []).map { |size| shown.shift(size) }
-    end
-
-    KIND_LABELS = { "image" => "Photos", "video" => "Video", "audio" => "Audio", "pdf" => "PDF" }.freeze
-
-    # One entry for each kind of item the record has: [kind, label, count, position of its first item in items]
-    def kinds
-      items.each_with_index.group_by { |item, _| item[:kind] }.map do |kind, entries|
-        [ kind, KIND_LABELS.fetch(kind, "Files"), entries.size, entries.first.last ]
-      end
-    end
-
     def media_dom_id(index) = "digital-assets-media-#{index}"
 
     def kind_icon(kind)
       tag.svg(tag.path(d: KIND_ICON_PATHS.fetch(kind, KIND_ICON_PATHS["pdf"])), width: "1.5em", height: "1.5em", viewBox: "0 0 24 24",
               fill: "currentColor", aria: { hidden: true }, focusable: "false")
+    end
+
+    # Material's previous and next arrows (Apache 2.0)
+    ARROW_PATHS = {
+      previous: "M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z",
+      next: "M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"
+    }.freeze
+
+    def arrow_icon(direction)
+      tag.svg(tag.path(d: ARROW_PATHS.fetch(direction)), width: "1em", height: "1em", viewBox: "0 0 24 24", fill: "currentColor",
+              aria: { hidden: true }, focusable: "false")
     end
 
     # The large images as blacklight-gallery's OpenSeadragon viewer takes them (the same sources the gem's own
@@ -105,6 +87,7 @@ module NexusCcs
         keyboardNavEnabled: false, tabIndex: -1
       }
     end
+
     def media_title(item) = item[:label].presence || title
 
     def count = large_paths.size
@@ -113,17 +96,33 @@ module NexusCcs
       Array(@document["title_tsim"]).first.presence || "Record"
     end
 
+    # "Grainger, Percy Aldridge · 1952"
+    def byline
+      creators = Array(@document["creator_ssim"]).first(2).join("; ")
+      [ creators.presence, Array(@document["production_date_ssim"]).first ].compact.join(" · ").presence
+    end
+
+    Tag = Struct.new(:field, :value)
+
+    # The chips under the byline: the record's format and its collection, each a link to that filter
+    def tags
+      [ Tag.new("format", Array(@document["format"]).first), Tag.new("collection_ssim", Array(@document["collection_ssim"]).first) ]
+        .select { |tag| tag.value.present? }
+    end
+
+    def tag_path(tag) = helpers.search_action_path(f: { tag.field => [ tag.value ] })
+
     # The image name carries the title and position, so each one is distinguishable.
     def alt(position)
       count == 1 ? title : "#{title}, image #{position} of #{count}"
     end
 
-    # e.g. "Copyright - Current"; the toolbar shows it as the licence chip
+    # e.g. "Copyright - Current"
     def licence
       Array(@document["licence_type_ssim"]).first.presence
     end
 
-    # What the record's rights note says (the licence name in brackets is the chip's, so it is not repeated)
+    # What the record's rights note says (the licence name in brackets is the licence type's, so it is not repeated)
     def terms
       note = Array(@document["rights_ssim"]).first.to_s.sub(/\A\s*\[[^\]]*\]\s*/, "").strip
       note.presence

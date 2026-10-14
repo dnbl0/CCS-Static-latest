@@ -24,13 +24,14 @@ class RecordLayoutTest < ActiveSupport::TestCase
     "format" => [ "Object" ]
   }.freeze
 
-  test "the summary is the title, the creator and date, and tags" do
-    c = component(FIELDS)
+  test "the title, the creator and date, and the tags are in the media band, from the same fields" do
+    band = NexusCcs::DigitalAssetsComponent.new(presenter: presenter(FIELDS))
 
-    assert_equal "Grainger, Percy Aldridge · 1952", c.byline
-    assert_equal [ "Object", "Grainger Museum Collection" ], c.tags.map(&:value)
-    assert_equal [ "format", "collection_ssim" ], c.tags.map(&:field)
-    assert_equal "Kangaroo-pouch tone-tool", c.heading
+    assert_equal "Kangaroo-pouch tone-tool", band.title
+    assert_equal "Grainger, Percy Aldridge · 1952", band.byline
+    assert_equal [ "Object", "Grainger Museum Collection" ], band.tags.map(&:value)
+    assert_equal [ "format", "collection_ssim" ], band.tags.map(&:field)
+    assert_equal "Kangaroo-pouch tone-tool", component(FIELDS).heading
   end
 
   test "the details list is Title first, the record's own id (UoM ID, copyable) just before the collection" do
@@ -55,8 +56,9 @@ class RecordLayoutTest < ActiveSupport::TestCase
     c = component("title_tsim" => [ "Untitled" ])
 
     assert_not c.copyright_card?
-    assert_nil c.byline
-    assert_empty c.tags
+    band = NexusCcs::DigitalAssetsComponent.new(presenter: presenter("title_tsim" => [ "Untitled" ]))
+    assert_nil band.byline
+    assert_empty band.tags
   end
 
   test "the Save button is at the top right of the summary, in a second column beside the title, byline and tags" do
