@@ -63,6 +63,9 @@
   width: min(100%, calc(var(--mosaic-height) / var(--mosaic-inverse)));
 }
 
+/* The split layout's title and details are beside the gallery, not above it, so the gallery may be taller: what is left under the site header and banner */
+.digital-assets-mosaic--split .digital-assets-mosaic__grid { --mosaic-height: clamp(20rem, calc(100vh - 19rem), 40rem); }
+
 .digital-assets-mosaic__tile {
   flex: var(--ratio) 1 0%;
   min-width: 0;

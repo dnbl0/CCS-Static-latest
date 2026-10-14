@@ -134,6 +134,34 @@ class DigitalAssetsComponentTest < ActiveSupport::TestCase
     assert_selector ".digital-assets-mosaic__row.d-none.d-lg-flex", visible: :all, count: 1
   end
 
+  def render_split(fields)
+    render_inline(NexusCcs::DigitalAssetsComponent.new(presenter: Presenter.new(SolrDocument.new(fields)), layout: "split"))
+  end
+
+  test "the split layout: the title and details in a third on the left, one large item and a row of up to three on the right, +N for the rest" do
+    render_split(assets(8).merge("creator_display_ssim" => [ "Judy Mengil (b.1954)" ], "object_type_ssim" => [ "Painting" ], "collection_ssim" => [ "Grainger Museum" ],
+                                 "production_date_ssim" => [ "2016" ], "licence_type_ssim" => [ "Copyright - Current" ]))
+
+    assert_selector "section.digital-assets-mosaic--split .row > article.col-lg-4 p.h2", text: "Cary Pocket microscope"
+    assert_selector "article.col-lg-4", text: "Painting • Grainger Museum"
+    assert_selector "article.col-lg-4", text: "Judy Mengil (b.1954) · 2016"
+    assert_selector "article.col-lg-4", text: "Copyright - Current"
+    assert_selector "article.col-lg-4 button", text: "View all 8 digital assets"
+    assert_selector ".row > .col-lg-8 .digital-assets-mosaic__grid"
+    assert_equal [ 1, 3 ], page.all(".digital-assets-mosaic__row", visible: :all).map { |row| row.all(".digital-assets-mosaic__tile", visible: :all).size }
+    assert_selector ".digital-assets-mosaic__tile", text: "+4", visible: :all, count: 1
+    assert_selector "button.digital-assets-mosaic__tile[aria-label^='+4 more: Open']", visible: :all, count: 1
+    assert_selector "#digital-assets-gallery section.digital-assets", visible: :all
+  end
+
+  test "the split layout with four or fewer items has no +N, and the mosaic never has one" do
+    render_split(assets(4))
+    assert_no_selector ".digital-assets-mosaic__tile", text: "+", visible: :all
+
+    render_mosaic(assets(8))
+    assert_no_selector ".digital-assets-mosaic__tile", text: "+", visible: :all
+  end
+
   test "the stage is the layout unless the mosaic is asked for" do
     render_for(assets(2))
     assert_no_selector ".digital-assets-mosaic"

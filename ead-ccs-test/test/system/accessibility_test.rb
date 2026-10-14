@@ -244,6 +244,25 @@ class AccessibilityTest < ApplicationSystemTestCase
     assert_operator page.evaluate_script("document.querySelector('.digital-assets-mosaic__grid').getBoundingClientRect().bottom"), :<=, 800
   end
 
+  # The split layout (?layout=split), after realestate.com.au: the title and details on the left, the gallery on the right.
+  test "a catalog record's split layout opens the gallery from the +N tile, with no axe violations" do
+    page.driver.resize(1280, 800)
+    StockSolr.documents = { "emu-9044" => stock_document("emu-9044", %w[1973_0004_000_000_1 1973_0071_000_000 1973_0084_000_000 1973_0755-1_pf 1973_0755_b_pf 1973_0755-2_pf]) }
+    visit "/catalog/emu-9044?layout=split"
+    assert_selector ".digital-assets-mosaic__tile", count: 4
+    assert_selector ".digital-assets-mosaic__tile", text: "+2"
+    assert_accessible
+
+    left, right = page.evaluate_script("[document.querySelector('.digital-assets-mosaic--split article').getBoundingClientRect().width, document.querySelector('.digital-assets-mosaic--split .col-lg-8').getBoundingClientRect().width]")
+    assert_in_delta 0.33, left.to_f / (left + right), 0.04, "the details are not about a third of the width"
+
+    find(".digital-assets-mosaic__tile", text: "+2").click
+    assert_selector "#digital-assets-gallery.show"
+    assert_selector "#digital-assets-gallery a.digital-assets__other[aria-current=true][data-media-viewer-page='3']"
+    wait_until_opaque("#digital-assets-gallery")
+    assert_accessible
+  end
+
   test "the home page with the Acknowledgement of Country open has no axe violations" do
     page.driver.clear_cookies
     visit root_path

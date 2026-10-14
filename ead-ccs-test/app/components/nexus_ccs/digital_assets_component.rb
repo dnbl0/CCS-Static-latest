@@ -26,8 +26,8 @@ module NexusCcs
 
     attr_reader :presenter
 
-    # layout: "stage" (the band: the image or file on show, thumbnails below) or "mosaic" (a large image and four tiles, "Show all" opening the band in
-    # a full-screen window); when not given, the page's ?layout= says (the band when it says nothing)
+    # layout: "stage" (the band: the image or file on show, thumbnails below), "mosaic" (a large image and four tiles, "Show all" opening the band in
+    # a full-screen window) or "split" (the title and details on the left, a large image with a row of three under it on the right); when not given, the page's ?layout= says (the band when it says nothing)
     def initialize(presenter:, document_counter: nil, layout: nil, **)
       @presenter = presenter
       @document = presenter.document
@@ -36,7 +36,9 @@ module NexusCcs
 
     def layout = (@layout || helpers.params[:layout]).to_s
 
-    def mosaic? = layout == "mosaic"
+    def split? = layout == "split"
+
+    def mosaic? = layout == "mosaic" || split?
 
     def render?
       large_paths.any? || media.any?
@@ -64,9 +66,12 @@ module NexusCcs
     # The mosaic's rows of tiles, each tile an item with its position in items: up to five items, in one row, or two (1, 2, 1+2, 2+2, 2+3)
     ROW_SPLITS = { 1 => [ 1 ], 2 => [ 2 ], 3 => [ 1, 2 ], 4 => [ 2, 2 ], 5 => [ 2, 3 ] }.freeze
 
+    # The split layout's: one large item, then a row of up to three (1, 1+1, 1+2, 1+3)
+    SPLIT_ROWS = { 1 => [ 1 ], 2 => [ 1, 1 ], 3 => [ 1, 2 ], 4 => [ 1, 3 ] }.freeze
+
     def mosaic_rows
-      shown = items.each_with_index.map { |item, position| item.merge(position: position) }.first(5)
-      ROW_SPLITS.fetch(shown.size, []).map { |size| shown.shift(size) }
+      shown = items.each_with_index.map { |item, position| item.merge(position: position) }.first(split? ? 4 : 5)
+      (split? ? SPLIT_ROWS : ROW_SPLITS).fetch(shown.size, []).map { |size| shown.shift(size) }
     end
 
     KIND_LABELS = { "image" => "Photos", "video" => "Video", "audio" => "Audio", "pdf" => "PDF" }.freeze
