@@ -13,12 +13,12 @@ class StockOpenseadragonEmbedComponent < Blacklight::Gallery::OpenseadragonEmbed
     super(presenter: presenter, view_config: view_config, classes: classes + %w[col-12], **kwargs)
   end
 
-  # The toolbar keeps previous/next and full page; zoom in, zoom out and home are dropped. The gem's template draws
+  # The toolbar keeps previous/next and full page; zoom in, zoom out and home are dropped, and the mouse wheel no longer zooms. The gem's template draws
   # those three buttons, so this component has its own copy of it without them; here OpenSeadragon is told not to
-  # build them (it would otherwise add its own) and not to look for the ones that are gone. Mouse wheel and pinch
-  # zoom are OpenSeadragon's own gestures and stay.
+  # build them (it would otherwise add its own) and not to look for the ones that are gone. Pinch, double-click and
+  # keyboard zoom are OpenSeadragon's own gestures and stay; scrolling the page over the image is left to the page.
   def osd_config
-    super.except(:zoomInButton, :zoomOutButton, :homeButton).merge(showZoomControl: false, showHomeControl: false)
+    super.except(:zoomInButton, :zoomOutButton, :homeButton).merge(showZoomControl: false, showHomeControl: false, gestureSettingsMouse: { scrollToZoom: false })
   end
 
   def image
