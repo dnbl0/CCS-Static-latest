@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import OpenSeadragon from "openseadragon"
 
 // A record's media: the "Media metadata" panel (opened by the info button, closed by its own button or Esc, with
 // focus going to the panel's close button and back to the info button), full screen for the band, and the
@@ -20,9 +21,35 @@ export default class extends Controller {
     if (this.hasFullscreenButtonTarget && document.fullscreenEnabled) this.fullscreenButtonTarget.hidden = false
     // the stage shows one item at a time: the first (the images' viewer if there are images). Without JavaScript they all show.
     this.mediaTargets.forEach((figure, index) => { figure.hidden = this.hasMainTarget || index > 0 })
+    this.refitWhenResized()
+  }
+
+  // The viewer's size changes with the window, the breakpoints and the screen's height (the band's height follows it): OpenSeadragon is told, and
+  // the image is fitted to the new size again (there is no zoom, so it is always the whole image). The viewer is started by openseadragon-rails
+  // after the page loads, so it is waited for.
+  refitWhenResized() {
+    if (!this.hasViewerTarget) return
+    let attempts = 0
+    const watch = () => {
+      const viewer = this.viewerTarget.osdViewer
+      if (!viewer) { if (attempts++ < 50) this.waiting = setTimeout(watch, 100); return }
+      this.viewerTarget.style.removeProperty("height") // openseadragon-rails writes the height it measured at start as inline pixels, which ignores the CSS from then on
+      this.resizeObserver = new ResizeObserver(() => {
+        if (this.viewerTarget.hidden || !this.viewerTarget.offsetWidth) return
+        // given the new size here rather than left to OpenSeadragon's own watcher, which does not always see the change (the container's
+        // percentage height follows the picture's, which the stylesheet now sets)
+        viewer.viewport.resize(new OpenSeadragon.Point(this.viewerTarget.clientWidth, this.viewerTarget.clientHeight), false)
+        viewer.viewport.goHome(true)
+        viewer.forceRedraw()
+      })
+      this.resizeObserver.observe(this.viewerTarget)
+    }
+    watch()
   }
 
   disconnect() {
+    clearTimeout(this.waiting)
+    this.resizeObserver?.disconnect()
     this.element.removeEventListener("keydown", this.onKey)
     document.removeEventListener("fullscreenchange", this.onFullscreen)
   }
@@ -86,7 +113,10 @@ export default class extends Controller {
       viewer.forceResize() // it was not displayed while a file was on show
     }
     this.element.querySelectorAll(".digital-assets__other").forEach((other) => {
-      other === link ? other.setAttribute("aria-current", "true") : other.removeAttribute("aria-current")
+      const current = other === link
+      other.classList.toggle("border-info", current)
+      other.classList.toggle("border-transparent", !current)
+      current ? other.setAttribute("aria-current", "true") : other.removeAttribute("aria-current")
     })
   }
 }

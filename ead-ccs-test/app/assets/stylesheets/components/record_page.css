@@ -47,7 +47,7 @@ body.blacklight-catalog-show #main-container .page-sidebar {
 .record-banner__inner {
   max-width: calc(75rem + 2 * var(--record-gutter));
   margin-inline: auto;
-  padding: 2.25rem var(--record-gutter);
+  padding: var(--ccs-space-5) var(--record-gutter);
 }
 
 .record-banner__title {

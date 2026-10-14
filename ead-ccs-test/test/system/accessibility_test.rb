@@ -165,6 +165,30 @@ class AccessibilityTest < ApplicationSystemTestCase
     end
   end
 
+  # openseadragon-rails writes the viewer's height at start as fixed pixels and OpenSeadragon only notices the window, so a screen of another size, or
+  # a window dragged to one, left the image the size it was (a small image in a tall band). The viewer follows the page, and the image is refitted.
+  test "a catalog record's image is refitted when the window changes size" do
+    StockSolr.documents = { "emu-9044" => stock_document("emu-9044", %w[a b c]) }
+    page.driver.resize(1280, 800)
+    visit "/catalog/emu-9044"
+    assert_selector "picture.digital-assets__viewer canvas"
+
+    fitted = "(() => { const p = document.querySelector('.digital-assets__viewer'), v = p.osdViewer; const size = v.viewport.getContainerSize();
+                 return { styled: p.style.height, picture: [p.offsetWidth, p.offsetHeight], viewer: [size.x, size.y],
+                          home: Math.abs(v.viewport.getZoom() - v.viewport.getHomeZoom()) < 0.001 } })()"
+    small = page.evaluate_script(fitted)
+    assert_equal "", small["styled"], "the viewer's height is fixed in pixels"
+    assert_equal small["picture"], small["viewer"]
+
+    page.driver.resize(1280, 1200)
+    Timeout.timeout(5) { sleep 0.1 until page.evaluate_script("document.querySelector('.digital-assets__viewer').offsetHeight") > small["picture"][1] }
+    Timeout.timeout(5) { sleep 0.1 until page.evaluate_script(fitted)["viewer"] == page.evaluate_script(fitted)["picture"] }
+    tall = page.evaluate_script(fitted)
+    assert_operator tall["picture"][1], :>, small["picture"][1]
+    assert_equal tall["picture"], tall["viewer"], "OpenSeadragon was not told the viewer's new size"
+    assert tall["home"], "the image was not fitted to the new size"
+  end
+
   test "the home page with the Acknowledgement of Country open has no axe violations" do
     page.driver.clear_cookies
     visit root_path

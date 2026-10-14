@@ -1,282 +1,67 @@
 /*
- * A record's media, after the CCS UI "Record-detail" media section (Figma 258:25197): a full-width #1a1a1a band
- * with the large image contained in it, a 340px "Media metadata" panel over its right edge, and a toolbar below
- * (the licence on the left, the panel and full screen buttons on the right). With several images the rest are a
- * row of thumbnails under the large one. Markup: NexusCcs::DigitalAssetsComponent; behaviour:
- * controllers/media_viewer_controller.js.
+ * A record's media (NexusCcs::DigitalAssetsComponent; behaviour: controllers/media_viewer_controller.js), after the CCS UI "Record-detail" media
+ * section (Figma 258:25197): a dark band with the image, video, audio or PDF on show, a "Media metadata" panel over its right edge, a thumbnail
+ * for each item and a toolbar. The markup is Bootstrap's classes; what is here is what Bootstrap has no class for: the sizes that make the whole
+ * band fit the screen, and the panel's slide.
  */
 .digital-assets {
-  --media-band: #1a1a1a;
-  /* The whole band fits the screen without scrolling: the stage's content (image, video, PDF) is as tall as what is left of the viewport
-     after the site header, breadcrumb and title strip above the band (17rem) and the band's own padding, thumbnails and toolbar (12rem
-     in all with its row of thumbnails, 5.8rem without), within 15rem and the design's 38.5rem (616px). */
-  --digital-assets-above: 17rem;
+  /* The whole band fits the screen without scrolling: what is on show (image, video, PDF) is as tall as what is left of the viewport after the
+     site header, breadcrumb and title strip above the band (15.5rem) and the band's own padding, thumbnails and toolbar (12rem in all with its
+     row of thumbnails, 5.8rem without), within 15rem and the design's 38.5rem (616px). */
+  --digital-assets-above: 15.5rem;
   --digital-assets-chrome: 12rem;
   --digital-assets-height: clamp(15rem, calc(100vh - var(--digital-assets-above) - var(--digital-assets-chrome)), 38.5rem);
-  margin: 0;
-  background: var(--media-band);
-  border-bottom: 1px solid var(--ccs-border-panel);
 }
 
 .digital-assets:not(:has(.digital-assets__others)) { --digital-assets-chrome: 5.8rem; }
 
-.digital-assets__stage {
-  position: relative;
-  min-height: calc(var(--digital-assets-height) + 2 * var(--ccs-space-4));
-  padding: var(--ccs-space-4);
-  overflow: hidden; /* the closed Media metadata panel waits off the right edge: it must not widen the page */
-}
+.digital-assets__stage { min-height: calc(var(--digital-assets-height) + 2rem); }
 
-/* The centred, clipped image/media area is a child of the stage, not the stage itself: the Media metadata
-   panel is the stage's other child, an absolutely positioned sibling of this area rather than a child of it,
-   so opening the panel (sliding it in with a transform) can never feed back into recentring the image -- that
-   coupling, through this area's own centring and clipping, was jolting the image open/close. */
-.digital-assets__media-area {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
+.digital-assets__viewer { height: var(--digital-assets-height); }
+.digital-assets__noscript { max-height: var(--digital-assets-height); }
 
-.digital-assets__main {
-  display: flex;
-  justify-content: center;
-  margin: 0;
-}
+/* A file takes the room of an image, less its caption */
+.digital-assets__video,
+.digital-assets__document { height: calc(var(--digital-assets-height) - 3rem); }
 
-/* blacklight-gallery's OpenSeadragon viewer: it draws the image on a canvas and needs a height of its own */
-.digital-assets__main { width: 100%; }
-
-.digital-assets__viewer {
-  display: block;
-  width: 100%;
-  height: var(--digital-assets-height);
-  background: var(--media-band);
-}
-
-/* Without JavaScript the viewer has nothing to draw: the plain image stands in for it */
-.digital-assets__noscript { display: block; max-width: 100%; max-height: var(--digital-assets-height); margin: 0 auto; object-fit: contain; }
-
-/* Thumbnails of the images, on the band */
-.digital-assets__others {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: var(--ccs-space-2);
-  margin: 0;
-  padding: 0 var(--ccs-space-4) var(--ccs-space-4);
-  list-style: none;
-}
-
-.digital-assets__other {
-  display: block;
-  border: 2px solid transparent;
-}
-
-.digital-assets__other[aria-current="true"],
-.digital-assets__other:hover,
-.digital-assets__other:focus-visible {
-  border-color: var(--ccs-cyan-400);
-  outline: 0;
-}
-
-.digital-assets__other img {
-  display: block;
+/* An image's thumbnail and a file's tile are the same square */
+.digital-assets__thumbnail {
   width: 5rem;
   height: 5rem;
-  object-fit: cover;
 }
 
-/* Media metadata: over the band's right edge. It stays in place and in the DOM at all times (positioned
-   off-stage by its own transform) rather than being toggled with [hidden]/display: switching an absolutely
-   positioned flex child's display was momentarily counted back into the stage's "justify-content: center",
-   making the large image jump and settle (a jolt) the instant the panel opened. Sliding it with transform and
-   hiding it with visibility, both paint-only, never touches the stage's layout. */
+/* Media metadata: over the band's right edge. It stays in the DOM at all times, off the stage by its own transform, rather than being toggled with
+   [hidden]/display: switching an absolutely positioned flex child's display was counted back into the stage's centring and made the image jump.
+   Sliding it with transform and hiding it with visibility, both paint-only, never touches the stage's layout. */
 .digital-assets__panel {
-  position: absolute;
-  inset: 0 0 0 auto;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
   width: 21.25rem; /* 340px */
-  max-width: 100%;
-  background: var(--ccs-white);
-  box-shadow: -6px 0 9px rgb(0 0 0 / 28%);
   visibility: hidden;
   transform: translateX(100%);
-  transition: transform var(--ccs-duration-base) ease-out, visibility 0s linear var(--ccs-duration-base);
+  transition: transform var(--ccs-duration-base, 0.2s) ease-out, visibility 0s linear var(--ccs-duration-base, 0.2s);
   will-change: transform;
 }
 
 .digital-assets__panel.is-open {
   visibility: visible;
   transform: translateX(0);
-  transition: transform var(--ccs-duration-base) ease-out;
+  transition: transform var(--ccs-duration-base, 0.2s) ease-out;
 }
 
-.digital-assets__panel-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: var(--ccs-space-3) var(--ccs-space-3) var(--ccs-space-3) var(--ccs-space-4);
-  border-bottom: 1px solid #e7e7e9;
-}
-
-.digital-assets__panel-title {
-  margin: 0;
-  font-family: var(--ccs-font-heading);
-  font-size: var(--ccs-font-size-md);
-  font-weight: var(--ccs-font-weight-semibold);
-  line-height: 1.2;
-  color: #1a1a1a;
-}
-
-.digital-assets__list {
-  flex: 1 1 auto;
-  margin: 0;
-  overflow-y: auto;
-}
-
-.digital-assets__item {
-  padding: 0.875rem var(--ccs-space-4);
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.digital-assets__item dt {
-  margin-bottom: var(--ccs-space-1);
-  font-size: 0.8125rem;
-  font-weight: var(--ccs-font-weight-semibold);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: #5b6070;
-}
-
-.digital-assets__item dd {
-  margin: 0;
-  font-size: var(--ccs-font-size-sm);
-  line-height: 1.5;
-  color: #1a1a1a;
-  text-wrap: pretty;
-  overflow-wrap: anywhere;
-}
-
-/* Toolbar */
-.digital-assets__toolbar {
-  padding: var(--ccs-space-2) var(--ccs-space-3);
-  border-top: 1px solid #e7e7e9;
-  background: var(--ccs-surface-subtle);
-}
-
-.digital-assets__toolbar-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--ccs-space-3);
-  max-width: 75rem;
-  min-height: 2.5rem;
-  margin: 0 auto;
-}
-
-.digital-assets__licence {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.375rem;
-  margin: 0;
-  padding: 0.375rem 0.625rem;
-  background: #f1f0ec;
-  font-size: var(--ccs-font-size-sm);
-  line-height: 1.4;
-  color: #1b1f2a;
-}
-
-.digital-assets__controls {
-  display: flex;
-  gap: var(--ccs-space-1);
-}
-
-.digital-assets__button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  padding: 0;
-  border: 0;
-  background: none;
-  font-size: 1.25rem;
-  color: var(--ccs-navy-1100);
-  cursor: pointer;
-}
-
-.digital-assets__button[hidden] {
-  display: none;
-}
-
-.digital-assets__button:hover {
-  background: var(--ccs-navy-100);
-}
-
-.digital-assets__button:focus-visible {
-  outline: 3px solid #0b4ea2;
-  outline-offset: -3px;
-}
-
-.digital-assets__button[aria-expanded="true"] {
-  background: var(--ccs-navy-200);
-}
-
-/* Full screen: the band fills the screen and the image is as large as it can be */
+/* Full screen: the band fills the screen and what is on show is as large as it can be */
 .digital-assets.is-fullscreen {
+  --digital-assets-height: calc(100vh - 12rem);
   display: flex;
   flex-direction: column;
 }
 
-.digital-assets.is-fullscreen .digital-assets__stage {
-  flex: 1 1 auto;
-}
+.digital-assets.is-fullscreen .digital-assets__stage { flex: 1 1 auto; }
 
-.digital-assets.is-fullscreen { --digital-assets-height: calc(100vh - 12rem); }
-
+/* A phone's header and title strip are taller and its thumbnails wrap: the band is 18rem high and the page scrolls */
 @media (max-width: 575.98px) {
-  /* a phone's header and title strip are taller and its thumbnails wrap: the band is 16rem to 20rem high and the page scrolls */
   .digital-assets { --digital-assets-height: 18rem; }
-
-
-  .digital-assets__panel {
-    width: 100%;
-  }
+  .digital-assets__panel { width: 100%; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .digital-assets__panel {
-    transition: none;
-  }
-}
-
-/* Audio, video and PDF files: one at a time in the stage, chosen by their thumbnail tile */
-.digital-assets__main[hidden],
-.digital-assets__media[hidden] { display: none; }
-
-.digital-assets__media { width: 100%; margin: 0; padding: 1rem; text-align: center; color: var(--ccs-white); }
-.digital-assets__video { display: block; width: 100%; height: calc(var(--digital-assets-height) - 3rem); background: #000; object-fit: contain; }
-.digital-assets__audio { width: 100%; max-width: 40rem; }
-.digital-assets__document { display: block; width: 100%; height: calc(var(--digital-assets-height) - 3rem); background: var(--ccs-white); }
-.digital-assets__media figcaption { margin-top: 0.5rem; }
-.digital-assets__media a, .digital-assets__pdf { color: inherit; }
-
-/* A file's thumbnail: the same 5rem square as an image's, with its kind's icon and name */
-.digital-assets__tile {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.25rem;
-  width: 5rem;
-  height: 5rem;
-  background: var(--ccs-navy-1100);
-  font-size: 0.8125rem;
-  line-height: 1.2;
-  color: var(--ccs-white);
+  .digital-assets__panel { transition: none; }
 }
