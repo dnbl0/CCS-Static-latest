@@ -17,6 +17,10 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
   PD = SolrDocument.new(DOC.to_h.merge("id" => "pd", "licence_type_ssim" => [ "Public domain - Copyright expired" ],
     "rights_ssim" => [ "[Public domain - Copyright expired] Public Domain / no known copyright restrictions" ])).tap { |doc| doc.instance_variable_set(:@response, DOC.response) }
 
+  # the pages exist for these ids only (StockRecords); the tests use two more of their own
+  setup { Rails.configuration.x.stock_record_ids = %w[vernon-MHM00394 multi pd] }
+  teardown { Rails.configuration.x.stock_record_ids = nil }
+
   FakeService = Struct.new(:doc) do
     def fetch(*) = doc
   end
@@ -178,6 +182,27 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     assert_equal({ icons: [], url: nil }, icons.("Something else"))
     assert_not StockLicenceBadgeComponent.new(licence: "").render?
     assert(StockLicenceIcons::PATHS.values.all? { |view_box, path| view_box.present? && path.start_with?("M") })
+  end
+
+  test "the new record pages are for the two records only; any other id is a 404, and the site's own record page is untouched" do
+    assert_equal %w[emu-9044 vernon-MHM00394], StockRecords::IDS
+    Rails.configuration.x.stock_record_ids = nil # the real list
+    assert_equal StockRecords::IDS, StockRecords.ids
+    # and as in a process that never set it: Rails then answers with an empty options object, not nil
+    Rails.configuration.x.stock_record_ids = ActiveSupport::OrderedOptions.new
+    assert_equal StockRecords::IDS, StockRecords.ids
+    Rails.configuration.x.stock_record_ids = nil
+    assert StockRecords.include?("emu-9044")
+    assert StockRecords.include?("vernon-MHM00394")
+    assert_not StockRecords.include?("emu-1")
+    assert_not StockRecords.include?(nil)
+    %w[/stock /branded-stock].each do |prefix|
+      assert_routing "#{prefix}/emu-9044", controller: prefix == "/stock" ? "stock_catalog" : "branded_stock_catalog", action: "show", id: "emu-9044"
+      assert_raises(ActionController::RoutingError) { Rails.application.routes.recognize_path("#{prefix}/emu-1") }
+      assert_raises(ActionController::RoutingError) { Rails.application.routes.recognize_path("#{prefix}/emu-1/citation") }
+    end
+    # /catalog/:id is the site's own page and is not restricted
+    assert_equal "catalog", Rails.application.routes.recognize_path("/catalog/emu-1")[:controller]
   end
 
   test "the search constraints and Back to search / Previous / Next above a record are left out" do
