@@ -8,7 +8,9 @@
     <div class="digital-assets__media-area">
       <% if main %>
         <figure class="digital-assets__main">
-          <%= image_tag main.first, alt: alt(1), class: "digital-assets__image", data: { media_viewer_target: "image" } %>
+          <%= openseadragon_picture_tag osd_image, role: "img", "aria-label": alt(1), class: "digital-assets__viewer",
+                data: { openseadragon: osd_config, media_viewer_target: "viewer" } %>
+          <noscript><%= image_tag main.first, alt: alt(1), class: "digital-assets__noscript" %></noscript>
         </figure>
       <% end %>
 
@@ -53,13 +55,14 @@
     <% end %>
   </div>
 
-  <% if others.any? %>
+  <% if images.size > 1 %>
     <ul class="digital-assets__others">
-      <% others.each_with_index do |(large, thumbnail), index| %>
+      <% images.each_with_index do |(large, thumbnail), index| %>
         <li>
           <%= link_to large, class: "digital-assets__other", target: "_blank", rel: "noopener",
-                data: { action: "media-viewer#show", media_viewer_large: large, media_viewer_alt: alt(index + 2) } do %>
-            <%= image_tag thumbnail, alt: "#{alt(index + 2)} (opens full size in a new tab)", loading: "lazy" %>
+                aria: { current: (index.zero? ? "true" : nil) },
+                data: { action: "media-viewer#show", media_viewer_page: index, media_viewer_alt: alt(index + 1) } do %>
+            <%= image_tag thumbnail, alt: "#{alt(index + 1)} (opens full size in a new tab)", loading: "lazy" %>
           <% end %>
         </li>
       <% end %>

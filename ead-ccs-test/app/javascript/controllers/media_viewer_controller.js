@@ -10,7 +10,7 @@ import { Controller } from "@hotwired/stimulus"
 // justify-content centring, jolting the large image. Opening and closing it only ever toggles the "is-open"
 // class (transform/visibility, both paint-only) and aria-hidden, which never touches that layout.
 export default class extends Controller {
-  static targets = [ "stage", "image", "panel", "infoButton", "fullscreenButton" ]
+  static targets = [ "stage", "viewer", "panel", "infoButton", "fullscreenButton" ]
 
   connect() {
     this.onKey = (event) => { if (event.key === "Escape" && this.isOpen) this.closePanel() }
@@ -57,18 +57,24 @@ export default class extends Controller {
   syncFullscreen() {
     const on = document.fullscreenElement === this.element
     this.element.classList.toggle("is-fullscreen", on)
+    if (this.hasViewerTarget) this.viewerTarget.osdViewer?.forceResize()
     if (this.hasFullscreenButtonTarget) {
       this.fullscreenButtonTarget.setAttribute("aria-label", on ? "Exit full screen" : "Full screen")
       this.fullscreenButtonTarget.title = on ? "Exit full screen" : "Full screen"
     }
   }
 
-  // a thumbnail shows its large image in the band (a modified click still opens it in a new tab)
+  // a thumbnail shows its image in the band's OpenSeadragon viewer (a modified click still opens it in a new tab)
   show(event) {
     if (event.metaKey || event.ctrlKey || event.shiftKey || event.button) return
+    const viewer = this.hasViewerTarget && this.viewerTarget.osdViewer
+    if (!viewer) return // viewer not started: the link opens the full-size image
     event.preventDefault()
     const link = event.currentTarget
-    this.imageTarget.src = link.dataset.mediaViewerLarge
-    this.imageTarget.alt = link.dataset.mediaViewerAlt
+    viewer.goToPage(Number(link.dataset.mediaViewerPage))
+    this.viewerTarget.setAttribute("aria-label", link.dataset.mediaViewerAlt)
+    this.element.querySelectorAll(".digital-assets__other").forEach((other) => {
+      other === link ? other.setAttribute("aria-current", "true") : other.removeAttribute("aria-current")
+    })
   }
 }

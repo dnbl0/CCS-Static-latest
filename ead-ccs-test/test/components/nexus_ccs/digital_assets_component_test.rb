@@ -27,17 +27,20 @@ class DigitalAssetsComponentTest < ActiveSupport::TestCase
     render_for(assets(1))
 
     assert_selector "section.digital-assets h2.visually-hidden", text: "Digital asset", exact_text: true
-    assert_selector "figure.digital-assets__main img[src='/digital-assets/large/a1.jpg'][alt='Cary Pocket microscope']"
+    assert_selector "figure.digital-assets__main picture.digital-assets__viewer[role=img][aria-label='Cary Pocket microscope']"
+    assert_selector "picture.digital-assets__viewer source[src='/digital-assets/large/a1.jpg']", count: 1, visible: :all
     assert_no_selector ".digital-assets__others"
   end
 
-  test "several assets: the first is large and the rest are thumbnails that open the large image" do
+  test "several assets: one gallery viewer holds them all and a thumbnail for each shows its image" do
     render_for(assets(3))
 
     assert_selector "h2", text: "Digital assets"
-    assert_selector "figure img[alt='Cary Pocket microscope, image 1 of 3']"
-    assert_selector ".digital-assets__others li", count: 2
-    assert_selector "a.digital-assets__other[href='/digital-assets/large/a2.jpg'][target=_blank][rel=noopener] img[src='/digital-assets/thumbs/a2.jpg']"
+    assert_selector "picture.digital-assets__viewer[aria-label='Cary Pocket microscope, image 1 of 3']"
+    assert_selector "picture.digital-assets__viewer source", count: 3, visible: :all
+    assert_selector ".digital-assets__others li", count: 3
+    assert_selector "a.digital-assets__other[aria-current=true][href='/digital-assets/large/a1.jpg']"
+    assert_selector "a.digital-assets__other[href='/digital-assets/large/a2.jpg'][target=_blank][rel=noopener][data-media-viewer-page='1'] img[src='/digital-assets/thumbs/a2.jpg']"
     assert_selector "a img[alt='Cary Pocket microscope, image 3 of 3 (opens full size in a new tab)']"
   end
 

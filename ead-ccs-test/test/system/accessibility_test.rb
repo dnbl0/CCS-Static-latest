@@ -58,6 +58,7 @@ class AccessibilityTest < ApplicationSystemTestCase
     end
   end
   StockCatalogController.prepend(StockSolr)
+  CatalogController.prepend(StockSolr)
   BrandedStockCatalogController.prepend(StockSolr)
 
   def stock_document(id, images)
@@ -101,6 +102,26 @@ class AccessibilityTest < ApplicationSystemTestCase
       wait_until_opaque(".modal.show")
       assert_accessible
     end
+  end
+
+  # The existing record page (/catalog/:id): its media band is blacklight-gallery's OpenSeadragon viewer, in the band's own layout. The viewer
+  # is on the page and shows the first image, a thumbnail shows its image (and is marked as the current one), and axe is clean throughout.
+  test "a catalog record page's gallery viewer shows the image a thumbnail chooses, with no axe violations, and its metadata panel opens" do
+    StockSolr.documents = { "emu-9044" => stock_document("emu-9044", %w[a b c]) }
+    visit "/catalog/emu-9044"
+    assert_selector "picture.digital-assets__viewer canvas"
+    assert_selector "a.digital-assets__other", count: 3
+    assert_selector "a.digital-assets__other[aria-current=true]", count: 1
+    assert_accessible
+
+    all("a.digital-assets__other")[2].click
+    assert_selector "picture.digital-assets__viewer[aria-label$='image 3 of 3']"
+    assert_equal 2, page.evaluate_script("document.querySelector('.digital-assets__viewer').osdViewer.currentPage()")
+    assert_selector "a.digital-assets__other[aria-current=true][data-media-viewer-page='2']"
+
+    find("button[aria-controls=media-metadata]").click
+    assert_selector "#media-metadata.is-open"
+    assert_accessible
   end
 
   test "the home page with the Acknowledgement of Country open has no axe violations" do

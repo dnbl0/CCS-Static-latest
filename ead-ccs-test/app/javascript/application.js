@@ -7,6 +7,7 @@ import * as bootstrap from "bootstrap"
 import githubAutoCompleteElement from "@github/auto-complete-element"
 import Blacklight from "blacklight-frontend"
 import "blacklight-gallery"
+import "openseadragon-rails" // the record page's media viewer (blacklight-gallery's OpenSeadragon)
 
 import BlacklightRangeLimit from "blacklight-range-limit";
 BlacklightRangeLimit.init({onLoadHandler: Blacklight.onLoad });

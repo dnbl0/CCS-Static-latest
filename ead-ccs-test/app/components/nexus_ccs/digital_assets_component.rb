@@ -7,6 +7,8 @@ module NexusCcs
   # Renders nothing for a record without assets. Registered, through NexusCcs::RecordEmbedComponent, as the show
   # page's document_embed_component. Behaviour: controllers/media_viewer_controller.js.
   class DigitalAssetsComponent < Blacklight::Component
+    include Openseadragon::OpenseadragonHelper # openseadragon_picture_tag: the gallery's OpenSeadragon viewer element
+
     # The advisory every record carries (the demo's wording)
     ADVISORY = "Some collection items include terms and views that are not appropriate today. They reflect the " \
                "period in which they were created and are not the views of the University of Melbourne."
@@ -32,6 +34,22 @@ module NexusCcs
     end
 
     def main = images.first
+
+    # The large images as blacklight-gallery's OpenSeadragon viewer takes them (the same sources the gem's own
+    # record-page embed gives it); the viewer replaces the plain <img>, the thumbnails below still choose which shows.
+    def osd_image
+      images.map { |large, _| { large => { type: "image", url: large } } }
+    end
+
+    # Viewing only: the CCS design has no zoom (not in the first release), so mouse, keyboard, zoom and home
+    # controls are off; the band's own buttons (info, full screen) and the thumbnails are the controls.
+    def osd_config
+      {
+        crossOriginPolicy: false, sequenceMode: true, showNavigationControl: false, showZoomControl: false,
+        showHomeControl: false, showFullPageControl: false, showSequenceControl: false, mouseNavEnabled: false,
+        keyboardNavEnabled: false, tabIndex: -1
+      }
+    end
     def media_title(item) = item[:label].presence || title
     def others = images.drop(1)
 
