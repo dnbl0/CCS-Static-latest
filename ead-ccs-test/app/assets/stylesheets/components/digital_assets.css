@@ -241,6 +241,7 @@
     height: 20rem;
   }
 
+
   .digital-assets__panel {
     width: 100%;
   }
@@ -252,7 +253,33 @@
   }
 }
 
-.digital-assets__media { margin: 0; padding: 1rem; text-align: center; }
-.digital-assets__video { max-width: 100%; max-height: 70vh; }
+/* Audio, video and PDF files: one at a time in the stage, chosen by their thumbnail tile */
+.digital-assets__main[hidden],
+.digital-assets__media[hidden] { display: none; }
+
+.digital-assets__media { width: 100%; margin: 0; padding: 1rem; text-align: center; color: var(--ccs-white); }
+.digital-assets__video { display: block; width: 100%; height: 36rem; background: #000; object-fit: contain; }
 .digital-assets__audio { width: 100%; max-width: 40rem; }
-.digital-assets__media figcaption, .digital-assets__pdf { color: inherit; margin-top: 0.5rem; }
+.digital-assets__document { display: block; width: 100%; height: 36rem; background: var(--ccs-white); }
+.digital-assets__media figcaption { margin-top: 0.5rem; }
+.digital-assets__media a, .digital-assets__pdf { color: inherit; }
+
+/* A file's thumbnail: the same 5rem square as an image's, with its kind's icon and name */
+.digital-assets__tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  width: 5rem;
+  height: 5rem;
+  background: var(--ccs-navy-1100);
+  font-size: 0.8125rem;
+  line-height: 1.2;
+  color: var(--ccs-white);
+}
+
+@media (max-width: 575.98px) {
+  .digital-assets__video,
+  .digital-assets__document { height: 20rem; }
+}

@@ -44,6 +44,38 @@ class DigitalAssetsComponentTest < ActiveSupport::TestCase
     assert_selector "a img[alt='Cary Pocket microscope, image 3 of 3 (opens full size in a new tab)']"
   end
 
+  MEDIA = [ "video|video/mp4|/m/interview.mp4|Interview", "audio|audio/mpeg|/m/oral.mp3|Oral history", "pdf|application/pdf|/m/catalogue.pdf|Catalogue entry" ].freeze
+
+  test "audio, video and PDF files are gallery items: a player each in the stage and a thumbnail tile each, after the images" do
+    render_for(assets(2).merge("digital_media_ssim" => MEDIA))
+
+    assert_selector "figure#digital-assets-media-0 video[controls][aria-label=Interview] source[src='/m/interview.mp4']", visible: :all
+    assert_selector "figure#digital-assets-media-1 audio[controls][aria-label='Oral history']", visible: :all
+    assert_selector "figure#digital-assets-media-2 object[type='application/pdf'][data='/m/catalogue.pdf'] a[href='/m/catalogue.pdf']", visible: :all
+    assert_selector ".digital-assets__others li", count: 5
+    tiles = page.all("a.digital-assets__other[data-media-viewer-media]")
+    assert_equal %w[digital-assets-media-0 digital-assets-media-1 digital-assets-media-2], tiles.map { |tile| tile["data-media-viewer-media"] }
+    assert_equal %w[video audio pdf], tiles.map { |tile| tile["data-media-viewer-kind"] }
+    assert_includes tiles.first.text(:all), "Video: Interview (opens in a new tab)"
+    assert_selector "a.digital-assets__other[aria-current=true]", count: 1
+  end
+
+  test "a record with only files has no image viewer and the first file on show" do
+    render_for("title_tsim" => [ "Recording" ], "digital_media_ssim" => MEDIA.drop(1))
+
+    assert_no_selector "picture.digital-assets__viewer", visible: :all
+    assert_selector "audio", visible: :all
+    assert_selector ".digital-assets__others li", count: 2
+    assert_selector "a.digital-assets__other[aria-current=true][data-media-viewer-kind=audio]"
+  end
+
+  test "a single file is on its own, with no thumbnails" do
+    render_for("title_tsim" => [ "Recording" ], "digital_media_ssim" => MEDIA.take(1))
+
+    assert_selector "video", visible: :all
+    assert_no_selector ".digital-assets__others"
+  end
+
   test "a record without assets renders nothing" do
     render_for("title_tsim" => [ "No images here" ])
     assert_no_selector ".digital-assets"

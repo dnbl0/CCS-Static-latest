@@ -61,7 +61,7 @@ class AccessibilityTest < ApplicationSystemTestCase
   CatalogController.prepend(StockSolr)
   BrandedStockCatalogController.prepend(StockSolr)
 
-  def stock_document(id, images)
+  def stock_document(id, images, media = [])
     fields = { "id" => id, "title_tsim" => [ "Untitled [Timber eucalypt specimen cabinet]" ], "format" => [ "Object" ],
                "object_type_ssim" => [ "chest of drawers", "Item" ], "production_date_ssim" => [ "[c. 1919—20]" ],
                "creator_display_ssim" => [ "Grimwade, Sir Wilfrid Russell CBE (1879 \u2013 1955)" ], "production_place_ssim" => [ "Oceania", "Australia" ],
@@ -71,6 +71,7 @@ class AccessibilityTest < ApplicationSystemTestCase
                "rights_ssim" => [ "[Public domain - Copyright expired] Public Domain / no known copyright restrictions" ],
                "digital_asset_large_paths_ssim" => images.map { |name| "/digital-assets/large/#{name}.jpg" },
                "digital_asset_paths_ssim" => images.map { |name| "/digital-assets/thumbs/#{name}.jpg" } }
+    fields["digital_media_ssim"] = media if media.any?
     SolrDocument.new(fields).tap { |doc| doc.instance_variable_set(:@response, Blacklight::Solr::Response.new({ "response" => { "docs" => [] } }, {})) }
   end
 
@@ -122,6 +123,31 @@ class AccessibilityTest < ApplicationSystemTestCase
     find("button[aria-controls=media-metadata]").click
     assert_selector "#media-metadata.is-open"
     assert_accessible
+  end
+
+  # Audio, video and PDF files sit in the same gallery as the images: a thumbnail tile for each, and the stage shows the one chosen.
+  test "a catalog record's gallery switches between its images and its audio, video and PDF files, with no axe violations" do
+    media = [ "video|video/mp4|/m/interview.mp4|Interview", "audio|audio/mpeg|/m/oral.mp3|Oral history", "pdf|application/pdf|/m/catalogue.pdf|Catalogue entry" ]
+    StockSolr.documents = { "emu-9044" => stock_document("emu-9044", %w[a b], media) }
+    visit "/catalog/emu-9044"
+    assert_selector "picture.digital-assets__viewer canvas"
+    assert_selector "a.digital-assets__other", count: 5
+    assert_no_selector "figure.digital-assets__media", visible: :visible
+    assert_accessible
+
+    { "Video" => "video", "Audio" => "audio", "PDF" => "object" }.each do |kind, element|
+      find("a.digital-assets__other[data-media-viewer-kind=#{kind.downcase}]").click
+      assert_selector "figure.digital-assets__media #{element}", visible: :all
+      assert_selector "figure.digital-assets__media", count: 1, visible: :visible
+      assert_no_selector "figure.digital-assets__main", visible: :visible
+      assert_selector "a.digital-assets__other[aria-current=true][data-media-viewer-kind=#{kind.downcase}]"
+      assert_accessible
+    end
+
+    all("a.digital-assets__other")[1].click
+    assert_selector "figure.digital-assets__main", visible: :visible
+    assert_no_selector "figure.digital-assets__media", visible: :visible
+    assert_equal 1, page.evaluate_script("document.querySelector('.digital-assets__viewer').osdViewer.currentPage()")
   end
 
   test "the home page with the Acknowledgement of Country open has no axe violations" do

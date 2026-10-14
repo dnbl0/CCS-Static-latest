@@ -10,7 +10,7 @@ import { Controller } from "@hotwired/stimulus"
 // justify-content centring, jolting the large image. Opening and closing it only ever toggles the "is-open"
 // class (transform/visibility, both paint-only) and aria-hidden, which never touches that layout.
 export default class extends Controller {
-  static targets = [ "stage", "viewer", "panel", "infoButton", "fullscreenButton" ]
+  static targets = [ "stage", "main", "viewer", "media", "panel", "infoButton", "fullscreenButton" ]
 
   connect() {
     this.onKey = (event) => { if (event.key === "Escape" && this.isOpen) this.closePanel() }
@@ -18,6 +18,8 @@ export default class extends Controller {
     this.element.addEventListener("keydown", this.onKey)
     document.addEventListener("fullscreenchange", this.onFullscreen)
     if (this.hasFullscreenButtonTarget && document.fullscreenEnabled) this.fullscreenButtonTarget.hidden = false
+    // the stage shows one item at a time: the first (the images' viewer if there are images). Without JavaScript they all show.
+    this.mediaTargets.forEach((figure, index) => { figure.hidden = this.hasMainTarget || index > 0 })
   }
 
   disconnect() {
@@ -64,15 +66,25 @@ export default class extends Controller {
     }
   }
 
-  // a thumbnail shows its image in the band's OpenSeadragon viewer (a modified click still opens it in a new tab)
+  // a thumbnail shows its item in the stage: an image in the OpenSeadragon viewer, an audio, video or PDF file in its own player
+  // (a modified click still opens the file in a new tab)
   show(event) {
     if (event.metaKey || event.ctrlKey || event.shiftKey || event.button) return
-    const viewer = this.hasViewerTarget && this.viewerTarget.osdViewer
-    if (!viewer) return // viewer not started: the link opens the full-size image
-    event.preventDefault()
     const link = event.currentTarget
-    viewer.goToPage(Number(link.dataset.mediaViewerPage))
-    this.viewerTarget.setAttribute("aria-label", link.dataset.mediaViewerAlt)
+    const isImage = link.dataset.mediaViewerKind === "image"
+    const viewer = this.hasViewerTarget && this.viewerTarget.osdViewer
+    if (isImage && !viewer) return // viewer not started: the link opens the full-size image
+    event.preventDefault()
+
+    this.element.querySelectorAll("audio, video").forEach((player) => player.pause())
+    if (this.hasMainTarget) this.mainTarget.hidden = !isImage
+    this.mediaTargets.forEach((figure) => { figure.hidden = isImage || figure.id !== link.dataset.mediaViewerMedia })
+
+    if (isImage) {
+      viewer.goToPage(Number(link.dataset.mediaViewerPage))
+      this.viewerTarget.setAttribute("aria-label", link.dataset.mediaViewerAlt)
+      viewer.forceResize() // it was not displayed while a file was on show
+    }
     this.element.querySelectorAll(".digital-assets__other").forEach((other) => {
       other === link ? other.setAttribute("aria-current", "true") : other.removeAttribute("aria-current")
     })
