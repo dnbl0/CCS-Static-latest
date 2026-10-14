@@ -11,6 +11,12 @@ function setUpTooltips() {
   })
 }
 
+// WCAG 1.4.13: a tooltip can be dismissed without moving the pointer or focus. Bootstrap's do not close on Escape.
+addEventListener("keydown", (event) => {
+  if (event.key !== "Escape") return
+  document.querySelectorAll("[data-tooltip-title]").forEach((element) => bootstrap.Tooltip.getInstance(element)?.hide())
+})
+
 // In full screen the full screen button leaves it: say so (its label and tooltip).
 function labelFullScreenButton() {
   document.querySelectorAll("picture.openseadragon-viewer").forEach((picture) => {
@@ -49,7 +55,7 @@ function wireThumbnails() {
     })
 
     buttons.forEach((button) => button.addEventListener("click", () => viewer.goToPage(Number(button.dataset.page))))
-    viewer.addHandler("page", (event) => mark(event.page))
+    viewer.addHandler("page", (event) => { mark(event.page); picture.setAttribute("aria-label", buttons[event.page].dataset.label) })
     mark(viewer.currentPage())
 
     const toolbar = document.getElementById(viewer.toolbar?.element?.id || "")

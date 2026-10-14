@@ -2,22 +2,23 @@
 <% hero = capture do %>
   <%# One wrapper for the band, toolbar and modal: OpenSeadragon, in full screen, takes the page body's children off and remembers where its toolbar was from the toolbar's parent, which must not be the body itself. %>
   <article aria-label="Media">
-  <section class="bg-black text-white" aria-label="Media viewer">
+  <%# The focus ring of the controls on the dark band: Bootstrap's own variable, near-opaque white (its light ring is 25% white, about 2:1 on black; WCAG 1.4.11 asks 3:1) %>
+  <section class="bg-black text-white" aria-label="Media viewer" style="--bs-focus-ring-color: rgba(255, 255, 255, .9)">
     <header class="container text-center py-5">
       <p class="display-6 text-white m-0" aria-hidden="true"><%= presenter.heading %></p>
     </header>
 
     <article class="container pb-3 d-flex align-items-center gap-3">
       <% if count > 1 %>
-        <button type="button" id="<%= @id_prefix %>-previous" class="btn btn-dark rounded-circle p-2 lh-1 flex-shrink-0" title="Previous image" aria-label="Previous image">
+        <button type="button" id="<%= @id_prefix %>-previous" class="btn btn-dark rounded-circle p-2 lh-1 flex-shrink-0 focus-ring" title="Previous image" aria-label="Previous image">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" /></svg>
         </button>
       <% end %>
       <figure class="flex-grow-1 m-0">
-        <%= helpers.openseadragon_picture_tag image, id: viewer_id, class: 'osd-image d-block border-0 bg-black', style: 'height: 616px', data: { openseadragon: count > 1 ? osd_config_referencestrip.merge(osd_config) : osd_config } %>
+        <%= helpers.openseadragon_picture_tag image, id: viewer_id, role: 'img', 'aria-label': image_label(1), class: 'osd-image d-block border-0 bg-black', style: 'height: 616px', data: { openseadragon: count > 1 ? osd_config_referencestrip.merge(osd_config) : osd_config } %>
       </figure>
       <% if count > 1 %>
-        <button type="button" id="<%= @id_prefix %>-next" class="btn btn-dark rounded-circle p-2 lh-1 flex-shrink-0" title="Next image" aria-label="Next image">
+        <button type="button" id="<%= @id_prefix %>-next" class="btn btn-dark rounded-circle p-2 lh-1 flex-shrink-0 focus-ring" title="Next image" aria-label="Next image">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z" /></svg>
         </button>
       <% end %>
@@ -28,7 +29,7 @@
         <ul class="list-unstyled d-flex justify-content-center flex-wrap gap-2 m-0 p-0">
           <% thumbnails.each_with_index do |url, index| %>
             <li>
-              <button type="button" class="btn p-0 border border-2 border-transparent rounded-0" data-page="<%= index %>" aria-label="Image <%= index + 1 %> of <%= count %>">
+              <button type="button" class="btn p-0 border border-2 border-transparent rounded-0 focus-ring" data-page="<%= index %>" data-label="<%= image_label(index + 1) %>" aria-label="Image <%= index + 1 %> of <%= count %>">
                 <img src="<%= url %>" alt="" width="80" height="80" class="d-block object-fit-cover">
               </button>
             </li>

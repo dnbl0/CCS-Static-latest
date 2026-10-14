@@ -66,13 +66,17 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     assert_equal [ "Licence Type", "Advisory", "Terms of Use" ], css_select(".modal th").map { |th| th.text.strip }
     assert_select ".modal .modal-title", text: "Media metadata"
     assert_select "#copyright-pane a[href='/help#copyright']", text: "About copyright and terms of use"
-    # the permalink, as the design has it: one row of the same table as the other tabs, "Persistent link", the record's page in the
+    # the permalink, as the design has it: the first row of the same table as the other tabs, "Persistent link", the record's page in the
     # site's catalog and a copy icon button (the site's clipboard script) right after it
-    assert_select "#permalink-pane table.table-borderless tbody tr", 1
+    assert_select "#permalink-pane table.table-borderless tbody tr", 3
     assert_select "#permalink-pane th[scope=row]", text: "Persistent link"
     assert_select "#permalink-pane td a[href$='/catalog/vernon-MHM00394'][data-clipboard-target=source]", text: /\/catalog\/vernon-MHM00394/
     assert_select "#permalink-pane td button[data-action='clipboard#copy'][aria-label='Copy link'][data-tooltip-title='Copy link'] svg", 1
     assert_select "#permalink-pane article.card, #permalink-pane footer, #permalink-pane input", false
+    # and the accession-number note and View full record, as rows under it
+    assert_select "#permalink-pane tr", 3
+    assert_select "#permalink-pane td.blacklight-contact", text: /Quote this link when contacting the collection team/
+    assert_select "#permalink-pane td.blacklight-full_record a[href$='/catalog/vernon-MHM00394']", text: "View full record"
     assert_select "p", text: /provided and maintained by\s*Museum/
     # the licence is a badge with its icon in the Copyright row (not in the media toolbar), above the rights note
     assert_select "section[aria-label='Media toolbar'] .badge", false
@@ -123,6 +127,21 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     assert_equal false, config["mouseNavEnabled"]
     assert_equal css_select("section[aria-label='Media toolbar']").first["id"], config["toolbar"]
     assert_not_includes response.body, "div.bg-black"
+  end
+
+  test "accessibility: the image has a text alternative, the viewer is not a stray tab stop, the buttons show focus" do
+    get "/branded-stock/multi"
+    assert_select "picture[data-openseadragon][role=img][aria-label='Test record, image 1 of 3']", 1 # 1.1.1
+    assert_select "nav[data-media-thumbnails] button[data-label='Test record, image 2 of 3'][aria-label='Image 2 of 3']", 1
+    config = JSON.parse(css_select("[data-openseadragon]").first["data-openseadragon"])
+    assert_equal(-1, config["tabIndex"]) # 2.4.3: no unnamed tab stop
+    # 2.4.7: a visible focus ring on every control over the dark band, and every icon-only button has a name (4.1.2)
+    assert_select "article[aria-label=Media] section[aria-label='Media viewer'] button.focus-ring", 5 # previous, next, 3 thumbnails
+    assert_select "section[aria-label='Media viewer'][style*='--bs-focus-ring-color']", 1 # a ring that shows on black
+    assert_select "article[aria-label=Media] button:not([aria-label])", false
+    assert_select "article[aria-label=Media] svg:not([aria-hidden=true])", false
+    get "/branded-stock/vernon-MHM00394"
+    assert_select "picture[data-openseadragon][role=img][aria-label='Test record']", 1
   end
 
   test "a record with several images has round previous and next buttons and a row of 80px thumbnails" do

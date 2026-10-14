@@ -56,6 +56,14 @@
                       <output class="visually-hidden" data-clipboard-target="status"></output>
                     </td>
                   </tr>
+                  <tr>
+                    <th scope="row" class="blacklight-contact fw-bold w-25 ps-0 py-3 border-bottom border-secondary-subtle">Contacting the team</th>
+                    <td class="blacklight-contact pe-0 py-3 border-bottom border-secondary-subtle"><%= accession_number ? "Quote the accession number #{accession_number} when contacting the collection team." : "Quote this link when contacting the collection team." %></td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="blacklight-full_record fw-bold w-25 ps-0 py-3 border-bottom border-secondary-subtle">Full record</th>
+                    <td class="blacklight-full_record pe-0 py-3 border-bottom border-secondary-subtle"><a href="<%= permalink %>" class="fw-bold">View full record</a></td>
+                  </tr>
                 </tbody>
               </table>
             </section>

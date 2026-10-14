@@ -16,7 +16,10 @@ class StockOpenseadragonEmbedComponent < Blacklight::Gallery::OpenseadragonEmbed
   def osd_config
     super.except(:zoomInButton, :zoomOutButton, :homeButton).merge(
       showZoomControl: false, showHomeControl: false, mouseNavEnabled: false, keyboardNavEnabled: false,
-      toolbar: "#{@id_prefix}-toolbar"
+      toolbar: "#{@id_prefix}-toolbar",
+      # OpenSeadragon makes its viewer a tab stop; with the mouse and keyboard navigation off it does nothing and has no name (the thumbnails and
+      # buttons are the controls), so it is left out of the tab order
+      tabIndex: -1
     )
   end
 
@@ -39,6 +42,11 @@ class StockOpenseadragonEmbedComponent < Blacklight::Gallery::OpenseadragonEmbed
 
   def media_fields
     presenter.field_presenters.select { |field| MEDIA_FIELDS.include?(field.key) }
+  end
+
+  # The text alternative of the image on show (the viewer draws it on a canvas, which has none): the title, and which image of how many
+  def image_label(number)
+    count > 1 ? "#{presenter.heading}, image #{number} of #{count}" : presenter.heading
   end
 
   def viewer_id = "#{@id_prefix}-viewer"
