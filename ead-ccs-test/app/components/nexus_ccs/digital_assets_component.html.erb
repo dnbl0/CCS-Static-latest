@@ -1,5 +1,8 @@
 <%# Bootstrap classes do the styling; the digital-assets__ classes are the hooks for the behaviour (media_viewer_controller.js), the tests and the few
     rules Bootstrap has no class for (the viewer's height, the sliding panel: digital_assets.css). %>
+<% if mosaic? %>
+  <%= render NexusCcs::DigitalAssetsMosaicComponent.new(gallery: self) %>
+<% else %>
 <section class="digital-assets bg-black text-white" data-controller="media-viewer" aria-labelledby="digital-assets-heading">
   <h2 id="digital-assets-heading" class="visually-hidden">Digital <%= "asset".pluralize(count + media.size) %></h2>
 
@@ -109,3 +112,4 @@
     </div>
   </section>
 </section>
+<% end %>

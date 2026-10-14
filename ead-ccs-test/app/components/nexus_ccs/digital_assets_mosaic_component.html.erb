@@ -1,0 +1,53 @@
+<%# The mosaic: Bootstrap's grid, ratio and utility classes; digital_assets.css holds the height that fits it to the screen. %>
+<section class="digital-assets-mosaic container py-4" data-controller="mosaic" aria-labelledby="digital-assets-heading">
+  <h2 id="digital-assets-heading" class="visually-hidden">Digital <%= "asset".pluralize(count) %></h2>
+
+  <div class="position-relative">
+    <div class="digital-assets-mosaic__grid row g-2 mx-0 overflow-hidden rounded-3">
+      <div class="<%= mosaic_tiles.any? ? 'col-12 col-lg-6' : 'col-12' %> h-100 p-0 pe-lg-1">
+        <%= tile(hero) %>
+      </div>
+      <% if mosaic_tiles.any? %>
+        <div class="col-lg-6 d-none d-lg-block h-100 p-0 ps-lg-1">
+          <div class="row g-2 mx-0 h-100">
+            <% mosaic_tiles.each do |item, classes| %>
+              <div class="<%= classes %> p-0"><%= tile(item) %></div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <button type="button" class="btn btn-light position-absolute bottom-0 end-0 m-3 shadow-sm" data-action="mosaic#open" data-mosaic-index-param="0">
+      Show all <span class="fw-semibold"><%= count %></span><span class="visually-hidden"> digital <%= "asset".pluralize(count) %></span>
+    </button>
+  </div>
+
+  <% if kinds.size > 0 %>
+    <nav aria-label="Digital assets by type" class="mt-3">
+      <ul class="list-unstyled d-flex flex-wrap gap-2 m-0">
+        <% kinds.each do |kind, label, number, position| %>
+          <li>
+            <button type="button" class="btn btn-outline-primary btn-sm" data-action="mosaic#open" data-mosaic-index-param="<%= position %>">
+              <%= label %> <span class="badge text-bg-primary"><%= number %></span>
+            </button>
+          </li>
+        <% end %>
+      </ul>
+    </nav>
+  <% end %>
+
+  <aside class="modal fade" id="digital-assets-gallery" tabindex="-1" aria-labelledby="digital-assets-gallery-title" aria-hidden="true" data-mosaic-target="modal">
+    <article class="modal-dialog modal-fullscreen">
+      <section class="modal-content bg-black text-white rounded-0">
+        <header class="modal-header border-secondary">
+          <h2 class="modal-title h5 text-white" id="digital-assets-gallery-title"><%= title %></h2>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close gallery"></button>
+        </header>
+        <div class="modal-body p-0">
+          <%= render gallery_component %>
+        </div>
+      </section>
+    </article>
+  </aside>
+</section>

@@ -189,6 +189,35 @@ class AccessibilityTest < ApplicationSystemTestCase
     assert tall["home"], "the image was not fitted to the new size"
   end
 
+  # The mosaic layout of the same gallery (?layout=mosaic): a tile opens the gallery window at that item.
+  test "a catalog record's mosaic opens the gallery at the item chosen, with no axe violations" do
+    media = [ "video|video/mp4|/m/interview.mp4|Interview", "audio|audio/mpeg|/m/oral.mp3|Oral history" ]
+    StockSolr.documents = { "emu-9044" => stock_document("emu-9044", %w[a b c], media) }
+    visit "/catalog/emu-9044?layout=mosaic"
+    assert_selector ".digital-assets-mosaic__tile", count: 5
+    assert_no_selector "#digital-assets-gallery.show"
+    assert_accessible
+
+    find("button.digital-assets-mosaic__tile[aria-label='Open Video: Interview']").click
+    assert_selector "#digital-assets-gallery.show"
+    assert_selector "#digital-assets-gallery figure.digital-assets__media video", visible: :visible
+    assert_selector "#digital-assets-gallery a.digital-assets__other[aria-current=true][data-media-viewer-kind=video]"
+    wait_until_opaque("#digital-assets-gallery")
+    assert_accessible
+
+    find("#digital-assets-gallery .btn-close").click
+    assert_no_selector "#digital-assets-gallery.show"
+
+    click_on "Photos 3"
+    assert_selector "#digital-assets-gallery.show"
+    assert_selector "#digital-assets-gallery a.digital-assets__other[aria-current=true][data-media-viewer-page='0']"
+    wait_until_opaque("#digital-assets-gallery")
+    assert_equal 0, page.evaluate_script("document.querySelector('#digital-assets-gallery .digital-assets__viewer').osdViewer.currentPage()")
+    # the window has no site header above the gallery: it fits the window
+    bottom = page.evaluate_script("document.querySelector('#digital-assets-gallery .digital-assets').getBoundingClientRect().bottom")
+    assert_operator bottom, :<=, page.evaluate_script("window.innerHeight")
+  end
+
   test "the home page with the Acknowledgement of Country open has no axe violations" do
     page.driver.clear_cookies
     visit root_path

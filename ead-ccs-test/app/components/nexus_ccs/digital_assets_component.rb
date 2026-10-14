@@ -24,9 +24,19 @@ module NexusCcs
       "pdf" => "M20 2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8.5 7.5c0 .83-.67 1.5-1.5 1.5H9v2H7.5V7H10c.83 0 1.5.67 1.5 1.5v1zm5 2c0 .83-.67 1.5-1.5 1.5h-2.5V7H15c.83 0 1.5.67 1.5 1.5v3zm4-3H19v1h1.5V11H19v2h-1.5V7h3v1.5zM9 9.5h1v-1H9v1zM4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm10 5.5h1v-3h-1v3z"
     }.freeze
 
-    def initialize(presenter:, document_counter: nil, **)
+    attr_reader :presenter
+
+    # layout: "stage" (the band: the image or file on show, thumbnails below) or "mosaic" (a large image and four tiles, "Show all" opening the band in
+    # a full-screen window); when not given, the page's ?layout= says (the band when it says nothing)
+    def initialize(presenter:, document_counter: nil, layout: nil, **)
+      @presenter = presenter
       @document = presenter.document
+      @layout = layout
     end
+
+    def layout = (@layout || helpers.params[:layout]).to_s
+
+    def mosaic? = layout == "mosaic"
 
     def render?
       large_paths.any? || media.any?
@@ -49,6 +59,28 @@ module NexusCcs
     def items
       images.each_with_index.map { |(large, thumbnail), index| { kind: "image", large: large, thumbnail: thumbnail, index: index } } +
         media.each_with_index.map { |item, index| item.merge(index: index) }
+    end
+
+    # What the mosaic shows: the first item large, then up to four tiles, each tile with the Bootstrap column classes that size it
+    def mosaic_tiles
+      rest = items.each_with_index.map { |item, position| item.merge(position: position) }.first(5).drop(1)
+      sizes = case rest.size
+      when 0 then []
+      when 1 then [ "col-12 h-100" ]
+      when 2 then [ "col-12 h-50" ] * 2
+      when 3 then [ "col-12 h-50", "col-6 h-50", "col-6 h-50" ]
+      else [ "col-6 h-50" ] * 4
+      end
+      rest.zip(sizes)
+    end
+
+    KIND_LABELS = { "image" => "Photos", "video" => "Video", "audio" => "Audio", "pdf" => "PDF" }.freeze
+
+    # One entry for each kind of item the record has: [kind, label, count, position of its first item in items]
+    def kinds
+      items.each_with_index.group_by { |item, _| item[:kind] }.map do |kind, entries|
+        [ kind, KIND_LABELS.fetch(kind, "Files"), entries.size, entries.first.last ]
+      end
     end
 
     def media_dom_id(index) = "digital-assets-media-#{index}"

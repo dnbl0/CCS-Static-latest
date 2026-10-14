@@ -56,9 +56,16 @@
 
 .digital-assets.is-fullscreen .digital-assets__stage { flex: 1 1 auto; }
 
+/* In the full-screen window of the mosaic there is no site header above the band, only the window's own title bar */
+.modal .digital-assets { --digital-assets-above: 4rem; }
+
+/* The mosaic: as tall as what fits the screen under the site header, banner and its own buttons */
+.digital-assets-mosaic__grid { height: clamp(16rem, calc(100vh - 24rem), 32rem); }
+
 /* A phone's header and title strip are taller and its thumbnails wrap: the band is 18rem high and the page scrolls */
 @media (max-width: 575.98px) {
   .digital-assets { --digital-assets-height: 18rem; }
+  .digital-assets-mosaic__grid { height: 16rem; }
   .digital-assets__panel { width: 100%; }
 }
 

@@ -76,6 +76,42 @@ class DigitalAssetsComponentTest < ActiveSupport::TestCase
     assert_no_selector ".digital-assets__others"
   end
 
+  def render_mosaic(fields)
+    render_inline(NexusCcs::DigitalAssetsComponent.new(presenter: Presenter.new(SolrDocument.new(fields)), layout: "mosaic"))
+  end
+
+  test "the mosaic: the first image large, four tiles beside it, a Show all button and a button for each kind, and the whole gallery in a window" do
+    render_mosaic(assets(3).merge("digital_media_ssim" => MEDIA))
+
+    assert_selector "section.digital-assets-mosaic h2.visually-hidden", text: "Digital assets"
+    assert_selector ".digital-assets-mosaic__tile", count: 5
+    assert_selector "button.digital-assets-mosaic__tile[aria-label='Open Cary Pocket microscope, image 1 of 3'][data-mosaic-index-param='0']"
+    assert_selector "button.digital-assets-mosaic__tile[aria-label='Open Video: Interview'][data-mosaic-index-param='3']"
+    assert_selector "button[data-action='mosaic#open']", text: "Show all 6"
+    assert_equal [ "Photos 3", "Video 1", "Audio 1", "PDF 1" ], page.all("nav[aria-label='Digital assets by type'] button").map { |b| b.text.squish }
+    assert_selector "aside.modal#digital-assets-gallery .modal-dialog.modal-fullscreen section.digital-assets picture.digital-assets__viewer", visible: :all
+  end
+
+  test "the mosaic with few items: one is one large tile; two are a large and a tall one; the rest fill the right side" do
+    render_mosaic(assets(1))
+    assert_selector ".digital-assets-mosaic__tile", count: 1
+    assert_no_selector ".d-lg-block"
+
+    render_mosaic(assets(2))
+    assert_selector ".digital-assets-mosaic__tile", count: 2
+    assert_selector ".d-lg-block .col-12.h-100 .digital-assets-mosaic__tile"
+
+    render_mosaic(assets(8))
+    assert_selector ".digital-assets-mosaic__tile", count: 5
+    assert_selector "button", text: "Show all 8"
+  end
+
+  test "the stage is the layout unless the mosaic is asked for" do
+    render_for(assets(2))
+    assert_no_selector ".digital-assets-mosaic"
+    assert_selector "section.digital-assets"
+  end
+
   test "a record without assets renders nothing" do
     render_for("title_tsim" => [ "No images here" ])
     assert_no_selector ".digital-assets"
