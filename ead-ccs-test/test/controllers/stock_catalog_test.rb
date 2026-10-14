@@ -66,13 +66,13 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     assert_equal [ "Licence Type", "Advisory", "Terms of Use" ], css_select(".modal th").map { |th| th.text.strip }
     assert_select ".modal .modal-title", text: "Media metadata"
     assert_select "#copyright-pane a[href='/help#copyright']", text: "About copyright and terms of use"
-    # the permalink, as one Bootstrap card: the record's page in the site's catalog and a copy button in the body, the
-    # accession-number note and "View full record" in the card's footer (not outside it)
-    assert_select "#permalink-pane article.card input[readonly][value$='/catalog/vernon-MHM00394']"
-    assert_select "#permalink-pane article.card button[data-action='clipboard#copy']", text: "Copy link"
-    assert_select "#permalink-pane article.card footer.card-footer p", text: /contacting the collection team/
-    assert_select "#permalink-pane article.card footer.card-footer a[href$='/catalog/vernon-MHM00394']", text: "View full record"
-    assert_select "#permalink-pane > a", false
+    # the permalink, as the design has it: one row of the same table as the other tabs, "Persistent link", the record's page in the
+    # site's catalog and a copy icon button (the site's clipboard script) right after it
+    assert_select "#permalink-pane table.table-borderless tbody tr", 1
+    assert_select "#permalink-pane th[scope=row]", text: "Persistent link"
+    assert_select "#permalink-pane td a[href$='/catalog/vernon-MHM00394'][data-clipboard-target=source]", text: /\/catalog\/vernon-MHM00394/
+    assert_select "#permalink-pane td button[data-action='clipboard#copy'][aria-label='Copy link'][data-tooltip-title='Copy link'] svg", 1
+    assert_select "#permalink-pane article.card, #permalink-pane footer, #permalink-pane input", false
     assert_select "p", text: /provided and maintained by\s*Museum/
     # the licence is a badge with its icon in the Copyright row (not in the media toolbar), above the rights note
     assert_select "section[aria-label='Media toolbar'] .badge", false
@@ -111,6 +111,9 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     assert_select "article[aria-label=Media] > section[aria-label='Media toolbar'] button[id$=-full-page]", 1
     assert_select "section[aria-label='Media toolbar'] button[data-bs-toggle=modal][aria-label='Media metadata']", 1
     assert_select ".modal.fade[aria-labelledby]", 1
+    # Bootstrap tooltips on the info and full screen buttons (no native title as well)
+    assert_select "section[aria-label='Media toolbar'] button[data-bs-toggle=modal][data-tooltip-title='Media metadata']:not([title])", 1
+    assert_select "section[aria-label='Media toolbar'] button[id$=-full-page][data-tooltip-title='Full screen']:not([title])", 1
     # one image: nothing to page through
     assert_select "button[id$=-previous], button[id$=-next], [data-media-thumbnails]", false
     # no zoom in the first release: no zoom or home buttons, the mouse and keyboard do not navigate
