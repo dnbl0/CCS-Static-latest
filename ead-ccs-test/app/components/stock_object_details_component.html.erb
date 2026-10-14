@@ -1,12 +1,9 @@
-<section aria-labelledby="object-details-heading">
-  <h2 id="object-details-heading" class="h4 mb-3"><%= t("blacklight.search.show.object_details", default: "Object details") %></h2>
-  <div class="table-responsive">
-    <table class="<%= @classes.join(" ") %>">
-      <tbody>
-        <% fields.each do |field| %>
-          <%= field %>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
-</section>
+<div class="table-responsive">
+  <table class="<%= @classes.join(" ") %>">
+    <tbody>
+      <% fields.each do |field| %>
+        <%= field %>
+      <% end %>
+    </tbody>
+  </table>
+</div>

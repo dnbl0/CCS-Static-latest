@@ -1,25 +1,30 @@
 # frozen_string_literal: true
 
-# blacklight-gallery's OpenSeadragon viewer (Blacklight::Gallery::OpenseadragonEmbedComponent, unchanged) fed with the
-# record's images. The gem reads IIIF tile sources from a configured Solr field; this collection has plain JPEGs
-# (digital_asset_large_paths_ssim), which OpenSeadragon takes as {type: "image", url: ...} sources. Registered as the
-# show page's document_embed_component, which draws between the title and the details. StockCatalogController only.
+# blacklight-gallery's OpenSeadragon viewer (Blacklight::Gallery::OpenseadragonEmbedComponent) laid out as the CCS design's
+# media viewer (Figma, "RecordTemplate"): a full-width dark band with the title, the image with round previous and next
+# buttons either side and a row of 80px thumbnails, then a light toolbar with an info button and full screen (a modal of the
+# record's media metadata) and full screen. The gem's component still does the viewing: its OpenSeadragon, its image
+# sources, its page and full-page buttons (here Bootstrap buttons, found by the ids the gem gives them). The gem's own
+# template is replaced by this component's, which sends the band to the layout (content_for :hero). No zoom (not in the
+# first release): zoom buttons, mouse and keyboard navigation are off.
 class StockOpenseadragonEmbedComponent < Blacklight::Gallery::OpenseadragonEmbedComponent
   IMAGES_FIELD = "digital_asset_large_paths_ssim"
+  THUMBNAILS_FIELD = "digital_asset_paths_ssim"
+  # The sheet's DAM fields (Licence Type 27, Advisory 28, Terms of Use 29, Producer 30): the media metadata
+  MEDIA_FIELDS = %w[licence_type_ssim gap_28_derived gap_29_derived gap_30_derived].freeze
 
-  # col-12: the viewer's toolbar and image are Bootstrap rows, which need a column around them to line up with the
-  # title. The spacing around it is StockDocumentComponent's stack.
-  def initialize(presenter:, view_config: nil, classes: [], **kwargs)
-    super(presenter: presenter, view_config: view_config, classes: classes + %w[col-12], **kwargs)
-  end
-
-  # The toolbar keeps previous/next and full page; zoom in, zoom out and home are dropped, and the mouse wheel no longer zooms. The gem's template draws
-  # those three buttons, so this component has its own copy of it without them; here OpenSeadragon is told not to
-  # build them (it would otherwise add its own) and not to look for the ones that are gone. Pinch, double-click and
-  # keyboard zoom are OpenSeadragon's own gestures and stay; scrolling the page over the image is left to the page.
   def osd_config
-    super.except(:zoomInButton, :zoomOutButton, :homeButton).merge(showZoomControl: false, showHomeControl: false, gestureSettingsMouse: { scrollToZoom: false })
+    super.except(:zoomInButton, :zoomOutButton, :homeButton).merge(
+      showZoomControl: false, showHomeControl: false, mouseNavEnabled: false, keyboardNavEnabled: false,
+      toolbar: "#{@id_prefix}-toolbar",
+      # OpenSeadragon makes its viewer a tab stop; with the mouse and keyboard navigation off it does nothing and has no name (the thumbnails and
+      # buttons are the controls), so it is left out of the tab order
+      tabIndex: -1
+    )
   end
+
+  # Paging only: the gem's strip is not used (the thumbnails are drawn here)
+  def osd_config_referencestrip = { sequenceMode: true }
 
   def image
     @image ||= begin
@@ -27,4 +32,22 @@ class StockOpenseadragonEmbedComponent < Blacklight::Gallery::OpenseadragonEmbed
       urls.map { |url| { url => { type: "image", url: url } } } if urls.any?
     end
   end
+
+  # Small image for each large one, for the thumbnail row; the large one when there is no small one
+  def thumbnails
+    large = Array(presenter.document[IMAGES_FIELD]).compact_blank
+    small = Array(presenter.document[THUMBNAILS_FIELD]).compact_blank
+    large.each_with_index.map { |url, index| small[index].presence || url }
+  end
+
+  def media_fields
+    presenter.field_presenters.select { |field| MEDIA_FIELDS.include?(field.key) }
+  end
+
+  # The text alternative of the image on show (the viewer draws it on a canvas, which has none): the title, and which image of how many
+  def image_label(number)
+    count > 1 ? "#{presenter.heading}, image #{number} of #{count}" : presenter.heading
+  end
+
+  def viewer_id = "#{@id_prefix}-viewer"
 end
