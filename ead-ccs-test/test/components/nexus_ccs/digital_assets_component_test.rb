@@ -92,6 +92,27 @@ class DigitalAssetsComponentTest < ActiveSupport::TestCase
     assert_selector "aside.modal#digital-assets-gallery .modal-dialog.modal-fullscreen section.digital-assets picture.digital-assets__viewer", visible: :all
   end
 
+  # Collection images are never cropped: whatever their shape they show whole, on white, inside a 1px light gray stroke
+  test "images are never cropped: tiles and thumbnails contain the image on white with a light gray stroke" do
+    render_mosaic(assets(3))
+    assert_selector "button.digital-assets-mosaic__tile.bg-white.border.border-light-subtle img.object-fit-contain", count: 3
+    assert_no_selector ".object-fit-cover"
+
+    render_for(assets(3))
+    assert_selector "a.digital-assets__other img.digital-assets__thumbnail.object-fit-contain.bg-white.border.border-light-subtle", count: 3
+    assert_no_selector ".object-fit-cover"
+  end
+
+  # Blacklight's layout sets Bootstrap's theme from the computer's, but the site's own styling is light only: the gallery is pinned to light
+  test "the band and the mosaic are pinned to Bootstrap's light theme" do
+    render_for(assets(2))
+    assert_selector "section.digital-assets[data-bs-theme=light]"
+
+    render_mosaic(assets(2))
+    assert_selector "section.digital-assets-mosaic[data-bs-theme=light]"
+    assert_selector "#digital-assets-gallery section.digital-assets[data-bs-theme=light]", visible: :all
+  end
+
   test "the mosaic with few items: one is one large tile; two are a large and a tall one; the rest fill the right side" do
     render_mosaic(assets(1))
     assert_selector ".digital-assets-mosaic__tile", count: 1

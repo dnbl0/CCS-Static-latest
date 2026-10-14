@@ -3,7 +3,7 @@
 <% if mosaic? %>
   <%= render NexusCcs::DigitalAssetsMosaicComponent.new(gallery: self) %>
 <% else %>
-<section class="digital-assets bg-black text-white" data-controller="media-viewer" aria-labelledby="digital-assets-heading">
+<section class="digital-assets bg-black text-white" data-bs-theme="light" data-controller="media-viewer" aria-labelledby="digital-assets-heading">
   <h2 id="digital-assets-heading" class="visually-hidden">Digital <%= "asset".pluralize(count + media.size) %></h2>
 
   <div class="digital-assets__stage position-relative overflow-hidden p-3" data-media-viewer-target="stage">
@@ -71,7 +71,7 @@
               <%= link_to item[:large], class: "digital-assets__other d-block border border-2 focus-ring #{current ? 'border-info' : 'border-transparent'}", target: "_blank", rel: "noopener",
                     aria: { current: (current ? "true" : nil) },
                     data: { action: "media-viewer#show", media_viewer_kind: "image", media_viewer_page: item[:index], media_viewer_alt: alt(item[:index] + 1) } do %>
-                <%= image_tag item[:thumbnail], alt: "#{alt(item[:index] + 1)} (opens full size in a new tab)", loading: "lazy", class: "digital-assets__thumbnail d-block object-fit-cover" %>
+                <%= image_tag item[:thumbnail], alt: "#{alt(item[:index] + 1)} (opens full size in a new tab)", loading: "lazy", class: "digital-assets__thumbnail d-block object-fit-contain bg-white border border-light-subtle" %>
               <% end %>
             <% else %>
               <%= link_to item[:url], class: "digital-assets__other d-block border border-2 focus-ring #{current ? 'border-info' : 'border-transparent'}", target: "_blank", rel: "noopener",

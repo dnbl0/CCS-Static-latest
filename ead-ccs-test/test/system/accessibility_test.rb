@@ -198,6 +198,10 @@ class AccessibilityTest < ApplicationSystemTestCase
     assert_no_selector "#digital-assets-gallery.show"
     assert_accessible
 
+    fits = page.evaluate_script("[...document.querySelectorAll('.digital-assets-mosaic__tile img')].map(i => getComputedStyle(i).objectFit)")
+    assert_equal [ "contain" ] * 3, fits, "an image is cropped by its tile"
+    assert_equal "rgb(255, 255, 255)", page.evaluate_script("getComputedStyle(document.querySelector('.digital-assets-mosaic__tile')).backgroundColor")
+
     find("button.digital-assets-mosaic__tile[aria-label='Open Video: Interview']").click
     assert_selector "#digital-assets-gallery.show"
     assert_selector "#digital-assets-gallery figure.digital-assets__media video", visible: :visible

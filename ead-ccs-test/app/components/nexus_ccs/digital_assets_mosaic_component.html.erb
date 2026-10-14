@@ -1,5 +1,5 @@
-<%# The mosaic: Bootstrap's grid, ratio and utility classes; digital_assets.css holds the height that fits it to the screen. %>
-<section class="digital-assets-mosaic container py-4" data-controller="mosaic" aria-labelledby="digital-assets-heading">
+<%# data-bs-theme="light": the site's own styling is light only, but Blacklight's layout sets Bootstrap's theme from the computer's (dark turns the theme-aware classes dark under dark text). The mosaic: Bootstrap's grid, ratio and utility classes; digital_assets.css holds the height that fits it to the screen. %>
+<section class="digital-assets-mosaic container py-4" data-bs-theme="light" data-controller="mosaic" aria-labelledby="digital-assets-heading">
   <h2 id="digital-assets-heading" class="visually-hidden">Digital <%= "asset".pluralize(count) %></h2>
 
   <div class="position-relative">

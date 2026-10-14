@@ -1,7 +1,7 @@
-<button type="button" class="digital-assets-mosaic__tile d-block w-100 h-100 p-0 border-0 bg-black overflow-hidden focus-ring" aria-label="<%= label %>"
+<button type="button" class="digital-assets-mosaic__tile d-block w-100 h-100 p-0 border border-light-subtle bg-white overflow-hidden focus-ring" aria-label="<%= label %>"
         data-action="mosaic#open" data-mosaic-index-param="<%= item[:position] %>">
   <% if image? %>
-    <%= image_tag item[:large], alt: "", loading: "lazy", class: "d-block w-100 h-100 object-fit-cover" %>
+    <%= image_tag item[:large], alt: "", loading: "lazy", class: "d-block w-100 h-100 object-fit-contain" %>
   <% else %>
     <span class="d-flex flex-column align-items-center justify-content-center gap-2 w-100 h-100 p-3 bg-primary text-white text-center">
       <span class="fs-1 lh-1"><%= kind_icon %></span>
