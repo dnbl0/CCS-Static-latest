@@ -23,17 +23,18 @@ Rails.application.routes.draw do
     end
   end
 
-  # A record page that is Blacklight out of the box, to compare the real one against (StockCatalogController).
-  scope constraints: { id: %r{[^/]+} } do
-    resources :stock_documents, only: [ :show ], path: "/stock", controller: "stock_catalog" do
-      concerns :exportable
-    end
-  end
+  # The new record page, for the records in StockRecords only (any other id is a 404): Blacklight out of the box (StockCatalogController),
+  # and the same page in the UoM header, breadcrumb and footer (BrandedStockCatalogController). The site's own record page, /catalog/:id,
+  # is unchanged.
+  constraints(->(request) { StockRecords.include?(request.path_parameters[:id]) }) do
+    scope constraints: { id: %r{[^/]+} } do
+      resources :stock_documents, only: [ :show ], path: "/stock", controller: "stock_catalog" do
+        concerns :exportable
+      end
 
-  # The same page in the UoM header, breadcrumb and footer (BrandedStockCatalogController).
-  scope constraints: { id: %r{[^/]+} } do
-    resources :branded_stock_documents, only: [ :show ], path: "/branded-stock", controller: "branded_stock_catalog" do
-      concerns :exportable
+      resources :branded_stock_documents, only: [ :show ], path: "/branded-stock", controller: "branded_stock_catalog" do
+        concerns :exportable
+      end
     end
   end
 
