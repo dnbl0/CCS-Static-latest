@@ -150,6 +150,21 @@ class AccessibilityTest < ApplicationSystemTestCase
     assert_equal 1, page.evaluate_script("document.querySelector('.digital-assets__viewer').osdViewer.currentPage()")
   end
 
+  # The band fits the screen: the header, breadcrumb, title strip and the whole band are on a laptop-sized screen without scrolling, and the
+  # closed Media metadata panel (waiting off the band's right edge) does not widen the page.
+  test "a catalog record's media band fits a laptop screen with no sideways scrolling" do
+    page.driver.resize(1280, 800)
+    StockSolr.documents = { "emu-9044" => stock_document("emu-9044", %w[a b c]), "vernon-MHM00394" => stock_document("vernon-MHM00394", %w[a]) }
+
+    %w[emu-9044 vernon-MHM00394].each do |id|
+      visit "/catalog/#{id}"
+      assert_selector "picture.digital-assets__viewer canvas"
+      bottom = page.evaluate_script("document.querySelector('.digital-assets').getBoundingClientRect().bottom")
+      assert_operator bottom, :<=, 800, "#{id}: the media band ends at #{bottom}px on an 800px screen"
+      assert_equal page.evaluate_script("document.documentElement.clientWidth"), page.evaluate_script("document.documentElement.scrollWidth"), "#{id}: the page scrolls sideways"
+    end
+  end
+
   test "the home page with the Acknowledgement of Country open has no axe violations" do
     page.driver.clear_cookies
     visit root_path

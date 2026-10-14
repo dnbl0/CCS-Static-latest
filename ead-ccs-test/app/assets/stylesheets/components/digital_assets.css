@@ -7,15 +7,24 @@
  */
 .digital-assets {
   --media-band: #1a1a1a;
+  /* The whole band fits the screen without scrolling: the stage's content (image, video, PDF) is as tall as what is left of the viewport
+     after the site header, breadcrumb and title strip above the band (17rem) and the band's own padding, thumbnails and toolbar (12rem
+     in all with its row of thumbnails, 5.8rem without), within 15rem and the design's 38.5rem (616px). */
+  --digital-assets-above: 17rem;
+  --digital-assets-chrome: 12rem;
+  --digital-assets-height: clamp(15rem, calc(100vh - var(--digital-assets-above) - var(--digital-assets-chrome)), 38.5rem);
   margin: 0;
   background: var(--media-band);
   border-bottom: 1px solid var(--ccs-border-panel);
 }
 
+.digital-assets:not(:has(.digital-assets__others)) { --digital-assets-chrome: 5.8rem; }
+
 .digital-assets__stage {
   position: relative;
-  min-height: 40.5rem; /* 648px: the panel's height in the design */
+  min-height: calc(var(--digital-assets-height) + 2 * var(--ccs-space-4));
   padding: var(--ccs-space-4);
+  overflow: hidden; /* the closed Media metadata panel waits off the right edge: it must not widen the page */
 }
 
 /* The centred, clipped image/media area is a child of the stage, not the stage itself: the Media metadata
@@ -43,12 +52,12 @@
 .digital-assets__viewer {
   display: block;
   width: 100%;
-  height: 38.5rem; /* 616px */
+  height: var(--digital-assets-height);
   background: var(--media-band);
 }
 
 /* Without JavaScript the viewer has nothing to draw: the plain image stands in for it */
-.digital-assets__noscript { display: block; max-width: 100%; max-height: 38.5rem; margin: 0 auto; object-fit: contain; }
+.digital-assets__noscript { display: block; max-width: 100%; max-height: var(--digital-assets-height); margin: 0 auto; object-fit: contain; }
 
 /* Thumbnails of the images, on the band */
 .digital-assets__others {
@@ -228,18 +237,11 @@
   flex: 1 1 auto;
 }
 
-.digital-assets.is-fullscreen .digital-assets__viewer {
-  height: calc(100vh - 8rem);
-}
+.digital-assets.is-fullscreen { --digital-assets-height: calc(100vh - 12rem); }
 
 @media (max-width: 575.98px) {
-  .digital-assets__stage {
-    min-height: 22rem;
-  }
-
-  .digital-assets__viewer {
-    height: 20rem;
-  }
+  /* a phone's header and title strip are taller and its thumbnails wrap: the band is 16rem to 20rem high and the page scrolls */
+  .digital-assets { --digital-assets-height: 18rem; }
 
 
   .digital-assets__panel {
@@ -258,9 +260,9 @@
 .digital-assets__media[hidden] { display: none; }
 
 .digital-assets__media { width: 100%; margin: 0; padding: 1rem; text-align: center; color: var(--ccs-white); }
-.digital-assets__video { display: block; width: 100%; height: 36rem; background: #000; object-fit: contain; }
+.digital-assets__video { display: block; width: 100%; height: calc(var(--digital-assets-height) - 3rem); background: #000; object-fit: contain; }
 .digital-assets__audio { width: 100%; max-width: 40rem; }
-.digital-assets__document { display: block; width: 100%; height: 36rem; background: var(--ccs-white); }
+.digital-assets__document { display: block; width: 100%; height: calc(var(--digital-assets-height) - 3rem); background: var(--ccs-white); }
 .digital-assets__media figcaption { margin-top: 0.5rem; }
 .digital-assets__media a, .digital-assets__pdf { color: inherit; }
 
@@ -277,9 +279,4 @@
   font-size: 0.8125rem;
   line-height: 1.2;
   color: var(--ccs-white);
-}
-
-@media (max-width: 575.98px) {
-  .digital-assets__video,
-  .digital-assets__document { height: 20rem; }
 }
