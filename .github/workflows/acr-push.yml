@@ -30,7 +30,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - uses: docker/login-action@v3
+      - uses: docker/login-action@v4
         with:
           registry: ${{ inputs.registry || vars.ACR_REGISTRY }}
           username: ${{ secrets.ACR_USERNAME }}
