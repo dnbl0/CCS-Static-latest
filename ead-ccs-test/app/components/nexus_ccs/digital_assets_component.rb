@@ -61,17 +61,12 @@ module NexusCcs
         media.each_with_index.map { |item, index| item.merge(index: index) }
     end
 
-    # What the mosaic shows: the first item large, then up to four tiles, each tile with the Bootstrap column classes that size it
-    def mosaic_tiles
-      rest = items.each_with_index.map { |item, position| item.merge(position: position) }.first(5).drop(1)
-      sizes = case rest.size
-      when 0 then []
-      when 1 then [ "col-12 h-100" ]
-      when 2 then [ "col-12 h-50" ] * 2
-      when 3 then [ "col-12 h-50", "col-6 h-50", "col-6 h-50" ]
-      else [ "col-6 h-50" ] * 4
-      end
-      rest.zip(sizes)
+    # The mosaic's rows of tiles, each tile an item with its position in items: up to five items, in one row, or two (1, 2, 1+2, 2+2, 2+3)
+    ROW_SPLITS = { 1 => [ 1 ], 2 => [ 2 ], 3 => [ 1, 2 ], 4 => [ 2, 2 ], 5 => [ 2, 3 ] }.freeze
+
+    def mosaic_rows
+      shown = items.each_with_index.map { |item, position| item.merge(position: position) }.first(5)
+      ROW_SPLITS.fetch(shown.size, []).map { |size| shown.shift(size) }
     end
 
     KIND_LABELS = { "image" => "Photos", "video" => "Video", "audio" => "Audio", "pdf" => "PDF" }.freeze

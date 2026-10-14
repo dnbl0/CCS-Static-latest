@@ -113,18 +113,25 @@ class DigitalAssetsComponentTest < ActiveSupport::TestCase
     assert_selector "#digital-assets-gallery section.digital-assets[data-bs-theme=light]", visible: :all
   end
 
-  test "the mosaic with few items: one is one large tile; two are a large and a tall one; the rest fill the right side" do
-    render_mosaic(assets(1))
-    assert_selector ".digital-assets-mosaic__tile", count: 1
-    assert_no_selector ".d-lg-block"
-
-    render_mosaic(assets(2))
-    assert_selector ".digital-assets-mosaic__tile", count: 2
-    assert_selector ".d-lg-block .col-12.h-100 .digital-assets-mosaic__tile"
+  test "the mosaic is rows of tiles: one row for one or two items, two rows for more, up to five tiles" do
+    { 1 => [ 1 ], 2 => [ 2 ], 3 => [ 1, 2 ], 4 => [ 2, 2 ], 8 => [ 2, 3 ] }.each do |count, rows|
+      render_mosaic(assets(count))
+      assert_equal rows, page.all(".digital-assets-mosaic__row", visible: :all).map { |row| row.all(".digital-assets-mosaic__tile", visible: :all).size }, "#{count} images"
+    end
 
     render_mosaic(assets(8))
-    assert_selector ".digital-assets-mosaic__tile", count: 5
     assert_selector "button", text: "Show all 8"
+  end
+
+  test "each tile has the shape of its asset: a --ratio for the stylesheet and the script to size it by, and only the first tile shows on a phone" do
+    render_mosaic(assets(3).merge("digital_media_ssim" => MEDIA.take(1)))
+
+    tiles = page.all(".digital-assets-mosaic__tile", visible: :all)
+    assert_equal 4, tiles.size
+    assert tiles.all? { |tile| tile["style"].match?(/--ratio: [\d.]+/) && tile["data-mosaic-target"] == "tile" }
+    assert_match(/--ratio: 1\.7778/, tiles.last["style"]) # a video: 16:9
+    assert_equal [ false, true, true, true ], tiles.map { |tile| tile[:class].include?("d-none d-lg-block") }
+    assert_selector ".digital-assets-mosaic__row.d-none.d-lg-flex", visible: :all, count: 1
   end
 
   test "the stage is the layout unless the mosaic is asked for" do

@@ -2,21 +2,15 @@
 <section class="digital-assets-mosaic container py-4" data-bs-theme="light" data-controller="mosaic" aria-labelledby="digital-assets-heading">
   <h2 id="digital-assets-heading" class="visually-hidden">Digital <%= "asset".pluralize(count) %></h2>
 
-  <div class="position-relative">
-    <div class="digital-assets-mosaic__grid row g-2 mx-0 overflow-hidden rounded-3">
-      <div class="<%= mosaic_tiles.any? ? 'col-12 col-lg-6' : 'col-12' %> h-100 p-0 pe-lg-1">
-        <%= tile(hero) %>
+  <%# A row's tiles share its width in proportion to their shapes; the grid's width is capped (in the stylesheet) so all the rows fit the screen. %>
+  <div class="digital-assets-mosaic__grid position-relative d-flex flex-column gap-2 mx-auto" data-mosaic-target="grid">
+    <% mosaic_rows.each_with_index do |row, row_index| %>
+      <div class="digital-assets-mosaic__row <%= row_index.zero? ? 'd-flex' : 'd-none d-lg-flex' %> gap-2" data-mosaic-target="row">
+        <% row.each_with_index do |item, index| %>
+          <%= tile(item, first: row_index.zero? && index.zero?) %>
+        <% end %>
       </div>
-      <% if mosaic_tiles.any? %>
-        <div class="col-lg-6 d-none d-lg-block h-100 p-0 ps-lg-1">
-          <div class="row g-2 mx-0 h-100">
-            <% mosaic_tiles.each do |item, classes| %>
-              <div class="<%= classes %> p-0"><%= tile(item) %></div>
-            <% end %>
-          </div>
-        </div>
-      <% end %>
-    </div>
+    <% end %>
 
     <button type="button" class="btn btn-light position-absolute bottom-0 end-0 m-3 shadow-sm" data-action="mosaic#open" data-mosaic-index-param="0">
       Show all <span class="fw-semibold"><%= count %></span><span class="visually-hidden"> digital <%= "asset".pluralize(count) %></span>

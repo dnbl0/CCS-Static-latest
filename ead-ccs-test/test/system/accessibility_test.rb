@@ -222,6 +222,28 @@ class AccessibilityTest < ApplicationSystemTestCase
     assert_operator bottom, :<=, page.evaluate_script("window.innerHeight")
   end
 
+  # No image is cropped or boxed in: each tile is its image's shape (to within its 1px stroke), the tiles of a row are the same height, and the rows fit
+  # the screen. The files are real, of different shapes, as the tile takes its shape from the image once it has loaded.
+  test "a catalog record's mosaic tiles are the shape of their images and fit the screen" do
+    page.driver.resize(1280, 800)
+    StockSolr.documents = { "emu-9044" => stock_document("emu-9044", %w[1973_0004_000_000_1 1973_0071_000_000 1973_0084_000_000 1973_0755-1_pf 1973_0755_b_pf]) }
+    visit "/catalog/emu-9044?layout=mosaic"
+    assert_selector ".digital-assets-mosaic__tile img", count: 5
+    Timeout.timeout(5) { sleep 0.1 until page.evaluate_script("[...document.querySelectorAll('.digital-assets-mosaic__tile img')].every(i => i.complete && i.naturalWidth)") }
+    sleep 0.3
+
+    rows = page.evaluate_script(<<~JS)
+      [...document.querySelectorAll('.digital-assets-mosaic__row')].map(row => [...row.querySelectorAll('.digital-assets-mosaic__tile')].map(tile => {
+        const box = tile.getBoundingClientRect(), image = tile.querySelector('img')
+        return { shape: box.width / box.height, image: image.naturalWidth / image.naturalHeight, height: box.height }
+      }))
+    JS
+    assert_equal [ 2, 3 ], rows.map(&:size)
+    rows.flatten.each { |tile| assert_in_delta tile["image"], tile["shape"], tile["image"] * 0.04, "a tile is not its image's shape" }
+    rows.each { |row| assert_in_delta row.first["height"], row.last["height"], 2, "the tiles of a row are not the same height" }
+    assert_operator page.evaluate_script("document.querySelector('.digital-assets-mosaic__grid').getBoundingClientRect().bottom"), :<=, 800
+  end
+
   test "the home page with the Acknowledgement of Country open has no axe violations" do
     page.driver.clear_cookies
     visit root_path

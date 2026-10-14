@@ -24,12 +24,6 @@
 .digital-assets__video,
 .digital-assets__document { height: calc(var(--digital-assets-height) - 3rem); }
 
-/* An image's thumbnail and a file's tile are the same square */
-.digital-assets__thumbnail {
-  width: 5rem;
-  height: 5rem;
-}
-
 /* Media metadata: over the band's right edge. It stays in the DOM at all times, off the stage by its own transform, rather than being toggled with
    [hidden]/display: switching an absolutely positioned flex child's display was counted back into the stage's centring and made the image jump.
    Sliding it with transform and hiding it with visibility, both paint-only, never touches the stage's layout. */
@@ -59,13 +53,34 @@
 /* In the full-screen window of the mosaic there is no site header above the band, only the window's own title bar */
 .modal .digital-assets { --digital-assets-above: 4rem; }
 
-/* The mosaic: as tall as what fits the screen under the site header, banner and its own buttons */
-.digital-assets-mosaic__grid { height: clamp(16rem, calc(100vh - 24rem), 32rem); }
+/* The mosaic: as tall as what fits the screen under the site header, banner and its own buttons. A tile is its asset's shape (--ratio, its width over its
+   height, set from the asset) and a row shares its width among its tiles in that proportion, so they are the same height with no room around the asset.
+   The grid is as wide as lets all its rows fit that height (--mosaic-inverse: see mosaic_controller.js), and no wider than the page. */
+.digital-assets-mosaic__grid {
+  --mosaic-height: clamp(16rem, calc(100vh - 24rem), 32rem);
+  --mosaic-inverse: 0.75;
+  --mosaic-inverse-first: 0.75;
+  width: min(100%, calc(var(--mosaic-height) / var(--mosaic-inverse)));
+}
+
+.digital-assets-mosaic__tile {
+  flex: var(--ratio) 1 0%;
+  min-width: 0;
+  aspect-ratio: var(--ratio);
+}
+
+/* A thumbnail is its image's shape at a fixed height (a file's tile is square) */
+.digital-assets__thumbnail { height: 5rem; width: auto; max-width: 10rem; }
+.digital-assets__tile { width: 5rem; }
+
+@media (max-width: 991.98px) {
+  .digital-assets-mosaic__grid { width: min(100%, calc(var(--mosaic-height) / var(--mosaic-inverse-first))); }
+}
 
 /* A phone's header and title strip are taller and its thumbnails wrap: the band is 18rem high and the page scrolls */
 @media (max-width: 575.98px) {
   .digital-assets { --digital-assets-height: 18rem; }
-  .digital-assets-mosaic__grid { height: 16rem; }
+  .digital-assets-mosaic__grid { --mosaic-height: 16rem; }
   .digital-assets__panel { width: 100%; }
 }
 
