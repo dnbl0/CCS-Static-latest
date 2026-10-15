@@ -2,8 +2,8 @@
     rules Bootstrap has no class for (the band's colour, the viewer's box and height, the sliding panel: digital_assets.css).
     data-bs-theme="light": the site's own styling is light only, but Blacklight's layout sets Bootstrap's theme from the computer's. %>
 <section class="digital-assets position-relative overflow-hidden text-white" data-bs-theme="light" data-controller="media-viewer" aria-labelledby="record-title">
-  <div class="digital-assets__stage mx-auto d-flex flex-column flex-lg-row align-items-lg-center" data-media-viewer-target="stage">
-    <article class="digital-assets__text px-3 py-4" aria-label="About this record">
+  <div class="digital-assets__stage mx-auto d-flex flex-column flex-lg-row" data-media-viewer-target="stage">
+    <article class="digital-assets__text d-flex flex-column justify-content-center px-3 py-4" aria-label="About this record">
       <h1 id="record-title" class="digital-assets__title fw-normal text-white mb-2"><%= title %></h1>
       <% if byline %><p class="digital-assets__byline text-white mb-4"><%= byline %></p><% end %>
       <% if tags.any? %>
@@ -13,101 +13,102 @@
           <% end %>
         </ul>
       <% end %>
+
+      <% if assets? %>
+        <%# Under the title on a phone; in the title column's bottom left corner beside the viewer (design: Figma 430:37277) %>
+        <ul class="digital-assets__actions list-unstyled d-flex gap-3 mt-4 mb-0">
+          <% if metadata? %>
+            <li>
+              <button type="button" class="btn btn-link link-light fs-4 p-0 lh-1" aria-controls="media-metadata" aria-expanded="false" aria-label="Media metadata" title="Media metadata"
+                      data-media-viewer-target="infoButton" data-action="media-viewer#togglePanel"><%= icon("media-info") %></button>
+            </li>
+          <% end %>
+          <li>
+            <button type="button" class="btn btn-link link-light fs-4 p-0 lh-1" aria-label="Full screen" title="Full screen" hidden
+                    data-media-viewer-target="fullscreenButton" data-action="media-viewer#toggleFullscreen"><%= icon("media-fullscreen") %></button>
+          </li>
+        </ul>
+      <% end %>
     </article>
 
     <% if assets? %>
-      <section class="digital-assets__viewer-column d-flex flex-column flex-lg-row gap-4 ps-3 pe-3 pe-lg-4 py-4" aria-labelledby="digital-assets-heading">
+      <section class="digital-assets__viewer-column d-flex flex-column flex-lg-row" aria-labelledby="digital-assets-heading">
         <h2 id="digital-assets-heading" class="visually-hidden">Digital <%= "asset".pluralize(count + media.size) %></h2>
 
-        <div class="flex-grow-1 w-100">
-          <%# The 3:2 box: an image in blacklight-gallery's viewer, which fits the whole image into it, or an audio, video or PDF file in its player %>
-          <div class="digital-assets__display position-relative w-100 overflow-hidden">
-            <% if main %>
-              <figure class="digital-assets__main w-100 h-100 m-0" data-media-viewer-target="main">
-                <%= openseadragon_picture_tag osd_image, role: "img", "aria-label": alt(1), class: "digital-assets__viewer d-block w-100 h-100",
-                      data: { openseadragon: osd_config, media_viewer_target: "viewer" } %>
-                <noscript><%= image_tag main.first, alt: alt(1), class: "digital-assets__noscript d-block mx-auto mw-100 mh-100" %></noscript>
-              </figure>
-            <% end %>
+        <%# The 3:2 box, edge to edge: an image in blacklight-gallery's viewer, which fits the whole image into it, or an audio, video or PDF file in its player %>
+        <div class="digital-assets__display position-relative flex-grow-1 overflow-hidden">
+          <% if main %>
+            <figure class="digital-assets__main w-100 h-100 m-0" data-media-viewer-target="main">
+              <%= openseadragon_picture_tag osd_image, role: "img", "aria-label": alt(1), class: "digital-assets__viewer d-block w-100 h-100",
+                    data: { openseadragon: osd_config, media_viewer_target: "viewer" } %>
+              <noscript><%= image_tag main.first, alt: alt(1), class: "digital-assets__noscript d-block mx-auto mw-100 mh-100" %></noscript>
+            </figure>
+          <% end %>
 
-            <% media.each_with_index do |item, index| %>
-              <figure class="digital-assets__media position-relative w-100 h-100 m-0" id="<%= media_dom_id(index) %>" data-media-viewer-target="media">
-                <% case item[:kind] %>
-                <% when "video" %>
-                  <video controls preload="metadata" class="digital-assets__video d-block w-100 h-100 bg-black object-fit-contain" aria-label="<%= media_title(item) %>">
-                    <source src="<%= item[:url] %>" type="<%= item[:type] %>">
-                    <a class="link-light" href="<%= item[:url] %>">Download <%= media_title(item) %></a>
-                  </video>
-                <% when "audio" %>
-                  <audio controls preload="metadata" class="digital-assets__audio position-absolute top-50 start-0 w-100 translate-middle-y" aria-label="<%= media_title(item) %>">
-                    <source src="<%= item[:url] %>" type="<%= item[:type] %>">
-                    <a class="link-light" href="<%= item[:url] %>">Download <%= media_title(item) %></a>
-                  </audio>
-                <% else %>
-                  <object data="<%= item[:url] %>" type="application/pdf" class="digital-assets__document d-block w-100 h-100 bg-white" aria-label="<%= media_title(item) %>">
-                    <%= link_to "Open #{media_title(item)} (PDF, opens in a new tab)", item[:url], target: "_blank", rel: "noopener", class: "digital-assets__pdf link-light" %>
-                  </object>
-                <% end %>
-                <figcaption class="visually-hidden"><%= media_title(item) %></figcaption>
-              </figure>
-            <% end %>
-          </div>
-
-          <div class="d-flex align-items-center justify-content-between mt-2">
-            <ul class="list-unstyled d-flex gap-2 m-0">
-              <% if metadata? %>
-                <li>
-                  <button type="button" class="btn btn-link link-light fs-4 p-1 lh-1" aria-controls="media-metadata" aria-expanded="false" aria-label="Media metadata" title="Media metadata"
-                          data-media-viewer-target="infoButton" data-action="media-viewer#togglePanel"><%= icon("media-info") %></button>
-                </li>
+          <% media.each_with_index do |item, index| %>
+            <figure class="digital-assets__media position-relative w-100 h-100 m-0" id="<%= media_dom_id(index) %>" data-media-viewer-target="media">
+              <% case item[:kind] %>
+              <% when "video" %>
+                <video controls preload="metadata" class="digital-assets__video d-block w-100 h-100 bg-black object-fit-contain" aria-label="<%= media_title(item) %>">
+                  <source src="<%= item[:url] %>" type="<%= item[:type] %>">
+                  <a class="link-light" href="<%= item[:url] %>">Download <%= media_title(item) %></a>
+                </video>
+              <% when "audio" %>
+                <audio controls preload="metadata" class="digital-assets__audio position-absolute top-50 start-0 w-100 translate-middle-y" aria-label="<%= media_title(item) %>">
+                  <source src="<%= item[:url] %>" type="<%= item[:type] %>">
+                  <a class="link-light" href="<%= item[:url] %>">Download <%= media_title(item) %></a>
+                </audio>
+              <% else %>
+                <object data="<%= item[:url] %>" type="application/pdf" class="digital-assets__document d-block w-100 h-100 bg-white" aria-label="<%= media_title(item) %>">
+                  <%= link_to "Open #{media_title(item)} (PDF, opens in a new tab)", item[:url], target: "_blank", rel: "noopener", class: "digital-assets__pdf link-light" %>
+                </object>
               <% end %>
-              <li>
-                <button type="button" class="btn btn-link link-light fs-4 p-1 lh-1" aria-label="Full screen" title="Full screen" hidden
-                        data-media-viewer-target="fullscreenButton" data-action="media-viewer#toggleFullscreen"><%= icon("media-fullscreen") %></button>
-              </li>
-            </ul>
-            <% if items.size > 1 %>
-              <ul class="list-unstyled d-flex gap-2 m-0">
-                <li>
-                  <button type="button" class="btn btn-link link-light fs-4 p-1 lh-1" aria-label="Previous" title="Previous" disabled
-                          data-media-viewer-target="previousButton" data-action="media-viewer#previous"><%= arrow_icon(:previous) %></button>
-                </li>
-                <li>
-                  <button type="button" class="btn btn-link link-light fs-4 p-1 lh-1" aria-label="Next" title="Next"
-                          data-media-viewer-target="nextButton" data-action="media-viewer#next"><%= arrow_icon(:next) %></button>
-                </li>
-              </ul>
-            <% end %>
-          </div>
+              <figcaption class="visually-hidden"><%= media_title(item) %></figcaption>
+            </figure>
+          <% end %>
         </div>
 
         <% if items.size > 1 %>
-          <nav class="digital-assets__thumbnails" aria-label="Digital assets">
-            <ul class="digital-assets__others list-unstyled d-flex flex-row flex-lg-column align-items-lg-end gap-3 m-0 p-0 overflow-auto">
-              <% items.each_with_index do |item, position| %>
-                <% current = position.zero? %>
-                <li class="flex-shrink-0">
-                  <% if item[:kind] == "image" %>
-                    <%= link_to item[:large], class: "digital-assets__other d-block border border-2 focus-ring #{current ? 'border-white' : 'border-transparent'}", target: "_blank", rel: "noopener",
-                          aria: { current: (current ? "true" : nil) },
-                          data: { action: "media-viewer#show", media_viewer_kind: "image", media_viewer_page: item[:index], media_viewer_alt: alt(item[:index] + 1) } do %>
-                      <%= image_tag item[:thumbnail], alt: "#{alt(item[:index] + 1)} (opens full size in a new tab)", loading: "lazy", class: "digital-assets__thumbnail d-block bg-white border border-light-subtle" %>
+          <%# Beside the viewer on a wide screen, under it on a phone: the thumbnails, then previous and next at the far end %>
+          <div class="digital-assets__sidebar d-flex flex-lg-column justify-content-between align-items-center align-items-lg-end gap-3 p-3 p-lg-4">
+            <nav class="digital-assets__thumbnails align-self-lg-start" aria-label="Digital assets">
+              <ul class="digital-assets__others list-unstyled d-flex flex-row flex-lg-column gap-3 m-0 p-0 overflow-x-auto">
+                <% items.each_with_index do |item, position| %>
+                  <% current = position.zero? %>
+                  <li class="flex-shrink-0">
+                    <% if item[:kind] == "image" %>
+                      <%= link_to item[:large], class: "digital-assets__other d-block border border-2 focus-ring #{current ? 'border-white' : 'border-transparent'}", target: "_blank", rel: "noopener",
+                            aria: { current: (current ? "true" : nil) },
+                            data: { action: "media-viewer#show", media_viewer_kind: "image", media_viewer_page: item[:index], media_viewer_alt: alt(item[:index] + 1) } do %>
+                        <%= image_tag item[:thumbnail], alt: "#{alt(item[:index] + 1)} (opens full size in a new tab)", loading: "lazy", class: "digital-assets__thumbnail d-block bg-white border border-light-subtle" %>
+                      <% end %>
+                    <% else %>
+                      <%= link_to item[:url], class: "digital-assets__other d-block border border-2 focus-ring #{current ? 'border-white' : 'border-transparent'}", target: "_blank", rel: "noopener",
+                            aria: { current: (current ? "true" : nil) },
+                            data: { action: "media-viewer#show", media_viewer_kind: item[:kind], media_viewer_media: media_dom_id(item[:index]) } do %>
+                        <span class="digital-assets__tile d-flex flex-column align-items-center justify-content-center gap-1 bg-primary text-white small">
+                          <%= kind_icon(item[:kind]) %>
+                          <span aria-hidden="true"><%= KIND_NAMES.fetch(item[:kind], "File") %></span>
+                        </span>
+                        <span class="visually-hidden"><%= KIND_NAMES.fetch(item[:kind], "File") %>: <%= media_title(item) %> (opens in a new tab)</span>
+                      <% end %>
                     <% end %>
-                  <% else %>
-                    <%= link_to item[:url], class: "digital-assets__other d-block border border-2 focus-ring #{current ? 'border-white' : 'border-transparent'}", target: "_blank", rel: "noopener",
-                          aria: { current: (current ? "true" : nil) },
-                          data: { action: "media-viewer#show", media_viewer_kind: item[:kind], media_viewer_media: media_dom_id(item[:index]) } do %>
-                      <span class="digital-assets__tile d-flex flex-column align-items-center justify-content-center gap-1 bg-primary text-white small">
-                        <%= kind_icon(item[:kind]) %>
-                        <span aria-hidden="true"><%= KIND_NAMES.fetch(item[:kind], "File") %></span>
-                      </span>
-                      <span class="visually-hidden"><%= KIND_NAMES.fetch(item[:kind], "File") %>: <%= media_title(item) %> (opens in a new tab)</span>
-                    <% end %>
-                  <% end %>
-                </li>
-              <% end %>
+                  </li>
+                <% end %>
+              </ul>
+            </nav>
+
+            <ul class="list-unstyled d-flex flex-shrink-0 gap-3 m-0">
+              <li>
+                <button type="button" class="btn btn-link link-light fs-4 p-0 lh-1" aria-label="Previous" title="Previous" disabled
+                        data-media-viewer-target="previousButton" data-action="media-viewer#previous"><%= arrow_icon(:previous) %></button>
+              </li>
+              <li>
+                <button type="button" class="btn btn-link link-light fs-4 p-0 lh-1" aria-label="Next" title="Next"
+                        data-media-viewer-target="nextButton" data-action="media-viewer#next"><%= arrow_icon(:next) %></button>
+              </li>
             </ul>
-          </nav>
+          </div>
         <% end %>
       </section>
     <% end %>

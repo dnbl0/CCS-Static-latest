@@ -186,6 +186,35 @@ class AccessibilityTest < ApplicationSystemTestCase
     assert_accessible
   end
 
+  # The design's structure (Figma 429:37076): the image edge to edge, as tall as the band; a 128px column beside it with the thumbnails (which scroll, so
+  # many of them never make the band taller than the image) and previous and next; the info and full screen buttons in the title column's bottom left.
+  test "several assets: the image is edge to edge, the side column is 128px and many thumbnails do not stretch the band" do
+    page.driver.resize(1440, 900)
+    names = %w[1973_0004_000_000_1 1973_0071_000_000 1973_0084_000_000 1973_0755-1_pf 1973_0755_b_pf 1973_0755-2_pf 1973_0755_c_pf 1973_0755_d_pf]
+    StockSolr.documents = { "emu-9044" => stock_document("emu-9044", names) }
+    visit "/catalog/emu-9044"
+    assert_selector "picture.digital-assets__viewer canvas"
+    assert_selector "a.digital-assets__other", count: 8
+
+    rect = lambda do |selector|
+      page.evaluate_script("(() => { const b = document.querySelector(#{selector.to_json}).getBoundingClientRect(); return { left: b.left, right: b.right, top: b.top, bottom: b.bottom, width: b.width, height: b.height } })()")
+    end
+    band, text, display, sidebar, actions, thumbnails = %w[.digital-assets .digital-assets__text .digital-assets__display .digital-assets__sidebar .digital-assets__actions .digital-assets__thumbnails].map(&rect)
+
+    assert_in_delta 1.5, display["width"] / display["height"], 0.02, "the image's box is not 3:2"
+    assert_in_delta band["height"], display["height"], 1, "the band is not as tall as the image beside it"
+    assert_in_delta display["top"], band["top"], 1, "the image is not flush with the top"
+    assert_in_delta display["bottom"], band["bottom"], 1, "the image is not flush with the bottom"
+    assert_in_delta text["right"], display["left"], 1, "the image does not begin where the title column ends"
+    assert_in_delta 128, sidebar["width"], 1
+    assert_in_delta display["right"], sidebar["left"], 1, "the side column is not beside the image"
+    assert_operator thumbnails["bottom"], :<=, sidebar["bottom"] + 1, "the thumbnails run out of the side column"
+    assert page.evaluate_script("(() => { const n = document.querySelector('.digital-assets__thumbnails'); return n.scrollHeight > n.clientHeight })()"), "eight thumbnails should scroll inside the column"
+    assert_in_delta band["bottom"] - 24, actions["bottom"], 6, "the info and full screen buttons are not 24px from the bottom of the title column"
+    assert_operator actions["left"], :<, text["left"] + 125, "the buttons are not in the title column's bottom left"
+    assert_accessible
+  end
+
   # The band, with the site header and breadcrumb above it, is on a laptop-sized screen without scrolling, and the closed Media metadata panel (waiting
   # off the band's right edge) does not widen the page.
   test "a catalog record's media band fits a laptop screen with no sideways scrolling" do

@@ -1,16 +1,16 @@
 /*
  * A record's media band (NexusCcs::DigitalAssetsComponent; behaviour: controllers/media_viewer_controller.js), after the CCS UI "Record" (Figma
- * 429:36672): a dark band with the record's title, byline and tags on the left and, when it has digital assets, the viewer on the right (an image in a
- * 3:2 box with its info, full screen, previous and next buttons under it, and a column of thumbnails beside it). The markup is Bootstrap's classes;
+ * 429:36672): a dark band with the record's title, byline and tags on the left and, when it has digital assets, the viewer on the right (an image
+ * edge to edge in a 3:2 box, with a column of thumbnails and the previous and next buttons beside it; the info and full screen buttons are in the title
+ * column's bottom left corner). The markup is Bootstrap's classes;
  * what is here is what Bootstrap has no class for: the band's colour, the viewer's box and the height that makes the band fit the screen, the
  * thumbnails' size and the Media metadata panel's slide.
  */
 .digital-assets {
-  /* The viewer is as tall as what is left of the screen after the site header and breadcrumb above the band (9.6rem) and the band's own padding and
-     buttons (6.5rem), within 15rem and the design's 38.5rem (616px). */
+  /* The viewer is edge to edge in the band, so the band is as tall as what is left of the screen after the site header and breadcrumb above it (9.6rem),
+     within 15rem and the design's 38.5rem (616px). */
   --digital-assets-above: 9.6rem;
-  --digital-assets-chrome: 6.5rem;
-  --digital-assets-height: clamp(15rem, calc(100vh - var(--digital-assets-above) - var(--digital-assets-chrome)), 38.5rem);
+  --digital-assets-height: clamp(15rem, calc(100vh - var(--digital-assets-above)), 38.5rem);
   background: var(--ccs-text-primary, #222);
 }
 
@@ -31,13 +31,28 @@
 
 /* The title column's left edge: 120px on the design's 1440px, less on a smaller screen */
 @media (min-width: 992px) {
-  .digital-assets__text { padding-left: clamp(1rem, 8.33vw, 7.5rem) !important; }
+  .digital-assets__text { padding-left: clamp(1rem, 8.33vw, 7.5rem) !important; padding-right: var(--ccs-space-panel, 1.5rem) !important; }
 }
 
-/* The viewer's box is 3:2, no taller than what fits the screen; what it shows is fitted into it whole */
+/* The viewer's box is 3:2 and edge to edge, so it sets the band's height; no taller than what fits the screen. What it shows is fitted into it whole */
 .digital-assets__display {
   aspect-ratio: 3 / 2;
   max-height: var(--digital-assets-height);
+  min-width: 0;
+}
+
+/* Under the viewer on a phone: the row of thumbnails scrolls sideways so that previous and next stay in view */
+.digital-assets__thumbnails { min-width: 0; }
+
+/* Beside the viewer: 128px of thumbnails at the top and previous and next at the bottom, padded 24px */
+@media (min-width: 992px) {
+  /* The side column is as tall as the image beside it and no taller: it takes no height of its own (contain: size) and its thumbnails scroll */
+  .digital-assets__sidebar { flex: 0 0 8rem; contain: size; }
+  .digital-assets__thumbnails { flex: 0 1 auto; min-height: 0; overflow-y: auto; }
+
+  /* the info and full screen buttons: the bottom left of the title column, 24px from the bottom, in line with the text */
+  .digital-assets__text { position: relative; }
+  .digital-assets__actions { position: absolute; bottom: 1.5rem; left: clamp(1rem, 8.33vw, 7.5rem); margin: 0 !important; }
 }
 
 .digital-assets__noscript { max-height: var(--digital-assets-height); }
@@ -53,10 +68,6 @@
 .digital-assets__tile {
   width: 5rem;
   height: 5rem;
-}
-
-@media (min-width: 992px) {
-  .digital-assets__others { max-height: var(--digital-assets-height); }
 }
 
 /* Previous and next at either end of the row of items: the one that cannot be used is dimmed (it is disabled, so it is also out of the tab order) */
