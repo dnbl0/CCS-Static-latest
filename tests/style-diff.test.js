@@ -48,7 +48,7 @@ const el = (style, box = [0, 0, 10, 10]) => ({ style, box });
   const run = (script, args) => cp.spawnSync('node', [path.join(root, 'scripts', script), ...args], { cwd: root, encoding: 'utf8' });
   const labels = ['selftest-a', 'selftest-b', 'selftest-c'];
   try {
-    const only = ['--pages=contact', '--states=default,mobile-menu', '--viewports=378'];
+    const only = ['--pages=help', '--states=default,mobile-menu', '--viewports=378'];
     for (const l of labels.slice(0, 2)) { const r = run('style-snapshot.js', [l, ...only]); if (r.status !== 0) { fail('snapshot failed: ' + r.stdout + r.stderr); return finish('style-diff'); } }
     eq(listSnapshots('selftest-a').length, 2, 'snapshot wrote one file per page/state/viewport');
     const s = readSnapshot(path.join(dirFor('selftest-a'), listSnapshots('selftest-a')[0]));

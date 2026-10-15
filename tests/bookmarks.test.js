@@ -145,7 +145,7 @@ const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css
       await c.addInitScript(() => { try { localStorage.setItem('ccs-cultural-ack', '1'); localStorage.setItem('ccs-bookmarks-v1', JSON.stringify([{ id: 2, t: Date.now(), title: 'x' }])); } catch (e) { /* none */ } });
       const m = await c.newPage();
       m.on('pageerror', e => errors.push(e.message));
-      for (const url of ['/search/search-results.html?q=microscope', '/collections/record.html?id=2', '/search/bookmarks.html', '/help/index.html', '/contact.html']) {
+      for (const url of ['/search/search-results.html?q=microscope', '/collections/record.html?id=2', '/search/bookmarks.html', '/help/index.html']) {
         await m.goto(base + url);
         await m.waitForSelector('.page-breadcrumbs [data-bookmarks-link]');
         eq(await geometry(m), { inStrip: true, inHeader: false, count: 1, sameHeight: true, tall: true, top: true, right: true, flush: true }, w + 'px ' + url.split('?')[0] + ': the bar is the breadcrumb strip\'s height (min 44px), flush right, and not in the header');

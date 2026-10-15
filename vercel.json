@@ -20,14 +20,18 @@
     }
   ],
   "redirects": [
+    { "source": "/contact", "destination": "/help/index.html#access", "statusCode": 301 },
+    { "source": "/contact.html", "destination": "/help/index.html#access", "statusCode": 301 },
+    { "source": "/help/search-tips", "destination": "/help/index.html", "statusCode": 301 },
+    { "source": "/help/search-tips.html", "destination": "/help/index.html", "statusCode": 301 },
     {
       "source": "/Contact Us.dc.html",
-      "destination": "/contact",
+      "destination": "/help/index.html#access",
       "statusCode": 301
     },
     {
       "source": "/Contact%20Us.dc.html",
-      "destination": "/contact",
+      "destination": "/help/index.html#access",
       "statusCode": 301
     },
     {
