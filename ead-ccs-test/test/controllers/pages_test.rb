@@ -47,6 +47,7 @@ class PagesTest < ActionDispatch::IntegrationTest
       assert_select "nav.jump-nav a.jump-nav__link[href='##{topic.key}']", topic.title
     end
     assert_select ".jump-nav__title", "On this page"
+    assert_select "nav.jump-nav[data-controller=jump-nav] a.jump-nav__link[data-jump-nav-target=link]", count: HelpTopic.all.size
     assert_select ".side-nav", count: 0
     assert_select "p.help-intro", count: 1
   end
