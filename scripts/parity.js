@@ -26,7 +26,7 @@ const PAGES = [
   ['/collections/grainger-museum/', '/collections/grainger-museum', ['.campaign-banner-split__heading', '.campaign-banner-split__text',
     '.campaign-banner-split__content a.button', '.collection-section__text', '.def-table__term', '.def-table__text', '.contact-box__title',
     '.contact-box__term', '.contact-box__para', '.ct-listing__title']],
-  ['/help/index.html', '/help', ['.page-banner h1', '.side-nav__title', '.side-nav__link', '.help-section__heading', '.help-section__description',
+  ['/help/index.html', '/help', ['.page-banner h1', '.jump-nav__title', '.jump-nav__link', '.help-section__heading', '.help-section__description',
     '.help-section__subheading', '.help-section__text', '.cta-band__heading']],
 ];
 
