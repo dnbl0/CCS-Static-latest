@@ -7,7 +7,7 @@ class PagesTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "body.page-collections-browse h1", "Browse collections"
     assert_select ".ccs-section--cards .ccs-card", count: 5
-    assert_select ".ccs-card__link[href=?]", "/collections/grainger-museum"
+    assert_select ".ccs-card__link[href=?]", "/catalog?f%5Bcollection_ssim%5D%5B%5D=Grainger+Museum+Collection&search_field=all_fields"
     assert_select ".ccs-card__title" do |titles|
       names = titles.map { |title| title.text.strip }
       assert_equal names.sort, names
@@ -16,15 +16,23 @@ class PagesTest < ActionDispatch::IntegrationTest
     assert_select "nav.page-breadcrumbs li[aria-current=page]", "Browse collections"
   end
 
-  test "each collection has a landing page that searches its records" do
-    YAML.load_file(Rails.root.join("config/pages.yml")).fetch("collections").each do |slug, collection|
+  test "the collection landing pages are gone: their addresses go to the results filtered to that collection" do
+    YAML.load_file(Rails.root.join("config/pages.yml")).fetch("collections").each_key do |slug|
+      facet_value = NexusCcs::SiteNavigation.facet_value(slug)
       get "/collections/#{slug}"
 
-      assert_response :success
-      assert_select "body.page-collection-landing h1", collection["name"]
-      facet_value = NexusCcs::SiteNavigation.facet_value(slug)
-      assert_select "a.button[href=?]", "/catalog?#{{ f: { collection_ssim: [ facet_value ] } }.to_query}"
-      assert_select ".def-table__row", count: collection["details"].size
+      assert_response :moved_permanently, slug
+      assert_redirected_to "/catalog?#{{ f: { collection_ssim: [ facet_value ] }, search_field: "all_fields" }.to_query}"
+    end
+  end
+
+  test "the collection links go to the results filtered to that collection" do
+    get "/"
+    assert_select ".home-card__link[href=?]", "/catalog?f%5Bcollection_ssim%5D%5B%5D=Grainger+Museum+Collection&search_field=all_fields"
+
+    get "/collections"
+    NexusCcs::SiteNavigation.collections.each do |_label, facet_value, _slug|
+      assert_select ".ccs-card__link[href=?]", "/catalog?#{{ f: { collection_ssim: [ facet_value ] }, search_field: "all_fields" }.to_query}"
     end
   end
 
@@ -95,15 +103,15 @@ class PagesTest < ActionDispatch::IntegrationTest
   test "the site header links to the pages, and has no Contact page of its own" do
     get "/help"
 
-    assert_select "#site-nav-collections li a[href^='/collections/']", count: 5
+    assert_select "#site-nav-collections li a[href^='/catalog?f%5Bcollection_ssim%5D']", count: 5
     assert_select "#site-nav-help a[href='/help#faq']"
     assert_select "#site-nav-help li a", count: HelpTopic.all.size
     assert_select "#site-nav a[href='/contact']", count: 0
     assert_select "a.site-header__title[href='/']"
   end
 
-  test "every content page has one main landmark for the skip link, and the collection banner is a named region" do
-    paths = [ "/", "/collections", "/collections/grainger-museum", "/help", "/about" ]
+  test "every content page has one main landmark for the skip link," do
+    paths = [ "/", "/collections", "/help", "/about" ]
 
     paths.each do |path|
       get path
@@ -112,10 +120,6 @@ class PagesTest < ActionDispatch::IntegrationTest
       assert_select "a.skip-link[href='#main-content']", count: 1
       assert_select "main#main-content", count: 1
     end
-
-    get "/collections/grainger-museum"
-    assert_select "section.campaign-banner-split[aria-labelledby=collection-heading] h1#collection-heading"
-    assert_select "header.campaign-banner-split", count: 0
   end
 
   test "the Acknowledgement of Country advisory is body text colour, not the pale secondary colour" do

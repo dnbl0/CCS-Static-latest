@@ -6,9 +6,9 @@ class SitePagesTest < ActiveSupport::TestCase
     assert_equal labels.sort, labels
   end
 
-  test "every collection of the header menu has a landing page and the browse page lists it" do
+  test "every collection of the header menu has its data and the browse page lists it" do
     NexusCcs::SiteNavigation.collections.each do |_label, _facet_value, slug|
-      assert SitePages.collection(slug), "no landing page data for #{slug}"
+      assert SitePages.collection(slug), "no collection data for #{slug}"
     end
     assert_equal SitePages.slugs.sort, SitePages.browse["collections"].map { |collection| collection["slug"] }.sort
   end
