@@ -18,7 +18,7 @@
           <% end %>
         </ul>
       </nav>
-      <%= render NexusCcs::SavedBarComponent.new(placement: :header) if saved_in_header? %>
+      <%= render NexusCcs::SavedBarComponent.new(placement: :header) if saved_in_header? && !home_page? %>
       <button type="button" class="site-header__search-toggle" aria-label="Open search" data-action="site-header#openSearch">
         <%= image_tag "site/icon-search-onaccent.svg", alt: "" %>
       </button>
@@ -76,7 +76,6 @@
             </div>
           </li>
           <li><%= link_to about.label, about.href, aria: { current: (helpers.current_page?(about.href) ? "page" : nil) } %></li>
-          <li><%= link_to contact.label, contact.href %></li>
           <%# Phones only: the header's top strip is hidden there, and the home page has no breadcrumb strip to hold the bar -%>
           <% if saved_in_header? %>
             <li class="site-nav__saved-item"><%= render NexusCcs::SavedBarComponent.new(placement: :drawer) %></li>

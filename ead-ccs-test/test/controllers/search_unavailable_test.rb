@@ -30,7 +30,7 @@ class SearchUnavailableTest < ActionDispatch::IntegrationTest
       get "/help"
       assert_response :success
 
-      get "/contact"
+      get "/about"
       assert_response :success
     end
   end

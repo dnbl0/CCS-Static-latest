@@ -8,7 +8,9 @@ class LandingTest < ActionDispatch::IntegrationTest
     assert_select "body.page-home h1", "Cultural Collections"
     assert_select ".ccs-hero__search search form"
     assert_select ".ccs-hero__search a.advanced_search[href=?]", "/catalog/advanced"
-    assert_select ".ccs-card__title a", count: 5
+    assert_select ".home-card__title a", count: 6
+    assert_select ".home-about__statement", count: 1
+    assert_select ".ccs-section--help, .ccs-section--faq", count: 0
   end
 
   test "a bare search page goes to the home page with the hero search" do

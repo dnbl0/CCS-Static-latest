@@ -15,7 +15,12 @@
             <%= t(".body_html") %>
           </blockquote>
 
-          <p class="text-body-secondary small mb-0"><%= t(".advisory") %></p>
+          <p class="text-body-secondary small"><%= t(".advisory") %></p>
+          <p class="text-body-secondary small"><%= t(".bias") %></p>
+          <p class="small mb-0">
+            <%= link_to t(".indigenous_data"), help_path(anchor: "indigenous") %><br>
+            <%= link_to t(".priorities"), "https://www.unimelb.edu.au/murmuk-djerring" %>
+          </p>
         </div>
 
         <div class="modal-footer border-0 px-4 pb-4 pt-0 px-md-5 pb-md-5">

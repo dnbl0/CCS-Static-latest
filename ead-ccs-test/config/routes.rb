@@ -41,10 +41,12 @@ Rails.application.routes.draw do
   get "collections", to: "pages#collections", as: :collections
   get "collections/:slug", to: "pages#collection", as: :collection, constraints: { slug: /[a-z-]+/ }
   get "help", to: "pages#help", as: :help
-  get "help/search-tips", to: "pages#search_tips", as: :search_tips
-  get "help/indigenous-data", to: "pages#indigenous_data", as: :indigenous_data
+  # Search tips, Indigenous cultural data and Contact are no longer pages of their own: Indigenous data and Contact
+  # are sections of Help, and the old addresses go there.
+  get "help/search-tips", to: redirect("/help", status: 301)
+  get "help/indigenous-data", to: redirect("/help#indigenous", status: 301)
+  get "contact", to: redirect("/help#access", status: 301)
   get "about", to: "pages#about", as: :about
-  get "contact", to: "pages#contact", as: :contact
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.

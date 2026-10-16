@@ -38,6 +38,9 @@ module NexusCcs
     # page) keeps it in the header's top strip instead; the content pages draw their own strip (PageBreadcrumbsComponent).
     def saved_in_header? = breadcrumbs.empty? && (helpers.controller_name != "pages" || helpers.action_name == "home")
 
+    # The home page carries the bar over the hero photo (pages/home.html.erb), not in the header's top strip.
+    def home_page? = helpers.controller_name == "pages" && helpers.action_name == "home"
+
     # A record's page has its title band instead of the search banner, and Blacklight's own advanced search page
     # (unmodified) is the search, so the site's search banner does not repeat above it.
     def show_search_banner? = helpers.controller_name == "catalog" && !%w[show advanced_search].include?(helpers.action_name)
@@ -62,8 +65,6 @@ module NexusCcs
     def help_home = SiteNavigation::Link.new(SiteNavigation::HELP_HOME_LABEL, helpers.help_path)
 
     def about = SiteNavigation::Link.new(SiteNavigation::ABOUT_LABEL, helpers.about_path)
-
-    def contact = SiteNavigation::Link.new(SiteNavigation::CONTACT_LABEL, helpers.contact_path)
 
     def collections_home = helpers.collections_path
 
