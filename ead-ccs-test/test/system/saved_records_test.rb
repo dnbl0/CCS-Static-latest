@@ -105,9 +105,10 @@ class SavedRecordsTest < ApplicationSystemTestCase
     assert_not_equal "none", shadow
   end
 
-  test "the home page keeps the bar in the header top strip" do
+  test "the home page has the bar over the top right of the hero photo, not in the header strip" do
     visit root_path
-    assert_selector ".site-header__utility a.site-nav__saved", count: 1
+    assert_selector ".ccs-hero__media a.site-nav__saved--hero", count: 1
+    assert_no_selector ".site-header__utility a.site-nav__saved"
     assert_no_selector ".breadcrumb-strip"
   end
 
