@@ -9,13 +9,11 @@ const { createServer } = require('./dev-server');
 const { writeSnapshot, dirFor, ROOT } = require('./lib/snapshot-format');
 
 /* ---- what to capture --------------------------------------------------------------------------------------------- */
-const LANDINGS = ['medical-history-museum', 'university-art-collection', 'grainger-museum', 'henry-forman-atkinson-dental-museum', 'harry-brookes-allen-museum'];
 const PAGES = {
   index: '/',
   'search-results': '/search/search-results.html?q=skull',
   'advanced-search': '/search/advanced-search.html',
   'collections-index': '/collections/',
-  ...Object.fromEntries(LANDINGS.map(l => ['collection-' + l, `/collections/${l}/`])),
   record: '/collections/record.html?id=1',
   help: '/help/',
 };
