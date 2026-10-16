@@ -17,6 +17,56 @@
   ],
   "redirects": [
     {
+      "source": "/collections/grainger-museum",
+      "destination": "/search/search-results.html?collection=Grainger%20Museum%20Collection",
+      "statusCode": 301
+    },
+    {
+      "source": "/collections/grainger-museum/index.html",
+      "destination": "/search/search-results.html?collection=Grainger%20Museum%20Collection",
+      "statusCode": 301
+    },
+    {
+      "source": "/collections/harry-brookes-allen-museum",
+      "destination": "/search/search-results.html?collection=Harry%20Brookes%20Allen%20Museum%20of%20Anatomy%20and%20Pathology",
+      "statusCode": 301
+    },
+    {
+      "source": "/collections/harry-brookes-allen-museum/index.html",
+      "destination": "/search/search-results.html?collection=Harry%20Brookes%20Allen%20Museum%20of%20Anatomy%20and%20Pathology",
+      "statusCode": 301
+    },
+    {
+      "source": "/collections/henry-forman-atkinson-dental-museum",
+      "destination": "/search/search-results.html?collection=Henry%20Forman%20Atkinson%20Dental%20Museum",
+      "statusCode": 301
+    },
+    {
+      "source": "/collections/henry-forman-atkinson-dental-museum/index.html",
+      "destination": "/search/search-results.html?collection=Henry%20Forman%20Atkinson%20Dental%20Museum",
+      "statusCode": 301
+    },
+    {
+      "source": "/collections/medical-history-museum",
+      "destination": "/search/search-results.html?collection=Medical%20History%20Museum",
+      "statusCode": 301
+    },
+    {
+      "source": "/collections/medical-history-museum/index.html",
+      "destination": "/search/search-results.html?collection=Medical%20History%20Museum",
+      "statusCode": 301
+    },
+    {
+      "source": "/collections/university-art-collection",
+      "destination": "/search/search-results.html?collection=University%20Art%20Collection",
+      "statusCode": 301
+    },
+    {
+      "source": "/collections/university-art-collection/index.html",
+      "destination": "/search/search-results.html?collection=University%20Art%20Collection",
+      "statusCode": 301
+    },
+    {
       "source": "/help/indigenous-data",
       "destination": "/help/index.html#indigenous",
       "statusCode": 301
