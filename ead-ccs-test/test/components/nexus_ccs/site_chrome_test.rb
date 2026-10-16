@@ -25,7 +25,7 @@ class SiteChromeTest < ActiveSupport::TestCase
     assert_selector "header.site-header"
     assert_selector ".site-header__utility nav a", count: NexusCcs::SiteNavigation::AUDIENCE.size
     assert_selector "button.site-header__search-toggle[aria-label='Open search']"
-    assert_selector "#site-nav-collections li a[href^='/collections/']", count: NexusCcs::SiteNavigation.collections.size
+    assert_selector "#site-nav-collections li a[href^='/catalog?f%5Bcollection_ssim%5D']", count: NexusCcs::SiteNavigation.collections.size
     assert_selector "#search-overlay form[role=search]"
     assert_selector "#site-nav form[role=search]"
   end

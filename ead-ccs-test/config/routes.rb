@@ -39,7 +39,10 @@ Rails.application.routes.draw do
   end
 
   get "collections", to: "pages#collections", as: :collections
-  get "collections/:slug", to: "pages#collection", as: :collection, constraints: { slug: /[a-z-]+/ }
+  # The collection landing pages are gone: their old addresses go to the results filtered to that collection.
+  get "collections/:slug", to: redirect(status: 301) { |params, _request|
+    "/catalog?#{{ f: { collection_ssim: [ NexusCcs::SiteNavigation.facet_value(params[:slug]) ] }, search_field: "all_fields" }.to_query}"
+  }, constraints: ->(request) { NexusCcs::SiteNavigation.facet_value(request.path_parameters[:slug]) }
   get "help", to: "pages#help", as: :help
   # Search tips, Indigenous cultural data and Contact are no longer pages of their own: Indigenous data and Contact
   # are sections of Help, and the old addresses go there.
