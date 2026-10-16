@@ -70,8 +70,8 @@ class SearchJourneysTest < ApplicationSystemTestCase
 
     assert_current_path(%r{\A/catalog/advanced\?.*clause.*skull})
     assert_no_selector "dialog#blacklight-modal[open]"
-    assert_selector "h1", text: "Advanced search"
-    assert_selector "nav.breadcrumb-bar li", text: "Advanced search"
+    assert_selector "h1", text: "Advanced Search"
+    assert_selector "nav.breadcrumb-bar li", text: "Advanced Search"
     assert_selector "form.advanced"
   end
 

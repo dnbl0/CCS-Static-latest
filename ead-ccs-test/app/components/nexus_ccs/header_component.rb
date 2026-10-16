@@ -19,7 +19,7 @@ module NexusCcs
         case helpers.action_name
         when "index" then helpers.has_search_parameters? ? [ [ "Search results", nil ] ] : []
         when "show" then [ [ "Search results", results_url ], [ record_title, nil ] ]
-        when "advanced_search" then [ [ "Advanced search", nil ] ]
+        when "advanced_search" then [ [ "Advanced Search", nil ] ]
         else []
         end
       when "bookmarks" then [ [ I18n.t("nexus_ccs.saved.list_title"), nil ] ]
