@@ -1,5 +1,5 @@
 /**
- * Free, same-origin stand-in for the Blacklight /catalog.json API (Vercel serverless function).
+ * Free, same-origin stand-in for the Blacklight /catalog.json API (serverless-style function; not deployed on GitHub Pages).
  * Answers the requests public/blacklight-adapter.js sends (q, f[...][], range, sort, page, per_page) and
  * GET /catalog/:id.json, using the catalogue in public/collection-data.js and the fuzzy / synonym / phrase
  * engine in public/search/smart-search.js. No database, no Solr, no cost; swap the adapter endpoint to a real

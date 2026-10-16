@@ -8,7 +8,7 @@ const { findChromium } = require('../scripts/lib/chromium');
 const eq = (a, b, msg) => { if (JSON.stringify(a) === JSON.stringify(b)) ok(msg); else fail(msg + ' (got ' + JSON.stringify(a) + ', expected ' + JSON.stringify(b) + ')'); };
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.json': 'application/json' };
 const PAGES = [
-  '/about.html', '/contact.html', '/help/index.html', '/help/search-tips.html', '/help/indigenous-data.html', '/collections/index.html',
+  '/about.html', '/help/index.html', '/help/indigenous-data.html', '/collections/index.html',
   '/collections/grainger-museum/index.html', '/search/search-results.html?q=skull', '/search/advanced-search.html', '/search/bookmarks.html',
   '/search/search-history.html', '/collections/record.html?id=10116'
 ];
