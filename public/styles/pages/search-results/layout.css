@@ -258,8 +258,8 @@ body.page-search-results .search-results-layout.is-searching .facet-rail__chevro
     align-items: start;
     box-sizing: border-box;
     width: 100%; /* it is a flex item of the page group: without this it shrinks to its content instead of filling the container */
-    max-width: var(--layout-container);
-    margin-inline: auto;
+    max-width: none;
+    margin-inline: 0;
     padding: 0 var(--space-32) var(--space-48);
   }
 
