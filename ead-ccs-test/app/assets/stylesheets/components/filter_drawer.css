@@ -138,8 +138,6 @@
 
   #sidebar .filter-sidebar__heading {
     margin: 0;
-    font-size: var(--ccs-font-size-xl);
-    line-height: 1.3;
   }
 
   #sidebar .facets {
@@ -152,8 +150,6 @@
 
   #sidebar .facets-heading {
     margin: 0 0 var(--ccs-space-2);
-    font-size: var(--ccs-font-size-lg);
-    line-height: 1.3;
   }
 
   #sidebar .facets-header {
@@ -203,8 +199,31 @@
   margin-bottom: var(--ccs-space-4);
 }
 
+/*
+ * Sidebar type, after the University's filtered listings (designsystem.web.unimelb.edu.au/components/filtered-listings, measured):
+ * the section heading is 24px / 600 Source Sans, a filter group's title (its legend) 18px / 600, and the filter names and their values
+ * 18px / 400. The page's serif is kept for page titles, not these controls. Same at every width, drawer included.
+ */
 .filter-sidebar__heading {
   margin: 0;
+  font-family: var(--ccs-font-body);
+  font-size: 1.5rem;
+  font-weight: var(--ccs-font-weight-semibold);
+  line-height: 1.2;
+}
+
+.filter-sidebar .facets-heading {
+  font-family: var(--ccs-font-body);
+  font-size: var(--ccs-font-size-lg);
+  font-weight: var(--ccs-font-weight-semibold);
+  line-height: 1.5;
+  margin-bottom: var(--ccs-space-3);
+}
+
+.filter-sidebar .accordion-button,
+.filter-sidebar .facet-values {
+  font-size: var(--ccs-font-size-lg);
+  line-height: 1.5;
 }
 
 .filter-sidebar .facets {
@@ -213,10 +232,6 @@
 
 .filter-sidebar .facets:last-child {
   margin-bottom: 0;
-}
-
-.filter-sidebar .facets-heading {
-  margin-bottom: var(--ccs-space-3);
 }
 
 @media (min-width: 992px) {

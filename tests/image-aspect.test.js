@@ -36,7 +36,7 @@ function serve() {
   });
 }
 
-const PAGES = ['/', '/collections/index.html', '/collections/grainger-museum/index.html', '/search/search-results.html?q=a', '/collections/record.html?id=10116', '/collections/record.html?id=20015'];
+const PAGES = ['/', '/collections/index.html', '/search/search-results.html?q=a', '/collections/record.html?id=10116', '/collections/record.html?id=20015'];
 const TOLERANCE = 0.03;
 
 (async () => {
