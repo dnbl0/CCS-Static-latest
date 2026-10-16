@@ -511,7 +511,7 @@
     var f = Select({ label: 'Search field', name: 'x', options: FIELDS, value: (values && values.field) || 'all_fields', completeStyle: true });
     var o = Select({ label: 'Match type', name: 'x', options: OPS, value: (values && values.op) || 'must', completeStyle: true });
     var qid = nextId('adv-q');
-    var q = el('input', { type: 'text', id: qid, 'class': 'ccs-input', placeholder: 'Enter search terms', 'data-role': 'query', autocomplete: 'off', 'aria-describedby': 'adv-terms-hint' });
+    var q = el('input', { type: 'text', id: qid, 'class': 'ccs-input', placeholder: 'Enter search term', 'data-role': 'query', autocomplete: 'off', 'aria-describedby': 'adv-terms-hint' });
     if (values && values.query) q.value = values.query;
     controls.appendChild(f.root); controls.appendChild(o.root);
     controls.appendChild(el('div', {}, [el('label', { 'for': qid, 'class': 'sr-only', text: 'Search terms' }), q]));
