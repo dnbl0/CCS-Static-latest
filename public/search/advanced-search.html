@@ -248,14 +248,28 @@
         <div id="adv-live" class="sr-only advanced-filters-adv-live" role="status" aria-live="polite"></div>
         <section class="ccs-adv__box" aria-labelledby="adv-terms-h">
           <h2 id="adv-terms-h" class="ccs-adv__heading">Search</h2>
-          <p id="adv-terms-hint" class="ccs-adv__desc">Narrow the search by selecting the fields to be searched. Add rows for more search terms or refine the matches by types. Use quotation marks to search for an exact phrase, e.g. "eucalyptus oil".</p>
+          <div id="adv-terms-hint" class="ccs-adv__desc ccs-adv__tip">
+            <p class="ccs-adv__tip-label">Tip:</p>
+            <ul class="ccs-adv__tip-list">
+              <li>Narrow the search by selecting the fields to be searched.</li>
+              <li>Add rows for more search terms or refine the matches by types.</li>
+              <li>Refine the matches by indicating the types of matches required. E.g. Contains all, Contains any, or exclude them.</li>
+              <li>Use quotation marks to search for an exact phrase, e.g. "eucalyptus oil".</li>
+            </ul>
+          </div>
           <div id="adv-terms" class="ccs-adv__stack"></div>
           <button type="button" id="adv-add-row" class="ccs-btn ccs-btn--add"><span class="ccs-btn__text">Add row</span><img class="ccs-btn__image" src="/images/advanced/icon-add.svg" alt=""></button>
         </section>
 
         <section class="ccs-adv__box" aria-labelledby="adv-filters-h">
           <h2 id="adv-filters-h" class="ccs-adv__heading">Filters</h2>
-          <p id="adv-filters-hint" class="ccs-adv__desc">Narrow your results. Select Add filter to choose other filters. You can delete any filter lines you don’t need.</p>
+          <p id="adv-filters-hint" class="ccs-adv__desc">Narrow your results</p>
+          <div id="adv-filters-tip" class="ccs-adv__tip">
+            <p class="ccs-adv__tip-label">Tip:</p>
+            <ul class="ccs-adv__tip-list">
+              <li>Select Add filter to choose other filters. You can delete any filter lines you don’t need.</li>
+            </ul>
+          </div>
           <div id="adv-filters" class="ccs-adv__stack"></div>
           <div class="advanced-filters-adv-add-filter-mount" id="adv-add-filter-mount"></div>
         </section>
@@ -271,65 +285,6 @@
         </div>
       </form>
     </search>
-
-    <aside class="ccs-instructions" aria-labelledby="adv-help-h">
-      <h2 id="adv-help-h" class="ccs-instructions__title">Search help</h2>
-      <section class="ccs-instructions__group" aria-labelledby="adv-tips-h">
-        <h3 id="adv-tips-h" class="ccs-instructions__sub">Tips for better results</h3>
-        <ul class="ccs-instructions__list">
-            <li class="ccs-instructions__item">
-              <span class="ccs-instructions__term"><img class="ccs-instructions__image" src="/images/advanced/icon-arrow.svg" alt="">Rows</span>
-              <span class="ccs-instructions__desc">Add rows to expand your search, or delete rows to simplify it.</span>
-            </li>
-            <li class="ccs-instructions__item">
-              <span class="ccs-instructions__term"><img class="ccs-instructions__image" src="/images/advanced/icon-arrow.svg" alt="">Search fields</span>
-              <span class="ccs-instructions__desc">Search a specific field (Title, Creator, Subject, Description) instead of everywhere.</span>
-            </li>
-            <li class="ccs-instructions__item">
-              <span class="ccs-instructions__term"><img class="ccs-instructions__image" src="/images/advanced/icon-arrow.svg" alt="">Match type</span>
-              <span class="ccs-instructions__desc">Each row can require its terms (<em class="ccs-instructions__emphasis">Contains all</em>), allow either (<em class="ccs-instructions__emphasis">Contains any</em>), or exclude them (<em class="ccs-instructions__emphasis">Does not contain</em>).</span>
-            </li>
-            <li class="ccs-instructions__item">
-              <span class="ccs-instructions__term"><img class="ccs-instructions__image" src="/images/advanced/icon-arrow.svg" alt="">Filters</span>
-              <span class="ccs-instructions__desc">Narrow by object type, collection, creator, licence, access and production date — each filter has its own <em class="ccs-instructions__emphasis">Includes all (AND)</em> / <em class="ccs-instructions__emphasis">Includes any (OR)</em> choice.</span>
-            </li>
-            <li class="ccs-instructions__item">
-              <span class="ccs-instructions__term"><img class="ccs-instructions__image" src="/images/advanced/icon-arrow.svg" alt="">Exact phrase</span>
-              <span class="ccs-instructions__desc">Use quotation marks to search for an exact phrase, e.g. <code class="ccs-instructions__code">"eucalyptus oil"</code>.</span>
-            </li>
-        </ul>
-      </section>
-      <section class="ccs-instructions__group" aria-labelledby="adv-ex-h">
-        <h3 id="adv-ex-h" class="ccs-instructions__sub">Search examples</h3>
-        <ul class="ccs-instructions__list">
-            <li class="ccs-instructions__item">
-              <span class="ccs-instructions__term"><img class="ccs-instructions__image" src="/images/advanced/icon-arrow.svg" alt="">All Fields → Contains all</span>
-              <span class="ccs-instructions__desc"><em class="ccs-instructions__emphasis">eucalyptus oil bottle</em> will display records with all three terms anywhere in the record.</span>
-            </li>
-            <li class="ccs-instructions__item">
-              <span class="ccs-instructions__term"><img class="ccs-instructions__image" src="/images/advanced/icon-arrow.svg" alt="">Subject → Contains all</span>
-              <span class="ccs-instructions__desc"><em class="ccs-instructions__emphasis">botanical illustration</em> will display records with <em class="ccs-instructions__emphasis">botanical</em> AND <em class="ccs-instructions__emphasis">illustration</em> in the subject field.</span>
-            </li>
-            <li class="ccs-instructions__item">
-              <span class="ccs-instructions__term"><img class="ccs-instructions__image" src="/images/advanced/icon-arrow.svg" alt="">Subject → Contains any</span>
-              <span class="ccs-instructions__desc"><em class="ccs-instructions__emphasis">botanical illustration</em> will display records with <em class="ccs-instructions__emphasis">botanical</em> OR <em class="ccs-instructions__emphasis">illustration</em> in the subject field.</span>
-            </li>
-        </ul>
-      </section>
-      <section class="ccs-instructions__group" aria-labelledby="adv-fx-h">
-        <h3 id="adv-fx-h" class="ccs-instructions__sub">Filter examples</h3>
-        <ul class="ccs-instructions__list">
-            <li class="ccs-instructions__item">
-              <span class="ccs-instructions__term"><img class="ccs-instructions__image" src="/images/advanced/icon-arrow.svg" alt="">Object Type → Includes all</span>
-              <span class="ccs-instructions__desc"><em class="ccs-instructions__emphasis">Photograph, Manuscript</em> will display records tagged with both Photograph AND Manuscript.</span>
-            </li>
-            <li class="ccs-instructions__item">
-              <span class="ccs-instructions__term"><img class="ccs-instructions__image" src="/images/advanced/icon-arrow.svg" alt="">Object Type → Includes any</span>
-              <span class="ccs-instructions__desc"><em class="ccs-instructions__emphasis">Photograph, Manuscript</em> will display records tagged with either Photograph OR Manuscript.</span>
-            </li>
-        </ul>
-      </section>
-    </aside>
   </div>
 </main>
 
