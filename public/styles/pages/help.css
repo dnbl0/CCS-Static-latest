@@ -181,6 +181,8 @@ body.page-help .jump-nav__list { margin: 0 0 var(--space-24); padding: 0; list-s
 body.page-help .jump-nav__item { margin: 0 0 var(--space-8); }
 body.page-help .jump-nav__link { font-size: var(--font-size-body-lg); font-weight: var(--font-weight-semibold); line-height: 1.5; color: var(--interactive-800); text-decoration: underline; }
 body.page-help .jump-nav__link:hover { color: var(--interactive-700); }
+/* The section being read (jump-nav.js), black as on the University's jump nav */
+body.page-help .jump-nav__link.is-current { color: var(--palette-black-00); }
 body.page-help .jump-nav__link:focus-visible { outline: 3px solid var(--brand-1100); outline-offset: 2px; }
 body.page-help .help-intro { margin: 0 0 var(--space-48); font-size: var(--font-size-title-5); font-weight: var(--font-weight-semibold); line-height: 1.4; color: var(--col-text-primary); }
 @media (max-width: 900px) {

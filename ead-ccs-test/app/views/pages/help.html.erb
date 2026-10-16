@@ -4,14 +4,14 @@
 <%= render NexusCcs::PageBannerComponent.new(title: "Help and support", description: "Guidance on searching, using and requesting items from the University's cultural collections.") %>
 <main class="help-main-content help-main-content--topic" id="main-content">
 <div class="help-layout">
-<nav class="jump-nav" aria-labelledby="jump-nav-title">
+<nav class="jump-nav" aria-labelledby="jump-nav-title" data-controller="jump-nav">
   <div class="jump-nav__container">
     <p class="jump-nav__title" id="jump-nav-title">On this page</p>
     <ul class="jump-nav__list">
-      <li class="jump-nav__item"><a class="jump-nav__link" href="#faq">Frequently Asked Questions</a></li>
-      <li class="jump-nav__item"><a class="jump-nav__link" href="#indigenous">Indigenous Cultural Data and Access</a></li>
-      <li class="jump-nav__item"><a class="jump-nav__link" href="#copyright">Copyright and Terms of Use</a></li>
-      <li class="jump-nav__item"><a class="jump-nav__link" href="#access">Access and Information</a></li>
+      <li class="jump-nav__item"><a class="jump-nav__link" data-jump-nav-target="link" href="#faq">Frequently Asked Questions</a></li>
+      <li class="jump-nav__item"><a class="jump-nav__link" data-jump-nav-target="link" href="#indigenous">Indigenous Cultural Data and Access</a></li>
+      <li class="jump-nav__item"><a class="jump-nav__link" data-jump-nav-target="link" href="#copyright">Copyright and Terms of Use</a></li>
+      <li class="jump-nav__item"><a class="jump-nav__link" data-jump-nav-target="link" href="#access">Access and Information</a></li>
     </ul>
   </div>
 </nav>
