@@ -9,8 +9,9 @@ git plumbing off `origin/main`, because the parent repo's checked-out branch bel
 
 - Work is on `wip/local-main` of `dnbl0/CCS-Static-latest`, where this app lives in `ead-ccs-test/` beside the static
   site. The branches named below (`feat/blacklight-oob`, `feat/rails-ccs-theme`) are history.
-- The app now has the home, collections (browse and a page each), help, indigenous data and contact pages
-  (`PagesController`, see the README), matching the static site; the search results are at `/catalog`.
+- The app has the home, collections (browse list), help (one page with the FAQ, Indigenous data, Copyright and Access sections) and
+  about pages (`PagesController`, see the README), matching the static site; the search results are at `/catalog`. The collection
+  landing pages, Contact and Search tips pages were removed (2026-10-16); their addresses redirect.
 - Tests: `bin/rails test` (183 runs, no Solr needed) and `bin/rails test:system` (journeys and axe accessibility checks;
   they need Solr, see `docs/solr-dev.md`). Rubocop, Brakeman and the gem and importmap audits run in
   `.github/workflows/rails-ci.yml` at the repository root; the workflows under `ead-ccs-test/.github/` are the ones the
@@ -84,7 +85,7 @@ gaps. The earlier pivot, query and contextual facets were removed because the wo
    The record page shows a record's images (`NexusCcs::DigitalAssetsComponent`).
 3. **Dates.** About 12,700 of 41,000 records have no `date_start_isi` and about 1,700 are 0 or below, which
    distorts the range histogram. Either exclude year <= 0 from the range facet or fix it at index time.
-4. **Style the rest** (the home hero; the results layout, filter rail, drawer and record page are done and follow
+4. **Style the rest** (the results layout, filter rail, drawer and record page are done and follow
    Europeana and the static design, see `docs/styling.md`): see `docs/styling-inventory.md` and the plan in `scratchpad/europeana/` (cards as one
    component with variants, left sticky 296px rail, drawer under 992px, accessible chips and drawer).
 5. **Bookmarks** need a user model; `/bookmarks` redirects without one. The Blacklight guest-user /
@@ -94,8 +95,7 @@ gaps. The earlier pivot, query and contextual facets were removed because the wo
 
 ## Deferred custom work (D said leave out for now)
 
-Collection/theme landing pages with a default view; editorial cards in results; custom facet UI
-(nesting, toggle-switch styling); British Museum style authority term pages; a view-preference cookie
+Editorial cards in results; custom facet UI (the facets are stock Blacklight by decision, 2026-10-13); British Museum style authority term pages; a view-preference cookie
 beyond the session (Blacklight already stores the view in the session); a non-Solr API repository (avoid).
 
 ## Gotchas
