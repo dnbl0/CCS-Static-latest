@@ -69,8 +69,10 @@ header omits those items (in development it defaults to `http://localhost:3000`)
 
 ## Filter rail and record page
 
-- **Filter rail**: Blacklight's default facets (default components, markup and range limit plugin), unstyled by the app
-  beyond the sidebar column and the mobile drawer (`filter_drawer.css`).
+- **Filter rail**: Blacklight's default facets (default components, markup, multi-select and the range limit plugin), unstyled
+  by the app beyond the sidebar column, its type scale and the mobile drawer (`filter_drawer.css`, `facet_list.css`). The type
+  follows the University's filtered listings: the "Search filters" heading is 24px / 600 Source Sans, a group's heading 18px / 600,
+  filter names and values 18px, at every width.
 - **Record page** (`components/record_page.css`, `digital_assets.css`): `RecordBannerComponent` (dark title
   band, hidden from assistive technology because Blacklight's own h1 stays), `RecordEmbedComponent` (the
   digital assets on a dark band, then type and collection, creator and date, licence), Blacklight's details
@@ -86,24 +88,36 @@ informed the drawer and cards. Files: `components/results_layout.css`, `filter_d
 
 - **Banner**: compact: "Search the Collection" and a 2.5rem search bar (field selector left, cyan button).
   The result count moved to the toolbar; "Advanced search" is a link under the search bar in the banner, as on the static site.
-- **Sidebar** (left, 14rem, flush with the window edge, ruled on its right): "Search filters" with "Clear all", then
-  "Search filters (n)" and "Clear filters" (the search stays, the filters go), then one flat list of
-  filters in blue with chevrons. The workbook's section titles stay for screen readers only. Creator role
-  sits above Creator name (in the design, not in the workbook).
+- **Sidebar** (left, flush with the window edge, ruled on its right): the "Search filters (n)" heading, then Blacklight's own facet
+  groups (the workbook's section titles as headings) of accordion filters. Creator role sits above Creator name (in the design,
+  not in the workbook). Type: see "Filter rail" above.
 - **Toolbar**: "N results for" with the search and each filter as a removable pill; sort and page size as
   select-style boxes; the view buttons flush right; a Filters button replaces the sidebar below 992px.
 - **Results**: mosaic columns step with the width (written out as `repeat(N, 1fr)`, because the
   mosaic polyfill mis-sizes `auto-fill`): six columns at 2000px, 17rem tiles, 16px gutters. List is one
   column, two from 1880px, with the collection above the title and the image right on a dark box.
 - **Pager**: small-caps Previous and Next around the page numbers, current page filled.
-- **Below 992px** the sidebar is an off-canvas drawer from the left (320px / 75vw max, 300ms, scrim
+- **Below 992px** the sidebar is an off-canvas drawer from the left (22rem / 88vw max, 300ms, scrim
   `rgba(0,0,0,.7)`); focus moves in and is trapped, Escape and the scrim close it, scroll is locked, focus
   returns to the Filters button.
 
 Not copied from Europeana on purpose: dropdown facets that apply at once, the page-number input, the
 right-hand sidebar. Europeana's live site is bot-protected, so its values were not compared rendered.
 
+## Header dropdowns
+
+Browse collections and Help open the University mega menu's panel (`components/site_header.css`): full width under the header,
+from 24px right of the logo block to the window edge, `#000b34`, 32px padding, 2px cyan top border; a 30px Fraunces title with a
+30px arrow, a hairline, then 18px / 600 links with 20px arrows. The header is the positioning context, so both panels line up the
+same. Below 1024px they are the phone drawer's lists.
+
+## Colour mode
+
+One design: light, whatever the browser or device is set to. Blacklight's colour mode script would otherwise set Bootstrap's dark
+theme on pages whose own styles are light only (a half-dark page). `config.dark_mode_support = false` on `CatalogController` and
+`StockCatalogController`, and `layouts/_light_theme` in all four layouts (`color-scheme` meta, `data-bs-theme` pinned to light).
+
 ## Not ported yet
 
-The home hero and the static-only pages (help, contact, collection landing pages). See
-`docs/styling-inventory.md`.
+Nothing from the static pages: help, about and the home hero are ported (the collection landing pages and the contact and search tips pages
+were removed on both sites). See `docs/styling-inventory.md`.

@@ -4,12 +4,13 @@
 
 - **Collections** have one slug each, used in URLs on both sites: `medical-history-museum`,
   `henry-forman-atkinson-dental-museum`, `harry-brookes-allen-museum`, `university-art-collection`, `grainger-museum`.
-  Static: `public/collections/<slug>/`. Rails: `/collections/<slug>`, `config/pages.yml` and
-  `NexusCcs::SiteNavigation::COLLECTIONS`, which also holds the Solr facet value (`collection_ssim`) and the menu label.
-  Adding a collection means adding it in those places and in `scripts/build-collection-pages.js`; there is no single
-  list yet (see "Not done" in `docs/code-quality-plan.md`).
+  There are no landing pages: a collection is the results page filtered by it (Rails `/catalog?f[collection_ssim][]=<name>`,
+  static `/search/search-results.html?collection=<name>`). Rails keeps the list in `config/pages.yml` (menu label, Solr
+  facet value `collection_ssim`, slug) read by `NexusCcs::SiteNavigation`; the old `/collections/<slug>` addresses redirect
+  to the filtered results.
 - **Pages** are named the same on both sites: home, collections (browse), a collection, help (one page with sections `faq`,
-  `copyright`, `access`, `privacy`), search tips, indigenous data, contact, about. Search results are `/search/search-results`
+  `indigenous`, `copyright`, `access`), about. Contact, Indigenous data and Search tips are not pages of their own: Contact is the
+  Help "Access and Information" section, and their old addresses redirect. Search results are `/search/search-results`
   (static) and `/catalog` (Rails).
 - **CSS classes** follow BEM (`block__element--modifier`). The static pages scope a page's rules with a `page-<name>` class
   on `<body>`; the Rails pages use the same classes (they are generated from the static styles).
@@ -17,8 +18,11 @@
   The Rails app's own results styles use its `--ccs-*` tokens; the content pages use the static ones.
 - **Collections are listed alphabetically** by name wherever they are all shown (header dropdown, Browse collections
   cards, contact groups): Grainger, Harry Brookes Allen, Henry Forman Atkinson, Medical History, University Art.
-- **Header dropdowns** are a single column about 306px wide, anchored to the right edge like the About us panel on
-  unimelb.edu.au (`.ccs-nav__panel` static, `.site-nav__panel` Rails).
+- **Header dropdowns** are the University's mega menu panel (designsystem.web.unimelb.edu.au/components/mega-menu, measured at
+  1440px): full width under the header from just right of the logo, `#000b34` with 32px padding and a 2px cyan top border, a 30px
+  serif title, a hairline, then one column of 18px / 600 links (`.ccs-nav__panel` static, `.site-nav__panel` Rails).
+- **One colour design.** The site is light only, whatever the browser or device is set to (light, dark or auto): Blacklight's
+  `dark_mode_support` is off, and `layouts/_light_theme` sets `color-scheme: light` and pins `data-bs-theme="light"`.
 
 ## Where a change is made
 

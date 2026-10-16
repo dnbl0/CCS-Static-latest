@@ -30,7 +30,7 @@ is ambiguous), **Not in prototype** (different environment or custom work, parke
 | CCS-143 Save search history | New | **Fixed** | Blacklight's built-in search history (saved in the session, no login), kept for 30 days. The search overlay lists the last 5. |
 | CCS-206 History grouped by day | New | **Fixed** | Blacklight's `/search_history` page with day headings added: Today, Yesterday, "N days ago", in Melbourne time. |
 | CCS-46 Favourite lists | New | **Partial** | Save / Saved on every result and record, a live "N saved records" bar in the header and a Saved records page, using Blacklight's bookmarks for guests (session cookie, 30 days, no login). One list only: several named lists, logging in and keeping the list across devices are **Not in prototype**. |
-| CCS-19 Explore collections | New | **Partial** | The header lists the five collections and filters by them. Collection landing pages with introductory text are parked custom work. |
+| CCS-19 Explore collections | New | **Partial** | The header lists the five collections and filters by them. There are no collection landing pages (removed by decision, 2026-10-16): a collection's link goes to the results filtered by it. |
 | CCS-44 Viewing classification | New | **Gap: data** | Source is "DA Advisory Classification" in Nexus DAM. |
 | CCS-217 Collection asset details | New | **Partial** | The record page follows the workbook's fields (19 of 30 have data); events, measurements, language and provenance are **Gap: data**. |
 | CCS-310 Test semantic search with integration data | New | **Not in prototype** | Depends on the developers' integration data. |

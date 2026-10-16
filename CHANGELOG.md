@@ -2,6 +2,11 @@
 
 Recent changes to the static site, newest first. Earlier history is in `git log`. (Moved out of the README on 2026-10-07.)
 
+### 2026-10-16
+
+- **Rails app** (org #49-#63, live): facets are stock Blacklight; Advanced Search is the stock form (title "Advanced Search"); the reviewed copy on home, About and Help; Help is one page with FAQ, Indigenous data, Copyright and Access and the University jump navigation (with a scroll highlight); Contact, Search tips and Indigenous data pages removed (old addresses redirect to the Help sections); collection landing pages removed on both sites, a collection's links go to the results filtered by it (old `/collections/<slug>` addresses redirect); header dropdowns are the University mega menu panel (static and Rails); mobile filter drawer spacing and a 24/18/18px sidebar type scale; record page tags wrap and the asset stage has equal padding; licence hover text from the copy; one light design whatever the browser's colour setting.
+- **Static site**: the same copy, restructure and layout; the home page ends with a line about other University collections.
+
 ### 2026-10-10
 
 - **Saved records bar moved into the breadcrumb strip (Rails)**: as on the Study site's saved courses, the slate-teal "N saved records" block now sits at the right end of the breadcrumb strip (both `BreadcrumbComponent` and `PageBreadcrumbsComponent` render `NexusCcs::SavedBarComponent` inside a `.breadcrumb-strip`), flush to the strip's top, bottom and right edge and exactly as tall as the strip (44px at 1440, 1000 and 390, system-tested). It is gone from the header top strip and the mobile drawer, except on pages with no breadcrumb (the home page), where it stays in the header's top strip (desktop only). Wording, live count, `aria-current` on `/bookmarks` and the focus ring are unchanged.

@@ -70,16 +70,20 @@ Eg:
 
 # Modifications from base Blacklight Project
 
-## Content pages (home, collections, help, contact, about)
+## Content pages (home, collections, help, about)
 
 `PagesController` serves the pages of the static prototype (`public/` in the repository root) so the two sites match:
-`/` (home), `/collections`, `/collections/<slug>`, `/help` (one page; sections `#faq`, `#copyright`, `#access`, `#privacy`),
-`/help/search-tips`, `/help/indigenous-data`, `/contact` and `/about`. The search results live at `/catalog`.
+`/` (home), `/collections` (the Browse collections list), `/help` (one page; sections `#faq`, `#indigenous`, `#copyright`, `#access`,
+with the University's jump navigation beside them) and `/about`. The search results live at `/catalog`.
 
-* Views are in `app/views/pages` (layout `layouts/pages`). The five collection landing pages share
-  `pages/collection.html.erb`; their text is in `config/pages.yml`. The Browse collections cards on the home, collections and about pages are one partial, `pages/_browse_collections.html.erb`. The help sections are
-  `pages/help/_sections.html.erb`.
-* Record counts on the browse page come from Solr when it is reachable and are left out otherwise.
+* There are no collection landing pages. `/collections/<slug>`, `/contact`, `/help/search-tips` and `/help/indigenous-data` are
+  permanent redirects (`config/routes.rb`): a collection's old address goes to the results filtered to that collection
+  (`/catalog?f[collection_ssim][]=<name>&search_field=all_fields`), the others to the matching Help section. The Browse collections
+  menu, cards and home page links all use `collection_results_path(slug)` (`ApplicationHelper`).
+* Views are in `app/views/pages` (layout `layouts/pages`). The collections' menu labels and Solr facet values are in
+  `config/pages.yml`. The Browse collections cards on the home and collections pages are one partial,
+  `pages/_browse_collections.html.erb` (the home page has its own listing); the Help text is all in `pages/help.html.erb`, and the
+  jump navigation highlight is the `jump-nav` Stimulus controller. `HelpTopic` lists the sections for the header's Help menu.
 * The styles and images are generated from the static site, which is their source: `app/assets/stylesheets/pages`,
   `tokens/static_site.css` and `app/assets/images/site/` are written by `node scripts/sync-rails-assets.js` (run
   `npm run sync:rails` at the repository root) and checked by `npm test`. Never edit those files by hand: change

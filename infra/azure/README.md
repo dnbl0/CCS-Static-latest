@@ -35,3 +35,12 @@ On Azure for Students "Express" environments there are no storage mounts, so Sol
 the web app re-fills it on start (`AUTO_INDEX=true`). Solr runs `--user-managed` with a generated password; the web app
 reaches it over its https address with the password held in a secret. Pin `TAG` to a commit SHA: a changed tag is what
 makes Azure start a new replica. See the header of `containerapps.sh` for details.
+
+## Redeploying a merged change (the live `ccs-web`)
+1. Merge to `org` main and wait for the **Push images to Azure Container Registry** workflow: it pushes `ccs-web:<commit SHA>`.
+2. `az containerapp update -n ccs-web -g <rg> --image <registry>.azurecr.io/ccs-web:<commit SHA>`. Do not pass `--revision-suffix` (Express
+   environments reject it) and do not use the `latest` tag (a replica keeps a cached image; only a changed image string restarts it).
+3. The app restarts and Solr is empty until the web app re-indexes the bundled CSVs (`AUTO_INDEX=true`, about two minutes): search shows
+   "0 results" meanwhile. Wait until `/catalog?q=map` returns results, then check `/`, `/help` and the stock record pages.
+4. Only `ccs-web` and `ccs-solr` are ours; leave any other app in the resource group alone. Passwords stay in Azure secrets.
+
