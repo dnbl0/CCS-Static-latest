@@ -24,7 +24,7 @@
 /* ---- Page composition ----------------------------------------------------------------------- */
 .ccs-page { display: flex; flex-direction: column; flex: 1; font-family: "Source Sans 3", sans-serif; color: var(--text-primary); }
 .ccs-page *, .ccs-page *::before, .ccs-page *::after { box-sizing: border-box; }
-.ccs-page__body { display: grid; grid-template-columns: minmax(0, 1fr) 305px; gap: var(--space-40); align-items: start; width: 100%; max-width: var(--layout-page); margin: 0 auto; padding: 64px 128px; }
+.ccs-page__body { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-40); align-items: start; width: 100%; max-width: var(--layout-page); margin: 0 auto; padding: 64px 128px; }
 @media (max-width: 1279px) { .ccs-page__body { padding-left: 64px; padding-right: 64px; } }
 @media (max-width: 1023px) { .ccs-page__body { grid-template-columns: minmax(0, 1fr); gap: var(--space-32); padding: var(--space-48) var(--space-24); } }
 
@@ -33,6 +33,11 @@
 .ccs-adv__box { display: flex; flex-direction: column; gap: var(--space-16); margin: 0; padding: 0; border: 0; min-width: 0; }
 .ccs-adv__heading { margin: 0; font-family: "Fraunces", serif; font-size: var(--font-size-26); font-weight: var(--font-weight-semibold); line-height: var(--line-height-tight); color: var(--brand-1100); font-variation-settings: "SOFT" 0, "WONK" 1; }
 .ccs-adv__desc { margin: 0; max-width: var(--layout-narrow); font-size: var(--font-size-body); line-height: 24px; color: var(--text-secondary); }
+/* Tips under each box, as the reviewed copy (page 6) sets them out: a "Tip:" label, then a bulleted list */
+.ccs-adv__tip { max-width: var(--layout-narrow); font-size: var(--font-size-body); line-height: 24px; color: var(--text-secondary); }
+.ccs-adv__tip-label { margin: 0 0 var(--space-4); font-weight: var(--font-weight-semibold); }
+.ccs-adv__tip-list { margin: 0; padding-left: var(--space-24); }
+.ccs-adv__tip-list li { margin: 0 0 var(--space-4); }
 .ccs-adv__stack { display: flex; flex-direction: column; gap: var(--space-24); }
 .ccs-adv__sort { max-width: 288px; }
 .ccs-adv__actions { display: flex; justify-content: flex-end; gap: var(--space-16); width: 100%; }
