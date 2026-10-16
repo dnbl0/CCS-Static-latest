@@ -1,8 +1,8 @@
-// Local preview server that mirrors vercel.json (clean URLs, /item/CA-nnnnnn rewrite, redirects).
+// Local preview server that mirrors config/hosting.json (clean URLs, /item/CA-nnnnnn rewrite, redirects).
 // Usage: npm run dev [-- 3000]   (default port 3000)
 const http = require('http'), fs = require('fs'), path = require('path');
 const root = path.join(__dirname, '..', 'public');
-const cfg = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'vercel.json'), 'utf8'));
+const cfg = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'config', 'hosting.json'), 'utf8'));
 const catalog = require('../api/catalog.js');
 const port = +process.argv[2] || +process.env.PORT || 3000;
 const mime = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.svg': 'image/svg+xml', '.mp4': 'video/mp4', '.mp3': 'audio/mpeg', '.json': 'application/json', '.woff2': 'font/woff2' };

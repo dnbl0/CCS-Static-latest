@@ -19,7 +19,6 @@ const PAGES = {
   record: '/collections/record.html?id=1',
   help: '/help/',
   'help-indigenous-data': '/help/indigenous-data.html',
-  contact: '/contact.html'
 };
 // search.html is only a redirect shim to the results page (no rendering of its own), so it is not snapshotted.
 const VIEWPORTS = { 1280: { width: 1280, height: 900 }, 378: { width: 378, height: 800 } };

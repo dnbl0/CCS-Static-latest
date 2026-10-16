@@ -418,3 +418,8 @@ body.page-about .about-help__text {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+body.page-about .about-support__text a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}

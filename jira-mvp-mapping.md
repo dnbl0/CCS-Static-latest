@@ -21,7 +21,7 @@ This revision was produced by fetching the live Jira issues directly (see audit 
 
 - **Live site**: everything under `public/` - `index.html`, `search.html` (redirect stub to `/search/search-results`), `search/search-results.html` (real search), `collections/index.html`, `collections/<slug>/index.html` (five landing pages: `grainger-museum`, `harry-brookes-allen-museum`, `henry-forman-atkinson-dental-museum`, `medical-history-museum`, `university-art-collection`), `collections/record.html`, `contact.html`, `help/index.html`, `help/indigenous-data.html`.
 - **Legacy files**: the old root-level `*.dc.html` files and root `index.html` / `collection-data.js` no longer exist. The legacy `.dc.html` filenames survive only as 301-redirect sources in `vercel.json` and `public/.htaccess`.
-- **`config/redirects.json`**: documentation-only (nothing reads it at runtime). `vercel.json` and `public/.htaccess` are authoritative; the JSON file does not list the `/search` redirects.
+- **`config/redirects.json`**: documentation-only (nothing reads it at runtime). `config/hosting.json` and `public/.htaccess` are authoritative; the JSON file does not list the `/search` redirects.
 - **Shared data source**: `public/collection-data.js` defines `window.CCS` (`records`, `items`, `ids`, `related()`); `search/search-results.html` and `collections/record.html` both read it. 735 records are listed. See README.md.
 - **Live stylesheets**: everything under `public/styles/` (`tokens/`, `base.css`, `components/`, `pages/`) and the locally built `public/styles/vendor/bootstrap-uom.min.css`.
 
@@ -60,7 +60,7 @@ This revision was produced by fetching the live Jira issues directly (see audit 
 | CCS-20 | Filter and refine public data | New | Covered by CCS-38's filters; Indigenous "subject area" sourcing from CMS not verifiable from this static repo (data-layer requirement) |
 | CCS-21 | Sensitivity notifications | New | Verified 2026-10-03: record page shows advisory banners from `advisories` (ADVISORY dict in `collection-data.js`). Only 2 of 728 records carry advisories, so Indigenous deceased-persons / language notices are not applied sitewide: **data gap**, not a UI gap |
 | CCS-22 | UoM ID surfacing | New | **Done 2026-10-03**: every record shows a copyable `UoM ID` (stable `CA-000123` asset ID) above the accession number, so the 12 records with no accession (child records) still have a visible identifier |
-| CCS-25 | Persistent URLs | Done | **Done 2026-10-03**: persistent link now resolves: `/item/CA-000123` rewrites (vercel.json + .htaccess) to the record page, and the displayed/copied link uses the current host. Production domain (collections.unimelb.edu.au) is a deployment concern |
+| CCS-25 | Persistent URLs | Done | **Done 2026-10-03**: persistent link now resolves: `/item/CA-000123` rewrites (config/hosting.json + .htaccess) to the record page, and the displayed/copied link uses the current host. Production domain (collections.unimelb.edu.au) is a deployment concern |
 | CCS-27 | Display rights information | Done | `collections/record.html` displays `licence`/`rights` fields and licence icons |
 | CCS-217 | View Collection Asset Details (with/without DAs) | New | `collections/record.html` handles both cases (records with no digital asset render without a media viewer) |
 
