@@ -47,7 +47,10 @@
 .saved-bar.has-saved .saved-bar__icon--some { display: block; }
 /* Primary navigation (links + dropdown triggers share the UniMelb interactive states) */
 /* UniMelb focus: a 2px inset blue ring (an invisible outline keeps it visible in forced-colours mode) */
-/* Dropdown panel (modelled on the UniMelb mega-menu panel: dark, 2px light-blue top rule, shadow) */
+/* The dropdown is the University mega menu's panel (designsystem.web.unimelb.edu.au/components/mega-menu, measured at 1440px):
+   it opens under the header from just right of the logo to the window's right edge, 32px padding and a 2px cyan top border on
+   #000b34; a 30px serif title with its arrow, a hairline, then one column of 18px / 600 links with 20px arrows. The header is the
+   positioning context (the nav items are static), so every panel lines up the same whichever button opened it. */
 /* Mobile-only pieces (Menu button, drawer search, drawer top links, Back row) are hidden on desktop */
 /* The saved-records link in the drawer: only the home page needs it (every other page has the bar in its breadcrumb strip), and only on phones */
 /* Mobile and tablet header, following the UniMelb mobile header: one 96px row (logo block, site name, Menu button),
