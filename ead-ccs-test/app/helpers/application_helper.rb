@@ -4,5 +4,4 @@ module ApplicationHelper
   def collection_results_path(slug)
     search_action_path(f: { collection_ssim: [ NexusCcs::SiteNavigation.facet_value(slug) ] }, search_field: "all_fields")
   end
-
 end
