@@ -13,6 +13,13 @@ class StockLicenceBadgeComponent < Blacklight::Component
   CC0 = "https://creativecommons.org/publicdomain/zero/1.0/"
   CC_LICENCE = %r{\ACC (BY(?:-NC)?(?:-ND|-SA)?)\b}i
 
+  # The hover text, from the reviewed copy: "<label> means ...". Free use: the public domain, CC0, CC BY and CC BY-SA; permission:
+  # in copyright. The copy has no sentence for a Creative Commons licence with NC or ND conditions (the static site words them "with
+  # conditions") nor for the reproduction licence, which is left without hover text until the stakeholders decide.
+  MEANS_FREE = "means you can use this item freely."
+  MEANS_PERMISSION = "means you may be able to use this item if you seek permission."
+  MEANS_CONDITIONS = "means you can use this item with conditions."
+
   attr_reader :licence
 
   def initialize(licence:)
@@ -35,6 +42,18 @@ class StockLicenceBadgeComponent < Blacklight::Component
     end
   end
 
+  # The hover text, or nil where the copy has none
+  def meaning
+    case licence
+    when /\Apublic domain/i then "Public Domain #{MEANS_FREE}"
+    when /\ACC0\b/i then "CC0 #{MEANS_FREE}"
+    when CC_LICENCE
+      elements = ::Regexp.last_match(1).upcase
+      "CC #{elements} #{elements.match?(/NC|ND/) ? MEANS_CONDITIONS : MEANS_FREE}"
+    when /\Acopyright/i then "In copyright #{MEANS_PERMISSION}"
+    end
+  end
+
   def icons = statement[:icons].filter_map { |name| StockLicenceIcons::PATHS[name] }
 
   def url = statement[:url]
@@ -42,6 +61,7 @@ class StockLicenceBadgeComponent < Blacklight::Component
   def wrapper_options
     options = { class: "badge rounded-pill text-bg-light border fw-normal px-3 py-2 d-inline-flex align-items-center gap-2 text-decoration-none" }
     options.merge!(href: url, target: "_blank", rel: "noopener") if url
+    options[:title] = meaning if meaning
     options
   end
 end

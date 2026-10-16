@@ -184,6 +184,16 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     assert(StockLicenceIcons::PATHS.values.all? { |view_box, path| view_box.present? && path.start_with?("M") })
   end
 
+  test "the licence badge's hover text is the reviewed copy: free use, permission, none for the reproduction licence" do
+    meaning = ->(licence) { StockLicenceBadgeComponent.new(licence: licence).meaning }
+    assert_equal "Public Domain means you can use this item freely.", meaning.("Public domain - Copyright expired")
+    assert_equal "CC BY-SA means you can use this item freely.", meaning.("CC BY-SA")
+    assert_equal "In copyright means you may be able to use this item if you seek permission.", meaning.("Copyright - Current")
+    assert_nil meaning.("Reproduction Licence - Current")
+    html = ApplicationController.render(StockLicenceBadgeComponent.new(licence: "Public domain - Copyright expired"), layout: false)
+    assert_includes html, 'title="Public Domain means you can use this item freely."'
+  end
+
   test "the new record pages are for the two records only; any other id is a 404, and the site's own record page is untouched" do
     assert_equal %w[emu-9044 vernon-MHM00394], StockRecords::IDS
     Rails.configuration.x.stock_record_ids = nil # the real list
