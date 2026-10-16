@@ -230,7 +230,15 @@
   height: 100%;
 }
 
-:is(.search-banner, .ccs-hero__search) .input-group > .ccs-select > .dropdown-toggle {
+:is(.search-banner, .ccs-hero__search) .input-group > :is(#sortAndPerPage .btn-group, .ccs-select) > .dropdown-toggle {
+  /* (The :is() with an id matches the specificity of the site's dropdown rule in results_toolbar.css, which this has to override.)
+     The bar already has the navy outline and is 3rem including it, so the button fills what is inside (46px) like the input and the
+     search button beside it. The site's dropdown button is 3rem with its own outline, which made it 2px taller than they are and
+     drew a second set of navy lines. Only a hairline divides it from the input. */
+  height: 100%;
+  line-height: calc(3rem - 2px);
+  border: 0;
+  border-left: 1px solid #d9d6cf;
   border-radius: 0;
 }
 
@@ -240,5 +248,12 @@
     order: 3;
     flex: 1 1 100%;
     width: 100%;
+  }
+
+  .search-banner .input-group > :is(#sortAndPerPage .btn-group, .ccs-select) > .dropdown-toggle {
+    height: 2.75rem;
+    line-height: 2.75rem;
+    border-top: 1px solid #d9d6cf;
+    border-left: 0;
   }
 }
