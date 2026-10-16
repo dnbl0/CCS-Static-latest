@@ -3,11 +3,173 @@
 <%= render NexusCcs::PageBreadcrumbsComponent.new(trail: [ [ "Help and support", nil ] ]) %>
 <%= render NexusCcs::PageBannerComponent.new(title: "Help and support", description: "Guidance on searching, using and requesting items from the University's cultural collections.") %>
 <main class="help-main-content help-main-content--topic" id="main-content">
-  <div class="help-layout">
-    <%= render "pages/help/side_nav", current: "all" %>
-    <div class="help-layout__content">
-      <%= render "pages/help/sections" %>
-    </div>
+<div class="help-layout">
+<nav class="jump-nav" aria-labelledby="jump-nav-title">
+  <div class="jump-nav__container">
+    <p class="jump-nav__title" id="jump-nav-title">On this page</p>
+    <ul class="jump-nav__list">
+      <li class="jump-nav__item"><a class="jump-nav__link" href="#faq">Frequently Asked Questions</a></li>
+      <li class="jump-nav__item"><a class="jump-nav__link" href="#indigenous">Indigenous Cultural Data and Access</a></li>
+      <li class="jump-nav__item"><a class="jump-nav__link" href="#copyright">Copyright and Terms of Use</a></li>
+      <li class="jump-nav__item"><a class="jump-nav__link" href="#access">Access and Information</a></li>
+    </ul>
   </div>
-  <%= render "pages/help/cta_band" %>
+</nav>
+<div class="help-layout__content">
+<p class="help-intro">Choose a topic to find guidance on searching, accessing and using the University's cultural collections.</p>
+<section class="help-section" id="faq" aria-labelledby="h-faq">
+  <header class="help-section__header">
+    <h2 class="help-section__heading" id="h-faq">Frequently Asked Questions</h2>
+    <p class="help-section__description">Having problems when searching for items across the cultural collections? Here are some frequently asked questions to help.</p>
+  </header>
+  <ul class="help-section__items">
+    <li class="help-section__item">
+      <h3 class="help-section__subheading">How do I search across multiple collections at once?</h3>
+      <p class="help-section__text">By default, searches run across every collection in CCS. You can use filters on the results page to narrow to a specific collection, or to further refine your results by other metadata fields.</p>
+    </li>
+    <li class="help-section__item">
+      <h3 class="help-section__subheading">What collections are currently included?</h3>
+      <p class="help-section__text">CCS is being delivered progressively, with collections onboarding over time as systems, metadata and digital content are available. The first phase brings together five collections across the University. More collections will be added over time, expanding the breadth and depth of content available through the platform. As more collections join CCS users will be able to search across an increasingly rich and diverse body of material, creating new opportunities for learning, research and innovation.</p>
+    </li>
+    <li class="help-section__item">
+      <h3 class="help-section__subheading">How do I request digital access to a collection item?</h3>
+      <p class="help-section__text">Contact the relevant Collection Team for image requests. It makes the process easier if you include the item's persistent identifier and a description of your intended use.</p>
+    </li>
+    <li class="help-section__item">
+      <h3 class="help-section__subheading">How do I report any incorrect or incomplete metadata?</h3>
+      <p class="help-section__text">We welcome community knowledge to help improve the accuracy of our records. Contact the Collection Team and include the item's persistent identifier to make the process easier.</p>
+    </li>
+    <li class="help-section__item">
+      <h3 class="help-section__subheading">What can I do if I have problems accessing the search?</h3>
+      <p class="help-section__text">Try clearing your cache in the browser you are using. Browsers often save outdated information, which is the most common cause of access errors.</p>
+    </li>
+    <li class="help-section__item">
+      <h3 class="help-section__subheading">Contact us</h3>
+      <p class="help-section__text">If you find a broken link, or want to suggest an improvement, contact us at <a href="mailto:ccs-feedback@unimelb.edu.au">ccs-feedback@unimelb.edu.au</a></p>
+    </li>
+  </ul>
+</section>
+
+<section class="help-section" id="indigenous" aria-labelledby="h-indigenous">
+  <header class="help-section__header">
+    <h2 class="help-section__heading" id="h-indigenous">Indigenous Cultural Data and Access</h2>
+    <p class="help-section__description">The University of Melbourne acknowledge Aboriginal and Torres Strait Islander people as the Traditional Owners of the unceded lands on which we work, learn and live. We pay respect to Elders past, present and future, and acknowledge the importance of Indigenous knowledge in the Academy.</p>
+  </header>
+  <ul class="help-section__items">
+    <li class="help-section__item">
+      <p class="help-section__text"><a href="https://www.unimelb.edu.au/murmuk-djerring">Read about our Indigenous priorities</a></p>
+      <p class="help-section__text"><a href="https://www.unimelb.edu.au/indigenous/acknowledgement-of-country">Read our full Acknowledgement of Country</a></p>
+    </li>
+    <li class="help-section__item">
+      <h3 class="help-section__subheading">Note on images and voices</h3>
+      <p class="help-section__text">Aboriginal and Torres Strait Islander people should be aware that the University of Melbourne website and collections contain the names, images and voices of people who have died.</p>
+    </li>
+    <li class="help-section__item">
+      <h3 class="help-section__subheading">Note on language</h3>
+      <p class="help-section__text">Please be advised that people may be disturbed by the content of some collection items, which may include distressing images and descriptions, and derogatory terms used in their historical context, including for Aboriginal and Torres Strait Islander people. They reflect the period in which they were created and are not the views of the University of Melbourne.</p>
+    </li>
+    <li class="help-section__item">
+      <h3 class="help-section__subheading">Note on terminology</h3>
+      <p class="help-section__text">The following terms are used interchangeably throughout collection items: Aboriginal and Torres Strait Islander, First Nations, First Peoples, Indigenous Australians (inclusive of Aboriginal and Torres Strait Islander peoples), Aboriginal peoples and Indigenous peoples (commonly used for First Nations peoples internationally).</p>
+    </li>
+    <li class="help-section__item">
+      <h3 class="help-section__subheading">Contact</h3>
+      <p class="help-section__text">If you have questions about Indigenous cultural materials, cultural protocols or access conditions, or wish to provide feedback about a record, please contact the relevant <a class="indigenous-data-contact__text-link-collection-team" href="#access">collection team</a>.</p>
+    </li>
+  </ul>
+</section>
+<section class="help-section" id="copyright" aria-labelledby="h-copyright">
+  <header class="help-section__header">
+    <h2 class="help-section__heading" id="h-copyright">Copyright and Terms of Use</h2>
+    <p class="help-section__description">How a collection item can be used varies depending on the conditions of its copyright license, intellectual property or cultural advice. Please check the License type and Terms of Use on individual record for further information.</p>
+  </header>
+  <ul class="help-section__items">
+    <li class="help-section__item">
+      <h3 class="help-section__subheading">Free Access</h3>
+      <p class="help-section__text">Collection items available for use for personal, research, educational or non-commercial purposes. Attribution to the creator and acknowledgement of University of Melbourne is required.</p>
+    </li>
+    <li class="help-section__item">
+      <h3 class="help-section__subheading">Licensed</h3>
+      <p class="help-section__text">Some collection items are available for use under Creative Commons or other licence types. Please follow the specific licence terms shown on the individual record.</p>
+    </li>
+    <li class="help-section__item">
+      <h3 class="help-section__subheading">Cultural Conditions</h3>
+      <p class="help-section__text">Where collection items carrying a cultural or advisory notice, engage respectfully with the content. For more information see <a class="help-copyright__item-link-indigenous-cultural-data" href="<%= help_path(anchor: "indigenous") %>">Indigenous Cultural Data and Access</a>.</p>
+    </li>
+    <li class="help-section__item">
+      <h3 class="help-section__subheading">Contact the Collection</h3>
+      <p class="help-section__text">To request permission to use collection items in publications, online and for commercial use, or for other specific enquiries, contact the relevant Collection. To assist in the query, note the information in Cite this item and prepare a description of your intended use.</p>
+    </li>
+    <li class="help-section__item">
+      <h3 class="help-section__subheading">University Copyright Office</h3>
+      <p class="help-section__text">To learn more about copyright and licensing, visit the <a href="https://copyright.unimelb.edu.au/">University Copyright Office</a>.</p>
+    </li>
+  </ul>
+</section>
+
+<section class="help-section" id="access" aria-labelledby="h-access">
+  <header class="help-section__header">
+    <h2 class="help-section__heading" id="h-access">Access and Information</h2>
+    <p class="help-section__description">If you wish to access the collections or would like to view, raise a general enquiry, or request an image, please contact the relevant collection and include information the accession number, or information from Cite this Item of the search page.</p>
+  </header>
+  <ul class="help-section__items">
+    <li class="help-section__item">
+      <h3 class="help-section__subheading">Contact a collection</h3>
+      <ul class="help-section__contacts">
+        <li class="help-section__contact">
+          <span class="help-section__contact-name">Medical History Museum</span>
+          <span class="help-section__contact-detail">Email: <a href="mailto:MDHS-museum@unimelb.edu.au">MDHS-museum@unimelb.edu.au</a></span>
+        </li>
+        <li class="help-section__contact">
+          <span class="help-section__contact-name">Henry Forman Atkinson Dental Museum</span>
+          <span class="help-section__contact-detail">Email: <a href="mailto:MDHS-museum@unimelb.edu.au">MDHS-museum@unimelb.edu.au</a></span>
+        </li>
+        <li class="help-section__contact">
+          <span class="help-section__contact-name">Harry Brookes Allen Museum of Anatomy and Pathology</span>
+          <span class="help-section__contact-detail">Email: <a href="mailto:MDHS-museum@unimelb.edu.au">MDHS-museum@unimelb.edu.au</a></span>
+        </li>
+        <li class="help-section__contact">
+          <span class="help-section__contact-name">University Art Collection</span>
+          <span class="help-section__contact-detail"><a href="#">Access Request Form</a></span>
+        </li>
+        <li class="help-section__contact">
+          <span class="help-section__contact-name">Grainger Museum Collection</span>
+          <span class="help-section__contact-detail"><a href="#">Access Request Form</a></span>
+        </li>
+      </ul>
+    </li>
+    <li class="help-section__item">
+      <h3 class="help-section__subheading">General enquiries</h3>
+      <ul class="help-section__contacts">
+        <li class="help-section__contact">
+          <span class="help-section__contact-name">Phone</span>
+          <span class="help-section__contact-detail">13 MELB (13 6352)<br>International: +61 3 9035 5511</span>
+        </li>
+        <li class="help-section__contact">
+          <span class="help-section__contact-name">Address</span>
+          <span class="help-section__contact-detail">The University of Melbourne<br>Grattan Street, Parkville<br>Victoria 3010, Australia</span>
+        </li>
+        <li class="help-section__contact">
+          <span class="help-section__contact-name">Site feedback</span>
+          <span class="help-section__contact-detail">Report a broken link or suggest an improvement: <a href="mailto:ccs-feedback@unimelb.edu.au">ccs-feedback@unimelb.edu.au</a></span>
+        </li>
+      </ul>
+    </li>
+    <li class="help-section__item">
+      <h3 class="help-section__subheading">Before you get in touch</h3>
+      <p class="help-section__text">Copy the persistent link or UoM ID from the record page and include this in your request.</p>
+    </li>
+  </ul>
+</section>
+
+</div>
+</div>
+
+<section class="cta-band" aria-labelledby="h-contact-box">
+  <div class="cta-band__inner">
+    <h2 class="cta-band__heading" id="h-contact-box">Still need help?</h2>
+    <p class="cta-band__text">Contact the collections team. We aim to respond to enquiries within 5 business days.</p>
+    <a class="ct-button" href="<%= help_path(anchor: "access") %>">Contact the collections team</a>
+  </div>
+</section>
 </main>

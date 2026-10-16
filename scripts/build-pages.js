@@ -2,10 +2,10 @@
 //   BASE_PATH=/CCS-2026-MVP node scripts/build-pages.js     (project site served under a sub-path)
 //   node scripts/build-pages.js                              (served from the root, e.g. a custom domain)
 //
-// What it does that Vercel did for us:
+// What this does for GitHub Pages, which has no server-side rules:
 //  - root-absolute URLs ("/styles/x.css", '/help/index.html', url(/images/y.svg)) get the base path prefixed;
-//  - /item/:code (a Vercel rewrite) becomes a 404.html that forwards to the record page;
-//  - the old *.dc.html and /search redirects in vercel.json become small meta-refresh pages;
+//  - /item/:code (a hosting rewrite) becomes a 404.html that forwards to the record page;
+//  - the old *.dc.html and /search redirects in config/hosting.json become small meta-refresh pages;
 //  - Pages has no /catalog.json function, so every page defaults the search adapter to its local catalogue.
 const fs = require('fs');
 const path = require('path');
@@ -42,9 +42,9 @@ for (const f of walk(out)) {
   fs.writeFileSync(f, text);
 }
 
-// vercel.json redirects -> meta-refresh stubs (Pages cannot send 301s)
+// config/hosting.json redirects -> meta-refresh stubs (Pages cannot send 301s)
 const stub = dest => `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Redirecting</title><meta http-equiv="refresh" content="0; url=${dest}"><link rel="canonical" href="${dest}"><script>location.replace(${JSON.stringify(dest)} + location.search + location.hash);</script></head><body><a href="${dest}">Continue</a></body></html>\n`;
-const cfg = JSON.parse(fs.readFileSync(path.join(root, 'vercel.json'), 'utf8'));
+const cfg = JSON.parse(fs.readFileSync(path.join(root, 'config', 'hosting.json'), 'utf8'));
 let stubs = 0;
 for (const r of cfg.redirects || []) {
   if (r.source.includes('%')) continue; // the encoded duplicate of a source that has a literal space

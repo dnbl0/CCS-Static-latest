@@ -24,12 +24,5 @@ class PagesController < ApplicationController
     topic = HelpTopic.find(params[:topic])
     redirect_to topic.path(helpers), status: :moved_permanently if topic
   end
-
-  def search_tips; end
-
-  def indigenous_data = render("pages/help/indigenous_data")
-
   def about; end
-
-  def contact; end
 end

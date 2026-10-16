@@ -793,7 +793,7 @@ public/                              # Deployed web root
 src/scss/custom-bootstrap.scss       # Bootstrap theme source
 tests/                               # Node test scripts (npm test)
 config/redirects.json                # documentation-only
-vercel.json                          # clean URLs + legacy redirects
+config/hosting.json                  # clean URLs + legacy redirects
 ```
 
 ### CSS Files Location

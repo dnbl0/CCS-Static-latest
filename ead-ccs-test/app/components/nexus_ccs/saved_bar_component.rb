@@ -5,7 +5,7 @@ module NexusCcs
   # block with a bookmark icon and "N saved records", linking to the saved list (Blacklight's /bookmarks). Both
   # breadcrumb components (BreadcrumbComponent, PageBreadcrumbsComponent) render it, so every page with a breadcrumb has
   # it, and it fills the strip's full height (breadcrumb_strip.css). The home page has no breadcrumb, so the
-  # header's top strip carries it there (`placement: :header`). The number carries Blacklight's
+  # header's top strip carries it there (`placement: :header`); on the home page it sits over the top right of the hero photo (`placement: :hero`). The number carries Blacklight's
   # `data-role="bookmark-counter"`, which its bookmark JavaScript rewrites after each Save / Saved click; the
   # saved_bar Stimulus controller then updates the words and the icon (bookmark-plus when empty, bookmark-check
   # otherwise) and the live region announces it.
@@ -20,7 +20,7 @@ module NexusCcs
       @count ||= helpers.respond_to?(:saved_records_count) ? helpers.saved_records_count.to_i : 0
     end
 
-    def classes = [ "site-nav__saved", (placement == :header ? "site-nav__saved--header" : nil), (placement == :drawer ? "site-nav__saved--drawer" : nil), (empty? ? "site-nav__saved--empty" : nil) ].compact.join(" ")
+    def classes = [ "site-nav__saved", (placement == :header ? "site-nav__saved--header" : nil), (placement == :hero ? "site-nav__saved--hero saved-bar--hero" : nil), (placement == :drawer ? "site-nav__saved--drawer" : nil), (empty? ? "site-nav__saved--empty" : nil) ].compact.join(" ")
 
     attr_reader :placement
 

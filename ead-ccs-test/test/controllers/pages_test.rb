@@ -34,80 +34,75 @@ class PagesTest < ActionDispatch::IntegrationTest
     assert_response :not_found
   end
 
-  test "the help page has a section for each topic that has no page of its own" do
+  test "the help page has a section for each topic, with the jump navigation beside them" do
     get "/help"
 
     assert_response :success
     assert_select "body.page-help h1", "Help and support"
-    sections = HelpTopic.all.reject(&:standalone?)
-    assert_select ".help-layout__content section.help-section", count: sections.size
-    sections.each do |topic|
+    assert_select ".help-layout__content section.help-section", count: HelpTopic.all.size
+    HelpTopic.all.each do |topic|
       assert_select "section.help-section##{topic.key} h2.help-section__heading", topic.title
       assert_select "section.help-section##{topic.key} .help-section__description", count: 1
-      assert_select "section.help-section##{topic.key} .help-section__item h3.help-section__subheading", minimum: 1
+      assert_select "section.help-section##{topic.key} .help-section__item", minimum: 1
+      assert_select "nav.jump-nav a.jump-nav__link[href='##{topic.key}']", topic.title
     end
-    assert_select ".side-nav a[aria-current=page]", "All help topics"
-    assert_select ".side-nav a[href='/help#faq']"
-    assert_select ".side-nav a[href='/help/search-tips']"
-    assert_select ".side-nav a[href='/help/indigenous-data']"
+    assert_select ".jump-nav__title", "On this page"
+    assert_select ".side-nav", count: 0
+    assert_select "p.help-intro", count: 1
   end
 
-  test "search tips has its own page with the topics side nav" do
-    get "/help/search-tips"
+  test "the access section lists the collection contacts, and the Indigenous section links to the priorities" do
+    get "/help"
 
-    assert_response :success
-    assert_select "body.page-help h1", "Search Tips"
-    assert_select ".side-nav a[aria-current=page]", "Search Tips"
-    assert_select "section.help-section", count: 0
+    assert_select "#access .help-section__contact", minimum: 5
+    assert_select "#access a[href^=mailto]", minimum: 3
+    assert_select "#indigenous a[href='https://www.unimelb.edu.au/murmuk-djerring']"
   end
 
-  test "the old help topic links go to the topic's page or section" do
-    { "faq" => "/help#faq", "copyright" => "/help#copyright", "access" => "/help#access", "privacy" => "/help#privacy",
-      "search-tips" => "/help/search-tips", "indigenous" => "/help/indigenous-data" }.each do |topic, location|
+  test "the old help topic links go to the topic's section" do
+    { "faq" => "/help#faq", "copyright" => "/help#copyright", "access" => "/help#access", "indigenous" => "/help#indigenous" }.each do |topic, location|
       get "/help", params: { topic: topic }
 
       assert_redirected_to location
     end
 
-    get "/help", params: { topic: "nope" }
-    assert_response :success
+    [ "nope", "privacy", "search-tips" ].each do |topic|
+      get "/help", params: { topic: topic }
+      assert_response :success
+    end
   end
 
-  test "the indigenous cultural data topic has its own page" do
-    get "/help/indigenous-data"
-    assert_response :success
-    assert_select "body.page-indigenous-data h1", "Indigenous Cultural Data and Access"
-    assert_select ".side-nav a[aria-current=page]", "Indigenous Cultural Data and Access"
+  test "the pages folded into Help redirect permanently to their section" do
+    { "/contact" => "/help#access", "/help/indigenous-data" => "/help#indigenous", "/help/search-tips" => "/help" }.each do |path, location|
+      get path
+
+      assert_redirected_to location
+      assert_response :moved_permanently
+    end
   end
 
-  test "the contact page lists the collection contacts" do
-    get "/contact"
-
-    assert_response :success
-    assert_select "body.page-contact h1", "Contact collections team"
-    assert_select "body.page-contact .side-nav__link", minimum: 4
-    assert_select "body.page-contact .help-layout__content li a[href^=mailto], body.page-contact .help-layout__content li a[target=_blank]", minimum: 5
-  end
-
-  test "the about page links to the collections and sits in the header" do
+  test "the about page has no browse collections section and sits in the header" do
     get "/about"
 
     assert_response :success
     assert_select "body.page-about h1", "About Cultural Collections Search"
-    assert_select "body.page-about .ccs-section--cards .ccs-card", count: 5
+    assert_select "body.page-about .ccs-section--cards", count: 0
+    assert_select "body.page-about .about-help a[href='/help#access']"
     assert_select "#site-nav-help ~ ul a[href='/about'], .site-nav a[href='/about']", minimum: 1
   end
 
-  test "the site header links to the pages" do
-    get "/contact"
+  test "the site header links to the pages, and has no Contact page of its own" do
+    get "/help"
 
     assert_select "#site-nav-collections li a[href^='/collections/']", count: 5
     assert_select "#site-nav-help a[href='/help#faq']"
+    assert_select "#site-nav-help li a", count: HelpTopic.all.size
+    assert_select "#site-nav a[href='/contact']", count: 0
     assert_select "a.site-header__title[href='/']"
   end
 
   test "every content page has one main landmark for the skip link, and the collection banner is a named region" do
-    paths = [ "/", "/collections", "/collections/grainger-museum", "/help", "/help/search-tips", "/help/indigenous-data", "/contact" ]
+    paths = [ "/", "/collections", "/collections/grainger-museum", "/help", "/about" ]
 
     paths.each do |path|
       get path

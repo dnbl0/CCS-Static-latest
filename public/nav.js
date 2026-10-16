@@ -141,14 +141,14 @@
   // layer can redraw the breadcrumb or the header after this script has run, which drops the bar, so it is added again.
   function ensureBar() {
     if (document.querySelector('[data-bookmarks-link]')) return;
-    var crumbs = document.querySelector('.page-breadcrumbs'), top = document.querySelector('.ccs-nav--header .ccs-nav__top');
-    if (!crumbs && !top) return;
-    var a = el('a', 'saved-bar ' + (crumbs ? 'saved-bar--breadcrumb' : 'saved-bar--header'));
+    var crumbs = document.querySelector('.page-breadcrumbs'), top = document.querySelector('.ccs-nav--header .ccs-nav__top'), hero = !crumbs && document.querySelector('.ccs-hero__media');
+    if (!crumbs && !top && !hero) return;
+    var a = el('a', 'saved-bar ' + (crumbs ? 'saved-bar--breadcrumb' : hero ? 'saved-bar--hero' : 'saved-bar--header'));
     a.href = '/search/bookmarks.html'; a.setAttribute('data-bookmarks-link', '');
     if (/^\/search\/bookmarks(\.html)?\/?$/.test(location.pathname)) a.setAttribute('aria-current', 'page');
     var label = el('span', null, countText(read().length)); label.setAttribute('data-bookmarks-text', '');
     a.appendChild(barIcon('empty', 'M12 7.5v6M9 10.5h6')); a.appendChild(barIcon('some', 'M8.8 10.4l2.3 2.3 4.2-4.6')); a.appendChild(label);
-    if (crumbs) crumbs.appendChild(a); else top.insertBefore(a, top.querySelector('.ccs-nav__search'));
+    if (crumbs) crumbs.appendChild(a); else if (hero) hero.appendChild(a); else top.insertBefore(a, top.querySelector('.ccs-nav__search'));
   }
   function sync() {
     ensureBar();

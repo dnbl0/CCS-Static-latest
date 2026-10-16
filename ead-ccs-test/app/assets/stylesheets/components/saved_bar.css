@@ -62,3 +62,18 @@ a.site-nav__saved:focus-visible {
     font-size: var(--ccs-font-size-md);
   }
 }
+
+/* Home page: the bar sits over the top right of the hero photo, as on study.unimelb.edu.au. The photo box is the
+   positioning context (.ccs-hero__media); on phones the bar is in the menu drawer instead. */
+.saved-bar--hero {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+}
+
+@media (max-width: 1023.98px) {
+  .saved-bar--hero {
+    display: none;
+  }
+}

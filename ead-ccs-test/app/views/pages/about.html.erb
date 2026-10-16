@@ -1,108 +1,102 @@
 <% content_for :title, "About — Cultural Collections Search — University of Melbourne" %>
 <% content_for :body_class, "page-about" %>
 <%= render NexusCcs::PageBreadcrumbsComponent.new(trail: [ [ "About", nil ] ]) %>
-<section class="about-hero" aria-labelledby="about-title">
-<div class="about-hero__inner">
-<div class="about-hero__content">
-<h1 class="about-hero__heading" id="about-title">About Cultural Collections Search</h1>
-</div>
-<div class="about-hero__media"><img class="about-hero__image" src="<%= asset_path("site/hero-parkville.jpg") %>" alt="The University of Melbourne Parkville campus"></div>
-</div>
+<section class="ccs-section ccs-section--hero" aria-labelledby="about-title">
+  <div class="ccs-hero">
+    <div class="ccs-hero__content">
+      <div>
+        <h1 id="about-title" class="ccs-hero__title">About Cultural Collections Search</h1>
+      </div>
+    </div>
+    <div class="ccs-hero__media"><img class="ccs-hero__image" src="<%= asset_path("site/hero-parkville.jpg") %>" alt="The University of Melbourne Parkville campus"></div>
+  </div>
 </section>
 <main id="main-content" class="about-main-content">
-<nav class="link-strip" aria-label="On this page">
-<ul class="link-strip__list">
-<li><a class="ct-link" href="#about-intro-title">Vision</a></li>
-<li><a class="ct-link" href="#about-journey-title">The Journey</a></li>
-<li><a class="ct-link" href="#about-myer-title">The Myer Family</a></li>
-<li><a class="ct-link" href="#about-support-title">Support CCS</a></li>
-<li><a class="ct-link" href="#about-data-title">About the data</a></li>
-</ul>
-</nav>
+  <nav class="link-strip" aria-label="On this page">
+    <ul class="link-strip__list">
+      <li><a class="ct-link" href="#about-intro-title">What is CCS</a></li>
+      <li><a class="ct-link" href="#about-journey-title">The journey</a></li>
+      <li><a class="ct-link" href="#about-myer-title">The Myer Family</a></li>
+      <li><a class="ct-link" href="#about-support-title">Support CCS</a></li>
+      <li><a class="ct-link" href="#about-data-title">About CCS Data</a></li>
+    </ul>
+  </nav>
 
-<section class="ccs-section ccs-section--intro" aria-labelledby="about-intro-title">
-<div class="ccs-section__inner">
-<h2 class="ccs-section__heading" id="about-intro-title">Vision: A New Way to Discover the University’s Cultural Collections</h2>
-<p class="ccs-intro">Cultural Collections Search brings together the University of Melbourne’s rich and diverse cultural collections into a single discovery experience. It enables students, researchers, staff and the wider community to explore collection records, uncover connections across disciplines, and engage with the University’s cultural heritage in new ways.</p>
-<p class="about-intro__text">CCS is part of a broader vision to make the University’s collections more discoverable, accessible and connected, supporting teaching, learning, research and public engagement.</p>
-</div>
-</section>
+  <section class="ccs-section ccs-section--intro" aria-labelledby="about-intro-title">
+    <div class="ccs-section__inner">
+      <h2 class="ccs-section__heading" id="about-intro-title">What is CCS</h2>
+      <p class="ccs-intro">CCS brings together the University of Melbourne’s rich and diverse cultural collections into a single discovery experience. It enables students, researchers, staff and the wider community to explore collections, uncover connections across disciplines, and engage with the University’s cultural heritage in new ways.</p>
+      <p class="about-intro__text">CCS is part of a broader vision to make the University’s collections more accessible and connected, supporting teaching, learning, research and public use.</p>
+    </div>
+  </section>
 
-<section class="about-journey" aria-labelledby="about-journey-title">
-<div class="about-journey__inner">
-<div class="about-journey__top">
-<h2 class="about-journey__heading" id="about-journey-title">The Journey</h2>
-<div class="about-journey__media"><img class="about-journey__image" src="<%= asset_path("site/banners/medical-history-museum.jpg") %>" alt=""></div>
-</div>
-<ul class="about-journey__steps">
-<li class="about-journey__step">Cultural Collections Search is being delivered progressively, with collections onboarding over time as systems, metadata and digital content are prepared for inclusion.</li>
-<li class="about-journey__step">The first phase brings together records from five collections across the University. Additional collections will be added in stages, expanding the breadth and depth of content available through the platform.</li>
-<li class="about-journey__step">As more collections join Cultural Collections Search, users will be able to search across an increasingly rich and diverse body of cultural material, creating new opportunities for discovery and research.</li>
-</ul>
-<ul class="about-journey__links">
-<li><a class="ct-link ct-link--inverse" href="<%= collections_path %>">Browse collections</a></li>
-<li><a class="ct-link ct-link--inverse" href="<%= search_catalog_path %>">Search all records</a></li>
-</ul>
-</div>
-</section>
+  <section class="about-journey" aria-labelledby="about-journey-title">
+    <div class="about-journey__inner">
+      <div class="about-journey__top">
+        <h2 class="about-journey__heading" id="about-journey-title">The journey</h2>
+        <div class="about-journey__media"><img class="about-journey__image" src="<%= asset_path("site/banners/medical-history-museum.jpg") %>" alt=""></div>
+      </div>
+      <ul class="about-journey__steps">
+        <li class="about-journey__step">CCS is being delivered progressively, with collections onboarding over time as systems, metadata and digital content are available.</li>
+        <li class="about-journey__step">The first phase brings together five collections across the University. More collections will be added over time, expanding the breadth and depth of content available through the platform.</li>
+        <li class="about-journey__step">As more collections join CCS, users will be able to search across an increasingly rich and diverse body of material, creating new opportunities for learning, research and innovation.</li>
+      </ul>
+      <ul class="about-journey__links">
+        <li><a class="ct-link ct-link--inverse" href="<%= collections_path %>">Browse collections</a></li>
+        <li><a class="ct-link ct-link--inverse" href="<%= search_action_path(search_field: "all_fields") %>">Search all records</a></li>
+      </ul>
+    </div>
+  </section>
 
-<section class="about-split" aria-labelledby="about-myer-title">
-<div class="about-split__inner">
-<div class="about-split__content">
-<h2 class="about-split__heading" id="about-myer-title">Made possible by the Myer Family</h2>
-<p class="about-split__text">The development of Cultural Collections Search has been made possible through the generous support of the Myer family and the enduring legacy of the Sidney Myer University Trust.</p>
-<p class="about-split__text">For over a century, the Myer family has played a significant role in supporting education, research and cultural initiatives at the University of Melbourne. Their support of CCS helps ensure the University's cultural collections can be discovered, explored and shared by future generations.</p>
-</div>
-<img class="about-split__image" src="<%= asset_path("site/banners/university-art-collection.jpg") %>" alt="">
-</div>
-</section>
+  <section class="about-split" aria-labelledby="about-myer-title">
+    <div class="about-split__inner">
+      <div class="about-split__content">
+        <h2 class="about-split__heading" id="about-myer-title">CCS is made possible with the support of the Myer Family</h2>
+        <p class="about-split__text">The development of CCS has been enabled by the generous support of the Myer family and the enduring legacy of the Sidney Myer University Trust.</p>
+        <p class="about-split__text">For over a century, the Myer family has played a significant role in supporting education, research and cultural initiatives at the University of Melbourne. Their support of CCS helps ensure the University's cultural collections can be discovered, explored and shared by future generations.</p>
+      </div>
+      <img class="about-split__image" src="<%= asset_path("site/banners/university-art-collection.jpg") %>" alt="">
+    </div>
+  </section>
 
-<section class="about-support" aria-labelledby="about-support-title">
-<div class="about-support__inner">
-<div class="about-support__intro">
-<h2 class="about-support__heading" id="about-support-title">How You Can Support This Initiative</h2>
-<p class="about-support__text">CCS is an evolving initiative that relies on ongoing investment to expand and enhance access to the University's cultural collections.</p>
-</div>
-<div class="about-support__list-box">
-<p class="about-support__lead">Support for CCS helps:</p>
-<ul class="about-support__list">
-<li class="about-support__item">Onboard additional collections to the platform</li>
-<li class="about-support__item">Improve the quality and richness of collection metadata</li>
-<li class="about-support__item">Digitise collection materials and increase online access</li>
-<li class="about-support__item">Enhance search, discovery and research capabilities</li>
-<li class="about-support__item">Preserve and share the University's cultural heritage for future generations</li>
-</ul>
-</div>
-<div class="about-support__closing">
-<p class="about-support__text">If you are interested in supporting Cultural Collections Search, please contact the Cultural Collections team to discuss partnership, sponsorship or philanthropic opportunities.</p>
-<p class="about-support__text">Together, we can create a more connected and discoverable cultural collections ecosystem for the University.</p>
-<a class="ct-button" href="<%= contact_path %>">Contact the Cultural Collections team</a>
-</div>
-</div>
-</section>
+  <section class="about-support" aria-labelledby="about-support-title">
+    <div class="about-support__inner">
+      <div class="about-support__intro">
+        <h2 class="about-support__heading" id="about-support-title">How you can support this Initiative</h2>
+        <p class="about-support__text">CCS is an evolving initiative that relies on investment to expand and enhance access to the University's cultural collections.</p>
+      </div>
+      <div class="about-support__list-box">
+        <p class="about-support__lead">Support for CCS helps:</p>
+        <ul class="about-support__list">
+          <li class="about-support__item">Onboard additional collections to the platform</li>
+          <li class="about-support__item">Digitise collection materials and increase online access</li>
+          <li class="about-support__item">Enhance the quality and richness of collection metadata</li>
+          <li class="about-support__item">Enhance search and research capabilities</li>
+          <li class="about-support__item">Share the University's cultural heritage with current and future generations</li>
+        </ul>
+      </div>
+      <div class="about-support__closing">
+        <p class="about-support__text">If you are interested in supporting CCS, please contact the Museums &amp; Collections team at <a href="mailto:MC-Collections@unimelb.edu.au">MC-Collections@unimelb.edu.au</a> to discuss partnership, sponsorship or philanthropic opportunities.</p>
+      </div>
+    </div>
+  </section>
 
-<section class="about-data" aria-labelledby="about-data-title">
-<div class="about-data__inner">
-<h2 class="about-data__heading" id="about-data-title">About CCS Data</h2>
-<div class="about-data__content">
-<p class="about-data__text">The information presented in CCS is sourced directly from participating collection management systems and associated collection databases.</p>
-<p class="about-data__text">As collections are onboarded, metadata is mapped to a shared data model that supports consistent searching and discovery across diverse collection types. While Cultural Collections Search provides a unified search experience, collection records continue to be managed and maintained by their originating collection teams.</p>
-<p class="about-data__text">Because collections use different standards, practices and levels of description, record content may vary between collections. Metadata and digital assets will continue to be enhanced over time as the platform evolves and additional collections are added.</p>
-<p class="about-data__text">Cultural Collections Search is an ongoing initiative, and both the volume and quality of available content will continue to grow as more collections become connected to the platform.</p>
-</div>
-</div>
-</section>
+  <section class="about-data" aria-labelledby="about-data-title">
+    <div class="about-data__inner">
+      <h2 class="about-data__heading" id="about-data-title">About CCS Data</h2>
+      <div class="about-data__content">
+        <p class="about-data__text">The collections found in CCS are in the care of the University of Melbourne. Documentation practices may vary between collections. Metadata and digital assets will continue to be enhanced over time as the platform evolves and additional collections are added.</p>
+        <p class="about-data__text">CCS is an ongoing initiative. The volume and detail of accessible content will continue to grow as more collections become available to access through the platform.</p>
+      </div>
+    </div>
+  </section>
 
-<%= render "pages/browse_collections" %>
-
-<section class="about-help" aria-labelledby="about-help-title">
-<div class="about-help__inner">
-<h2 class="about-help__heading" id="about-help-title">Contact and support</h2>
-<ul class="about-help__list">
-<li class="about-help__item"><a class="ct-link" href="<%= contact_path %>">Contact the collections team</a><p class="about-help__text">Ask a question, or request access to a collection item.</p></li>
-<li class="about-help__item"><a class="ct-link" href="<%= help_path %>">Help and support</a><p class="about-help__text">Searching, using, copyright and requesting items from the collections.</p></li>
-<li class="about-help__item"><a class="ct-link" href="mailto:ccs-feedback@unimelb.edu.au">Send feedback about this site</a><p class="about-help__text">Report a broken link or suggest an improvement.</p></li>
-</ul>
-</div>
-</section>
+  <section class="about-help" aria-labelledby="about-help-title">
+    <h2 class="about-help__title" id="about-help-title"><svg class="about-help__title-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="16" cy="16" r="12" /><path d="M12.5 12.5a3.5 3.5 0 1 1 5 3.2c-1 .6-1.5 1.2-1.5 2.3" /><path d="M16 22.5v.01" /></svg><span>Contact and support</span></h2>
+    <ul class="about-help__list">
+      <li class="about-help__item"><a class="about-help__link" href="<%= help_path(anchor: "access") %>"><img class="about-help__icon" src="<%= asset_path("site/icon-arrow-footer.svg") %>" alt=""><span>Contact the collections team</span></a></li>
+      <li class="about-help__item"><a class="about-help__link" href="<%= help_path %>"><img class="about-help__icon" src="<%= asset_path("site/icon-arrow-footer.svg") %>" alt=""><span>Help and support</span></a></li>
+      <li class="about-help__item"><a class="about-help__link" href="mailto:ccs-feedback@unimelb.edu.au"><img class="about-help__icon" src="<%= asset_path("site/icon-arrow-footer.svg") %>" alt=""><span>Send feedback about this site</span></a></li>
+    </ul>
+  </section>
 </main>

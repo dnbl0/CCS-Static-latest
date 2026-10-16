@@ -7,6 +7,7 @@
    when it sticks; a compact search box appears in it so searching is still possible while scrolling.
    ========================================================================== */
 body.page-search-results .search-results-banner .page-banner__inner {
+  max-width: none;
   padding: 56px var(--space-32) var(--space-48);
 }
 

@@ -30,13 +30,13 @@ class SiteChromeTest < ActiveSupport::TestCase
     assert_selector "#site-nav form[role=search]"
   end
 
-  test "header has the Help menu and the Contact link" do
+  test "header has the Help menu: FAQ, Indigenous, Copyright, Access, and no Contact page link" do
     render_header
 
     assert_selector "#site-nav-help a[href='/help#faq']"
-    assert_selector "#site-nav-help a[href='/help/search-tips']"
-    assert_selector "#site-nav-help a[href='/help/indigenous-data']"
-    assert_link "Contact", href: "/contact"
+    assert_equal [ "/help#faq", "/help#indigenous", "/help#copyright", "/help#access" ],
+                 page.all("#site-nav-help ul a").map { |a| a[:href] }
+    assert_no_link "Contact", href: "/contact"
   end
 
   test "header menu controls are wired to the site-header Stimulus controller" do

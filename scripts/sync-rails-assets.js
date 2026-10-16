@@ -95,7 +95,7 @@ body.page-collection-landing, body.page-collections-browse, body.page-help, body
 `;
 
 const SHARED = ['ccs', 'breadcrumbs', 'page-banner', 'content-templates', 'campaign-banner', 'collection'];
-const PAGES = { home: 'home', 'collections-browse': 'collections_browse', 'collection-landing': 'collection_landing', contact: 'contact', help: 'help', 'indigenous-data': 'indigenous_data', about: 'about' };
+const PAGES = { home: 'home', 'collections-browse': 'collections_browse', 'collection-landing': 'collection_landing', help: 'help', about: 'about' };
 
 const files = new Map(); // path relative to RAILS -> Buffer | string
 files.set('stylesheets/tokens/static_site.css', read('tokens/tokens.css'));
