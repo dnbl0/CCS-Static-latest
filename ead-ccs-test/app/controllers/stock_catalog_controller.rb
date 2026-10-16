@@ -34,6 +34,8 @@ class StockCatalogController < ActionController::Base
   private :search_action_options
 
   configure_blacklight do |config|
+    # One design, the light one, whatever the browser or device is set to (the only change from the gem's defaults here)
+    config.dark_mode_support = false
     config.show.title_field = "title_tsim"
     config.show.display_type_field = "format"
     # The record's digital assets in blacklight-gallery's OpenSeadragon viewer (zoom, pan, full page; a paging strip

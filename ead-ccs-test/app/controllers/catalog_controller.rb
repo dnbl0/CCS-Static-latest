@@ -26,6 +26,9 @@ class CatalogController < ApplicationController
   self.search_service_class = ::SearchService
 
   configure_blacklight do |config|
+    # One design, the light one, whatever the browser or device is set to: no colour mode switching (see layouts/_light_theme)
+    config.dark_mode_support = false
+
     # Results per page; the per_page widget offers these and the first request uses the default.
     config.per_page = [ 12, 24, 40, 96 ]
     config.default_per_page = 40
