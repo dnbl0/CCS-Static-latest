@@ -20,9 +20,13 @@ for (const page of pages) {
   const order = hrefs.map(h => (h.startsWith('pages/') ? 2 : h.startsWith('components/') ? 1 : 0));
   if (order.some((v, i) => i && v < order[i - 1])) fail(`${path.relative(PUBLIC, page)}: stylesheets must load tokens, then components, then page CSS`);
 }
+// Components the Rails asset sync copies into the Rails app (scripts/sync-rails-assets.js SHARED) are in use there even
+// when no static page links them (e.g. campaign-banner.css after the static collection landing pages were removed).
+const RAILS_SHARED = new Set((fs.readFileSync(path.join(__dirname, '..', 'scripts', 'sync-rails-assets.js'), 'utf8').match(/const SHARED = \[([^\]]*)\]/) || ['', ''])[1]
+  .split(',').map(x => x.trim().replace(/^'|'$/g, '')).filter(Boolean).map(n => `components/${n}.css`));
 for (const s of sheets) {
   if (!ALLOWED_DIRS.some(d => s.startsWith(d)) && s !== 'base.css') fail(`styles/${s}: put stylesheets in tokens/, components/ or pages/`);
-  if (!linked.has(s)) fail(`styles/${s} is not linked from any page`);
+  if (!linked.has(s) && !RAILS_SHARED.has(s)) fail(`styles/${s} is not linked from any page`);
   if (!s.startsWith('tokens/') && /^:root\s*\{[^}]*^\s*--(?:col|brand|uom-ds)-[\w-]+\s*:/m.test(fs.readFileSync(path.join(STYLES, s), 'utf8'))) fail(`styles/${s}: colour tokens belong in styles/tokens/`);
 }
 // Keep stylesheets one component or page area in size: split a sheet before it grows past this (tokens are one file by design)
