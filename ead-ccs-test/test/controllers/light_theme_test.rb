@@ -4,7 +4,7 @@ require "test_helper"
 # colour mode, and the browser is told the page is light.
 class LightThemeTest < ActionDispatch::IntegrationTest
   PAGES = [ "/", "/help", "/about" ].freeze
-  LAYOUTS = %w[application pages stock_blacklight branded_stock].freeze
+  LAYOUTS = %w[application pages stock_blacklight branded_stock blacklight/base].freeze
 
   test "every layout tells the browser the page is light and pins the colour mode" do
     PAGES.each do |path|
