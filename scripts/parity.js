@@ -28,7 +28,6 @@ const PAGES = [
     '.contact-box__term', '.contact-box__para', '.ct-listing__title']],
   ['/help/index.html', '/help', ['.page-banner h1', '.side-nav__title', '.side-nav__link', '.help-section__heading', '.help-section__description',
     '.help-section__subheading', '.help-section__text', '.cta-band__heading']],
-  ['/help/indigenous-data', '/help/indigenous-data', ['.page-banner h1', '.side-nav__link', '.help-layout__content h2', '.help-layout__content p']]
 ];
 
 // Header navigation labels: the static `.ccs-nav*` and Rails `.site-nav*` classes differ, so they are compared in pairs. Both must

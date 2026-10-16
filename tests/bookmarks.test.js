@@ -153,13 +153,14 @@ const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css
       eq(await m.$eval('[data-bookmarks-text]', a => a.textContent), '1 saved record', w + 'px: the bar shows the count');
       await c.close();
     }
-    // Home has no breadcrumb: the bar stays in the header top strip (desktop), and there is none in the drawer
+    // Home has no breadcrumb: the bar sits over the top right of the banner photo (as on study.unimelb.edu.au), and there is none in the drawer
     {
       const h = await browser.newPage({ viewport: { width: 1440, height: 900 } });
       await h.addInitScript(() => { try { localStorage.setItem('ccs-cultural-ack', '1'); } catch (e) { /* none */ } });
       await h.goto(base + '/index.html');
-      await h.waitForSelector('.ccs-nav__top [data-bookmarks-link]');
-      eq(await h.$$eval('[data-bookmarks-link]', a => a.length), 1, 'home: one bar, in the header top strip');
+      await h.waitForSelector('.ccs-hero__media [data-bookmarks-link]');
+      eq(await h.$$eval('[data-bookmarks-link]', a => a.length), 1, 'home: one bar, over the banner photo');
+      eq(await h.$eval('.ccs-nav__top [data-bookmarks-link]', () => 1).catch(() => 0), 0, 'home: none in the header top strip');
       eq(await h.$eval('.ccs-nav__drawer-saved, .ccs-nav__primary [data-bookmarks-link]', () => 1).catch(() => 0), 0, 'home: no bar in the drawer');
       await h.close();
     }

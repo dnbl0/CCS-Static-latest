@@ -38,6 +38,6 @@ for (const s of sheets) {
   if (/scroll-behavior\s*:\s*smooth/.test(css)) fail(`styles/${s}: scroll-behavior: smooth outside @media (prefers-reduced-motion: no-preference)`);
 }
 // The results body is a flex item that centres itself: without width:100% it shrinks to its content and misses the page container
-if (!/\.search-results-body\s*\{[^}]*width:\s*100%[^}]*max-width:\s*var\(--layout-container\)/s.test(fs.readFileSync(path.join(STYLES, 'pages/search-results/layout.css'), 'utf8'))) fail('search-results/layout.css: .search-results-body must be width: 100% up to var(--layout-container)');
+if (!/\.search-results-body\s*\{[^}]*width:\s*100%[^}]*max-width:\s*none/s.test(fs.readFileSync(path.join(STYLES, 'pages/search-results/layout.css'), 'utf8'))) fail('search-results/layout.css: .search-results-body must be width: 100% with no max-width (the results fill the page)');
 ok(`${sheets.length} stylesheets, ${pages.length} pages: structure and load order consistent`);
 finish('stylesheet-structure');

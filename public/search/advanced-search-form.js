@@ -26,7 +26,7 @@
   var MODES = [['or', 'Includes any (OR)'], ['and', 'Includes all (AND)']];
   var SORTS = [['relevance', 'Relevance'], ['year-desc', 'Date (Newest)'], ['year-asc', 'Date (Oldest)'], ['az', 'Title (A–Z)']];
   var FILTERS = [
-    { key: 'collection', label: 'Collection Title', get: function (it) { return [it.collection]; }, on: true },
+    { key: 'collection', label: 'Collection Title', get: function (it) { return [it.collection]; }, on: false },
     { key: 'creator', label: 'Creator Name', get: function (it) { return [it.creator]; } },
     { key: 'type', label: 'Object Type', get: function (it) { return it.types || []; } },
     { key: 'licence', label: 'Licence Type', get: function (it) { return [it.licence]; } },

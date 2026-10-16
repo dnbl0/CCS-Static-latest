@@ -17,6 +17,16 @@
   ],
   "redirects": [
     {
+      "source": "/help/indigenous-data",
+      "destination": "/help/index.html#indigenous",
+      "statusCode": 301
+    },
+    {
+      "source": "/help/indigenous-data.html",
+      "destination": "/help/index.html#indigenous",
+      "statusCode": 301
+    },
+    {
       "source": "/contact",
       "destination": "/help/index.html#access",
       "statusCode": 301
