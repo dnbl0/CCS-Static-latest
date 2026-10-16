@@ -70,17 +70,17 @@ public/                     Deployed web root
   styles/                   tokens/tokens.css (the one token layer), base.css, components/*.css, pages/<page>.css, vendor/bootstrap-uom.min.css (see design.md, CSS Files Location)
   assets/                   images/collections (digital assets), data (audio/video, metadata sheets), documents
   images/                   Optimised web images and icons used by pages (home/ = Figma homepage assets, advanced/ = Advanced Filters icons)
-  .htaccess                 Apache equivalent of the vercel.json redirects
+  .htaccess                 Apache equivalent of the config/hosting.json redirects
 src/partials/               Shared page chrome: header, search overlay, footer and browse-collections.html (the home page's Browse collections cards, reused on the About and Collections pages). Written into the pages by scripts/sync-partials.js
 src/collection-landing.template.html   Template for the five collection pages (scripts/build-collection-pages.js)
 src/scss/custom-bootstrap.scss   Bootstrap 5.3.3 theme source (see Styling)
 tests/                      Plain-Node test scripts (see Develop, test and deploy)
-config/redirects.json      Documentation-only list of legacy redirects (nothing reads it at runtime; vercel.json and .htaccess are authoritative)
+config/redirects.json      Documentation-only list of legacy redirects (nothing reads it at runtime; config/hosting.json and .htaccess are authoritative)
 assets/                     Source material for content: spreadsheets, CSVs, help/landing-page copy (.docx), original images. Not deployed (listed in .vercelignore)
 .github/workflows/          ci.yml, rails-ci.yml, auto-merge.yml, pages.yml (deploy to GitHub Pages), azure-deploy.yml, acr-push.yml
 .agents/rules/              PR workflow rule for coding agents
 verify-bootstrap.sh         Checks Bootstrap references in pages (run by npm test)
-vercel.json                 Clean URLs + legacy redirects; read by scripts/dev-server.js and scripts/build-pages.js (Vercel is no longer used; the file is kept as the redirect configuration)
+config/hosting.json          Clean URLs + legacy redirects; read by scripts/dev-server.js and scripts/build-pages.js
 scripts/build-pages.js      Builds public/ into dist/ for GitHub Pages (base-path prefixing, /item/:code via 404.html, redirect pages); `npm run build:pages`
 design.md, github.md, jira-mvp-mapping.md, BOOTSTRAP-DEPENDENCIES.md   Supporting docs
 ```
@@ -231,7 +231,7 @@ npm test          # full check, see below
 python3 -m http.server 8933 --directory public   # local server (as in .claude/launch.json)
 ```
 
-Clean URLs (`/search/search-results`, `/collections/record`) only resolve on a host that applies `vercel.json` or `.htaccess`; with a plain static server use the `.html` paths.
+Clean URLs (`/search/search-results`, `/collections/record`) only resolve on a host that applies `config/hosting.json` or `.htaccess`; with a plain static server use the `.html` paths.
 
 ### What `npm test` runs
 
@@ -257,7 +257,7 @@ Clean URLs (`/search/search-results`, `/collections/record`) only resolve on a h
 Published with GitHub Pages from the organisation repository (`Enterprise-Services-Group/CCS-2026-MVP`) by `pages.yml`; the site is public at https://enterprise-services-group.github.io/CCS-2026-MVP/. Vercel is no longer used. Changes reach it in two steps: a pull request into `main` of the personal repository (`dnbl0/CCS-Static-latest`), then a sync pull request into the organisation repository, which deploys when merged.
 
 - `scripts/build-pages.js` prefixes links with the Pages base path, serves `/item/:code` through `404.html` and writes redirect pages for the legacy URLs.
-- `vercel.json`: `cleanUrls: true`, `trailingSlash: false`, and 301 redirects from the legacy `*.dc.html` names and from `/search` and `/search.html` to `/search/search-results`. It is no longer deployed, but `scripts/dev-server.js` and `scripts/build-pages.js` read it.
+- `config/hosting.json`: `cleanUrls: true`, `trailingSlash: false`, and 301 redirects from the legacy `*.dc.html` names and from `/search` and `/search.html` to `/search/search-results`. It is the redirect configuration: `scripts/dev-server.js` and `scripts/build-pages.js` read it.
 - `public/.htaccess`: the Apache equivalent (redirects plus clean-URL rewrites) for hosting on Apache.
 - Local preview: `PORT=3000 node scripts/dev-server.js`, then open `http://localhost:3000/about.html` (any page).
 
@@ -282,7 +282,7 @@ codebases clean are described in `ead-ccs-test/README.md` and `docs/code-quality
 - **Accession numbers**: 15 of 735 records have no accession number (the data owner needs to supply them). `npm test` reports `accession number present on 720/735 records`.
 - **Unpopulated spec fields**: Editions, Source URL, Related child record and Producer are supported by `build()` but no record sets them (reported as test warnings).
 - **`search.html`** redirect stub has no `<h1>` (test warning).
-- **Hosting behaviour unverified**: the redirects in `vercel.json` are applied by `scripts/build-pages.js` for GitHub Pages; check them on the live site after changing them.
+- **Hosting behaviour unverified**: the redirects in `config/hosting.json` are applied by `scripts/build-pages.js` for GitHub Pages; check them on the live site after changing them.
 - **Thin audio/video data**: only two audio/video items exist, so the sound-recording and film browse tiles map to small keyword searches.
 - **Object type facet is long**: object types are free text (about 370 distinct values), so the Object type facet is long and uneven.
 - **Accessibility**: axe-core scans of the pages were clean except for the items above; there has been no formal WCAG audit, manual screen-reader pass or certification.
