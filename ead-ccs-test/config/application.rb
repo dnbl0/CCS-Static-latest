@@ -38,7 +38,7 @@ module EadCcs
     # These settings can be overridden in specific environments using the files
     # in config/environments, which are processed later.
     #
-    # The service is for University of Melbourne users, so "today" on the search history is Melbourne's.
+    # The service is for University of Melbourne users, so dates and times are Melbourne's.
     config.time_zone = "Melbourne"
     # config.eager_load_paths << Rails.root.join("extras")
   end
