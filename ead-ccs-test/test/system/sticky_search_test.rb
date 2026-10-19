@@ -15,7 +15,9 @@ class StickySearchTest < ApplicationSystemTestCase
     assert_no_selector ".sticky-search.is-visible"
     scroll_to 1200
     assert_selector ".sticky-search.is-visible"
-    assert_selector ".sticky-search input#sticky-search-q"
+    assert_selector ".sticky-search a.site-header__title", text: "Cultural Collections"
+    assert_selector ".sticky-search a.advanced_search"
+    assert_selector ".sticky-search input#sticky_q"
     scroll_to 0
     assert_no_selector ".sticky-search.is-visible"
   end
@@ -26,10 +28,23 @@ class StickySearchTest < ApplicationSystemTestCase
     assert_selector ".sticky-search.is-visible"
 
     height = find(".sticky-search").evaluate_script("this.getBoundingClientRect().height")
-    assert_operator height, :<=, 64
+    assert_operator height, :<=, 60
 
-    fill_in "sticky-search-q", with: "skull"
-    click_button "Search", match: :first, visible: :visible
+    fill_in "sticky_q", with: "skull"
+    find("#sticky-search-submit").click
     assert_current_path(/\/catalog\?.*q=skull/)
+  end
+
+  test "the title is at the left, the bar in the centre and Advanced Search at the right of the strip" do
+    visit root_path
+    scroll_to 1200
+    assert_selector ".sticky-search.is-visible"
+
+    box = ->(selector) { find(selector).evaluate_script("(() => { const r = this.getBoundingClientRect(); return [r.left, r.right]; })()") }
+    title, bar, link = box.call(".sticky-search__title"), box.call(".sticky-search .search-banner__form"), box.call(".sticky-search .advanced_search")
+    assert_operator title[1], :<=, bar[0]
+    assert_operator bar[1], :<=, link[0]
+    window_center = page.evaluate_script("window.innerWidth") / 2.0
+    assert_in_delta window_center, (bar[0] + bar[1]) / 2, 2
   end
 end
