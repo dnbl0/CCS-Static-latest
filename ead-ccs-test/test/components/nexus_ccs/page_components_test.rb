@@ -12,6 +12,19 @@ class PageComponentsTest < ViewComponent::TestCase
     assert_selector ".breadcrumb-strip > nav.page-breadcrumbs + a.site-nav__saved[href='/bookmarks']", text: /0\s+saved records/
   end
 
+  test "the breadcrumb has a narrow-screen link back to the parent page" do
+    render_inline(NexusCcs::PageBreadcrumbsComponent.new(trail: [ [ "Help and support", "/help" ], [ "Privacy", nil ] ]))
+
+    assert_selector "nav.page-breadcrumbs > a.breadcrumb-bar__back[href='/help']", count: 1, text: "Help and support"
+    assert_selector "a.breadcrumb-bar__back svg[aria-hidden=true][width='14'][height='14']"
+  end
+
+  test "a top-level page's back link goes to Cultural Collections, the home page" do
+    render_inline(NexusCcs::PageBreadcrumbsComponent.new(trail: [ [ "About", nil ] ]))
+
+    assert_selector "nav.page-breadcrumbs > a.breadcrumb-bar__back[href='/']", text: "Cultural Collections"
+  end
+
   test "the banner has the page heading and its description" do
     render_inline(NexusCcs::PageBannerComponent.new(title: "Browse collections", description: "Five collections."))
 

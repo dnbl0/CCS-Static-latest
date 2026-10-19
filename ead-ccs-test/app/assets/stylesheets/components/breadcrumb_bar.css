@@ -73,14 +73,29 @@
   display: inline-flex;
 }
 
+/* The narrow-screen back link of both breadcrumbs (BreadcrumbComponent and PageBreadcrumbsComponent), so it carries
+   its own colour and size rather than taking them from .breadcrumb-bar. */
 .breadcrumb-bar__back {
   display: none;
   align-items: center;
   gap: var(--ccs-space-2);
   padding: var(--ccs-space-2) var(--ccs-space-3);
+  color: var(--ccs-text-inverse);
+  font-size: var(--ccs-font-size-lg);
+  line-height: 1.5;
+  text-decoration: none;
 }
 
-@media (max-width: 767px) {
+.breadcrumb-bar__back:hover,
+.breadcrumb-bar__back:focus-visible {
+  color: var(--ccs-text-inverse);
+  text-decoration: underline;
+}
+
+/* 768px and below: the breakpoint of the shared rule in pages/static_shared.css that hides every breadcrumb trail
+   (nav[aria-label="Breadcrumb"] > ol), which is what hides .page-local-history. The back link shows at exactly the
+   widths the trail is hidden, so no width leaves the strip empty. */
+@media (max-width: 768px) {
   .breadcrumb-bar__trail {
     display: none;
   }

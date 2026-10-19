@@ -76,6 +76,14 @@ class SiteChromeTest < ActiveSupport::TestCase
     assert_no_selector "li[aria-current=page] a"
   end
 
+  test "breadcrumb back link goes to the parent page, or Cultural Collections with no parent" do
+    render_inline(NexusCcs::BreadcrumbComponent.new(items: [ [ "Search results", "/catalog" ], [ "A skull", nil ] ]))
+    assert_selector "nav.breadcrumb-bar > a.breadcrumb-bar__back[href='/catalog']", text: "Search results"
+
+    render_inline(NexusCcs::BreadcrumbComponent.new(items: [ [ "Search results", nil ] ]))
+    assert_selector "nav.breadcrumb-bar > a.breadcrumb-bar__back[href='/']", text: "Cultural Collections"
+  end
+
   test "the saved-records bar is the last child of the breadcrumb strip, and nowhere else on a page with a breadcrumb" do
     render_header(url: "/catalog/abc", action: "show")
 
