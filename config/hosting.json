@@ -78,12 +78,12 @@
     },
     {
       "source": "/contact",
-      "destination": "/help/index.html#access",
+      "destination": "/help/index.html#contact-us",
       "statusCode": 301
     },
     {
       "source": "/contact.html",
-      "destination": "/help/index.html#access",
+      "destination": "/help/index.html#contact-us",
       "statusCode": 301
     },
     {
@@ -98,12 +98,12 @@
     },
     {
       "source": "/Contact Us.dc.html",
-      "destination": "/help/index.html#access",
+      "destination": "/help/index.html#contact-us",
       "statusCode": 301
     },
     {
       "source": "/Contact%20Us.dc.html",
-      "destination": "/help/index.html#access",
+      "destination": "/help/index.html#contact-us",
       "statusCode": 301
     },
     {

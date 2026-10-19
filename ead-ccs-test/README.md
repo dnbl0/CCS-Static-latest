@@ -73,7 +73,7 @@ Eg:
 ## Content pages (home, collections, help, contact, about)
 
 `PagesController` serves the pages of the static prototype (`public/` in the repository root) so the two sites match:
-`/` (home), `/collections`, `/collections/<slug>`, `/help` (one page; sections `#faq`, `#copyright`, `#access`, `#privacy`),
+`/` (home), `/collections`, `/collections/<slug>`, `/help` (one page; sections `#faq`, `#copyright`, `#contact-us`, `#privacy`),
 `/help/search-tips`, `/help/indigenous-data`, `/contact` and `/about`. The search results live at `/catalog`.
 
 * Views are in `app/views/pages` (layout `layouts/pages`). The five collection landing pages share

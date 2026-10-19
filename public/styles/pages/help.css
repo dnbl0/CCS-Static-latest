@@ -85,7 +85,7 @@ body.page-help .help-search-tips__group--v1 {
 /* Help sections: one block per topic on /help. Each has a heading, a description and a list of sub headings with their
    descriptions. Sections are separated by a rule and 48px; the sub headings of one section sit 32px apart. */
 body.page-help .help-section {
-  scroll-margin-top: var(--space-24);
+  scroll-margin-top: var(--help-sticky-offset);
 }
 
 body.page-help .help-layout__content .help-section + .help-section {
@@ -174,8 +174,10 @@ body.page-help .help-layout__content .help-section__contact {
    Desktop: a sticky "On this page" menu in the left column, divided from the content by a 1px rule.
    Phones and tablets: the same menu sits at the top of the page as a table of contents. */
 body.page-help .help-layout { grid-template-columns: 292px minmax(0, 1fr); gap: var(--space-24); max-width: calc(var(--layout-content-wide) + 2 * var(--space-32)); padding-top: 64px; }
+/* Room for a sticky header or search strip above the page (about 105px tall): the "On this page" menu sticks below it and anchored sections stop below it, so neither is hidden under it */
+body.page-help { --help-sticky-offset: 120px; }
 body.page-help .jump-nav { align-self: stretch; padding-right: var(--space-16); border-right: 1px solid var(--neutral-200); }
-body.page-help .jump-nav__container { position: sticky; top: var(--space-16); }
+body.page-help .jump-nav__container { position: sticky; top: var(--help-sticky-offset); }
 body.page-help .jump-nav__title { margin: 0 0 var(--space-16); padding: 0 0 var(--space-8); border-bottom: 1px solid var(--neutral-200); font-size: var(--font-size-title-5); font-weight: var(--font-weight-semibold); line-height: 1.2; color: var(--brand-1100); }
 body.page-help .jump-nav__list { margin: 0 0 var(--space-24); padding: 0; list-style: none; }
 body.page-help .jump-nav__item { margin: 0 0 var(--space-8); }

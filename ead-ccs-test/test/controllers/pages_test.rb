@@ -62,7 +62,7 @@ class PagesTest < ActionDispatch::IntegrationTest
   end
 
   test "the old help topic links go to the topic's page or section" do
-    { "faq" => "/help#faq", "copyright" => "/help#copyright", "access" => "/help#access", "privacy" => "/help#privacy",
+    { "faq" => "/help#faq", "copyright" => "/help#copyright", "access" => "/help#contact-us", "contact-us" => "/help#contact-us", "privacy" => "/help#privacy",
       "search-tips" => "/help/search-tips", "indigenous" => "/help/indigenous-data" }.each do |topic, location|
       get "/help", params: { topic: topic }
 
