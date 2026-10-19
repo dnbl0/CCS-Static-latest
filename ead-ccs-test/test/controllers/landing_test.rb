@@ -30,6 +30,8 @@ class LandingTest < ActionDispatch::IntegrationTest
       assert_select ".sticky-search select[name=search_field]#sticky_search_field"
       assert_select ".sticky-search input[name=q]#sticky_q"
       assert_select ".sticky-search button#sticky-search-submit"
+      assert_select ".sticky-search auto-complete[src=?][for=sticky-autocomplete-popup]", "/catalog/suggest"
+      assert_select ".sticky-search ul#sticky-autocomplete-popup[role=listbox]"
       assert_select ".sticky-search a.advanced_search[href^=?]", "/catalog/advanced"
     end
   end
