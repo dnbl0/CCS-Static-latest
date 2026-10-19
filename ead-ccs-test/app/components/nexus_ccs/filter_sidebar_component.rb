@@ -8,5 +8,10 @@ module NexusCcs
     def applied_count
       helpers.applied_filter_count
     end
+
+    # The same search (words, search field, sort, view) with every filter taken off.
+    def clear_filters_path
+      helpers.search_action_path(helpers.search_state.params_for_search.except(:f, :f_inclusive, :range, :page))
+    end
   end
 end
