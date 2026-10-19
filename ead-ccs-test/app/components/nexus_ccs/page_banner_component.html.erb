@@ -1,6 +1,8 @@
 <section class="page-banner" aria-label="Page banner">
   <div class="page-banner__inner">
     <h1 class="page-banner__heading"><%= title %></h1>
-    <p class="page-banner__desc"><%= description %></p>
+    <% if description.present? %>
+      <p class="page-banner__desc"><%= description %></p>
+    <% end %>
   </div>
 </section>

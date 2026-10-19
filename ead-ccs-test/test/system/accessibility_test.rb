@@ -10,7 +10,8 @@ class AccessibilityTest < ApplicationSystemTestCase
     "help" => "/help",
     "search tips" => "/help/search-tips",
     "indigenous cultural data" => "/help/indigenous-data",
-    "contact" => "/contact"
+    "contact" => "/contact",
+    "advanced search" => "/catalog/advanced"
   }.freeze
 
   PAGES.each do |name, path|

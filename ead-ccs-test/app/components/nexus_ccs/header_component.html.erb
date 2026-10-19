@@ -107,3 +107,4 @@
 
 <%= search_bar if show_search_banner? %>
 <%= render NexusCcs::RecordBannerComponent.new(title: record_title) if show_record_banner? %>
+<%= render NexusCcs::PageBannerComponent.new(title: helpers.t("blacklight.advanced_search.form.title")) if show_advanced_search_banner? %>

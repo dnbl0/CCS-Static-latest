@@ -141,6 +141,18 @@ class CatalogController < ApplicationController
   # with the search bar. Any parameter means the visitor chose something and gets the results.
   before_action :show_home_page_when_bare, only: :index
 
+  # The advanced search form submitted with nothing in it (no term, no attribute, no range) has nothing to search for: back to
+  # the form with a notification, instead of every record. A search from anywhere else is left alone.
+  before_action :reject_empty_advanced_search, only: :index
+
+  def reject_empty_advanced_search
+    return unless request.format.html? && params[:clause].present? && params[:q].blank?
+    return if params[:f].present? || params[:f_inclusive].present? || params[:range].present?
+    return if params[:clause].to_unsafe_h.values.any? { |clause| clause.is_a?(Hash) && clause["query"].present? }
+
+    redirect_to advanced_search_catalog_path(op: params[:op].presence), flash: { advanced_search_error: true }
+  end
+
   def show_home_page_when_bare
     return unless controller_name == "catalog" && request.format.html? && request.query_parameters.empty?
 

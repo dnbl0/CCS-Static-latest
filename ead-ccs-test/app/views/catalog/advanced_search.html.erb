@@ -1,0 +1,25 @@
+<%# The advanced search page (the CCS design, Figma "Advanced Search"): Blacklight's own form beside the search tips. The page banner with the
+    h1 is drawn by NexusCcs::HeaderComponent; the form is Blacklight::AdvancedSearchFormComponent, unchanged, styled by components/advanced_search.css. %>
+<% @page_title = t("blacklight.advanced_search.page_title", application_name: application_name) %>
+
+<div class="advanced-search-page">
+  <% if flash[:advanced_search_error] %>
+    <div class="advanced-search__notice" role="alert" tabindex="-1" autofocus>
+      <%= image_tag "site/icon-error.svg", alt: "", class: "advanced-search__notice-icon" %>
+      <div class="advanced-search__notice-text">
+        <p class="advanced-search__notice-title">There is a problem with your search</p>
+        <p class="advanced-search__notice-body">Enter at least one search term, or choose an attribute to search by.</p>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="advanced-search__columns">
+    <div class="advanced-search__form">
+      <%= render "advanced_search_form" %>
+    </div>
+
+    <div class="advanced-search__tips">
+      <%= render "advanced_search_help" %>
+    </div>
+  </div>
+</div>
