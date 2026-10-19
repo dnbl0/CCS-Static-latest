@@ -1,0 +1,67 @@
+/*
+ * The error pages (ErrorsController): the page banner names what happened, then a short explanation, "What you can do" as arrow
+ * links, and how to reach the team. After the University's page banner and arrow-link patterns; nothing here is new to the site.
+ */
+.error-page {
+  max-width: calc(var(--layout-content-wide) + 2 * var(--space-32)); /* the page banner's container, so they line up */
+  margin-inline: auto;
+  padding: var(--ccs-space-6) var(--space-32) var(--ccs-space-8);
+  color: var(--ccs-text-primary);
+}
+
+@media (max-width: 767.98px) {
+  .error-page {
+    padding-inline: var(--space-16);
+  }
+}
+
+.error-page__inner {
+  max-width: 45rem;
+}
+
+.error-page__lead {
+  margin: 0 0 var(--ccs-space-6);
+  font-size: var(--ccs-font-size-xl);
+  line-height: 1.5;
+}
+
+.error-page__heading {
+  margin: 0 0 var(--ccs-space-2);
+  font-family: var(--ccs-font-heading);
+  font-size: var(--ccs-font-size-2xl);
+  font-weight: var(--ccs-font-weight-semibold);
+  line-height: 1.2;
+  color: var(--ccs-navy-1100);
+}
+
+.error-page__links {
+  margin: 0 0 var(--ccs-space-6);
+  padding: 0;
+  list-style: none;
+}
+
+.error-page__help {
+  margin: 0 0 var(--ccs-space-4);
+  font-size: var(--ccs-font-size-lg);
+  line-height: 1.5;
+}
+
+.error-page__code {
+  margin: 0;
+  font-size: var(--ccs-font-size-sm);
+  color: var(--ccs-text-secondary);
+}
+
+/* Shown to a visitor whose browser has JavaScript turned off (the layouts render it inside <noscript>) */
+.noscript-notice {
+  padding: var(--ccs-space-3) var(--space-16);
+  background: var(--ccs-surface-subtle);
+  border-bottom: 1px solid var(--ccs-border-default);
+  font-size: var(--ccs-font-size-md);
+  line-height: 1.5;
+  color: var(--ccs-text-primary);
+}
+
+.noscript-notice a {
+  font-weight: var(--ccs-font-weight-semibold);
+}

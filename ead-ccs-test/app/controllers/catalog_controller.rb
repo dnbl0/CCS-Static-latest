@@ -20,6 +20,7 @@ class CatalogController < ApplicationController
 
   # Solr down, slow or refusing a request: say so, instead of a stack trace. The pages that do not search (home, help...)
   # keep working. Timeouts come from config/blacklight.yml.
+  rescue_from BlacklightRangeLimit::InvalidRange, with: :invalid_date_range
   rescue_from Blacklight::Exceptions::ECONNREFUSED, Blacklight::Exceptions::InvalidRequest, Faraday::TimeoutError, Faraday::ConnectionFailed, with: :search_unavailable
 
   # Retries a zero-result search using Solr's spelling collation
@@ -168,6 +169,15 @@ class CatalogController < ApplicationController
   end
 
   private
+
+  # From later than To (a hand-edited address): the search runs without the date range, and says so.
+  def invalid_date_range(_error)
+    if request.format.json?
+      render json: { error: "The From year must not be later than the To year." }, status: :unprocessable_content
+    else
+      redirect_to search_action_url(request.query_parameters.except("range")), alert: "The From year must not be later than the To year, so the date range was not used."
+    end
+  end
 
   def search_unavailable(error)
     Rails.logger.error("Search unavailable: #{error.class}: #{error.message}")

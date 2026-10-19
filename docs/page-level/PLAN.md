@@ -71,7 +71,7 @@ Each page doc contains: Header; Anatomy (regions with numbered markers, Figure);
 
 ## 5. Gaps and inconsistencies to propose (not built in the apps)
 These come from the research; each is documented as a flagged item in the relevant doc, not silently designed:
-1. Rails 404/500/422/400/406 are stock, unbranded and have no site chrome; Static has no error pages. Propose branded error page (Error page, Proposed).
+1. (Built 2026-10-20, see BUILD-STATUS-2026-10-20.md: 404, 500, 422, 400 are branded; 406 still stock.) Rails 404/500/422/400/406 were stock, unbranded and had no site chrome; Static has no error pages. Propose branded error page (Error page, Proposed).
 2. No unavailable/withdrawn/restricted-record state exists in either app (record R22); Rails has no restricted-view gate or deceased-persons advisory on the record page (Static has both).
 3. Saved list: Rails card stays until reload after removal; no undo or export in either; failure uses a browser `alert()`; no message when cookies are blocked.
 4. Save control has no visible error state (alert only).
