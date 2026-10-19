@@ -1,13 +1,14 @@
 // The site's data model must follow the two project workbooks (extracted to data-model/*.json by scripts/extract-data-model.py):
-//   assets/CCS Data inventory - final.xlsx                                  -> inventory, datatypes, complex fields, copyright advice
-//   assets/CCS Field labels and filters - Final - PRG - 1 OCT 2026.xlsx     -> field-labels.json, filters.json
+//   assets/CCS Data inventory - final.xlsx          -> inventory, datatypes, complex fields, copyright advice
+//   CCS Field labels and filters.xlsx (repo root)   -> field-labels.json (CCS Field Labels, by final sequence order), filters.json (CCS Filters)
+//   The source of truth for CCS Field Labels (record pages) and CCS Filters (search results and advanced search facets).
 // Anything the site shows beyond the workbooks must be listed, with a reason, in data-model/extensions.json.
 const { PUBLIC, ROOT, fail, warn, ok, finish, fs, path } = require('./lib');
 const vm = require('vm');
 const J = f => JSON.parse(fs.readFileSync(path.join(ROOT, 'data-model', f), 'utf8'));
 const labels = J('field-labels.json'), filters = J('filters.json'), inventory = J('inventory.json'), datatypes = J('datatypes.json'), ext = J('extensions.json'), copyright = J('copyright-advice.json');
 
-if (labels.length === 30 && filters.length === 22 && inventory.length > 50 && datatypes.length > 10) ok(`data model loaded: ${labels.length} display fields, ${filters.length} filters, ${inventory.length} inventory fields, ${datatypes.length} data types`);
+if (labels.length === 28 && filters.length === 23 && inventory.length > 50 && datatypes.length > 10) ok(`data model loaded: ${labels.length} display fields, ${filters.length} filters, ${inventory.length} inventory fields, ${datatypes.length} data types`);
 else fail('data-model/*.json look incomplete; re-run scripts/extract-data-model.py');
 
 const norm = s => String(s).toLowerCase().replace(/licen[sc]e/g, 'licence').replace(/&/g, 'and').replace(/[^a-z]/g, '');
@@ -59,7 +60,7 @@ const noTitle = R.filter(r => !r.title || !r.title.trim()), noColl = R.filter(r 
 if (noTitle.length || noColl.length || noUnit.length) fail(`mandatory fields missing: ${noTitle.length} titles, ${noColl.length} collections, ${noUnit.length} responsible units`); else ok(`Title, Collection and Responsible Unit are present on all ${R.length} records (inventory: record cannot display without them)`);
 const mand = copyright.filter(c => /^Must/i.test(c.withDA || '') && /Copyright holder|Credit line|Collection Title|Responsible/i.test(c.descriptor)).map(c => c.descriptor.trim());
 ok(`Copyright Advice: ${mand.join(', ')} are mandatory (credit line and copyright checked on every record in collection-data.test.js)`);
-if (R.some(r => r.rights.some(f => f.label === 'Accession number'))) fail('Accession number must appear once (Field labels row 15, details list), not also in the usage-rights block');
+if (R.some(r => r.rights.some(f => f.label === 'Accession number'))) fail('Accession number must appear once (Field Labels row 20, details list), not also in the usage-rights block');
 const ph = R.filter(r => [...r.fields, ...r.rights].some(f => /^(not recorded|no caption recorded)$/i.test(String(f.value).trim())));
 if (ph.length) fail(`${ph.length} records show a "Not recorded" placeholder; an unpopulated field must be omitted (inventory: "Field does not display")`); else ok('no placeholder values: unpopulated fields are omitted');
 // Accession number is mandatory in the inventory. Records that still lack one are tracked in data-model/accession-gaps.json (candidates found in the
@@ -88,8 +89,9 @@ for (const r of R) {
   if (field(r, 'Caption') !== cap) badCap.push(`#${r.id} Caption row differs from the caption`);
 }
 if (badCap.length) fail(`${badCap.length} digital asset caption problems, e.g. ${badCap.slice(0, 3).join('; ')}`); else ok(`all ${R.filter(r => r.hasDA).length} digital-asset captions follow the Complex fields recipe (title, copyright, collection and credit line present, in order, no empty parts)`);
-/* ---- media metadata sidebar: Field labels rows 27-30 only, in order, and nowhere else ---- */
-const SIDEBAR = labels.filter(l => l.seq >= 27 && l.seq <= 30);
+/* ---- media metadata sidebar: the Field Labels sheet's DAM fields (Licence Type, Advisory, Terms of Use, Producer) only, in order, and nowhere else ---- */
+const SIDEBAR = labels.filter(l => l.source === 'DAM');
+if (SIDEBAR.map(l => l.label).join() !== 'Licence Type,Advisory,Terms of Use,Producer') fail('the sheet\'s DAM fields are no longer Licence Type, Advisory, Terms of Use, Producer');
 const sideBad = [];
 for (const r of R) {
   const m = r.media || [];
@@ -97,7 +99,7 @@ for (const r of R) {
   if (r.hasDA && !m.length) sideBad.push(`#${r.id} digital asset has an empty media sidebar`);
   m.forEach((row, i) => {
     const sheet = SIDEBAR.find(l => norm(l.label) === norm(row.label));
-    if (!sheet) sideBad.push(`#${r.id} sidebar row "${row.label}" is not Field labels rows 27-30`);
+    if (!sheet) sideBad.push(`#${r.id} sidebar row "${row.label}" is not one of the sheet's DAM fields`);
     else if (row.seq !== sheet.seq) sideBad.push(`#${r.id} sidebar row "${row.label}" has sequence ${row.seq}, the sheet says ${sheet.seq}`);
     if (i && m[i - 1].seq > row.seq) sideBad.push(`#${r.id} sidebar rows are out of order`);
     if (!row.value || !String(row.value).trim()) sideBad.push(`#${r.id} sidebar row "${row.label}" is empty`);
@@ -106,5 +108,5 @@ for (const r of R) {
   for (const l of SIDEBAR) if ([...r.fields, ...r.rights].some(f => norm(f.label) === norm(l.label))) sideBad.push(`#${r.id} shows "${l.label}" outside the media sidebar`);
 }
 if (/Terms of use<\/span>/.test(fs.readFileSync(path.join(PUBLIC, 'collections/record.html'), 'utf8').replace(/<aside[\s\S]*?<\/aside>/, ''))) sideBad.push('record.html shows Terms of use outside the media sidebar');
-if (sideBad.length) fail(`${sideBad.length} media sidebar problems, e.g. ${sideBad.slice(0, 3).join('; ')}`); else ok(`media metadata sidebar follows Field labels rows 27-30 (${SIDEBAR.map(l => l.label).join(', ')}) on all ${R.filter(r => r.hasDA).length} digital-asset records, in order and nowhere else`);
+if (sideBad.length) fail(`${sideBad.length} media sidebar problems, e.g. ${sideBad.slice(0, 3).join('; ')}`); else ok(`media metadata sidebar follows the sheet's DAM fields (${SIDEBAR.map(l => l.label).join(', ')}) on all ${R.filter(r => r.hasDA).length} digital-asset records, in order and nowhere else`);
 finish('data-model');

@@ -50,7 +50,7 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     assert_not_includes response.body, %(import "application")
   end
 
-  test "the details sit under an Object details heading, labelled from the CCS Field labels - Updated sheet" do
+  test "the details sit under an Object details heading, labelled from the CCS Field Labels sheet" do
     get "/stock/vernon-MHM00394"
     # Europeana's item page: the viewer, the title, who provides the item, then three tabs. "Object details" (every sheet field
     # the record has a value for except the copyright ones, in the sheet's order), "Copyright" (the caption, credit line,
@@ -64,8 +64,8 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     assert_not_includes response.body, "Discover related collections"
     details = css_select("#object-details-pane th").map { |th| th.text.strip }
     copyright = css_select("#copyright-pane th").map { |th| th.text.strip }
-    assert_equal [ "Creator", "Place", "Collection", "Classification", "Subject" ], details
-    assert_equal [ "Copyright", "Credit Line", "Caption" ], copyright
+    assert_equal [ "Creator", "Place", "Subject", "Classification", "Collection" ], details
+    assert_equal [ "Credit Line", "Copyright", "Caption" ], copyright
     # the media metadata (the sheet's DAM fields: licence type, advisory, terms of use, producer) is in the media band's modal
     assert_equal [ "Licence Type", "Advisory", "Terms of Use" ], css_select(".modal th").map { |th| th.text.strip }
     assert_select ".modal .modal-title", text: "Media metadata"
@@ -90,8 +90,8 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     assert_select "td.blacklight-rights_ssim", text: /\[Copyright - Current\] Used with permission\./
     assert_select "td.blacklight-credit_line_tsim", text: "Gift of Someone, 1970"
     assert_select "td.blacklight-licence_type_ssim", text: "Copyright - Current"
-    assert_select "td.blacklight-gap_29_derived", text: "Used with permission."
-    assert_select "td.blacklight-gap_28_derived", text: /not appropriate today/
+    assert_select "td.blacklight-gap_28_derived", text: "Used with permission."
+    assert_select "td.blacklight-gap_27_derived", text: /not appropriate today/
     assert_select "td.blacklight-caption", text: /Test record\..*Used with permission\.\.?/
     assert_not_includes response.body, "Not available"
     # Creator: a person (EMu's "Family, Given") gets the sheet's b./d. form; an organisation keeps its plain dates

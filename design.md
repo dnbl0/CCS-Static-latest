@@ -693,7 +693,7 @@ These are spot calculations, not a full audit of every page.
 - Keyboard shortcuts apply only while the viewer has focus or is full screen (see the script in `record.html` for the current keys)
 - "Contact us" button opens a request dialog (General enquiry / Request to use / Request to view) with focus trap and Esc to close
 - Unknown ids show "Record not found"; each record sets its own document title
-- Field labels and order follow `assets/CCS Field labels and filters - Final - PRG - 1 OCT 2026.xlsx` (see `README.md`)
+- Field labels and order follow `CCS Field labels and filters.xlsx` (repo root, final sequence order) (see `README.md`)
 
 ### Search Results (`public/search/search-results.html`)
 

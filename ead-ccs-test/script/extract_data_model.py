@@ -12,8 +12,8 @@ Sources (in data/, not tracked in git; copied from the static CCS repo's extract
       "AH sequencing"                -> sequencing.json
       "Copyright Advice"             -> copyright-advice.json
       ("CCS Data Inventory - 18 Aug" and "- Superseeded" are older versions and are not used)
-  data/CCS-Field-labels-and-filters.xlsx (the 8 Oct 2026 update; sheet renamed, columns reordered)
-      "CCS Field labels - Updated"   -> field-labels.json
+  ../CCS Field labels and filters.xlsx (repo root; the source of truth for CCS Field Labels and CCS Filters)
+      "CCS Field Labels"             -> field_labels.json
       "CCS Filters"                  -> filters.json
 """
 import json, os, re, sys
@@ -22,7 +22,7 @@ import openpyxl
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 OUT = os.path.join(ROOT, 'config', 'data_model')
 INV = os.path.join(ROOT, 'data', 'CCS-data-inventory.xlsx')
-LAB = os.path.join(ROOT, 'data', 'CCS-Field-labels-and-filters.xlsx')
+LAB = os.path.join(ROOT, '..', 'CCS Field labels and filters.xlsx')
 
 def clean(v):
     if v is None: return None
@@ -45,22 +45,43 @@ def num(v):
 lab = openpyxl.load_workbook(LAB, data_only=True)
 inv = openpyxl.load_workbook(INV, data_only=True)
 
-# ---- field labels (28: the 8 Oct 2026 update leaves two superseded "Related ... Record" rows in the
-# sheet -- same Display Order as the row above, "Remove" in the review-comments column -- so a row marked
-# Remove is dropped rather than kept as a duplicate or phantom seq) ----
-fl = []
-for r in rows(lab['CCS Field labels - Updated'])[1:]:
-    if not r[0] or num(r[0]) is None: continue
-    if (r[7] or '').strip().lower() == 'remove': continue
-    fl.append({'seq': num(r[0]), 'label': r[1], 'encompasses': r[2], 'description': r[3], 'transformRequired': r[4], 'displaySpec': r[5], 'examples': r[6], 'questions': r[7], 'dataType': r[8], 'source': r[9]})
+# ---- field labels (the 19/10 sheet: Display Order is the field's old row number; FINAL SEQUENCE ORDER is the order the CCS
+# record page shows them in, and is the `seq` used everywhere. Rows with no Display Order continue the row above
+# (more display rules, examples, questions), so their text is joined onto it.) ----
+def header(rows_, first):
+    i = next(i for i, r in enumerate(rows_) if r[0] and r[0].lower().startswith(first))
+    return i, {(h or '').lower(): n for n, h in enumerate(rows_[i])}
+def at(r, h, *names):
+    for n in names:
+        for k, i in h.items():
+            if k.startswith(n.lower()): return r[i] if i < len(r) else None
+fl, last = [], None
+FR = rows(lab['CCS Field Labels'])
+hi, H1 = header(FR, 'display order')
+for r in FR[hi + 1:]:
+    if num(r[0]) is None:
+        if last:
+            for key, names in (('displaySpec', ('specifications',)), ('examples', ('examples',)), ('questions', ('comments',))):
+                v = at(r, H1, *names)
+                if v: last[key] = (last[key] + '\n' + v) if last[key] else v
+        continue
+    last = {'seq': num(at(r, H1, 'final sequence')), 'rowNumber': num(r[0]), 'label': at(r, H1, 'ccs display field'), 'encompasses': at(r, H1, 'could encompass'),
+            'description': at(r, H1, 'brief description'), 'transformRequired': at(r, H1, 'transformation'), 'displaySpec': at(r, H1, 'specifications'),
+            'examples': at(r, H1, 'examples'), 'questions': at(r, H1, 'comments'), 'dataType': at(r, H1, 'data type'), 'source': at(r, H1, 'source system')}
+    fl.append(last)
+fl.sort(key=lambda f: f['seq'])
 write('field_labels.json', fl)
 
-# ---- filters (22; the 8 Oct 2026 update dropped the "Additional Functionality" column) ----
+# ---- filters (23; columns found by their headings) ----
 ft, section = [], None
-for r in rows(lab['CCS Filters'])[1:]:
+TR = rows(lab['CCS Filters'])
+hi, H2 = header(TR, '#')
+for r in TR[hi + 1:]:
     if num(r[0]) is None: continue
-    section = r[1] or section
-    ft.append({'seq': num(r[0]), 'section': section, 'name': r[2], 'type': r[3], 'options': r[4], 'dataModelRef': r[5], 'questions': r[6]})
+    name = at(r, H2, 'filter name')
+    section = at(r, H2, 'filter section') or section
+    ft.append({'seq': num(r[0]), 'section': section, 'name': name, 'type': at(r, H2, 'filter type'), 'options': at(r, H2, 'filter options'),
+               'dataModelRef': at(r, H2, 'ccs data model'), 'questions': ' / '.join(x for x in (at(r, H2, 'jb notes'), at(r, H2, 'kh notes')) if x) or None})
 write('filters.json', ft)
 
 # ---- datatypes ----

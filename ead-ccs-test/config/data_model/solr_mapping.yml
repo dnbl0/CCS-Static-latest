@@ -4,6 +4,7 @@
 # here invents data: a gap stays a gap until a source column exists. DataModel loads this file and
 # test/models/data_model_test.rb checks it against the workbooks.
 #
+# Keys are the FINAL SEQUENCE ORDER of the 19/10 workbook (the `seq` of field_labels.json) and the # of its CCS Filters sheet.
 # fields: `index: true` also shows the field in the search results list.
 fields:
   1:  { solr: title_tsim }                     # the record heading, not repeated in the details list
@@ -11,51 +12,51 @@ fields:
   3:  { solr: production_date_ssim, index: true }
   4:  { solr: creator_display_ssim, index: true }   # "Name (born - died) Role", from the creator columns
   5:  { solr: associated_entity_ssim }
-  6:  { solr: production_place_ssim, index: true }
-  7:  { solr: description_tsim }               # Vernon only: the EMu export has no description column
+  6:  { solr: cultural_group_ssim }            # EMu "Cultural Group" (2 records populated)
+  7:  { solr: production_place_ssim, index: true }
   8:  { solr: series_ssim }
   9:  { gap: "Neither export has an Editions column." }
   10: { solr: material_ssim }                  # EMu "Medium" and "Extent and Medium"; Vernon has none
   11: { gap: "Neither export has a dimensions column." }
   12: { gap: "Neither export has an inscription column." }
   13: { gap: "Inventory: language is held by neither M&C nor MDHS; EMu's Language Group column is empty." }
-  14: { solr: cultural_group_ssim }            # EMu "Cultural Group" (2 records populated)
-  15: { solr: accession_number_ssim }
-  16: { solr: rights_ssim }
-  17: { solr: credit_line_tsim }
+  15: { solr: subject_ssim }                    # EMu only
+  16: { solr: description_tsim }               # Vernon only: the EMu export has no description column
+  17: { solr: classification_ssim }
   18: { solr: named_collection_ssim }
   19: { solr: collection_ssim, index: true }
-  20: { gap: "Inventory: physical access is held by neither system. EMu's Record Status (access_condition_ssi) is indexed but not shown; it is not an access condition and needs data-owner sign-off." }
-  21: { solr: classification_ssim }
-  22: { solr: subject_ssim }                    # EMu only
+  20: { solr: accession_number_ssim }
+  21: { solr: credit_line_tsim }
+  22: { solr: rights_ssim }
   23: { gap: "No source URL column in either export (the record page uses a placeholder link)." }
-  24: { solr: parent_record_ssi }              # the 8 Oct 2026 workbook update drops the old 25 (Related Child
-                                                # Record) and 26 (related_object_ssim): both rows are marked Remove
+  24: { gap: "Inventory: physical access is held by neither system. EMu's Record Status (access_condition_ssi) is indexed but not shown; it is not an access condition and needs data-owner sign-off." }
+  25: { solr: parent_record_ssi }
+  26: { gap: "DAM field: no Nexus DAM export yet." }
   27: { gap: "DAM field: no Nexus DAM export yet." }
   28: { gap: "DAM field: no Nexus DAM export yet." }
   29: { gap: "DAM field: no Nexus DAM export yet." }
-  30: { gap: "DAM field: no Nexus DAM export yet." }
 
 filters:
   1:  { solr: collection_ssim }
   2:  { solr: named_collection_ssim }
   3:  { solr: creator_ssim }
-  4:  { solr: creator_birth_isim }             # four-digit years parsed from EMu's birth dates
-  5:  { solr: creator_death_isim }
-  6:  { gap: "Inventory: held by M&C, but neither export has a nationality column." }
-  7:  { solr: date_start_isi }
-  8:  { gap: "Open question in the workbook: is the era/period/century derived? No source column." }
-  9:  { solr: classification_ssim }
-  10: { solr: object_type_ssim }
-  11: { solr: material_ssim }
-  12: { gap: "Language is not held by either system." }
-  13: { gap: "Open question in the workbook: is Region derived from Place of Production?" }
-  14: { solr: subject_ssim }
-  15: { gap: "Workbook marks the filter type as 'Unsure' (is it the same as Creator Name?)." }
-  16: { solr: associated_entity_place_ssim }   # EMu only, sparsely populated
-  17: { gap: "No subject event in either export." }
-  18: { solr: licence_type_ssim }              # the bracketed licence at the start of EMu rights notes
-  19: { gap: "No film or gaming classification in either export." }
-  20: { gap: "Workbook marks the filter type as 'tbd' and asks whether it is needed." }
+  4:  { solr: creator_role_ssim }             # the 19/10 workbook lists it between Creator Name and the birth date
+  5:  { solr: creator_birth_isim }             # four-digit years parsed from EMu's birth dates
+  6:  { solr: creator_death_isim }
+  7:  { gap: "Inventory: held by M&C, but neither export has a nationality column." }
+  8:  { solr: date_start_isi }
+  9:  { gap: "Open question in the workbook: is the era/period/century derived? No source column." }
+  10: { solr: classification_ssim }
+  11: { solr: object_type_ssim }
+  12: { solr: material_ssim }
+  13: { gap: "Language is not held by either system." }
+  14: { gap: "Open question in the workbook: is Region derived from Place of Production?" }
+  15: { solr: subject_ssim }
+  16: { gap: "Workbook marks the filter type as 'Unsure' (is it the same as Creator Name?)." }
+  17: { solr: associated_entity_place_ssim }   # EMu only, sparsely populated
+  18: { gap: "No subject event in either export." }
+  19: { solr: licence_type_ssim }              # the bracketed licence at the start of EMu rights notes
+  20: { gap: "No film or gaming classification in either export." }
   21: { gap: "Workbook marks the filter type as 'tbd' and asks whether it is needed." }
-  22: { solr: digital_asset_format_ssim }      # "Image" for the records that have a digital asset
+  22: { gap: "Workbook marks the filter type as 'tbd' and asks whether it is needed." }
+  23: { solr: digital_asset_format_ssim }      # "Image" for the records that have a digital asset

@@ -9,8 +9,8 @@ class DataModelTest < ActiveSupport::TestCase
   end
 
   test "every workbook field and filter is mapped, and nothing else is" do
-    assert_equal (1..24).to_a + (27..30).to_a, DataModel::MAPPING["fields"].keys.sort
-    assert_equal (1..22).to_a, DataModel::MAPPING["filters"].keys.sort
+    assert_equal (1..13).to_a + (15..29).to_a, DataModel::MAPPING["fields"].keys.sort
+    assert_equal (1..23).to_a, DataModel::MAPPING["filters"].keys.sort
     assert_equal DataModel::FIELD_LABELS.map { |row| row["seq"] }.sort, DataModel::MAPPING["fields"].keys.sort
     assert_equal DataModel::FILTER_ROWS.map { |row| row["seq"] }.sort, DataModel::MAPPING["filters"].keys.sort
   end
@@ -28,9 +28,7 @@ class DataModelTest < ActiveSupport::TestCase
   end
 
   # CCS-41 asks for a with/without digital assets option, which is not in the workbook's filter list.
-  # Beyond the workbook: CCS-41's with/without digital assets, and Creator role (search results design,
-  # placed above Creator name).
-  JIRA_ADDITIONS = %w[creator_role_ssim has_digital_asset].freeze
+  JIRA_ADDITIONS = %w[has_digital_asset].freeze
 
   test "facets are the workbook's available filters: same order, names, sections and types" do
     expected = DataModel.filters.select(&:available?)
@@ -44,15 +42,19 @@ class DataModelTest < ActiveSupport::TestCase
     end
   end
 
-  test "the facets beyond the workbook: Creator role above Creator name, and CCS-41's digital asset option" do
-    extra = config.facet_fields.values.select { |facet| JIRA_ADDITIONS.include?(facet.key) }.index_by(&:key)
+  test "the facet beyond the workbook: CCS-41's digital asset option, above Digital Asset Format Type" do
+    extra = config.facet_fields["has_digital_asset"]
 
-    assert_equal "creator", extra["creator_role_ssim"].group
-    assert_equal %w[with without], extra["has_digital_asset"].query.keys.map(&:to_s)
-    assert_equal "media_type", extra["has_digital_asset"].group
+    assert_equal %w[with without], extra.query.keys.map(&:to_s)
+    assert_equal "media_type", extra.group
 
     order = config.facet_fields.keys
-    assert_equal "creator_ssim", order[order.index("creator_role_ssim") + 1]
+    assert_equal "digital_asset_format_ssim", order[order.index("has_digital_asset") + 1]
+  end
+
+  test "Creator role is a workbook filter, between Creator Name and the birth date" do
+    order = config.facet_fields.keys
+    assert_equal %w[creator_ssim creator_role_ssim creator_birth_isim], order[order.index("creator_ssim"), 3]
   end
 
   test "filter sections appear in the workbook's order with titles" do
@@ -79,7 +81,7 @@ class DataModelTest < ActiveSupport::TestCase
     shown = config.show_fields.values.map(&:label)
 
     DataModel.field_gaps.each { |field| assert_not_includes shown, field.label }
-    assert_equal [ 27, 28, 29, 30 ], DataModel.fields.select { |field| field.source == "DAM" }.map(&:seq)
+    assert_equal [ 26, 27, 28, 29 ], DataModel.fields.select { |field| field.source == "DAM" }.map(&:seq)
     assert DataModel.fields.select { |field| field.source == "DAM" }.none?(&:available?)
   end
 

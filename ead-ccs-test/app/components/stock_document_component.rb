@@ -12,7 +12,7 @@ class StockDocumentComponent < Blacklight::DocumentComponent
   attr_reader :object_fields, :copyright_fields
 
   def before_render
-    fields = presenter.field_presenters.reject { |field| field.key == TITLE || StockOpenseadragonEmbedComponent::MEDIA_FIELDS.include?(field.key) }
+    fields = presenter.field_presenters.reject { |field| field.key == TITLE || StockRecordFields.media_keys.include?(field.key) }
     @copyright_fields, @object_fields = fields.partition { |field| COPYRIGHT_FIELDS.include?(field.key) }
     super
   end
