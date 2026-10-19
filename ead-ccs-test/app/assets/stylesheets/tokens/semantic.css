@@ -26,6 +26,7 @@
   --ccs-surface-panel: var(--ccs-white);
   --ccs-surface-brand: var(--ccs-navy-1100);
   --ccs-surface-brand-strong: var(--ccs-navy-1200);
+  --ccs-surface-error: #fff1f2;
 
   /* Borders */
   --ccs-border-default: var(--ccs-neutral-300);

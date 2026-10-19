@@ -1,42 +1,304 @@
 /*
- * The advanced search page is Blacklight's own, unmodified markup (app/views/catalog/advanced_search.html.erb
- * and Blacklight::AdvancedSearchFormComponent's own template, both from the gem -- no CCS override of either).
- * This file does not change what the page is or does; it only fits Blacklight's Bootstrap grid classes to this
- * site's type scale and column widths, the same way every other Blacklight page here gets CCS-only CSS without
- * being a deviation from the gem's own behaviour.
+ * The advanced search page, after the CCS design (Figma "Advanced Search"). The form is Blacklight's own
+ * (Blacklight::AdvancedSearchFormComponent, unchanged): this file only lays it out and styles it. The page's h1 is the page
+ * banner above it (NexusCcs::HeaderComponent renders it), and the page's own template is app/views/catalog/advanced_search.html.erb:
+ * the form beside a 376px "Search tips" card, stacked below 992px.
  *
- * Blacklight lays each field/filter/sort row out as a 12-column row with a 3-column label (or a 3-column empty
- * offset before a 9-column block, for the parts with no label of their own) beside a 9-column field -- sized for
- * Bootstrap's small default heading and label text. This site's headings are larger, so those 3-column slots
- * (roughly a quarter of the already-narrower form column, not the full page) wrapped "Sort results by" onto
- * three lines and left "AND have these attributes" with a wide empty gutter where a label would have gone.
- * Stacking the label above its field instead removes both: no column is ever too narrow to hold a heading.
- *
- * Scoped to descendants of form.advanced (the form itself, not the page): the page's own outer row -- the form
- * beside the "Search tips" card -- is Bootstrap's col-md-8/col-md-4 split working as intended and is left alone.
+ * Blacklight lays each field/filter/sort row out as a 12-column row with a 3-column label beside a 9-column field, sized for
+ * Bootstrap's small text. Here the label sits above its field instead (as in the design), so no column is ever too narrow for a
+ * heading: the rows inside form.advanced are blocks. (Scoped to form.advanced: the page's own columns are not Bootstrap's.)
+ * Bootstrap's mb-* utilities are !important, so the spacing that replaces them is too.
  */
+
+/* The page uses the whole window like the results pages: the content sets its own width and gutters */
+body.blacklight-catalog-advanced_search #main-container {
+  max-width: none;
+  padding-inline: 0;
+}
+
+body.blacklight-catalog-advanced_search #main-container > .row {
+  --bs-gutter-x: 0;
+  margin-inline: 0;
+}
+
+.advanced-search-page {
+  flex: 0 0 100%;
+  max-width: calc(var(--layout-content-wide) + 2 * var(--space-32)); /* the page banner's container, so they line up */
+  margin-inline: auto;
+  padding: var(--ccs-space-6) var(--space-32) var(--ccs-space-8);
+}
+
+@media (max-width: 767.98px) {
+  .advanced-search-page {
+    padding-inline: var(--space-16);
+  }
+}
+
+.advanced-search__columns {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ccs-space-8);
+}
+
+.advanced-search__form {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.advanced-search__tips {
+  flex: 0 0 23.5rem; /* 376px */
+}
+
+@media (max-width: 991.98px) {
+  .advanced-search__columns {
+    flex-direction: column;
+    gap: var(--ccs-space-6);
+  }
+
+  .advanced-search__form,
+  .advanced-search__tips {
+    flex: none;
+    width: 100%;
+  }
+}
+
+/* "There is a problem with your search": shown when the form is sent with nothing in it */
+.advanced-search__notice {
+  display: flex;
+  gap: var(--ccs-space-2);
+  margin-bottom: var(--ccs-space-5);
+  padding: var(--ccs-space-5);
+  background: var(--ccs-surface-error);
+  border: 1px solid var(--ccs-border-error);
+}
+
+/* Focused on load so it is read out; its own border carries the meaning, not a focus ring over it */
+.advanced-search__notice:focus {
+  outline: none;
+}
+
+.advanced-search__notice-icon {
+  flex: none;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.advanced-search__notice-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ccs-space-2);
+}
+
+.advanced-search__notice-title,
+.advanced-search__notice-body {
+  margin: 0;
+}
+
+.advanced-search__notice-title {
+  font-size: var(--ccs-font-size-xl);
+  font-weight: var(--ccs-font-weight-semibold);
+  line-height: 1.2;
+  color: var(--ccs-navy-1100);
+}
+
+.advanced-search__notice-body {
+  font-size: var(--ccs-font-size-lg);
+  line-height: 1.5;
+  color: var(--ccs-text-primary);
+}
+
+/* Rows: label above field */
 form.advanced .row {
   display: block;
+  margin-inline: 0;
 }
 
 form.advanced .row > [class*="col-"] {
   width: 100%;
   max-width: 100%;
   margin-left: 0;
+  padding-inline: 0;
 }
 
+/* The three section headings: serif 28px semibold navy */
 form.advanced .query-criteria-heading,
 form.advanced .limit-criteria-heading,
 form.advanced #advanced-search-sort-label {
+  margin: 0 0 var(--ccs-space-4);
+  font-family: var(--ccs-font-heading);
+  font-size: 1.75rem; /* 28px */
+  font-weight: var(--ccs-font-weight-semibold);
+  line-height: 1.2;
   text-align: left;
+  color: var(--ccs-navy-1100);
+}
+
+form.advanced .limit-criteria-heading strong {
+  font-weight: inherit;
+}
+
+/* "all" / "any": the match menu sits in the sentence as a tinted box, in the heading's own type */
+form.advanced .query-criteria-heading select {
+  appearance: none;
+  padding: 0 2.25rem 0 var(--ccs-space-2);
+  border: 1px solid #dde6dc;
+  border-radius: 0;
+  background: #f8f9fa url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000f46' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") right 0.25rem center / 1.5rem no-repeat;
+  font: inherit;
+  font-weight: var(--ccs-font-weight-regular);
+  color: var(--ccs-text-primary);
+  cursor: pointer;
+}
+
+/* Fields: 18px semibold navy label, then a 48px navy-outlined input */
+form.advanced .query-criteria {
+  margin-bottom: var(--ccs-space-6) !important;
+}
+
+form.advanced .advanced-search-field {
+  margin-bottom: var(--ccs-space-4) !important;
 }
 
 form.advanced .advanced-search-field .col-form-label {
   display: block;
-  margin-bottom: 0.25rem;
+  margin-bottom: var(--ccs-space-2);
+  padding: 0;
+  font-size: var(--ccs-font-size-lg);
+  font-weight: var(--ccs-font-weight-semibold);
+  line-height: 1.5;
+  text-align: left;
+  color: var(--ccs-navy-1100);
 }
 
-/* The page content was flush against the header above and the footer below */
-.advanced-search-form {
-  padding-block: 2rem;
+form.advanced .advanced-search-field input[type="text"],
+form.advanced .advanced-search-field input[type="search"] {
+  height: 3rem;
+  padding: var(--ccs-space-3);
+  border: 1px solid var(--ccs-navy-1100);
+  border-radius: 0;
+  background: var(--ccs-white);
+  font-size: var(--ccs-font-size-md);
+  line-height: 1.5;
+}
+
+/* Attributes: one flat row per facet, 59px, tinted, a rule beneath, 4px apart */
+form.advanced .limit-criteria {
+  margin-bottom: var(--ccs-space-6) !important;
+}
+
+form.advanced .advanced-facet-limits {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ccs-space-1);
+  --bs-accordion-border-width: 0;
+  --bs-accordion-border-radius: 0;
+  --bs-accordion-inner-border-radius: 0;
+}
+
+form.advanced .advanced-facet-limits .accordion-item {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+form.advanced .advanced-facet-limits .accordion-button {
+  min-height: 3.6875rem; /* 59px */
+  padding: var(--ccs-space-4) 1.25rem;
+  border-bottom: 1px solid var(--ccs-border-default);
+  border-radius: 0;
+  background-color: #f8f9fa;
+  box-shadow: none;
+  font-size: var(--ccs-font-size-md);
+  font-weight: var(--ccs-font-weight-regular);
+  line-height: 1.5;
+  color: var(--ccs-navy-1100);
+}
+
+form.advanced .advanced-facet-limits .accordion-button:not(.collapsed) {
+  background-color: #f8f9fa;
+  color: var(--ccs-navy-1100);
+}
+
+/* A facet with thousands of values (Subject terms, Named collections) opens as a scrolling list, not a page-long one */
+form.advanced .advanced-facet-limits .facet-values {
+  max-height: 20rem;
+  margin-bottom: 0;
+  overflow-y: auto;
+}
+
+/* Sort */
+form.advanced .row.mb-4 {
+  margin-bottom: var(--ccs-space-6) !important;
+}
+
+form.advanced #sort {
+  width: auto;
+  min-width: 8.8125rem;
+  height: 2.375rem; /* 38px */
+  padding: 0 2.25rem 0 var(--ccs-space-3);
+  border: 1px solid var(--ccs-border-default);
+  border-radius: 0;
+  font-size: var(--ccs-font-size-md);
+  line-height: 1.5;
+  color: var(--ccs-text-primary);
+}
+
+/* Search and Start over */
+form.advanced .submit-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ccs-space-4);
+}
+
+form.advanced .advanced-search-submit {
+  padding: var(--ccs-space-3) var(--ccs-space-4);
+  border: 0;
+  border-radius: 0;
+  background: var(--ccs-action-primary);
+  font-size: var(--ccs-font-size-lg);
+  font-weight: var(--ccs-font-weight-semibold);
+  line-height: 1.5rem;
+  color: var(--ccs-action-primary-text);
+}
+
+form.advanced .advanced-search-submit:hover {
+  background: var(--ccs-action-primary-hover);
+  color: var(--ccs-action-primary-text);
+}
+
+form.advanced .advanced-search-start-over {
+  padding: 0;
+  font-size: var(--ccs-font-size-lg);
+  font-weight: var(--ccs-font-weight-semibold);
+  line-height: 1.5rem;
+  text-decoration: underline;
+  color: var(--ccs-text-link);
+}
+
+form.advanced .advanced-search-start-over:hover {
+  color: var(--ccs-text-link-hover);
+}
+
+/* Search tips: a 1px card with a serif title */
+.advanced-search-tips {
+  padding: var(--ccs-space-4);
+  border: 1px solid rgb(0 0 0 / 18%);
+  background: var(--ccs-white);
+  color: var(--ccs-text-primary);
+}
+
+.advanced-search-tips__title {
+  margin: 0 0 var(--ccs-space-2);
+  font-family: var(--ccs-font-heading);
+  font-size: var(--ccs-font-size-2xl);
+  font-weight: var(--ccs-font-weight-semibold);
+  line-height: 1.2;
+}
+
+.advanced-search-tips .advanced-help {
+  margin: 0;
+  padding-left: var(--ccs-space-5);
+  font-size: var(--ccs-font-size-md);
+  line-height: 1.5;
 }

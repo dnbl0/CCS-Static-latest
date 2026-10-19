@@ -45,6 +45,9 @@ module NexusCcs
     # (unmodified) is the search, so the site's search banner does not repeat above it.
     def show_search_banner? = helpers.controller_name == "catalog" && !%w[show advanced_search].include?(helpers.action_name)
 
+    # The advanced search page has the page banner (its h1) under the breadcrumb strip, as the content pages do
+    def show_advanced_search_banner? = helpers.controller_name == "catalog" && helpers.action_name == "advanced_search"
+
     def show_record_banner? = helpers.controller_name == "catalog" && helpers.action_name == "show"
 
     def record_title

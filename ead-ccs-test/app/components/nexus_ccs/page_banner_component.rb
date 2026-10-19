@@ -3,7 +3,7 @@
 module NexusCcs
   # The dark band under the breadcrumb on the content pages: the page's h1 and a line about it.
   class PageBannerComponent < ViewComponent::Base
-    def initialize(title:, description:)
+    def initialize(title:, description: nil)
       @title = title
       @description = description
     end

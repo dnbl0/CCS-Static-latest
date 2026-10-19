@@ -115,6 +115,14 @@ class CatalogController < ApplicationController
     if config.advanced_search.enabled
       config.copy_search_field_config_to_advanced!
       config.copy_facet_field_config_to_advanced!
+
+      # Blacklight asks Solr for every value of every filter on the form ("facet.limit": -1): with the full collections that was a page
+      # of 8 MB and about 15,000 checkboxes, far too long to use (and too slow for a screen reader or a phone). Each filter lists its
+      # most common values (facet.sort is count) in a scrolling list; every value is still reachable through the filters on the results page.
+      advanced_facet_limit = 100
+      config.advanced_search.form_solr_parameters.each_key do |key|
+        config.advanced_search.form_solr_parameters[key] = advanced_facet_limit if key.match?(/\Af\..+\.facet\.limit\z/)
+      end
     end
 
     # ================================================================
@@ -140,6 +148,18 @@ class CatalogController < ApplicationController
   # A bare /catalog (no search, filter or sort) has nothing to show, so it goes to the home page: the hero banner
   # with the search bar. Any parameter means the visitor chose something and gets the results.
   before_action :show_home_page_when_bare, only: :index
+
+  # The advanced search form submitted with nothing in it (no term, no attribute, no range) has nothing to search for: back to
+  # the form with a notification, instead of every record. A search from anywhere else is left alone.
+  before_action :reject_empty_advanced_search, only: :index
+
+  def reject_empty_advanced_search
+    return unless request.format.html? && params[:clause].present? && params[:q].blank?
+    return if params[:f].present? || params[:f_inclusive].present? || params[:range].present?
+    return if params[:clause].to_unsafe_h.values.any? { |clause| clause.is_a?(Hash) && clause["query"].present? }
+
+    redirect_to advanced_search_catalog_path(op: params[:op].presence), flash: { advanced_search_error: true }
+  end
 
   def show_home_page_when_bare
     return unless controller_name == "catalog" && request.format.html? && request.query_parameters.empty?

@@ -6,4 +6,6 @@ en:
       # The page's title, from the reviewed copy (page 6). Blacklight's own form, otherwise unchanged
       form:
         title: Advanced Search
+        # The CCS design's wording (Figma, Advanced Search)
+        query_criteria_heading_html: "Find items that match %{select_menu} of the fields below"
       page_title: Advanced Search - %{application_name}
