@@ -47,4 +47,30 @@ class StickySearchTest < ApplicationSystemTestCase
     window_center = page.evaluate_script("window.innerWidth") / 2.0
     assert_in_delta window_center, (bar[0] + bar[1]) / 2, 2
   end
+
+  # The suggestions are Blacklight's own <auto-complete> element fetching /catalog/suggest. The test index has no suggester
+  # dictionary, so the browser's fetch answers that one URL; the sticky bar's wiring is what is under test.
+  def stub_suggestions
+    page.execute_script(<<~JS)
+      const realFetch = window.fetch.bind(window);
+      window.fetch = (url, opts) => String(url).includes("/catalog/suggest")
+        ? Promise.resolve(new Response('<li role="option" class="dropdown-item"><span>sculpture</span></li><li role="option" class="dropdown-item"><span>skeleton sets</span></li>', { status: 200, headers: { "Content-Type": "text/html" } }))
+        : realFetch(url, opts);
+    JS
+  end
+
+  test "typing in the sticky bar offers Blacklight's suggestions in its own list, and choosing one fills the box" do
+    visit search_catalog_path(q: "skull", search_field: "all_fields")
+    stub_suggestions
+    scroll_to 1500
+    assert_selector ".sticky-search.is-visible"
+
+    find("#sticky_q").click
+    find("#sticky_q").send_keys("sk")
+    assert_selector "#sticky-autocomplete-popup li[role=option]", text: "sculpture", visible: :visible
+    assert_no_selector "#autocomplete-popup li[role=option]", visible: :visible # the banner's own list is left alone
+
+    find("#sticky-autocomplete-popup li[role=option]", text: "skeleton sets").click
+    assert_equal "skeleton sets", find("#sticky_q").value
+  end
 end
