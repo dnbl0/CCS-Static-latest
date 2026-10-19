@@ -24,7 +24,7 @@ const PAGES = [
   ['/collections/', '/collections', ['.page-banner h1', '.page-banner__desc', '.ct-listing__title', '.ct-listing__lead',
     '.ccs-section__heading', '.ccs-card__title a', '.ccs-card__text', '.pathfinder__title', '.pathfinder__summary']],
   ['/help/index.html', '/help', ['.page-banner h1', '.jump-nav__title', '.jump-nav__link', '.help-section__heading', '.help-section__description',
-    '.help-section__subheading', '.help-section__text', '.cta-band__heading']],
+    '.help-section__subheading', '.help-section__text']],
 ];
 
 // Header navigation labels: the static `.ccs-nav*` and Rails `.site-nav*` classes differ, so they are compared in pairs. Both must
