@@ -10,7 +10,7 @@ class LandingTest < ActionDispatch::IntegrationTest
     assert_select ".ccs-hero__search a.advanced_search[href=?]", "/catalog/advanced"
     assert_select ".home-card__title a", count: 6
     assert_select ".home-about__statement", count: 1
-    assert_select ".home-collections__more a[href=?]", "https://museumsandcollections.unimelb.edu.au/collections"
+    assert_select ".home-card__text a[href=?]", "https://museumsandcollections.unimelb.edu.au/collections"
     assert_select ".ccs-section--help, .ccs-section--faq", count: 0
   end
 

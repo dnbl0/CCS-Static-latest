@@ -45,3 +45,4 @@ body.page-home .home-textbutton__image { width: 24px; height: 24px; flex: none; 
 body.page-home .home-collections__more { margin: 0; max-width: var(--layout-reading); font-size: var(--font-size-body-lg); color: var(--neutral-1000); }
 body.page-home .home-collections__more a { color: var(--interactive-800); text-decoration: underline; overflow-wrap: anywhere; }
 body.page-home .home-collections__more a:hover { color: var(--interactive-700); }
+body.page-home .home-card__text a { text-decoration: underline; overflow-wrap: anywhere; }
