@@ -203,6 +203,10 @@
     menu.appendChild(ul);
     var none = el('p', { 'class': 'ccs-combo__none', role: 'status', hidden: true, text: 'No matching values' });
     menu.appendChild(none);
+    // A long list opens on its most common values (the options arrive most common first); typing searches all of them.
+    var LIMIT = 10, limited = !!search && o.options.length > LIMIT + 5;
+    var more = el('p', { 'class': 'ccs-combo__more', hidden: true });
+    if (limited) menu.insertBefore(more, ul);
     var label = el('span', { id: lblId, 'class': 'sr-only', text: o.label });
     var root = el('div', { 'class': 'ccs-combo ccs-combo--multi' + (o.className ? ' ' + o.className : '') }, [label, btn, menu]);
     self.root = root; self.button = btn; self.boxes = boxes;
@@ -232,6 +236,7 @@
     self.show = function () {
       if (self.open) return;
       setOpen(self);
+      if (limited) applyFilter();
       self.open = true; menu.hidden = false; btn.setAttribute('aria-expanded', 'true'); keepInView(menu);
       iconImg.src = openIcon; root.classList.add('is-open');
       var first = search || visible()[0];
@@ -255,11 +260,18 @@
       else if (k === 'End' && document.activeElement !== search) { e.preventDefault(); if (v.length) v[v.length - 1].focus(); }
       else if (k === 'Enter' && document.activeElement.classList.contains('ccs-check')) { e.preventDefault(); document.activeElement.click(); }
     });
-    if (search) search.addEventListener('input', function () {
-      var q = search.value.trim().toLowerCase(), shown = 0;
-      $$('.ccs-combo__item', ul).forEach(function (li) { var hit = !q || li.getAttribute('data-label').indexOf(q) > -1; li.hidden = !hit; if (hit) shown++; });
+    function applyFilter() {
+      var q = search ? search.value.trim().toLowerCase() : '', shown = 0, hiddenCount = 0;
+      $$('.ccs-combo__item', ul).forEach(function (li, i) {
+        var hit = q ? li.getAttribute('data-label').indexOf(q) > -1 : (!limited || i < LIMIT || li.querySelector('input').checked);
+        li.hidden = !hit; if (hit) shown++; else hiddenCount++;
+      });
       none.hidden = shown > 0;
-    });
+      more.hidden = !(limited && !q && hiddenCount > 0);
+      more.textContent = 'Showing the ' + shown + ' most common of ' + boxes.length + ' values. Type to search all values.';
+    }
+    if (search) search.addEventListener('input', applyFilter);
+    if (limited) applyFilter();
     self.refresh(true);
     return self;
   }
