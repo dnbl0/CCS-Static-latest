@@ -50,4 +50,13 @@ class CatalogConfigurationTest < ActiveSupport::TestCase
       assert_nil facet.ex, "#{facet.key} excludes a tag"
     end
   end
+
+  test "the advanced search form asks Solr for at most the 100 most common values of a filter, not every value" do
+    params = CatalogController.blacklight_config.advanced_search.form_solr_parameters
+    limits = params.select { |key, _| key.match?(/\Af\..+\.facet\.limit\z/) }
+
+    assert_not_empty limits
+    assert_equal [ 100 ], limits.values.uniq
+    assert_equal "count", params["facet.sort"]
+  end
 end

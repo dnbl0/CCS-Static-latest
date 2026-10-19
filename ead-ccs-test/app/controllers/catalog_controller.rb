@@ -115,6 +115,14 @@ class CatalogController < ApplicationController
     if config.advanced_search.enabled
       config.copy_search_field_config_to_advanced!
       config.copy_facet_field_config_to_advanced!
+
+      # Blacklight asks Solr for every value of every filter on the form ("facet.limit": -1): with the full collections that was a page
+      # of 8 MB and about 15,000 checkboxes, far too long to use (and too slow for a screen reader or a phone). Each filter lists its
+      # most common values (facet.sort is count) in a scrolling list; every value is still reachable through the filters on the results page.
+      advanced_facet_limit = 100
+      config.advanced_search.form_solr_parameters.each_key do |key|
+        config.advanced_search.form_solr_parameters[key] = advanced_facet_limit if key.match?(/\Af\..+\.facet\.limit\z/)
+      end
     end
 
     # ================================================================

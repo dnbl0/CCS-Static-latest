@@ -54,4 +54,12 @@ class AdvancedSearchTest < ApplicationSystemTestCase
     assert_selector ".result-card"
     assert_no_selector ".advanced-search__notice"
   end
+
+  test "no attribute lists more than 100 values, so the page stays a usable size" do
+    visit "/catalog/advanced"
+
+    counts = all(".advanced-facet-limits .facet-values", visible: :all).map { |list| list.all("li", visible: :all).size }
+    assert_not_empty counts
+    assert_operator counts.max, :<=, 100
+  end
 end
