@@ -9,7 +9,7 @@ class HelpTopic < Data.define(:key, :title, :blurb)
     new("search-tips", "Search Tips", "These tips help you to easily find information, images, audio, and video held in the university's cultural collections."),
     new("indigenous", "Indigenous Cultural Data and Access", "Information on respectful discovery of Aboriginal and Torres Strait Islander cultural heritage and knowledge."),
     new("copyright", "Copyright and Terms of Use", "How a collection item can be used varies depending on the conditions of its copyright license, intellectual property or cultural advice."),
-    new("access", "Access and Information", "How to submit a request to access an item or for further information from the Collections team."),
+    new("contact-us", "Contact Us", "How to submit a request to access an item or for further information from the Collections team."),
     new("privacy", "Privacy", "How the University respects the privacy of protecting and managing personal information.")
   ].freeze
 

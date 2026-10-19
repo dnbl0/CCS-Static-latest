@@ -53,12 +53,12 @@ Source: research agent, 2026-10-12 (code read only, app not run). Rails text liv
 | P2 | Help | FAQ is not an accordion on /help | Edge | n/a | 8 FAQs are always-open `h3` + `p`; accordion only on Home | _sections.html.erb:7-39 | Both |
 | P3 | Help | Old `?topic=key` links | Edge | `/help?topic=search-tips` | 301 to the topic page or `/help#key`; unknown topic renders `/help` | pages_controller.rb:23-26 | Rails |
 | P4 | Help | Dead link in Access section | Sad | n/a | "Request Form: Open form" has `href="#"` | _sections.html.erb:95; public/help/index.html:330 | Both |
-| P5 | Help | Anchored section | Edge | `/help#access` | Smooth scroll to the section | help.css:113 | Both |
+| P5 | Help | Anchored section | Edge | `/help#contact-us` | Smooth scroll to the section | help.css:113 | Both |
 | P6 | Help | Mobile | Edge | <=900 | Side nav stacks; topic grid 2 columns at 900, 1 at 560 | help.css:99-112 | Both |
 | S1 | Search tips | Default | Happy | `/help/search-tips` | Breadcrumb Home > Help and support > Search Tips; banner; side nav (current = Search tips); long article with 2-column "dropdown option / searches" table, stemming, boolean; "Still need help?" contact box | search_tips.html.erb | Both |
 | S2 | Search tips | Long content | Edge | n/a | Very long single article; backtick-quoted examples; 2-column group grid | search_tips.html.erb:21-27 | Both |
 | I1 | Indigenous data | Default | Happy | `/help/indigenous-data` | Banner with long Acknowledgement paragraph; side nav (current = Indigenous); 2 links; warning notice "Note on images and voices"; language, terminology and contact notes | indigenous_data.html.erb | Both |
-| I2 | Indigenous data | Link target mismatch | Edge | n/a | "Read about our Indigenous priorities" -> `/help#access`; static footer -> `unimelb.edu.au/reconciliation` | indigenous_data.html.erb:10 | Both |
+| I2 | Indigenous data | Link target mismatch | Edge | n/a | "Read about our Indigenous priorities" -> `/help#contact-us`; static footer -> `unimelb.edu.au/reconciliation` | indigenous_data.html.erb:10 | Both |
 
 ## Components to check (code names)
 Layout and chrome: `Header` / `ccs-nav--header`, `SiteFooter`, `PageBreadcrumbsComponent`, `SavedBarComponent`. Banners:

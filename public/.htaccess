@@ -9,7 +9,7 @@
   RewriteBase /
 
   # --- Legacy filename redirects (301) to new clean URLs ---
-  RewriteRule ^Contact\ Us\.dc\.html$ /help/index.html#access [R=301,NE,L]
+  RewriteRule ^Contact\ Us\.dc\.html$ /help/index.html#contact-us [R=301,NE,L]
   RewriteRule ^Collection\ Record\.dc\.html$ /collections/record [R=301,L,QSA]
   RewriteRule ^item/(CA-[0-9]+)$ /collections/record?item=$1 [L]
   RewriteRule ^Collection\ Search\ v3\.dc\.html$ /search/search-results [R=301,L,QSA]
@@ -31,5 +31,5 @@
   RewriteRule ^collections/?$ collections/index.html [L]
   RewriteRule ^help/?$ help/index.html [L]
   RewriteRule ^help/([a-z0-9-]+)/?$ help/$1.html [L]
-  RewriteRule ^contact(\.html)?/?$ /help/index.html#access [R=301,NE,L]
+  RewriteRule ^contact(\.html)?/?$ /help/index.html#contact-us [R=301,NE,L]
 </IfModule>
