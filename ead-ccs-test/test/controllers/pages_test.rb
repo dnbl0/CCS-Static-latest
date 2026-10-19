@@ -47,6 +47,7 @@ class PagesTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_select "body.page-help h1", "Help and support"
+    assert_select ".cta-band", count: 0 # a "Still need help?" band only looped back to this page
     assert_select ".help-layout__content section.help-section", count: HelpTopic.all.size
     HelpTopic.all.each do |topic|
       assert_select "section.help-section##{topic.key} h2.help-section__heading", topic.title

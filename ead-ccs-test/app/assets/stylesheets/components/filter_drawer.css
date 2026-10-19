@@ -196,7 +196,21 @@
  * #sidebar already pads itself, so the extra inset applies from 992px only.
  */
 .filter-sidebar__summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--ccs-space-2) var(--ccs-space-3);
   margin-bottom: var(--ccs-space-4);
+}
+
+.filter-sidebar__clear {
+  color: var(--interactive-800);
+  text-decoration: underline;
+}
+
+.filter-sidebar__clear:hover {
+  color: var(--interactive-700);
 }
 
 /*
