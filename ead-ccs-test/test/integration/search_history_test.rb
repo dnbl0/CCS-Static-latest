@@ -1,29 +1,24 @@
 require "test_helper"
 
-# CCS-143 and CCS-206 use Blacklight's own search history (searches saved in the session, the /search_history page).
-# What this app adds is the day headings and a session cookie that outlasts the browser, so past days can show.
+# CCS-143 uses Blacklight's own search history, as it comes (searches saved in the session, the /search_history page with its
+# recent-searches table and Clear history button): nothing here overrides it. Grouping by day (CCS-206) is not in the MVP.
 class SearchHistoryTest < ActionDispatch::IntegrationTest
-  test "searches are saved and listed under day headings, newest first" do
+  test "searches are saved and listed on Blacklight's own history page, newest first" do
     get "/catalog", params: { q: "skull" }
     get "/catalog", params: { q: "violin" }
-    Search.all.find { |search| search.query_params["q"] == "skull" }.update_columns(updated_at: 2.days.ago)
 
     get "/search_history"
 
     assert_response :success
-    assert_select "section.search-history-day h2", text: "Today"
-    assert_select "section.search-history-day h2", text: "2 days ago"
-    assert_select "section.search-history-day", text: /violin/ do
-      assert_select "h2", text: "Today"
-    end
+    assert_select "h1.page-heading", "Search History"
+    assert_select "table.search-history td.query a", count: 2
+    assert_select "table.search-history tr:first-child td.query", text: /violin/
+    assert_select "a[data-turbo-method=delete]", text: "Clear Search History"
+    assert_select ".search-history-day", count: 0 # no custom day headings
   end
 
-  test "the session cookie lasts 30 days so the history survives closing the browser" do
-    get "/catalog", params: { q: "skull" }
-
-    cookie = response.headers["Set-Cookie"].to_s
-    assert_match(/_ccs_session=/, cookie)
-    expires = Time.httpdate(cookie[/expires=([^;]+)/i, 1])
-    assert_in_delta 30.days.from_now.to_f, expires.to_f, 1.day.to_f
+  test "the history page is Blacklight's own view, not an override" do
+    assert_not Rails.root.join("app/views/search_history").exist?
+    assert_not Rails.root.join("app/helpers/search_history_helper.rb").exist?
   end
 end

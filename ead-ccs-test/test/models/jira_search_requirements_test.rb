@@ -69,16 +69,6 @@ class JiraSearchRequirementsTest < ActionDispatch::IntegrationTest
     assert_not_includes left_sides, "doctor"
   end
 
-  test "CCS-206: search history headings are Today, Yesterday, then N days ago" do
-    today = Date.new(2026, 10, 6)
-    helper = Object.new.extend(SearchHistoryHelper)
-
-    assert_equal "Today", helper.history_day_label(today, today: today)
-    assert_equal "Yesterday", helper.history_day_label(today - 1, today: today)
-    assert_equal "2 days ago", helper.history_day_label(today - 2, today: today)
-    assert_equal "4 days ago", helper.history_day_label(today - 4, today: today)
-  end
-
   test "the service runs in Melbourne time, so history days match its users' days" do
     assert_equal "Melbourne", Time.zone.name
   end

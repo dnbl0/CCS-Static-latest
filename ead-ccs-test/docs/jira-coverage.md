@@ -27,8 +27,8 @@ is ambiguous), **Not in prototype** (different environment or custom work, parke
 | CCS-288, 292, 293 Spelling bugs | Done | **Met** | Last word misspelled, phrase with a misspelling, partial phrase: all correct and offer alternatives. |
 | CCS-124 No results message | New | **Fixed** | Now "No results found and no suggestions are available for this search phrase." |
 | CCS-271 Empty search | Done | **Met** | Superseded by CCS-33's updated criterion: an empty search returns everything. |
-| CCS-143 Save search history | New | **Fixed** | Blacklight's built-in search history (saved in the session, no login), kept for 30 days. The search overlay lists the last 5. |
-| CCS-206 History grouped by day | New | **Fixed** | Blacklight's `/search_history` page with day headings added: Today, Yesterday, "N days ago", in Melbourne time. |
+| CCS-143 Save search history | New; label `CCS-2027`, de-prioritised for MVP by the business (comment, 16 Oct) | **Met, native** | Blacklight's built-in search history, unmodified: saved in the session, no login, the `/search_history` page with Clear history. The search overlay lists the last 5. The session cookie lasts 30 days (it also keeps saved records), so history outlasts the browser; the story says session only. |
+| CCS-206 History grouped by day | New; label `CCS-2027`; Remarks: not core for MVP | **Not in prototype** | Removed: the custom day-grouped page. The history page is Blacklight's own, ungrouped. |
 | CCS-46 Favourite lists | New | **Partial** | Save / Saved on every result and record, a live "N saved records" bar in the header and a Saved records page, using Blacklight's bookmarks for guests (session cookie, 30 days, no login). One list only: several named lists, logging in and keeping the list across devices are **Not in prototype**. |
 | CCS-19 Explore collections | New | **Partial** | The header lists the five collections and filters by them. There are no collection landing pages (removed by decision, 2026-10-16): a collection's link goes to the results filtered by it. |
 | CCS-44 Viewing classification | New | **Gap: data** | Source is "DA Advisory Classification" in Nexus DAM. |
@@ -53,6 +53,6 @@ violations on the results, record and advanced search pages.
 |---|---|---|---|
 | CCS-65 Digital asset formats | New, MVP: images, audio, video, PDF (2027: eBook, Office, Open Office, 3D) | **Partial** | Only still images are indexed and shown (`Collections::DigitalAssets`, `FORMAT = "Image"`). Audio, video and PDF are not met in this app; the static site has viewers for all four. |
 | CCS-157 Hero image | New, flagged MVP | **Partial** | A thumbnail shows in results and the record. Not implemented: the hero chosen by DAM sequence `000` (CCS-302, CCS-316), the source ordering of the other images, and the 20-asset cap per record. |
-| CCS-206 History grouped by day | Not on the `CCS-2026` label | **Fixed** | Built ahead of the board; no Remarks apply. |
+| CCS-206 History grouped by day | `CCS-2027`; not core for MVP | **Not in prototype** | Was built ahead of the board; removed so the history page is Blacklight's own. |
 | CCS-55 Indigenous data filter | New, not MVP, data not ready | **Gap: data** | Unchanged. |
 | CCS-158 Spelling suggestions | Done, but Remarks say not MVP | **Met** | Built regardless. |
