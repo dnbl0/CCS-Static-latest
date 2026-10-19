@@ -24,6 +24,7 @@
 @import url("components/results_toolbar.css");
 @import url("components/pagination.css");
 @import url("components/back_to_top.css");
+@import url("components/sticky_search.css");
 @import url("components/filter_drawer.css");
 @import url("components/facet_list.css");
 @import url("components/skeleton.css");

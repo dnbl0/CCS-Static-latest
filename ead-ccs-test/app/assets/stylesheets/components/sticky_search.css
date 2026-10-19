@@ -1,0 +1,80 @@
+/*
+ * Sticky search bar: a slim navy strip (about 56px) fixed to the top of the window. Layout, the input group, the
+ * form control and the button are Bootstrap's own (position-fixed, container, input-group, form-control, btn);
+ * this adds the navy band, the slide in and out, and the 44px-high controls. Markup: NexusCcs::StickySearchComponent;
+ * behaviour: controllers/sticky_search_controller.js. Above the page, below the header's menus and modals.
+ */
+.sticky-search {
+  z-index: 1030; /* Bootstrap's fixed-top layer: under modals (1055) and the header's own layer */
+  background: var(--ccs-navy-1200);
+  box-shadow: var(--ccs-shadow-md);
+  transform: translateY(-100%);
+  visibility: hidden;
+  transition: transform 0.25s ease, visibility 0s linear 0.25s;
+}
+
+.sticky-search.is-visible {
+  transform: translateY(0);
+  visibility: visible;
+  transition: transform 0.25s ease, visibility 0s;
+}
+
+.sticky-search__inner {
+  max-width: var(--layout-container);
+}
+
+.sticky-search .input-group {
+  max-width: 45rem;
+  margin-inline: auto;
+  flex-wrap: nowrap;
+}
+
+.sticky-search .form-control,
+.sticky-search .btn {
+  height: 2.75rem;
+  border-radius: 0;
+  border-color: var(--ccs-navy-1100);
+}
+
+.sticky-search .form-control {
+  padding-inline: 0.875rem;
+  font-size: var(--ccs-font-size-md);
+  color: var(--ccs-text-primary);
+}
+
+.sticky-search .form-control:focus {
+  box-shadow: 0 0 0 3px rgb(70 200 240 / 45%);
+}
+
+.sticky-search .btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  padding: 0;
+  background: var(--ccs-action-primary);
+  color: var(--ccs-action-primary-text);
+}
+
+.sticky-search .btn:hover {
+  background: var(--ccs-action-primary-hover);
+  color: var(--ccs-action-primary-text);
+}
+
+.sticky-search .btn:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: -3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sticky-search,
+  .sticky-search.is-visible {
+    transition: none;
+  }
+}
+
+@media print {
+  .sticky-search {
+    display: none;
+  }
+}

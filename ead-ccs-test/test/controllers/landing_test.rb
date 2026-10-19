@@ -19,4 +19,21 @@ class LandingTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to "/"
   end
+
+  test "every page carries the sticky search bar: a GET search form, hidden until the banner has scrolled away" do
+    [ "/", "/help", "/about" ].each do |path|
+      get path
+
+      assert_select ".sticky-search[data-controller=sticky-search][inert][aria-hidden=true]", count: 1
+      assert_select ".sticky-search form.input-group[action=?][method=get]", "/catalog"
+      assert_select ".sticky-search input[name=search_field][value=all_fields]"
+      assert_select ".sticky-search label[for=sticky-search-q]"
+    end
+  end
+
+  test "the sticky search bar keeps the current query" do
+    get "/catalog", params: { q: "skull", search_field: "all_fields" }
+
+    assert_select ".sticky-search input#sticky-search-q[value=skull]"
+  end
 end
