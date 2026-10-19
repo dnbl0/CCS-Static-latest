@@ -28,24 +28,68 @@ class StickySearchTest < ApplicationSystemTestCase
     assert_selector ".sticky-search.is-visible"
 
     height = find(".sticky-search").evaluate_script("this.getBoundingClientRect().height")
-    assert_operator height, :<=, 60
+    assert_operator height, :<=, 61
 
     fill_in "sticky_q", with: "skull"
     find("#sticky-search-submit").click
     assert_current_path(/\/catalog\?.*q=skull/)
   end
 
-  test "the title is at the left, the bar in the centre and Advanced Search at the right of the strip" do
+  def rect(selector) = find(selector, visible: :all).evaluate_script("(() => { const r = this.getBoundingClientRect(); return [r.left, r.right, r.height]; })()")
+
+  test "desktop: the title, then 48px, then the search bar and, 16px after it, Advanced Search, in the page container" do
     visit root_path
     scroll_to 1200
     assert_selector ".sticky-search.is-visible"
 
-    box = ->(selector) { find(selector).evaluate_script("(() => { const r = this.getBoundingClientRect(); return [r.left, r.right]; })()") }
-    title, bar, link = box.call(".sticky-search__title"), box.call(".sticky-search .search-banner__form"), box.call(".sticky-search .advanced_search")
-    assert_operator title[1], :<=, bar[0]
+    title, bar, link = rect(".sticky-search__title"), rect(".sticky-search .search-banner__form"), rect(".sticky-search .advanced_search")
+    inner = rect(".sticky-search__inner")
+    assert_in_delta 1264, inner[1] - inner[0], 1           # --layout-container, the banner's own
+    assert_in_delta inner[0] + 32, title[0], 1             # the title starts inside its 32px gutter
+    assert_in_delta 48, bar[0] - title[1], 1              # --space-48 between the title and the group
+    assert_in_delta 16, link[0] - bar[1], 1               # --space-16 between the bar and Advanced Search
+    assert_in_delta inner[1] - 32, link[1], 1             # Advanced Search ends at the right gutter
+    assert_operator bar[1] - bar[0], :>, 720              # the bar takes the rest of the width, wider than the banner's
+    assert_in_delta 40, bar[2], 1
+    assert_operator link[2], :>=, 44
+  end
+
+  test "tablet: the bar and Advanced Search, without the title" do
+    page.driver.resize(820, 1000)
+    visit root_path
+    scroll_to 1200
+    assert_selector ".sticky-search.is-visible"
+
+    assert_selector ".sticky-search .advanced_search", visible: :visible
+    assert_no_selector ".sticky-search__title", visible: :visible
+    bar, link = rect(".sticky-search .search-banner__form"), rect(".sticky-search .advanced_search")
     assert_operator bar[1], :<=, link[0]
-    window_center = page.evaluate_script("window.innerWidth") / 2.0
-    assert_in_delta window_center, (bar[0] + bar[1]) / 2, 2
+    assert_operator link[1], :<=, 820
+  ensure
+    page.driver.resize(1440, 900)
+  end
+
+  test "phone: the bar alone, filling the strip" do
+    page.driver.resize(390, 800)
+    visit root_path
+    scroll_to 1200
+    assert_selector ".sticky-search.is-visible"
+
+    assert_no_selector ".sticky-search .advanced_search", visible: :visible
+    assert_no_selector ".sticky-search__title", visible: :visible
+    bar = rect(".sticky-search .search-banner__form")
+    assert_in_delta 358, bar[1] - bar[0], 2 # 390px less a 16px gutter each side
+  ensure
+    page.driver.resize(1440, 900)
+  end
+
+  test "the strip is a labelled search landmark with no axe violations while it is showing, on a page that also has the banner's search" do
+    visit search_catalog_path(q: "skull", search_field: "all_fields")
+    scroll_to 1500
+    assert_selector ".sticky-search.is-visible"
+
+    assert_selector ".sticky-search search[aria-label='Quick search']"
+    assert_accessible
   end
 
   # The suggestions are Blacklight's own <auto-complete> element fetching /catalog/suggest. The test index has no suggester

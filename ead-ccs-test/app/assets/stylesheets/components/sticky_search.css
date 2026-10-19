@@ -1,10 +1,11 @@
 /*
- * Sticky search strip: a slim navy band (about 56px) fixed to the top of the window with the site title on the left,
- * the search bar in the centre and the "Advanced Search" link on the right. The layout is Bootstrap's own
- * (position-fixed, container, d-grid); the bar is the banner's and hero's search bar, styled by the same rules in
- * search_banner.css (their :is() lists include .sticky-search), made 40px high here to keep the strip slim.
- * Markup: NexusCcs::StickySearchComponent; behaviour: controllers/sticky_search_controller.js. Above the page,
- * below modals.
+ * Sticky search strip. Layout follows the CCS Design Documentation (Figma "search") as a reference only; no new tokens or
+ * styles come from it. A navy band fixed to the top of the window: the site title on the left, then 48px (--space-48),
+ * then one group that takes the rest: the search bar (grows) and, 16px (--space-16) after it, the "Advanced Search" link.
+ * The bar is the banner's and hero's search bar, styled by the same rules in search_banner.css (their :is() lists include
+ * .sticky-search). Layout is Bootstrap's own (position-fixed, d-flex) with the site's existing spacing tokens.
+ * Phones: the bar alone, full width. Tablets (768px+): the bar and Advanced Search. Desktop (992px+): the title too.
+ * Markup: NexusCcs::StickySearchComponent; behaviour: controllers/sticky_search_controller.js. Above the page, below modals.
  */
 .sticky-search {
   z-index: 1030; /* Bootstrap's fixed-top layer: under modals (1055) */
@@ -21,33 +22,55 @@
   transition: transform 0.25s ease, visibility 0s;
 }
 
-/* Title left, search bar centre, Advanced Search right: three columns, the outer two equal so the bar is centred */
+/* Keep the strip from covering what keyboard focus or an in-page link scrolls into view (WCAG 2.2 "Focus Not Obscured") */
+html {
+  scroll-padding-top: 4.5rem;
+}
+
 .sticky-search__inner {
-  max-width: var(--layout-container);
-  grid-template-columns: 1fr minmax(0, 45rem) 1fr;
-  column-gap: var(--ccs-space-4);
+  max-width: var(--layout-container); /* the one page container, as the banner's */
+  margin-inline: auto;
+  padding-inline: var(--space-16);
+  column-gap: var(--space-48);
+}
+
+@media (min-width: 768px) {
+  .sticky-search__inner {
+    padding-inline: var(--space-32);
+  }
 }
 
 .sticky-search__title {
-  grid-column: 1;
-  justify-self: start;
+  flex: none;
   padding-right: 0;
   white-space: nowrap;
 }
 
-/* The bar's wrappers drop out of the layout so its form and its Advanced Search link are the grid's own items */
-.sticky-search .search-banner__search,
+/* The bar's wrapper is the group: the form grows, the Advanced Search link follows it 16px away. Its <search> element
+   drops out of the layout so the form and the link are the group's own items. */
+.sticky-search .search-banner__search {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: var(--space-16);
+  min-width: 0;
+  margin: 0; /* the banner's wrapper has a top margin of its own */
+}
+
 .sticky-search search {
   display: contents;
 }
 
 .sticky-search .search-banner__form {
-  grid-column: 2;
+  flex: 1 1 auto;
+  width: auto;
+  max-width: none;
+  min-width: 0;
 }
 
 .sticky-search .advanced_search {
-  grid-column: 3;
-  justify-self: end;
+  flex: none;
+  min-height: 2.75rem; /* 44px target, as in the design */
   white-space: nowrap;
   font-size: var(--ccs-font-size-md);
 }
@@ -56,20 +79,23 @@
   height: 2.5rem;
 }
 
-/* Below 992px there is no room for the title and the link: the bar fills the strip */
-@media (max-width: 991.98px) {
-  .sticky-search__inner {
-    grid-template-columns: minmax(0, 1fr);
-  }
+.sticky-search__title:focus-visible,
+.sticky-search .advanced_search:focus-visible {
+  outline: 3px solid var(--ccs-cyan-250);
+  outline-offset: 2px;
+}
 
-  .sticky-search__title,
-  .sticky-search .advanced_search {
+/* Tablets: no room for the title; the bar and Advanced Search share the strip */
+@media (max-width: 991.98px) {
+  .sticky-search__title {
     display: none;
   }
+}
 
-  .sticky-search .search-banner__form {
-    grid-column: 1;
-    max-width: none;
+/* Phones: the bar alone, and a narrower scope menu */
+@media (max-width: 767.98px) {
+  .sticky-search .advanced_search {
+    display: none;
   }
 }
 

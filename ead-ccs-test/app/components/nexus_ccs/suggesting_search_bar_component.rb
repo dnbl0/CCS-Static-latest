@@ -9,5 +9,9 @@ module NexusCcs
     POPUP_ID = "sticky-autocomplete-popup"
 
     def popup_id = POPUP_ID
+
+    # A second search landmark on the page (the banner has one): its own name tells them apart. The gem's form carries
+    # role="search" too; here the <search> element is the one landmark, so the pair does not nest two of the same name.
+    def search_label = "Quick search"
   end
 end
