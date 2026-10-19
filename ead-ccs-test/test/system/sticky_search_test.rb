@@ -54,6 +54,25 @@ class StickySearchTest < ApplicationSystemTestCase
     assert_operator link[2], :>=, 44
   end
 
+  test "the scope menu's label is centred in its button, in the strip as in the hero's bar" do
+    visit root_path
+    centre = lambda do |selector|
+      find(selector).evaluate_script(<<~JS)
+        (() => {
+          const toggle = this.querySelector(".dropdown-toggle"), box = toggle.getBoundingClientRect();
+          const range = document.createRange(); range.selectNodeContents(toggle);
+          const text = range.getBoundingClientRect();
+          return (text.top + text.height / 2) - (box.top + box.height / 2);
+        })()
+      JS
+    end
+    assert_in_delta 0, centre.call(".ccs-hero__search .ccs-select"), 1
+
+    scroll_to 1200
+    assert_selector ".sticky-search.is-visible"
+    assert_in_delta 0, centre.call(".sticky-search .ccs-select"), 1
+  end
+
   test "tablet: the bar and Advanced Search, without the title" do
     page.driver.resize(820, 1000)
     visit root_path

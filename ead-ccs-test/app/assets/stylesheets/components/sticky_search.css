@@ -79,6 +79,12 @@ html {
   height: 2.5rem;
 }
 
+/* The scope menu's label is centred by its line height, which the banner sets for its 48px bar (46px inside the outline);
+   the strip's bar is 40px (38px inside). (The :is() with an id matches the specificity of the banner rule this overrides.) */
+.sticky-search .input-group > :is(#sortAndPerPage .btn-group, .ccs-select) > .dropdown-toggle {
+  line-height: calc(2.5rem - 2px);
+}
+
 .sticky-search__title:focus-visible,
 .sticky-search .advanced_search:focus-visible {
   outline: 3px solid var(--ccs-cyan-250);
