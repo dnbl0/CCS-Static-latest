@@ -40,6 +40,16 @@ module EadCcs
     #
     # The service is for University of Melbourne users, so dates and times are Melbourne's.
     config.time_zone = "Melbourne"
+
+    # Errors (404, 500 ...) are drawn by ErrorsController inside the site header and footer, not by the stock files in public/
+    # (which stay as the fallback if that page cannot be drawn).
+    # The failed request's own query string may be what failed (a broken %-encoding), so it is not passed on: the error page
+    # would fail the same way. The path is still available to the page as request.original_fullpath.
+    config.exceptions_app = lambda { |env|
+      env["QUERY_STRING"] = ""
+      %w[rack.request.query_string rack.request.query_hash action_dispatch.request.query_parameters].each { |key| env.delete(key) }
+      Rails.application.routes.call(env)
+    }
     # config.eager_load_paths << Rails.root.join("extras")
   end
 end

@@ -28,6 +28,8 @@ module QueryRules
   def apply_query_rules
     return unless request.get? || request.head?
 
+    drop_clauses_for_unknown_fields
+
     cleaned = apply_query_rule_to(params, :q)
     params[:clause].each_value { |clause| cleaned &&= apply_query_rule_to(clause, :query) } if params[:clause].respond_to?(:each_value)
     return if cleaned
@@ -35,6 +37,17 @@ module QueryRules
     respond_to do |format|
       format.json { render json: { error: INVALID_MESSAGE }, status: :unprocessable_content }
       format.any { redirect_to root_path, alert: INVALID_MESSAGE }
+    end
+  end
+
+  # An advanced search row for a field this site does not search (an old link, or a hand-edited address) is ignored: the
+  # constraints under the results are drawn from the field's label, which does not exist.
+  def drop_clauses_for_unknown_fields
+    return unless params[:clause].respond_to?(:each_pair)
+
+    known = blacklight_config.search_fields.keys
+    params[:clause].each_pair.to_a.each do |key, clause|
+      params[:clause].delete(key) unless clause.respond_to?(:[]) && !clause.is_a?(String) && known.include?(clause[:field].to_s)
     end
   end
 

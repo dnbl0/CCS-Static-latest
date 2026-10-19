@@ -51,6 +51,9 @@ Rails.application.routes.draw do
   get "contact", to: redirect("/help#access", status: 301)
   get "about", to: "pages#about", as: :about
 
+  # What the visitor sees for an error: Rails sends the failed request to /<status> (config.exceptions_app)
+  %w[400 404 406 422 500].each { |code| match code, to: "errors#show", via: :all, defaults: { code: code }, as: "error_#{code}" }
+
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
