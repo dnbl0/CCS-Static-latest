@@ -106,6 +106,8 @@ ul.ccs-combo__menu > .ccs-combo__option { list-style: none; }
 .ccs-combo__search { margin: var(--space-8); width: calc(100% - 16px); height: 40px; }
 .ccs-combo__none { margin: 0; padding: var(--space-12); font-size: var(--font-size-body); color: var(--text-secondary); }
 .ccs-combo__none[hidden] { display: none; }
+.ccs-combo__more { margin: 0; padding: var(--space-8) var(--space-12); font-size: var(--font-size-body); color: var(--text-secondary); border-bottom: 1px solid var(--col-bg-primary); }
+.ccs-combo__more[hidden] { display: none; }
 .ccs-combo--multi .ccs-combo__option:has(.ccs-check:focus-visible) { background: var(--input-fill-hover); }
 
 /* Checkbox: the Figma control artwork (unchecked / checked) on a real <input type=checkbox> */
