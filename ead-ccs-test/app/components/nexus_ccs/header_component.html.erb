@@ -101,7 +101,7 @@
 
 <%= render NexusCcs::SearchOverlayComponent.new %>
 
-<%= render NexusCcs::StickySearchComponent.new %>
+<%= render NexusCcs::StickySearchComponent.new(blacklight_config: blacklight_config) %>
 
 <%= render NexusCcs::BreadcrumbComponent.new(items: breadcrumbs) %>
 

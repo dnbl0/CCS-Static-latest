@@ -20,20 +20,30 @@ class LandingTest < ActionDispatch::IntegrationTest
     assert_redirected_to "/"
   end
 
-  test "every page carries the sticky search bar: a GET search form, hidden until the banner has scrolled away" do
+  test "every page carries the sticky strip: the title, the same search bar and Advanced Search, hidden until the banner has scrolled away" do
     [ "/", "/help", "/about" ].each do |path|
       get path
 
       assert_select ".sticky-search[data-controller=sticky-search][inert][aria-hidden=true]", count: 1
-      assert_select ".sticky-search form.input-group[action=?][method=get]", "/catalog"
-      assert_select ".sticky-search input[name=search_field][value=all_fields]"
-      assert_select ".sticky-search label[for=sticky-search-q]"
+      assert_select ".sticky-search a.site-header__title[href=?]", "/", text: "Cultural Collections"
+      assert_select ".sticky-search form.search-query-form[action=?][method=get]", "/catalog"
+      assert_select ".sticky-search select[name=search_field]#sticky_search_field"
+      assert_select ".sticky-search input[name=q]#sticky_q"
+      assert_select ".sticky-search button#sticky-search-submit"
+      assert_select ".sticky-search a.advanced_search[href^=?]", "/catalog/advanced"
     end
   end
 
-  test "the sticky search bar keeps the current query" do
+  test "the sticky bar keeps the current query" do
     get "/catalog", params: { q: "skull", search_field: "all_fields" }
 
-    assert_select ".sticky-search input#sticky-search-q[value=skull]"
+    assert_select ".sticky-search input#sticky_q[value=skull]"
+  end
+
+  test "no id is used twice on the page with the sticky strip, with the search banner" do
+    get "/catalog", params: { q: "skull", search_field: "all_fields" }
+
+    ids = css_select("[id]").map { |node| node["id"] }
+    assert_equal [], ids.tally.select { |_, n| n > 1 }.keys
   end
 end
