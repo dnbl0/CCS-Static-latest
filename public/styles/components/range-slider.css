@@ -11,7 +11,7 @@
   --rs-bar-empty: #e0e0e0;
   --rs-rail: #e0e0e0;
   --rs-field-border: #b5baca;
-  --rs-focus: #0b4ea2;
+  --rs-focus: var(--focus-focus);
   width: 100%;
 }
 

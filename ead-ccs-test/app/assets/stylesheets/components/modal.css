@@ -1,0 +1,128 @@
+/*
+ * Modals: scroll lock and the University of Melbourne Gen 3 modal look (designsystem.web.unimelb.edu.au/components/modal/).
+ * Every modal-like surface shares this:
+ *   - the dialogs (<dialog>: Acknowledgement of Country, "You're leaving this site", Blacklight's #blacklight-modal) lock the page through :has(dialog[open]);
+ *   - the surfaces that are not a <dialog> (the search overlay, the mobile filter drawer) set html.has-open-modal through
+ *     app/javascript/modal_lock.js, which counts them so the lock stays until the last one has closed.
+ * While locked the root does not scroll (wheel, touch, keyboard) and keeps its scrollbar gutter, so the page does not shift;
+ * content taller than the window scrolls inside the modal and never chains to the page behind.
+ * The navy 80% blanket is --ccs-scrim; the panel is white, square and padded 24px; the Close button (icon, then the word) sits
+ * top right inside the panel. Markup: .modal-close in the confirmation dialogs, Blacklight's .btn-close elsewhere.
+ */
+html:has(dialog[open]),
+html.has-open-modal {
+  overflow: hidden;
+  scrollbar-gutter: stable;
+  /* the reserved gutter (where a classic scrollbar was) is not under the blanket: paint it as the blanket over white */
+  background-color: color-mix(in srgb, var(--ccs-navy-1200) 80%, var(--ccs-white));
+}
+
+:root {
+  --bl-modal-backdrop-bg: var(--ccs-scrim);
+}
+
+dialog::backdrop,
+dialog.modal[open]::backdrop {
+  background-color: var(--ccs-scrim, rgb(0 11 52 / 80%));
+}
+
+dialog.modal {
+  --bs-modal-border-radius: var(--ccs-radius-none);
+  --bs-modal-inner-border-radius: var(--ccs-radius-none);
+  --bs-modal-border-width: 0;
+  --bs-modal-box-shadow: none;
+}
+
+dialog.modal[open] {
+  overscroll-behavior: contain;
+}
+
+dialog.modal .modal-dialog {
+  border-radius: var(--ccs-radius-none);
+}
+
+/* Confirmation dialogs: a white square panel with 24px padding and the Close button in its top right corner */
+dialog.uom-modal .modal-content {
+  position: relative;
+  padding: var(--ccs-space-5);
+  background: var(--ccs-surface-panel);
+}
+
+dialog.uom-modal .modal-header,
+dialog.uom-modal .modal-body,
+dialog.uom-modal .modal-footer {
+  padding: 0;
+  border: 0;
+}
+
+dialog.uom-modal .modal-header {
+  margin-bottom: var(--ccs-space-3);
+}
+
+dialog.uom-modal .modal-footer {
+  margin-top: var(--ccs-space-5);
+  gap: var(--ccs-space-3);
+}
+
+dialog.uom-modal .modal-close {
+  position: absolute;
+  z-index: var(--ccs-z-raised);
+  top: 1.625rem;
+  right: 1.25rem;
+}
+
+/* room beside the first block for the Close button */
+dialog.uom-modal .modal-close + * {
+  padding-right: 2.25rem;
+}
+
+/* Close button: the icon, then the word (Gen 3's .modal__close). Blacklight's own buttons (.btn-close) look the same. */
+dialog.modal .modal-close,
+dialog.modal .btn-close {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ccs-space-1);
+  width: auto;
+  height: auto;
+  min-height: 1.5rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--ccs-radius-none);
+  background: none;
+  opacity: 1;
+  font-family: var(--ccs-font-body);
+  font-size: 0.875rem;
+  font-weight: var(--ccs-font-weight-regular);
+  line-height: 1.4;
+  color: var(--ccs-text-brand);
+  cursor: pointer;
+}
+
+dialog.modal .modal-close::before,
+dialog.modal .btn-close::before {
+  content: "";
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  background: currentcolor;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='M5 5l14 14M19 5L5 19'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+/* Blacklight renders an empty button with an aria-label; the visible word comes from here (the same word as the label) */
+dialog.modal .btn-close::after {
+  content: "Close";
+}
+
+dialog.modal .modal-close:hover,
+dialog.modal .btn-close:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+dialog.modal .modal-close:focus-visible,
+dialog.modal .btn-close:focus-visible {
+  outline: 2px solid var(--ccs-focus-ring);
+  outline-offset: 3px;
+  box-shadow: none;
+}

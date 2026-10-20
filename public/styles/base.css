@@ -18,6 +18,14 @@ a:hover{color:#0b2a6b;text-decoration:underline}
   outline-offset: 3px;
 }
 
+/* Modal scroll lock. While any modal surface is open the page behind it must not scroll (wheel, touch, keyboard) and must not
+   shift when the scrollbar goes: overflow is hidden on the root and the scrollbar's gutter stays reserved. html.has-open-modal is
+   set by nav.js whenever a search overlay or [role=dialog][aria-modal] is on screen (derived from the DOM, so it cannot stick);
+   native <dialog>s are covered by :has(). The reserved gutter (where a classic scrollbar was) is not under the blanket, so it is painted as the blanket over white. Content taller than the viewport scrolls inside the modal, and never chains to the page. */
+html.has-open-modal,
+html:has(dialog[open]){overflow:hidden;scrollbar-gutter:stable;background-color:color-mix(in srgb,var(--brand-1200) 80%,var(--white-100))}
+[role="dialog"][aria-modal="true"],.uom-search-popover{overscroll-behavior:contain}
+
 .sr-live{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
 .skip-link{position:absolute;top:-120px;left:16px;background:var(--col-btn-action-bg);color:var(--col-btn-action-text);padding:12px 18px;z-index:var(--z-99999);font-weight:700;text-decoration:none;border:2px solid var(--col-bg-primary);transition:top var(--duration-base) ease}

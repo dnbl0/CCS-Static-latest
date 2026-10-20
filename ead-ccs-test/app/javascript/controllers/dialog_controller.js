@@ -9,6 +9,11 @@ export default class extends Controller {
     if (this.openOnConnectValue) this.open()
   }
 
+  // Turbo is replacing the page: do not leave a modal dialog open in the cached copy
+  disconnect() {
+    if (this.hasDialogTarget && this.dialogTarget.open) this.dialogTarget.close()
+  }
+
   open() {
     if (!this.dialogTarget.open) this.dialogTarget.showModal()
   }

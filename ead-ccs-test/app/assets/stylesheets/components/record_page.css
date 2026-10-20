@@ -139,7 +139,7 @@ body.blacklight-catalog-show #main-container .page-sidebar {
 }
 
 .record-tag:focus-visible {
-  outline: 3px solid #0b4ea2;
+  outline: 3px solid var(--ccs-focus-ring);
   outline-offset: 2px;
 }
 
@@ -246,7 +246,7 @@ body.blacklight-catalog-show #main-container .page-sidebar {
 }
 
 .record-details__truncate-toggle:focus-visible {
-  outline: 3px solid #0b4ea2;
+  outline: 3px solid var(--ccs-focus-ring);
   outline-offset: 2px;
 }
 
@@ -277,7 +277,7 @@ body.blacklight-catalog-show #main-container .page-sidebar {
 .record-copy:focus-visible,
 .persistent-link__copy:focus-visible,
 .persistent-link__browser .uom-action:focus-visible {
-  outline: 3px solid #0b4ea2;
+  outline: 3px solid var(--ccs-focus-ring);
   outline-offset: 2px;
 }
 

@@ -73,7 +73,7 @@ class ResultsLayoutTest < ActiveSupport::TestCase
     assert_includes drawer, "width: 22rem;"
     assert_includes drawer, "max-width: 88vw;"
     assert_includes drawer, "transform: translateX(-100%);"
-    assert_includes css, "rgb(0 0 0 / 70%)"
+    assert_includes css, "background: var(--ccs-scrim);" # the navy modal blanket
   end
 
   test "the filter sidebar, toggle and list card are registered with Blacklight" do

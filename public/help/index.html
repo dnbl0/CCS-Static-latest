@@ -177,7 +177,6 @@
     if (!pop) return;
     lastSearchTrigger = trigger || null;
     pop.classList.add('is-open');
-    document.body.style.overflow = 'hidden';
     var input = document.getElementById('uom-search-overlay-input');
     if (input) input.focus();
   }
@@ -185,8 +184,7 @@
     var pop = document.getElementById('uom-search-popover');
     if (!pop) return;
     pop.classList.remove('is-open');
-    document.body.style.overflow = '';
-    if (lastSearchTrigger) lastSearchTrigger.focus();
+    if (lastSearchTrigger) lastSearchTrigger.focus({ preventScroll: true });   // back to the opener without moving the page
   }
 
   document.addEventListener('click', function(e){

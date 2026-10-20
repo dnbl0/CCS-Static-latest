@@ -3,6 +3,7 @@ import "page_loader" // first, so the loading screen always comes off even if a 
 import "@hotwired/turbo-rails"
 import "controllers"
 import "search_loading"
+import "modal_lock"
 import * as bootstrap from "bootstrap"
 import githubAutoCompleteElement from "@github/auto-complete-element"
 import Blacklight from "blacklight-frontend"
