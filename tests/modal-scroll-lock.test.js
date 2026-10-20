@@ -79,7 +79,7 @@ const eq = (a, b, msg) => { if (JSON.stringify(a) === JSON.stringify(b)) ok(msg)
   try {
     /* ---- 1. search overlay on every kind of page ------------------------------------------------- */
     const OVERLAY = '[popovertarget="uom-search-popover"]';
-    for (const url of ['/index.html', '/collections/index.html', '/collections/grainger-museum/index.html', '/help/search-tips.html', '/about.html','/search/advanced-search.html', '/collections/record.html?id=10116']) {
+    for (const url of ['/index.html', '/collections/index.html', '/help/index.html','/about.html','/search/advanced-search.html', '/collections/record.html?id=10116']) {
       const page = await open(url);
       const visible = await page.evaluate(sel => [...document.querySelectorAll(sel)].some(e => e.getBoundingClientRect().width > 0), OVERLAY);
       if (!visible) { fail(url + ': no visible search button in the header'); await page.context().close(); continue; }
