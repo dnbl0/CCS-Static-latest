@@ -58,7 +58,9 @@
 // ([data-bookmarks-link], .saved-bar) shows the live count; both are kept in step with the list, also across tabs.
 // The bar is not in the page markup: it is added here at the right end of the breadcrumb strip (.page-breadcrumbs), or in
 // the header top strip on a page with no breadcrumb (the home page).
+var SAVED_RECORDS = false;   // Saved records are hidden (as in the Rails app, config.x.saved_records); set true to bring back the bar and the Save buttons
 (function () {
+  if (!SAVED_RECORDS) return;
   var KEY = 'ccs-bookmarks-v1', MAX = 500, EVENT = 'ccs:bookmarks';
   var PATH = 'M6 3h12v18l-6-4-6 4z';
   function read() {

@@ -1,5 +1,4 @@
-// The breadcrumb's home icon is exactly 24x24px and the breadcrumb strip stays 44px high with the saved-records bar flush
-// to its right edge at the same height, on every page that has the strip (desktop width; phones show the back link instead).
+// The breadcrumb's home icon is exactly 24x24px and the breadcrumb strip stays 44px high (the saved-records bar is hidden), on every page that has the strip (desktop width; phones show the back link instead).
 // Skipped gracefully when playwright-core or Chromium is not installed.
 const http = require('http');
 const { PUBLIC, fail, ok, finish, fs, path } = require('./lib');
@@ -9,7 +8,7 @@ const eq = (a, b, msg) => { if (JSON.stringify(a) === JSON.stringify(b)) ok(msg)
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.json': 'application/json' };
 const PAGES = [
   '/about.html', '/help/index.html', '/collections/index.html',
-  '/search/search-results.html?q=skull', '/search/advanced-search.html', '/search/bookmarks.html',
+  '/search/search-results.html?q=skull', '/search/advanced-search.html',
   '/search/search-history.html', '/collections/record.html?id=10116'
 ];
 
@@ -36,17 +35,14 @@ const PAGES = [
       p.on('pageerror', e => errors.push(e.message));
       await p.goto(base + url);
       await p.waitForSelector('.page-local-history__link-image');
-      await p.waitForSelector('.page-breadcrumbs [data-bookmarks-link]');
       const m = await p.evaluate(() => {
         const i = document.querySelector('.page-local-history__link-image').getBoundingClientRect();
         const s = document.querySelector('.page-breadcrumbs').getBoundingClientRect();
-        const b = document.querySelector('.page-breadcrumbs [data-bookmarks-link]').getBoundingClientRect();
-        return { icon: [i.width, i.height], strip: s.height, bar: b.height, flushRight: Math.abs(s.right - b.right) < 0.5 };
+        return { icon: [i.width, i.height], strip: s.height, bar: document.querySelectorAll('[data-bookmarks-link], .ccs-save').length };
       });
       eq(m.icon, [24, 24], url + ': the home icon is 24x24');
       eq(m.strip, 44, url + ': the breadcrumb strip is 44px high');
-      eq(m.bar, 44, url + ': the saved-records bar is as tall as the strip');
-      eq(m.flushRight, true, url + ': the saved-records bar is flush to the right edge');
+      eq(m.bar, 0, url + ': no saved-records bar or Save button');
       await p.close();
     }
   } finally { await browser.close(); srv.close(); }
