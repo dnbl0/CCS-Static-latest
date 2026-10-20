@@ -2,7 +2,8 @@
 """Prints the field labels and filters straight from CCS Field labels and filters.xlsx as JSON, for tests/workbook-drift.test.js.
 
 Standard library only (an .xlsx is a zip of XML), so CI needs no openpyxl. Fields are the rows of "CCS Field Labels" that have a
-FINAL SEQUENCE ORDER (column L), as [sequence, label]; filters are the numbered rows of "CCS Filters", as [number, name].
+FINAL SEQUENCE ORDER (column L), as [sequence, label, source system (column Q: CMS or DAM, null when blank)]; filters are the
+numbered rows of "CCS Filters", as [number, name, filter type (column D, null when blank)].
 """
 import json, re, sys, zipfile
 import xml.etree.ElementTree as ET
@@ -33,6 +34,6 @@ def clean(s):
 
 
 book = sheets(sys.argv[1])
-fields = [[int(r["L"]), clean(r["B"])] for _, r in sorted(book["CCS Field Labels"].items()) if r.get("L", "").isdigit() and r.get("B")]
-filters = [[int(r["A"]), clean(r["C"])] for _, r in sorted(book["CCS Filters"].items()) if r.get("A", "").isdigit() and r.get("C")]
+fields = [[int(r["L"]), clean(r["B"]), clean(r.get("Q")) or None] for _, r in sorted(book["CCS Field Labels"].items()) if r.get("L", "").isdigit() and r.get("B")]
+filters = [[int(r["A"]), clean(r["C"]), clean(r.get("D")) or None] for _, r in sorted(book["CCS Filters"].items()) if r.get("A", "").isdigit() and r.get("C")]
 print(json.dumps({"fields": sorted(fields), "filters": sorted(filters)}))  # the JSON copies are in sequence order; the sheet is in display-field order
