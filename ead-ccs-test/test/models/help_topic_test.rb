@@ -2,7 +2,7 @@ require "test_helper"
 
 class HelpTopicTest < ActiveSupport::TestCase
   test "the topics are listed in the order of the help page and its menu" do
-    assert_equal %w[faq indigenous copyright access], HelpTopic.all.map(&:key)
+    assert_equal %w[faq indigenous copyright contact-us], HelpTopic.all.map(&:key)
   end
 
   test "every topic is a section of /help" do

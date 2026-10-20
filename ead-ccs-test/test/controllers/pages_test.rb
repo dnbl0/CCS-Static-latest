@@ -64,13 +64,13 @@ class PagesTest < ActionDispatch::IntegrationTest
   test "the access section lists the collection contacts, and the Indigenous section links to the priorities" do
     get "/help"
 
-    assert_select "#access .help-section__contact", minimum: 5
-    assert_select "#access a[href^=mailto]", minimum: 3
+    assert_select "#contact-us .help-section__contact", minimum: 5
+    assert_select "#contact-us a[href^=mailto]", minimum: 3
     assert_select "#indigenous a[href='https://www.unimelb.edu.au/murmuk-djerring']"
   end
 
   test "the old help topic links go to the topic's section" do
-    { "faq" => "/help#faq", "copyright" => "/help#copyright", "access" => "/help#access", "indigenous" => "/help#indigenous" }.each do |topic, location|
+    { "faq" => "/help#faq", "copyright" => "/help#copyright", "access" => "/help#contact-us", "contact-us" => "/help#contact-us", "indigenous" => "/help#indigenous" }.each do |topic, location|
       get "/help", params: { topic: topic }
 
       assert_redirected_to location
@@ -83,7 +83,7 @@ class PagesTest < ActionDispatch::IntegrationTest
   end
 
   test "the pages folded into Help redirect permanently to their section" do
-    { "/contact" => "/help#access", "/help/indigenous-data" => "/help#indigenous", "/help/search-tips" => "/help" }.each do |path, location|
+    { "/contact" => "/help#contact-us", "/help/indigenous-data" => "/help#indigenous", "/help/search-tips" => "/help" }.each do |path, location|
       get path
 
       assert_redirected_to location
@@ -97,7 +97,7 @@ class PagesTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "body.page-about h1", "About Cultural Collections Search"
     assert_select "body.page-about .ccs-section--cards", count: 0
-    assert_select "body.page-about .about-help a[href='/help#access']"
+    assert_select "body.page-about .about-help a[href='/help#contact-us']"
     assert_select "#site-nav-help ~ ul a[href='/about'], .site-nav a[href='/about']", minimum: 1
   end
 

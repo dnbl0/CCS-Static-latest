@@ -25,7 +25,7 @@ class ErrorPagesTest < ActionDispatch::IntegrationTest
     assert_select ".error-page__links a", text: "Search all records"
     assert_select ".error-page__links a", text: "Browse collections"
     assert_select ".error-page__links a", text: "Go to the home page"
-    assert_select ".error-page__help a[href=?]", "/help#access"
+    assert_select ".error-page__help a[href=?]", "/help#contact-us"
     assert_select ".error-page__code", "Error 404"
   end
 
