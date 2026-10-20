@@ -9,7 +9,7 @@ git plumbing off `origin/main`, because the parent repo's checked-out branch bel
 
 - Work is on `wip/local-main` of `dnbl0/CCS-Static-latest`, where this app lives in `ead-ccs-test/` beside the static
   site. The branches named below (`feat/blacklight-oob`, `feat/rails-ccs-theme`) are history.
-- The app has the home, collections (browse list), help (one page with the FAQ, Indigenous data, Copyright and Access sections) and
+- The app has the home, collections (browse list), help (one page with the FAQ, Indigenous data, Copyright and Contact Us sections) and
   about pages (`PagesController`, see the README), matching the static site; the search results are at `/catalog`. The collection
   landing pages, Contact and Search tips pages were removed (2026-10-16); their addresses redirect.
 - Tests: `bin/rails test` (183 runs, no Solr needed) and `bin/rails test:system` (journeys and axe accessibility checks;

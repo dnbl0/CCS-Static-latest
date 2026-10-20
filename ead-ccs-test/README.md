@@ -73,7 +73,7 @@ Eg:
 ## Content pages (home, collections, help, about)
 
 `PagesController` serves the pages of the static prototype (`public/` in the repository root) so the two sites match:
-`/` (home), `/collections` (the Browse collections list), `/help` (one page; sections `#faq`, `#indigenous`, `#copyright`, `#access`,
+`/` (home), `/collections` (the Browse collections list), `/help` (one page; sections `#faq`, `#indigenous`, `#copyright`, `#contact-us`,
 with the University's jump navigation beside them) and `/about`. The search results live at `/catalog`.
 
 * There are no collection landing pages. `/collections/<slug>`, `/contact`, `/help/search-tips` and `/help/indigenous-data` are

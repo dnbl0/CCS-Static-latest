@@ -10,7 +10,7 @@
   to the filtered results.
 - **Pages** are named the same on both sites: home, collections (browse), a collection, help (one page with sections `faq`,
   `indigenous`, `copyright`, `access`), about. Contact, Indigenous data and Search tips are not pages of their own: Contact is the
-  Help "Access and Information" section, and their old addresses redirect. Search results are `/search/search-results`
+  Help "Contact Us" section, and their old addresses redirect. Search results are `/search/search-results`
   (static) and `/catalog` (Rails).
 - **CSS classes** follow BEM (`block__element--modifier`). The static pages scope a page's rules with a `page-<name>` class
   on `<body>`; the Rails pages use the same classes (they are generated from the static styles).

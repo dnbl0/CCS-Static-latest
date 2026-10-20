@@ -61,7 +61,7 @@ class PagesTest < ActionDispatch::IntegrationTest
     assert_select "p.help-intro", count: 1
   end
 
-  test "the access section lists the collection contacts, and the Indigenous section links to the priorities" do
+  test "the Contact Us section lists the collection contacts, and the Indigenous section links to the priorities" do
     get "/help"
 
     assert_select "#contact-us .help-section__contact", minimum: 5
