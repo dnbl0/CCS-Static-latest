@@ -48,7 +48,7 @@ Rails.application.routes.draw do
   # are sections of Help, and the old addresses go there.
   get "help/search-tips", to: redirect("/help", status: 301)
   get "help/indigenous-data", to: redirect("/help#indigenous", status: 301)
-  get "contact", to: redirect("/help#access", status: 301)
+  get "contact", to: redirect("/help#contact-us", status: 301)
   get "about", to: "pages#about", as: :about
 
   # What the visitor sees for an error: Rails sends the failed request to /<status> (config.exceptions_app)

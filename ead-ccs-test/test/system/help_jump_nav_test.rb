@@ -10,6 +10,6 @@ class HelpJumpNavTest < ApplicationSystemTestCase
     assert_selector "a.jump-nav__link[aria-current=location]", count: 1
 
     page.execute_script("window.scrollTo(0, document.documentElement.scrollHeight)")
-    assert_selector "a.jump-nav__link.is-current", text: "Access and Information"
+    assert_selector "a.jump-nav__link.is-current", text: "Contact Us"
   end
 end

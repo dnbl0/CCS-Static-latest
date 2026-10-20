@@ -34,7 +34,7 @@ class SiteChromeTest < ActiveSupport::TestCase
     render_header
 
     assert_selector "#site-nav-help a[href='/help#faq']"
-    assert_equal [ "/help#faq", "/help#indigenous", "/help#copyright", "/help#access" ],
+    assert_equal [ "/help#faq", "/help#indigenous", "/help#copyright", "/help#contact-us" ],
                  page.all("#site-nav-help ul a").map { |a| a[:href] }
     assert_no_link "Contact", href: "/contact"
   end
