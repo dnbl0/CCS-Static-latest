@@ -86,17 +86,8 @@ body.page-search-results .search-results-ack-title__button-close-ack:hover {
   text-decoration: underline;
 }
 
-body.page-search-results .search-results-ack-title__group--v1 {
-  padding: var(--space-20) var(--space-32) 28px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-16);
-  flex-wrap: wrap;
-}
-
 body.page-search-results .search-results-ack-title__group--v2 {
-  padding: 28px var(--space-32) var(--space-8);
+  padding: 28px var(--space-32) 28px;
   padding-right: 5rem; /* room for the Close button */
   display: flex;
   flex-direction: column;
@@ -110,12 +101,6 @@ body.page-search-results .search-results-ack-title__heading-before-you-explore {
   font-size: var(--font-size-26);
   line-height: var(--line-height-tight);
   color: var(--col-bg-primary);
-}
-
-body.page-search-results .search-results-ack-title__link-indigenous-cultural-data {
-  font-size: var(--font-size-15);
-  font-weight: var(--font-weight-semibold);
-  text-decoration: underline;
 }
 
 body.page-search-results .search-results-ack-title__text--v1 {
