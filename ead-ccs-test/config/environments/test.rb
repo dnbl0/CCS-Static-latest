@@ -15,6 +15,10 @@ Rails.application.configure do
   # loading is working properly before deploying your code.
   config.eager_load = ENV["CI"].present?
 
+  # Saved records are off by default (config/application.rb); the saved-records tests and the rest of the suite run with them on,
+  # and test/integration/saved_records_hidden_test.rb switches them off.
+  config.x.saved_records = true
+
   # Configure public file server for tests with cache-control for performance.
   config.public_file_server.headers = { "cache-control" => "public, max-age=3600" }
 

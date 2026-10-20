@@ -10,6 +10,9 @@ module NexusCcs
   # saved_bar Stimulus controller then updates the words and the icon (bookmark-plus when empty, bookmark-check
   # otherwise) and the live region announces it.
   class SavedBarComponent < ViewComponent::Base
+    # Hidden while config.x.saved_records is off (config/application.rb)
+    def render? = Rails.configuration.x.saved_records
+
     # `count` defaults to the visitor's saved records (0 where the page has no session, e.g. a component test).
     def initialize(count: nil, placement: :breadcrumb)
       @count = count

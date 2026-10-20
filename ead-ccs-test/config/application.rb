@@ -41,6 +41,10 @@ module EadCcs
     # The service is for University of Melbourne users, so dates and times are Melbourne's.
     config.time_zone = "Melbourne"
 
+    # Saved records (the Save buttons, the saved bar in the header and breadcrumb strip, the /bookmarks list) are hidden:
+    # not part of the stakeholder review. Set SAVED_RECORDS=on to show them again; the code stays in place.
+    config.x.saved_records = ENV["SAVED_RECORDS"] == "on"
+
     # Errors (404, 500 ...) are drawn by ErrorsController inside the site header and footer, not by the stock files in public/
     # (which stay as the fallback if that page cannot be drawn).
     # The failed request's own query string may be what failed (a broken %-encoding), so it is not passed on: the error page

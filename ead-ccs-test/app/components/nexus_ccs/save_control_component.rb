@@ -6,6 +6,9 @@ module NexusCcs
   # submits it without a page reload and updates every `data-role="bookmark-counter"` (the header's saved bar).
   # Only the words, the icon, the accessible name ("Save record: <title>") and the markup around them change.
   class SaveControlComponent < Blacklight::Document::BookmarkComponent
+    # Hidden while config.x.saved_records is off (config/application.rb)
+    def render? = Rails.configuration.x.saved_records && super
+
     def title
       helpers.document_presenter(@document).heading
     end

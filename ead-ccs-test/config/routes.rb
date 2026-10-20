@@ -15,10 +15,13 @@ Rails.application.routes.draw do
     resources :solr_documents, only: [ :show ], path: "/catalog", controller: "catalog" do
       concerns :exportable
     end
-    resources :bookmarks, only: [ :index, :update, :create, :destroy ] do
-      concerns :exportable
-      collection do
-        delete "clear"
+    # The saved list and its Save / Remove requests are a 404 while config.x.saved_records is off (config/application.rb)
+    constraints(->(_request) { Rails.configuration.x.saved_records }) do
+      resources :bookmarks, only: [ :index, :update, :create, :destroy ] do
+        concerns :exportable
+        collection do
+          delete "clear"
+        end
       end
     end
   end
