@@ -24,7 +24,6 @@
 <link rel="stylesheet" href="/styles/components/hero-search.css">
 <link rel="stylesheet" href="/styles/components/content-templates.css">
 <link rel="stylesheet" href="/styles/components/range-slider.css">
-<link rel="stylesheet" href="/styles/components/save-button.css">
 <link rel="stylesheet" href="/styles/pages/search-results/layout.css">
 <link rel="stylesheet" href="/styles/pages/search-results/results.css">
 <link rel="stylesheet" href="/styles/pages/search-results/toolbar.css">
@@ -107,7 +106,6 @@
             </div>
           </li>
           <li class="ccs-nav__list-item"><a class="ccs-nav__item-link-about" href="/about.html">About</a></li>
-          <li class="ccs-nav__list-item ccs-nav__list-item--saved"><a class="ccs-nav__item-link-saved" href="/search/bookmarks.html"><span data-bookmarks-drawer-text>0 saved records</span></a></li>
         </ul>
         <ul class="ccs-nav__drawer-top" aria-label="University of Melbourne">
         <li class="ccs-nav__item"><a class="ccs-nav__item-link-study" href="https://study.unimelb.edu.au">Study</a></li>
@@ -410,7 +408,6 @@
                   <span class="search-results-article__line">{{ r.type }}</span>
                   <a class="search-results-article__line search-results-article__line--link" href="/collections/index.html">{{ r.collection }}</a>
                 </p>
-                <button type="button" class="ccs-save search-results-article__save" data-bookmark-id="{{ r.id }}" data-bookmark-title="{{ r.title }}"></button>
                 <sc-if value="{{ r.matchLabel }}"><span class="search-results-article__text search-results-article__text--match">{{ r.matchLabel }}</span></sc-if>
                 <div class="search-results-article__group search-results-article__group--v1">
                   <sc-if value="{{ r.webAccess }}"><span class="search-results-article__text search-results-article__text--web-access">{{ r.webAccess }}</span></sc-if>
@@ -439,7 +436,6 @@
                   <span class="search-results-article__line">{{ r.type }}</span>
                   <a class="search-results-article__line search-results-article__line--link" href="/collections/index.html">{{ r.collection }}</a>
                 </p>
-                <button type="button" class="ccs-save search-results-article__save" data-bookmark-id="{{ r.id }}" data-bookmark-title="{{ r.title }}"></button>
               </div>
             </article>
           </sc-for>

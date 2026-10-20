@@ -40,7 +40,7 @@ function serve() {
 const PAGES = [
   '/index.html', '/collections/index.html', '/search/search-results.html?q=kangaroo', '/search/advanced-search.html',
   '/collections/record.html?id=10116', '/collections/record.html?id=23', '/collections/record.html?id=10004',
-  '/help/index.html', '/about.html', '/search/search-history.html', '/search/bookmarks.html'
+  '/help/index.html', '/about.html', '/search/search-history.html'
 ];
 
 (async () => {

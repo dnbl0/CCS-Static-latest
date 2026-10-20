@@ -15,7 +15,6 @@
 <link rel="stylesheet" href="/styles/components/breadcrumbs.css">
 <link rel="stylesheet" href="/styles/components/page-banner.css">
 <link rel="stylesheet" href="/styles/components/licence-badge.css">
-<link rel="stylesheet" href="/styles/components/save-button.css">
 <link rel="stylesheet" href="/styles/pages/record.css">
   <script src="../blacklight-adapter.js"></script>
 </head>
@@ -115,7 +114,6 @@
             </div>
           </li>
           <li class="ccs-nav__list-item"><a class="ccs-nav__item-link-about" href="/about.html">About</a></li>
-          <li class="ccs-nav__list-item ccs-nav__list-item--saved"><a class="ccs-nav__item-link-saved" href="/search/bookmarks.html"><span data-bookmarks-drawer-text>0 saved records</span></a></li>
         </ul>
         <ul class="ccs-nav__drawer-top" aria-label="University of Melbourne">
         <li class="ccs-nav__item"><a class="ccs-nav__item-link-study" href="https://study.unimelb.edu.au">Study</a></li>
@@ -240,7 +238,6 @@
 <section class="page-banner page-banner--compact" aria-label="Page banner">
   <div class="page-banner__inner">
     <h1 class="page-banner__heading">{{ pageTitle }}</h1>
-    <sc-if value="{{ found }}"><button type="button" class="ccs-save ccs-save--on-dark record-page__save" data-bookmark-id="{{ rec.id }}" data-bookmark-title="{{ rec.title }}"></button></sc-if>
     <sc-if value="{{ found }}" hint-placeholder-val="{{ true }}"></sc-if>
   </div>
 </section>
