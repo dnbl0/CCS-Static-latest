@@ -1,10 +1,10 @@
 # Data model
 
-The data model is defined by two project workbooks in `data/` (not tracked in git):
+The data model is defined by two project workbooks: `CCS Field labels and filters.xlsx` at the repo root (tracked; the source of truth for CCS Field Labels on record pages and CCS Filters in search results and advanced search) and `data/CCS-data-inventory.xlsx` (not tracked in git):
 
 | Workbook | Sheets used | Defines |
 |---|---|---|
-| `CCS-Field-labels-and-filters.xlsx` | CCS Field labels, CCS Filters | The 30 record display fields (label, sequence, source system, display rules) and the 22 filters (section, name, type) |
+| `../CCS Field labels and filters.xlsx` | CCS Field Labels, CCS Filters | The 28 record display fields (label, final sequence order, source system, display rules) and the 23 filters (section, name, type). Licence Type, Advisory, Terms of Use and Producer (DAM) are the media metadata, shown in the media viewer's modal only |
 | `CCS-data-inventory.xlsx` | CCS Data Inventory - 9 Sept, CCS Datatypes, Complex fields, AH sequencing, Copyright Advice | 107 metadata building blocks: which systems hold each (M&C is EMu, MDHS is Vernon, Nexus DAM), whether it displays, what happens when it is unpopulated |
 
 ## How the app follows it
@@ -30,7 +30,7 @@ To change the model: update the workbook, rerun the extractor, fill in `solr_map
 and the tests show what else must change. To fill a gap: add the source column to the indexer, replace
 `gap:` with `solr:`, reindex.
 
-## Record fields (Field labels sheet)
+## Record fields (CCS Field Labels sheet; # is its final sequence order)
 
 | # | Label | Source | Solr field |
 |---|---|---|---|
@@ -39,31 +39,29 @@ and the tests show what else must change. To fill a gap: add the source column t
 | 3 | Date | CMS | `production_date_ssim` (also in results) |
 | 4 | Creator | CMS | `creator_display_ssim` (also in results) |
 | 5 | Associated Entity | CMS | `associated_entity_ssim` |
-| 6 | Place | CMS | `production_place_ssim` (also in results) |
-| 7 | Description | CMS | `description_tsim` |
+| 6 | Cultural Affiliation | CMS | `cultural_group_ssim` |
+| 7 | Place | CMS | `production_place_ssim` (also in results) |
 | 8 | Series | CMS | `series_ssim` |
 | 9 | Editions | CMS | **gap**: Neither export has an Editions column. |
 | 10 | Material | CMS | `material_ssim` |
-| 11 | Dimensions | CMS | **gap**: Neither export has a dimensions column. |
+| 11 | Measurements |  | **gap**: Neither export has a dimensions column. |
 | 12 | Inscription | CMS | **gap**: Neither export has an inscription column. |
 | 13 | Language | CMS | **gap**: Inventory: language is held by neither M&C nor MDHS; EMu's Language Group column is empty. |
-| 14 | Cultural Affiliation | CMS | `cultural_group_ssim` |
-| 15 | Accession Number | CMS | `accession_number_ssim` |
-| 16 | Copyright | CMS | `rights_ssim` |
-| 17 | Credit Line | CMS | `credit_line_tsim` |
+| 15 | Subject | CMS | `subject_ssim` |
+| 16 | Description | CMS | `description_tsim` |
+| 17 | Classification | CMS | `classification_ssim` |
 | 18 | Named Collection | CMS | `named_collection_ssim` |
 | 19 | Collection | CMS | `collection_ssim` (also in results) |
-| 20 | Access | CMS | **gap**: Inventory: physical access is held by neither system. EMu's Record Status (access_condition_ssi) is indexed but not shown; it is not an access condition and needs data-owner sign-off. |
-| 21 | Classification | CMS | `classification_ssim` |
-| 22 | Subject | CMS | `subject_ssim` |
+| 20 | Accession Number | CMS | `accession_number_ssim` |
+| 21 | Credit Line | CMS | `credit_line_tsim` |
+| 22 | Copyright | CMS | `rights_ssim` |
 | 23 | Source URL | CMS | **gap**: No source URL column in either export (the record page uses a placeholder link). |
-| 24 | Related Parent Record | CMS | `parent_record_ssi` |
-| 25 | Related Child Record | CMS | **gap**: A child link is the inverse of the parent link; it is not derived yet. |
-| 26 | Related Record | CMS | `related_object_ssim` |
-| 27 | Licence Type | DAM | **gap**: DAM field: no Nexus DAM export yet. |
-| 28 | Advisory | DAM | **gap**: DAM field: no Nexus DAM export yet. |
-| 29 | Terms of Use | DAM | **gap**: DAM field: no Nexus DAM export yet. |
-| 30 | Producer | DAM | **gap**: DAM field: no Nexus DAM export yet. |
+| 24 | Access | CMS | **gap**: Inventory: physical access is held by neither system. EMu's Record Status (access_condition_ssi) is indexed but not shown; it is not an access condition and needs data-owner sign-off. |
+| 25 | Related Record |  | `parent_record_ssi` |
+| 26 | Licence Type | DAM (media metadata) | **gap**: DAM field: no Nexus DAM export yet. |
+| 27 | Advisory | DAM (media metadata) | **gap**: DAM field: no Nexus DAM export yet. |
+| 28 | Terms of Use | DAM (media metadata) | **gap**: DAM field: no Nexus DAM export yet. |
+| 29 | Producer | DAM (media metadata) | **gap**: DAM field: no Nexus DAM export yet. |
 
 ## Filters (Filters sheet)
 
@@ -72,25 +70,26 @@ and the tests show what else must change. To fill a gap: add the source column t
 | 1 | Collection details | Collection Title | checkbox | `collection_ssim` |
 | 2 | Collection details | Named Collections | browse | `named_collection_ssim` |
 | 3 | Creator | Creator Name | browse | `creator_ssim` |
-| 4 | Creator | Creator Date of Birth | year | `creator_birth_isim` |
-| 5 | Creator | Creator Date of Death | year | `creator_death_isim` |
-| 6 | Creator | Nationality | browse | **gap**: Inventory: held by M&C, but neither export has a nationality column. |
-| 7 | Object | Production date | year | `date_start_isi` |
-| 8 | Object | Date (Era, Period, Century) | browse | **gap**: Open question in the workbook: is the era/period/century derived? No source column. |
-| 9 | Object | Classification | browse | `classification_ssim` |
-| 10 | Object | Object Type | browse | `object_type_ssim` |
-| 11 | Object | Materials / Medium | browse | `material_ssim` |
-| 12 | Object | Language | browse | **gap**: Language is not held by either system. |
-| 13 | Object | Region | browse | **gap**: Open question in the workbook: is Region derived from Place of Production? |
-| 14 | Subject / Topic | Subject Terms | browse | `subject_ssim` |
-| 15 | Subject / Topic | Subject Agent | other | **gap**: Workbook marks the filter type as 'Unsure' (is it the same as Creator Name?). |
-| 16 | Subject / Topic | Subject Location | browse | `associated_entity_place_ssim` |
-| 17 | Subject / Topic | Subject Event | browse | **gap**: No subject event in either export. |
-| 18 | Copyright & Advisory | License type | checkbox | `licence_type_ssim` |
-| 19 | Copyright & Advisory | Film & Gaming Classification | checkbox | **gap**: No film or gaming classification in either export. |
-| 20 | Access | Object Access Condition | other | **gap**: Workbook marks the filter type as 'tbd' and asks whether it is needed. |
-| 21 | Access | Digital asset Access Condition | other | **gap**: Workbook marks the filter type as 'tbd' and asks whether it is needed. |
-| 22 | Media type | Digital Asset Format Type | checkbox | `digital_asset_format_ssim` |
+| 4 | Creator | Creator role | other | `creator_role_ssim` |
+| 5 | Creator | Creator Date of Birth | year | `creator_birth_isim` |
+| 6 | Creator | Creator Date of Death | year | `creator_death_isim` |
+| 7 | Creator | Nationality | browse | **gap**: Inventory: held by M&C, but neither export has a nationality column. |
+| 8 | Object | Production date | year | `date_start_isi` |
+| 9 | Object | Date (Era, Period, Century) | browse | **gap**: Open question in the workbook: is the era/period/century derived? No source column. |
+| 10 | Object | Classification | browse | `classification_ssim` |
+| 11 | Object | Object Type | browse | `object_type_ssim` |
+| 12 | Object | Materials / Medium | browse | `material_ssim` |
+| 13 | Object | Language | browse | **gap**: Language is not held by either system. |
+| 14 | Object | Region | browse | **gap**: Open question in the workbook: is Region derived from Place of Production? |
+| 15 | Subject / Topic | Subject Terms | browse | `subject_ssim` |
+| 16 | Subject / Topic | Subject Agent | other | **gap**: Workbook marks the filter type as 'Unsure' (is it the same as Creator Name?). |
+| 17 | Subject / Topic | Subject Location | browse | `associated_entity_place_ssim` |
+| 18 | Subject / Topic | Subject Event | browse | **gap**: No subject event in either export. |
+| 19 | Copyright & Advisory | License type | checkbox | `licence_type_ssim` |
+| 20 | Copyright & Advisory | Film & Gaming Classification | checkbox | **gap**: No film or gaming classification in either export. |
+| 21 | Access | Object Access Condition | other | **gap**: Workbook marks the filter type as 'tbd' and asks whether it is needed. |
+| 22 | Access | Digital asset Access Condition | other | **gap**: Workbook marks the filter type as 'tbd' and asks whether it is needed. |
+| 23 | Media type | Digital Asset Format Type | checkbox | `digital_asset_format_ssim` |
 
 ## Indexer changes made to follow the model
 

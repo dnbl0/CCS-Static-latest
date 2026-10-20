@@ -123,7 +123,7 @@ Some early prototype stubs duplicate a fuller record. `SUPERSEDED = { oldId: can
 
 ## Field labels and the spreadsheet
 
-Field labels, sequence numbers, filters and mandatory/optional rules follow the two workbooks in `assets/` (CCS Field labels and filters - Final - PRG - 1 OCT 2026.xlsx and CCS Data inventory - final.xlsx), extracted to `data-model/` and enforced by `tests/data-model.test.js`; see `docs/data-model.md`.
+Field labels, sequence numbers, filters and mandatory/optional rules follow the two workbooks: `CCS Field labels and filters.xlsx` in the repo root (the source of truth for CCS Field Labels on record pages and CCS Filters in search results and advanced search) and `assets/CCS Data inventory - final.xlsx`, extracted to `data-model/` and enforced by `tests/data-model.test.js`; see `docs/data-model.md`.
 
 - Record page fields: the `f` array in `build()` in `public/collection-data.js` (`[seq, label, lines]`). Rights fields (16, 17, 29) come from the `rights` array; media metadata (Title, Format, Licence type, Terms of use, Advisory ...) from `media`.
 - Filters: the `FACETS` array in `public/search/search-results.html` (group, key, title, kind).

@@ -10,9 +10,6 @@
 class StockOpenseadragonEmbedComponent < Blacklight::Gallery::OpenseadragonEmbedComponent
   IMAGES_FIELD = "digital_asset_large_paths_ssim"
   THUMBNAILS_FIELD = "digital_asset_paths_ssim"
-  # The sheet's DAM fields (Licence Type 27, Advisory 28, Terms of Use 29, Producer 30): the media metadata
-  MEDIA_FIELDS = %w[licence_type_ssim gap_28_derived gap_29_derived gap_30_derived].freeze
-
   def osd_config
     super.except(:zoomInButton, :zoomOutButton, :homeButton).merge(
       showZoomControl: false, showHomeControl: false, mouseNavEnabled: false, keyboardNavEnabled: false,
@@ -40,8 +37,11 @@ class StockOpenseadragonEmbedComponent < Blacklight::Gallery::OpenseadragonEmbed
     large.each_with_index.map { |url, index| small[index].presence || url }
   end
 
+  # The sheet's DAM fields (Licence Type, Advisory, Terms of Use, Producer): the media metadata
+  def media_keys = StockRecordFields.media_keys
+
   def media_fields
-    presenter.field_presenters.select { |field| MEDIA_FIELDS.include?(field.key) }
+    presenter.field_presenters.select { |field| media_keys.include?(field.key) }
   end
 
   # The text alternative of the image on show (the viewer draws it on a canvas, which has none): the title, and which image of how many

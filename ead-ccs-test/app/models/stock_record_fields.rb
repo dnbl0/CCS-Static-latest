@@ -1,24 +1,26 @@
 # frozen_string_literal: true
 
-# The show fields of the stock record page (StockCatalogController): one row for every field of the "CCS Field labels -
-# Updated" sheet (data/CCS-Field-labels-and-filters.xlsx, through DataModel: its seq, label and order) that the record
-# has a value for, plus the Copyright card's caption. A field with no value has no row (the sheet: "it will be blank and
+# The show fields of the stock record page (StockCatalogController): one row for every field of the "CCS Field Labels"
+# sheet (CCS Field labels and filters.xlsx at the repo root, through DataModel: its final sequence order, label and order)
+# that the record has a value for, plus the Copyright card's caption. The sheet's DAM fields (Licence Type, Advisory, Terms
+# of Use, Producer) are the media metadata: they are shown in the media viewer's modal only (media_keys), not in the details. A field with no value has no row (the sheet: "it will be blank and
 # label also does not appear"). Stock page only: the site's own record page does not use this.
 module StockRecordFields
+  # Numbers are the sheet's FINAL SEQUENCE ORDER (DataModel's seq).
   # How the sheet says several values are joined into one line (Blacklight's separator_options): Date (3) separated
-  # with "; " as its examples show, Place (6) "with a comma", Classification (21) hyphenated, "one line of text".
-  # Other fields list each value on its own line, Blacklight's default (Related Record (24) says so too).
-  JOINS = { 3 => "; ", 6 => ", ", 21 => " - " }.freeze
+  # with "; " as its examples show, Place (7) "with a comma", Classification (17) hyphenated, "one line of text".
+  # Other fields list each value on its own line, Blacklight's default (Related Record (25) says so too).
+  JOINS = { 3 => "; ", 7 => ", ", 17 => " - " }.freeze
 
-  # Classification (21) and Subject (22): "preferred" as links that search for records with that value.
-  LINKS = [ 21, 22 ].freeze
+  # Classification (17) and Subject (15): "preferred" as links that search for records with that value.
+  LINKS = [ 17, 15 ].freeze
 
-  # Copyright (16): the licence, as a badge with its icon (Europeana's licence label), above the rights note.
-  RIGHTS = 16
+  # Copyright (22): the licence, as a badge with its icon (Europeana's licence label), above the rights note.
+  RIGHTS = 22
 
   # Fields the indexer carries under a name the data model's mapping does not give them (a DAM field in the sheet,
   # though the licence is derived from the rights note, and the producer is read if an export ever has it).
-  SOLR_FIELDS = { 27 => "licence_type_ssim", 30 => "producer_ssim" }.freeze
+  SOLR_FIELDS = { 26 => "licence_type_ssim", 29 => "producer_ssim" }.freeze
 
   # The sheet's label cell for Measurements (11) carries a note ("... previosly mentioned as Dimensions"); its display
   # rule 2 says "CCS label will be 'Measurements'".
@@ -34,12 +36,12 @@ module StockRecordFields
         creator.include?(",") ? creator.sub(/\(([^()]+?) – ([^()]+?)\)/, '(b. \\1 - d. \\2)') : creator
       end
     },
-    # Related Record (24): "each line will be identified with a relation type"; the data carries the parent only.
-    24 => ->(document) { Array(document["parent_record_ssi"]).map { |value| "Parent - #{value}" } },
-    # Advisory (28): the site's own wording, which every record with digital assets carries (Media metadata panel).
-    28 => ->(document) { digital_assets?(document) ? [ NexusCcs::DigitalAssetsComponent::ADVISORY ] : [] },
-    # Terms of Use (29): the rights note without the licence in brackets that starts it (as the Media metadata panel).
-    29 => lambda { |document|
+    # Related Record (25): "each line will be identified with a relation type"; the data carries the parent only.
+    25 => ->(document) { Array(document["parent_record_ssi"]).map { |value| "Parent - #{value}" } },
+    # Advisory (27): the site's own wording, which every record with digital assets carries (Media metadata panel).
+    27 => ->(document) { digital_assets?(document) ? [ NexusCcs::DigitalAssetsComponent::ADVISORY ] : [] },
+    # Terms of Use (28): the rights note without the licence in brackets that starts it (as the Media metadata panel).
+    28 => lambda { |document|
       note = Array(document["rights_ssim"]).first.to_s.sub(/\A\s*\[[^\]]*\]\s*/, "").strip
       digital_assets?(document) && note.present? ? [ note ] : []
     }
@@ -54,17 +56,17 @@ module StockRecordFields
 
       DataModel.fields.each do |field|
         values = values_for(field)
-        solr = SOLR_FIELDS.fetch(field.seq, field.solr)
-        key = solr || "gap_#{field.seq}"
-        key = "#{key}_derived" if DERIVED.key?(field.seq) && solr.nil?
 
-        config.add_show_field key, **value_options(field, values)
+        config.add_show_field key_for(field), **value_options(field, values)
       end
 
       # The Copyright card's caption (site record page): "Title. Date. Creator. Material. © Rights. Collection."
       config.add_show_field "caption", label: "Caption", values: ->(_config, document, _context) { caption(document) },
         if: ->(_context, _config, document) { caption(document).any? }
     end
+
+    # The show field keys of the media metadata (the sheet's DAM fields): the media viewer's modal shows these, the details list does not.
+    def media_keys = DataModel.fields.select { |field| field.source == "DAM" }.map { |field| key_for(field) }
 
     # Each rights note under the record's licence badge (none when the record has no licence).
     def rights_with_badge(notes, document, context)
@@ -86,6 +88,12 @@ module StockRecordFields
     end
 
     private
+
+    def key_for(field)
+      solr = SOLR_FIELDS.fetch(field.seq, field.solr)
+      return solr if solr
+      DERIVED.key?(field.seq) ? "gap_#{field.seq}_derived" : "gap_#{field.seq}"
+    end
 
     def label_for(field) = LABELS.fetch(field.seq, field.label)
 

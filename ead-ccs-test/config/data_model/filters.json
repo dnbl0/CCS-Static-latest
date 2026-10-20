@@ -6,7 +6,7 @@
     "type": "Checkbox",
     "options": "List of all available Collections",
     "dataModelRef": "Collection",
-    "questions": null
+    "questions": "List of all available Collections"
   },
   {
     "seq": 2,
@@ -15,7 +15,7 @@
     "type": "Browse + Search within this filter",
     "options": "List of all available named Collections",
     "dataModelRef": "Collection - Named",
-    "questions": null
+    "questions": "List of all available named Collections"
   },
   {
     "seq": 3,
@@ -24,10 +24,19 @@
     "type": "Browse + Search within this filter",
     "options": "List of all available Creators",
     "dataModelRef": "Agent - Creator",
-    "questions": null
+    "questions": "List of all available Creators"
   },
   {
     "seq": 4,
+    "section": "Creator",
+    "name": "Creator role",
+    "type": null,
+    "options": null,
+    "dataModelRef": null,
+    "questions": null
+  },
+  {
+    "seq": 5,
     "section": "Creator",
     "name": "Creator Date of Birth",
     "type": "Date selector (Year)",
@@ -36,7 +45,7 @@
     "questions": null
   },
   {
-    "seq": 5,
+    "seq": 6,
     "section": "Creator",
     "name": "Creator Date of Death",
     "type": "Date selector (Year)",
@@ -45,7 +54,7 @@
     "questions": null
   },
   {
-    "seq": 6,
+    "seq": 7,
     "section": "Creator",
     "name": "Nationality",
     "type": "Browse + Search within this filter",
@@ -54,79 +63,79 @@
     "questions": null
   },
   {
-    "seq": 7,
+    "seq": 8,
     "section": "Object",
     "name": "Production date",
     "type": "Date selector (Year)",
     "options": "n/a",
     "dataModelRef": "Date - Date of Production",
-    "questions": null
+    "questions": "This would be ideal - noting that it's not possible for 3/12, but needs to be included in scope post SMUT"
   },
   {
-    "seq": 8,
+    "seq": 9,
     "section": "Object",
     "name": "Date (Era, Period, Century)",
     "type": "Browse + Search within this filter",
     "options": "tbd",
     "dataModelRef": "Date - Created Period",
-    "questions": "This needs to be derived - Eg BCE vs CE"
+    "questions": null
   },
   {
-    "seq": 9,
+    "seq": 10,
     "section": "Object",
     "name": "Classification",
     "type": "Browse + Search within this filter",
     "options": "List of all available classifications",
     "dataModelRef": "Subject Classification",
-    "questions": "Need UI input - consider both primary and secondary"
+    "questions": "List of all available classifications"
   },
   {
-    "seq": 10,
+    "seq": 11,
     "section": "Object",
     "name": "Object Type",
     "type": "Browse + Search within this filter",
     "options": "List of all available object types",
     "dataModelRef": "Subject - Type",
-    "questions": null
+    "questions": "List of all available object types"
   },
   {
-    "seq": 11,
+    "seq": 12,
     "section": "Object",
     "name": "Materials / Medium",
     "type": "Browse + Search within this filter",
     "options": "List of all available Materials",
     "dataModelRef": "Material Technique",
-    "questions": null
+    "questions": "List of all available Materials"
   },
   {
-    "seq": 12,
+    "seq": 13,
     "section": "Object",
     "name": "Language",
     "type": "Browse + Search within this filter",
     "options": "List of all available languages",
     "dataModelRef": "Language",
-    "questions": null
+    "questions": "List of all available languages"
   },
   {
-    "seq": 13,
+    "seq": 14,
     "section": "Object",
     "name": "Region",
     "type": "Browse + Search within this filter",
     "options": "List of all regions - tbd",
     "dataModelRef": "Place - Place of Production",
-    "questions": "This can be just the string - place (field)"
+    "questions": "List of all regions - tbd"
   },
   {
-    "seq": 14,
+    "seq": 15,
     "section": "Subject / Topic",
     "name": "Subject Terms",
     "type": "Browse + Search within this filter",
     "options": "List of all available subject terms",
     "dataModelRef": "Subject",
-    "questions": null
+    "questions": "List of all available subject terms"
   },
   {
-    "seq": 15,
+    "seq": 16,
     "section": "Subject / Topic",
     "name": "Subject Agent",
     "type": "Unsure",
@@ -135,43 +144,43 @@
     "questions": null
   },
   {
-    "seq": 16,
+    "seq": 17,
     "section": "Subject / Topic",
     "name": "Subject Location",
     "type": "Browse + Search within this filter",
     "options": "List of all available locations",
     "dataModelRef": "Subject > Place",
-    "questions": null
+    "questions": "List of all available locations"
   },
   {
-    "seq": 17,
+    "seq": 18,
     "section": "Subject / Topic",
     "name": "Subject Event",
     "type": "Browse + Search within this filter",
     "options": "List of all available events?",
     "dataModelRef": "Subject",
-    "questions": "This is not mapped for EMu and it is part of 'subject'"
+    "questions": "List of all available events?"
   },
   {
-    "seq": 18,
+    "seq": 19,
     "section": "Copyright & Advisory",
     "name": "License type",
     "type": "Checkbox",
     "options": "tbd",
     "dataModelRef": "Copyright",
-    "questions": "What would be the options here?"
+    "questions": "no"
   },
   {
-    "seq": 19,
+    "seq": 20,
     "section": "Copyright & Advisory",
     "name": "Film & Gaming Classification",
     "type": "Checkbox",
     "options": "G, PG, M, MA 15+, R 18+, X 18+, RC",
     "dataModelRef": "Access Type - e.g., film, game, sensitivity",
-    "questions": null
+    "questions": "TBC - do any collections record in this way?"
   },
   {
-    "seq": 20,
+    "seq": 21,
     "section": "Access",
     "name": "Object Access Condition",
     "type": "tbd",
@@ -180,7 +189,7 @@
     "questions": null
   },
   {
-    "seq": 21,
+    "seq": 22,
     "section": "Access",
     "name": "Digital asset Access Condition",
     "type": "tbd",
@@ -189,12 +198,12 @@
     "questions": null
   },
   {
-    "seq": 22,
+    "seq": 23,
     "section": "Media type",
     "name": "Digital Asset Format Type",
     "type": "Checkbox",
     "options": "List of available format types (Images, audio, video, PDF)",
     "dataModelRef": "Material Technique - Digital format",
-    "questions": null
+    "questions": "List of available format types (Images, audio, video, PDF)"
   }
 ]

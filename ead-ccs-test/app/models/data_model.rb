@@ -1,9 +1,9 @@
 # The CCS data model: the display fields and filters defined by the two project workbooks
-# (data/CCS-Field-labels-and-filters.xlsx, data/CCS-data-inventory.xlsx), extracted to
+# (../CCS Field labels and filters.xlsx at the repo root, data/CCS-data-inventory.xlsx), extracted to
 # config/data_model/*.json by script/extract_data_model.py, plus config/data_model/solr_mapping.yml
 # which says which Solr field carries each one (or why none does yet).
 #
-# CatalogController builds its fields, facets and facet groups from this, so the workbooks stay
+# Field seq is the workbook's FINAL SEQUENCE ORDER. CatalogController builds its fields, facets and facet groups from this, so the workbooks stay
 # the source of truth for labels, order, sections and filter types.
 class DataModel
   FIELD_LABELS = JSON.parse(Rails.root.join("config/data_model/field_labels.json").read).freeze

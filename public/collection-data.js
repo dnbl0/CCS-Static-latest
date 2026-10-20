@@ -873,7 +873,7 @@
   // PDF documents (CCS-65). Add { id: [{ kind: 'pdf', src, label }] } when a record has a matched PDF; none are mapped yet.
   const ASSET_PDF = {};
 
-  // Sequence of appearance per CCS Field labels and filters - Final PRG specification
+  // Sequence of appearance per the CCS Field Labels sheet (CCS Field labels and filters.xlsx), final sequence order
   function build(it) {
     const rawType = it.objectType || it.type || '';
     const objType = capitalize(rawType) || (it.collection === GMC ? 'Cultural Object' : 'Object');
@@ -910,31 +910,33 @@
     const filmCls = isFilmRating ? CLASSIFICATION[it.classification] : (it.advisoryClassification ? CLASSIFICATION[it.advisoryClassification] : (isMovingImage ? CLASSIFICATION.CTC : null));
     const museumClassification = !isFilmRating ? (it.classification || null) : null;
 
+    // seq is the FINAL SEQUENCE ORDER of the CCS Field Labels sheet (CCS Field labels and filters.xlsx); the list is in that order
     const f = [
       [2, 'Object type', [L(objType, true)]],
       [3, 'Date', date && [L(date)]],
       [4, 'Creator', it.creator && creatorLines],
       [5, 'Associated entity', it.associatedEntity && [L(it.associatedEntity, true)]],
-      [6, 'Place', it.place && [L(it.place)]],
-      [7, 'Description', it.description && [L(it.description)]],
+      [6, 'Cultural affiliation', it.culturalAffiliation && [L(it.culturalAffiliation, true)]],
+      [6.5, 'UoM ID', [L(`CA-${String(it.id).padStart(6, '0')}`)], true],
+      [7, 'Place', it.place && [L(it.place)]],
       [8, 'Series', it.series && [L(it.series, true)]],
       [9, 'Editions', it.editions && [L(it.editions, true)]],
       [10, 'Material', it.material && [L(it.material)]],
-      [11, 'Dimensions (H x W x D)', it.dimensions && [L(it.dimensions)]],
+      [11, 'Measurements', it.dimensions && [L(it.dimensions)]],
       [12, 'Inscription', it.inscription && [L(it.inscription)]],
       [13, 'Language', it.language && [L(it.language, true)]],
-      [14, 'Cultural affiliation', it.culturalAffiliation && [L(it.culturalAffiliation, true)]],
-      [14.5, 'UoM ID', [L(`CA-${String(it.id).padStart(6, '0')}`)], true],
-      [15, 'Accession number', it.accession && [L(it.accession)], true],
+      [15, 'Subject', it.subject && [L(it.subject, true)]],
+      [16, 'Description', it.description && [L(it.description)]],
+      [17, 'Classification', museumClassification && [L(museumClassification, true)]],
       [18, 'Named collection', it.named && [L(it.named, true)]],
       [19, 'Collection', [L(coll, true)]],
-      [20, 'Access', it.access && [L(it.access, true)]],
-      [21, 'Classification', museumClassification && [L(museumClassification, true)]],
-      [22, 'Subject', it.subject && [L(it.subject, true)]],
+      [20, 'Accession number', it.accession && [L(it.accession)], true],
       [23, 'Source URL', it.sourceUrl && [L(it.sourceUrl)]],
-      [24, 'Related parent record', it.relatedParent && [L(it.relatedParent, true)]],
-      [25, 'Related child record', it.relatedChild && [L(it.relatedChild, true)]],
-      [26, 'Related record', it.relatedRecord && [L(it.relatedRecord, true)]]
+      [24, 'Access', it.access && [L(it.access, true)]],
+      // Related Record (25): "each line will be identified with a relation type (parent / child)"
+      [25, 'Related record', it.relatedParent && [L(`Parent - ${it.relatedParent}`, true)]],
+      [25, 'Related record', it.relatedChild && [L(`Child - ${it.relatedChild}`, true)]],
+      [25, 'Related record', it.relatedRecord && [L(it.relatedRecord, true)]]
     ].filter(r => r[2]).map(([seq, label, lines, copy]) => ({ seq, label, lines, copy: !!copy, value: lines[0].text }));
     // Digital asset caption: "Complex fields" sheet, Image Caption (DA Caption). Recipe, in this order, each part dropped when it has no data:
     //   [DA Title]. [CA Date]. [CA Creator] [DOB-DOD]. [Role]. [Affiliation]. [CA Material]. [Copyright holder]. [Collection title (formal)]. [Credit line]. Image: [DA Creator]. [DA Date of Production].
@@ -952,21 +954,21 @@
         producer ? 'Image: ' + producer + (it.imageProducerDate ? '. ' + it.imageProducerDate : '') : ''].filter(Boolean).map(clean).filter(Boolean);
       return parts.join('. ') + '.';
     })();
-    // Usage rights: caption (digital assets only), credit, copyright. Accession number is a Field labels sheet row (15) shown once, in the details list.
+    // Usage rights: caption (digital assets only), credit, copyright. Accession number is a Field Labels sheet row (20) shown once, in the details list.
     // Data inventory ("Field behaviour if not populated in source") and Field labels sheet: a field with no data is omitted, label
     // included, so Caption appears only when recorded. Credit line and Copyright are mandatory (Copyright Advice sheet).
     const rights = [
-      ...(damCaption ? [{ seq: 15.5, label: 'Caption', value: damCaption }] : []),
-      { seq: 17, label: 'Credit line', value: creditLine },
-      { seq: 16, label: 'Copyright', value: copyrightHolder }
+      ...(damCaption ? [{ seq: 20.5, label: 'Caption', value: damCaption }] : []),
+      { seq: 21, label: 'Credit line', value: creditLine },
+      { seq: 22, label: 'Copyright', value: copyrightHolder }
     ];
     const advisories = (it.advisories || []).map(a => ADVISORY[a]).filter(Boolean);
     const byline = [(!it.creator || UNKNOWN.test(it.creator)) ? null : nameOnly(it.creator), date].filter(Boolean).join(' · ');
     const citation = `${(!it.creator || UNKNOWN.test(it.creator)) ? '' : it.creator + ', '}${it.title}${date ? ', ' + date : ''}. ${creditLine.replace(/\.$/, '')}${it.accession ? ', ' + it.accession : ''}.`;
     const citations = buildCitations(it, date, coll, creditLine, it.accession);
     
-    // Digital Asset Media metadata mapped according to CCS Field labels and filters Final PRG schema
-    // Media metadata sidebar (the flyout on the media viewer): CCS Field labels sheet rows 27-30, in order: Licence Type, Advisory,
+    // Digital Asset Media metadata mapped according to the CCS Field labels and filters workbook
+    // Media metadata sidebar (the flyout on the media viewer): CCS Field Labels sheet rows 26-29 (the DAM fields), in order: Licence Type, Advisory,
     // Terms of Use, Producer (DAM fields). They appear here only, not in the details list or the page body. A field with no data is omitted, label included.
     const producerVal = it.imageProducer || it.producer;
     const termsText = it.terms || lic.terms.replace('{holder}', copyrightHolder.replace(/^©\s*/, '')).replace('{date}', date ? ', ' + date : '').replace('{unit}', UNIT[it.collection] || 'the Responsible Collection');
@@ -978,10 +980,10 @@
     // CCS-50: items with an advisory or a film/game classification show a usage notice that must be accepted before the media is shown
     const usageNotice = hasDA && (advisories.length > 0 || !!filmCls) ? [...advisories.map(a => a.text), ...(filmCls ? [filmCls.text] : [])] : [];
     const media = hasDA ? [
-      { seq: 27, label: 'Licence type', value: lic.label },
-      ...(advisories.length ? [{ seq: 28, label: 'Advisory', value: advisories.map(a => a.text).join('\n\n') }] : []),
-      { seq: 29, label: 'Terms of use', value: termsText },
-      ...(producerVal ? [{ seq: 30, label: 'Producer', value: producerVal }] : [])
+      { seq: 26, label: 'Licence type', value: lic.label },
+      ...(advisories.length ? [{ seq: 27, label: 'Advisory', value: advisories.map(a => a.text).join('\n\n') }] : []),
+      { seq: 28, label: 'Terms of use', value: termsText },
+      ...(producerVal ? [{ seq: 29, label: 'Producer', value: producerVal }] : [])
     ] : [];
 
     return {

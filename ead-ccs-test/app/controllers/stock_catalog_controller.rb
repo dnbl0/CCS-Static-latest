@@ -43,7 +43,7 @@ class StockCatalogController < ActionController::Base
     # The viewer is the gem's own component; the subclass only gives it the record's image URLs.
     config.show.document_embed_component = StockOpenseadragonEmbedComponent
 
-    # One row for every field of the CCS Field labels - Updated sheet, a muted "Not available" where the record has no
+    # One row for every field of the CCS Field Labels sheet, a muted "Not available" where the record has no
     # value (see StockRecordFields), plus the Copyright card's caption.
     StockRecordFields.apply(config)
 

@@ -3,11 +3,11 @@
 The data model is defined by two project workbooks. Their content is extracted to `data-model/*.json` (committed, so CI can read it) and the site is
 checked against it by `tests/data-model.test.js`.
 
-| Workbook (in `assets/`) | Sheet | Extracted to | What it defines |
+| Workbook | Sheet | Extracted to | What it defines |
 |---|---|---|---|
-| CCS Field labels and filters - Final - PRG - 1 OCT 2026.xlsx | CCS Field labels | `field-labels.json` | The 30 record display fields: label, sequence number, data type, source system (CMS or DAM), display rules, examples |
-| | CCS Filters | `filters.json` | The 22 filters: section, name, type (checkbox, browse + search, year selector), options, data model reference |
-| CCS Data inventory - final.xlsx | CCS Data Inventory - 9 Sept | `inventory.json` | 107 metadata building blocks: data type, which collections hold them (M&C, MDHS, Nexus DAM), whether they display, mandatory/optional with and without a digital asset, faceted search, what happens when unpopulated |
+| `CCS Field labels and filters.xlsx` (repo root; the source of truth for CCS Field Labels and CCS Filters) | CCS Field Labels | `field-labels.json` | The 28 record display fields in the sheet's FINAL SEQUENCE ORDER (the `seq`): label, data type, source system (CMS or DAM), display rules, examples. The DAM fields (Licence Type, Advisory, Terms of Use, Producer) are the digital asset's media metadata and are shown there only |
+| | CCS Filters | `filters.json` | The 23 filters: section, name, type (checkbox, browse + search, year selector), options, data model reference |
+| `assets/CCS Data inventory - final.xlsx` | CCS Data Inventory - 9 Sept | `inventory.json` | 107 metadata building blocks: data type, which collections hold them (M&C, MDHS, Nexus DAM), whether they display, mandatory/optional with and without a digital asset, faceted search, what happens when unpopulated |
 | | CCS Datatypes | `datatypes.json` | The 20 data types and their attributes (Identifier, Title, Text, Agent, Date, Place, Collection, ...) |
 | | Complex fields | `complex-fields.json` | Constructed fields (the digital asset caption) |
 | | AH sequencing | `sequencing.json` | Order of appearance and simple/complex per field |
@@ -39,5 +39,5 @@ Title, Copyright holder, Credit line and Collection title are mandatory, missing
 ## Known data gaps (warnings, not failures)
 - Field labels populated on no record: Editions, Source URL, Related Child Record, Producer.
 - 7 of 728 records have no accession number (see Accession numbers above).
-- The two workbooks disagree on sequence numbers (the inventory's "Sequence of appearance" differs from the Field labels sheet). The site follows the Field labels sheet, which is the later "Final - PRG" file.
+- The two workbooks disagree on sequence numbers (the inventory's "Sequence of appearance" differs from the Field labels sheet). The site follows the Field Labels sheet (final sequence order, 19/10).
 - Open questions recorded in the sheets (for example whether Region is derived from Place of Production, and which Licence type options exist) are unanswered; the site keeps its current behaviour.
