@@ -12,6 +12,12 @@ class AcknowledgementOfCountryTest < ApplicationSystemTestCase
     assert_no_selector "#country-acknowledgement[open]"
   end
 
+  test "has no links inside it" do
+    visit root_path
+    assert_selector "#country-acknowledgement[open]"
+    assert_no_selector "#country-acknowledgement a"
+  end
+
   test "is not shown on search results" do
     visit search_catalog_path(q: "melbourne")
     assert_no_selector "#country-acknowledgement"
