@@ -12,8 +12,9 @@ Rails.application.routes.draw do
       concerns :searchable
       concerns :range_searchable
     end
+    # Blacklight's default record routes, without its Email and SMS pages: the site offers neither (only Cite)
     resources :solr_documents, only: [ :show ], path: "/catalog", controller: "catalog" do
-      concerns :exportable
+      member { get "citation" }
     end
     # The saved list and its Save / Remove requests are a 404 while config.x.saved_records is off (config/application.rb)
     constraints(->(_request) { Rails.configuration.x.saved_records }) do
@@ -32,17 +33,18 @@ Rails.application.routes.draw do
   constraints(->(request) { StockRecords.include?(request.path_parameters[:id]) }) do
     scope constraints: { id: %r{[^/]+} } do
       resources :stock_documents, only: [ :show ], path: "/stock", controller: "stock_catalog" do
-        concerns :exportable
+        member { get "citation" }
       end
 
       resources :branded_stock_documents, only: [ :show ], path: "/branded-stock", controller: "branded_stock_catalog" do
-        concerns :exportable
+        member { get "citation" }
       end
     end
   end
 
-  get "collections", to: "pages#collections", as: :collections
-  # The collection landing pages are gone: their old addresses go to the results filtered to that collection.
+  # Browse collections is gone (the sitemap keeps Blacklight's own pages): its address goes to the collection cards on the home
+  # page, and each old collection landing page goes to the results filtered to that collection.
+  get "collections", to: redirect("/#browse-collections", status: 301)
   get "collections/:slug", to: redirect(status: 301) { |params, _request|
     "/catalog?#{{ f: { collection_ssim: [ NexusCcs::SiteNavigation.facet_value(params[:slug]) ] }, search_field: "all_fields" }.to_query}"
   }, constraints: ->(request) { NexusCcs::SiteNavigation.facet_value(request.path_parameters[:slug]) }

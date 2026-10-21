@@ -1,19 +1,13 @@
 require "test_helper"
 
 class PagesTest < ActionDispatch::IntegrationTest
-  test "browse collections lists the five collections alphabetically and the help links" do
+  test "Browse collections is gone: its address goes to the collection cards on the home page" do
     get "/collections"
 
-    assert_response :success
-    assert_select "body.page-collections-browse h1", "Browse collections"
-    assert_select ".ccs-section--cards .ccs-card", count: 5
-    assert_select ".ccs-card__link[href=?]", "/catalog?f%5Bcollection_ssim%5D%5B%5D=Grainger+Museum+Collection&search_field=all_fields"
-    assert_select ".ccs-card__title" do |titles|
-      names = titles.map { |title| title.text.strip }
-      assert_equal names.sort, names
-    end
-    assert_select ".ct-listing__list--text", count: 0
-    assert_select "nav.page-breadcrumbs li[aria-current=page]", "Browse collections"
+    assert_response :moved_permanently
+    assert_redirected_to "/#browse-collections"
+    follow_redirect!
+    assert_select "#browse-collections"
   end
 
   test "the collection landing pages are gone: their addresses go to the results filtered to that collection" do
@@ -28,11 +22,20 @@ class PagesTest < ActionDispatch::IntegrationTest
 
   test "the collection links go to the results filtered to that collection" do
     get "/"
-    assert_select ".home-card__link[href=?]", "/catalog?f%5Bcollection_ssim%5D%5B%5D=Grainger+Museum+Collection&search_field=all_fields"
-
-    get "/collections"
     NexusCcs::SiteNavigation.collections.each do |_label, facet_value, _slug|
-      assert_select ".ccs-card__link[href=?]", "/catalog?#{{ f: { collection_ssim: [ facet_value ] }, search_field: "all_fields" }.to_query}"
+      assert_select ".home-card__link[href=?]", "/catalog?#{{ f: { collection_ssim: [ facet_value ] }, search_field: "all_fields" }.to_query}"
+    end
+  end
+
+  test "the record pages have Blacklight's Cite page but not its Email or SMS pages" do
+    routes = Rails.application.routes
+    assert_equal "/catalog/emu-1/citation", routes.url_helpers.citation_solr_document_path("emu-1")
+    %w[email sms].each do |action|
+      assert_not routes.named_routes.key?(:"#{action}_solr_document"), action
+      assert_not routes.named_routes.key?(:"#{action}_solr_documents"), action
+      get "/catalog/emu-1/#{action}"
+
+      assert_response :not_found, action
     end
   end
 
@@ -103,12 +106,12 @@ class PagesTest < ActionDispatch::IntegrationTest
     assert_select ".site-nav a[href='/about']", count: 1
   end
 
-  test "the header lists Browse records, Browse all collections, About and Help in that order" do
+  test "the header lists Browse records, About and Help in that order" do
     get "/about"
 
-    labels = [ "Browse records", "Browse all collections", "About", "Help" ]
+    labels = [ "Browse records", "About", "Help" ]
     items = css_select(".site-nav > ul > li").map { |item| item.text.squish }
-    assert_equal labels, items.first(4).map { |text| labels.find { |label| text.start_with?(label) } }
+    assert_equal labels, items.first(3).map { |text| labels.find { |label| text.start_with?(label) } }
     assert_select "#site-nav a[href='https://about.unimelb.edu.au']", count: 0
   end
 
@@ -117,7 +120,7 @@ class PagesTest < ActionDispatch::IntegrationTest
 
     assert_select "#site-nav-records li a[href^='/catalog?f%5Bcollection_ssim%5D']", count: 5
     assert_select "#site-nav-collections", count: 0
-    assert_select ".site-nav > ul > li > a[href='/collections']", text: "Browse all collections"
+    assert_select "#site-nav a[href='/collections']", count: 0
     assert_select "#site-nav-help a[href='/help#faq']"
     assert_select "#site-nav-help li a", count: HelpTopic.all.size
     assert_select "#site-nav a[href='/contact']", count: 0
@@ -125,7 +128,7 @@ class PagesTest < ActionDispatch::IntegrationTest
   end
 
   test "every content page has one main landmark for the skip link," do
-    paths = [ "/", "/collections", "/help", "/about" ]
+    paths = [ "/", "/help", "/about" ]
 
     paths.each do |path|
       get path

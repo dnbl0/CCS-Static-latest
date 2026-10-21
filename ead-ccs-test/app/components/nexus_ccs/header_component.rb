@@ -69,8 +69,6 @@ module NexusCcs
 
     def about = SiteNavigation::Link.new(SiteNavigation::ABOUT_LABEL, helpers.about_path)
 
-    def collections_home = helpers.collections_path
-
     def all_records_path = helpers.search_catalog_path
 
     # The nav link opens the catalog on the All Fields search; the search form needs the bare path as its action.
