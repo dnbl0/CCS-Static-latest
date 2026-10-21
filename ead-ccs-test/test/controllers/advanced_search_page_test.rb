@@ -18,7 +18,7 @@ class AdvancedSearchPageTest < ActionDispatch::IntegrationTest
       EMPTY_FORM.merge(range: { date_start_isi: { begin: "1900", end: "1950" } }),
       { q: "", search_field: "all_fields", f: { collection_ssim: [ "Grainger Museum Collection" ] } } # the search bar, not the form
     ].each do |params|
-      get "/catalog", params: params
+      get "/catalog", params: params.merge(any_assets: "1")
 
       assert_not response.redirect?, params.inspect
     end

@@ -37,10 +37,10 @@ class SavedRecordsHiddenTest < ActionDispatch::IntegrationTest
 
   test "the results and record pages show no saved bar or Save button" do
     needs_solr
-    get "/catalog", params: { q: "skull" }
+    get "/catalog", params: { q: "skull", any_assets: "1" }
     assert_no_saving
 
-    get "/catalog", params: { q: "skull", format: :json }
+    get "/catalog", params: { q: "skull", any_assets: "1", format: :json }
     id = JSON.parse(response.body)["data"].first["id"]
     get "/catalog/#{id}"
     assert_no_saving

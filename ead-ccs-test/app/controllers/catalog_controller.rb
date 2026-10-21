@@ -162,6 +162,19 @@ class CatalogController < ApplicationController
     redirect_to advanced_search_catalog_path(op: params[:op].presence), flash: { advanced_search_error: true }
   end
 
+  # Results show records with a digital asset (an image) unless the visitor chose otherwise: the filter is applied, shown
+  # as a pill, and taking it off (or choosing "Without a digital asset") is remembered by the `any_assets` marker.
+  before_action :default_to_digital_assets, only: :index
+
+  def default_to_digital_assets
+    return unless controller_name == "catalog" && request.get? && request.format.html?
+    query = request.query_parameters
+    filters = query["f"].is_a?(Hash) ? query["f"] : {}   # a hand-edited f that is not a list of filters is left to the search to refuse
+    return if query.empty? || query["any_assets"].present? || filters["has_digital_asset"].present?
+
+    redirect_to search_action_url(query.merge("f" => filters.merge("has_digital_asset" => [ "with" ])))
+  end
+
   def show_home_page_when_bare
     return unless controller_name == "catalog" && request.format.html? && request.query_parameters.empty?
 

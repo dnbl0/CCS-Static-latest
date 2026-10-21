@@ -14,7 +14,7 @@ class BookmarksTest < ActionDispatch::IntegrationTest
   # Two records from the Solr core at SOLR_URL
   def record_ids
     @record_ids ||= begin
-      get "/catalog", params: { q: "skull", format: :json }
+      get "/catalog", params: { q: "skull", any_assets: "1", format: :json }
       JSON.parse(response.body)["data"].first(2).map { |doc| doc["id"] }
     end
   end
@@ -25,7 +25,7 @@ class BookmarksTest < ActionDispatch::IntegrationTest
 
   test "browsing creates no guest user and the saved bar says 0 saved records" do
     assert_no_difference "User.count" do
-      get "/catalog", params: { q: "skull" }
+      get "/catalog", params: { q: "skull", any_assets: "1" }
       get "/"
     end
 
@@ -33,7 +33,7 @@ class BookmarksTest < ActionDispatch::IntegrationTest
   end
 
   test "the saved bar is in the breadcrumb strip of the results page and the saved list, with aria-current on the list" do
-    get "/catalog", params: { q: "skull" }
+    get "/catalog", params: { q: "skull", any_assets: "1" }
     assert_select ".breadcrumb-strip > a.site-nav__saved[href='/bookmarks']", count: 1
     assert_select ".site-header a.site-nav__saved", count: 0
     assert_select "a.site-nav__saved[aria-current]", count: 0
@@ -66,7 +66,7 @@ class BookmarksTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_equal 1, JSON.parse(response.body).dig("bookmarks", "count")
 
-    get "/catalog", params: { q: "skull" }
+    get "/catalog", params: { q: "skull", any_assets: "1" }
     assert_equal 1, saved_bar_count
     assert_select ".site-nav__saved .site-nav__saved-text", text: /1\s+saved record\b/
     assert_select ".result-card[data-document-id='#{id.parameterize}'] form.save-control" do
@@ -90,7 +90,7 @@ class BookmarksTest < ActionDispatch::IntegrationTest
 
   test "each control has an accessible name that includes the record title" do
     needs_solr
-    get "/catalog", params: { q: "skull" }
+    get "/catalog", params: { q: "skull", any_assets: "1" }
 
     assert_select ".result-card form.save-control .toggle-bookmark-label .visually-hidden", text: /record: \S/, minimum: 1
     assert_select ".result-card input.save-control__input[type=checkbox]", minimum: 1
