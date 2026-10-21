@@ -51,6 +51,7 @@
    it opens under the header from just right of the logo to the window's right edge, 32px padding and a 2px cyan top border on
    #000b34; a 30px serif title with its arrow, a hairline, then one column of 18px / 600 links with 20px arrows. The header is the
    positioning context (the nav items are static), so every panel lines up the same whichever button opened it. */
+/* While a dropdown is open the page below the header is dimmed (about 65% black) as on unimelb.edu.au; a click on it closes the dropdown (nav.js) */
 /* Mobile-only pieces (Menu button, drawer search, drawer top links, Back row) are hidden on desktop */
 /* The saved-records link in the drawer: only the home page needs it (every other page has the bar in its breadcrumb strip), and only on phones */
 /* Mobile and tablet header, following the UniMelb mobile header: one 96px row (logo block, site name, Menu button),
