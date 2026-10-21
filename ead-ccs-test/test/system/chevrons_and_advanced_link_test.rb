@@ -11,14 +11,14 @@ class ChevronsAndAdvancedLinkTest < ApplicationSystemTestCase
 
   def settle = sleep(0.5) # the chevrons animate
 
-  test "the header's Browse all collections chevron points up while its menu is open" do
+  test "the header's Browse records chevron points up while its menu is open" do
     visit root_path
-    trigger = find(".site-nav__trigger", text: "collections")
+    trigger = find(".site-nav__trigger", text: "Browse records")
     turn = "getComputedStyle(this.querySelector('img')).transform"
     settle
     assert_equal "none", trigger.evaluate_script(turn)
     trigger.click
-    assert_selector ".site-nav__trigger[aria-expanded=true]", text: "collections"
+    assert_selector ".site-nav__trigger[aria-expanded=true]", text: "Browse records"
     settle
     assert_equal FLIPPED, trigger.evaluate_script(turn)
     trigger.click

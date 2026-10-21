@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta name="description" content="About Cultural Collections Search: one place to search the University of Melbourne's museum and art collections, how the collections are cared for and how to use them.">
+<meta name="description" content="About Cultural Collections Search: one place to search the University of Melbourne's cultural collections, how the collections are being delivered and how to support them.">
 <title>About — Cultural Collections Search — University of Melbourne</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,16 +15,15 @@
 <link rel="stylesheet" href="/styles/components/breadcrumbs.css">
 <link rel="stylesheet" href="/styles/components/page-banner.css">
 <link rel="stylesheet" href="/styles/components/content-templates.css">
-<link rel="stylesheet" href="/styles/pages/about.css">
+<link rel="stylesheet" href="/styles/pages/help.css">
 </head>
-<body class="page-about">
-<a href="#main-content" class="skip-link about-page__link-skip-main-content">Skip to main content</a>
+<body class="page-help">
+<a href="#main-content" class="skip-link help-page__link-skip-main-content">Skip to main content</a>
 <x-dc>
 <helmet><link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..700,0..100,0..1;1,9..144,300..700,0..100,0..1&family=Source+Code+Pro:ital,wght@0,400;1,400&family=Source+Sans+3:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
-<!-- Bootstrap 5.3.3 CSS (Custom UoM Gen 3 Build) -->
 </helmet>
-<div class="about-page__group about-page__group--v1">
+<div class="help-page__group">
 <header class="ccs-nav ccs-nav--header" data-component="Header" aria-label="Site header">
   <div class="ccs-nav__brand">
     <a class="ccs-nav__link-university-melbourne-homepage" href="https://www.unimelb.edu.au" aria-label="The University of Melbourne homepage">
@@ -33,17 +32,16 @@
   </div>
   <div class="ccs-nav__main">
     <div class="ccs-nav__top">
-      <nav class="about-university-melbourne" aria-label="University of Melbourne">
-        <ul class="about-university-melbourne__list">
-          <li class="about-university-melbourne__list-item"><a class="about-university-melbourne__item-link-study" href="https://study.unimelb.edu.au">Study</a></li>
-          <li class="about-university-melbourne__list-item"><a class="about-university-melbourne__item-link-students" href="https://students.unimelb.edu.au">Students</a></li>
-          <li class="about-university-melbourne__list-item"><a class="about-university-melbourne__item-link-research" href="https://research.unimelb.edu.au">Research</a></li>
-          <li class="about-university-melbourne__list-item"><a class="about-university-melbourne__item-link-library" href="https://library.unimelb.edu.au">Library</a></li>
-          <li class="about-university-melbourne__list-item"><a class="about-university-melbourne__item-link-staff" href="https://staff.unimelb.edu.au">Staff</a></li>
-          <li class="about-university-melbourne__list-item"><a class="about-university-melbourne__item-link-alumni" href="https://www.unimelb.edu.au/alumni">Alumni</a></li>
-          <li class="about-university-melbourne__list-item"><a class="about-university-melbourne__item-link-giving" href="https://giving.unimelb.edu.au">Giving</a></li>
-          <li class="about-university-melbourne__list-item"><a class="about-university-melbourne__item-link-about" href="https://about.unimelb.edu.au">About</a></li>
-          <li class="about-university-melbourne__list-item"><a class="about-university-melbourne__item-link-contact" href="https://www.unimelb.edu.au/contact">Contact</a></li>
+      <nav class="help-university-melbourne" aria-label="University of Melbourne">
+        <ul class="help-university-melbourne__list">
+          <li class="help-university-melbourne__list-item"><a class="help-university-melbourne__item-link-study" href="https://study.unimelb.edu.au">Study</a></li>
+          <li class="help-university-melbourne__list-item"><a class="help-university-melbourne__item-link-students" href="https://students.unimelb.edu.au">Students</a></li>
+          <li class="help-university-melbourne__list-item"><a class="help-university-melbourne__item-link-research" href="https://research.unimelb.edu.au">Research</a></li>
+          <li class="help-university-melbourne__list-item"><a class="help-university-melbourne__item-link-library" href="https://library.unimelb.edu.au">Library</a></li>
+          <li class="help-university-melbourne__list-item"><a class="help-university-melbourne__item-link-staff" href="https://staff.unimelb.edu.au">Staff</a></li>
+          <li class="help-university-melbourne__list-item"><a class="help-university-melbourne__item-link-alumni" href="https://www.unimelb.edu.au/alumni">Alumni</a></li>
+          <li class="help-university-melbourne__list-item"><a class="help-university-melbourne__item-link-giving" href="https://giving.unimelb.edu.au">Giving</a></li>
+          <li class="help-university-melbourne__list-item"><a class="help-university-melbourne__item-link-contact" href="https://www.unimelb.edu.au/contact">Contact</a></li>
         </ul>
       </nav>
       <button type="button" class="ccs-nav__search" popovertarget="uom-search-popover" data-popover-type="search" aria-label="Open search">
@@ -55,26 +53,27 @@
       <nav id="ccs-primary-nav" class="ccs-nav__primary" aria-label="Primary navigation">
         <div class="ccs-nav__drawer-search">
           <form class="ccs-nav__form-search" role="search" action="/search/search-results.html" method="get">
-            <label for="ccs-drawer-q" class="sr-only about-form__label-search-cultural-collections">Search Cultural Collections</label>
+            <label for="ccs-drawer-q" class="sr-only help-form__label-search-cultural-collections">Search Cultural Collections</label>
             <input class="ccs-drawer-q" id="ccs-drawer-q" name="q" type="text" autocomplete="off" placeholder="Search">
-            <button class="about-form__button-search" type="submit" aria-label="Search"><img class="about-form__button-image" src="/images/home/icon-search-onaccent.svg" alt=""></button>
+            <button class="help-form__button-search" type="submit" aria-label="Search"><img class="help-form__button-image" src="/images/home/icon-search-onaccent.svg" alt=""></button>
           </form>
         </div>
         <ul class="ccs-nav__list">
-          <li class="ccs-nav__list-item"><a class="ccs-nav__item-link-search-all-records" href="/search/search-results.html">Search all records</a></li>
           <li class="ccs-nav__list-item">
-            <button type="button" class="ccs-nav__trigger" aria-expanded="false" aria-controls="ccs-dd-collections"><span>Browse <span class="ccs-nav__label-more">all </span>collections</span><img class="ccs-nav__image" src="/images/home/icon-expand.svg" alt=""></button>
-            <div id="ccs-dd-collections" class="ccs-nav__panel">
-              <a class="ccs-nav__panel-title" href="/collections/index.html"><img class="ccs-nav__image" src="/images/home/icon-arrow-footer.svg" alt="">Browse <span class="ccs-nav__label-more">all </span>collections</a>
+            <button type="button" class="ccs-nav__trigger" aria-expanded="false" aria-controls="ccs-dd-records">Browse records<img class="ccs-nav__image" src="/images/home/icon-expand.svg" alt=""></button>
+            <div id="ccs-dd-records" class="ccs-nav__panel">
+              <a class="ccs-nav__panel-title" href="/search/search-results.html"><img class="ccs-nav__image" src="/images/home/icon-arrow-footer.svg" alt="">Browse records</a>
               <ul class="ccs-nav__panel-list">
-                <li class="ccs-nav__item"><a class="ccs-nav__item-link-grainger-museum-collection" href="/search/search-results.html?collection=Grainger%20Museum%20Collection"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Grainger Museum Collection</a></li>
-                <li class="ccs-nav__item"><a class="ccs-nav__item-link-harry-brookes-allen" href="/search/search-results.html?collection=Harry%20Brookes%20Allen%20Museum%20of%20Anatomy%20and%20Pathology"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Harry Brookes Allen Museum</a></li>
-                <li class="ccs-nav__item"><a class="ccs-nav__item-link-henry-forman-atkinson" href="/search/search-results.html?collection=Henry%20Forman%20Atkinson%20Dental%20Museum"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Henry Forman Atkinson Dental Museum</a></li>
-                <li class="ccs-nav__item"><a class="ccs-nav__item-link-medical-history-museum" href="/search/search-results.html?collection=Medical%20History%20Museum"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Medical History Museum</a></li>
-                <li class="ccs-nav__item"><a class="ccs-nav__item-link-university-art-collection" href="/search/search-results.html?collection=University%20Art%20Collection"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">University Art Collection</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-grainger-museum-collection" href="/search/search-results.html?collection=Grainger%20Museum%20Collection"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Browse Grainger Museum Collection</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-harry-brookes-allen" href="/search/search-results.html?collection=Harry%20Brookes%20Allen%20Museum%20of%20Anatomy%20and%20Pathology"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Browse Harry Brookes Allen Museum</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-henry-forman-atkinson" href="/search/search-results.html?collection=Henry%20Forman%20Atkinson%20Dental%20Museum"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Browse Henry Forman Atkinson Dental Museum</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-medical-history-museum" href="/search/search-results.html?collection=Medical%20History%20Museum"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Browse Medical History Museum</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-university-art-collection" href="/search/search-results.html?collection=University%20Art%20Collection"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Browse University Art Collection</a></li>
               </ul>
             </div>
           </li>
+          <li class="ccs-nav__list-item"><a class="ccs-nav__item-link-browse-all-collections" href="/collections/index.html"><span>Browse <span class="ccs-nav__label-more">all </span>collections</span></a></li>
+          <li class="ccs-nav__list-item"><a class="ccs-nav__item-link-about" href="/about.html" aria-current="page">About</a></li>
           <li class="ccs-nav__list-item">
             <button type="button" class="ccs-nav__trigger" aria-expanded="false" aria-controls="ccs-dd-help">Help<img class="ccs-nav__image" src="/images/home/icon-expand.svg" alt=""></button>
             <div id="ccs-dd-help" class="ccs-nav__panel">
@@ -87,7 +86,6 @@
               </ul>
             </div>
           </li>
-          <li class="ccs-nav__list-item"><a class="ccs-nav__item-link-about" href="/about.html" aria-current="page">About</a></li>
         </ul>
         <ul class="ccs-nav__drawer-top" aria-label="University of Melbourne">
         <li class="ccs-nav__item"><a class="ccs-nav__item-link-study" href="https://study.unimelb.edu.au">Study</a></li>
@@ -97,7 +95,6 @@
         <li class="ccs-nav__item"><a class="ccs-nav__item-link-staff" href="https://staff.unimelb.edu.au">Staff</a></li>
         <li class="ccs-nav__item"><a class="ccs-nav__item-link-alumni" href="https://www.unimelb.edu.au/alumni">Alumni</a></li>
         <li class="ccs-nav__item"><a class="ccs-nav__item-link-giving" href="https://giving.unimelb.edu.au">Giving</a></li>
-        <li class="ccs-nav__item"><a class="ccs-nav__item-link-about" href="https://about.unimelb.edu.au">About</a></li>
         <li class="ccs-nav__item"><a class="ccs-nav__item-link-contact" href="https://www.unimelb.edu.au/contact">Contact</a></li>
         </ul>
       </nav>
@@ -205,108 +202,127 @@
 })();
 </script>
 
-<div class="about-page__group about-page__group--v2">
-  <nav class="page-breadcrumbs" aria-label="Breadcrumb"><ol class="page-local-history" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="root" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a class="page-local-history__item-link-home" href="/" itemprop="item" title="Home" aria-label="Home"><img class="page-local-history__link-image" src="images/home.svg" alt="" width="24" height="24"><span itemprop="name" class="sr-only page-local-history__link-text">Home</span></a><meta content="1" itemprop="position"></li><li class="page-local-history__item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page"><span class="page-local-history__item-text" itemprop="name">About</span><meta content="2" itemprop="position"></li></ol><ol class="bc-mobile bc-mobile--styled"><li class="bc-mobile__item"><a class="bc-mobile__item-link-cultural-collections" href="/"><svg class="bc-mobile__link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span class="bc-mobile__link-text">Cultural Collections</span></a></li></ol></nav>
-</div>
-<section class="ccs-section ccs-section--hero" aria-labelledby="about-title">
-  <div class="ccs-hero">
-    <div class="ccs-hero__content">
-      <div>
-        <h1 id="about-title" class="ccs-hero__title">About Cultural Collections Search</h1>
-      </div>
-    </div>
-    <div class="ccs-hero__media"><img class="ccs-hero__image" src="/images/home/hero-parkville.jpg" alt="The University of Melbourne Parkville campus"></div>
+<nav class="page-breadcrumbs" aria-label="Breadcrumb"><ol class="page-local-history" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="root" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a class="page-local-history__item-link-home" href="/" itemprop="item" title="Home" aria-label="Home"><img class="page-local-history__link-image" src="/images/home.svg" alt="" width="24" height="24"><span itemprop="name" class="sr-only page-local-history__link-text">Home</span></a><meta content="1" itemprop="position"></li><li class="page-local-history__item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem" aria-current="page"><span class="page-local-history__item-text" itemprop="name">About</span><meta content="2" itemprop="position"></li></ol><ol class="bc-mobile bc-mobile--styled"><li class="bc-mobile__item"><a class="bc-mobile__item-link-about" href="/"><svg class="bc-mobile__link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span class="bc-mobile__link-text">Cultural Collections</span></a></li></ol></nav>
+<section class="page-banner" aria-label="Page banner">
+  <div class="page-banner__inner">
+    <h1 class="page-banner__heading">About Cultural Collections Search</h1>
+    <p class="page-banner__desc">CCS brings together the University of Melbourne’s rich and diverse cultural collections into a single discovery experience.</p>
   </div>
 </section>
 
-<main id="main-content" class="about-main-content">
-  <nav class="link-strip" aria-label="On this page">
-    <ul class="link-strip__list">
-      <li><a class="ct-link" href="#about-intro-title">What is CCS</a></li>
-      <li><a class="ct-link" href="#about-journey-title">The journey</a></li>
-      <li><a class="ct-link" href="#about-myer-title">The Myer Family</a></li>
-      <li><a class="ct-link" href="#about-support-title">Support CCS</a></li>
-      <li><a class="ct-link" href="#about-data-title">About CCS Data</a></li>
+<main class="help-main-content help-main-content--topic" id="main-content">
+<div class="help-layout">
+<nav class="jump-nav" aria-labelledby="jump-nav-title">
+  <div class="jump-nav__container">
+    <p class="jump-nav__title" id="jump-nav-title">On this page</p>
+    <ul class="jump-nav__list">
+      <li class="jump-nav__item"><a class="jump-nav__link" href="#what-is-ccs">What is CCS</a></li>
+      <li class="jump-nav__item"><a class="jump-nav__link" href="#journey">The journey</a></li>
+      <li class="jump-nav__item"><a class="jump-nav__link" href="#myer">The Myer Family</a></li>
+      <li class="jump-nav__item"><a class="jump-nav__link" href="#support">Support CCS</a></li>
+      <li class="jump-nav__item"><a class="jump-nav__link" href="#data">About CCS Data</a></li>
+      <li class="jump-nav__item"><a class="jump-nav__link" href="#contact-support">Contact and support</a></li>
     </ul>
-  </nav>
+  </div>
+</nav>
+<div class="help-layout__content">
+<section class="help-section" id="what-is-ccs" aria-labelledby="h-what-is-ccs">
+  <header class="help-section__header">
+    <h2 class="help-section__heading" id="h-what-is-ccs">What is CCS</h2>
+    <p class="help-section__description">CCS brings together the University of Melbourne’s rich and diverse cultural collections into a single discovery experience. It enables students, researchers, staff and the wider community to explore collections, uncover connections across disciplines, and engage with the University’s cultural heritage in new ways.</p>
+  </header>
+  <ul class="help-section__items">
+    <li class="help-section__item">
+      <p class="help-section__text">CCS is part of a broader vision to make the University’s collections more accessible and connected, supporting teaching, learning, research and public use.</p>
+    </li>
+  </ul>
+</section>
 
-  <section class="ccs-section ccs-section--intro" aria-labelledby="about-intro-title">
-    <div class="ccs-section__inner">
-      <h2 class="ccs-section__heading" id="about-intro-title">What is CCS</h2>
-      <p class="ccs-intro">CCS brings together the University of Melbourne’s rich and diverse cultural collections into a single discovery experience. It enables students, researchers, staff and the wider community to explore collections, uncover connections across disciplines, and engage with the University’s cultural heritage in new ways.</p>
-      <p class="about-intro__text">CCS is part of a broader vision to make the University’s collections more accessible and connected, supporting teaching, learning, research and public use.</p>
-    </div>
-  </section>
+<section class="help-section" id="journey" aria-labelledby="h-journey">
+  <header class="help-section__header">
+    <h2 class="help-section__heading" id="h-journey">The journey</h2>
+  </header>
+  <ul class="help-section__items">
+    <li class="help-section__item">
+      <p class="help-section__text">CCS is being delivered progressively, with collections onboarding over time as systems, metadata and digital content are available.</p>
+    </li>
+    <li class="help-section__item">
+      <p class="help-section__text">The first phase brings together five collections across the University. More collections will be added over time, expanding the breadth and depth of content available through the platform.</p>
+    </li>
+    <li class="help-section__item">
+      <p class="help-section__text">As more collections join CCS, users will be able to search across an increasingly rich and diverse body of material, creating new opportunities for learning, research and innovation.</p>
+    </li>
+    <li class="help-section__item">
+      <p class="help-section__text"><a href="/collections/index.html">Browse all collections</a></p>
+      <p class="help-section__text"><a href="/search/search-results.html">Browse records</a></p>
+    </li>
+  </ul>
+</section>
 
-  <section class="about-journey" aria-labelledby="about-journey-title">
-    <div class="about-journey__inner">
-      <div class="about-journey__top">
-        <h2 class="about-journey__heading" id="about-journey-title">The journey</h2>
-        <div class="about-journey__media"><img class="about-journey__image" src="/images/banners/medical-history-museum.jpg" alt=""></div>
-      </div>
-      <ul class="about-journey__steps">
-        <li class="about-journey__step">CCS is being delivered progressively, with collections onboarding over time as systems, metadata and digital content are available.</li>
-        <li class="about-journey__step">The first phase brings together five collections across the University. More collections will be added over time, expanding the breadth and depth of content available through the platform.</li>
-        <li class="about-journey__step">As more collections join CCS, users will be able to search across an increasingly rich and diverse body of material, creating new opportunities for learning, research and innovation.</li>
+<section class="help-section" id="myer" aria-labelledby="h-myer">
+  <header class="help-section__header">
+    <h2 class="help-section__heading" id="h-myer">CCS is made possible with the support of the Myer Family</h2>
+    <p class="help-section__description">The development of CCS has been enabled by the generous support of the Myer family and the enduring legacy of the Sidney Myer University Trust.</p>
+  </header>
+  <ul class="help-section__items">
+    <li class="help-section__item">
+      <p class="help-section__text">For over a century, the Myer family has played a significant role in supporting education, research and cultural initiatives at the University of Melbourne. Their support of CCS helps ensure the University's cultural collections can be discovered, explored and shared by future generations.</p>
+    </li>
+  </ul>
+</section>
+
+<section class="help-section" id="support" aria-labelledby="h-support">
+  <header class="help-section__header">
+    <h2 class="help-section__heading" id="h-support">How you can support this Initiative</h2>
+    <p class="help-section__description">CCS is an evolving initiative that relies on investment to expand and enhance access to the University's cultural collections.</p>
+  </header>
+  <ul class="help-section__items">
+    <li class="help-section__item">
+      <h3 class="help-section__subheading">Support for CCS helps:</h3>
+      <ul>
+        <li class="help-section__text">Onboard additional collections to the platform</li>
+        <li class="help-section__text">Digitise collection materials and increase online access</li>
+        <li class="help-section__text">Enhance the quality and richness of collection metadata</li>
+        <li class="help-section__text">Enhance search and research capabilities</li>
+        <li class="help-section__text">Share the University's cultural heritage with current and future generations</li>
       </ul>
-      <ul class="about-journey__links">
-        <li><a class="ct-link ct-link--inverse" href="/collections/index.html">Browse collections</a></li>
-        <li><a class="ct-link ct-link--inverse" href="/search/search-results.html">Search all records</a></li>
-      </ul>
-    </div>
-  </section>
+    </li>
+    <li class="help-section__item">
+      <p class="help-section__text">If you are interested in supporting CCS, please contact the Museums &amp; Collections team at <a href="mailto:MC-Collections@unimelb.edu.au">MC-Collections@unimelb.edu.au</a> to discuss partnership, sponsorship or philanthropic opportunities.</p>
+    </li>
+  </ul>
+</section>
 
-  <section class="about-split" aria-labelledby="about-myer-title">
-    <div class="about-split__inner">
-      <div class="about-split__content">
-        <h2 class="about-split__heading" id="about-myer-title">CCS is made possible with the support of the Myer Family</h2>
-        <p class="about-split__text">The development of CCS has been enabled by the generous support of the Myer family and the enduring legacy of the Sidney Myer University Trust.</p>
-        <p class="about-split__text">For over a century, the Myer family has played a significant role in supporting education, research and cultural initiatives at the University of Melbourne. Their support of CCS helps ensure the University's cultural collections can be discovered, explored and shared by future generations.</p>
-      </div>
-      <img class="about-split__image" src="/images/banners/university-art-collection.jpg" alt="">
-    </div>
-  </section>
+<section class="help-section" id="data" aria-labelledby="h-data">
+  <header class="help-section__header">
+    <h2 class="help-section__heading" id="h-data">About CCS Data</h2>
+  </header>
+  <ul class="help-section__items">
+    <li class="help-section__item">
+      <p class="help-section__text">The collections found in CCS are in the care of the University of Melbourne. Documentation practices may vary between collections. Metadata and digital assets will continue to be enhanced over time as the platform evolves and additional collections are added.</p>
+    </li>
+    <li class="help-section__item">
+      <p class="help-section__text">CCS is an ongoing initiative. The volume and detail of accessible content will continue to grow as more collections become available to access through the platform.</p>
+    </li>
+  </ul>
+</section>
 
-  <section class="about-support" aria-labelledby="about-support-title">
-    <div class="about-support__inner">
-      <div class="about-support__intro">
-        <h2 class="about-support__heading" id="about-support-title">How you can support this Initiative</h2>
-        <p class="about-support__text">CCS is an evolving initiative that relies on investment to expand and enhance access to the University's cultural collections.</p>
-      </div>
-      <div class="about-support__list-box">
-        <p class="about-support__lead">Support for CCS helps:</p>
-        <ul class="about-support__list">
-          <li class="about-support__item">Onboard additional collections to the platform</li>
-          <li class="about-support__item">Digitise collection materials and increase online access</li>
-          <li class="about-support__item">Enhance the quality and richness of collection metadata</li>
-          <li class="about-support__item">Enhance search and research capabilities</li>
-          <li class="about-support__item">Share the University's cultural heritage with current and future generations</li>
-        </ul>
-      </div>
-      <div class="about-support__closing">
-        <p class="about-support__text">If you are interested in supporting CCS, please contact the Museums &amp; Collections team at <a href="mailto:MC-Collections@unimelb.edu.au">MC-Collections@unimelb.edu.au</a> to discuss partnership, sponsorship or philanthropic opportunities.</p>
-      </div>
-    </div>
-  </section>
+<section class="help-section" id="contact-support" aria-labelledby="h-contact-support">
+  <header class="help-section__header">
+    <h2 class="help-section__heading" id="h-contact-support">Contact and support</h2>
+  </header>
+  <ul class="help-section__items">
+    <li class="help-section__item">
+      <p class="help-section__text"><a href="/help/index.html#contact-us">Contact the collections team</a></p>
+      <p class="help-section__text"><a href="/help/index.html">Help and support</a></p>
+      <p class="help-section__text"><a href="mailto:ccs-feedback@unimelb.edu.au">Send feedback about this site</a></p>
+    </li>
+  </ul>
+</section>
 
-  <section class="about-data" aria-labelledby="about-data-title">
-    <div class="about-data__inner">
-      <h2 class="about-data__heading" id="about-data-title">About CCS Data</h2>
-      <div class="about-data__content">
-        <p class="about-data__text">The collections found in CCS are in the care of the University of Melbourne. Documentation practices may vary between collections. Metadata and digital assets will continue to be enhanced over time as the platform evolves and additional collections are added.</p>
-        <p class="about-data__text">CCS is an ongoing initiative. The volume and detail of accessible content will continue to grow as more collections become available to access through the platform.</p>
-      </div>
-    </div>
-  </section>
+</div>
+</div>
 
-  <section class="about-help" aria-labelledby="about-help-title">
-    <h2 class="about-help__title" id="about-help-title"><svg class="about-help__title-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="16" cy="16" r="12"/><path d="M12.5 12.5a3.5 3.5 0 1 1 5 3.2c-1 .6-1.5 1.2-1.5 2.3"/><path d="M16 22.5v.01"/></svg><span>Contact and support</span></h2>
-    <ul class="about-help__list">
-      <li class="about-help__item"><a class="about-help__link" href="/help/index.html#contact-us"><img class="about-help__icon" src="/images/home/icon-arrow-footer.svg" alt=""><span>Contact the collections team</span></a></li>
-      <li class="about-help__item"><a class="about-help__link" href="/help/index.html"><img class="about-help__icon" src="/images/home/icon-arrow-footer.svg" alt=""><span>Help and support</span></a></li>
-      <li class="about-help__item"><a class="about-help__link" href="mailto:ccs-feedback@unimelb.edu.au"><img class="about-help__icon" src="/images/home/icon-arrow-footer.svg" alt=""><span>Send feedback about this site</span></a></li>
-    </ul>
-  </section>
 </main>
 
 <!-- UoM Footer -->
@@ -366,7 +382,7 @@
       </div>
     </div>
   </footer>
-<svg class="about-page__icon" xmlns="http://www.w3.org/2000/svg">
+<svg class="help-page__icon" xmlns="http://www.w3.org/2000/svg">
   <symbol id="icon-facebook" viewBox="0 0 24 24">
     <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
   </symbol>
@@ -391,11 +407,11 @@ class Component extends DCLogic {
     return {};
   }
 }
-
 </script>
 
 
 
   <script src="/nav.js"></script>
+  <script src="/help/jump-nav.js"></script>
 </body>
 </html>

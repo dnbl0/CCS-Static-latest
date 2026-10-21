@@ -14,7 +14,6 @@ module NexusCcs
       Link.new("Staff", "https://staff.unimelb.edu.au"),
       Link.new("Alumni", "https://www.unimelb.edu.au/alumni"),
       Link.new("Giving", "https://giving.unimelb.edu.au"),
-      Link.new("About", "https://about.unimelb.edu.au"),
       Link.new("Contact", "https://www.unimelb.edu.au/contact")
     ].freeze
 

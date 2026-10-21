@@ -36,7 +36,7 @@ function current(relative) {
   else if (relative === 'help/index.html') items.add('help');
   return items;
 }
-const ATTRIBUTES = { collections: ' aria-current="true"', help: ' aria-current="true"' };
+const ATTRIBUTES = { search: ' aria-current="true"', help: ' aria-current="true"' };
 
 function renderHeader(relative, page) {
   const prefix = page.match(/class="([a-z-]+?)-university-melbourne"/)?.[1];

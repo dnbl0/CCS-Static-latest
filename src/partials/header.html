@@ -15,7 +15,6 @@
           <li class="@PAGE@-university-melbourne__list-item"><a class="@PAGE@-university-melbourne__item-link-staff" href="https://staff.unimelb.edu.au">Staff</a></li>
           <li class="@PAGE@-university-melbourne__list-item"><a class="@PAGE@-university-melbourne__item-link-alumni" href="https://www.unimelb.edu.au/alumni">Alumni</a></li>
           <li class="@PAGE@-university-melbourne__list-item"><a class="@PAGE@-university-melbourne__item-link-giving" href="https://giving.unimelb.edu.au">Giving</a></li>
-          <li class="@PAGE@-university-melbourne__list-item"><a class="@PAGE@-university-melbourne__item-link-about" href="https://about.unimelb.edu.au">About</a></li>
           <li class="@PAGE@-university-melbourne__list-item"><a class="@PAGE@-university-melbourne__item-link-contact" href="https://www.unimelb.edu.au/contact">Contact</a></li>
         </ul>
       </nav>
@@ -34,20 +33,21 @@
           </form>
         </div>
         <ul class="ccs-nav__list">
-          <li class="ccs-nav__list-item"><a class="ccs-nav__item-link-search-all-records" href="/search/search-results.html"@CUR:search@>Search all records</a></li>
           <li class="ccs-nav__list-item">
-            <button type="button" class="ccs-nav__trigger" aria-expanded="false" aria-controls="ccs-dd-collections"@CUR:collections@><span>Browse <span class="ccs-nav__label-more">all </span>collections</span><img class="ccs-nav__image" src="/images/home/icon-expand.svg" alt=""></button>
-            <div id="ccs-dd-collections" class="ccs-nav__panel">
-              <a class="ccs-nav__panel-title" href="/collections/index.html"><img class="ccs-nav__image" src="/images/home/icon-arrow-footer.svg" alt="">Browse <span class="ccs-nav__label-more">all </span>collections</a>
+            <button type="button" class="ccs-nav__trigger" aria-expanded="false" aria-controls="ccs-dd-records"@CUR:search@>Browse records<img class="ccs-nav__image" src="/images/home/icon-expand.svg" alt=""></button>
+            <div id="ccs-dd-records" class="ccs-nav__panel">
+              <a class="ccs-nav__panel-title" href="/search/search-results.html"><img class="ccs-nav__image" src="/images/home/icon-arrow-footer.svg" alt="">Browse records</a>
               <ul class="ccs-nav__panel-list">
-                <li class="ccs-nav__item"><a class="ccs-nav__item-link-grainger-museum-collection" href="/search/search-results.html?collection=Grainger%20Museum%20Collection"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Grainger Museum Collection</a></li>
-                <li class="ccs-nav__item"><a class="ccs-nav__item-link-harry-brookes-allen" href="/search/search-results.html?collection=Harry%20Brookes%20Allen%20Museum%20of%20Anatomy%20and%20Pathology"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Harry Brookes Allen Museum</a></li>
-                <li class="ccs-nav__item"><a class="ccs-nav__item-link-henry-forman-atkinson" href="/search/search-results.html?collection=Henry%20Forman%20Atkinson%20Dental%20Museum"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Henry Forman Atkinson Dental Museum</a></li>
-                <li class="ccs-nav__item"><a class="ccs-nav__item-link-medical-history-museum" href="/search/search-results.html?collection=Medical%20History%20Museum"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Medical History Museum</a></li>
-                <li class="ccs-nav__item"><a class="ccs-nav__item-link-university-art-collection" href="/search/search-results.html?collection=University%20Art%20Collection"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">University Art Collection</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-grainger-museum-collection" href="/search/search-results.html?collection=Grainger%20Museum%20Collection"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Browse Grainger Museum Collection</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-harry-brookes-allen" href="/search/search-results.html?collection=Harry%20Brookes%20Allen%20Museum%20of%20Anatomy%20and%20Pathology"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Browse Harry Brookes Allen Museum</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-henry-forman-atkinson" href="/search/search-results.html?collection=Henry%20Forman%20Atkinson%20Dental%20Museum"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Browse Henry Forman Atkinson Dental Museum</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-medical-history-museum" href="/search/search-results.html?collection=Medical%20History%20Museum"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Browse Medical History Museum</a></li>
+                <li class="ccs-nav__item"><a class="ccs-nav__item-link-university-art-collection" href="/search/search-results.html?collection=University%20Art%20Collection"><img class="ccs-nav__link-image" src="/images/home/icon-arrow-footer.svg" alt="">Browse University Art Collection</a></li>
               </ul>
             </div>
           </li>
+          <li class="ccs-nav__list-item"><a class="ccs-nav__item-link-browse-all-collections" href="/collections/index.html"@CUR:collections@><span>Browse <span class="ccs-nav__label-more">all </span>collections</span></a></li>
+          <li class="ccs-nav__list-item"><a class="ccs-nav__item-link-about" href="/about.html"@CUR:about@>About</a></li>
           <li class="ccs-nav__list-item">
             <button type="button" class="ccs-nav__trigger" aria-expanded="false" aria-controls="ccs-dd-help"@CUR:help@>Help<img class="ccs-nav__image" src="/images/home/icon-expand.svg" alt=""></button>
             <div id="ccs-dd-help" class="ccs-nav__panel">
@@ -60,7 +60,6 @@
               </ul>
             </div>
           </li>
-          <li class="ccs-nav__list-item"><a class="ccs-nav__item-link-about" href="/about.html"@CUR:about@>About</a></li>
         </ul>
         <ul class="ccs-nav__drawer-top" aria-label="University of Melbourne">
         <li class="ccs-nav__item"><a class="ccs-nav__item-link-study" href="https://study.unimelb.edu.au">Study</a></li>
@@ -70,7 +69,6 @@
         <li class="ccs-nav__item"><a class="ccs-nav__item-link-staff" href="https://staff.unimelb.edu.au">Staff</a></li>
         <li class="ccs-nav__item"><a class="ccs-nav__item-link-alumni" href="https://www.unimelb.edu.au/alumni">Alumni</a></li>
         <li class="ccs-nav__item"><a class="ccs-nav__item-link-giving" href="https://giving.unimelb.edu.au">Giving</a></li>
-        <li class="ccs-nav__item"><a class="ccs-nav__item-link-about" href="https://about.unimelb.edu.au">About</a></li>
         <li class="ccs-nav__item"><a class="ccs-nav__item-link-contact" href="https://www.unimelb.edu.au/contact">Contact</a></li>
         </ul>
       </nav>

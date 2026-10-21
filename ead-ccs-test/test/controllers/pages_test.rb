@@ -91,20 +91,33 @@ class PagesTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "the about page has no browse collections section and sits in the header" do
+  test "the about page is built on the help page's template, with an On this page sidebar" do
     get "/about"
 
     assert_response :success
-    assert_select "body.page-about h1", "About Cultural Collections Search"
-    assert_select "body.page-about .ccs-section--cards", count: 0
-    assert_select "body.page-about .about-help a[href='/help#contact-us']"
-    assert_select "#site-nav-help ~ ul a[href='/about'], .site-nav a[href='/about']", minimum: 1
+    assert_select "body.page-help h1", "About Cultural Collections Search"
+    assert_select "body.page-help .help-layout > nav.jump-nav[aria-labelledby='jump-nav-title'] .jump-nav__link", count: 6
+    assert_select "body.page-help .help-layout__content > section.help-section", count: 6
+    css_select(".jump-nav__link").each { |link| assert_equal 1, css_select(link["href"]).size, "no section for #{link["href"]}" }
+    assert_select "body.page-help a[href='/help#contact-us']"
+    assert_select ".site-nav a[href='/about']", count: 1
+  end
+
+  test "the header lists Browse records, Browse all collections, About and Help in that order" do
+    get "/about"
+
+    labels = [ "Browse records", "Browse all collections", "About", "Help" ]
+    items = css_select(".site-nav > ul > li").map { |item| item.text.squish }
+    assert_equal labels, items.first(4).map { |text| labels.find { |label| text.start_with?(label) } }
+    assert_select "#site-nav a[href='https://about.unimelb.edu.au']", count: 0
   end
 
   test "the site header links to the pages, and has no Contact page of its own" do
     get "/help"
 
-    assert_select "#site-nav-collections li a[href^='/catalog?f%5Bcollection_ssim%5D']", count: 5
+    assert_select "#site-nav-records li a[href^='/catalog?f%5Bcollection_ssim%5D']", count: 5
+    assert_select "#site-nav-collections", count: 0
+    assert_select ".site-nav > ul > li > a[href='/collections']", text: "Browse all collections"
     assert_select "#site-nav-help a[href='/help#faq']"
     assert_select "#site-nav-help li a", count: HelpTopic.all.size
     assert_select "#site-nav a[href='/contact']", count: 0
