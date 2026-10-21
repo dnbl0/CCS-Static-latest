@@ -1,0 +1,41 @@
+<%= render(@layout.new(facet_field: @facet_field)) do |component| %>
+  <% component.with_label do %>
+    <%= @facet_field.label %>
+  <% end %>
+
+  <% component.with_body do %>
+    <div class="advanced-filter__match">
+      <%= label_tag "match_#{key}", "How the ticked #{@facet_field.label} values combine", class: "visually-hidden" %>
+      <%= select_tag "match[#{key}]", options_for_select(matches, match), id: "match_#{key}", class: "form-select advanced-filter__match-select" %>
+    </div>
+
+    <ul class="facet-values list-unstyled blacklight-facet-checkboxes">
+      <% unlisted.each_with_index do |value, idx| %>
+        <li>
+          <span class="facet-checkbox flex-shrink-0">
+            <%= check_box_tag "f_inclusive[#{key}][]", value, true, id: "f_inclusive_#{key}_applied_#{idx}" %>
+          </span>
+          <span class="facet-label-and-count flex-grow-1">
+            <%= label_tag "f_inclusive_#{key}_applied_#{idx}", class: "d-flex" do %>
+              <span class="facet-label flex-grow-1"><%= value %></span>
+            <% end %>
+          </span>
+        </li>
+      <% end %>
+      <% presenters.each_with_index do |presenter, idx| -%>
+        <li>
+          <span class="facet-checkbox flex-shrink-0">
+            <%= check_box_tag "f_inclusive[#{key}][]", presenter.value, checked?(presenter), id: control_id(idx) %>
+          </span>
+
+          <span class="facet-label-and-count flex-grow-1">
+            <%= label_tag control_id(idx), class: "d-flex" do %>
+              <span class="facet-label flex-grow-1"><%= presenter.label %></span>
+              <span class="facet-count"><%= t("blacklight.search.facets.count", number: number_with_delimiter(presenter.hits)) %></span>
+            <% end %>
+          </span>
+        </li>
+      <% end -%>
+    </ul>
+  <% end %>
+<% end %>

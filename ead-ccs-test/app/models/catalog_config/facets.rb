@@ -13,11 +13,12 @@ module CatalogConfig
         # CCS-41 (not in the workbook): the Digital asset option sits above Digital Asset Format Type.
         add_digital_asset_option(config) if filter.name == DIGITAL_ASSET_FORMAT_FILTER
 
+        # Each list filter on the Advanced search form has a "match" menu (includes all / includes any / excludes all)
         options = { label: filter.name, group: filter.group }
         case filter.type
         when :year then options[:range] = true # the range limit plugin's own form and histogram
-        when :checkbox then options.merge!(limit: nil, filter_class: InclusiveFilterField)
-        else options.merge!(limit: 20, index_range: "A".."Z", filter_class: InclusiveFilterField)   # browse, with "search within this filter" in the modal
+        when :checkbox then options.merge!(limit: nil, filter_class: InclusiveFilterField, advanced_search_component: NexusCcs::AdvancedFilterComponent)
+        else options.merge!(limit: 20, index_range: "A".."Z", filter_class: InclusiveFilterField, advanced_search_component: NexusCcs::AdvancedFilterComponent)   # browse, with "search within this filter" in the modal
         end
         config.add_facet_field filter.solr, **options
       end

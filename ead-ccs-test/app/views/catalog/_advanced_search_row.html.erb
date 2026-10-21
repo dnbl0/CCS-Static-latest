@@ -1,0 +1,20 @@
+<%# One search row of the Advanced search form: the field, how its words match, the words, and a button to remove the row.
+    Also the content of the template the "Add a field" button copies (the index is then __INDEX__). -%>
+<% i = row.index %>
+<div class="advanced-search-row" data-advanced-rows-target="row">
+  <div class="advanced-search-row__field">
+    <label class="advanced-search-row__label" for="clause_<%= i %>_field">Search in</label>
+    <%= select_tag "clause[#{i}][field]", options_for_select(field_options, row.field), id: "clause_#{i}_field", class: "form-select" %>
+  </div>
+  <div class="advanced-search-row__type">
+    <label class="advanced-search-row__label" for="clause_<%= i %>_type">Match</label>
+    <%= select_tag "clause[#{i}][type]", options_for_select(types, row.type), id: "clause_#{i}_type", class: "form-select" %>
+  </div>
+  <div class="advanced-search-row__query">
+    <label class="advanced-search-row__label" for="clause_<%= i %>_query">Search for</label>
+    <%= text_field_tag "clause[#{i}][query]", row.query, id: "clause_#{i}_query", class: "form-control", maxlength: QueryRules::MAX_LENGTH %>
+  </div>
+  <button type="button" class="advanced-search-row__remove" data-action="advanced-rows#remove" data-advanced-rows-target="remove" hidden>
+    <span class="visually-hidden">Remove this field</span><span aria-hidden="true">&times;</span>
+  </button>
+</div>

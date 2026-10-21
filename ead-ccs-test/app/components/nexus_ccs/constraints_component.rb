@@ -15,6 +15,16 @@ module NexusCcs
       @inline
     end
 
+    # The rows of an Advanced search, each saying how its words match
+    def clause_presenters
+      return to_enum(:clause_presenters) unless block_given?
+
+      @search_state.clause_params.each do |key, clause|
+        field_config = helpers.blacklight_config.search_fields[clause[:field]]
+        yield NexusCcs::AdvancedClausePresenter.new(key, clause, field_config, helpers)
+      end
+    end
+
     def total
       helpers.instance_variable_get(:@response)&.total.to_i
     end

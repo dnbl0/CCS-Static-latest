@@ -49,7 +49,7 @@ class AdvancedSearchTest < ApplicationSystemTestCase
     visit "/catalog/advanced"
     assert_no_selector ".advanced-search__notice"
 
-    fill_in "All Fields", with: "skull"
+    fill_in "clause_0_query", with: "skull"
     click_button "advanced-search-submit"
     assert_selector ".constraints-label"
     assert_no_selector ".advanced-search__notice"

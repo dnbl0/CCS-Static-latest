@@ -1,0 +1,67 @@
+<% if constraints? %>
+  <div class="constraints well search_history">
+    <h4><%= t "blacklight.advanced_search.form.search_context" %></h4>
+    <% constraints.each do |constraint| %>
+      <%= constraint %>
+    <% end %>
+  </div>
+<% end %>
+
+<%= form_tag @url, method: @method, class: @classes.join(" "), role: "search", "aria-label" => t("blacklight.search.form.submit") do %>
+  <%= render Blacklight::HiddenSearchStateComponent.new(params: hidden_search_state_params) %>
+
+  <div class="input-criteria">
+    <div class="query-criteria mb-4" data-controller="advanced-rows" data-advanced-rows-next-index-value="<%= next_index %>">
+      <h2 class="query-criteria-heading h3 mb-4">
+        <%= t("blacklight.advanced_search.form.query_criteria_heading_html", select_menu: default_operator_menu) %>
+      </h2>
+
+      <div id="advanced_search" class="advanced-search-rows" data-advanced-rows-target="list">
+        <% rows.each do |row| %>
+          <%= render "catalog/advanced_search_row", row: row, field_options: field_options, types: types %>
+        <% end %>
+      </div>
+
+      <template data-advanced-rows-target="template">
+        <%= render "catalog/advanced_search_row", row: blank_row, field_options: field_options, types: types %>
+      </template>
+
+      <div class="advanced-search-rows__controls" data-advanced-rows-target="controls" hidden>
+        <button type="button" class="advanced-search-rows__add" data-action="advanced-rows#add">
+          <span aria-hidden="true">+</span> Add a field
+        </button>
+        <p class="visually-hidden" role="status" aria-live="polite" data-advanced-rows-target="status"></p>
+      </div>
+    </div>
+
+    <% if search_filter_controls? %>
+      <div class="limit-criteria mb-4">
+        <h2 class="limit-criteria-heading h3"><%= t("blacklight.advanced_search.form.limit_criteria_heading_html") %></h2>
+
+        <div id="advanced_search_facets" class="facets limit_input row">
+          <div class="advanced-facet-limits accordion col-md-9 offset-md-3">
+            <% search_filter_controls.each do |control| %>
+              <%= control %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <% if sort_fields_select %>
+    <div class="row mb-4">
+      <%= content_tag :h2, t("blacklight.advanced_search.form.sort_label"), id: "advanced-search-sort-label", class: "col-md-3 text-md-right" %>
+      <div class="col-md-9">
+        <%= sort_fields_select %>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="submit-buttons col-md-9 offset-md-3">
+      <%= submit_tag t("blacklight.advanced_search.form.search_btn_html"), class: "btn btn-primary advanced-search-submit", id: "advanced-search-submit" %>
+      <%= link_to t("blacklight.advanced_search.form.start_over_html"), request.path, class: "btn btn-link advanced-search-start-over" %>
+    </div>
+  </div>
+<% end %>

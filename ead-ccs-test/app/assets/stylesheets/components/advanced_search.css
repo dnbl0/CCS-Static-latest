@@ -296,9 +296,135 @@ form.advanced .advanced-search-start-over:hover {
   line-height: 1.2;
 }
 
-.advanced-search-tips .advanced-help {
+.advanced-search-tips .advanced-help,
+.advanced-search-tips .advanced-match-types {
   margin: 0;
   padding-left: var(--ccs-space-5);
   font-size: var(--ccs-font-size-md);
   line-height: 1.5;
+}
+
+/* Search rows (NexusCcs::AdvancedSearchFormComponent): the field to search, how its words match, the words, and Remove.
+   Each control keeps its label above it like the other fields; the row stacks below 768px. */
+form.advanced .advanced-search-rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ccs-space-4);
+}
+
+form.advanced .advanced-search-row {
+  display: grid;
+  grid-template-columns: minmax(9rem, 12rem) minmax(8rem, 10rem) minmax(0, 1fr) auto;
+  align-items: end;
+  gap: var(--ccs-space-3);
+}
+
+form.advanced .advanced-search-row__label {
+  display: block;
+  margin-bottom: var(--ccs-space-2);
+  font-size: var(--ccs-font-size-lg);
+  font-weight: var(--ccs-font-weight-semibold);
+  line-height: 1.5;
+  color: var(--ccs-navy-1100);
+}
+
+form.advanced .advanced-search-row .form-select,
+form.advanced .advanced-search-row input[type="text"],
+form.advanced .advanced-filter__match-select {
+  height: 3rem;
+  border: 1px solid var(--ccs-navy-1100);
+  border-radius: 0;
+  background-color: var(--ccs-white);
+  font-size: var(--ccs-font-size-md);
+  line-height: 1.5;
+  color: var(--ccs-navy-1100);
+}
+
+form.advanced .advanced-search-row input[type="text"] {
+  padding: var(--ccs-space-3);
+}
+
+form.advanced .advanced-search-row__remove {
+  width: 3rem;
+  height: 3rem;
+  border: 1px solid var(--ccs-navy-1100);
+  border-radius: 0;
+  background: var(--ccs-white);
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--ccs-navy-1100);
+  cursor: pointer;
+}
+
+form.advanced .advanced-search-row__remove:hover {
+  background: var(--ccs-sage-150);
+}
+
+form.advanced .advanced-search-row__remove[hidden],
+form.advanced .advanced-search-rows__controls[hidden] {
+  display: none;
+}
+
+form.advanced .advanced-search-rows__controls {
+  margin-top: var(--ccs-space-4);
+}
+
+form.advanced .advanced-search-rows__add {
+  padding: var(--ccs-space-2) 0;
+  border: 0;
+  background: none;
+  font-size: var(--ccs-font-size-md);
+  font-weight: var(--ccs-font-weight-semibold);
+  color: var(--ccs-navy-1100);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+form.advanced .advanced-search-rows__add:hover {
+  color: var(--ccs-navy-800);
+}
+
+form.advanced .advanced-search-row .form-select:focus-visible,
+form.advanced .advanced-search-row input[type="text"]:focus-visible,
+form.advanced .advanced-search-row__remove:focus-visible,
+form.advanced .advanced-search-rows__add:focus-visible,
+form.advanced .advanced-filter__match-select:focus-visible {
+  outline: 2px solid var(--interactive-500);
+  outline-offset: 2px;
+}
+
+@media (max-width: 767.98px) {
+  form.advanced .advanced-search-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  form.advanced .advanced-search-row__field,
+  form.advanced .advanced-search-row__type,
+  form.advanced .advanced-search-row__query {
+    grid-column: 1 / -1;
+  }
+
+  form.advanced .advanced-search-row__remove {
+    grid-column: 2;
+    grid-row: 4;
+  }
+}
+
+/* The menu at the top of each filter: Includes all / Includes any / Excludes all */
+form.advanced .advanced-filter__match {
+  margin-bottom: var(--ccs-space-3);
+}
+
+form.advanced .advanced-filter__match-select {
+  width: auto;
+  max-width: 100%;
+  min-width: 12rem;
+}
+
+.advanced-search-tips__subtitle {
+  margin: var(--ccs-space-4) 0 var(--ccs-space-2);
+  font-family: var(--ccs-font-heading);
+  font-size: var(--ccs-font-size-xl);
+  font-weight: var(--ccs-font-weight-semibold);
+  line-height: 1.2;
 }

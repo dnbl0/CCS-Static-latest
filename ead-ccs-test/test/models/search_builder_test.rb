@@ -40,4 +40,44 @@ class SearchBuilderTest < ActiveSupport::TestCase
     assert_equal 1, solr[:json][:query][:bool][:should].size
     assert_nil solr[:json][:query][:bool][:must_not]
   end
+
+  # How a row matches its words (clause[i][type], the Advanced search form's "Contains all / any / Excludes")
+  def edismax_for(query, type)
+    clause = { "0" => { field: "all_fields", op: "must", query: query }.merge(type ? { type: type } : {}) }
+    SearchBuilder.new(CatalogController.new).with(clause: clause).to_h.dig(:json, :query, :bool, :must, 0, :edismax)
+  end
+
+  test "a row that contains all its words uses the keyword search's rule, or none when it has explicit syntax" do
+    assert_equal SearchBuilder::KEYWORD_MM, edismax_for("anatomy botany", "all")[:mm]
+    assert_equal SearchBuilder::BOOLEAN_MM, edismax_for("anatomy OR botany", "all")[:mm]
+    assert_equal SearchBuilder::BOOLEAN_MM, edismax_for("+anatomy botany", "all")[:mm]
+  end
+
+  test "a row that contains any of its words needs only one of them" do
+    edismax = edismax_for("anatomy botany", "any")
+
+    assert_equal "0", edismax[:mm]
+    assert_equal "OR", edismax[:"q.op"]
+  end
+
+  test "a row without a type is left to Blacklight's default, as addresses from before the menu were" do
+    edismax = edismax_for("anatomy botany", nil)
+
+    assert_nil edismax[:mm]
+    assert_nil edismax[:"q.op"]
+  end
+
+  test "a row that excludes leaves out the records that have its words" do
+    clause = { "0" => { field: "all_fields", query: "skull", type: "none" } }
+    bool = SearchBuilder.new(CatalogController.new).with(clause: clause).to_h.dig(:json, :query, :bool)
+
+    assert bool[:must_not].present?
+    assert_nil bool[:must]
+  end
+
+  test "an empty row adds nothing" do
+    clause = { "0" => { field: "all_fields", query: "", type: "any" } }
+
+    assert_nil SearchBuilder.new(CatalogController.new).with(clause: clause).to_h[:json]
+  end
 end

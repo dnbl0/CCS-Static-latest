@@ -47,8 +47,9 @@ class BooleanSearchTest < ApplicationSystemTestCase
   # The match menu is a styled select over a hidden <select id="op">; set its value and submit the form
   def search_advanced(title:, subject:, op:)
     visit advanced_search_catalog_path
-    fill_in "Title", with: title
-    fill_in "Subject", with: subject
+    # the form starts with one row for each search field, in the order of the menu: all fields, title, creator, subject, description
+    fill_in "clause_1_query", with: title
+    fill_in "clause_3_query", with: subject
     find("select#op", visible: :all).execute_script("this.value = '#{op}'")
     find("form.advanced").evaluate_script("this.requestSubmit()")
   end

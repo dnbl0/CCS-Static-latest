@@ -78,14 +78,15 @@ class SearchJourneysTest < ApplicationSystemTestCase
     assert_selector "form.advanced"
   end
 
-  test "the advanced search form is Blacklight's own: one fixed row per search field, a plain match-all/any select" do
+  test "the advanced search form starts with one row per search field, and a plain match-all/any select between the rows" do
     visit search_catalog_path(any_assets: "1", q: "skull")
     click_link "Advanced Search"
 
     op = find("select#op", visible: :all)
     assert_equal %w[must should], op.all("option", visible: :all).map { |o| o["value"] }
 
-    fill_in "Title", with: "portrait"
+    assert_equal 5, all(".advanced-search-row").size
+    fill_in "clause_1_query", with: "portrait" # the Title row
     find("form.advanced").evaluate_script("this.requestSubmit()")
     assert_current_path(%r{clause%5B\d%5D%5Bfield%5D=title|clause\[\d\]\[field\]=title})
   end
