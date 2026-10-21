@@ -49,6 +49,8 @@ class BooleanSearchTest < ApplicationSystemTestCase
     visit advanced_search_catalog_path
     fill_in "Title", with: title
     fill_in "Subject", with: subject
+    # The form submits "With a digital asset" checked by default, which would hide matches that have no image
+    page.execute_script("document.querySelectorAll(\"form.advanced input[name='f[has_digital_asset][]']\").forEach(box => { box.checked = false })")
     find("select#op", visible: :all).execute_script("this.value = '#{op}'")
     find("form.advanced").evaluate_script("this.requestSubmit()")
   end
