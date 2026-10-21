@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="University of Melbourne Cultural Collections Search - Explore unrivalled collections of visual arts, cartography, medical history, and more.">
+  <meta name="description" content="University of Melbourne Collection Navigator - Explore unrivalled collections of visual arts, cartography, medical history, and more.">
   <meta name="keywords" content="collections, cultural heritage, University of Melbourne, search, archives">
-  <meta property="og:title" content="Cultural Collections Search - University of Melbourne">
+  <meta property="og:title" content="Collection Navigator - University of Melbourne">
   <meta property="og:description" content="Search the University of Melbourne's cultural collections spanning visual arts, cartography, medical history, zoology, and archives.">
-  <title>Cultural Collections Search - University of Melbourne</title>
+  <title>Collection Navigator - University of Melbourne</title>
 
   <!-- Bootstrap 5.3.3 CSS (Custom UoM Gen 3 Build) -->
 <link rel="stylesheet" href="/styles/vendor/bootstrap-uom.min.css">
@@ -50,7 +50,6 @@
           <li class="home-university-melbourne__list-item"><a class="home-university-melbourne__item-link-staff" href="https://staff.unimelb.edu.au">Staff</a></li>
           <li class="home-university-melbourne__list-item"><a class="home-university-melbourne__item-link-alumni" href="https://www.unimelb.edu.au/alumni">Alumni</a></li>
           <li class="home-university-melbourne__list-item"><a class="home-university-melbourne__item-link-giving" href="https://giving.unimelb.edu.au">Giving</a></li>
-          <li class="home-university-melbourne__list-item"><a class="home-university-melbourne__item-link-contact" href="https://www.unimelb.edu.au/contact">Contact</a></li>
         </ul>
       </nav>
       <button type="button" class="ccs-nav__search" popovertarget="uom-search-popover" data-popover-type="search" aria-label="Open search">
@@ -58,11 +57,11 @@
       </button>
     </div>
     <div class="ccs-nav__bottom">
-      <a class="ccs-nav__title" href="/index.html">Cultural Collections</a>
+      <a class="ccs-nav__title" href="/index.html">Collection Navigator</a>
       <nav id="ccs-primary-nav" class="ccs-nav__primary" aria-label="Primary navigation">
         <div class="ccs-nav__drawer-search">
           <form class="ccs-nav__form-search" role="search" action="/search/search-results.html" method="get">
-            <label for="ccs-drawer-q" class="sr-only home-form__label-search-cultural-collections">Search Cultural Collections</label>
+            <label for="ccs-drawer-q" class="sr-only home-form__label-search-cultural-collections">Search Collection Navigator</label>
             <input class="ccs-drawer-q" id="ccs-drawer-q" name="q" type="text" autocomplete="off" placeholder="Search">
             <button class="home-form__button-search" type="submit" aria-label="Search"><img class="home-form__button-image" src="/images/home/icon-search-onaccent.svg" alt=""></button>
           </form>
@@ -104,7 +103,6 @@
         <li class="ccs-nav__item"><a class="ccs-nav__item-link-staff" href="https://staff.unimelb.edu.au">Staff</a></li>
         <li class="ccs-nav__item"><a class="ccs-nav__item-link-alumni" href="https://www.unimelb.edu.au/alumni">Alumni</a></li>
         <li class="ccs-nav__item"><a class="ccs-nav__item-link-giving" href="https://giving.unimelb.edu.au">Giving</a></li>
-        <li class="ccs-nav__item"><a class="ccs-nav__item-link-contact" href="https://www.unimelb.edu.au/contact">Contact</a></li>
         </ul>
       </nav>
     </div>
@@ -120,18 +118,19 @@
 <div id="uom-search-popover" class="uom-search-popover" role="dialog" aria-modal="true" aria-labelledby="uom-search-overlay-title">
   <div class="uom-search-popover__inner">
     <h2 id="uom-search-overlay-title" class="sr-only uom-search-popover__heading">Search</h2>
-    <form class="uom-search-popover__form" role="search" action="/search/search-results.html" method="get">
-      <label for="uom-search-overlay-input" class="sr-only uom-search-popover__label-search-cultural-collections">Search Cultural Collections</label>
-      <input class="uom-search-overlay-input" id="uom-search-overlay-input" name="q" type="text" placeholder="Search" autocomplete="off">
+    <form class="uom-search-popover__form" role="search" action="https://search.unimelb.edu.au/s/search.html" method="get">
+      <input type="hidden" name="collection" value="uom~sp-global">
+      <label for="uom-search-overlay-input" class="sr-only uom-search-popover__label-search-cultural-collections">Search Melbourne University</label>
+      <input class="uom-search-overlay-input" id="uom-search-overlay-input" name="query" type="text" placeholder="Search" autocomplete="off">
       <button type="submit" class="uom-search-popover__submit" aria-label="Search">
-        <svg class="uom-search-popover__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <svg class="uom-search-popover__icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="11" cy="11" r="8"></circle>
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
       </button>
     </form>
     <button type="button" class="uom-search-popover__close" id="uom-search-popover-close" aria-label="Close search">
-      <svg class="uom-search-popover__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <svg class="uom-search-popover__icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <line x1="18" y1="6" x2="6" y2="18"></line>
         <line x1="6" y1="6" x2="18" y2="18"></line>
       </svg>
@@ -219,8 +218,8 @@
         <div class="ccs-hero__content">
           <div class="ccs-hero__group">
             <div class="ccs-hero__group">
-              <h1 id="home-title" class="ccs-hero__title">Cultural Collections</h1>
-              <p class="ccs-hero__text">CCS brings together the University of Melbourne’s rich and diverse cultural collections into a single discovery experience.</p>
+              <h1 id="home-title" class="ccs-hero__title">Collection Navigator</h1>
+              <p class="ccs-hero__text">Collection Navigator brings together the University of Melbourne’s rich and diverse cultural collections into a single discovery experience.</p>
             </div>
             <div class="ccs-hero__search">
               <form class="ccs-hero__form-search" role="search" action="/search/search-results.html" method="get" data-ccs-searchbar>
@@ -237,9 +236,9 @@
     </section>
 
     <!-- Section component: introduction (162:1273 / 162:3463) -->
-    <section class="ccs-section home-about" aria-label="About CCS">
+    <section class="ccs-section home-about" aria-label="About Collection Navigator">
       <div class="ccs-section__inner home-about__inner">
-        <h2 class="home-about__statement">Welcome to CCS. A New Way to Discover the University’s Cultural Collections</h2>
+        <h2 class="home-about__statement">Welcome to Collection Navigator. A New Way to Discover the University’s Cultural Collections</h2>
         <p class="home-about__text">The University of Melbourne's cultural collections are unrivalled among Australian universities, spanning historical and contemporary items in the fields of visual arts, rare books, medical history, botany, zoology, and geology, as well as the disciplines of science, engineering and information technology. The University is also custodian to extensive archival holdings, and significant Aboriginal and Torres Strait Islander cultural heritage material, which is of greatest importance to communities of origin and their descendants.</p>
       </div>
     </section>
@@ -247,8 +246,8 @@
         <section class="ccs-section home-collections" aria-labelledby="browse-collections">
       <div class="ccs-section__inner">
         <header class="home-collections__header">
-          <h2 id="browse-collections" class="ccs-section__heading">Collections currently available in CCS</h2>
-          <p class="home-collections__description">CCS will bring together the University of Melbourne’s 30+ cultural collections via a single discovery experience. CCS is part of a broader vision to make the University’s cultural collections more discoverable, accessible and connected, supporting teaching, learning, research and public use. All University collections will join CCS over time.</p>
+          <h2 id="browse-collections" class="ccs-section__heading">Collections currently available in Collection Navigator</h2>
+          <p class="home-collections__description">Collection Navigator will bring together the University of Melbourne’s 30+ cultural collections via a single discovery experience. Collection Navigator is part of a broader vision to make the University’s cultural collections more discoverable, accessible and connected, supporting teaching, learning, research and public use. All University collections will join Collection Navigator over time.</p>
         </header>
         <ul class="home-collections__list">
         <li class="home-card">
@@ -294,8 +293,8 @@
         <li class="home-card">
           <div class="home-card__media"><img class="home-card__image" src="images/home/collections-breakout.jpg" alt=""></div>
           <div class="home-card__body">
-            <h3 class="home-card__title"><a class="home-card__link" href="/search/search-results.html">Cultural Collections</a></h3>
-            <p class="home-card__text">CCS will make accessible the University of Melbourne’s 30+ cultural collections via a single discovery experience. You can search all five collections now, and more will be available over time; for more information about other cultural collections at the University of Melbourne, visit <a href="https://museumsandcollections.unimelb.edu.au/collections">museumsandcollections.unimelb.edu.au/collections</a>.</p>
+            <h3 class="home-card__title"><a class="home-card__link" href="/search/search-results.html">Collection Navigator</a></h3>
+            <p class="home-card__text">Collection Navigator will make accessible the University of Melbourne’s 30+ cultural collections via a single discovery experience. You can search all five collections now, and more will be available over time; for more information about other cultural collections at the University of Melbourne, visit <a href="https://museumsandcollections.unimelb.edu.au/collections">museumsandcollections.unimelb.edu.au/collections</a>.</p>
             <a class="home-textbutton" href="/search/search-results.html">University museums and collections<span class="sr-only"> (searches all five collections)</span><img class="home-textbutton__image" src="images/home/icon-arrow-right.svg" alt=""></a>
           </div>
         </li>

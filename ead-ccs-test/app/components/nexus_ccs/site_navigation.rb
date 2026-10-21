@@ -13,8 +13,7 @@ module NexusCcs
       Link.new("Library", "https://library.unimelb.edu.au"),
       Link.new("Staff", "https://staff.unimelb.edu.au"),
       Link.new("Alumni", "https://www.unimelb.edu.au/alumni"),
-      Link.new("Giving", "https://giving.unimelb.edu.au"),
-      Link.new("Contact", "https://www.unimelb.edu.au/contact")
+      Link.new("Giving", "https://giving.unimelb.edu.au")
     ].freeze
 
     # Menu label, the value of the collection_ssim facet, then the slug of its landing page (config/pages.yml).

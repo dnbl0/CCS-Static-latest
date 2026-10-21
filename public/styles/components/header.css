@@ -38,15 +38,17 @@
   display: flex;
   flex: 1 1 auto;
   min-width: 16rem;
-  max-width: 40rem;
+  max-width: 26rem;
 }
 
 .uom-search-popover__form input {
   flex: 1 1 auto;
   min-width: 0;
   border: 0;
-  padding: 0.75rem 1rem;
-  font-size: 1.0625rem;
+  height: 4rem;
+  box-sizing: border-box;
+  padding: 1rem;
+  font-size: 1.5rem;
   font-family: var(--uom-ds-typography-font-family-200);
   color: var(--uom-ds-color-text-brand);
 }
@@ -62,7 +64,9 @@
   align-items: center;
   justify-content: center;
   border: 0;
-  padding: 0 0.875rem;
+  width: 4rem;
+  height: 4rem;
+  padding: 0;
   background-color: var(--uom-ds-color-background-button-secondary);
   color: var(--uom-ds-color-text-brand);
   cursor: pointer;
@@ -105,41 +109,3 @@
 }
 
 /* Colour variables carried over from the retired footer stylesheet (still referenced by other styles) */
-
-/* Recent searches inside the header search overlay (CCS-143) */
-.uom-search-recent {
-  width: 100%;
-  margin-top: var(--space-24);
-  color: var(--white-100);
-}
-
-.uom-search-recent__heading {
-  margin: 0 0 var(--space-8);
-  font-size: var(--font-size-small);
-  font-weight: var(--font-weight-semibold);
-  letter-spacing: 0.06em;
-  line-height: 20px;
-  text-transform: uppercase;
-}
-
-.uom-search-recent__list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-8) var(--space-16);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.uom-search-recent__link {
-  color: var(--white-100);
-  text-decoration: underline;
-}
-
-.uom-search-recent__all {
-  display: inline-block;
-  margin-top: var(--space-12);
-  color: var(--white-100);
-  font-size: var(--font-size-small);
-  text-decoration: underline;
-}

@@ -59,11 +59,12 @@ const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css
     eq(await page.$eval('h1', h => h.textContent), 'Search history', 'the page heading is Search history');
     eq(await page.$eval('.ccs-nav__item-link-contact', a => a.hasAttribute('aria-current')).catch(() => false), false, 'no header item is marked as the current page');
 
-    // The header overlay lists the recent searches and links to the history page
+    // The header overlay is the University of Melbourne global search: it submits to search.unimelb.edu.au (no recent searches)
     await page.click('[popovertarget="uom-search-popover"]');
-    await page.waitForSelector('.uom-search-recent__link');
-    eq(await page.$$eval('.uom-search-recent__link', a => a.map(x => x.textContent)), ['today one', 'today two'], 'the header search overlay lists recent searches');
-    eq(await page.$eval('.uom-search-recent__all', a => a.getAttribute('href')), '/search/search-history.html', 'the overlay links to all recent searches');
+    eq(await page.$eval('#uom-search-popover form', f => f.getAttribute('action')), 'https://search.unimelb.edu.au/s/search.html', 'the overlay searches unimelb.edu.au');
+    eq(await page.$eval('#uom-search-popover input[name=collection]', i => i.value), 'uom~sp-global', 'the overlay searches the whole University website');
+    eq(await page.$eval('#uom-search-popover input[name=query]', i => i.id), 'uom-search-overlay-input', 'the overlay field is named query');
+    eq(await page.$$('.uom-search-recent__link').then(a => a.length), 0, 'the overlay lists no recent searches');
 
     // A search on the results page is saved, and survives a new tab (the browser, not the tab, keeps it)
     await page.goto(base + '/search/search-results.html?q=zither');

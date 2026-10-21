@@ -1,18 +1,19 @@
 <div id="uom-search-popover" class="uom-search-popover" role="dialog" aria-modal="true" aria-labelledby="uom-search-overlay-title">
   <div class="uom-search-popover__inner">
     <h2 id="uom-search-overlay-title" class="sr-only uom-search-popover__heading">Search</h2>
-    <form class="uom-search-popover__form" role="search" action="/search/search-results.html" method="get">
-      <label for="uom-search-overlay-input" class="sr-only uom-search-popover__label-search-cultural-collections">Search Cultural Collections</label>
-      <input class="uom-search-overlay-input" id="uom-search-overlay-input" name="q" type="text" placeholder="Search" autocomplete="off">
+    <form class="uom-search-popover__form" role="search" action="https://search.unimelb.edu.au/s/search.html" method="get">
+      <input type="hidden" name="collection" value="uom~sp-global">
+      <label for="uom-search-overlay-input" class="sr-only uom-search-popover__label-search-cultural-collections">Search Melbourne University</label>
+      <input class="uom-search-overlay-input" id="uom-search-overlay-input" name="query" type="text" placeholder="Search" autocomplete="off">
       <button type="submit" class="uom-search-popover__submit" aria-label="Search">
-        <svg class="uom-search-popover__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <svg class="uom-search-popover__icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="11" cy="11" r="8"></circle>
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
       </button>
     </form>
     <button type="button" class="uom-search-popover__close" id="uom-search-popover-close" aria-label="Close search">
-      <svg class="uom-search-popover__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <svg class="uom-search-popover__icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <line x1="18" y1="6" x2="6" y2="18"></line>
         <line x1="6" y1="6" x2="18" y2="18"></line>
       </svg>

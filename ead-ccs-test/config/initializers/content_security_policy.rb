@@ -11,7 +11,7 @@ Rails.application.configure do
     policy.object_src  :none
     policy.base_uri    :self
     policy.frame_ancestors :self
-    policy.form_action :self
+    policy.form_action :self, "https://search.unimelb.edu.au"
     policy.script_src  :self
     policy.style_src   :self, :unsafe_inline # Blacklight sets some inline styles
     policy.connect_src :self

@@ -95,7 +95,7 @@ class PagesTest < ActionDispatch::IntegrationTest
     get "/about"
 
     assert_response :success
-    assert_select "body.page-help h1", "About Cultural Collections Search"
+    assert_select "body.page-help h1", "About Collection Navigator"
     assert_select "body.page-help .help-layout > nav.jump-nav[aria-labelledby='jump-nav-title'] .jump-nav__link", count: 6
     assert_select "body.page-help .help-layout__content > section.help-section", count: 6
     css_select(".jump-nav__link").each { |link| assert_equal 1, css_select(link["href"]).size, "no section for #{link["href"]}" }

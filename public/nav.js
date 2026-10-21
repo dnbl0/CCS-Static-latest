@@ -270,38 +270,6 @@ var SAVED_RECORDS = false;   // Saved records are hidden (as in the Rails app, c
   });
 })();
 
-/* Recent searches (CCS-143): when the header search overlay opens, list the last few search terms
-   (kept by window.CCSHistory above). Built here so every page gets it without extra markup. */
-(function () {
-  function recent() {
-    return window.CCSHistory.recent(5).map(function (x) { return x.q; });
-  }
-  function render() {
-    var inner = document.querySelector('#uom-search-popover .uom-search-popover__inner');
-    if (!inner) return;
-    var old = inner.querySelector('.uom-search-recent');
-    if (old) old.remove();
-    var terms = recent();
-    if (!terms.length) return;
-    var box = document.createElement('nav');
-    box.className = 'uom-search-recent';
-    box.setAttribute('aria-label', 'Recent searches');
-    var h = document.createElement('h3'); h.className = 'uom-search-recent__heading'; h.textContent = 'Recent searches'; box.appendChild(h);
-    var ul = document.createElement('ul'); ul.className = 'uom-search-recent__list';
-    terms.forEach(function (t) {
-      var li = document.createElement('li'); li.className = 'uom-search-recent__item';
-      var a = document.createElement('a'); a.className = 'uom-search-recent__link'; a.href = '/search/search-results.html?q=' + encodeURIComponent(t); a.textContent = t;
-      li.appendChild(a); ul.appendChild(li);
-    });
-    box.appendChild(ul);
-    var all = document.createElement('a'); all.className = 'uom-search-recent__all'; all.href = '/search/search-history.html'; all.textContent = 'All recent searches';
-    box.appendChild(all); inner.appendChild(box);
-  }
-  document.addEventListener('click', function (e) {
-    if (e.target.closest && e.target.closest('[popovertarget="uom-search-popover"]')) setTimeout(render, 0);
-  });
-})();
-
 // Modal scroll lock: sets html.has-open-modal (base.css: overflow hidden + stable scrollbar gutter) while any modal surface is on
 // screen, so the page behind cannot scroll, and clears it as soon as the last one has gone (Escape, backdrop, Close button, a
 // re-render or leaving the page). The state is derived from the DOM rather than counted, so nested or stacked modals keep the

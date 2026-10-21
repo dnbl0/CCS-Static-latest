@@ -1,20 +1,11 @@
 # frozen_string_literal: true
 
 module NexusCcs
-  # Full-screen search opened by the header's search button.
+  # Full-screen search opened by the header's search button. Like the global search on unimelb.edu.au it searches the
+  # University of Melbourne website (search.unimelb.edu.au), not this site's records: records are searched from the
+  # sticky search strip and the "Browse records" menu.
   class SearchOverlayComponent < Blacklight::Component
-    RECENT = 5
-
-    delegate :search_catalog_path, to: :helpers
-
-    # The visitor's latest searches this session (Blacklight keeps their ids in the session), newest first.
-    def recent_searches
-      ids = helpers.session[:history]
-      ids.blank? ? [] : Search.where(id: ids).order(updated_at: :desc).limit(RECENT).to_a
-    end
-
-    def link_to_search(search)
-      helpers.link_to_previous_search(helpers.search_state.reset(search.query_params).to_hash)
-    end
+    UNIMELB_SEARCH_URL = "https://search.unimelb.edu.au/s/search.html"
+    UNIMELB_SEARCH_COLLECTION = "uom~sp-global"
   end
 end

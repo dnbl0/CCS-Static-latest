@@ -130,28 +130,13 @@ class SiteChromeTest < ActiveSupport::TestCase
     assert_selector ".site-footer__identifiers", text: "CRICOS: 00116K"
   end
 
-  test "the search overlay lists the visitor's recent searches (CCS-143)" do
-    recent = Search.create!(query_params: { q: "harp" })
-    other = Search.create!(query_params: { q: "someone elses" })
+  test "the search overlay searches the University of Melbourne website like the global search on unimelb.edu.au" do
+    render_inline(NexusCcs::SearchOverlayComponent.new)
 
-    with_controller_class(CatalogController) do
-      with_request_url("/catalog?q=skull") do
-        vc_test_request.session[:history] = [ recent.id ]
-        render_inline(NexusCcs::SearchOverlayComponent.new)
-      end
-    end
-
-    assert_selector "nav.search-overlay__recent[aria-label='Recent searches'] a", text: "harp"
-    assert_no_selector ".search-overlay__recent", text: other.query_params["q"]
-    assert_selector ".search-overlay__recent a.search-overlay__recent-all[href='/search_history']", text: "All recent searches"
-  end
-
-  test "the search overlay has no recent searches list when there is no history" do
-    with_controller_class(CatalogController) do
-      with_request_url("/catalog?q=skull") { render_inline(NexusCcs::SearchOverlayComponent.new) }
-    end
-
+    assert_selector "#search-overlay form[role=search][method=get][action='https://search.unimelb.edu.au/s/search.html']"
+    assert_selector "#search-overlay input[type=hidden][name=collection][value='uom~sp-global']", visible: :all
+    assert_selector "#search-overlay-input[name=query][maxlength='255']"
+    assert_selector "label[for=search-overlay-input]", text: "Search Melbourne University", visible: :all
     assert_no_selector ".search-overlay__recent"
-    assert_selector "#search-overlay-input[maxlength='255']"
   end
 end
