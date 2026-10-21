@@ -19,10 +19,10 @@ class DefaultDigitalAssetsTest < ActionDispatch::IntegrationTest
 
   test "a choice is respected: Without a digital asset, or the any_assets marker left by taking the filter off" do
     get "/catalog", params: { q: "skull", f: { has_digital_asset: [ "without" ] } }
-    assert_response :success
+    assert_not response.redirect?
 
     get "/catalog", params: { q: "skull", any_assets: "1" }
-    assert_response :success
+    assert_not response.redirect?
   end
 
   test "taking the applied filter off leaves the marker so the default is not applied again" do

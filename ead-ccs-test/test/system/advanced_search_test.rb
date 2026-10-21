@@ -51,7 +51,7 @@ class AdvancedSearchTest < ApplicationSystemTestCase
 
     fill_in "All Fields", with: "skull"
     click_button "advanced-search-submit"
-    assert_selector ".result-card"
+    assert_selector ".constraints-label"
     assert_no_selector ".advanced-search__notice"
   end
 

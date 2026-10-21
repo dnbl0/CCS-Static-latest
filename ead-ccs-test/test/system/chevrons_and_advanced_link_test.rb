@@ -27,7 +27,7 @@ class ChevronsAndAdvancedLinkTest < ApplicationSystemTestCase
   end
 
   test "the search bar's dropdown chevron points up while its menu is open" do
-    visit search_catalog_path(q: "skull")
+    visit search_catalog_path(any_assets: "1", q: "skull")
     toggle = find(".search-banner .ccs-select > .dropdown-toggle")
     turn = "getComputedStyle(this, '::after').transform"
     settle
@@ -39,7 +39,7 @@ class ChevronsAndAdvancedLinkTest < ApplicationSystemTestCase
   end
 
   test "the Advanced Search link is a footer-style link: blue arrow, bold white label, no button box" do
-    [ root_path, search_catalog_path(q: "skull") ].each do |path|
+    [ root_path, search_catalog_path(any_assets: "1", q: "skull") ].each do |path|
       visit path
       link = first("a.advanced_search")
       assert_equal "Advanced Search", link.text, path

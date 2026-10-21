@@ -15,12 +15,15 @@ class SearchJourneysTest < ApplicationSystemTestCase
     end
 
     assert_current_path(%r{\A/catalog\?.*q=skull})
+    assert_selector ".filter-has_digital_asset", text: "With a digital asset" # applied by default
+    find(".filter-has_digital_asset a.remove").click
+    assert_no_selector ".filter-has_digital_asset"
     assert_selector ".result-card", minimum: 12
     assert_selector ".documents-masonry"
   end
 
   test "a search with no matches shows the empty state, and its button clears the search" do
-    visit search_catalog_path(q: "zzzqxqxnomatch")
+    visit search_catalog_path(any_assets: "1", q: "zzzqxqxnomatch")
     assert_selector ".results-empty .results-empty__title"
     assert_text "Try removing a filter or broadening your search terms."
 
@@ -30,7 +33,7 @@ class SearchJourneysTest < ApplicationSystemTestCase
   end
 
   test "the view buttons switch between the mosaic and the list" do
-    visit search_catalog_path(q: "skull")
+    visit search_catalog_path(any_assets: "1", q: "skull")
     assert_selector ".documents-masonry"
 
     find("a.view-type-list").click
@@ -40,10 +43,10 @@ class SearchJourneysTest < ApplicationSystemTestCase
   end
 
   test "choosing a filter narrows the results and shows what was chosen" do
-    visit search_catalog_path(q: "skull")
+    visit search_catalog_path(any_assets: "1", q: "skull")
     everything = find(".search-banner__desc").text
 
-    visit search_catalog_path(q: "skull", f: { collection_ssim: [ "Medical History Museum" ] })
+    visit search_catalog_path(any_assets: "1", q: "skull", f: { collection_ssim: [ "Medical History Museum" ] })
 
     assert_selector ".result-card", minimum: 1
     assert_text "Medical History Museum"
@@ -51,7 +54,7 @@ class SearchJourneysTest < ApplicationSystemTestCase
   end
 
   test "opening a result shows the record and its breadcrumb leads back to the results" do
-    visit search_catalog_path(q: "skull")
+    visit search_catalog_path(any_assets: "1", q: "skull")
     title = first(".result-card .document-title-heading a").text
     first(".result-card .document-title-heading a").click
 
@@ -65,7 +68,7 @@ class SearchJourneysTest < ApplicationSystemTestCase
   end
 
   test "the advanced search link is a standalone page, Blacklight's own form, not a modal" do
-    visit search_catalog_path(q: "skull")
+    visit search_catalog_path(any_assets: "1", q: "skull")
     click_link "Advanced Search"
 
     assert_current_path(%r{\A/catalog/advanced\?.*clause.*skull})
@@ -76,7 +79,7 @@ class SearchJourneysTest < ApplicationSystemTestCase
   end
 
   test "the advanced search form is Blacklight's own: one fixed row per search field, a plain match-all/any select" do
-    visit search_catalog_path(q: "skull")
+    visit search_catalog_path(any_assets: "1", q: "skull")
     click_link "Advanced Search"
 
     op = find("select#op", visible: :all)
@@ -88,7 +91,7 @@ class SearchJourneysTest < ApplicationSystemTestCase
   end
 
   test "the pagination is centred under the results" do
-    visit search_catalog_path(q: "skull")
+    visit search_catalog_path(any_assets: "1", q: "skull")
     assert_selector ".paginate-section .pagination"
 
     offsets = page.evaluate_script(<<~JS)
@@ -104,7 +107,7 @@ class SearchJourneysTest < ApplicationSystemTestCase
   end
 
   test "the back to top button appears once scrolled and returns to the top" do
-    visit search_catalog_path(q: "skull")
+    visit search_catalog_path(any_assets: "1", q: "skull")
     assert_no_selector "button.back-to-top", visible: true
 
     page.execute_script("window.scrollTo(0, 1500)")
@@ -120,7 +123,7 @@ class SearchJourneysTest < ApplicationSystemTestCase
     # [window width, banner title left edge (32px gutter, 16px on a phone), footer left edge (1200px of content centred)]
     [ [ 1440, 32, 120 ], [ 2000, 32, 400 ], [ 1000, 32, 32 ], [ 390, 16, 16 ] ].each do |width, banner_left, footer_left|
       page.driver.resize(width, 900)
-      visit search_catalog_path(q: "skull")
+      visit search_catalog_path(any_assets: "1", q: "skull")
       assert_selector ".result-card", minimum: 1
 
       edges = page.evaluate_script(<<~JS)
@@ -146,7 +149,7 @@ class SearchJourneysTest < ApplicationSystemTestCase
   test "with reduced motion the back to top button returns to the top at once" do
     page.driver.resize(1000, 900)
     page.driver.browser.page.command("Emulation.setEmulatedMedia", features: [ { name: "prefers-reduced-motion", value: "reduce" } ])
-    visit search_catalog_path(q: "skull")
+    visit search_catalog_path(any_assets: "1", q: "skull")
     page.execute_script("window.scrollTo(0, 1500)")
     assert_selector "button.back-to-top.is-visible", visible: true
 

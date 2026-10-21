@@ -103,7 +103,7 @@ class StickySearchTest < ApplicationSystemTestCase
   end
 
   test "the strip is a labelled search landmark with no axe violations while it is showing, on a page that also has the banner's search" do
-    visit search_catalog_path(q: "skull", search_field: "all_fields")
+    visit search_catalog_path(any_assets: "1", q: "skull", search_field: "all_fields")
     scroll_to 1500
     assert_selector ".sticky-search.is-visible"
 
@@ -123,7 +123,7 @@ class StickySearchTest < ApplicationSystemTestCase
   end
 
   test "typing in the sticky bar offers Blacklight's suggestions in its own list, and choosing one fills the box" do
-    visit search_catalog_path(q: "skull", search_field: "all_fields")
+    visit search_catalog_path(any_assets: "1", q: "skull", search_field: "all_fields")
     stub_suggestions
     scroll_to 1500
     assert_selector ".sticky-search.is-visible"

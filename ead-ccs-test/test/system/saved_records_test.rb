@@ -9,7 +9,7 @@ class SavedRecordsTest < ApplicationSystemTestCase
   def bar = find(".site-nav__saved-text")
 
   test "Save becomes Saved without a reload, the header count follows, and the list page shows the record" do
-    visit search_catalog_path(q: "skull", view: "list")
+    visit search_catalog_path(any_assets: "1", q: "skull", view: "list")
     assert_selector ".site-nav__saved--empty"
     assert_text "0 saved records"
     page.execute_script("window.sameDocument = true")
@@ -46,7 +46,7 @@ class SavedRecordsTest < ApplicationSystemTestCase
   # Save on a result card toggles in place in both views and never opens the record, by pointer or keyboard.
   %w[masonry list].each do |view|
     test "Save on a #{view} card toggles in place without leaving the results (click, Space, Enter)" do
-      visit search_catalog_path(q: "skull", view: view)
+      visit search_catalog_path(any_assets: "1", q: "skull", view: view)
       results_url = current_url
       page.execute_script("window.sameDocument = true")
 
@@ -74,7 +74,7 @@ class SavedRecordsTest < ApplicationSystemTestCase
   test "the saved bar fills the breadcrumb strip at 1440, 1000 and 390 wide" do
     [ [ 1440, 900 ], [ 1000, 800 ], [ 390, 844 ] ].each do |width, height|
       page.driver.resize(width, height)
-      [ search_catalog_path(q: "skull"), bookmarks_path, about_path ].each do |path|
+      [ search_catalog_path(any_assets: "1", q: "skull"), bookmarks_path, about_path ].each do |path|
         visit path
         assert_selector ".breadcrumb-strip a.site-nav__saved"
         box = page.evaluate_script(<<~JS)
@@ -133,7 +133,7 @@ class SavedRecordsTest < ApplicationSystemTestCase
   end
 
   test "the record page control is a real checkbox that takes keyboard focus, and the count survives navigation" do
-    visit search_catalog_path(q: "skull", view: "list")
+    visit search_catalog_path(any_assets: "1", q: "skull", view: "list")
     visit first(".result-card .document-title-heading a")[:href]
 
     checkbox = find(".record-summary__save .save-control__input", visible: :all)
@@ -151,7 +151,7 @@ class SavedRecordsTest < ApplicationSystemTestCase
   end
 
   test "the saved list and the bar have no accessibility violations" do
-    visit search_catalog_path(q: "skull", view: "list")
+    visit search_catalog_path(any_assets: "1", q: "skull", view: "list")
     first(".result-card .toggle-bookmark-label").click
     assert_text "1 saved record"
     assert_accessible
