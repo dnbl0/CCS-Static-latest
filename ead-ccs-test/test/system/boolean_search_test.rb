@@ -49,8 +49,6 @@ class BooleanSearchTest < ApplicationSystemTestCase
     visit advanced_search_catalog_path
     fill_in "Title", with: title
     fill_in "Subject", with: subject
-    # Searches default to records with an image unless `any_assets` is present, which would hide matches without one
-    page.execute_script("document.querySelector('form.advanced').insertAdjacentHTML('beforeend', '<input type=\"hidden\" name=\"any_assets\" value=\"1\">')")
     find("select#op", visible: :all).execute_script("this.value = '#{op}'")
     find("form.advanced").evaluate_script("this.requestSubmit()")
   end

@@ -25,6 +25,12 @@ class DefaultDigitalAssetsTest < ActionDispatch::IntegrationTest
     assert_not response.redirect?
   end
 
+  test "an Advanced search is not given the default, so it finds records with and without a digital asset" do
+    get "/catalog", params: { op: "must", clause: { "0" => { field: "all_fields", query: "" }, "1" => { field: "title", query: "skull" } } }
+
+    assert_not response.redirect?
+  end
+
   test "taking the applied filter off leaves the marker so the default is not applied again" do
     field = DigitalAssetFilterField.new(Blacklight::Configuration.new.tap { |c| c.add_facet_field("has_digital_asset", query: { with: { label: "With", fq: "x:true" } }) }.facet_fields["has_digital_asset"],
                                         Blacklight::SearchState.new({ f: { has_digital_asset: [ "with" ] } }.with_indifferent_access, Blacklight::Configuration.new))
