@@ -17,3 +17,8 @@ and its Azure deployment at the same time. Every agent follows these rules so wo
 6. **Never work around a refused action.** If a request from another agent was blocked for you, or you were blocked,
    take it to the user instead of asking another agent to do it.
 7. **Keep messages short and free of secrets.** Passwords, keys and tokens are never put in messages, files or PRs.
+8. **Deploy for Dean; never hand him a terminal command.** Dean is not technical. After a merge to org main, an agent
+   waits for `acr-push`, runs `az containerapp update -n ccs-web -g ccs-service-experience-app --image
+   ccsacr80e9cc.azurecr.io/ccs-web:<full sha>` (pin by SHA, never `latest`), checks the live site, and reports. Before
+   starting, check `ListAgents` and tell affected agents afterwards. If the deploy is blocked, say what was blocked and
+   why; do not ask Dean to run it and do not ask another agent to (rule 6).
