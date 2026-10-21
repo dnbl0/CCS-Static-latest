@@ -96,10 +96,10 @@ class PagesTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_select "body.page-help h1", "About Collection Navigator"
-    assert_select "body.page-help .help-layout > nav.jump-nav[aria-labelledby='jump-nav-title'] .jump-nav__link", count: 6
-    assert_select "body.page-help .help-layout__content > section.help-section", count: 6
+    assert_select "body.page-help .help-layout > nav.jump-nav[aria-labelledby='jump-nav-title'] .jump-nav__link", count: 5
+    assert_select "body.page-help .help-layout__content > section.help-section", count: 5
     css_select(".jump-nav__link").each { |link| assert_equal 1, css_select(link["href"]).size, "no section for #{link["href"]}" }
-    assert_select "body.page-help a[href='/help#contact-us']"
+    assert_select "#contact-support, main a[href='/help#contact-us']", count: 0 # no Contact and support section; Help has the contact details
     assert_select ".site-nav a[href='/about']", count: 1
   end
 
