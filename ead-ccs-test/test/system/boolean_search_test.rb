@@ -44,26 +44,29 @@ class BooleanSearchTest < ApplicationSystemTestCase
     assert_equal skull, total(clause.call("skull -#{NOMATCH}"))
   end
 
-  test "match all needs every field filled in to match, match any needs one" do
+  # The match menu is a styled select over a hidden <select id="op">; set its value and submit the form
+  def search_advanced(title:, subject:, op:)
     visit advanced_search_catalog_path
-    fill_in "Title", with: "skull"
-    fill_in "Subject", with: NOMATCH
-    find("select#op", visible: :all).find("option[value=must]", visible: :all).select_option
+    fill_in "Title", with: title
+    fill_in "Subject", with: subject
+    find("select#op", visible: :all).execute_script("this.value = '#{op}'")
     find("form.advanced").evaluate_script("this.requestSubmit()")
+  end
+
+  test "match all needs every field filled in to match, match any needs one" do
+    search_advanced(title: "skull", subject: NOMATCH, op: "must")
+    assert_current_path(/op=must/)
     assert_selector ".results-empty"
 
-    visit advanced_search_catalog_path
-    fill_in "Title", with: "skull"
-    fill_in "Subject", with: NOMATCH
-    find("select#op", visible: :all).find("option[value=should]", visible: :all).select_option
-    find("form.advanced").evaluate_script("this.requestSubmit()")
+    search_advanced(title: "skull", subject: NOMATCH, op: "should")
+    assert_current_path(/op=should/)
     assert_selector ".result-card", minimum: 1
   end
 
   test "the Search tips card has a well-formed heading and a closed list item for every tip" do
     visit advanced_search_catalog_path
 
-    assert_selector ".advanced-search-form h2.card-title", text: "Search tips"
+    assert_selector "section.advanced-search-tips h2", text: "Search tips"
     assert_selector "ul.advanced-help > li", count: 8
     assert_equal 0, page.evaluate_script("document.querySelectorAll('ul.advanced-help li li').length")
   end
