@@ -24,7 +24,8 @@ body.page-help .bc-mobile__item-link-cultural-collections {
   min-height: 44px;
 }
 
-body.page-help .bc-mobile__item-link-help-support {
+body.page-help .bc-mobile__item-link-help-support,
+body.page-help .bc-mobile__item-link-about {
   display: inline-flex;
   align-items: center;
   gap: var(--space-6);
