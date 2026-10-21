@@ -32,7 +32,7 @@ module CatalogConfig
     # CCS-41: show results with or without digital assets. Not in the workbook's filter list, so it is
     # an addition from the Jira story; it sits with the Media type filters.
     def self.add_digital_asset_option(config)
-      config.add_facet_field "has_digital_asset", label: "Digital asset", group: "media_type", query: {
+      config.add_facet_field "has_digital_asset", label: "Digital asset", group: "media_type", filter_class: DigitalAssetFilterField, query: {
         with: { label: "With a digital asset", fq: "has_digital_asset_bsi:true" },
         without: { label: "Without a digital asset", fq: "-has_digital_asset_bsi:true" }
       }

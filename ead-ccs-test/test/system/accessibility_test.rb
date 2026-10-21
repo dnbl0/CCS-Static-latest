@@ -31,13 +31,13 @@ class AccessibilityTest < ApplicationSystemTestCase
   end
 
   test "search results have no axe violations" do
-    visit search_catalog_path(q: "skull")
+    visit search_catalog_path(any_assets: "1", q: "skull")
     assert_selector ".result-card"
     assert_accessible
   end
 
   test "a record page has no axe violations" do
-    visit search_catalog_path(q: "skull")
+    visit search_catalog_path(any_assets: "1", q: "skull")
     first(".result-card .document-title-heading a").click
     assert_selector "h1"
     assert_accessible

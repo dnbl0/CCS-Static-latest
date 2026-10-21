@@ -11,7 +11,7 @@ class SearchUnavailableTest < ActionDispatch::IntegrationTest
   end
 
   test "a search says it is unavailable when Solr cannot be reached, with a 503" do
-    with_solr_down { get "/catalog", params: { q: "skull" } }
+    with_solr_down { get "/catalog", params: { q: "skull", any_assets: "1" } }
 
     assert_response :service_unavailable
     assert_select "h1", "Search is unavailable"

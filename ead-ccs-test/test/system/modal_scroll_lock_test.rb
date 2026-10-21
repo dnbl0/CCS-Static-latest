@@ -75,7 +75,7 @@ class ModalScrollLockTest < ApplicationSystemTestCase
   end
 
   test "the leaving-site dialog locks the page, and Escape, the Close button and the backdrop each release it where it was" do
-    visit search_catalog_path(q: "skull")
+    visit search_catalog_path(any_assets: "1", q: "skull")
     first(".result-card .document-title-heading a").click
     assert_selector "button[data-action='dialog#open']"
 
@@ -91,7 +91,7 @@ class ModalScrollLockTest < ApplicationSystemTestCase
   end
 
   test "the search overlay locks the page and releases it where it was" do
-    visit search_catalog_path(q: "skull")
+    visit search_catalog_path(any_assets: "1", q: "skull")
     scroll_page_to(700)
 
     page.execute_script("document.querySelector('.site-header__search-toggle').click()")
@@ -107,7 +107,7 @@ class ModalScrollLockTest < ApplicationSystemTestCase
 
   test "the mobile filter drawer locks the page and the scrim, Escape and Close release it where it was" do
     page.driver.resize(390, 800)
-    visit search_catalog_path(q: "skull")
+    visit search_catalog_path(any_assets: "1", q: "skull")
 
     [ -> { page.driver.browser.keyboard.type(:Escape) }, -> { find(".filter-drawer__close").click }, -> { page.execute_script("document.querySelector('.filter-backdrop').click()") } ].each do |close|
       scroll_page_to(400)
@@ -125,7 +125,7 @@ class ModalScrollLockTest < ApplicationSystemTestCase
   end
 
   test "leaving a page with the search overlay open does not leave the next page locked" do
-    visit search_catalog_path(q: "skull")
+    visit search_catalog_path(any_assets: "1", q: "skull")
     page.execute_script("document.querySelector('.site-header__search-toggle').click()")
     assert_selector "html.has-open-modal"
 

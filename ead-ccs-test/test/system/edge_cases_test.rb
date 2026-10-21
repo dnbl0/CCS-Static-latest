@@ -5,7 +5,7 @@ class EdgeCasesTest < ApplicationSystemTestCase
   setup { page.driver.set_cookie("country_acknowledged", "1") }
 
   test "an advanced search row for a field this site does not search is ignored, and the search still runs" do
-    visit "/catalog?q=skull&search_field=all_fields&clause[0][field]=nope&clause[0][query]=x"
+    visit "/catalog?any_assets=1&q=skull&search_field=all_fields&clause[0][field]=nope&clause[0][query]=x"
 
     assert_selector ".result-card"
     assert_no_text "Routing Error"
@@ -13,7 +13,7 @@ class EdgeCasesTest < ApplicationSystemTestCase
   end
 
   test "a date range with From later than To is dropped, the search runs, and the visitor is told" do
-    visit "/catalog?q=skull&search_field=all_fields&range[date_start_isi][begin]=2000&range[date_start_isi][end]=1000"
+    visit "/catalog?any_assets=1&q=skull&search_field=all_fields&range[date_start_isi][begin]=2000&range[date_start_isi][end]=1000"
 
     assert_text "The From year must not be later than the To year, so the date range was not used."
     assert_selector ".result-card"
@@ -21,7 +21,7 @@ class EdgeCasesTest < ApplicationSystemTestCase
   end
 
   test "paging far past the last page shows a page, not an error" do
-    visit "/catalog?q=skull&search_field=all_fields&page=99999"
+    visit "/catalog?any_assets=1&q=skull&search_field=all_fields&page=99999"
 
     assert_no_text "Something went wrong"
     assert_selector ".site-header"

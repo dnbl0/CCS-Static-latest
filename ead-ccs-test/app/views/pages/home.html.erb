@@ -79,9 +79,9 @@
         <li class="home-card">
           <div class="home-card__media"><img class="home-card__image" src="<%= asset_path("site/collections-breakout.jpg") %>" alt=""></div>
           <div class="home-card__body">
-            <h3 class="home-card__title"><a class="home-card__link" href="https://museumsandcollections.unimelb.edu.au/collections">Cultural Collections</a></h3>
-            <p class="home-card__text">CCS will make accessible the University of Melbourne’s 30+ cultural collections via a single discovery experience. More collections will be available over time; in the meantime, for more information about other cultural collections at the University of Melbourne, visit <a href="https://museumsandcollections.unimelb.edu.au/collections">museumsandcollections.unimelb.edu.au/collections</a>.</p>
-            <a class="home-textbutton" href="https://museumsandcollections.unimelb.edu.au/collections">University museums and collections<span class="sr-only"> (opens the Museums and Collections website)</span><img class="home-textbutton__image" src="<%= asset_path("site/icon-arrow-right.svg") %>" alt=""></a>
+            <h3 class="home-card__title"><a class="home-card__link" href="<%= search_action_path(search_field: "all_fields") %>">Cultural Collections</a></h3>
+            <p class="home-card__text">CCS will make accessible the University of Melbourne’s 30+ cultural collections via a single discovery experience. You can search all five collections now, and more will be available over time; for more information about other cultural collections at the University of Melbourne, visit <a href="https://museumsandcollections.unimelb.edu.au/collections">museumsandcollections.unimelb.edu.au/collections</a>.</p>
+            <a class="home-textbutton" href="<%= search_action_path(search_field: "all_fields") %>">University museums and collections<span class="sr-only"> (searches all five collections)</span><img class="home-textbutton__image" src="<%= asset_path("site/icon-arrow-right.svg") %>" alt=""></a>
           </div>
         </li>
         </ul>

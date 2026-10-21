@@ -10,7 +10,7 @@ class FacetLayoutTest < ApplicationSystemTestCase
   end
 
   test "a facet label that wraps starts every line in the same place (no hanging indent) in the filter sidebar" do
-    visit search_catalog_path(q: "")
+    visit search_catalog_path(any_assets: "1", q: "")
     assert_selector "#sidebar .facet-label", visible: :all
     assert_equal "0px", style("#sidebar .facet-label", "textIndent")
     assert_equal "0px", style("#sidebar .facet-label", "paddingLeft")
@@ -34,7 +34,7 @@ class FacetLayoutTest < ApplicationSystemTestCase
   end
 
   test "the facet modal: a smaller heading, and the letter bar fits inside it" do
-    visit search_catalog_path(q: "")
+    visit search_catalog_path(any_assets: "1", q: "")
     page.execute_script("document.querySelector('#sidebar a[data-blacklight-modal=trigger]').click()")
     assert_selector "#blacklight-modal .modal-title"
     assert_equal "28px", style("#blacklight-modal .modal-title", "fontSize")

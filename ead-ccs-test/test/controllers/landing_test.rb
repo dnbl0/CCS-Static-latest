@@ -14,6 +14,14 @@ class LandingTest < ActionDispatch::IntegrationTest
     assert_select ".ccs-section--help, .ccs-section--faq", count: 0
   end
 
+  test "the Cultural Collections card searches all five collections" do
+    get "/"
+
+    assert_select ".home-card__text", /search all five collections/
+    assert_select "a.home-textbutton[href=?]", "/catalog?search_field=all_fields", text: /University museums and collections/
+    assert_select ".home-card__title a[href=?]", "/catalog?search_field=all_fields", text: "Cultural Collections"
+  end
+
   test "a bare search page goes to the home page with the hero search" do
     get "/catalog"
 
@@ -37,13 +45,13 @@ class LandingTest < ActionDispatch::IntegrationTest
   end
 
   test "the sticky bar keeps the current query" do
-    get "/catalog", params: { q: "skull", search_field: "all_fields" }
+    get "/catalog", params: { q: "skull", any_assets: "1", search_field: "all_fields" }
 
     assert_select ".sticky-search input#sticky_q[value=skull]"
   end
 
   test "no id is used twice on the page with the sticky strip, with the search banner" do
-    get "/catalog", params: { q: "skull", search_field: "all_fields" }
+    get "/catalog", params: { q: "skull", any_assets: "1", search_field: "all_fields" }
 
     ids = css_select("[id]").map { |node| node["id"] }
     assert_equal [], ids.tally.select { |_, n| n > 1 }.keys

@@ -141,6 +141,10 @@ class CatalogController < ApplicationController
     # mean") suggestion is offered.
     config.spell_max = 100
 
+    # The marker left by taking the default Digital asset filter off (DigitalAssetFilterField) travels on every link of the
+    # search: the view, sort, per-page and pagination links are built from the search state, which drops anything not listed.
+    config.search_state_fields += [ :any_assets ]
+
     # Configuration for autocomplete suggester
     config.autocomplete_enabled = true
     config.autocomplete_path = "suggest"
@@ -160,6 +164,19 @@ class CatalogController < ApplicationController
     return if params[:clause].to_unsafe_h.values.any? { |clause| clause.is_a?(Hash) && clause["query"].present? }
 
     redirect_to advanced_search_catalog_path(op: params[:op].presence), flash: { advanced_search_error: true }
+  end
+
+  # Results show records with a digital asset (an image) unless the visitor chose otherwise: the filter is applied, shown
+  # as a pill, and taking it off (or choosing "Without a digital asset") is remembered by the `any_assets` marker.
+  before_action :default_to_digital_assets, only: :index
+
+  def default_to_digital_assets
+    return unless controller_name == "catalog" && request.get? && request.format.html?
+    query = request.query_parameters
+    filters = query["f"].is_a?(Hash) ? query["f"] : {}   # a hand-edited f that is not a list of filters is left to the search to refuse
+    return if query.empty? || query["any_assets"].present? || filters["has_digital_asset"].present?
+
+    redirect_to search_action_url(query.merge("f" => filters.merge("has_digital_asset" => [ "with" ])))
   end
 
   def show_home_page_when_bare
