@@ -168,13 +168,14 @@ class CatalogController < ApplicationController
 
   # Results show records with a digital asset (an image) unless the visitor chose otherwise: the filter is applied, shown
   # as a pill, and taking it off (or choosing "Without a digital asset") is remembered by the `any_assets` marker.
+  # Advanced search is the exception: its form sends `clause` fields and the visitor sets Digital asset there themselves.
   before_action :default_to_digital_assets, only: :index
 
   def default_to_digital_assets
     return unless controller_name == "catalog" && request.get? && request.format.html?
     query = request.query_parameters
     filters = query["f"].is_a?(Hash) ? query["f"] : {}   # a hand-edited f that is not a list of filters is left to the search to refuse
-    return if query.empty? || query["any_assets"].present? || filters["has_digital_asset"].present?
+    return if query.empty? || query["any_assets"].present? || query["clause"].present? || filters["has_digital_asset"].present?
 
     redirect_to search_action_url(query.merge("f" => filters.merge("has_digital_asset" => [ "with" ])))
   end
