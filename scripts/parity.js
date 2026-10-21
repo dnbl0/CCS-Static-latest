@@ -202,7 +202,8 @@ async function measurePair(page, selector, [label, , , opts], out, skips) {
   const loc = page.locator(selector.split(/(?=::(?:before|after))/)[0]).first();
   if (!(await loc.count())) { out[label] = null; return; }
   await page.mouse.move(1, 1); // the pointer rests in the corner, off the elements measured at rest
-  await loc.evaluate((el) => el.scrollIntoView({ block: 'center' })).catch(() => {});
+  // Jump without smooth scrolling and let two frames pass, so scroll-driven state (the Help jump nav's current link) has settled on both sides
+  await loc.evaluate((el) => new Promise((done) => { el.scrollIntoView({ block: 'center', behavior: 'instant' }); requestAnimationFrame(() => requestAnimationFrame(done)); })).catch(() => {});
   await page.waitForTimeout(300); // let colour transitions finish
   out[label] = await readResult(page, selector, opts.props || RESULT_REST, opts.size);
   for (const state of opts.states || []) {
