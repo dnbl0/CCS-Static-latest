@@ -31,4 +31,11 @@ class DefaultDigitalAssetsTest < ActionDispatch::IntegrationTest
 
     assert_equal "1", field.remove("with").params[DigitalAssetFilterField::ANY_ASSETS_PARAM]
   end
+
+  test "the marker is kept by the links that change the view, sort and page, so the filter stays off" do
+    config = CatalogController.blacklight_config
+
+    assert_includes config.search_state_fields, :any_assets
+    assert_equal "1", Blacklight::SearchState.new(ActionController::Parameters.new(q: "skull", any_assets: "1"), config).params[:any_assets]
+  end
 end

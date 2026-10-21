@@ -15,7 +15,7 @@ class SearchJourneysTest < ApplicationSystemTestCase
     end
 
     assert_current_path(%r{\A/catalog\?.*q=skull})
-    assert_selector ".filter-has_digital_asset", text: "With a digital asset" # applied by default
+    assert_selector ".filter-has_digital_asset", text: /with a digital asset/i # applied by default
     find(".filter-has_digital_asset a.remove").click
     assert_no_selector ".filter-has_digital_asset"
     assert_selector ".result-card", minimum: 12

@@ -141,6 +141,10 @@ class CatalogController < ApplicationController
     # mean") suggestion is offered.
     config.spell_max = 100
 
+    # The marker left by taking the default Digital asset filter off (DigitalAssetFilterField) travels on every link of the
+    # search: the view, sort, per-page and pagination links are built from the search state, which drops anything not listed.
+    config.search_state_fields += [ :any_assets ]
+
     # Configuration for autocomplete suggester
     config.autocomplete_enabled = true
     config.autocomplete_path = "suggest"
