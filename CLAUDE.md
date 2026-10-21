@@ -22,3 +22,9 @@ and its Azure deployment at the same time. Every agent follows these rules so wo
    ccsacr80e9cc.azurecr.io/ccs-web:<full sha>` (pin by SHA, never `latest`), checks the live site, and reports. Before
    starting, check `ListAgents` and tell affected agents afterwards. If the deploy is blocked, say what was blocked and
    why; do not ask Dean to run it and do not ask another agent to (rule 6).
+9. **Check every change in a real browser, always.** Fetching a page with `curl` or reading its HTML is not a check: it
+   missed "Browse all collections" (split across tags) and a search redirect that only a browser-style request
+   triggers. Before saying a change works or is live, open the page in Chrome (Claude in Chrome), take a screenshot, and
+   look at the exact thing that changed, at desktop and phone width where layout matters. Do it locally before opening a
+   PR and again on the deployed site after a rollout, and say in the report which pages you looked at. If the browser
+   cannot be used, say so plainly instead of reporting the change as verified.
