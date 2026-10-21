@@ -19,13 +19,13 @@ class SiteChromeTest < ActiveSupport::TestCase
     end
   end
 
-  test "header has the audience links, search toggle and a collections menu that links to the collection pages" do
+  test "header has the audience links, search toggle and a Browse records menu that links to the collection pages" do
     render_header
 
     assert_selector "header.site-header"
     assert_selector ".site-header__utility nav a", count: NexusCcs::SiteNavigation::AUDIENCE.size
     assert_selector "button.site-header__search-toggle[aria-label='Open search']"
-    assert_selector "#site-nav-collections li a[href^='/catalog?f%5Bcollection_ssim%5D']", count: NexusCcs::SiteNavigation.collections.size
+    assert_selector "#site-nav-records li a[href^='/catalog?f%5Bcollection_ssim%5D']", count: NexusCcs::SiteNavigation.collections.size
     assert_selector "#search-overlay form[role=search]"
     assert_selector "#site-nav form[role=search]"
   end
@@ -43,9 +43,9 @@ class SiteChromeTest < ActiveSupport::TestCase
     render_header
 
     assert_selector "header[data-controller='site-header']"
-    assert_selector "button.site-nav__trigger[aria-expanded='false'][data-action='site-header#toggleSection']", count: 2
+    assert_selector "button.site-nav__trigger[aria-expanded='false'][data-action='site-header#toggleSection']", count: 2 # Browse records and Help
     assert_selector "button.site-header__menu[aria-controls='site-nav'][aria-expanded='false']"
-    assert_selector "#site-nav-collections button.site-nav__back"
+    assert_selector "#site-nav-records button.site-nav__back"
   end
 
   test "search results show the breadcrumb and a banner with the search form" do
@@ -58,9 +58,11 @@ class SiteChromeTest < ActiveSupport::TestCase
     assert_no_selector "nav.topbar" # Blacklight's own top navbar is replaced
   end
 
-  test "Search all records opens the catalog on the All Fields search" do
+  test "Browse records opens the catalog on the All Fields search, and lists a Browse link for each collection" do
     render_header(url: "/catalog")
-    assert_selector "a[href='/catalog?search_field=all_fields']", text: "Search all records"
+    assert_selector "#site-nav-records a.site-nav__panel-title[href='/catalog?search_field=all_fields']", text: "Browse records"
+    assert_selector "#site-nav-records .site-nav__panel-list a", text: "Browse Grainger Museum Collection"
+    assert_no_selector "a", text: "Search all records"
   end
 
   test "the bare search page has no breadcrumb" do
