@@ -33,6 +33,26 @@ class JiraSearchRequirementsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "the Advanced search tips: a + that starts a term (make it required) survives, any other + does not" do
+    {
+      "+skull bird" => "+skull bird",
+      "bird +skull" => "bird +skull",
+      "skull AND +(bird OR monkey)" => "skull AND +(bird OR monkey)",
+      "+skull -bird" => "+skull -bird",
+      "red+blue" => "red blue",
+      "skull +" => "skull",
+      "+ skull" => "skull",
+      "++skull" => "skull"
+    }.each { |typed, searched| assert_equal searched, QueryRules.clean(typed), typed.inspect }
+  end
+
+  test "the Advanced search tips: a + before a term reaches Solr in the advanced fields and the search box" do
+    solr = SearchBuilder.new(CatalogController.new).with(op: "must", clause: { "0" => { field: "all_fields", query: QueryRules.clean("+skull -bird") } }).to_h
+
+    assert_equal "+skull -bird", solr[:json][:query][:bool][:must].first[:edismax][:query]
+    assert_equal SearchBuilder::BOOLEAN_MM, SearchBuilder.new(CatalogController.new).with(q: QueryRules.clean("+skull bird")).to_h[:mm]
+  end
+
   test "CCS-33: a search of only special characters asks for a valid search string, and never reaches Solr" do
     get "/catalog", params: { q: "!!!" }
 

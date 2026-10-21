@@ -2,15 +2,18 @@
 #   - at most 255 characters;
 #   - no special characters: only letters, digits, spaces and the few characters needed for exact
 #     phrases and Boolean searches (CCS-34: quotes and parentheses) and for real names and titles
-#     (apostrophe, comma, full stop, hyphen, ampersand) are kept. Everything else (such as * : [ ] { } ! + ~ ^ \ | / < >)
-#     is Solr query syntax, so it is replaced by a space rather than interpreted ("red+blue" searches for red blue);
+#     (apostrophe, comma, full stop, hyphen, ampersand) are kept. A + is kept only at the start of a term ("+skull" makes
+#     the term required, as the Advanced search tips promise); anywhere else it is replaced by a space, like everything
+#     else (such as * : [ ] { } ! ~ ^ \ | / < >) that is Solr query syntax ("red+blue" searches for red blue);
 #   - a blank search is allowed and returns every record.
 # If characters were removed the visitor is told; if nothing searchable is left they are asked for a valid search.
 module QueryRules
   extend ActiveSupport::Concern
 
   MAX_LENGTH = 255
-  ALLOWED = /[^\p{L}\p{M}\p{N}\s"'’“”().,&-]/
+  # What is not allowed: any character outside the list, and a + that is not the start of a term (it follows a
+  # character that is not a space or "(", or it is followed by a space, another + or the end).
+  ALLOWED = /[^\p{L}\p{M}\p{N}\s"'’“”().,&+-]|(?<=[^\s(])\+|\+(?=[\s+]|\z)/
   INVALID_MESSAGE = "Please enter a valid search string.".freeze
   REMOVED_MESSAGE = "Special characters can't be used in a search, so they were removed from your search.".freeze
 
