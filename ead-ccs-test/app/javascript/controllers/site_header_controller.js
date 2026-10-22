@@ -4,8 +4,8 @@ import { inertOutside, releaseInert } from "modal_lock"
 const PHONE = "(max-width: 1023px)"
 
 // Site header behaviour: desktop dropdown panels and the mobile drawer. On mobile, opening a
-// section "drills in": the section replaces the menu list and its name is shown in place of the
-// home link. While the drawer covers the page, everything outside the header is inert.
+// section "drills in": the section replaces the menu list and its name is shown under the
+// home link, which stays visible and keeps its own name. While the drawer covers the page, everything outside the header is inert.
 export default class extends Controller {
   static targets = ["nav", "menu", "menuLabel", "trigger", "title", "section"]
 
@@ -93,7 +93,6 @@ export default class extends Controller {
     const drilledIn = Boolean(open) && window.matchMedia(PHONE).matches
     this.sectionTarget.textContent = drilledIn ? open.textContent.replace(/\s+/g, " ").trim() : ""
     this.sectionTarget.hidden = !drilledIn
-    this.titleTarget.hidden = drilledIn
   }
 
   get openTrigger() {
