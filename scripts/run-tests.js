@@ -32,7 +32,8 @@ const CHECKS = [
   'node tests/pages-build.test.js',
   'node tests/accessibility.test.js',
   'node scripts/sync-rails-assets.js --check',
-  'node tests/modal-scroll-lock.test.js'
+  'node tests/modal-scroll-lock.test.js',
+  'node tests/help-jump-nav.test.js'
 ];
 
 function run(command) {

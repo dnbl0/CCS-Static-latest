@@ -34,5 +34,9 @@
   window.addEventListener('hashchange', schedule);
   document.addEventListener('DOMContentLoaded', schedule);
   window.addEventListener('load', schedule);
+  // The template layer can redraw the menu after load (it did on slower machines, so no link was marked until the reader
+  // scrolled): mark it again whenever the page changes. A redraw that only repeats the current marking changes nothing,
+  // so this does not loop.
+  new MutationObserver(schedule).observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
   schedule();
 })();
