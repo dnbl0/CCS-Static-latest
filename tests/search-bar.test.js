@@ -228,6 +228,16 @@ const HARNESS = `<!doctype html><html lang="en"><head><meta charset="utf-8"><tit
     eq(new URL(page.url()).searchParams.get('q'), 'wing', 'a bar created without onSubmit still opens the results page');
     await page.close();
 
+    // "Did you mean" on the results page runs the corrected search in place
+    page = await browser.newPage();
+    page.on('pageerror', e => errors.push(e.message));
+    await page.addInitScript(() => { try { localStorage.setItem('ccs-cultural-ack', '1'); } catch (e) { /* storage blocked */ } });
+    await page.goto(base + '/search/search-results.html?q=micrscope', { waitUntil: 'networkidle' });
+    await page.locator('.search-results-smart__button', { hasText: 'microscope' }).click();
+    await page.waitForFunction(() => /results for “microscope”/.test(document.body.innerText), null, { timeout: 5000 }).catch(() => {});
+    eq(await page.evaluate(() => /\d+ results for “microscope”/.test(document.body.innerText)), true, 'the "Did you mean" suggestion runs the corrected search');
+    await page.close();
+
     eq(errors, [], 'no page errors');
   } finally { await browser.close(); srv.close(); }
   finish('search-bar');

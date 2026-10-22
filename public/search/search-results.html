@@ -1415,7 +1415,7 @@ class Component extends DCLogic {
       smartDetails: smartDesc ? [...smartDesc.fuzzy.map(x => ({ k: 'Close spellings', v: `${x.from} → ${x.to.join(', ')}` })), ...smartDesc.semantic.map(x => ({ k: 'Related terms', v: `${x.from} → ${x.to.join(', ')}` }))] : [],
       exactOnly: () => this.apply(ff => ({ ...ff, exact: true })),
       showExactNotice: !!f.exact && !!f.q, relatedAgain: () => this.apply(ff => ({ ...ff, exact: false })),
-      showDidYouMean: !!didYouMeanText && n === 0, showDidYouMeanTop: !!didYouMeanText && n > 0, didYouMeanText, applyDidYouMean: () => runQ(didYouMeanText),
+      showDidYouMean: !!didYouMeanText && n === 0, showDidYouMeanTop: !!didYouMeanText && n > 0, didYouMeanText, applyDidYouMean: () => this.runQ(didYouMeanText),
       modal: s.modal, closeModal: () => this.closeModal(), stop: e => e.stopPropagation(),
       bodyRef: this.bodyRef, trackRef: this.trackRef, dialogRef: this.dialogRef,
       ackOpen: s.ackOpen, ackRef: this.ackRef, acceptAck: () => this.closeAck(), closeAck: () => this.closeAck(), ackTrapKey: this.makeTrapKey(this.ackRef),
