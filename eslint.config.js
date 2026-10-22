@@ -16,9 +16,8 @@ module.exports = [
   {
     rules: {
       'no-empty': ['error', { allowEmptyCatch: true }],
-      // Findings to clean up over time (see docs/code-quality-plan.md); they do not fail the build yet
-      'no-unused-vars': ['warn', { args: 'none', caughtErrors: 'none' }],
-      'no-useless-escape': 'warn'
+      'no-unused-vars': ['error', { args: 'none', caughtErrors: 'none' }],
+      'no-useless-escape': 'error'
     }
   }
 ];

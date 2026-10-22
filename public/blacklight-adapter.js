@@ -10,8 +10,8 @@
   const DEFAULT_ENDPOINT = '/catalog.json';
   const STORAGE_KEY = 'ccs_api_mode'; // 'auto' | 'live' | 'mock'
   const MODES = ['auto', 'live', 'mock'];
-  // Filters the API can answer. Anything else (advanced clauses, "match all", birth years, accession, downloads, ...) is answered locally.
-  const API_KEYS = ['collection', 'type', 'subject', 'culture', 'place', 'theme', 'licence'];
+  // Filters the API can answer: collection, type, subject, culture, place, theme and licence. Anything else (advanced
+  // clauses, "match all", birth years, accession, downloads, the keys below, ...) is answered locally.
   const LOCAL_ONLY_KEYS = ['period', 'creator', 'creatorRole', 'assoc', 'material', 'language', 'access', 'nationality', 'classification', 'named', 'filmClass', 'region', 'assetFormat', 'subjectPlace', 'subjectEvent', 'daAccess'];
 
   const BlacklightAdapter = {

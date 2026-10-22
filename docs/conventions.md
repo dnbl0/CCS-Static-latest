@@ -4,10 +4,13 @@
 
 - **Collections** have one slug each, used in URLs on both sites: `medical-history-museum`,
   `henry-forman-atkinson-dental-museum`, `harry-brookes-allen-museum`, `university-art-collection`, `grainger-museum`.
-  Static: `public/collections/<slug>/`. Rails: `/collections/<slug>`, `config/pages.yml` and
+  Static: the collection landing pages were removed (#257); each collection opens the results filtered to it
+  (`/search/search-results?collection=<Name>`), and the old `/collections/<slug>` addresses redirect there
+  (`config/hosting.json` and `public/.htaccess`). Rails: `/collections/<slug>`, `config/pages.yml` and
   `NexusCcs::SiteNavigation::COLLECTIONS`, which also holds the Solr facet value (`collection_ssim`) and the menu label.
-  Adding a collection means adding it in those places and in `scripts/build-collection-pages.js`; there is no single
-  list yet (see "Not done" in `docs/code-quality-plan.md`).
+  Adding a collection means adding it in those places, in the static header and Browse collections partials
+  (`src/partials/`), the redirects, and the Collection title facet (`HIER` in `public/search/search-query.js`); there is
+  no single list yet (see "Not done" in `docs/code-quality-plan.md`).
 - **Pages** are named the same on both sites: home, collections (browse), a collection, help (one page with sections `faq`,
   `copyright`, `access`, `privacy`), search tips, indigenous data, contact, about. Search results are `/search/search-results`
   (static) and `/catalog` (Rails).
@@ -27,7 +30,7 @@
 | Styles or images shared by the pages | `public/styles`, `public/images` | `npm run sync:rails` |
 | Header, search overlay, footer, Browse collections cards (static) | `src/partials/` | `npm run sync:partials` |
 | Header and Browse collections cards (Rails) | `NexusCcs::HeaderComponent`, `app/views/pages/_browse_collections.html.erb` | keep in step with the static partials; `npm run parity` |
-| A collection page (static) | `src/collection-landing.template.html` and the page's data tables | `npm run build:collections` |
+| Search rules: URLs, matching, facets, counts, sorting, "Did you mean" (static) | `public/search/search-query.js` | `node tests/run.js search-query` |
 | Page copy | the static page and the Rails view / `config/pages.yml`, together | `npm run parity` to check styles |
 | Rails results, record, filters | `ead-ccs-test/app` | `bin/rails test`, `bin/rails test:system` |
 

@@ -29,7 +29,6 @@
   var BAR_PITCH = 9.8;       // px: a 7.8px bar and its 2px gap
   var MIN_BARS = 20, MAX_BARS = 60;
   var PAGE_YEARS = 10;
-  var MIN_BAR_PX = 4;
 
   function twoPart(lo, hi) { return lo < KNEE && hi > KNEE; }
 
@@ -241,11 +240,6 @@
     }
 
     function applySoon() { clearTimeout(timer); timer = setTimeout(commit, APPLY_DELAY); }
-
-    function choose(from, to) {
-      pending = { from: from, to: to };
-      applySoon();
-    }
 
     function announce() {
       if (!announceNext || resultCount == null) return;
