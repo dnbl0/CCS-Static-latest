@@ -116,6 +116,7 @@ class CatalogController < ApplicationController
     if config.advanced_search.enabled
       config.copy_search_field_config_to_advanced!
       config.copy_facet_field_config_to_advanced!
+      CatalogConfig::Facets.keep_pending_out_of_advanced_request(config)
 
       # Blacklight asks Solr for every value of every filter on the form ("facet.limit": -1): with the full collections that was a page
       # of 8 MB and about 15,000 checkboxes, far too long to use (and too slow for a screen reader or a phone). Each filter lists its

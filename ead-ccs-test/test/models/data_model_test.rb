@@ -43,15 +43,19 @@ class DataModelTest < ActiveSupport::TestCase
     end
   end
 
-  test "a filter with no data yet is still shown, with a note, and is not asked of Solr or offered in Advanced search" do
+  test "a filter with no data yet is still shown, with a note, on the results and in Advanced search, and is never asked of Solr" do
     gaps = DataModel.filter_gaps
     assert_includes gaps.map(&:name), "Film & Gaming Classification"
+    advanced_request = config.advanced_search.form_solr_parameters
 
     gaps.each do |filter|
       facet = config.facet_fields.fetch(filter.key)
       assert_equal NexusCcs::PendingFacetComponent, facet.component, filter.name
+      assert_equal NexusCcs::PendingFacetComponent, facet.advanced_search_component, filter.name
+      assert_not_equal false, facet.include_in_advanced_search, filter.name
       assert_equal false, facet.include_in_request, filter.name
-      assert_equal false, facet.include_in_advanced_search, filter.name
+      assert_not_includes advanced_request["facet.field"], filter.key
+      assert_not advanced_request.key?("f.#{filter.key}.facet.limit"), filter.name
     end
   end
 

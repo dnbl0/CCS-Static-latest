@@ -55,6 +55,21 @@ class AdvancedSearchTest < ApplicationSystemTestCase
     assert_no_selector ".advanced-search__notice"
   end
 
+  test "every workbook filter is an attribute, in the sheet's order; one with no data yet shows the note and no checkboxes" do
+    visit "/catalog/advanced"
+
+    # the year selectors are range filters, which Blacklight's form does not offer
+    labels = all("#advanced_search_facets .facet-field-heading button", visible: :all).map { |b| b.text(:all).strip }
+    assert_equal DataModel.filters.reject { |filter| filter.type == :year }.map(&:name), labels - [ "Digital asset" ]
+
+    find("#facet-pending_film_gaming_classification-header button").click
+    within("#facet-pending_film_gaming_classification") do
+      assert_text "No records have this information yet."
+      assert_no_selector "input[type=checkbox]"
+    end
+    assert_accessible
+  end
+
   test "no attribute lists more than 100 values, so the page stays a usable size" do
     visit "/catalog/advanced"
 

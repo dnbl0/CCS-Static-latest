@@ -67,7 +67,7 @@ and the tests show what else must change. To fill a gap: add the source column t
 
 The search results sidebar shows every filter, ordered by the sheet's # column. A **gap** filter keeps its
 place with the note "No records have this information yet." (`NexusCcs::PendingFacetComponent`); it is not
-sent to Solr and is left out of Advanced search until its data exists. Film & Gaming Classification is for video
+sent to Solr. Advanced search lists the same filters in the same order, with the same note in place of checkboxes. Film & Gaming Classification is for video
 and game records.
 
 | # | Section | Filter | Type | Solr field |
