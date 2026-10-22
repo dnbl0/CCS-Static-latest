@@ -148,21 +148,6 @@ dialog.modal {
 }
 /* The Gen 3 modal look and the scroll lock are in components/modal.css */
 
-/* Home page hero (app/views/catalog/_home_text.html.erb) */
-.uom-hero {
-  background-color: var(--uom-navy);
-  border-radius: var(--bs-border-radius);
-  color: var(--ccs-text-inverse);
-}
-
-.uom-hero h1 {
-  font-weight: 300; /* UoM title-display */
-}
-
-.uom-hero a:not(.btn) {
-  color: var(--ccs-text-inverse);
-}
-
 /* Facets ----------------------------------------- */
 /* Do not style .facet-limit here.
    Blacklight's .facet-limit-active loads earlier. */

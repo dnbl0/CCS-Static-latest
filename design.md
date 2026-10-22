@@ -4,6 +4,10 @@
 **Design System**: UoM Gen 3 v15.14.0 | **Version**: 2.4 | **Date**: 2026-10-01  
 **Status**: Prototype (no formal accessibility audit) | **Codebase**: Static pages under `public/`
 
+> This document describes the static prototype. The live product is the Rails/Blacklight app in `ead-ccs-test/`
+> (see `docs/adr/0001`). Some paths below are out of date: `contact.html` and `help/indigenous-data.html` were folded into `/help`,
+> and the collection landing pages were removed (`docs/adr/0002`).
+
 ---
 
 ## Quick Reference

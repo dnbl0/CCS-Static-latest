@@ -37,7 +37,8 @@ search bar on the home page (the Rails app keeps its Blacklight bar) and font fa
   - Item 10: ESLint (`eslint.config.js`, 0 errors, 12 warnings to clean up) and Stylelint (`.stylelintrc.json`, 0
     errors, 23 warnings: duplicate selectors and `!important`) run first in `npm test` (`npm run lint`). HTML
     validation is left out: the pages are DC templates with `{{ }}` and custom tags that validators reject.
-  - Item 11: the five collection pages are generated from `src/collection-landing.template.html` by
+  - Item 11 (superseded 2026-10-16: the collection pages, their template and `build-collection-pages.js` were removed;
+    a collection is now the filtered results, see `docs/adr/0002`): the five collection pages are generated from `src/collection-landing.template.html` by
     `scripts/build-collection-pages.js` (output unchanged, byte for byte); `--check` runs in `npm test`.
   - Item 12: the header, search overlay and footer are `src/partials/*`, written into every page by
     `scripts/sync-partials.js` (`--check` in `npm test`). Three pages changed: the contact page's Contact link class,
