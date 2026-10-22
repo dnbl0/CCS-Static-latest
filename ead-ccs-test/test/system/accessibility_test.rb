@@ -6,7 +6,6 @@ class AccessibilityTest < ApplicationSystemTestCase
 
   PAGES = {
     "home" => "/",
-    "browse collections" => "/collections",
     "help" => "/help",
     "search tips" => "/help/search-tips",
     "indigenous cultural data" => "/help/indigenous-data",

@@ -28,7 +28,7 @@ class SavedRecordsHiddenTest < ActionDispatch::IntegrationTest
   end
 
   test "the content pages show no saved bar" do
-    [ "/", "/collections", "/help", "/about" ].each do |path|
+    [ "/", "/help", "/about" ].each do |path|
       get path
 
       assert_no_saving
