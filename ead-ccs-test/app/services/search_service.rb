@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
-# Blacklight's search service plus one additional behaviour: when a search returns
-# nothing offers a spelling collation, run the search again with the collation
-# and mark the response so the view can explain the substitution. (From CCS-123)
-# Solr does the heavy lifting. See spellcheck.maxCollationTries in solrconfig.xml
+# Blacklight's search service plus two additional behaviours:
+# - when a search returns nothing offers a spelling collation, run the search again with the collation
+#   and mark the response so the view can explain the substitution. (From CCS-123)
+#   Solr does the heavy lifting. See spellcheck.maxCollationTries in solrconfig.xml
+# - when a search with filters still returns nothing, count the results without its filters (ZeroResults), so the empty
+#   page can offer them. Facet counts cannot give this: they are counted inside the filtered (empty) results.
 #
 # Wired up as CatalogController.search_service_class, which is a class_attribute
 # from Blacklight::Searchable rather than a blacklight_config property.
@@ -11,12 +13,24 @@ class SearchService < Blacklight::SearchService
   def search_results
     response = super
     correction = SpellingCorrection.from(search_state.query_param, response)
-    return response if correction.nil?
-
-    retry_with(correction) || response
+    response = retry_with(correction) || response if correction
+    count_without_filters(response)
   end
 
   private
+
+  # One rows=0 request with no facets, stats or spellcheck, made only for an empty page with filters. (merge, because
+  # the builder's own rows= is overridden by the page size.)
+  def count_without_filters(response)
+    return response unless response.total.zero? && ZeroResults.filtered?(search_state.to_hash)
+
+    state = search_state.reset(ZeroResults.without_filters(search_state.to_hash))
+    builder = search_builder.with(state).merge(rows: 0, facet: false, stats: false, spellcheck: false)
+
+    response.extend(ZeroResults::Response)
+    response.unfiltered_total = repository.search(params: builder).total
+    response
+  end
 
   # This mirrors Blacklight::SearchService#search_results rather than calling
   # it. Going back through search_state.reset keeps the retry on our own

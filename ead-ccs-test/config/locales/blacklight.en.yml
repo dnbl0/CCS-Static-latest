@@ -32,6 +32,17 @@ en:
         button_label_html: "%{count}"
       zero_results:
         title: No results found and no suggestions are available for this search phrase.
+        hint: Try different or broader search terms.
+        new_search: Start a new search
+        # The search finds records, but none of them match its filters (ZeroResults)
+        filtered_title: No results match your filters.
+        without_default_filter:
+          one: "1 result without the ‘With a digital asset’ filter"
+          other: "%{total} results without the ‘With a digital asset’ filter"
+        without_filters:
+          one: "1 result without these filters"
+          other: "%{total} results without these filters"
+        clear_filters: Clear all filters
       # Titles of the filter sections in the Field labels and filters workbook (facet groups)
       facets-collection_details:
         title: Collection details

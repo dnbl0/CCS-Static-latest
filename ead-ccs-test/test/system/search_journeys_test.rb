@@ -22,14 +22,59 @@ class SearchJourneysTest < ApplicationSystemTestCase
     assert_selector ".documents-masonry"
   end
 
-  test "a search with no matches shows the empty state, and its button clears the search" do
+  test "a search with no matches at all shows the empty state, and its link starts a new search" do
     visit search_catalog_path(any_assets: "1", q: "zzzqxqxnomatch")
     assert_selector ".results-empty .results-empty__title"
-    assert_text "Try removing a filter or broadening your search terms."
+    assert_text "Try different or broader search terms."
+
+    click_link "Start a new search"
+    assert_no_selector ".results-empty"
+    assert_current_path(root_path)
+  end
+
+  test "a home page search hidden by the default filter says how many results there are, and the links keep the search" do
+    visit root_path
+    within(".ccs-hero__search") do
+      fill_in "q", with: "skull"
+      click_button "Search"
+    end
+
+    assert_selector ".results-empty"
+    assert_no_text(/no suggestions/i)
+    unfiltered = find("a.results-empty__unfiltered").text
+    assert_match(/\A\d+ results without the ‘With a digital asset’ filter\z/, unfiltered)
 
     click_link "Clear all filters"
     assert_no_selector ".results-empty"
-    assert_no_current_path(/zzzqxqx/)
+    assert_no_selector ".filter-has_digital_asset"
+    assert_selector ".result-card", minimum: 12
+    assert_current_path(/q=skull/)
+    assert_equal "skull", find("#q").value
+
+    go_back
+    click_link unfiltered
+    assert_selector ".result-card", minimum: 12
+    assert_current_path(/q=skull/)
+  end
+
+  test "the hidden-results count costs one extra Solr request, only on an empty page with filters" do
+    searches = 0
+    original = Blacklight::Solr::Repository.instance_method(:search)
+    Blacklight::Solr::Repository.define_method(:search) do |*args, **kwargs|
+      searches += 1
+      original.bind_call(self, *args, **kwargs)
+    end
+
+    visit search_catalog_path(q: "skull", f: { has_digital_asset: [ "with" ] })
+    assert_selector "a.results-empty__unfiltered"
+    assert_equal 2, searches
+
+    searches = 0
+    visit search_catalog_path(any_assets: "1", q: "skull")
+    assert_selector ".result-card", minimum: 1
+    assert_equal 1, searches
+  ensure
+    Blacklight::Solr::Repository.define_method(:search, original)
   end
 
   test "the view buttons switch between the mosaic and the list" do

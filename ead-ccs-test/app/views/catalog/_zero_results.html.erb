@@ -1,7 +1,20 @@
-<%# The empty state, after the static search page's "No records match your search": a serif title (the wording is the
-    Jira requirement kept in the locale file), a hint and a button that clears the search and every filter %>
+<%# The empty state, after the static search page's "No records match your search": a serif title, a hint and the next
+    step. When the filters hide results (ZeroResults), it says how many and its links keep the search; otherwise it
+    keeps the Jira requirement's title (locale file) and offers a new search. %>
+<% filters = search_state.to_hash %>
+<% hidden = @response.respond_to?(:unfiltered_total) ? @response.unfiltered_total.to_i : 0 %>
+<% cleared = search_action_url(ZeroResults.without_filters(filters)) %>
 <div id="documents" class="noresults results-empty">
-  <h3 class="results-empty__title"><%= t("blacklight.search.zero_results.title") %></h3>
-  <p class="results-empty__text">Try removing a filter or broadening your search terms.</p>
-  <%= link_to "Clear all filters", search_action_url, class: "results-empty__button" %>
+  <% if hidden.positive? %>
+    <h3 class="results-empty__title"><%= t("blacklight.search.zero_results.filtered_title") %></h3>
+    <p class="results-empty__text">
+      <%= link_to t(ZeroResults.only_default_filter?(filters) ? "blacklight.search.zero_results.without_default_filter" : "blacklight.search.zero_results.without_filters",
+                    count: hidden, total: number_with_delimiter(hidden)), cleared, class: "results-empty__unfiltered" %>
+    </p>
+    <%= link_to t("blacklight.search.zero_results.clear_filters"), cleared, class: "results-empty__button" %>
+  <% else %>
+    <h3 class="results-empty__title"><%= t("blacklight.search.zero_results.title") %></h3>
+    <p class="results-empty__text"><%= t("blacklight.search.zero_results.hint") %></p>
+    <%= link_to t("blacklight.search.zero_results.new_search"), root_path, class: "results-empty__button results-empty__new-search" %>
+  <% end %>
 </div>
