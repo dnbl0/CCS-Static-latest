@@ -150,43 +150,20 @@ class CatalogController < ApplicationController
     config.autocomplete_path = "suggest"
   end
 
-  # A bare /catalog (no search, filter or sort) has nothing to show, so it goes to the home page: the hero banner
-  # with the search bar. Any parameter means the visitor chose something and gets the results.
-  before_action :show_home_page_when_bare, only: :index
-
-  # The advanced search form submitted with nothing in it (no term, no attribute, no range) has nothing to search for: back to
-  # the form with a notification, instead of every record. A search from anywhere else is left alone.
-  before_action :reject_empty_advanced_search, only: :index
-
-  def reject_empty_advanced_search
-    return unless request.format.html? && params[:clause].present? && params[:q].blank?
-    return if params[:f].present? || params[:f_inclusive].present? || params[:range].present?
-    return if params[:clause].to_unsafe_h.values.any? { |clause| clause.is_a?(Hash) && clause["query"].present? }
-
-    redirect_to advanced_search_catalog_path(op: params[:op].presence), flash: { advanced_search_error: true }
-  end
-
-  # Results show records with a digital asset (an image) unless the visitor chose otherwise: the filter is applied, shown
-  # as a pill, and taking it off (or choosing "Without a digital asset") is remembered by the `any_assets` marker.
-  # Advanced search is the exception: its form sends `clause` fields and the visitor sets Digital asset there themselves.
-  before_action :default_to_digital_assets, only: :index
-
-  def default_to_digital_assets
-    return unless controller_name == "catalog" && request.get? && request.format.html?
-    query = request.query_parameters
-    filters = query["f"].is_a?(Hash) ? query["f"] : {}   # a hand-edited f that is not a list of filters is left to the search to refuse
-    return if query.empty? || query["any_assets"].present? || query["clause"].present? || filters["has_digital_asset"].present?
-
-    redirect_to search_action_url(query.merge("f" => filters.merge("has_digital_asset" => [ "with" ])))
-  end
-
-  def show_home_page_when_bare
-    return unless controller_name == "catalog" && request.format.html? && request.query_parameters.empty?
-
-    redirect_to root_path
-  end
+  # Home page, the Advanced search form again, or the default Digital asset filter: the rules are SearchDefaults'
+  before_action :apply_search_defaults, only: :index
 
   private
+
+  def apply_search_defaults
+    outcome, detail = SearchDefaults.decide(request.query_parameters, html: request.format.html?, get: request.get?,
+                                            catalog: controller_name == "catalog")
+    case outcome
+    when :home then redirect_to root_path
+    when :advanced_search_again then redirect_to advanced_search_catalog_path(op: detail), flash: { advanced_search_error: true }
+    when :search then redirect_to search_action_url(detail)
+    end
+  end
 
   # From later than To (a hand-edited address): the search runs without the date range, and says so.
   def invalid_date_range(_error)
