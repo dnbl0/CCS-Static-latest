@@ -1,0 +1,8 @@
+<%= render(layout.new(facet_field: @facet_field)) do |component| %>
+  <% component.with_label do %>
+    <%= @facet_field.label %>
+  <% end %>
+  <% component.with_body do %>
+    <p class="facet-pending"><%= t("nexus_ccs.facets.pending") %></p>
+  <% end %>
+<% end %>

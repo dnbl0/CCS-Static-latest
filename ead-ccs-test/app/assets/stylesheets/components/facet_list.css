@@ -56,3 +56,9 @@
   display: block;
   padding: 1.5rem 0;
 }
+
+/* A workbook filter with no data yet (NexusCcs::PendingFacetComponent): a quiet note in place of values */
+.facet-pending {
+  color: var(--bs-secondary-color);
+  margin-bottom: 0;
+}

@@ -30,15 +30,28 @@ class DataModelTest < ActiveSupport::TestCase
   # CCS-41 asks for a with/without digital assets option, which is not in the workbook's filter list.
   JIRA_ADDITIONS = %w[has_digital_asset].freeze
 
-  test "facets are the workbook's available filters: same order, names, sections and types" do
-    expected = DataModel.filters.select(&:available?)
+  test "facets are every workbook filter, in the order of the sheet's # column, with its names, sections and types" do
+    expected = DataModel.filters
     actual = config.facet_fields.values.reject { |facet| JIRA_ADDITIONS.include?(facet.key) }
 
-    assert_equal expected.map(&:solr), actual.map(&:field)
+    assert_equal (1..23).to_a, expected.map(&:seq)
+    assert_equal expected.map(&:key), actual.map(&:key)
     assert_equal expected.map(&:name), actual.map(&:label)
     assert_equal expected.map(&:group), actual.map(&:group)
     expected.zip(actual).each do |filter, facet|
       assert_equal filter.type == :year, facet.range.present?, "#{filter.name}: only year selectors are range facets"
+    end
+  end
+
+  test "a filter with no data yet is still shown, with a note, and is not asked of Solr or offered in Advanced search" do
+    gaps = DataModel.filter_gaps
+    assert_includes gaps.map(&:name), "Film & Gaming Classification"
+
+    gaps.each do |filter|
+      facet = config.facet_fields.fetch(filter.key)
+      assert_equal NexusCcs::PendingFacetComponent, facet.component, filter.name
+      assert_equal false, facet.include_in_request, filter.name
+      assert_equal false, facet.include_in_advanced_search, filter.name
     end
   end
 
@@ -58,7 +71,7 @@ class DataModelTest < ActiveSupport::TestCase
   end
 
   test "filter sections appear in the workbook's order with titles" do
-    assert_equal %w[collection_details creator object subject_topic copyright_advisory media_type], config.facet_group_names
+    assert_equal %w[collection_details creator object subject_topic copyright_advisory access media_type], config.facet_group_names
     config.facet_group_names.each do |group|
       assert I18n.exists?("blacklight.search.facets-#{group}.title"), "no title for the #{group} filter section"
     end

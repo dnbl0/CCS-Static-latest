@@ -18,6 +18,9 @@ class DataModel
   Filter = Data.define(:seq, :section, :name, :type, :solr, :gap) do
     def available? = solr.present?
 
+    # The facet key: the Solr field, or for a filter with no data yet a stand-in made from its name.
+    def key = solr || "pending_#{name.parameterize(separator: "_")}"
+
     # A form usable as a facet group id and locale key: "Subject / Topic" becomes "subject_topic".
     def group = section.parameterize(separator: "_")
   end
@@ -34,7 +37,7 @@ class DataModel
       end
     end
 
-    # The workbook's filters in sheet order.
+    # The workbook's filters, ordered by the sheet's # column.
     def filters
       @filters ||= FILTER_ROWS.sort_by { |row| row["seq"] }.map do |row|
         mapping = MAPPING.fetch("filters").fetch(row["seq"])
@@ -43,10 +46,8 @@ class DataModel
       end
     end
 
-    # Filter sections in sheet order, each with the filters that can be offered now.
-    def sections
-      filters.group_by(&:section).transform_values { |list| list.select(&:available?) }.reject { |_, list| list.empty? }
-    end
+    # Filter sections in sheet order, each with its filters.
+    def sections = filters.group_by(&:section)
 
     def field_gaps = fields.reject(&:available?)
     def filter_gaps = filters.reject(&:available?)

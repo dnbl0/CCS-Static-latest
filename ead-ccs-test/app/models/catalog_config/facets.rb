@@ -7,11 +7,18 @@ module CatalogConfig
       # ================================================================
       # Facets
       # ================================================================
-      # The filters, sections, order, names and types come from the workbook (DataModel). A filter the
-      # data cannot support yet (see config/data_model/solr_mapping.yml) is simply not offered.
-      DataModel.filters.select(&:available?).each do |filter|
+      # The filters, sections, order (the sheet's # column), names and types come from the workbook (DataModel).
+      # Every filter is shown. One the data cannot support yet (see config/data_model/solr_mapping.yml) says
+      # so, and is neither asked of Solr nor offered in Advanced search.
+      DataModel.filters.each do |filter|
         # CCS-41 (not in the workbook): the Digital asset option sits above Digital Asset Format Type.
         add_digital_asset_option(config) if filter.name == DIGITAL_ASSET_FORMAT_FILTER
+
+        unless filter.available?
+          config.add_facet_field filter.key, label: filter.name, group: filter.group, component: NexusCcs::PendingFacetComponent,
+            include_in_request: false, include_in_advanced_search: false
+          next
+        end
 
         options = { label: filter.name, group: filter.group }
         case filter.type

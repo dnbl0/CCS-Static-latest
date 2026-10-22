@@ -1,6 +1,6 @@
 # Maps the workbooks' display fields (field_labels.json, by seq) and filters (filters.json, by seq)
 # to the Solr fields the indexers write (app/indexers/collections/*). Every field and filter has
-# either `solr:` (the field to show or facet on) or `gap:` (why it cannot be shown yet). Nothing
+# either `solr:` (the field to show or facet on) or `gap:` (why it has no data yet; a gap field is not shown, a gap filter is shown with a note). Nothing
 # here invents data: a gap stays a gap until a source column exists. DataModel loads this file and
 # test/models/data_model_test.rb checks it against the workbooks.
 #

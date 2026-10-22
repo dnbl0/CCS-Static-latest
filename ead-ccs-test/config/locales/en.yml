@@ -74,6 +74,8 @@ en:
       stay: "Stay on this page"
       continue: "Continue to site"
       close: "Close"
+    facets:
+      pending: "No records have this information yet."
 
   catalog:
     country_acknowledgement:
