@@ -112,7 +112,7 @@ body.page-help .help-layout__content .help-section + .help-section {
 }
 /* Smooth scrolling for jumps within a page, turned on by app/javascript/smooth_scroll.js once the first load has settled.
    A page opened at an address with a #section lands there at once: an animated first jump can be cut short (slow load,
-   background tab) and leave the page at the top. html:not(.smooth-scroll) outranks Bootstrap's :root { scroll-behavior: smooth }. */
+   background tab) and leave the page at the top. html:not(.smooth-scroll) outranks Bootstrap's own smooth-scrolling rule on :root. */
 html:not(.smooth-scroll){scroll-behavior:auto}
 @media (prefers-reduced-motion:no-preference) {
 html.smooth-scroll{scroll-behavior:smooth}
