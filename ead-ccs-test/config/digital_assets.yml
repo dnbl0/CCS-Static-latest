@@ -92,3 +92,97 @@
 "HFA2450":
   - "HFA2450_a.jpg"
   - "HFA2450_b.jpg"
+
+# Grainger Museum Collection: images from the Grainger Museum Omeka site (omeka.cloud.unimelb.edu.au/grainger), matched
+# to records by accession number (the Omeka Dublin Core Identifier). Only records EMu marks "Public domain - Copyright
+# expired" and that Omeka gives no third-party copyright note. The originals are not kept here (several are 75 MB TIFFs):
+# each name is the Omeka file, at https://omeka.cloud.unimelb.edu.au/grainger/files/original/<name>.
+"13.0028":  # Percy Grainger (Omeka item 44)
+  - "85827df9ab6c38d57468e763906aff80.jpg"
+"13.0031":  # Percy Grainger (Omeka item 43)
+  - "e104958e935d70fa032f6809ba5c767d.jpg"
+"17.0004":  # Percy and Ella Grainger at Pevensey (Omeka item 79)
+  - "21b07895ca80eb633f1d1c4d37913d7e.tif"
+"17.0006":  # Dancer (Omeka item 161)
+  - "2e136cc2a758071d02cb0304e930c711.tif"
+"17.0007":  # Dancer (Omeka item 162)
+  - "0d80cb84661595e404fb6715e9aa5e4d.tif"
+"17.0008":  # Dancer (Omeka item 163)
+  - "e9a45bc8be15fdf7fb436962daa10bc9.tif"
+  - "a332e45cb301d73be51146ca090f2c86.tif"
+"17.0011":  # Nellie Melba at Coombe Cottage, Victoria (Omeka item 113)
+  - "fd1f546bbb3878608be304253dc8a4c6.jpg"
+"17.0012":  # Portrait of Ignacy Jan Paderewski (Omeka item 114)
+  - "5ed255b7bb610631f08945108c08ea28.jpg"
+"17.0013":  # Portrait of a woman with short hair and a white blouse (Omeka item 115)
+  - "02d8c982115dab4a684be331b48f10bc.jpg"
+"17.0014":  # Ella Grainger in her wedding dress (Omeka item 116)
+  - "f103369e7370953e82056c3b1e4f60f6.jpg"
+"17.0015":  # Unidentified Edwardian woman (Omeka item 74)
+  - "72bf0049837d86ddbb88d9ebc0a267b0.jpg"
+  - "15885653d3db534d62a35395c1de34a1.jpg"
+"17.0017":  # Rose Grainger (age 59) wearing Indian necklace bought at Alb (Omeka item 117)
+  - "ee7a5daa5f3cfd8378a809edc2394b4b.jpg"
+"17.0018":  # Portrait of a young boy and his dog on a leash (Omeka item 118)
+  - "3d7090ce530ab68d665d3e0e3ed8ea5c.jpg"
+"17.0019":  # Ella Grainger painting in her Springfield apartment (Omeka item 119)
+  - "a0b599f2fcf43254665561d939aee291.jpg"
+  - "22511748a712cb8637ccd5e982f75fbc.jpg"
+"17.0020.1":  # Percy Grainger photographed modelling a grass skirt, and sel (Omeka item 120)
+  - "a6a280067cbc7f3f1216e8065cab0def.jpg"
+"17.0020.2":  # Percy Grainger photographed modelling a grass skirt and bead (Omeka item 121)
+  - "d16bfcce2fb67f21c5c4d5b4e27bcf49.jpg"
+"17.0021":  # Percy Grainger (Omeka item 122)
+  - "4ab17c05fb814b4cd43d56c0a628081e.jpg"
+"17.0022.1":  # Portrait of Percy Grainger in a suit, vest and tie (Omeka item 123)
+  - "ab5a7d6b8cedeb91136021b5f59eca4b.jpg"
+"17.0024":  # Portrait of Ella Grainger (Omeka item 124)
+  - "92780cd3cf9e721e9c0aba4e48448014.jpg"
+"17.0026":  # Margot Harrison (Omeka item 69)
+  - "6be9949199470db8ddc4d984d76bd650.jpg"
+  - "5dc5beaec589879ac885bf6fad412089.jpg"
+"17.0039.1":  # Percy Grainger with dog (Omeka item 76)
+  - "9367bff6ed3caf747da8185e1c703d21.jpg"
+"17.0039.2":  # Percy Grainger with dog (Omeka item 135)
+  - "6433b745af2ed262f4da03c33e51cce1.jpg"
+"17.0039.3":  # Percy Grainger with dog (Omeka item 136)
+  - "5a42806fb56b52668649385924a468d2.jpg"
+"17.0042":  # Percy Grainger (Omeka item 66)
+  - "7c05856c5e83209b6d92d4a1e276095e.jpg"
+  - "c8bb960360946a8c8964c6ba2fe8b0eb.jpg"
+"17.0050.3":  # Percy Grainger (Omeka item 142)
+  - "05e7df7d3fb2b8a531648c437fd6ef7d.jpg"
+  - "d34bb2e305e9523ea4b75974c3528aa0.jpg"
+"17.0054":  # Photo wallet containing 2 photographs of Percy Grainger and (Omeka item 519)
+  - "dd2055c767f50d58bb25955335fdeb56.jpg"
+"17.0057":  # Portrait of Percy Grainger (Omeka item 146)
+  - "a0a504a1f402356817cc9bb5e6386c5c.jpg"
+"17.0061":  # Percy Grainger (Omeka item 149)
+  - "e002ee7d12983b14a1dfbfbcd599624e.jpg"
+"17.0062.1":  # Portrait of Percy Grainger (Omeka item 150)
+  - "980cf91fe103f776757c75595d945d19.jpg"
+"17.0063":  # Percy Grainger (Omeka item 151)
+  - "4ac8a6a7af7ea8561c1f451d557578a5.jpg"
+"17.0064":  # Percy Grainger (Omeka item 219)
+  - "63b2804d42bef81252e4269e04dc5dbd.jpg"
+"17.0065":  # Percy Grainger (Omeka item 152)
+  - "6adfa523cc704e27c1e22cef9084c558.jpg"
+"17.0066":  # Percy Grainger postcard (Omeka item 153)
+  - "99490d96abc604585e1786ffd9630352.jpg"
+  - "ebabbf07bb66a0f7897354a18828b841.jpg"
+"17.0067":  # Photograph of a collage of photographs of Rose and Percy Gra (Omeka item 75)
+  - "d7c862b5f29a5d18d4c14f0f596d4ce7.jpg"
+"17.0068":  # Negative of a collage of photographs of Rose and Percy Grain (Omeka item 154)
+  - "aad57f3ec1443630dc2f17166972292f.jpg"
+"17.0081":  # Portrait of unknown boys (Omeka item 49)
+  - "4de967bbf121afe9c60d231a1013147b.jpg"
+"17.0084":  # Percy Grainger, Fort Hamilton, New York (Omeka item 45)
+  - "71b91131551fd290421aa5f426887668.jpg"
+"99.0600.1":  # Percy Grainger "In the Round" (Omeka item 260)
+  - "1ec140f764b462fef3edde658f4e63ee.jpg"
+"99.1000.5":  # Promotional portrait of Percy Grainger with the score of his (Omeka item 261)
+  - "fe70d9152a14d76e09b129aa92b51aae.jpg"
+"99.5700.3":  # Percy Grainger and Burnett Cross working on a Free Music ton (Omeka item 87)
+  - "f9cc9fda40e54b57a2a4a04f33cf74ca.jpg"
+"99.5700.4":  # Ella Grainger, seated at her writing desk in the living room (Omeka item 88)
+  - "37b3f69e6ee697024493a8665878dcfb.jpg"
