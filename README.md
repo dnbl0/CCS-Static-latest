@@ -55,7 +55,8 @@ Legacy `*.dc.html` filenames (for example `Collection Search v3.dc.html`) 301-re
 public/                     Deployed web root
   index.html, search.html, about.html
   nav.js                    Header behaviour: dropdown menus + mobile drawer (event-delegated; used by every page)
-  search/search-results.html
+  search/search-results.html     # results page: renders what search/search-query.js decides
+  search/search-query.js          # the search query: URL in and out, which records match, facet counts, order, "Did you mean"
   search/advanced-search.html     # advanced search form (logic in search/advanced-search-form.js)
   collections/{index.html, record.html}
   help/{index.html, jump-nav.js}
@@ -203,6 +204,7 @@ Rows combine as: every `must` row matches, at least one `should` row matches (if
 - **Record media access rules**: `webAccess`, `accessMessage`, `viewRestricted`, `usageNotice` and `caption` are computed in `public/collection-data.js` (see `jira-mvp-mapping.md`, CCS-27/45/50/68/69). Licence types live in the `LIC` table there; `Not licensed` hides the media and offers a request to view.
 - **Tests**: `npm test` also runs `tests/image-aspect.test.js` (needs playwright-core and Chromium; skipped otherwise). Request types, the PDF viewer, the Theme filter and recent searches are described in `jira-mvp-mapping.md`.
 - **Accessibility**: `tests/accessibility.test.js` runs axe-core (WCAG 2.1 A/AA) plus 320px reflow and title checks; keep it passing. The manual checklist is in `jira-mvp-mapping.md` (WCAG 2.1 AA pass). Do not claim conformance without a formal audit.
+- **Search query**: `public/search/search-query.js` (`window.CCSSearchQuery`) holds every search rule of the results page: reading the simple and advanced URL formats, writing the "Edit advanced search" link, which records match a query, facet counts, result order and "Did you mean" suggestions, plus the list of filters (`FACETS`). The page only renders what it returns. `tests/search-query.test.js` checks it against the catalogue in node, with no browser.
 - **Fuzzy and semantic search**: `public/search/smart-search.js` (loaded by the search page) provides fuzzy, prefix and thesaurus-based matching with no backend; edit the `SYNONYMS` and `BROADER` tables there to teach it new vocabulary. `tests/smart-search.test.js` checks it against the catalogue. See `jira-mvp-mapping.md`.
 
 - **Filters modal**: the search page's Filters panel follows the Gen 3 Modal component (white panel, navy 80% blanket, Fraunces heading, top-right Close with a visible label). It adds a "Find a filter" box, a removable "Selected" chip list and a live "Show N records" button, with the header and footer fixed while the filters scroll. Its styles are the `search-results-filters-title__*` and `filters-*` rules in `public/styles/pages/search-results/ (split by component: layout, results, toolbar, banner, flyout, filters, facet-rail, pagination, pills)`.

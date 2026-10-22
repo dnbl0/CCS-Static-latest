@@ -19,9 +19,9 @@ const unknown = refTypes.filter(t => !t.includes('?') && !t.split(/ & | and /).s
 if (unknown.length) warn('field-label data types not in the CCS Datatypes sheet: ' + unknown.join(', '));
 
 /* ---- filters: same names, order, sections and behaviour as the CCS Filters sheet ---- */
-const html = fs.readFileSync(path.join(PUBLIC, 'search/search-results.html'), 'utf8');
-const facets = [...html.matchAll(/\{group:'([^']*)', ?key:'(\w+)',title:("[^"]*"|'[^']*'),kind:'(\w+)'(,search:true)?(?:,dk:'\w+')?\}/g)].map(m => ({ group: m[1], key: m[2], title: eval(m[3]), kind: m[4], search: !!m[5] }));
-if (facets.length < 22) fail(`could not read the FACETS list from search-results.html (found ${facets.length})`);
+// the site's filters are the FACETS list of the search query module (public/search/search-query.js)
+const facets = require(path.join(PUBLIC, 'search', 'search-query.js')).FACETS.map(F => ({ group: F.group, key: F.key, title: F.title, kind: F.kind, search: !!F.search }));
+if (facets.length < 22) fail(`could not read the FACETS list from search-query.js (found ${facets.length})`);
 const extFilters = new Set(ext.filters.map(e => norm(e.name)));
 let last = -1;
 for (const f of filters) {
