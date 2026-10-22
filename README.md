@@ -57,6 +57,7 @@ public/                     Deployed web root
   nav.js                    Header behaviour: dropdown menus + mobile drawer (event-delegated; used by every page)
   search/search-results.html     # results page: renders what search/search-query.js decides
   search/search-query.js          # the search query: URL in and out, which records match, facet counts, order, "Did you mean"
+  search/catalogue.js             # where results come from: the local records, or the Blacklight API in live mode
   search/advanced-search.html     # advanced search form (logic in search/advanced-search-form.js)
   collections/{index.html, record.html}
   help/{index.html, jump-nav.js}
@@ -205,6 +206,7 @@ Rows combine as: every `must` row matches, at least one `should` row matches (if
 - **Tests**: `npm test` also runs `tests/image-aspect.test.js` (needs playwright-core and Chromium; skipped otherwise). Request types, the PDF viewer, the Theme filter and recent searches are described in `jira-mvp-mapping.md`.
 - **Accessibility**: `tests/accessibility.test.js` runs axe-core (WCAG 2.1 A/AA) plus 320px reflow and title checks; keep it passing. The manual checklist is in `jira-mvp-mapping.md` (WCAG 2.1 AA pass). Do not claim conformance without a formal audit.
 - **Search query**: `public/search/search-query.js` (`window.CCSSearchQuery`) holds every search rule of the results page: reading the simple and advanced URL formats, writing the "Edit advanced search" link, which records match a query, facet counts, result order and "Did you mean" suggestions, plus the list of filters (`FACETS`). The page only renders what it returns. `tests/search-query.test.js` checks it against the catalogue in node, with no browser.
+- **Catalogue**: `public/search/catalogue.js` (`window.CCSCatalogue`) decides where results come from. In live mode it asks `blacklight-adapter.js` for a page of results, uses the full local record for each document the API returns, drops a reply that a newer search has replaced, and falls back to the local records when the API cannot answer the query or fails. `tests/catalogue.test.js` checks this with a stand-in adapter; `tests/search-live.test.js` checks it in the browser against `api/catalog.js`.
 - **Fuzzy and semantic search**: `public/search/smart-search.js` (loaded by the search page) provides fuzzy, prefix and thesaurus-based matching with no backend; edit the `SYNONYMS` and `BROADER` tables there to teach it new vocabulary. `tests/smart-search.test.js` checks it against the catalogue. See `jira-mvp-mapping.md`.
 
 - **Filters modal**: the search page's Filters panel follows the Gen 3 Modal component (white panel, navy 80% blanket, Fraunces heading, top-right Close with a visible label). It adds a "Find a filter" box, a removable "Selected" chip list and a live "Show N records" button, with the header and footer fixed while the filters scroll. Its styles are the `search-results-filters-title__*` and `filters-*` rules in `public/styles/pages/search-results/ (split by component: layout, results, toolbar, banner, flyout, filters, facet-rail, pagination, pills)`.

@@ -11,6 +11,7 @@
 <script src="../collection-data.js"></script>
 <script src="/search/smart-search.js"></script>
 <script src="/search/search-query.js"></script>
+<script src="/search/catalogue.js"></script>
 <script src="/search/range-slider.js"></script>
 <script src="/search-bar.js"></script>
 <script src="/search/back-to-top.js" defer></script>
@@ -674,6 +675,8 @@ const ITEMS = window.CCS.items;
 const SMART = window.SmartSearch.create(ITEMS);
 // The search query (URL in and out, which records match, facet counts, spelling suggestions): see search-query.js
 const QUERY = window.CCSSearchQuery.create({ items: ITEMS, smart: SMART, canonType: window.CCS.canonType });
+// Where results come from: the local records, or the Blacklight API in live mode (see catalogue.js)
+const CATALOGUE = window.CCSCatalogue.create({ items: ITEMS, query: QUERY, adapter: window.BlacklightAdapter });
 const { FACETS, KEYS, LABELS, HIER, SORTS, ADV_FIELDS, ADV_OPS, lifespanOf, empty: EMPTYF, clone } = window.CCSSearchQuery;
 const LISTS = {
  licence:['Public Domain','Rights Reserved','CC BY','CC BY-SA'], access:['Open Access','Restricted','By Appointment'],
@@ -695,29 +698,15 @@ function saveSearchHistory(term) {
   else window.addEventListener('load', () => window.CCSHistory && window.CCSHistory.save(term));   // nav.js loads after this script on first paint
 }
 class Component extends DCLogic {
-  state = { stuck: false, advOpen: false, f:EMPTYF(), loading:false, view:null, modal:false, mFind:'', draft:null, mOpen:{coll:true,type:true,date:true}, sOpen:{}, sMore:{}, sFq:{}, sExtra:false, sYIn:null, sYErr:'', fq:{}, more:{}, sortOpen:false, perPage:40, ppOpen:false, page:1, yIn:null, yErr:'', counting:false, ackOpen:false, vw: typeof window !== 'undefined' ? window.innerWidth : 1200, liveItems: null, liveTotal: null, liveError: null };
+  state = { stuck: false, advOpen: false, f:EMPTYF(), loading:false, view:null, modal:false, mFind:'', draft:null, mOpen:{coll:true,type:true,date:true}, sOpen:{}, sMore:{}, sFq:{}, sExtra:false, sYIn:null, sYErr:'', fq:{}, more:{}, sortOpen:false, perPage:40, ppOpen:false, page:1, yIn:null, yErr:'', counting:false, ackOpen:false, vw: typeof window !== 'undefined' ? window.innerWidth : 1200, live: null, liveError: null };
   trackRef = React.createRef(); bodyRef = React.createRef(); sortRef = React.createRef(); ppRef = React.createRef(); advBtnRef = React.createRef(); advDialogRef = React.createRef(); advCloseRef = React.createRef(); advFrameRef = React.createRef(); mainRef = React.createRef();
   sentinelRef = React.createRef(); bannerHostRef = React.createRef(); compactHostRef = React.createRef(); dialogRef = React.createRef(); filterBtnRef = React.createRef(); ackRef = React.createRef();
   dom = { lo: 1700, hi: 2030 };
 
+  // In live mode, ask the API for this page of results (see catalogue.js); otherwise nothing changes
   async fetchLive(f, page, perPage) {
-    if (typeof BlacklightAdapter === 'undefined' || !BlacklightAdapter.isLive()) return;
-    const targetF = f || this.state.f;
-    const targetPage = page || this.state.page;
-    const targetPerPage = perPage || this.state.perPage;
-    // filters the API cannot answer (advanced clauses, "match all", ...) stay on the local catalogue
-    if (!BlacklightAdapter.canServe(targetF)) { this.liveSeq = (this.liveSeq || 0) + 1; this.setState({ liveItems: null, liveTotal: null, liveError: null }); return; }
-    const seq = this.liveSeq = (this.liveSeq || 0) + 1;
-    this.setState({ loading: true });
-    const res = await BlacklightAdapter.query(targetF, targetPage, targetPerPage);
-    if (seq !== this.liveSeq) return; // a newer search has already replaced this one
-    if (res.source === 'live' && res.items) {
-      // the API returns lean documents: show the full local record (image, formats, licence) when we have it
-      const byId = new Map(ITEMS.map(it => [String(it.id), it]));
-      this.setState({ liveItems: res.items.map(d => byId.get(String(d.id)) || d), liveTotal: res.total, loading: false, liveError: null });
-    } else {
-      this.setState({ liveItems: null, liveTotal: null, loading: false, liveError: res.error || null });
-    }
+    const res = await CATALOGUE.fetch(f || this.state.f, page || this.state.page, perPage || this.state.perPage, () => this.setState({ loading: true }));
+    if (res) this.setState({ live: res.live, liveError: res.error, ...(res.sent ? { loading: false } : {}) });
   }
 
   componentDidMount() {
@@ -750,9 +739,7 @@ class Component extends DCLogic {
     const pv = qs.get('view'); if (pv === 'list' || pv === 'masonry') this.setState({ view: pv });
     if (urlTerm) saveSearchHistory(urlTerm);
     this.setState({ f: urlF });
-    if (typeof BlacklightAdapter !== 'undefined' && BlacklightAdapter.isLive()) {
-      this.fetchLive(urlF, 1, this.state.perPage);
-    }
+    this.fetchLive(urlF, 1, this.state.perPage);
   }
   // The two search bars (banner and sticky) are the shared search-bar.js component, built into empty host elements so a
   // re-render of this template never touches them; syncBars() re-creates one if its host was replaced and refreshes
@@ -815,9 +802,7 @@ class Component extends DCLogic {
     this.setState({ f: nextF, loading: true, page: 1 });
     clearTimeout(this.t);
     this.t = setTimeout(() => this.setState({ loading: false }), 420);
-    if (typeof BlacklightAdapter !== 'undefined' && BlacklightAdapter.isLive()) {
-      this.fetchLive(nextF, 1, this.state.perPage);
-    }
+    this.fetchLive(nextF, 1, this.state.perPage);
   }
   setDraft(fn) { this.setState(st => ({ draft: fn(clone(st.draft)), counting: true })); clearTimeout(this.ct); this.ct = setTimeout(() => this.setState({ counting: false }), 280); }
   togParent(h) { this.setDraft(d => { if (d.collection.includes(h.name)) d.collection = d.collection.filter(x => x !== h.name); else { d.collection.push(h.name); d.named = d.named.filter(x => !h.children.includes(x)); } return d; }); }
@@ -1037,16 +1022,11 @@ class Component extends DCLogic {
     if (f.birthFrom != null || f.birthTo != null) chips.push({ group: 'Creator birth years', label: (f.birthFrom ?? 'Any') + ' – ' + (f.birthTo ?? 'Any'), remove: () => this.apply(ff => ({ ...ff, birthFrom: null, birthTo: null })) });
     if (f.deathFrom != null || f.deathTo != null) chips.push({ group: 'Creator death years', label: (f.deathFrom ?? 'Any') + ' – ' + (f.deathTo ?? 'Any'), remove: () => this.apply(ff => ({ ...ff, deathFrom: null, deathTo: null })) });
     if (f.downloadable) chips.push({ group: 'Access', label: 'Only records with downloads', remove: () => this.apply(ff => ({ ...ff, downloadable: false })) });
-    const isLive = typeof BlacklightAdapter !== 'undefined' && BlacklightAdapter.isLive();
+    const isLive = CATALOGUE.live();
     const apiBtnText = isLive ? (s.liveError ? '● API: Fallback (Offline)' : '● API: Live Blacklight') : (typeof BlacklightAdapter !== 'undefined' && BlacklightAdapter.getMode() === 'auto' ? '● API: Unavailable, local data' : '○ API: Mock Data');
     const apiBtnBg = isLive ? (s.liveError ? '#fff3cd' : '#e8edf6') : '#f4f5f8';
     const apiBtnColor = isLive ? (s.liveError ? '#856404' : 'var(--col-bg-primary)') : 'var(--col-text-muted)';
-    let list, smartKinds = null;
-    if (isLive && s.liveItems) {
-      list = s.liveItems;
-    } else {
-      ({ list, smart: smartKinds } = QUERY.search(f));
-    }
+    const { list, smart: smartKinds, total: n, paged } = CATALOGUE.results(f, s.live);
     const results = list.map((it, idx) => {
       const imgPath = it.img ? (it.img.startsWith('http') || it.img.startsWith('/') ? it.img : '../images/' + it.img + '.jpg') : null;
       return { ...it, href: '/collections/record.html?id=' + it.id, img: imgPath, imgSrc: imgPath || '', ar: it.img && RATIO[it.img] ? RATIO[it.img].join(' / ') : 'auto', delay: Math.min(idx, 12) * 35 + 'ms', hasImg: !!it.img, noImg: !it.img,
@@ -1056,8 +1036,7 @@ class Component extends DCLogic {
     const exactCount = smartKinds ? [...smartKinds.values()].filter(m => m.kind === 'exact').length : 0;
     const smartDesc = smartKinds ? SMART.describe(SMART.analyse(f.q)) : null;
     const relatedCount = smartKinds ? smartKinds.size - exactCount : 0;
-    const totalCount = (isLive && s.liveTotal != null) ? s.liveTotal : (isLive && s.liveItems ? s.liveItems.length : list.length);
-    const n = totalCount, pageCount = Math.max(1, Math.ceil(n / s.perPage)), page = Math.min(s.page, pageCount);
+    const pageCount = Math.max(1, Math.ceil(n / s.perPage)), page = Math.min(s.page, pageCount);
     // Windowed pagination: current page +/- 2, always show first/last, with an
     // ellipsis marker when the window doesn't reach the edge.
     const pageWindow = 2;
@@ -1071,7 +1050,7 @@ class Component extends DCLogic {
       this.setState({ page: pg, loading: true });
       clearTimeout(this.t);
       this.t = setTimeout(() => this.setState({ loading: false }), 420);
-      if (isLive) this.fetchLive(this.state.f, pg, this.state.perPage);
+      this.fetchLive(this.state.f, pg, this.state.perPage);
       const m = this.mainRef.current;
       if (m) window.scrollTo({ top: m.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
     };
@@ -1128,7 +1107,7 @@ class Component extends DCLogic {
       loading: s.loading, notLoading: !s.loading, chips, hasActive: chips.length > 0, railCount: chips.length,
       clearAll: () => this.apply(ff => ({ ...EMPTYF(), sort: ff.sort })),
       skeletons: (n ? results.slice(0, 12).map(r => ({ ar: r.hasImg ? r.ar : 'auto', imgDisplay: r.hasImg ? 'block' : 'none' })) : SKEL.slice(0, 6).map(x => ({ ar: '1 / ' + (x / 300), imgDisplay: 'block' }))),
-      results: (isLive && s.liveItems) ? results : results.slice((page - 1) * s.perPage, page * s.perPage), isGrid: !s.loading && view === 'masonry' && n > 0, isList: !s.loading && view === 'list' && n > 0, isEmpty: !s.loading && n === 0,
+      results: paged ? results : results.slice((page - 1) * s.perPage, page * s.perPage), isGrid: !s.loading && view === 'masonry' && n > 0, isList: !s.loading && view === 'list' && n > 0, isEmpty: !s.loading && n === 0,
       showSmartNotice: !!smartKinds && relatedCount > 0 && !isLive,
       smartNoticeText: smartKinds ? (exactCount === 0 ? `No records match your words exactly. Showing ${relatedCount} ${relatedCount === 1 ? 'related result' : 'related results'} instead.` : `${exactCount} ${exactCount === 1 ? 'record matches' : 'records match'} your words exactly. ${relatedCount} ${relatedCount === 1 ? 'related result follows' : 'related results follow'} them.`) : '',
       smartDetails: smartDesc ? [...smartDesc.fuzzy.map(x => ({ k: 'Close spellings', v: `${x.from} → ${x.to.join(', ')}` })), ...smartDesc.semantic.map(x => ({ k: 'Related terms', v: `${x.from} → ${x.to.join(', ')}` }))] : [],
