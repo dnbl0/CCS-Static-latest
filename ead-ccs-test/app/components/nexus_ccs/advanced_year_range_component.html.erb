@@ -1,0 +1,14 @@
+<%= render(Blacklight::Facets::FieldComponent.new(facet_field: @facet_field)) do |component| %>
+  <% component.with_label do %>
+    <%= @facet_field.label %>
+  <% end %>
+  <% component.with_body do %>
+    <div class="advanced-year-range">
+      <% { begin: "range_begin", end: "range_end" }.each do |bound, css_class| %>
+        <%= render BlacklightRangeLimit::RangeInputComponent.new(input_name: input_name(bound), input_value: value(bound),
+              label_text: t("blacklight.range_limit.#{bound == :begin ? 'range_begin_short' : 'range_end_short'}"),
+              min_value: nil, max_value: nil, css_class: css_class) %>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

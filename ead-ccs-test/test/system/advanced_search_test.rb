@@ -58,9 +58,8 @@ class AdvancedSearchTest < ApplicationSystemTestCase
   test "every workbook filter is an attribute, in the sheet's order; one with no data yet shows the note and no checkboxes" do
     visit "/catalog/advanced"
 
-    # the year selectors are range filters, which Blacklight's form does not offer
     labels = all("#advanced_search_facets .facet-field-heading button", visible: :all).map { |b| b.text(:all).strip }
-    assert_equal DataModel.filters.reject { |filter| filter.type == :year }.map(&:name), labels - [ "Digital asset" ]
+    assert_equal DataModel.filters.map(&:name), labels - [ "Digital asset" ]
 
     find("#facet-pending_film_gaming_classification-header button").click
     within("#facet-pending_film_gaming_classification") do
@@ -68,6 +67,20 @@ class AdvancedSearchTest < ApplicationSystemTestCase
       assert_no_selector "input[type=checkbox]"
     end
     assert_accessible
+  end
+
+  test "a year filter takes a From and a To year, and searches that range" do
+    visit "/catalog/advanced"
+    find("#facet-date_start_isi-header button").click
+    within("#facet-date_start_isi") do
+      fill_in "From", with: "1900"
+      fill_in "To", with: "1910"
+    end
+    assert_accessible
+    click_button "advanced-search-submit"
+
+    assert_current_path(/range%5Bdate_start_isi%5D%5Bbegin%5D=1900/)
+    assert_selector ".constraint-value", text: /1900.*1910/
   end
 
   test "no attribute lists more than 100 values, so the page stays a usable size" do

@@ -8,7 +8,7 @@ module CatalogConfig
       # Facets
       # ================================================================
       # The filters, sections, order (the sheet's # column), names and types come from the workbook (DataModel).
-      # Every filter is shown, on the results and in Advanced search. One the data cannot support yet (see
+      # Every filter is shown, on the results and in Advanced search (the year selectors as From and To years there). One the data cannot support yet (see
       # config/data_model/solr_mapping.yml) says so in place of values, and is never asked of Solr.
       DataModel.filters.each do |filter|
         # CCS-41 (not in the workbook): the Digital asset option sits above Digital Asset Format Type.
@@ -22,7 +22,7 @@ module CatalogConfig
 
         options = { label: filter.name, group: filter.group }
         case filter.type
-        when :year then options[:range] = true # the range limit plugin's own form and histogram
+        when :year then options.merge!(range: true, advanced_search_component: NexusCcs::AdvancedYearRangeComponent) # the range limit plugin's own form and histogram; From and To years in Advanced search
         when :checkbox then options.merge!(limit: nil, filter_class: InclusiveFilterField)
         else options.merge!(limit: 20, index_range: "A".."Z", filter_class: InclusiveFilterField)   # browse, with "search within this filter" in the modal
         end

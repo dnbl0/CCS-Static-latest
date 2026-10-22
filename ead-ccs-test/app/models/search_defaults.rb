@@ -29,10 +29,16 @@ module SearchDefaults
 
   def self.empty_advanced_search?(query)
     return false unless query["clause"].present? && query["q"].blank?
-    return false if query["f"].present? || query["f_inclusive"].present? || query["range"].present?
+    return false if query["f"].present? || query["f_inclusive"].present? || years_given?(query)
 
     clauses = query["clause"].is_a?(Hash) ? query["clause"].values : []
     clauses.none? { |clause| clause.is_a?(Hash) && clause["query"].present? }
+  end
+
+  # The form sends every year filter's From and To, blank or not: only a year filled in counts
+  def self.years_given?(query)
+    ranges = query["range"].is_a?(Hash) ? query["range"].values : Array(query["range"])
+    ranges.any? { |range| range.is_a?(Hash) ? range.values.any?(&:present?) : range.present? }
   end
 
   def self.wants_default_filter?(query)
@@ -48,5 +54,5 @@ module SearchDefaults
   # A hand-edited f that is not a list of filters is left for the search itself to refuse
   def self.filters(query) = query["f"].is_a?(Hash) ? query["f"] : {}
 
-  private_class_method :empty_advanced_search?, :wants_default_filter?, :with_digital_asset_filter, :filters
+  private_class_method :empty_advanced_search?, :years_given?, :wants_default_filter?, :with_digital_asset_filter, :filters
 end

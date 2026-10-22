@@ -226,6 +226,17 @@ form.advanced .advanced-facet-limits .facet-values {
   overflow-y: auto;
 }
 
+/* A year filter (NexusCcs::AdvancedYearRangeComponent): From and To side by side, each wide enough for a four-digit year */
+form.advanced .advanced-year-range {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ccs-space-4);
+}
+
+form.advanced .advanced-year-range .form-control {
+  width: 8rem;
+}
+
 /* Sort */
 form.advanced .row.mb-4 {
   margin-bottom: var(--ccs-space-6) !important;

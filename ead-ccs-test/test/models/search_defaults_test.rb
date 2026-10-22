@@ -34,12 +34,19 @@ class SearchDefaultsTest < ActiveSupport::TestCase
     assert_equal [ :advanced_search_again, nil ], decide({ "clause" => { "0" => { "query" => "" } } })
   end
 
+  test "an Advanced search whose year fields were left blank is still empty" do
+    blank_years = { "creator_birth_isim" => { "begin" => "", "end" => "" }, "date_start_isi" => { "begin" => "", "end" => "" } }
+
+    assert_equal [ :advanced_search_again, nil ], decide({ "clause" => { "0" => { "query" => "" } }, "range" => blank_years })
+  end
+
   test "an Advanced search with only filters or a date range is searched" do
     empty_clause = { "0" => { "query" => "" } }
 
     assert_nil decide({ "clause" => empty_clause, "f_inclusive" => { "format" => [ "photograph" ] } })
     assert_nil decide({ "clause" => empty_clause, "f" => { "collection_ssim" => [ "Grainger Museum" ] } })
     assert_nil decide({ "clause" => empty_clause, "range" => { "date" => { "begin" => "1900" } } })
+    assert_nil decide({ "clause" => empty_clause, "range" => { "date" => { "begin" => "", "end" => "1950" } } })
     assert_nil decide({ "clause" => empty_clause, "q" => "skull" })
   end
 

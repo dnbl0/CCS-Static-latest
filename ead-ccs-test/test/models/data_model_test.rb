@@ -40,6 +40,7 @@ class DataModelTest < ActiveSupport::TestCase
     assert_equal expected.map(&:group), actual.map(&:group)
     expected.zip(actual).each do |filter, facet|
       assert_equal filter.type == :year, facet.range.present?, "#{filter.name}: only year selectors are range facets"
+      assert_equal NexusCcs::AdvancedYearRangeComponent, facet.advanced_search_component, filter.name if filter.type == :year
     end
   end
 
