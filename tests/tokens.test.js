@@ -1,5 +1,5 @@
 // Design tokens: tier rules hold, every var(--token) the site uses is defined.
-const { PUBLIC, ROOT, fail, ok, walk, finish, fs, path } = require('./lib');
+const { PUBLIC, fail, ok, walk, finish, fs, path } = require('./lib');
 // tokens.css has three tiers marked by "TIER n" banner comments: semantic may alias primitives only, component may alias semantic only
 const TIERS = ['primitive', 'semantic', 'component'];
 const ALLOWED = { primitive: [], semantic: ['primitive'], component: ['semantic'] };

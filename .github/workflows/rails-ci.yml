@@ -10,6 +10,7 @@ on:
       - 'scripts/parity.js'
       - 'scripts/sync-rails-assets.js'
       - 'package.json'
+      - 'package-lock.json'
       - '.github/workflows/rails-ci.yml'
   push:
     branches:
@@ -109,11 +110,11 @@ jobs:
         with:
           node-version: 20
           cache: npm
-          cache-dependency-path: package.json
+          cache-dependency-path: package-lock.json
 
       - name: Install Node dependencies and Chromium
         run: |
-          npm install
+          npm ci
           npx playwright-core install --with-deps chromium
 
       - name: Prepare the Rails app
@@ -183,11 +184,11 @@ jobs:
         with:
           node-version: 20
           cache: npm
-          cache-dependency-path: package.json
+          cache-dependency-path: package-lock.json
 
       - name: Install axe-core
         working-directory: .
-        run: npm install
+        run: npm ci
 
       - name: Cache Solr
         id: solr-cache

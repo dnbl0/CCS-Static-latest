@@ -453,7 +453,7 @@
     });
     // Numbers only: strip anything that is not a digit or "/" (and keep a minus only at the very start, for BCE years)
     input.addEventListener('input', function () {
-      var v = input.value, cleaned = v.replace(/[^0-9\/\-]/g, '').replace(/(?!^)-/g, '');
+      var v = input.value, cleaned = v.replace(/[^0-9/-]/g, '').replace(/(?!^)-/g, '');
       if (cleaned !== v) { input.value = cleaned; say('Numbers only'); }
       self.setError('');
     });

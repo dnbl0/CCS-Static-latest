@@ -37,9 +37,7 @@ for (const [q, want] of [['false teeth', 'denture'], ['sheet music', 'score'], [
 }
 // Exact matches always rank before related ones
 for (const q of ['doctor', 'tooth', 'harp']) {
-  const r = run(q); const order = { exact: 0, fuzzy: 1, semantic: 2 };
-  let bad = 0; for (let i = 1; i < r.length; i++) if (order[r[i].m.kind] < order[r[i - 1].m.kind] && r[i].m.score > r[i - 1].m.score) bad++;
-  const firstRelated = r.findIndex(x => x.m.kind !== 'exact'), lastExact = r.map(x => x.m.kind).lastIndexOf('exact');
+  const r = run(q);
   if (r.length && r[0].m.kind === 'exact') ok(`"${q}" ranks an exact match first (${JSON.stringify(kinds(r))})`);
   else fail(`"${q}" should rank an exact match first`);
 }

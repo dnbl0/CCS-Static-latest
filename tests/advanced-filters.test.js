@@ -208,7 +208,7 @@ const truthy = (v, msg) => { if (v) ok(msg); else fail(msg); };
     // numbers only
     await p.fill(fi, ''); await p.type(fi, 'ab1c5/0d3/1950x');
     eq(await p.inputValue(fi), '15/03/1950', 'typing letters is ignored');
-    truthy(/^[0-9\/\-]*$/.test(await p.inputValue(fi)), 'the field only ever contains digits and slashes');
+    truthy(/^[0-9/-]*$/.test(await p.inputValue(fi)), 'the field only ever contains digits and slashes');
     // format + range validation
     await p.fill(fi, '31/02/1950'); await p.press(fi, 'Tab');
     truthy((await p.$eval(from + ' .ccs-error', e => e.textContent)).includes('format dd/mm/yyyy'), 'an impossible date is rejected');

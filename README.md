@@ -55,7 +55,9 @@ Legacy `*.dc.html` filenames (for example `Collection Search v3.dc.html`) 301-re
 public/                     Deployed web root
   index.html, search.html, about.html
   nav.js                    Header behaviour: dropdown menus + mobile drawer (event-delegated; used by every page)
-  search/search-results.html
+  search/search-results.html     # results page: renders what search/search-query.js decides
+  search/search-query.js          # the search query: URL in and out, which records match, facet counts, order, "Did you mean"
+  search/catalogue.js             # where results come from: the local records, or the Blacklight API in live mode
   search/advanced-search.html     # advanced search form (logic in search/advanced-search-form.js)
   collections/{index.html, record.html}
   help/{index.html, jump-nav.js}
@@ -203,6 +205,8 @@ Rows combine as: every `must` row matches, at least one `should` row matches (if
 - **Record media access rules**: `webAccess`, `accessMessage`, `viewRestricted`, `usageNotice` and `caption` are computed in `public/collection-data.js` (see `jira-mvp-mapping.md`, CCS-27/45/50/68/69). Licence types live in the `LIC` table there; `Not licensed` hides the media and offers a request to view.
 - **Tests**: `npm test` also runs `tests/image-aspect.test.js` (needs playwright-core and Chromium; skipped otherwise). Request types, the PDF viewer, the Theme filter and recent searches are described in `jira-mvp-mapping.md`.
 - **Accessibility**: `tests/accessibility.test.js` runs axe-core (WCAG 2.1 A/AA) plus 320px reflow and title checks; keep it passing. The manual checklist is in `jira-mvp-mapping.md` (WCAG 2.1 AA pass). Do not claim conformance without a formal audit.
+- **Search query**: `public/search/search-query.js` (`window.CCSSearchQuery`) holds every search rule of the results page: reading the simple and advanced URL formats, writing the "Edit advanced search" link, which records match a query, facet counts, result order and "Did you mean" suggestions, plus the list of filters (`FACETS`). The page only renders what it returns. `tests/search-query.test.js` checks it against the catalogue in node, with no browser.
+- **Catalogue**: `public/search/catalogue.js` (`window.CCSCatalogue`) decides where results come from. In live mode it asks `blacklight-adapter.js` for a page of results, uses the full local record for each document the API returns, drops a reply that a newer search has replaced, and falls back to the local records when the API cannot answer the query or fails. `tests/catalogue.test.js` checks this with a stand-in adapter; `tests/search-live.test.js` checks it in the browser against `api/catalog.js`.
 - **Fuzzy and semantic search**: `public/search/smart-search.js` (loaded by the search page) provides fuzzy, prefix and thesaurus-based matching with no backend; edit the `SYNONYMS` and `BROADER` tables there to teach it new vocabulary. `tests/smart-search.test.js` checks it against the catalogue. See `jira-mvp-mapping.md`.
 
 - **Filters modal**: the search page's Filters panel follows the Gen 3 Modal component (white panel, navy 80% blanket, Fraunces heading, top-right Close with a visible label). It adds a "Find a filter" box, a removable "Selected" chip list and a live "Show N records" button, with the header and footer fixed while the filters scroll. Its styles are the `search-results-filters-title__*` and `filters-*` rules in `public/styles/pages/search-results/ (split by component: layout, results, toolbar, banner, flyout, filters, facet-rail, pagination, pills)`.
@@ -230,6 +234,8 @@ Clean URLs (`/search/search-results`, `/collections/record`) only resolve on a h
 
 ### What `npm test` runs
 
+`npm test` is `tests/run.js`: lint, the CSS build and the generated-file checks, then every `tests/*.test.js` (a new suite runs without being listed anywhere), then the Rails asset check. Every step runs even after a failure, and the summary names the ones that failed. `node tests/run.js search-query catalogue` runs only those suites. Some of them:
+
 1. `build:css` - compiles Bootstrap (fails on Sass errors).
 2. `verify-bootstrap.sh` - for each page referencing Bootstrap, checks that the compiled `bootstrap-uom.min.css` exists (or that any CDN reference is version 5.3.3 with SRI).
 3. `tests/blacklight-adapter.test.js` - default mode is `mock`, request-parameter building and document transformation.
@@ -242,7 +248,7 @@ Clean URLs (`/search/search-results`, `/collections/record`) only resolve on a h
 
 ### CI and merge workflow
 
-- `.github/workflows/ci.yml`: Node 20, `npm ci` (or `npm install` without a lockfile), installs Chromium for the browser test, then `npm test`, on every pull request and push to `main`.
+- `.github/workflows/ci.yml`: Node 20, `npm ci` (from the committed `package-lock.json`, so every run uses the same tool versions), installs Chromium for the browser test, then `npm test`, on every pull request and push to `main`.
 - `.github/workflows/auto-merge.yml`: pushes to `feature/**`, `bugfix/**` or `enhance/**` that change html/css/js/md files and have 3+ commits or 2+ changed files open (or reuse) a PR against `main`, run basic documentation/structure checks, approve it, and squash-merge it. It does not run `npm test` itself. Auto-approval only works if the repository setting **Settings > Actions > General > "Allow GitHub Actions to create and approve pull requests"** is enabled; otherwise the approve step logs a warning and the job continues to the merge step. See `github.md` and `.agents/rules/pr-workflow.md`.
 - `.github/workflows/rails-ci.yml`: Rails tests, system tests, rubocop and `npm run parity` (static pages against their Rails twins). `test`, `rails` and `system` must pass before a pull request is merged. On `dnbl0/CCS-Static-latest`, `parity` compares against this repository's copy of the Rails app, which can lag the organisation repository (where the Rails port is done); a `parity` failure is only acceptable when every failure is that known lag, and it should pass in the organisation repository after the sync.
 - `.github/workflows/pages.yml`: on push to `main` of the organisation repo, builds `public/` into `dist/` (`scripts/build-pages.js`) and publishes it with GitHub Pages. It does nothing on forks or personal copies.

@@ -32,10 +32,9 @@ const { PUBLIC, fail, ok, finish, fs, path } = require('./lib');
     await page.waitForSelector('.facet-rail');
     const titles = () => ({
       rail: page.$$eval('.facet-rail__section', els => els.map(e => e.querySelector('.facet-rail__name').childNodes[0].textContent.trim())),
-      railGroups: page.$$eval('.facet-rail__section', els => els.filter(e => e.querySelector('.facet-rail__group')).map(e => e.querySelector('.facet-rail__group').textContent.trim())),
     });
     const t = await titles();
-    const rail = await t.rail, railGroups = await t.railGroups;
+    const rail = await t.rail;
     await page.evaluate(() => document.querySelector('.search-results-search-tools__button-filter-btn').click()); // hidden beside the rail on desktop; the modal still opens
     await page.waitForSelector('.search-results-filters-title__section');
     const modal = await page.$$eval('.search-results-filters-title__section', els => els.map(e => e.querySelector('.search-results-section__text--v2').childNodes[0].textContent.trim()));

@@ -39,6 +39,7 @@ search bar on the home page (the Rails app keeps its Blacklight bar) and font fa
     validation is left out: the pages are DC templates with `{{ }}` and custom tags that validators reject.
   - Item 11: the five collection pages are generated from `src/collection-landing.template.html` by
     `scripts/build-collection-pages.js` (output unchanged, byte for byte); `--check` runs in `npm test`.
+    (Superseded: the collection landing pages, the template and the script were removed in #257.)
   - Item 12: the header, search overlay and footer are `src/partials/*`, written into every page by
     `scripts/sync-partials.js` (`--check` in `npm test`). Three pages changed: the contact page's Contact link class,
     the search page's search button class (neither is styled) and the home page footer's image paths (now absolute).

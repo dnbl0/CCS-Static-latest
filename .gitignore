@@ -22,7 +22,6 @@ Thumbs.db
 
 # Dependencies (if using any in future)
 node_modules
-package-lock.json
 yarn.lock
 
 # Build & Distribution
