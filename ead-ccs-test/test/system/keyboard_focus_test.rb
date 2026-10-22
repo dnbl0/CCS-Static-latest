@@ -118,19 +118,33 @@ class KeyboardFocusTest < ApplicationSystemTestCase
     assert_equal "40 per page", accessible_name(toggle)
   end
 
-  test "on a phone the home link keeps its name when a menu section is open; the section name is shown in its place as text" do
+  test "on a phone the home link stays visible with its own name when a menu section is open; the section name is shown under it as text" do
     page.driver.resize(390, 800)
     visit root_path
     find("button.site-header__menu").click
     find("button.site-nav__trigger[aria-controls=site-nav-records]").click
 
+    home = "a.site-header__title[href='/']:not(.sticky-search *)"
     assert_selector ".site-header__section", text: "Browse records", visible: true
     assert_no_selector "a.site-header__section", visible: :all
-    assert_equal "Collection Navigator", find("a.site-header__title[href='/']:not(.sticky-search *)", visible: :all).text(:all).squish
+    assert_selector home, text: "Collection Navigator", visible: true
+    assert_equal "Collection Navigator", accessible_name(home)
     assert_no_selector "a[href='/']", text: "Browse records", visible: :all
 
-    find("#site-nav-records .site-nav__back").click
+    box = page.evaluate_script(<<~JS)
+      (() => {
+        const link = document.querySelector(".site-header a.site-header__title").getBoundingClientRect()
+        const section = document.querySelector(".site-header__section").getBoundingClientRect()
+        const bar = document.querySelector(".site-header__bar").getBoundingClientRect()
+        return { linkBottom: link.bottom, linkHeight: link.height, sectionTop: section.top, sectionBottom: section.bottom, barBottom: bar.bottom }
+      })()
+    JS
+    assert_operator box["sectionTop"], :>=, box["linkBottom"] - 1, "the section name sits under the link"
+    assert_operator box["sectionBottom"], :<=, box["barBottom"] + 1, "both fit in the header bar"
+    assert_operator box["linkHeight"], :>=, 24, "the link keeps a usable target size"
+
+    find("button.site-header__menu").click # Close: the drawer and its section close together
     assert_no_selector ".site-header__section", visible: true
-    assert_equal "Collection Navigator", accessible_name("a.site-header__title[href='/']:not(.sticky-search *)")
+    assert_selector home, text: "Collection Navigator", visible: true
   end
 end
