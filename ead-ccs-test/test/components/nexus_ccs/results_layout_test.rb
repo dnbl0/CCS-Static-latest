@@ -187,6 +187,7 @@ class ResultsLayoutTest < ActiveSupport::TestCase
     phone = css[/@media \(max-width: 767\.98px\) \{.*?\n\}\n/m]
     assert_includes phone, "grid-template-columns: repeat(2, minmax(0, 1fr));"
     assert_includes phone, ".sort-dropdown .dropdown-toggle .d-none"
-    assert_includes phone, ".per_page-dropdown .dropdown-toggle .visually-hidden"
+    assert_includes css, "#sortAndPerPage .per_page-dropdown .dropdown-toggle .visually-hidden {" # the words show at every width
+    assert_includes phone, ".per_page-dropdown .dropdown-toggle .per-page__results" # and "results" goes on phones
   end
 end

@@ -39,7 +39,9 @@
 .site-header__search-toggle img { width: 24px; height: 24px; padding: 0; }
 .site-header__bar { display: flex; align-items: center; justify-content: space-between; gap: var(--ccs-space-4); height: 65px; padding: var(--ccs-space-2); }
 .site-header__title { display: flex; align-items: center; min-height: 44px; padding: 0 var(--ccs-space-5) 0 var(--ccs-space-1); font-size: var(--ccs-font-size-md); font-weight: var(--ccs-font-weight-semibold); line-height: var(--ccs-line-height-tight); color: var(--ccs-white); text-decoration: none; white-space: nowrap; }
-.site-header__title:hover { color: var(--ccs-cyan-400); text-decoration: underline; }
+a.site-header__title:hover { color: var(--ccs-cyan-400); text-decoration: underline; }
+/* Phones: the open menu section's name (plain text) takes the home link's place; display: flex above outranks [hidden] */
+.site-header__title[hidden] { display: none; }
 
 /* Primary navigation (links + dropdown triggers share the UniMelb interactive states) */
 .site-nav { display: flex; }

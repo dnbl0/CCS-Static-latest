@@ -109,6 +109,19 @@
   max-width: 18rem;
 }
 
+/* "40 results per page": the button shows the words its menu items keep for screen readers (config/locales/blacklight.en.yml) */
+#sortAndPerPage .per_page-dropdown .dropdown-toggle .visually-hidden {
+  /* Bootstrap's .visually-hidden is !important throughout */
+  position: static !important;
+  width: auto !important;
+  height: auto !important;
+  margin: 0 !important;
+  overflow: visible !important;
+  clip: auto !important;
+  clip-path: none !important;
+  white-space: nowrap !important;
+}
+
 #sortAndPerPage .search-widgets > [data-controller="tooltip"] {
   flex: none;
   margin-left: auto !important;
@@ -289,21 +302,9 @@
     display: inline !important;
   }
 
-  /* "40 per page": show the words that are visually hidden at wider widths, drop "results" */
-  #sortAndPerPage .per_page-dropdown .dropdown-toggle .d-sm-inline {
-    display: none !important;
-  }
-
-  #sortAndPerPage .per_page-dropdown .dropdown-toggle .visually-hidden {
-    /* Bootstrap's .visually-hidden is !important throughout */
-    position: static !important;
-    width: auto !important;
-    height: auto !important;
-    margin: 0 !important;
-    overflow: visible !important;
-    clip: auto !important;
-    clip-path: none !important;
-    white-space: nowrap !important;
+  /* "40 per page": drop "results" */
+  #sortAndPerPage .per_page-dropdown .dropdown-toggle .per-page__results {
+    display: none;
   }
 
   @media (max-width: 400px) {

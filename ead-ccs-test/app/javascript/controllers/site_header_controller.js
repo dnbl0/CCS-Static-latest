@@ -1,9 +1,24 @@
 import { Controller } from "@hotwired/stimulus"
+import { inertOutside, releaseInert } from "modal_lock"
+
+const PHONE = "(max-width: 1023px)"
 
 // Site header behaviour: desktop dropdown panels and the mobile drawer. On mobile, opening a
-// section "drills in": the section replaces the menu list and the header title takes its name.
+// section "drills in": the section replaces the menu list and its name is shown in place of the
+// home link. While the drawer covers the page, everything outside the header is inert.
 export default class extends Controller {
-  static targets = ["nav", "menu", "menuLabel", "trigger", "title"]
+  static targets = ["nav", "menu", "menuLabel", "trigger", "title", "section"]
+
+  connect() {
+    this.phone = window.matchMedia(PHONE)
+    this.leavePhone = () => { if (!this.phone.matches) this.setMenu(false) }
+    this.phone.addEventListener("change", this.leavePhone)
+  }
+
+  disconnect() {
+    this.phone.removeEventListener("change", this.leavePhone)
+    releaseInert(this)
+  }
 
   openSearch() {
     this.dispatch("open", { prefix: "search-overlay", bubbles: true })
@@ -61,6 +76,8 @@ export default class extends Controller {
     this.menuTarget.setAttribute("aria-expanded", String(open))
     this.menuLabelTarget.textContent = open ? "Close" : "Menu"
     this.navTarget.classList.toggle("is-open", open)
+    if (open) inertOutside(this, this.element)
+    else releaseInert(this)
     if (!open) this.closeSections()
   }
 
@@ -72,15 +89,11 @@ export default class extends Controller {
   }
 
   syncTitle() {
-    const title = this.titleTarget
     const open = this.openTrigger
-    if (open && window.matchMedia("(max-width: 1023px)").matches) {
-      if (!title.dataset.homeLabel) title.dataset.homeLabel = title.textContent
-      title.textContent = open.textContent.replace(/\s+/g, " ").trim()
-    } else if (title.dataset.homeLabel) {
-      title.textContent = title.dataset.homeLabel
-      delete title.dataset.homeLabel
-    }
+    const drilledIn = Boolean(open) && window.matchMedia(PHONE).matches
+    this.sectionTarget.textContent = drilledIn ? open.textContent.replace(/\s+/g, " ").trim() : ""
+    this.sectionTarget.hidden = !drilledIn
+    this.titleTarget.hidden = drilledIn
   }
 
   get openTrigger() {

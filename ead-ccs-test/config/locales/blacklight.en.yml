@@ -24,9 +24,12 @@ en:
         label: "%{label}"
       facets:
         more_html: Show more <span class="visually-hidden">%{field_name}</span>
+      # The option and the button share one label, so "per page" is said once: menu items show the number and are named
+      # "40 results per page"; the button shows the words too (components/results_toolbar.css), dropping "results" on phones
       per_page:
-        button_label: "%{count} results per page"
-        button_label_html: '%{count}<span class="d-none d-sm-inline"> results per page</span>'
+        label: '%{count}<span class="visually-hidden"><span class="per-page__results"> results</span> per page</span>'
+        button_label: "%{count}"
+        button_label_html: "%{count}"
       zero_results:
         title: No results found and no suggestions are available for this search phrase.
       # Titles of the filter sections in the Field labels and filters workbook (facet groups)

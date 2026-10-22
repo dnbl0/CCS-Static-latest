@@ -7,7 +7,10 @@ import * as bootstrap from "bootstrap"
 // Attach to an element containing the select; `data-select-dropdown-selector-value` picks it (default "select").
 // `data-select-dropdown-variant-value="field"` gives it the look of the filter rail's boxes (a 48px box with a
 // quiet outline and a chevron inside it); its menu is positioned against the window so a scrolling container
-// around it cannot clip it.
+// around it cannot clip it. The button is named by the select's label and then the chosen value ("Search in All Fields"),
+// through aria-labelledby; a select with only a title gets a hidden element holding that text.
+let uid = 0
+
 export default class extends Controller {
   static values = { selector: { type: String, default: "select" }, variant: { type: String, default: "" } }
 
@@ -15,7 +18,8 @@ export default class extends Controller {
     this.select = this.element.querySelector(this.selectorValue)
     if (!this.select || this.group) return
 
-    const label = this.element.querySelector(`label[for="${this.select.id}"]`)?.textContent.trim() || this.select.title
+    const labelElement = this.element.querySelector(`label[for="${this.select.id}"]`)
+    const label = labelElement?.textContent.trim() || this.select.title
     this.group = document.createElement("div")
     this.group.className = "btn-group ccs-select"
     if (this.variantValue) this.group.classList.add(`ccs-select--${this.variantValue}`)
@@ -26,7 +30,7 @@ export default class extends Controller {
     this.toggle.setAttribute("data-bs-toggle", "dropdown")
     this.toggle.setAttribute("aria-expanded", "false")
     this.toggle.setAttribute("aria-haspopup", "listbox")
-    this.toggle.title = label || ""
+    this.toggle.id = `ccs-select-${++uid}`
 
     this.menu = document.createElement("div")
     this.menu.className = "dropdown-menu"
@@ -46,6 +50,7 @@ export default class extends Controller {
     })
 
     this.group.append(this.toggle, this.menu)
+    if (label) this.labelToggle(labelElement, label)
     this.select.before(this.group)
     if (this.variantValue === "field") {
       bootstrap.Dropdown.getOrCreateInstance(this.toggle, { popperConfig: (config) => ({ ...config, strategy: "fixed" }) })
@@ -57,6 +62,19 @@ export default class extends Controller {
     this.select.setAttribute("aria-hidden", "true")
     this.select.tabIndex = -1
     this.sync()
+  }
+
+  // aria-labelledby reads the label, then the button's own text (the chosen value)
+  labelToggle(labelElement, text) {
+    let name = labelElement
+    if (!name) {
+      name = document.createElement("span")
+      name.hidden = true
+      name.textContent = text
+      this.group.append(name)
+    }
+    if (!name.id) name.id = `${this.toggle.id}-label`
+    this.toggle.setAttribute("aria-labelledby", `${name.id} ${this.toggle.id}`)
   }
 
   disconnect() {
