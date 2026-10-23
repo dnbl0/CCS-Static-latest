@@ -2,6 +2,16 @@
 
 Recent changes to the static site, newest first. Earlier history is in `git log`. (Moved out of the README on 2026-10-07.)
 
+### 2026-10-23
+
+- **EMu accession numbers keep their zeros (Rails)**: the export's accession column had been through a spreadsheet (00.0070 became 0.007) on 5,589 Grainger and University Art Collection records, which also gave different records the same number, so images keyed to it showed on the wrong records (the contrabass sarrusophone's photos on its case and on *Rocks at Black Rock*; the Quinn life study on a musical glass). The indexer now takes the number from the Summary Data (`[00.0070] ...`). Needs a reindex (`FORCE=1`).
+- **UoM ID is emu-umc-<IRN> (Rails)**: the University has three EMu systems (UMC, FEIT, prints); this export is UMC's. The record address stays `/catalog/emu-<IRN>`, and `/catalog/emu-umc-<IRN>` redirects there.
+- **Oboe (00.0092) and contrabass sarrusophone (00.0070)**: front view first; the sarrusophone's photos moved from its case (00.0071) to the instrument.
+- **Renamed to Collections Navigator** (static and Rails): page titles, header title, home and About headings, search box labels, the page loader, Blacklight's application name, the app manifest and the docs. "Cultural Collections", "Cultural Collections Search" and the "CCS" abbreviation no longer appear in page text; "the University's cultural collections" stays as a description. Code names (`ccs-` classes, `window.CCS`, the `ead-ccs-test` folder, Jira keys) are unchanged.
+- **Azure images push again after each merge**: `acr-push.yml` fell back to Docker Hub when the `ACR_REGISTRY` variable was empty, so every push to `main` since 2026-10-13 failed. It now falls back to `<ACR_USERNAME>.azurecr.io`. With an `AZURE_CREDENTIALS` secret it also rolls `ccs-web` onto the new image (with `FORCE=1`, so the index is rebuilt on start).
+- **Vercel deployments turned off**: `vercel.json` sets `git.deploymentEnabled: false`, so the Vercel GitHub App no longer builds a preview or posts a comment for each push and PR. The unused `.vercelignore` is removed. Hosting is GitHub Pages and the Azure Container Apps deployment.
+- **Images for three University Art Collection records (Rails)**: James Peter Quinn, *Life study, seated man* (0.013, two views); Rammey Ramsey, *Tranie Gorge* (2011.0251.000.000); Simryn Gill, *A small town at the turn of the century #5* (2018.231.071), in `ead-ccs-test/config/digital_assets.yml`.
+
 ### 2026-10-10
 
 - **Saved records bar moved into the breadcrumb strip (Rails)**: as on the Study site's saved courses, the slate-teal "N saved records" block now sits at the right end of the breadcrumb strip (both `BreadcrumbComponent` and `PageBreadcrumbsComponent` render `NexusCcs::SavedBarComponent` inside a `.breadcrumb-strip`), flush to the strip's top, bottom and right edge and exactly as tall as the strip (44px at 1440, 1000 and 390, system-tested). It is gone from the header top strip and the mobile drawer, except on pages with no breadcrumb (the home page), where it stays in the header's top strip (desktop only). Wording, live count, `aria-current` on `/bookmarks` and the focus ring are unchanged.

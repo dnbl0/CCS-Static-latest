@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Cultural Collections design tokens: the single token layer.
+   Collections Navigator design tokens: the single token layer.
 
    Tier 1  PRIMITIVES   raw values (palette, type scale, spacing scale, radii, elevation, z-index, motion, sizes).
                         Nothing else in the app should hold a raw colour or size that is also here.

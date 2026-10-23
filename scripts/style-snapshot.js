@@ -138,6 +138,8 @@ async function runJob(browser, base, job) {
     await job.def.run(page);
     await page.mouse.move(1, 1);
     await page.waitForTimeout(400);
+    // Scroll-driven state (the Help jump nav's current link) updates only on scroll or resize; let it see the settled layout
+    await page.evaluate(() => window.dispatchEvent(new Event('scroll')));
     await page.evaluate(() => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r))));
     const data = await page.evaluate(EXTRACT, RUNTIME_VARS);
     // the server port is random: keep it out of resolved url(...) values

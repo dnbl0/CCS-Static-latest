@@ -5,7 +5,7 @@ class LandingTest < ActionDispatch::IntegrationTest
     get "/"
 
     assert_response :success
-    assert_select "body.page-home h1", "Cultural Collections"
+    assert_select "body.page-home h1", "Collections Navigator"
     assert_select ".ccs-hero__search search form"
     assert_select ".ccs-hero__search a.advanced_search[href=?]", "/catalog/advanced"
     assert_select ".ccs-card__title a", count: 5

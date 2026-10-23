@@ -1,4 +1,4 @@
-<% content_for :title, "#{@collection["name"]} — Cultural Collections Search — University of Melbourne" %>
+<% content_for :title, "#{@collection["name"]} — Collections Navigator — University of Melbourne" %>
 <% content_for :body_class, "page-collection-landing" %>
 <% search_href = search_catalog_path(f: { collection_ssim: [ @facet_value ] }) %>
 <%= render NexusCcs::PageBreadcrumbsComponent.new(trail: [ [ "Browse collections", collections_path ], [ @collection["name"], nil ] ]) %>

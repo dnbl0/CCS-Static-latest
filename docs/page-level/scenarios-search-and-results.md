@@ -66,7 +66,7 @@ Key numbers
 | E4 | Query | Advanced clause validation | Sad | invalid `clause[n][query]` | Same rule applied | query_rules.rb:30 | R |
 | U1 | Error | Solr down or timeout | Sad | connection refused, invalid request, timeout | HTTP 503 page: h1 "Search is unavailable"; "We could not search the collections just now. Please try again in a few minutes."; links "Back to the home page", "contact the collections team" | unavailable.html.erb | R |
 | U2 | Error | Static API offline | Sad | static dev toggle | "API: Fallback (Offline)" or "API: Unavailable, local data" | search-results.html:1315 | S |
-| L1 | Loading | Page loader | Happy | first paint up to 15s | Navy cover, spinner, "Loading Cultural Collections Search" | page_loader.css:1-25 | R |
+| L1 | Loading | Page loader | Happy | first paint up to 15s | Navy cover, spinner, "Loading Collections Navigator" | page_loader.css:1-25 | R |
 | L2 | Loading | Skeleton | Happy | change slower than 150ms | Tiles, facet values and pills shimmer grey; pagination and toolbar at 50%; `aria-busy`; reduced motion flat grey | search_loading.js; skeleton.css | R |
 | L3 | Loading | Static skeleton | Happy | any change (static) | 420ms loading state with placeholder cards, "Loading results" | search-results.html:376-384 | S |
 | A1 | Advanced | Page | Happy | `/catalog/advanced` | Banner "Advanced Search" / "Combine fields and filters to find exactly what you're looking for across every collection."; Search (rows, "Add row"), Filters ("Add filter"), Dates, "Sort results by"; "Start over", "Search"; Search help sidebar | advanced_search.en.yml | Both |

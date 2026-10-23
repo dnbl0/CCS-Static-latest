@@ -1,4 +1,4 @@
-# Cultural Collections Search - University of Melbourne
+# Collections Navigator - University of Melbourne
 
 A static front-end prototype for searching and browsing the University of Melbourne's cultural collections (Grainger Museum, Medical History Museum, University Art Collection, Harry Brookes Allen Museum, Henry Forman Atkinson Dental Museum, and a few smaller collections).
 
@@ -189,7 +189,7 @@ Rows combine as: every `must` row matches, at least one `should` row matches (if
 
 `public/collections/record.html?id=<id>`:
 
-- Reads `window.CCS.records[id]`. An unknown or missing id shows "Record not found" and sets that as the document title. A found record sets the title to `<record title> - Cultural Collections Search - University of Melbourne`.
+- Reads `window.CCS.records[id]`. An unknown or missing id shows "Record not found" and sets that as the document title. A found record sets the title to `<record title> - Collections Navigator - University of Melbourne`.
 - Only the **Contact us** button opens the request dialog. Tabs: General enquiry, Request to use, Request to view. The dialog traps focus, closes on Esc, and returns focus to the opener. Submitting only shows a confirmation; nothing is sent anywhere.
 - Media viewer shows images, audio and video from `slides`, with thumbnails and a metadata sidebar. The viewer handles keyboard shortcuts only while it has focus or is full screen (see the script in `record.html` for the exact keys).
 - "Copy persistent link" and citation formats are generated from the record.
