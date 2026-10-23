@@ -1,7 +1,7 @@
 // Writes the Rails app's copies of the shared design assets from their source in public/:
 //   public/styles/tokens/tokens.css            -> ead-ccs-test/app/assets/stylesheets/tokens/static_site.css
 //   public/styles/components + pages (CSS)     -> ead-ccs-test/app/assets/stylesheets/pages/*.css (filtered)
-//   public/images (banners, tiles, home icons) -> ead-ccs-test/app/assets/images/site/
+//   public/images (banners, tiles, home icons, Creative Commons icons) -> ead-ccs-test/app/assets/images/site/
 // The static site is the origin; never edit the Rails copies by hand. `--check` writes nothing and exits 1 when a
 // copy is stale (run by `npm test`). Usage: node scripts/sync-rails-assets.js [--check]
 const fs = require('fs');
@@ -110,7 +110,8 @@ const IMAGE_FILES = [
   ['arrow-right.svg', 'arrow-right.svg'],
   ...fs.readdirSync(path.join(IMAGES, 'banners')).map((f) => [`banners/${f}`, `banners/${f}`]),
   ...fs.readdirSync(IMAGES).filter((f) => f.startsWith('tile-')).map((f) => [f, `tiles/${f}`]),
-  ...fs.readdirSync(path.join(IMAGES, 'home')).map((f) => [`home/${f}`, f])
+  ...fs.readdirSync(path.join(IMAGES, 'home')).map((f) => [`home/${f}`, f]),
+  ...fs.readdirSync(path.join(IMAGES, 'cc')).map((f) => [`cc/${f}`, `cc/${f}`])
 ];
 for (const [from, to] of IMAGE_FILES) files.set(`images/site/${to}`, fs.readFileSync(path.join(IMAGES, from)));
 

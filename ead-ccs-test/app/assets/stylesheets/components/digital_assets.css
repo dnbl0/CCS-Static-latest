@@ -169,16 +169,10 @@
   margin: 0 auto;
 }
 
+/* The licence badge (components/licence_badge.css) */
 .digital-assets__licence {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.375rem;
   margin: 0;
-  padding: 0.375rem 0.625rem;
-  background: #f1f0ec;
-  font-size: var(--ccs-font-size-sm);
-  line-height: 1.4;
-  color: #1b1f2a;
+  min-width: 0;
 }
 
 .digital-assets__controls {

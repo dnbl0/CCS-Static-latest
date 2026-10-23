@@ -427,7 +427,7 @@ body.blacklight-catalog-show #main-container .page-sidebar {
   overflow-wrap: anywhere;
 }
 
-.record-copyright__item a,
+.record-copyright__item a:not(.licence-badge),
 .record-copyright__terms a {
   color: var(--record-link);
 }

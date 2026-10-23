@@ -83,9 +83,9 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     assert_select "#permalink-pane td.blacklight-full_record a[href$='/catalog/vernon-MHM00394']", text: "View full record"
     assert_select "p", text: /provided and maintained by\s*Museum/
     # the licence is a badge with its icon in the Copyright row (not in the media toolbar), above the rights note
-    assert_select "section[aria-label='Media toolbar'] .badge", false
-    assert_select "#copyright-pane td.blacklight-rights_ssim p .badge svg path", 1
-    assert_select "#copyright-pane td.blacklight-rights_ssim p .badge", text: /Copyright - Current/
+    assert_select "section[aria-label='Media toolbar'] .licence-badge", false
+    assert_select "#copyright-pane td.blacklight-rights_ssim p .licence-badge img.licence-badge__icon[src*='/site/cc/in-copyright']", 1
+    assert_select "#copyright-pane td.blacklight-rights_ssim p .licence-badge", text: /Copyright - Current/
     # the Copyright card's data is in the table: copyright, credit line, licence, terms of use, advisory, caption
     assert_select "td.blacklight-rights_ssim", text: /\[Copyright - Current\] Used with permission\./
     assert_select "td.blacklight-credit_line_tsim", text: "Gift of Someone, 1970"
@@ -163,9 +163,10 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
 
   test "a public domain record's licence badge has the Public Domain Mark icon and links to its page" do
     get "/branded-stock/pd"
-    assert_select "#copyright-pane td.blacklight-rights_ssim a.badge[href='https://creativecommons.org/publicdomain/mark/1.0/'][target=_blank][rel=noopener]" do
-      assert_select "svg[viewBox='0 0 496 512']", 1
-      assert_select "span", text: "Public domain - Copyright expired"
+    assert_select "#copyright-pane td.blacklight-rights_ssim a.licence-badge[href='https://creativecommons.org/publicdomain/mark/1.0/'][target=_blank][rel=noopener]" do
+      assert_select "img.licence-badge__icon[alt='']", 1
+      assert_select "img.licence-badge__icon[src*='/site/cc/pd']", 1
+      assert_select ".licence-badge__label", text: "Public domain - Copyright expired"
       assert_select ".visually-hidden", text: "(opens in new window)"
     end
   end
@@ -181,7 +182,8 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     assert_equal({ icons: %w[copyright], url: nil }, icons.("Reproduction Licence - Current"))
     assert_equal({ icons: [], url: nil }, icons.("Something else"))
     assert_not StockLicenceBadgeComponent.new(licence: "").render?
-    assert(StockLicenceIcons::PATHS.values.all? { |view_box, path| view_box.present? && path.start_with?("M") })
+    assert_equal %w[site/cc/cc.svg site/cc/by.svg site/cc/nc.svg site/cc/nd.svg], StockLicenceBadgeComponent.new(licence: "CC BY-NC-ND").icons
+    assert_equal %w[site/cc/in-copyright.svg], StockLicenceBadgeComponent.new(licence: "Copyright - Current").icons
   end
 
   test "the licence badge's hover text is the reviewed copy: free use, permission, none for the reproduction licence" do

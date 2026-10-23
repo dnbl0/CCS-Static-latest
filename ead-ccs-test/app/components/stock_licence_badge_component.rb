@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 # A record's licence as a badge: the licence's icon or icons, then its label, linked to the licence's page where it has one, as
-# Europeana draws it (a lookup from the licence to its icons, as europeana/portal.js's rightsStatement.js does). Creative Commons
-# licences get CC's element icons (cc, by, nc, nd, sa); the public domain, CC0, and the copyright symbol for the University's own
-# copyright and reproduction-licence values. The icons are StockLicenceIcons' (Font Awesome Free's, CC BY 4.0).
+# Europeana's record pages draw a rights statement (europeana/portal.js RightsStatementButton: a small off-white button, the
+# icons a quarter rem apart, then the name; the lookup from licence to icons follows its rightsStatement.js). Creative Commons
+# licences get CC's own element icons (cc, by, nc, nd, sa), the public domain mark and CC0 theirs, from
+# creativecommons.org/mission/downloads (public/images/cc, copied to app/assets/images/site/cc by sync:rails); the University's
+# own copyright and reproduction-licence values get the in-copyright symbol.
 #
 # This collection's licence values are the University's own ("Public domain - Copyright expired", "Copyright - Current",
 # "Reproduction Licence - Current"); the Creative Commons rows are for a record that ever carries one ("CC BY-SA"). A version-less
@@ -54,12 +56,15 @@ class StockLicenceBadgeComponent < Blacklight::Component
     end
   end
 
-  def icons = statement[:icons].filter_map { |name| StockLicenceIcons::PATHS[name] }
+  # The icon files (app/assets/images/site/cc) for the statement's icons
+  ICON_FILES = %w[cc by nc nd sa zero pd].to_h { |name| [ name, "site/cc/#{name}.svg" ] }.merge("copyright" => "site/cc/in-copyright.svg").freeze
+
+  def icons = statement[:icons].filter_map { |name| ICON_FILES[name] }
 
   def url = statement[:url]
 
   def wrapper_options
-    options = { class: "badge rounded-pill text-bg-light border fw-normal px-3 py-2 d-inline-flex align-items-center gap-2 text-decoration-none" }
+    options = { class: "licence-badge" }
     options.merge!(href: url, target: "_blank", rel: "noopener") if url
     options[:title] = meaning if meaning
     options

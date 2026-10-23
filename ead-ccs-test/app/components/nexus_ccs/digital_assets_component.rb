@@ -11,7 +11,7 @@ module NexusCcs
     ADVISORY = "Some collection items include terms and views that are not appropriate today. They reflect the " \
                "period in which they were created and are not the views of the University of Melbourne."
 
-    ICONS = %w[media-copyright media-info media-fullscreen].freeze
+    ICONS = %w[media-info media-fullscreen].freeze
 
     def initialize(presenter:, document_counter: nil, **)
       @document = presenter.document

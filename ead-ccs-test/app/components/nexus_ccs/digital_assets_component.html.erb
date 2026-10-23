@@ -69,7 +69,7 @@
   <div class="digital-assets__toolbar">
     <div class="digital-assets__toolbar-inner">
       <% if licence %>
-        <p class="digital-assets__licence"><%= icon("media-copyright") %><span><span class="visually-hidden">Licence: </span><%= licence %></span></p>
+        <p class="digital-assets__licence"><span class="visually-hidden">Licence: </span><%= render StockLicenceBadgeComponent.new(licence: licence) %></p>
       <% else %>
         <span></span>
       <% end %>
