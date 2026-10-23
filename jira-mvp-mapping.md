@@ -1,4 +1,4 @@
-# Cultural Collections Search - 2026 MVP Requirements Mapping
+# Collections Navigator - 2026 MVP Requirements Mapping
 
 **Project**: CCS-2026 | **Jira Source**: [unimelb.atlassian.net CCS board](https://unimelb.atlassian.net/jira/software/c/projects/CCS/boards/6889?label=CCS-2026) (label `CCS-2026`, ~140 issues)
 **Audit Method**: Live Jira MCP fetch (66 frontend-relevant epics/stories/bugs, verbatim descriptions) cross-checked against a from-scratch read of the actual `public/` codebase — not against this document's own prior claims.

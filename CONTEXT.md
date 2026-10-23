@@ -1,13 +1,13 @@
-# Collection Navigator
+# Collections Navigator
 
 Search across the University of Melbourne's cultural collections. The product is the Rails/Blacklight app in `ead-ccs-test/`
 (live on Azure as `ccs-web`); `public/` is the earlier static prototype of the same pages.
 
 ## Language
 
-**Collection Navigator**:
-The product's name, shown to visitors (renamed from "Cultural Collections Search" in October 2026).
-_Avoid_: CCS (fine in docs and Jira, not on screen), Cultural Collections Search, Nexus
+**Collections Navigator**:
+The product's name, shown to visitors (renamed from "Collections Navigator" in October 2026).
+_Avoid_: CCS (fine in docs and Jira, not on screen), Collections Navigator, Nexus
 
 **Collection**:
 One of the five museums or collections whose records are searched, such as the Grainger Museum Collection. A collection has

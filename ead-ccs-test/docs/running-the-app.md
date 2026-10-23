@@ -1,6 +1,6 @@
 # Running the Rails app
 
-This guide gets the Cultural Collections Search Rails app (`ead-ccs-test/`) running on your own computer, then points
+This guide gets the Collections Navigator Rails app (`ead-ccs-test/`) running on your own computer, then points
 to how it runs on Azure. It assumes a Mac with [Homebrew](https://brew.sh). Run every command in the Terminal app.
 
 The app has three moving parts, and all three must be running:
@@ -69,7 +69,7 @@ Open **http://localhost:3002**. Search lives at http://localhost:3002/catalog. S
 `bin/dev` runs two things from `Procfile.dev`: the web server and `dartsass:watch`, which rebuilds the Bootstrap
 stylesheet when you change it. To run only the server: `bin/rails server -p 3002`.
 
-The first load shows a navy "Loading Cultural Collections Search" screen until the page has finished loading.
+The first load shows a navy "Loading Collections Navigator" screen until the page has finished loading.
 
 ## 3. Check it works
 

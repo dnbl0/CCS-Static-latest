@@ -1,5 +1,5 @@
 /**
- * Cultural Collections Search (CCS) - Blacklight API Adapter
+ * Collections Navigator - Blacklight API Adapter
  * Connects the CCS search interface to the Blacklight JSON API endpoint (/catalog.json)
  * with transparent fallback to local mock data (collection-data.js).
  */
@@ -122,7 +122,7 @@
         id: doc.id || doc._id || Math.random().toString(36).substring(7),
         title: str(doc.title_tsim || doc.title_display || doc.title || 'Untitled Record'),
         img: str(doc.thumbnail_url_ssim || doc.media_url_ssim || doc.img || ''),
-        collection: str(doc.collection_name_ssim || doc.collection || 'Cultural Collections'),
+        collection: str(doc.collection_name_ssim || doc.collection || 'Collections Navigator'),
         objectType: str(doc.format_ssim || doc.objectType || 'Cultural Object'),
         creator: str(doc.creator_tsim || doc.author_tsim || doc.creator || 'Maker unknown'),
         date: str(doc.date_display_ssim || doc.pub_date_isim || doc.date || 'Undated'),
