@@ -1169,6 +1169,22 @@ body.page-record .record-summary__group--v1 .record-summary__link:hover {
   text-decoration: underline;
 }
 
+/* The banner is a row: the title on the left, Save at the top right of the banner's inner container (still beside the
+   title on a phone, where the title wraps onto more lines) */
+body.page-record .page-banner__inner {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-16);
+}
+
+body.page-record .page-banner__inner .page-banner__heading {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
 body.page-record .record-page__save {
-  margin-top: var(--space-8);
+  flex: none;
+  margin: 0;
+  padding-right: 0;
 }

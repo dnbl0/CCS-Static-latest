@@ -250,6 +250,30 @@ const truthy = (v, msg) => { if (v) ok(msg); else fail(msg); };
     eq(qq.get('range[year][begin]') + '-' + qq.get('range[year][end]'), '1950-1960', 'valid range submits as years');
     await p.close();
 
+    /* ---- inside the fly-out (embed=1, an iframe on the results page): the same dropdown, menus not clipped ------------- */
+    for (const [w, h] of [[1440, 900], [390, 700]]) {
+      const ep = await open(w, h, '?embed=1');
+      eq(await ep.$$eval('select', e => e.length), 0, w + 'px fly-out: no native <select> (custom dropdowns only)');
+      eq(await ep.$eval('.ccs-combo__field', e => Math.round(e.getBoundingClientRect().height)), 48, w + 'px fly-out: dropdown trigger is 48px, as in the filter sidebar');
+      eq(await ep.$eval('.ccs-combo__icon', e => getComputedStyle(e).borderLeftWidth), '0px', w + 'px fly-out: no rule before the chevron, as in the filter sidebar');
+      const total = await ep.$$eval('.ccs-combo--single .ccs-combo__field, .ccs-combo__field[role=combobox]', e => e.length);
+      truthy(total >= 2, w + 'px fly-out: has dropdowns to test (' + total + ')');
+      for (const i of [0, total - 1]) {
+        const field = ep.locator('.ccs-combo__field[role=combobox]').nth(i);
+        await field.scrollIntoViewIfNeeded(); await field.click();
+        const m = await ep.evaluate(() => {
+          const menu = document.querySelector('.ccs-combo.is-open .ccs-combo__menu'); if (!menu) return null;
+          const r = menu.getBoundingClientRect(); let clipped = false;
+          for (let n = menu.parentElement; n && n !== document.documentElement; n = n.parentElement) { const o = getComputedStyle(n); if (/hidden|clip|auto|scroll/.test(o.overflowY) && n !== document.body) clipped = true; }
+          const doc = document.scrollingElement;
+          return { visible: r.height > 40, inDocument: r.bottom <= doc.scrollHeight + 1 && r.left >= 0 && r.right <= window.innerWidth + 1, clipped };
+        });
+        truthy(m && m.visible && m.inDocument && !m.clipped, w + 'px fly-out: dropdown ' + (i + 1) + ' opens fully inside the scrollable form, not clipped by a container');
+        await ep.keyboard.press('Escape');
+      }
+      await ep.close();
+    }
+
     eq(pageErrors.length, 0, 'no page errors (' + pageErrors.join('; ') + ')');
   } catch (e) {
     fail('advanced-filters test crashed: ' + (e && e.stack || e));

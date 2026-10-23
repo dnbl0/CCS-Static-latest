@@ -82,7 +82,7 @@
 .ccs-combo__field:disabled, .ccs-input:disabled { background: var(--input-fill-disabled); color: var(--text-tertiary); cursor: not-allowed; }
 .ccs-combo__value { flex: 1; min-width: 0; padding: 11px var(--space-12); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-primary); }
 .ccs-combo__value.is-placeholder { color: var(--text-tertiary); }
-.ccs-combo__icon { flex: none; display: flex; align-items: center; justify-content: center; width: 46px; border-left: 1px solid var(--input-stroke-default); }
+.ccs-combo__icon { flex: none; display: flex; align-items: center; justify-content: center; width: 46px; }
 .ccs-combo__icon img { width: 24px; height: 24px; }
 .ccs-combo.is-open .ccs-combo__field { background: var(--input-fill-default); }
 

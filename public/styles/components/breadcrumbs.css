@@ -62,6 +62,13 @@
   background: url("/images/chevron-right.svg") center / 16px 16px no-repeat;
 }
 
+.page-breadcrumbs .page-local-history__link-image {
+  display: block;
+  flex: none;
+  width: 24px;
+  height: 24px;
+}
+
 .page-breadcrumbs .page-local-history a {
   color: var(--uom-ds-color-text-link-inverse);
   text-decoration: none;
