@@ -50,7 +50,7 @@ module NexusCcs
           list << Row.new(label: config.label, values: values, field: name) if values.any?
         end
         index = list.index { |row| row.field.in?(%w[named_collection_ssim collection_ssim]) } || list.size
-        list.insert(index, Row.new(label: "UoM ID", values: [ document.id.to_s ], field: "id", copy: true))
+        list.insert(index, Row.new(label: "UoM ID", values: [ (document["uom_id_ssi"] || document.id).to_s ], field: "id", copy: true))
       end
     end
 

@@ -3,6 +3,11 @@ Rails.application.routes.draw do
   concern :range_searchable, BlacklightRangeLimit::Routes::RangeSearchable.new
   mount Blacklight::Engine => "/"
   root to: "pages#home"
+
+  # A UoM ID names its EMu system (emu-umc-<IRN>); the record's address is emu-<IRN>, so a UoM ID works as an address too
+  get "/catalog/:id", constraints: { id: /emu-umc-\d+/ }, to: redirect(status: 301) { |params, _request|
+    "/catalog/emu-#{params[:id].delete_prefix('emu-umc-')}"
+  }
   concern :searchable, Blacklight::Routes::Searchable.new
   concern :exportable, Blacklight::Routes::Exportable.new
 

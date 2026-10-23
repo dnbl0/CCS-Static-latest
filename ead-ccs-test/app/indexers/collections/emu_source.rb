@@ -47,6 +47,11 @@ module Collections
     ASSOC_NAME     = "Name: (CAAssociatedEntitiesSubject)".freeze
     ASSOC_PLACE    = "Place: (CAAssociatEntitiesSubject)".freeze
 
+    # The University runs three EMu systems: UMC (the University's museums and collections), FEIT and prints. This
+    # export is UMC's, so its records' UoM IDs are emu-umc-<IRN>. (The Solr id, and so the record's address, stays
+    # emu-<IRN>; /catalog/emu-umc-<IRN> redirects there.)
+    SYSTEM = "umc".freeze
+
     # Consolidate broad to specific: "Europe", "United Kingdom", "England", "London".
     CREATION_PLACES = (1..5).map { |n| "CreationPlace#{n}: (CAPlaceProduction)".freeze }.freeze
 
@@ -64,9 +69,10 @@ module Collections
 
       compact_document(
         "id"                  => document_id(irn),
+        "uom_id_ssi"          => "#{name}-#{SYSTEM}-#{irn}",
         "source_system_ssi"   => name,
         "source_identifier_ssi" => irn,
-        "accession_number_ssim" => row.values(ACCESSION),
+        "accession_number_ssim" => accession_numbers(row),
         "source_reference_tsim" => row.values(SUMMARY_DATA),
 
         "collection_ssim"       => row.values(COLLECTION),
@@ -119,6 +125,14 @@ module Collections
 
         "access_condition_ssi" => row.value(RECORD_STATUS)
       )
+    end
+
+    # The export's accession column has lost leading and trailing zeros (00.0070 became 0.007, as a spreadsheet does to
+    # a number), which also gave different records the same number. The Summary Data column opens with the number as
+    # EMu holds it, in square brackets ("[00.0070] sarrusophone ..."), so that is used when it is there.
+    def accession_numbers(row)
+      from_summary = row.value(SUMMARY_DATA).to_s[/\A\[([^\]]+)\]/, 1]
+      from_summary ? [ from_summary ] : row.values(ACCESSION)
     end
 
     # Scrape the display string for when there's no explicit range
