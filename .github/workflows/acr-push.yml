@@ -4,11 +4,18 @@ name: Push images to Azure Container Registry
 # the ACR_USERNAME and ACR_PASSWORD repository secrets (no Azure sign-in needed). Runs automatically on every
 # push to main that touches ead-ccs-test, and can also be run manually from the Actions tab.
 #
-# It only pushes images -- it does not roll them out. Azure Container Apps keeps running whatever image it was
-# last told to use, even after a newer one lands in the registry (and :latest alone does not trigger a new
-# replica), so finish a deploy with:
-#   az containerapp update -n ccs-web -g ccs-service-experience-app --image ${{ vars.ACR_REGISTRY }}/ccs-web:<sha>
-#   az containerapp update -n ccs-solr -g ccs-service-experience-app --image ${{ vars.ACR_REGISTRY }}/ccs-solr:<sha>
+# The registry is the workflow input, else the ACR_REGISTRY repository variable, else <ACR_USERNAME>.azurecr.io (an
+# Azure registry's admin user is named after the registry). Without that last fallback, pushes to main with no
+# ACR_REGISTRY variable tried to sign in to Docker Hub and failed.
+#
+# Azure Container Apps keeps running whatever image it was last told to use, even after a newer one lands in the
+# registry (and :latest alone does not trigger a new replica). When the AZURE_CREDENTIALS secret is set (the JSON
+# from `az ad sp create-for-rbac --name ccs-github-deploy --role Contributor --scopes
+# /subscriptions/<id>/resourceGroups/ccs-service-experience-app --json-auth`), the last step rolls ccs-web onto the
+# new image with FORCE=1, so the web app re-fills Solr from the bundled exports on start (where AUTO_INDEX=true).
+# Without that secret, finish a deploy by hand:
+#   az containerapp update -n ccs-web -g ccs-service-experience-app --image <registry>/ccs-web:<sha>
+#   az containerapp update -n ccs-solr -g ccs-service-experience-app --image <registry>/ccs-solr:<sha>
 # (only needed for ccs-solr if solr/ or the Solr half of the Dockerfile changed). The commit's SHA is the tag this
 # workflow just pushed, shown in its own log and in the Actions run's URL.
 on:
@@ -18,27 +25,32 @@ on:
   workflow_dispatch:
     inputs:
       registry:
-        description: "Registry login server, e.g. myregistry.azurecr.io. Defaults to the ACR_REGISTRY repository variable."
+        description: "Registry login server, e.g. myregistry.azurecr.io. Defaults to the ACR_REGISTRY repository variable, then <ACR_USERNAME>.azurecr.io."
         required: false
 
 permissions:
   contents: read
 
+concurrency:
+  group: acr-push
+  cancel-in-progress: false
+
 jobs:
   push:
     runs-on: ubuntu-latest
+    env:
+      REGISTRY: ${{ inputs.registry || vars.ACR_REGISTRY || format('{0}.azurecr.io', secrets.ACR_USERNAME) }}
+      RESOURCE_GROUP: ${{ vars.AZURE_RESOURCE_GROUP || 'ccs-service-experience-app' }}
     steps:
       - uses: actions/checkout@v7
 
       - uses: docker/login-action@v4
         with:
-          registry: ${{ inputs.registry || vars.ACR_REGISTRY }}
+          registry: ${{ env.REGISTRY }}
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
 
       - name: Build and push images
-        env:
-          REGISTRY: ${{ inputs.registry || vars.ACR_REGISTRY }}
         run: |
           cd ead-ccs-test
           for target in "ead-ccs ccs-web" "solr ccs-solr"; do
@@ -48,4 +60,27 @@ jobs:
             docker push "$REGISTRY/$2:latest"
           done
           echo "### Images pushed, tagged \`$GITHUB_SHA\`" >> "$GITHUB_STEP_SUMMARY"
-          echo "Roll them out with \`az containerapp update\` -- see this workflow's own comment for the exact commands." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Check for Azure credentials
+        id: azure
+        env:
+          AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+        run: |
+          if [ -n "$AZURE_CREDENTIALS" ]; then
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "No AZURE_CREDENTIALS secret, so ccs-web was not rolled out. Run \`az containerapp update -n ccs-web -g $RESOURCE_GROUP --image <registry>/ccs-web:$GITHUB_SHA\`." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - uses: azure/login@v2
+        if: steps.azure.outputs.configured == 'true'
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Roll out ccs-web
+        if: steps.azure.outputs.configured == 'true'
+        run: |
+          az containerapp update -n ccs-web -g "$RESOURCE_GROUP" --image "$REGISTRY/ccs-web:$GITHUB_SHA" \
+            --set-env-vars FORCE=1 -o none
+          echo "Rolled ccs-web out to \`ccs-web:$GITHUB_SHA\`." >> "$GITHUB_STEP_SUMMARY"

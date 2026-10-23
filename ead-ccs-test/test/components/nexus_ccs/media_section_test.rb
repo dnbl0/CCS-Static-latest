@@ -31,6 +31,15 @@ class MediaSectionTest < ActiveSupport::TestCase
     assert_selector "button[aria-label='Full screen'][hidden]", visible: :all
   end
 
+  test "the licence chip is the licence badge: Creative Commons' own icon, linked to the licence's page, as Europeana shows it" do
+    render_for(FIELDS.merge("licence_type_ssim" => [ "Public domain - Copyright expired" ]))
+
+    assert_selector ".digital-assets__licence a.licence-badge[href='https://creativecommons.org/publicdomain/mark/1.0/'][target=_blank]" do
+      assert_selector "img.licence-badge__icon[alt=''][src*='/site/cc/pd']", count: 1
+      assert_selector ".licence-badge__label", text: "Public domain - Copyright expired"
+    end
+  end
+
   test "the metadata panel is closed until opened, with licence type, advisory and terms of use" do
     render_for(FIELDS)
 

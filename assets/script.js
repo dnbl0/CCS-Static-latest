@@ -1,5 +1,5 @@
 /* ============================================================================
-   Cultural Collections — Prototype application logic
+   Collections Navigator — Prototype application logic
    ----------------------------------------------------------------------------
    A standalone, dependency-free single-page app that mimics a Blacklight + Solr
    discovery interface. Routing is hash-based so it works on GitHub Pages with
@@ -278,7 +278,7 @@
 
     $("#site-header").innerHTML = `
       <div class="header-inner">
-        <a href="#/" class="brand" aria-label="Cultural Collections home">
+        <a href="#/" class="brand" aria-label="Collections Navigator home">
           ${logoMark()}
           <span class="brand-text">
             <strong>CULTURAL COLLECTIONS</strong>
@@ -754,7 +754,7 @@
       <div class="hero">
         <div class="hero-inner">
           <p class="hero-eyebrow">${logoMark()} CULTURAL COLLECTIONS</p>
-          <h1>Discover University of Melbourne Cultural Collections</h1>
+          <h1>Discover University of Melbourne cultural collections</h1>
           <p class="hero-sub">Search across museums, archives, art collections, scientific records, manuscripts and more — all in one place.</p>
           <form class="hero-search" id="hero-search" role="search">
             <label class="visually-hidden" for="hero-q">Search the collections</label>
@@ -810,7 +810,7 @@
       <!-- HELP & GUIDANCE -->
       <section class="container section">
         <div class="section-head">
-          <div><h2>Help &amp; Guidance</h2><p>Resources to help you get the most from Cultural Collections</p></div>
+          <div><h2>Help &amp; Guidance</h2><p>Resources to help you get the most from Collections Navigator</p></div>
           <a href="#/help" class="link-arrow">All help resources →</a>
         </div>
         <div class="card-grid card-grid--4">
@@ -834,7 +834,7 @@
             ${[
               "How do I search across multiple collections at once?",
               "Can I download images from the collections?",
-              "What collections are currently included in Cultural Collections?",
+              "What collections are currently included in Collections Navigator?",
               "What does \"View Only\" mean for digital assets?",
               "How do I request access to restricted records?",
               "How do I report an error or missing metadata?"
@@ -942,7 +942,7 @@ function mediaGlyph(type) {
       ["quote", "Citing Collections", "How to cite collection items in academic and research contexts including APA, Chicago, MLA and Harvard styles.", "#/help/citing-collections"],
       ["lock", "Access Restrictions Explained", "Understand what View Only, Restricted and Metadata Only mean and how to request access.", "#/help/access-restrictions"],
       ["info", "FAQs", "Answers to common questions about searching, downloading and using the collections.", "#/help/faqs"],
-      ["dot", "Indigenous Cultural Data and Access", "How Cultural Collections supports the respectful management, description and discovery of Aboriginal and Torres Strait Islander cultural heritage, knowledge and collections.", "#/indigenous"],
+      ["dot", "Indigenous Cultural Data and Access", "How Collections Navigator supports the respectful management, description and discovery of Aboriginal and Torres Strait Islander cultural heritage, knowledge and collections.", "#/indigenous"],
       ["mail", "Contact the Collections Team", "Submit an enquiry, request access to an item, or ask for further information from the Collections team.", "#/contact"]
     ];
 
@@ -987,7 +987,7 @@ function mediaGlyph(type) {
   const HELP_ARTICLES = {
     "search-tips": {
       icon: "search", title: "Search Tips",
-      intro: "Cultural Collections is a search-first discovery platform. These tips help you find records quickly and precisely across all collections.",
+      intro: "Collections Navigator is a search-first discovery platform. These tips help you find records quickly and precisely across all collections.",
       sections: [
         ["Keyword search", "Type any combination of title, creator, date, place or subject terms. By default all of your terms must appear in a record (an AND search), so adding terms narrows your results. Searching <em>bark painting Arnhem</em> returns records containing all three words."],
         ["Exact phrase", "Switch the search mode to <strong>Exact Phrase</strong> to match words in the exact order you typed them. Use this for known titles or names, for example <em>Foundation Charter</em>."],
@@ -1046,11 +1046,11 @@ function mediaGlyph(type) {
     },
     "faqs": {
       icon: "info", title: "Frequently Asked Questions",
-      intro: "Answers to common questions about searching, downloading and using Cultural Collections.",
+      intro: "Answers to common questions about searching, downloading and using Collections Navigator.",
       faqList: [
         { q: "How do I search across multiple collections at once?", a: "By default, searches run across all collections. Leave the scope selector on <strong>All Collections</strong>, or choose a single collection to narrow your search before running it. Use the facets on the results page to refine afterwards." },
         { q: "Can I download images from the collections?", a: "It depends on the item's access status and rights. Items marked <strong>Available</strong> can be downloaded under their rights statement. <strong>View Only</strong> items can be viewed but not downloaded. Check the badge and the Rights and Access panel on each record." },
-        { q: "What collections are currently included in Cultural Collections?", a: "The platform brings together records from museums, archives, art collections, photographic, scientific and research collections across the University. Use Browse Collections to see every contributing collection and its size." },
+        { q: "What collections are currently included in Collections Navigator?", a: "The platform brings together records from museums, archives, art collections, photographic, scientific and research collections across the University. Use Browse Collections to see every contributing collection and its size." },
         { q: "What does 'View Only' mean for digital assets?", a: "It means you can view the record and an online preview, but the high-resolution digital asset is not available for download, usually due to copyright or cultural conditions. You can contact the Collections team if you need to use the asset." },
         { q: "How do I request access to restricted records?", a: "Open the record, then use the <strong>Request Access</strong> button or the Contact the Collections Team form. Include the item's persistent identifier and describe your intended use. The team aims to respond within 5 business days." },
         { q: "How do I report an error or missing metadata?", a: "Use the Contact the Collections Team form and select <strong>Contribute Additional Information</strong>. Quote the persistent identifier and describe the correction. Community knowledge helps us improve the accuracy of records." }
@@ -1121,11 +1121,11 @@ function mediaGlyph(type) {
             <a href="#/">Home</a> › <a href="#/indigenous">Help &amp; Guidance</a> › <span>Indigenous Cultural Data and Access</span>
           </nav>
           <h1>Indigenous Cultural Data and Access</h1>
-          <p class="page-hero-sub">How Cultural Collections supports the respectful management, description and discovery of Aboriginal and Torres Strait Islander cultural heritage, knowledge and collections.</p>
+          <p class="page-hero-sub">How Collections Navigator supports the respectful management, description and discovery of Aboriginal and Torres Strait Islander cultural heritage, knowledge and collections.</p>
         </div>
         <div class="cultural-warning">
           <div class="container">
-            <strong>${icon("warning")} Cultural Warning:</strong> This page and the Cultural Collections platform contain references to Aboriginal and Torres Strait Islander peoples, communities, cultures and histories. Some records may contain images, voices or names of deceased persons.
+            <strong>${icon("warning")} Cultural Warning:</strong> This page and the Collections Navigator platform contain references to Aboriginal and Torres Strait Islander peoples, communities, cultures and histories. Some records may contain images, voices or names of deceased persons.
           </div>
         </div>
       </div>
@@ -1136,10 +1136,10 @@ function mediaGlyph(type) {
           <p>Final content will require endorsement by the University's Indigenous Advisory Group.</p>
         </div>
         <p>The University of Melbourne is committed to the respectful management, description and discovery of Aboriginal and Torres Strait Islander cultural heritage, knowledge and collections.</p>
-        <p>Cultural Collections brings together records from collections across the University. Some records may contain Indigenous cultural information, imagery, language, stories, knowledge, or materials that are culturally sensitive.</p>
+        <p>Collections Navigator brings together records from collections across the University. Some records may contain Indigenous cultural information, imagery, language, stories, knowledge, or materials that are culturally sensitive.</p>
 
         <h2 class="iconed">${icon("dot")} Our Approach</h2>
-        <p class="muted">How Cultural Collections supports responsible discovery and access</p>
+        <p class="muted">How Collections Navigator supports responsible discovery and access</p>
         <ul class="stack-list">
           <li>Respecting Indigenous Cultural and Intellectual Property (ICIP).</li>
           <li>Supporting culturally appropriate access and use of collection information.</li>
@@ -1156,7 +1156,7 @@ function mediaGlyph(type) {
           <div class="mini-card">Have access conditions determined by collection custodians or Indigenous communities.</div>
           <div class="mini-card">Link to additional guidance about appropriate use and attribution.</div>
         </div>
-        <div class="note-dark">${icon("info")} Where restrictions apply, Cultural Collections will clearly indicate the access status of the record. Look for access status indicators on individual item records.</div>
+        <div class="note-dark">${icon("info")} Where restrictions apply, Collections Navigator will clearly indicate the access status of the record. Look for access status indicators on individual item records.</div>
 
         <h3 class="overline">Access Status Indicators</h3>
         <div class="indicator-grid">
@@ -1169,7 +1169,7 @@ function mediaGlyph(type) {
         <p class="muted">Rights, recognition and responsibilities</p>
         <p>Indigenous Cultural and Intellectual Property refers to the rights of Aboriginal and Torres Strait Islander Peoples to maintain, control, protect and benefit from their cultural heritage, knowledge, cultural expressions and traditional practices.</p>
         <p>The University recognises the importance of respecting ICIP principles when managing and providing access to Indigenous cultural materials.</p>
-        <div class="note-soft">${icon("info")} Users accessing Indigenous cultural materials through Cultural Collections are expected to engage with content respectfully and in accordance with the University's cultural protocols. Commercial use of Indigenous cultural materials requires prior consent from relevant Traditional Custodians and communities.</div>
+        <div class="note-soft">${icon("info")} Users accessing Indigenous cultural materials through Collections Navigator are expected to engage with content respectfully and in accordance with the University's cultural protocols. Commercial use of Indigenous cultural materials requires prior consent from relevant Traditional Custodians and communities.</div>
 
         <h2 class="iconed">${icon("warning")} Cultural Warnings</h2>
         <p class="muted">Content users should be aware of</p>
@@ -1190,9 +1190,9 @@ function mediaGlyph(type) {
         </ul>
 
         <h2 class="iconed">${icon("mail")} Contact</h2>
-        <p class="muted">Get in touch with the Cultural Collections team</p>
-        <div class="note-soft">If you have questions about Indigenous cultural materials, cultural protocols, access conditions, or wish to provide feedback about a record, please contact the relevant collection custodian or the University of Melbourne Cultural Collections team.</div>
-        <p><a href="#/contact" class="btn btn--primary">${icon("mail")} Contact the Cultural Collections Team</a></p>
+        <p class="muted">Get in touch with the Collections team</p>
+        <div class="note-soft">If you have questions about Indigenous cultural materials, cultural protocols, access conditions, or wish to provide feedback about a record, please contact the relevant collection custodian or the University of Melbourne Collections Navigator team.</div>
+        <p><a href="#/contact" class="btn btn--primary">${icon("mail")} Contact the Collections Navigator Team</a></p>
       </div>`;
   }
 
@@ -2797,7 +2797,7 @@ function mediaGlyph(type) {
         <div class="container">
           <nav class="breadcrumb" aria-label="Breadcrumb">${homeCrumb()} › <span>What's changed</span></nav>
           <h1>What's changed — Version 4 (latest: v0.6 Contact & Faceted Search)</h1>
-          <p class="page-hero-sub">Cultural Collections prototype. A summary of the refinements and enhancements following stakeholder review, technical estimation workshops and the Product Owner reviews. The latest update (v0.6) moves Contact Collections to collection-specific contact methods, routes the object “Contact Collection” button to the owning collection, removes the Classification facet and renames the Object facet group; everything else in the prototype is unchanged.</p>
+          <p class="page-hero-sub">Collections Navigator prototype. A summary of the refinements and enhancements following stakeholder review, technical estimation workshops and the Product Owner reviews. The latest update (v0.6) moves Contact Collections to collection-specific contact methods, routes the object “Contact Collection” button to the owning collection, removes the Classification facet and renames the Object facet group; everything else in the prototype is unchanged.</p>
         </div>
       </div>
 
@@ -2956,15 +2956,15 @@ function mediaGlyph(type) {
   }
 
   /* ---- Leave-site (View Full Record) modal ---- */
-  /** Warns the user they are about to leave Cultural Collections for the
+  /** Warns the user they are about to leave Collections Navigator for the
    *  source collection's own website, where the fuller record lives. */
   function openLeaveSiteModal(item) {
     // Plausible source-system URL for the prototype (no real navigation).
     const sourceUrl = `https://${item.collectionSlug.replace(/-/g, "")}.unimelb.edu.au/record/${encodeURIComponent(item.id)}`;
     openModal(`
       <button class="modal-x" data-close aria-label="Close">${icon("x")}</button>
-      <h2>You are leaving Cultural Collections</h2>
-      <p>You are about to leave Cultural Collections and move to the original collection's website, where a more detailed record for this item is held.</p>
+      <h2>You are leaving Collections Navigator</h2>
+      <p>You are about to leave Collections Navigator and move to the original collection's website, where a more detailed record for this item is held.</p>
       <div class="leave-target">
         <span class="leave-icon" aria-hidden="true">${icon("external")}</span>
         <div>
@@ -2973,7 +2973,7 @@ function mediaGlyph(type) {
           <code class="leave-url">${esc(sourceUrl)}</code>
         </div>
       </div>
-      <p class="muted small">The source website may have different terms of use, access conditions and privacy practices to Cultural Collections.</p>
+      <p class="muted small">The source website may have different terms of use, access conditions and privacy practices to Collections Navigator.</p>
       <div class="modal-foot">
         <button class="btn btn--ghost" data-close>Stay here</button>
         <button class="btn btn--primary" id="leave-go">Continue to source website ${icon("external")}</button>

@@ -74,7 +74,7 @@
           <dl class="record-copyright__list">
             <% { "Caption" => caption, "Credit line" => credit_line, "Copyright" => copyright, "Licence" => licence }.each do |label, value| %>
               <% next if value.blank? %>
-              <div class="record-copyright__item"><dt><%= label %></dt><dd><%= value %></dd></div>
+              <div class="record-copyright__item"><dt><%= label %></dt><dd><%= label == "Licence" ? render(StockLicenceBadgeComponent.new(licence: value)) : value %></dd></div>
             <% end %>
             <% if responsible_collection %>
               <div class="record-copyright__item">

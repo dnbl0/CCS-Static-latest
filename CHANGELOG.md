@@ -2,6 +2,17 @@
 
 Recent changes to the static site, newest first. Earlier history is in `git log`. (Moved out of the README on 2026-10-07.)
 
+### 2026-10-23
+
+- **Renamed to Collections Navigator** (static and Rails): page titles, header title, home and About headings, search box labels, the page loader, Blacklight's application name, the app manifest and the docs. The earlier names ("Cultural Collections", "Cultural Collections Search", the singular "Collection" form) and the "CCS" abbreviation no longer appear in page text; "the University's cultural collections" stays as a description.
+- **EMu accession numbers keep their zeros (Rails)**: the export's accession column had been through a spreadsheet (00.0070 became 0.007) on 5,589 Grainger and University Art Collection records. The indexer now takes the number from the Summary Data (`[00.0070] ...`). Needs a reindex (`FORCE=1`).
+- **UoM ID is emu-umc-<IRN> (Rails)**: the University has three EMu systems (UMC, FEIT, prints); this export is UMC's. Record addresses stay `/catalog/emu-<IRN>`; `/catalog/emu-umc-<IRN>` redirects there.
+- **Images**: the contrabass sarrusophone's photos move from its case to the instrument, front view first; the oboe shows its front first; the J. Quinn life study (signed, "Presented: 1893") moves from Hugh Ramsay's record to Quinn's.
+- **Facets (Rails)**: a selected value's remove × stays beside its label when the label wraps.
+- **Azure images push after each merge again**: `acr-push.yml` fell back to Docker Hub when the `ACR_REGISTRY` variable was empty; it now falls back to `<ACR_USERNAME>.azurecr.io`, and with an `AZURE_CREDENTIALS` secret it rolls `ccs-web` onto the new image (with `FORCE=1`).
+- **Licence badge, as on Europeana's record pages (Rails)**: the licence under the image and in the Copyright card is a small off-white button with Creative Commons' own icons (re-downloaded from creativecommons.org/mission/downloads into `public/images/cc`, copied to the Rails app by `sync:rails`), then the licence name, linked to the licence's page with hover text on reuse. It replaces the generic © on every licence and the Font Awesome icon paths.
+- **Vercel deployments turned off** (`vercel.json`); the Help jump nav no longer makes style snapshots flaky.
+
 ### 2026-10-16
 
 - **Rails app** (org #49-#63, live): facets are stock Blacklight; Advanced Search is the stock form (title "Advanced Search"); the reviewed copy on home, About and Help; Help is one page with FAQ, Indigenous data, Copyright and Access and the University jump navigation (with a scroll highlight); Contact, Search tips and Indigenous data pages removed (old addresses redirect to the Help sections); collection landing pages removed on both sites, a collection's links go to the results filtered by it (old `/collections/<slug>` addresses redirect); header dropdowns are the University mega menu panel (static and Rails); mobile filter drawer spacing and a 24/18/18px sidebar type scale; record page tags wrap and the asset stage has equal padding; licence hover text from the copy; one light design whatever the browser's colour setting.

@@ -12,6 +12,24 @@
   --bl-facet-label-padding-left: 0;
 }
 
+/* A selected value is its label then a remove link (×), inline in one span, so a label that fills the line pushed the × onto a line
+   of its own. Lay the two out side by side instead: the label wraps in its own column and the × stays beside its first line. */
+.facet-label:has(> .remove) {
+  align-items: flex-start;
+  display: flex;
+}
+
+.facet-label > .selected {
+  min-width: 0;
+}
+
+.facet-label > .remove {
+  align-items: center;
+  display: inline-flex;
+  flex: none;
+  height: 1lh;
+}
+
 /* The modal ("more" on a facet), and the same list as a page of its own (/catalog/facet/<field>, which is what the modal loads): the
    filter box, the A-Z letter bar, previous / next and the sort buttons, then the list ---- */
 

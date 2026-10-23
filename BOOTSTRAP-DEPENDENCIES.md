@@ -1,6 +1,6 @@
 # Bootstrap Dependencies Documentation
 
-**Project**: Cultural Collections Search (CCS)  
+**Project**: Collections Navigator  
 **Bootstrap Version**: 5.3.3 (from the official npm package, built locally)  
 **Official Repository**: https://github.com/twbs/bootstrap  
 **Last updated**: 2026-10-01
