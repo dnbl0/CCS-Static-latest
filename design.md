@@ -1,6 +1,6 @@
-# Cultural Collections Search - Design System Documentation
+# Collections Navigator - Design System Documentation
 
-**Project**: Cultural Collections Search (CCS) | **Institution**: University of Melbourne  
+**Project**: Collections Navigator | **Institution**: University of Melbourne  
 **Design System**: UoM Gen 3 v15.14.0 | **Version**: 2.4 | **Date**: 2026-10-01  
 **Status**: Prototype (no formal accessibility audit) | **Codebase**: Static pages under `public/`
 
@@ -140,7 +140,7 @@ Body: 'Source Sans 3', system-ui, -apple-system, sans-serif
 ### Text Hierarchy Example
 
 ```
-<h1>Cultural Collections</h1>        <!-- Main heading -->
+<h1>Collections Navigator</h1>        <!-- Main heading -->
 <p>Introduction paragraph</p>        <!-- Body text 18px -->
 <h2>Featured Collections</h2>        <!-- Section heading -->
 <p>Secondary text</p>                <!-- Body text 15px -->
@@ -305,9 +305,9 @@ Defined in `public/styles/home.css` as `.ccs-nav--header` (behaviour in `public/
 
 ```
 Desktop: [UoM logo 110px] | top row (UniMelb links, search button)
-                          | Cultural Collections         Search all records  Browse collections v  Help v  Contact
+                          | Collections Navigator         Search all records  Browse collections v  Help v  Contact
 Mobile:  [logo 80px] | search button                                       [Menu]
-                     | Cultural Collections
+                     | Collections Navigator
 ```
 
 | Element | Spec |

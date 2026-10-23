@@ -1,4 +1,4 @@
-<% content_for :title, "Search Tips — Help — Cultural Collections Search — University of Melbourne" %>
+<% content_for :title, "Search Tips — Help — Collections Navigator — University of Melbourne" %>
 <% content_for :body_class, "page-help" %>
 <%= render NexusCcs::PageBreadcrumbsComponent.new(trail: [ [ "Help and support", help_path ], [ "Search Tips", nil ] ]) %>
 <%= render NexusCcs::PageBannerComponent.new(title: "Search Tips", description: HelpTopic.find("search-tips").blurb) %>

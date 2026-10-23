@@ -4,6 +4,8 @@ Recent changes to the static site, newest first. Earlier history is in `git log`
 
 ### 2026-10-23
 
+- **Renamed to Collections Navigator** (static and Rails): page titles, header title, home and About headings, search box labels, the page loader, Blacklight's application name, the app manifest and the docs. "Cultural Collections", "Cultural Collections Search" and the "CCS" abbreviation no longer appear in page text; "the University's cultural collections" stays as a description. Code names (`ccs-` classes, `window.CCS`, the `ead-ccs-test` folder, Jira keys) are unchanged.
+- **Azure images push again after each merge**: `acr-push.yml` fell back to Docker Hub when the `ACR_REGISTRY` variable was empty, so every push to `main` since 2026-10-13 failed. It now falls back to `<ACR_USERNAME>.azurecr.io`. With an `AZURE_CREDENTIALS` secret it also rolls `ccs-web` onto the new image (with `FORCE=1`, so the index is rebuilt on start).
 - **Vercel deployments turned off**: `vercel.json` sets `git.deploymentEnabled: false`, so the Vercel GitHub App no longer builds a preview or posts a comment for each push and PR. The unused `.vercelignore` is removed. Hosting is GitHub Pages and the Azure Container Apps deployment.
 - **Images for three University Art Collection records (Rails)**: James Peter Quinn, *Life study, seated man* (0.013, two views); Rammey Ramsey, *Tranie Gorge* (2011.0251.000.000); Simryn Gill, *A small town at the turn of the century #5* (2018.231.071), in `ead-ccs-test/config/digital_assets.yml`.
 

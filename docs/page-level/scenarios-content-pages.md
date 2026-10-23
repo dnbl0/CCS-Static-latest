@@ -21,7 +21,7 @@ Source: research agent, 2026-10-12 (code read only, app not run). Rails text liv
 ## Scenarios
 | ID | Page | Scenario | Type | How reached | What the UI shows | Source | R/S |
 |---|---|---|---|---|---|---|---|
-| H1 | Home | Default | Happy | `/` | Hero ("Cultural Collections", search box, Parkville image), intro, 5 cards, 4 help cards, FAQ intro + 3 accordions | home.html.erb:4-115 | Both |
+| H1 | Home | Default | Happy | `/` | Hero ("Collections Navigator", search box, Parkville image), intro, 5 cards, 4 help cards, FAQ intro + 3 accordions | home.html.erb:4-115 | Both |
 | H2 | Home | FAQ accordion collapsed vs open | Happy | click `details.ccs-acc` | Closed by default; open shows panel and 180 degree chevron; hover tint; focus ring | home.html.erb:90-110 | Both |
 | H3 | Home | Acknowledgement of Country modal | Edge | first visit per day (cookie `country_acknowledged`, 1 day) | Dialog with title, quote, advisory, "Continue" button (autofocus). Home only | home.html.erb:117; country_acknowledgement.rb:12-34 | Rails only |
 | H4 | Home | Restack at 1023 and 768 | Edge | narrow viewport | Hero, cards, help cards restack | static_shared.css:53-149 | Both |

@@ -58,7 +58,7 @@ for (const r of cfg.redirects || []) {
 
 // /item/:code -> record page; anything else is a plain not-found page
 const notFound = `<!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Page not found - Cultural Collections Search</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Page not found - Collections Navigator</title>
 <script>
 (function () {
   var base = ${JSON.stringify(BASE)};
@@ -68,7 +68,7 @@ const notFound = `<!DOCTYPE html>
 </script></head>
 <body style="font-family:sans-serif;max-width:40rem;margin:4rem auto;padding:0 1rem">
 <h1>Page not found</h1>
-<p>We couldn't find that page. <a href="${BASE}/">Return to Cultural Collections Search</a>.</p>
+<p>We couldn't find that page. <a href="${BASE}/">Return to Collections Navigator</a>.</p>
 </body></html>
 `;
 fs.writeFileSync(path.join(out, '404.html'), notFound);
