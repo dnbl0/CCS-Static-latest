@@ -5,6 +5,9 @@ module NexusCcs
   module SiteNavigation
     Link = Data.define(:label, :href)
 
+    # A collection in the header menu: its menu label, its landing page and the search results filtered by it.
+    CollectionLink = Data.define(:label, :href, :search_href)
+
     # University-wide audience links (header utility bar and mobile drawer).
     AUDIENCE = [
       Link.new("Study", "https://study.unimelb.edu.au"),

@@ -26,8 +26,27 @@ class SiteChromeTest < ActiveSupport::TestCase
     assert_selector ".site-header__utility nav a", count: NexusCcs::SiteNavigation::AUDIENCE.size
     assert_selector "button.site-header__search-toggle[aria-label='Open search']"
     assert_selector "#site-nav-collections li a[href^='/collections/']", count: NexusCcs::SiteNavigation.collections.size
+    assert_selector "#site-nav-collections ul.site-nav__panel-list > li > a[href^='/collections/']",
+      count: NexusCcs::SiteNavigation.collections.size
     assert_selector "#search-overlay form[role=search]"
     assert_selector "#site-nav form[role=search]"
+  end
+
+  test "each collection in the Browse Collections menu links to its search results" do
+    render_header
+
+    collections = NexusCcs::SiteNavigation.collections
+    items = page.all("#site-nav-collections ul.site-nav__panel-list > li.site-nav__panel-item")
+
+    assert_equal collections.size, items.size
+
+    items.zip(collections).each do |item, (_menu_label, facet_value, _slug)|
+      assert_equal 1, item.all("ul.site-nav__sublist").size
+      sublinks = item.first("ul.site-nav__sublist").all("a.site-nav__sublink")
+      assert_equal 1, sublinks.size
+      assert_equal "/catalog?#{{ f: { collection_ssim: [ facet_value ] } }.to_query}", sublinks.first[:href]
+      assert sublinks.first.text.strip.start_with?("Search "), sublinks.first.text
+    end
   end
 
   test "header has the Help menu and the Contact link" do

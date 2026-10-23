@@ -6,6 +6,18 @@
       "runtimeExecutable": "python3",
       "runtimeArgs": ["-m", "http.server", "8933", "--directory", "public"],
       "port": 8933
+    },
+    {
+      "name": "ead-ccs-test",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": ["-c", "cd ead-ccs-test && SOLR_URL=http://127.0.0.1:8984/solr/blacklight-core bin/rails server -p 3002"],
+      "port": 3002
+    },
+    {
+      "name": "ead-ccs-test-wt",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": ["-c", "cd ../CCS-Static-wt-record-details/ead-ccs-test && SOLR_URL=http://127.0.0.1:8984/solr/blacklight-core bin/rails server -p 3003"],
+      "port": 3003
     }
   ]
 }

@@ -17,3 +17,7 @@ and its Azure deployment at the same time. Every agent follows these rules so wo
 6. **Never work around a refused action.** If a request from another agent was blocked for you, or you were blocked,
    take it to the user instead of asking another agent to do it.
 7. **Keep messages short and free of secrets.** Passwords, keys and tokens are never put in messages, files or PRs.
+
+## Agent skills
+
+Use the shared workflow in [AGENTS.md](AGENTS.md). The canonical skill packages live in `.agents/skills/`; links under `.claude/skills/` expose them to Claude Code without duplicating their contents. For web UI work, load Intopia's skill and its indexed references before changing or reviewing the interface.
