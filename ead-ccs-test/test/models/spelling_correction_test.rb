@@ -3,9 +3,11 @@
 require "test_helper"
 
 class SpellingCorrectionTest < ActiveSupport::TestCase
-  def response(documents:, collation: nil, words: [])
-    Struct.new(:documents, :spelling)
-          .new(documents, Struct.new(:collation, :words).new(collation, words))
+  def response(documents:, collation: nil, words: [], total: documents.length)
+    Struct.new(:documents, :spelling, :total) do
+      def grouped? = false
+    end
+          .new(documents, Struct.new(:collation, :words).new(collation, words), total)
   end
 
   test "corrects a query that found nothing" do
@@ -31,6 +33,34 @@ class SpellingCorrectionTest < ActiveSupport::TestCase
 
   test "leaves a search that found something alone" do
     assert_nil SpellingCorrection.from("anatomy", response(documents: [ :a_hit ], collation: "botany"))
+  end
+
+  test "leaves an empty page alone when the search has matching records" do
+    assert_nil SpellingCorrection.from("anatomy", response(documents: [], collation: "botany", total: 12))
+  end
+
+  test "a corrected search starts on the first page even when a later page was requested" do
+    empty = response(documents: [], collation: "anatomy")
+    first_page = response(documents: [ { "id" => "anatomy-1" } ])
+    later_page = response(documents: [], total: 1)
+    repository = Object.new
+    repository.define_singleton_method(:search) do |params:|
+      query = params.to_h
+      if query[:q] == "anatomy"
+        query[:start].to_i.zero? ? first_page : later_page
+      else
+        empty
+      end
+    end
+    config = CatalogController.blacklight_config.dup
+    config.define_singleton_method(:repository) { repository }
+    state = Blacklight::SearchState.new({ q: "anatommy", page: 9 }, config)
+
+    result = SearchService.new(config: config, search_state: state).search_results
+
+    assert_equal [ { "id" => "anatomy-1" } ], result.documents
+    assert_equal "anatommy", result.spelling_correction.original
+    assert_equal "anatomy", result.spelling_correction.corrected
   end
 
   # Solr echoes the query back when it has nothing better. Retrying just repeats the empty search.

@@ -23,7 +23,7 @@ class SearchService < Blacklight::SearchService
   # SearchBuilder. Returns nil if the collation finds nothing after all, so the
   # caller can keep the original response.
   def retry_with(correction)
-    state = search_state.reset(search_state.params.merge(q: correction.corrected))
+    state = search_state.reset(search_state.params.merge(q: correction.corrected, page: 1))
     builder = search_builder.with(state)
     builder.page = state.page
     builder.rows = state.per_page

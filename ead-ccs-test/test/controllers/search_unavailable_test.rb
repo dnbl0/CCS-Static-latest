@@ -25,6 +25,18 @@ class SearchUnavailableTest < ActionDispatch::IntegrationTest
     assert_equal "Search is unavailable. Please try again shortly.", response.parsed_body["error"]
   end
 
+  test "valid advanced search rows still reach Blacklight, including a blank optional row" do
+    clauses = {
+      "0" => { field: "title", op: "must", query: "skull" },
+      "1" => { field: "all_fields", op: "should", query: "" }
+    }
+
+    with_solr_down { get "/catalog.json", params: { clause: clauses } }
+
+    assert_response :service_unavailable
+    assert_equal "Search is unavailable. Please try again shortly.", response.parsed_body["error"]
+  end
+
   test "pages that do not search keep working while Solr is down" do
     with_solr_down do
       get "/help"

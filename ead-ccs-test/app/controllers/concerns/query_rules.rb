@@ -29,7 +29,12 @@ module QueryRules
     return unless request.get? || request.head?
 
     cleaned = apply_query_rule_to(params, :q)
-    params[:clause].each_value { |clause| cleaned &&= apply_query_rule_to(clause, :query) } if params[:clause].respond_to?(:each_value)
+    if params.key?(:clause)
+      clauses = params[:clause]
+      cleaned &&= clauses.is_a?(ActionController::Parameters) && clauses.each_value.all? do |clause|
+        clause.is_a?(ActionController::Parameters) && apply_query_rule_to(clause, :query)
+      end
+    end
     return if cleaned
 
     respond_to do |format|

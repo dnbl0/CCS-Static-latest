@@ -9,7 +9,7 @@ SpellingCorrection = Struct.new(:original, :corrected, :suggestions) do
   def self.from(query, response)
     return if query.blank?
 
-    return unless response.respond_to?(:documents) && response.documents.empty?
+    return unless response.respond_to?(:total) && response.total.zero?
 
     collation = response.spelling&.collation.to_s
     return if collation.blank? || collation.casecmp?(query)

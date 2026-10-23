@@ -48,6 +48,22 @@ class JiraSearchRequirementsTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_path
   end
 
+  test "malformed advanced search clauses use the existing JSON validation response" do
+    [ "skull", [ "skull" ], { "0" => "skull" }, { "0" => [ "skull" ] }, { "0" => nil } ].each do |clauses|
+      get "/catalog.json", params: { clause: clauses }
+
+      assert_response :unprocessable_content
+      assert_equal "Please enter a valid search string.", response.parsed_body["error"]
+    end
+  end
+
+  test "malformed advanced search clauses use the existing HTML validation response" do
+    get "/catalog", params: { clause: { "0" => "skull" } }
+
+    assert_redirected_to root_path
+    assert_equal "Please enter a valid search string.", flash[:alert]
+  end
+
   test "CCS-116: synonyms apply to queries only, and the synonym file holds the curated vocabulary" do
     schema = Nokogiri::XML(CONF.join("schema.xml").read)
     text = schema.at_xpath("//fieldType[@name='text']")
