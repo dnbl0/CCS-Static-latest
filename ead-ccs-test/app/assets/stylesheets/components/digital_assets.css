@@ -18,6 +18,9 @@
   flex-direction: column;
   min-height: 40.5rem; /* 648px: the panel's height in the design */
   padding: var(--ccs-space-4);
+  /* The closed panel waits just off this edge (translateX(100%)): clip it here, or on a phone, where the panel is full
+     width, it doubles the page's width (WCAG 1.4.10 Reflow). clip, not hidden: no scroll container, nothing else changes. */
+  overflow-x: clip;
 }
 
 /* The centred, clipped image/media area is a child of the stage, not the stage itself: the Media metadata
