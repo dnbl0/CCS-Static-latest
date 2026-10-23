@@ -4,7 +4,7 @@ Recent changes to the static site, newest first. Earlier history is in `git log`
 
 ### 2026-10-23
 
-- **Renamed to Collections Navigator** (static and Rails): page titles, header title, home and About headings, search box labels, the page loader, Blacklight's application name, the app manifest and the docs. "Collection Navigator", "Cultural Collections", "Cultural Collections Search" and the "CCS" abbreviation no longer appear in page text; "the University's cultural collections" stays as a description.
+- **Renamed to Collections Navigator** (static and Rails): page titles, header title, home and About headings, search box labels, the page loader, Blacklight's application name, the app manifest and the docs. The earlier names ("Cultural Collections", "Cultural Collections Search", the singular "Collection" form) and the "CCS" abbreviation no longer appear in page text; "the University's cultural collections" stays as a description.
 - **EMu accession numbers keep their zeros (Rails)**: the export's accession column had been through a spreadsheet (00.0070 became 0.007) on 5,589 Grainger and University Art Collection records. The indexer now takes the number from the Summary Data (`[00.0070] ...`). Needs a reindex (`FORCE=1`).
 - **UoM ID is emu-umc-<IRN> (Rails)**: the University has three EMu systems (UMC, FEIT, prints); this export is UMC's. Record addresses stay `/catalog/emu-<IRN>`; `/catalog/emu-umc-<IRN>` redirects there.
 - **Images**: the contrabass sarrusophone's photos move from its case to the instrument, front view first; the oboe shows its front first; the J. Quinn life study (signed, "Presented: 1893") moves from Hugh Ramsay's record to Quinn's.
