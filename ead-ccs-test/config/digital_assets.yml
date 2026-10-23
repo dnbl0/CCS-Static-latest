@@ -186,3 +186,155 @@
   - "f9cc9fda40e54b57a2a4a04f33cf74ca.jpg"
 "99.5700.4":  # Ella Grainger, seated at her writing desk in the living room (Omeka item 88)
   - "37b3f69e6ee697024493a8665878dcfb.jpg"
+
+# University Art Collection and Grainger Museum Collection: images exported from the Nexus DAM (2026-10-23), matched to
+# records by the accession number in the file name. Keyed by record id, because the two collections share accession numbers
+# (Grainger 00.0013 and Art 0.0013 are both "0.0013"). The originals are not kept here.
+"emu-400198":  # Taish?goto, Nagoya harp (Grainger Museum Collection)
+  - "GMC_00_0006~3_PF.jpg"
+"emu-400205":  # Masenqo (Grainger Museum Collection)
+  - "GMC_00_0013~3_PF.jpg"
+"emu-400236":  # Concertina (Grainger Museum Collection)
+  - "GMC_00_0032~2_PF.jpg"
+"emu-400237":  # Conductors baton (Grainger Museum Collection)
+  - "GMC_00_0034~1_PF.jpg"
+  - "GMC_00_0034~2_PF.jpg"
+"emu-400330":  # Contrabass sarrusophone carrying case (Grainger Museum Collection)
+  - "GMC_00_0071~1_PF.jpg"
+  - "GMC_00_0071~2_PF.jpg"
+"emu-400336":  # Alto sarrusophone (Grainger Museum Collection)
+  - "GMC_00_0077~1_PF.jpg"
+  - "GMC_00_0077~2_PF.jpg"
+"emu-400340":  # Soprano trombone (Grainger Museum Collection)
+  - "GMC_00_0081~1_PF.jpg"
+  - "GMC_00_0081~2_PF.jpg"
+  - "GMC_00_0081~3_PF.jpg"
+"emu-400351":  # Oboe (Grainger Museum Collection)
+  - "GMC_00_0092~1_PF.jpg"
+  - "GMC_00_0092~2_PF.jpg"
+"emu-400394":  # Sanxian (San-Hsien) (Grainger Museum Collection)
+  - "GMC_00_0108~1_PF.jpg"
+  - "GMC_00_0108~2_PF.jpg"
+"emu-400395":  # Yangqin (Hammered Dulcimer) (Grainger Museum Collection)
+  - "GMC_00_0109~1_PF.jpg"
+  - "GMC_00_0109~2_PF.jpg"
+"emu-401107":  # Yueqin (or yüeh-ch'in) (Grainger Museum Collection)
+  - "GMC_00_0212~1_PF.jpg"
+  - "GMC_00_0212~2_PF.jpg"
+"emu-401135":  # Colour Chord 12-stringed sound box (Grainger Museum Collection)
+  - "GMC_01_0011~1_PF.jpg"
+  - "GMC_01_0011~2_PF.jpg"
+"emu-401138":  # Colour Chord 12-stringed sound box (Grainger Museum Collection)
+  - "GMC_01_0014~1_PF.jpg"
+  - "GMC_01_0014~2_PF.jpg"
+"emu-401155":  # Colour Chord wind instrument (Grainger Museum Collection)
+  - "GMC_01_0031~1_PF.jpg"
+  - "GMC_01_0031~2_PF.jpg"
+"emu-401160":  # Colour Chord wind instrument (horn) (Grainger Museum Collection)
+  - "GMC_01_0036~1_PF.jpg"
+  - "GMC_01_0036~2_PF.jpg"
+  - "GMC_01_0036~3_PF.jpg"
+"emu-401326":  # Fob watch and chain (Grainger Museum Collection)
+  - "GMC_01_0212~1_PF.jpg"
+  - "GMC_01_0212~2_PF.jpg"
+"emu-401363":  # Gold pencil holder with lid (Grainger Museum Collection)
+  - "GMC_01_0245~1_PF.jpg"
+"emu-401373":  # Box originally owned by Franz Liszt (Grainger Museum Collection)
+  - "GMC_01_0256~1_PF.jpg"
+  - "GMC_01_0256~2_PF.jpg"
+  - "GMC_01_0256~3_PF.jpg"
+"emu-401426":  # Castle On Rhine (Grainger Museum Collection)
+  - "GMC_00_5053~1_PF.jpg"
+"emu-402678":  # Poi (Grainger Museum Collection)
+  - "GMC_01_3001~1_PF.jpg"
+"emu-402685":  # Basket (Grainger Museum Collection)
+  - "GMC_01_3027~1_PF.jpg"
+"emu-402700":  # Conch shell (Grainger Museum Collection)
+  - "GMC_01_3034~1_PF.jpg"
+"emu-402702":  # Basket (Grainger Museum Collection)
+  - "GMC_01_3026~1_PF.jpg"
+"emu-403094":  # Brown satin hat (Grainger Museum Collection)
+  - "GMC_04_5015~2_PF.jpg"
+  - "GMC_04_5015~4_PF.jpg"
+"emu-403244":  # Bracelet from Bapota Solomon Group (Grainger Museum Collection)
+  - "GMC_01_3059~1_PF.jpg"
+"emu-403250":  # Armband (Grainger Museum Collection)
+  - "GMC_01_3065~1_PF.jpg"
+"emu-403251":  # Armband (Grainger Museum Collection)
+  - "GMC_01_3066~1_PF.jpg"
+  - "GMC_01_3066~3_PF.jpg"
+  - "GMC_01_3066~5_PF.jpg"
+"emu-403252":  # Armband (Grainger Museum Collection)
+  - "GMC_01_3067~1_PF.jpg"
+"emu-403279":  # Pair of moccasins (Grainger Museum Collection)
+  - "GMC_01_3094~1_PF.jpg"
+  - "GMC_01_3094~4_PF.jpg"
+"emu-403293":  # Pipe bag (Grainger Museum Collection)
+  - "GMC_01_3108~1_PF.jpg"
+"emu-403297":  # Vest (Grainger Museum Collection)
+  - "GMC_01_3112~1_PF.jpg"
+"emu-403825":  # Portable gramophone used by Nellie Melba (Grainger Museum Collection)
+  - "GMC_01_3293~3_PF.jpg"
+  - "GMC_01_3293~5_PF.jpg"
+  - "GMC_01_3293~6_PF.jpg"
+"emu-405545":  # Lute (Grainger Museum Collection)
+  - "GMC_00_0226~1_PF.jpg"
+  - "GMC_00_0226~2_PF.jpg"
+"emu-407596":  # Harp guitar / mandolin and case (Grainger Museum Collection)
+  - "GMC_00_0185~1_PF.jpg"
+  - "GMC_00_0185~2_PF.jpg"
+"emu-10133":  # Ethelreda (Portrait of A Girl) (University Art Collection)
+  - "UAC 1982_0022~2_PF.jpg"
+"emu-10247":  # Ferntree Gully, Dandenong Ranges, (Victoria) (University Art Collection)
+  - "1973_0672_000_000_PF.jpg"
+"emu-104619":  # Darreninjuwa (Godford Gorge) (University Art Collection)
+  - "Darreninjuwa-PF.jpg"
+"emu-105738":  # New Holland: Vessels, weapons and fishing implements [Nouvel (University Art Collection)
+  - "2018_0056~1_PF.jpg"
+"emu-105739":  # Van Diemen’s Land: Weapons and ornaments [Terre de Diémen: A (University Art Collection)
+  - "2018_0057~1_PF.jpg"
+"emu-108223":  # Conundrum (University Art Collection)
+  - "GAS.R_1_2.jpg"
+"emu-108290":  # Scarred for Life I, Birth Certificate, 1962 (University Art Collection)
+  - "MOF.T_1.jpg"
+"emu-1633":  # Untitled [The University Lake and The National Museum] (University Art Collection)
+  - "UAC 1975_0003_000_000-PF.jpg"
+"emu-17398":  # Toorak (University Art Collection)
+  - "UAC 1973_0003_000_000_PF.jpg"
+"emu-20233":  # Shabti (University Art Collection)
+  - "UAC 0000_0636_000_000-PF.jpg"
+  - "UAC 0000_0636_000_000A-PF.jpg"
+"emu-20252":  # Shabti (University Art Collection)
+  - "UAC 0000_0638a.jpg"
+  - "UAC 0000_0638b.jpg"
+"emu-20324":  # Fragment of Hieroglyphic inscription (University Art Collection)
+  - "UAC 0000_0642_000_000-PF.jpg"
+"emu-20335":  # Grandfather's father's country (University Art Collection)
+  - "2006_0111_000_000_PF.jpg"
+"emu-25168":  # Lotus plaque (University Art Collection)
+  - "0000_0421_000_000_PF.jpg"
+"emu-25260":  # Animal figurine (University Art Collection)
+  - "UAC 1970_0340_000_000-PF_1.jpg"
+"emu-25310":  # Lebes gamikos and lid (University Art Collection)
+  - "UAC 1978_0117_000_000E-PF.jpg"
+"emu-25746":  # Faience and glass necklace (University Art Collection)
+  - "UAC 1968_0062_000_000B-PF.jpg"
+"emu-26443":  # Papyrus - A declaration or oath addressed to the agoranomi c (University Art Collection)
+  - "UAC 1901_0003A_000_000_PF.jpg"
+"emu-26480":  # Coin - Tetradrachm, Ob: Head of Athena, of very archaic styl (University Art Collection)
+  - "UAC 1928_0039_000_000A_PF.jpg"
+  - "UAC 1928_0039_000_000B_PF.jpg"
+"emu-26597":  # Coin - Daric, Ob: The Great King bearded, running right (a h (University Art Collection)
+  - "0000_0275_000_A_000_B~1_PF.jpg"
+"emu-4759":  # Fragment from St. Pauls Epistle, with illuminated "P" (University Art Collection)
+  - "UAC 1975_0110A_000_000_PF.jpg"
+"emu-508389":  # Pukara (University Art Collection)
+  - "2023_033_001~1_PF.jpg"
+"emu-5595":  # Untitled [University Scene] (University Art Collection)
+  - "UAC 0000_0004_000_000-PF.jpg"
+"emu-5618":  # Untitled [Ballerina]; Verso [Unfinished lake scene] (University Art Collection)
+  - "UAC 1970_0377_000_000A-PF.jpg"
+"emu-8465":  # (Banksia serrata Linn. al.) (University Art Collection)
+  - "0000_0278~1_PF.jpg"
+"emu-8798":  # By the Engineering School, Melbourne University (University Art Collection)
+  - "1976_0021~1_PF.jpg"

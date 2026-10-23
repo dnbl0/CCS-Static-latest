@@ -19,6 +19,20 @@ class DigitalAssetsTest < ActiveSupport::TestCase
     assert_equal 2, document["digital_asset_paths_ssim"].size
   end
 
+  test "an entry keyed by record id goes to that record only, so a shared accession number cannot pass it to another collection" do
+    assets = Collections::DigitalAssets.new("emu-400205" => [ "GMC_00_0013~3_PF.jpg" ])
+
+    assert_equal "/digital-assets/thumbs/gmc_00_0013_3_pf.jpg", assets.attach("id" => "emu-400205", "accession_number_ssim" => [ "0.0013" ])["thumbnail_path_ssi"]
+    assert_nil assets.attach("id" => "emu-12240", "accession_number_ssim" => [ "0.0013" ])["thumbnail_path_ssi"]
+  end
+
+  test "a record listed by id and by accession number shows both, the id's images first" do
+    assets = Collections::DigitalAssets.new("emu-9" => [ "new.jpg" ], "1973.0755" => [ "old.jpg" ])
+
+    assert_equal %w[/digital-assets/thumbs/new.jpg /digital-assets/thumbs/old.jpg],
+      assets.attach("id" => "emu-9", "accession_number_ssim" => [ "1973.0755" ])["digital_asset_paths_ssim"]
+  end
+
   test "a record without images is left unchanged" do
     document = { "id" => "emu-1", "accession_number_ssim" => [ "X.1" ] }
 

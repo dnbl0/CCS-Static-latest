@@ -1,9 +1,10 @@
 require "yaml"
 
 module Collections
-  # Attaches digital-asset fields to a document when its accession number has images listed in
-  # config/digital_assets.yml. Each image has an 800 px thumbnail (list, mosaic) and a
-  # 1600 px large version (record page) under public/digital-assets.
+  # Attaches digital-asset fields to a document when its accession number, or its record id, has images listed in
+  # config/digital_assets.yml. A record id key ("emu-400205") is for an accession number that two collections share
+  # (Grainger and the Art Collection both have a 0.0013), so the image goes to the one record. Each image has an
+  # 800 px thumbnail (list, mosaic) and a 1600 px large version (record page) under public/digital-assets.
   class DigitalAssets
     THUMBNAILS = "/digital-assets/thumbs".freeze
     LARGE = "/digital-assets/large".freeze
@@ -25,7 +26,8 @@ module Collections
     end
 
     def attach(document)
-      files = Array(document["accession_number_ssim"]).filter_map { |accession| @files_by_accession[accession] }.first
+      by_accession = Array(document["accession_number_ssim"]).filter_map { |accession| @files_by_accession[accession] }.first
+      files = (Array(@files_by_accession[document["id"]]) + Array(by_accession)).uniq
       return document if files.blank?
 
       names = files.map { |file| self.class.thumbnail_name(file) }
