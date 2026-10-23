@@ -71,6 +71,22 @@
   transition: text-decoration var(--duration-fast) ease;
 }
 
+/* The home icon is exactly 24px by 24px on every page, whatever the page rules say */
+.page-breadcrumbs .page-local-history__link-image {
+  display: block;
+  flex: none;
+  width: 24px;
+  height: 24px;
+}
+
+/* The home icon is exactly 24px by 24px on every page, whatever the page rules say */
+.page-breadcrumbs .page-local-history__link-image {
+  display: block;
+  flex: none;
+  width: 24px;
+  height: 24px;
+}
+
 .page-breadcrumbs .page-local-history a:hover,
 .page-breadcrumbs .page-local-history a:focus-visible {
   text-decoration: underline;
