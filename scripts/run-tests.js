@@ -9,6 +9,7 @@ const CHECKS = [
   'node tests/blacklight-adapter.test.js',
   'node tests/search-live.test.js',
   'node tests/catalog-api.test.js',
+  'node tests/copy-markdown.test.js',
   'node tests/runtime-libs.test.js',
   'node tests/budgets.test.js',
   'node tests/page-integrity.test.js',

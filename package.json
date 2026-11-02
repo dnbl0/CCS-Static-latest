@@ -19,6 +19,7 @@
     "sync:partials": "node scripts/sync-partials.js",
     "sync:rails": "node scripts/sync-rails-assets.js",
     "parity": "node scripts/parity.js",
+    "export:page-copy": "node scripts/export-page-copy.js",
     "style:snapshot": "node scripts/style-snapshot.js",
     "style:diff": "node scripts/style-diff.js",
     "test": "node scripts/run-tests.js"

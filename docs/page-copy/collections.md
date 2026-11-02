@@ -1,0 +1,25 @@
+> **Page:** /collections/ · **Source file:** `public/collections/index.html`
+
+Home › Browse collections
+
+# Browse collections
+
+The University of Melbourne's cultural collections are unrivalled among Australian universities, spanning visual arts, cartography, medical history, zoology, archives and more, including significant collections of Aboriginal and Torres Strait Islander cultural heritage.
+
+## Collections currently available in Collections Navigator
+
+- [Grainger Museum Collection](/search/search-results.html?collection=Grainger%20Museum%20Collection) Australian musician and composer Percy Grainger established the Grainger Museum and Collection in 1938, motivated by the desire to interpret and contextualise his creative achievements and cultural environment. The Collection is an internationally significant archive of over 100,000 items, spanning a range of disciplines, from experimental sound technology and musical instruments, to costumes, ethnography, art and design. The collection is brought to life through collaboration with students, academic partners and artists and their creative work and production.
+- [Harry Brookes Allen Museum of Anatomy and Pathology](/search/search-results.html?collection=Harry%20Brookes%20Allen%20Museum%20of%20Anatomy%20and%20Pathology) The Harry Brookes Allen Museum of Anatomy and Pathology is one of Australia's largest collections of human tissue specimens, animal anatomy specimens, and historical anatomical models, offering students and researchers a unique insight into the human body.
+- [Henry Forman Atkinson Dental Museum](/search/search-results.html?collection=Henry%20Forman%20Atkinson%20Dental%20Museum) Showcases the intriguing history of dental health and development of the dental professions and dental education. The Henry Forman Atkinson Dental Museum collection is the oldest and most significant dental collection in Australia, tracing its origins back to 1884.
+- [Medical History Museum](/search/search-results.html?collection=Medical%20History%20Museum) Since its inception in 1967, the Medical History Museum has developed a diverse and varied collection of over 13,000 items encompassing documents, photographs, artefacts, artworks, medical and scientific equipment and associated research material, encompassing the history of medicine in Victoria, Australia and internationally.
+- [University Art Collection](/search/search-results.html?collection=University%20Art%20Collection) The University of Melbourne Art Collection is the largest University-based art collection in Australia, comprising over 18,000 artworks. The collection includes major holdings of paintings, prints and drawings, ceramics, and sculpture, including contemporary Australian art and contemporary Aboriginal and Torres Strait Islander Art.
+
+## Help and guidance
+
+Information on searching, accessing and respectfully using the collections.
+
+[Help and supportSearching, using and requesting items from the collections.](/help/index.html)
+
+[Indigenous cultural data and accessHow Aboriginal and Torres Strait Islander cultural material is described, protected and accessed.](/help/index.html#indigenous)
+
+[Contact the collections teamAsk a question or request access to a collection item.](/help/index.html#contact-us)
