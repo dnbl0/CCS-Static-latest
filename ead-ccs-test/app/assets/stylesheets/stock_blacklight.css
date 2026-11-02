@@ -2,3 +2,10 @@
 @import url("bootstrap-stock.css");
 @import url("blacklight.css");
 @import url("blacklight_gallery/osd_viewer.css");
+
+/* Each linked value in Object details is a target at least 24px tall (WCAG 2.2, 2.5.8 Target Size (Minimum)): the links stand
+   one per line, not in a sentence, so the inline-text exception does not apply. Same rule in components/record_page.css. */
+.stock-object-details__values a {
+  display: inline-block;
+  min-height: 24px;
+}

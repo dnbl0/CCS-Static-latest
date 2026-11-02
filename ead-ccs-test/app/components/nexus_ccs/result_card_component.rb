@@ -6,9 +6,10 @@ module NexusCcs
   # Registered as the list and mosaic views' document_component; everything else is Blacklight's
   # DocumentComponent (title slot with its link and counter, classes, ids).
   class ResultCardComponent < Blacklight::DocumentComponent
-    TITLE_TAG = :h5
+    TITLE_TAG = :h3
 
-    # The card's heading is an h5 (Blacklight's default is h3)
+    # The card's heading is an h3, under the results' h2 (WCAG 1.3.1: no heading level is skipped); its size is set by
+    # .document-title-heading, not by the tag
     def initialize(**args)
       super(**args, title_component: TITLE_TAG)
     end

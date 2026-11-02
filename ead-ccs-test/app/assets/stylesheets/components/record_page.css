@@ -469,3 +469,10 @@ body.blacklight-catalog-show #main-container .page-sidebar {
     padding-inline: var(--ccs-space-4);
   }
 }
+
+/* Each linked value in the branded record page's Object details is a target at least 24px tall (WCAG 2.2, 2.5.8 Target Size
+   (Minimum)): the links stand one per line, not in a sentence. Same rule in stock_blacklight.css for /stock. */
+.stock-object-details__values a {
+  display: inline-block;
+  min-height: 24px;
+}

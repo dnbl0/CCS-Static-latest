@@ -114,9 +114,9 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     get "/branded-stock/vernon-MHM00394"
     # a full-width band above the page container, in the layout's slot; one wrapper for band, toolbar and modal (OpenSeadragon's full screen needs the toolbar's parent not to be the body)
     assert_operator response.body.index("Media viewer"), :<, response.body.index('id="main-container"')
-    assert_select "article[aria-label=Media] > section.bg-black[aria-label='Media viewer'] header p", text: "Test record"
-    assert_select "article[aria-label=Media] picture.osd-image[data-openseadragon]"
-    assert_select "article[aria-label=Media] > section[aria-label='Media toolbar'] button[id$=-full-page]", 1
+    assert_select "section[aria-label=Media] > section.bg-black[aria-label='Media viewer'] header p", text: "Test record"
+    assert_select "section[aria-label=Media] picture.osd-image[data-openseadragon]"
+    assert_select "section[aria-label=Media] > section[aria-label='Media toolbar'] button[id$=-full-page]", 1
     assert_select "section[aria-label='Media toolbar'] button[data-bs-toggle=modal][aria-label='Media metadata']", 1
     assert_select ".modal.fade[aria-labelledby]", 1
     # Bootstrap tooltips on the info and full screen buttons (no native title as well)
@@ -140,18 +140,18 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     config = JSON.parse(css_select("[data-openseadragon]").first["data-openseadragon"])
     assert_equal(-1, config["tabIndex"]) # 2.4.3: no unnamed tab stop
     # 2.4.7: a visible focus ring on every control over the dark band, and every icon-only button has a name (4.1.2)
-    assert_select "article[aria-label=Media] section[aria-label='Media viewer'] button.focus-ring", 5 # previous, next, 3 thumbnails
+    assert_select "section[aria-label=Media] section[aria-label='Media viewer'] button.focus-ring", 5 # previous, next, 3 thumbnails
     assert_select "section[aria-label='Media viewer'][style*='--bs-focus-ring-color']", 1 # a ring that shows on black
-    assert_select "article[aria-label=Media] button:not([aria-label])", false
-    assert_select "article[aria-label=Media] svg:not([aria-hidden=true])", false
+    assert_select "section[aria-label=Media] button:not([aria-label])", false
+    assert_select "section[aria-label=Media] svg:not([aria-hidden=true])", false
     get "/branded-stock/vernon-MHM00394"
     assert_select "picture[data-openseadragon][role=img][aria-label='Test record']", 1
   end
 
   test "a record with several images has round previous and next buttons and a row of 80px thumbnails" do
     get "/branded-stock/multi"
-    assert_select "article[aria-label=Media] button[id$=-previous].rounded-circle[aria-label='Previous image']", 1
-    assert_select "article[aria-label=Media] button[id$=-next].rounded-circle[aria-label='Next image']", 1
+    assert_select "section[aria-label=Media] button[id$=-previous].rounded-circle[aria-label='Previous image']", 1
+    assert_select "section[aria-label=Media] button[id$=-next].rounded-circle[aria-label='Next image']", 1
     assert_select "nav[data-media-thumbnails][aria-label=Images] button[data-page]", 3
     assert_select "nav[data-media-thumbnails] img[width='80'][height='80'][src='/digital-assets/thumbs/b.jpg']", 1
     config = JSON.parse(css_select("[data-openseadragon]").first["data-openseadragon"])

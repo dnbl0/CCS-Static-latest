@@ -1,6 +1,6 @@
 require "application_system_test_case"
 
-# axe-core (WCAG 2.1 A and AA) over the pages and the states people reach by clicking
+# axe-core (WCAG 2.2 A and AA, AXE_TAGS) over the pages and the states people reach by clicking
 class AccessibilityTest < ApplicationSystemTestCase
   setup { page.driver.set_cookie("country_acknowledged", "1") }
 
@@ -33,6 +33,24 @@ class AccessibilityTest < ApplicationSystemTestCase
     visit search_catalog_path(any_assets: "1", q: "skull")
     assert_selector ".result-card"
     assert_accessible
+  end
+
+  # 1.3.1: axe's heading-order rule is a best practice, outside AXE_TAGS, so the levels are checked here: no heading on the
+  # results page goes more than one level below the heading before it (the result titles are h3 under the results' h2)
+  test "the results page skips no heading level" do
+    visit search_catalog_path(any_assets: "1", q: "skull")
+    assert_selector ".result-card h3.document-title-heading"
+    levels = page.evaluate_script("[...document.querySelectorAll('main h1, main h2, main h3, main h4, main h5, main h6')].map(h => +h.tagName[1])")
+    jumps = levels.each_cons(2).select { |before, after| after > before + 1 }
+    assert_empty jumps, "heading levels in <main>: #{levels.inspect}"
+  end
+
+  # 2.4.3: Turbo changes the page without a browser load, which leaves focus on <body>; page_focus.js moves it to the new page's h1
+  test "after following a link to another page, focus is on that page's heading" do
+    visit search_catalog_path(any_assets: "1", q: "skull")
+    first(".result-card .document-title-heading a").click
+    assert_selector "main h1"
+    assert_equal "H1", page.evaluate_script("document.activeElement.tagName")
   end
 
   test "a record page has no axe violations" do

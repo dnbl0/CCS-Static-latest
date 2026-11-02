@@ -1,7 +1,8 @@
 <%# The media band goes to the layout (content_for :hero), above the page container. Icons are Material's paths, filled with the text colour. %>
 <% hero = capture do %>
   <%# One wrapper for the band, toolbar and modal: OpenSeadragon, in full screen, takes the page body's children off and remembers where its toolbar was from the toolbar's parent, which must not be the body itself. %>
-  <article aria-label="Media">
+  <%# A named section (a region landmark), so all of the band is inside a landmark (it is drawn above <main>) %>
+  <section aria-label="Media">
   <%# The focus ring of the controls on the dark band: Bootstrap's own variable, near-opaque white (its light ring is 25% white, about 2:1 on black; WCAG 1.4.11 asks 3:1) %>
   <section class="bg-black text-white" aria-label="Media viewer" style="--bs-focus-ring-color: rgba(255, 255, 255, .9)">
     <header class="container text-center py-5">
@@ -73,6 +74,6 @@
       </article>
     </aside>
   <% end %>
-  </article>
+  </section>
 <% end %>
 <% helpers.content_for(:hero, hero) %>

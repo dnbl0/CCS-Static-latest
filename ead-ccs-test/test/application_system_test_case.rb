@@ -13,7 +13,7 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
 
   # axe-core comes from the static site's dependencies (npm install at the repository root)
   AXE = Rails.root.join("../node_modules/axe-core/axe.min.js")
-  AXE_TAGS = %w[wcag2a wcag2aa wcag21a wcag21aa].freeze
+  AXE_TAGS = %w[wcag2a wcag2aa wcag21a wcag21aa wcag22aa].freeze
 
   # Fails with each violation (rule, impact, elements) when axe finds any on the current page. `except` lists rule ids
   # that are known and tracked elsewhere.
