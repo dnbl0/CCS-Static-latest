@@ -31,7 +31,7 @@ function current(relative) {
   const items = new Set();
   let m;
   if (relative === 'about.html') items.add('about');
-  else if (relative === 'search/search-results.html' || relative === 'collections/record.html') items.add('search');
+  else if (relative === 'search/search-results.html' || relative === 'collections/record.html' || relative === 'catalog/index.html' || relative === 'catalog/record.html') items.add('search');
   else if (relative === 'collections/index.html') items.add('collections');
   else if (relative === 'help/index.html') items.add('help');
   return items;

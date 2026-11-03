@@ -18,6 +18,10 @@ if (BASE && !BASE.startsWith('/')) throw new Error('BASE_PATH must start with "/
 
 fs.rmSync(out, { recursive: true, force: true });
 fs.cpSync(src, out, { recursive: true });
+// The catalogue's thumbnails and large images (the Rails app serves them from its own public/), copied beside the site
+// so the static catalogue (public/catalog/) can show them
+const assets = path.join(root, 'ead-ccs-test', 'public', 'digital-assets');
+if (fs.existsSync(assets)) fs.cpSync(assets, path.join(out, 'digital-assets'), { recursive: true });
 
 // First path segments that belong to this site (top-level names with and without .html) plus the old API paths.
 const names = new Set(['item', 'catalog', 'catalog.json']);
@@ -55,6 +59,10 @@ for (const r of cfg.redirects || []) {
   fs.writeFileSync(target, stub(BASE + (r.destination === '/' ? '/' : r.destination)));
   stubs++;
 }
+
+// The old prototype search page forwards to the catalogue, the static copy of the Rails app's /catalog page
+const { stubHtml } = require('./lib/old-search-redirect');
+fs.writeFileSync(path.join(out, 'search', 'search-results.html'), stubHtml(BASE + '/catalog/'));
 
 // /item/:code -> record page; anything else is a plain not-found page
 const notFound = `<!DOCTYPE html>

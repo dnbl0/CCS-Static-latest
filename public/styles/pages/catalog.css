@@ -1,0 +1,54 @@
+/* Static catalogue backup (public/catalog/): the search form, cards, filters and menus the results page styles do not cover. */
+.catalog-search-form { display: flex; gap: var(--spacing-075, 0.75rem); max-width: 40rem; }
+.catalog-search-form__input { flex: 1; min-height: 2.75rem; padding: 0 1rem; border: 1px solid var(--neutral-500, #767676); border-radius: 0.25rem; font: inherit; }
+.catalog-search-form__button { min-height: 2.75rem; padding: 0 1.5rem; border: 0; border-radius: 0.25rem; background: var(--brand-800, #094183); color: var(--white-100, #fff); font: inherit; font-weight: 600; cursor: pointer; }
+.catalog-search-form__button:hover { background: var(--brand-900, #07336a); }
+.catalog-status { padding: 1rem 0; }
+.catalog-status[hidden] { display: none; }
+.catalog-count { margin: 0; font-size: 1.25rem; }
+.catalog-controls { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+
+.catalog-menu { position: relative; }
+.catalog-menu > summary { list-style: none; cursor: pointer; }
+.catalog-menu > summary::-webkit-details-marker { display: none; }
+.catalog-menu__list { position: absolute; z-index: 20; right: 0; min-width: 12rem; margin: 0.25rem 0 0; padding: 0.25rem 0; list-style: none; background: var(--white-100, #fff); border: 1px solid var(--neutral-300, #ccc); border-radius: 0.25rem; box-shadow: 0 4px 12px rgb(0 0 0 / 15%); }
+.catalog-menu__item { display: block; padding: 0.5rem 1rem; color: inherit; text-decoration: none; }
+.catalog-menu__item:hover, .catalog-menu__item.active { background: var(--blue-100, #e8eef7); }
+
+.catalog-results { display: grid; gap: 1rem; margin: 1rem 0; }
+.catalog-results--mosaic { grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)); }
+.catalog-results--list { grid-template-columns: 1fr; }
+.catalog-card { display: flex; flex-direction: column; border: 1px solid var(--neutral-300, #ccc); border-radius: 0.25rem; background: var(--white-100, #fff); overflow: hidden; }
+.catalog-results--list .catalog-card { flex-direction: row; }
+.catalog-card__media { display: block; background: var(--neutral-200, #eee); }
+.catalog-card__media img { display: block; width: 100%; height: 12rem; object-fit: cover; }
+.catalog-results--list .catalog-card__media { flex: 0 0 9rem; }
+.catalog-card__body { padding: 1rem; }
+.catalog-card__title { margin: 0 0 0.5rem; font-size: 1.125rem; }
+.catalog-card__lines { margin: 0; padding: 0; list-style: none; color: var(--neutral-800, #444); }
+
+.catalog-facet { border-top: 1px solid var(--neutral-300, #ccc); padding: 0.75rem 0; }
+.catalog-facet__heading { margin: 0; font-size: 1rem; font-weight: 600; cursor: pointer; }
+.catalog-facet__list { margin: 0.5rem 0 0; padding: 0; list-style: none; }
+.catalog-facet__link { display: flex; justify-content: space-between; gap: 0.5rem; min-height: 1.5rem; padding: 0.25rem 0; color: var(--interactive-700, #0b4aa0); }
+.catalog-facet__link.is-selected { font-weight: 700; }
+.catalog-facet__count { color: var(--neutral-800, #444); }
+.catalog-facet__more > summary { padding: 0.5rem 0; color: var(--interactive-700, #0b4aa0); cursor: pointer; }
+.catalog-range__row { display: flex; gap: 0.5rem; margin: 0.5rem 0; }
+.catalog-range__row label { flex: 1; }
+.catalog-range__row input { width: 100%; min-height: 2.5rem; }
+
+.catalog-record { max-width: 60rem; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+.catalog-record__media { margin: 1rem 0; }
+.catalog-record__media img { display: block; max-width: 100%; max-height: 32rem; height: auto; margin: 0 auto; object-fit: contain; }
+.catalog-record__details th { width: 14rem; text-align: left; vertical-align: top; }
+.catalog-record__details td p { margin: 0 0 0.25rem; }
+.catalog-record__id { color: var(--neutral-800, #444); }
+@media (width <= 600px) { .catalog-record__details th, .catalog-record__details td { display: block; width: auto; } .catalog-results--list .catalog-card { flex-direction: column; } }
+
+/* Below desktop the filters stack above the results (the results page hides them behind a Filters button; this page has none) */
+@media (width <= 991.98px) {
+  body.page-catalog .search-results-layout { display: block; }
+  body.page-catalog .facet-rail { width: auto; padding-right: 0; border-right: 0; border-bottom: 1px solid var(--neutral-300, #ccc); }
+  body.page-catalog .catalog-results--mosaic { grid-template-columns: repeat(auto-fill, minmax(min(16rem, 100%), 1fr)); }
+}

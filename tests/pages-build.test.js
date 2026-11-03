@@ -32,8 +32,12 @@ for (const f of ['404.html', '.nojekyll', 'Contact Us.dc.html', 'search/advanced
 }
 if (/collections\/record\.html\?item=/.test(fs.readFileSync(path.join(dist, '404.html'), 'utf8'))) ok('404.html forwards /item/:code to the record page');
 else fail('404.html does not forward /item/:code');
-if (/apiMode:"mock"/.test(fs.readFileSync(path.join(dist, 'search', 'search-results.html'), 'utf8'))) ok('search page defaults the adapter to the local catalogue');
-else fail('search page does not default the adapter to the local catalogue');
+const oldSearch = fs.readFileSync(path.join(dist, 'search', 'search-results.html'), 'utf8');
+if (oldSearch.includes(`url=${BASE}/catalog/`) && oldSearch.includes('translate(location.search)')) ok('the old search page forwards to the catalogue');
+else fail('the old search page does not forward to the catalogue');
+for (const f of ['catalog/index.html', 'catalog/record.html', 'catalog/catalog-data.json', 'catalog/catalog-text.json']) {
+  if (fs.existsSync(path.join(dist, f))) ok(`dist has ${f}`); else fail(`dist is missing ${f}`);
+}
 
 fs.rmSync(dist, { recursive: true, force: true });
 finish('pages-build');

@@ -12,7 +12,7 @@ module.exports = [
   // Tests run Playwright: the functions given to page.evaluate run in the page, so they see browser globals and the
   // helpers the tests inject with addInitScript.
   { files: ['tests/**/*.js'], languageOptions: { sourceType: 'commonjs', globals: { ...globals.node, ...globals.browser, state: 'readonly', log: 'readonly', barA: 'readonly', CCSSearchBar: 'readonly', axe: 'readonly', CCS: 'readonly', barB: 'readonly' } } },
-  { files: ['public/**/*.js'], languageOptions: { sourceType: 'script', globals: { ...globals.browser, module: 'writable', global: 'readonly', CCSSearchBar: 'readonly' } } },
+  { files: ['public/**/*.js'], languageOptions: { sourceType: 'script', globals: { ...globals.browser, module: 'writable', global: 'readonly', CCSSearchBar: 'readonly', CatalogSearch: 'readonly' } } },
   {
     rules: {
       'no-empty': ['error', { allowEmptyCatch: true }],
