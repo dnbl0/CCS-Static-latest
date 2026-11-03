@@ -49,6 +49,16 @@ Legacy `*.dc.html` filenames (for example `Collection Search v3.dc.html`) 301-re
 
 ---
 
+## Backup catalogue on GitHub Pages
+
+While the Azure copy of the Rails app (`ccs-web`) is unavailable, the Pages site carries a working copy of its catalogue:
+
+- **Search:** https://enterprise-services-group.github.io/CCS-2026-MVP/catalog/ (the old prototype search page, `/search/search-results.html`, forwards there).
+- **How it works:** `public/catalog/` searches all of the Rails app's records in the browser. The data is exported from the Rails app's Solr index into `public/catalog/catalog-data.json`, `catalog-text.json` and `catalog-detail/`. It is read-only: no saved records, search history or "did you mean".
+- **Refresh the data** after the Rails index changes (new CSV exports): start the Rails app and Solr (see [ead-ccs-test/docs/running-the-app.md](ead-ccs-test/docs/running-the-app.md)), then run `SOLR_URL=http://USER:PASSWORD@HOST:PORT/solr/blacklight-core node scripts/build-catalog-index.js` and commit the files it writes.
+- **Images** for the records that have them come from `ead-ccs-test/public/digital-assets`; the Pages build copies them next to the site.
+- **Tests:** `tests/catalog-search.test.js` (search rules), `tests/catalog-export.test.js` (export), `tests/old-search-redirect.test.js`, `tests/pages-build.test.js`.
+
 ## Repository layout
 
 ```
