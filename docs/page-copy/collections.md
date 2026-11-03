@@ -1,4 +1,4 @@
-> **Page:** /collections/ · **Source file:** `public/collections/index.html`
+> **URL:** https://enterprise-services-group.github.io/CCS-2026-MVP/collections/ · **Source file:** `public/collections/index.html`
 
 Home › Browse collections
 

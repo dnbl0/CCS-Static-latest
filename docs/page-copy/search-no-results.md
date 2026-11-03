@@ -1,4 +1,4 @@
-> **Page:** /search/search-results.html?q=zzzzqqqq · **Source file:** `public/search/search-results.html`
+> **URL:** https://enterprise-services-group.github.io/CCS-2026-MVP/search/search-results.html?q=zzzzqqqq · **Source file:** `public/search/search-results.html`
 >
 > The page when a search finds nothing. The result cards are left out.
 

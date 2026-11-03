@@ -17,7 +17,7 @@ function handler(req, res) {
   let query = qs;
   for (const [re, dest] of rewrites) {
     const m = re.exec(url);
-    if (m) { const d = dest.replace(/:(\w+)/g, (_, k) => m.groups[k]).split('?'); url = d[0]; query = d[1] || query; break; }
+    if (m && !file(path.join(root, url))) { const d = dest.replace(/:(\w+)/g, (_, k) => m.groups[k]).split('?'); url = d[0]; query = d[1] || query; break; }
   }
   if (url === '/api/catalog') return catalog({ url: '/api/catalog?' + query }, { setHeader: (k, v) => res.setHeader(k, v), status(c) { res.statusCode = c; return this; }, json(b) { res.setHeader('Content-Type', 'application/json'); res.end(JSON.stringify(b)); } });
   const f = file(path.join(root, url));

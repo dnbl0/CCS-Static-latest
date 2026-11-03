@@ -1,4 +1,4 @@
-> **Page:** /search/advanced-search.html · **Source file:** `public/search/advanced-search.html`
+> **URL:** https://enterprise-services-group.github.io/CCS-2026-MVP/search/advanced-search.html · **Source file:** `public/search/advanced-search.html`
 
 Home › Advanced Search
 

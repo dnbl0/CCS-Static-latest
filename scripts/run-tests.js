@@ -13,6 +13,8 @@ const CHECKS = [
   'node tests/catalog-export.test.js',
   'node tests/old-search-redirect.test.js',
   'node tests/copy-markdown.test.js',
+  'node tests/dev-server-static-first.test.js',
+  'node tests/page-copy-urls.test.js',
   'node tests/runtime-libs.test.js',
   'node tests/budgets.test.js',
   'node tests/page-integrity.test.js',

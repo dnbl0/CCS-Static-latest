@@ -1,4 +1,4 @@
-> **Page:** / · **Source file:** `public/index.html`
+> **URL:** https://enterprise-services-group.github.io/CCS-2026-MVP/ · **Source file:** `public/index.html`
 
 # Collections Navigator
 

@@ -1,4 +1,4 @@
-> **Page:** /help/ · **Source file:** `public/help/index.html`
+> **URL:** https://enterprise-services-group.github.io/CCS-2026-MVP/help/ · **Source file:** `public/help/index.html`
 
 Home › Help and support
 

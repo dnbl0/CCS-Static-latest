@@ -13,13 +13,15 @@ The header, footer and search overlay are the same on every page, so they are wr
 
 | Page | File | URL |
 | --- | --- | --- |
-| About | [about.md](about.md) | `/about.html` |
-| Browse collections | [collections.md](collections.md) | `/collections/` |
-| Item record (one sample record) | [collections-record.md](collections-record.md) | `/collections/record.html?item=CA-010071` |
-| Help and support | [help.md](help.md) | `/help/` |
-| Home | [home.md](home.md) | `/` |
-| Advanced search | [search-advanced-search.md](search-advanced-search.md) | `/search/advanced-search.html` |
-| Search results | [search-search-results.md](search-search-results.md) | `/search/search-results.html` |
-| Search results: no results | [search-no-results.md](search-no-results.md) | `/search/search-results.html?q=zzzzqqqq` |
-| Item record: record not found | [collections-record-not-found.md](collections-record-not-found.md) | `/collections/record.html?item=CA-999999` |
-| Item record: restricted media ("Request to view") | [collections-record-restricted-media.md](collections-record-restricted-media.md) | `/collections/record.html?item=CA-000001` |
+| About | [about.md](about.md) | https://enterprise-services-group.github.io/CCS-2026-MVP/about.html |
+| Catalogue search (backup copy of the Rails search) | [catalog.md](catalog.md) | https://enterprise-services-group.github.io/CCS-2026-MVP/catalog/ |
+| Catalogue record (backup copy, one sample record) | [catalog-record.md](catalog-record.md) | https://enterprise-services-group.github.io/CCS-2026-MVP/catalog/record.html?id=emu-401120 |
+| Browse collections | [collections.md](collections.md) | https://enterprise-services-group.github.io/CCS-2026-MVP/collections/ |
+| Item record (one sample record) | [collections-record.md](collections-record.md) | https://enterprise-services-group.github.io/CCS-2026-MVP/collections/record.html?item=CA-010071 |
+| Help and support | [help.md](help.md) | https://enterprise-services-group.github.io/CCS-2026-MVP/help/ |
+| Home | [home.md](home.md) | https://enterprise-services-group.github.io/CCS-2026-MVP/ |
+| Advanced search | [search-advanced-search.md](search-advanced-search.md) | https://enterprise-services-group.github.io/CCS-2026-MVP/search/advanced-search.html |
+| Search results | [search-search-results.md](search-search-results.md) | https://enterprise-services-group.github.io/CCS-2026-MVP/search/search-results.html |
+| Search results: no results | [search-no-results.md](search-no-results.md) | https://enterprise-services-group.github.io/CCS-2026-MVP/search/search-results.html?q=zzzzqqqq |
+| Item record: record not found | [collections-record-not-found.md](collections-record-not-found.md) | https://enterprise-services-group.github.io/CCS-2026-MVP/collections/record.html?item=CA-999999 |
+| Item record: restricted media ("Request to view") | [collections-record-restricted-media.md](collections-record-restricted-media.md) | https://enterprise-services-group.github.io/CCS-2026-MVP/collections/record.html?item=CA-000001 |

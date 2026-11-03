@@ -1,4 +1,4 @@
-> **Page:** /collections/record.html?item=CA-010071 · **Source file:** `public/collections/record.html`
+> **URL:** https://enterprise-services-group.github.io/CCS-2026-MVP/collections/record.html?item=CA-010071 · **Source file:** `public/collections/record.html`
 >
 > Shown with one sample record (CA-010071). The field labels and page copy are static; the values are that record's.
 

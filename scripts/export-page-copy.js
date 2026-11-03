@@ -13,19 +13,24 @@ const { domToMarkdown } = require('./lib/dom-to-markdown');
 const root = path.join(__dirname, '..');
 const publicDir = path.join(root, 'public');
 const outDir = path.join(root, process.env.COPY_MD_DIR || 'docs/page-copy');
+// The live site (GitHub Pages); every page file shows its full URL on it
+const SITE_URL = (process.env.COPY_SITE_URL || 'https://enterprise-services-group.github.io/CCS-2026-MVP').replace(/\/+$/, '');
 const SITE = 'Cultural Collections Search (CCS), University of Melbourne';
 
 // Not part of the 2026 MVP (search history and saved searches are 2027), or not a page of copy
 const SKIP_FILES = new Set(['404.html', 'search/search-history.html', 'search/bookmarks.html']);
 // Pages that need a query string to show anything, and a note about what the example shows
-const QUERY = { 'collections/record.html': '?item=CA-010071' };
+const QUERY = { 'collections/record.html': '?item=CA-010071', 'catalog/record.html': '?id=emu-401120' };
 // Page names for the index (the browser titles are long, and the record page's is a sample item's name)
 const NAMES = {
   home: 'Home', about: 'About', collections: 'Browse collections', 'collections-record': 'Item record (one sample record)', help: 'Help and support',
-  'search-advanced-search': 'Advanced search', 'search-search-results': 'Search results'
+  'search-advanced-search': 'Advanced search', 'search-search-results': 'Search results',
+  catalog: 'Catalogue search (backup copy of the Rails search)', 'catalog-record': 'Catalogue record (backup copy, one sample record)'
 };
 const NOTES = {
   'search/search-results.html': 'The result cards are sample records, so they are left out here.',
+  'catalog/index.html': 'The backup copy of the Rails search page: it searches all records in the browser. The result cards are left out here.',
+  'catalog/record.html': 'Shown with one sample record (emu-401120). The field labels are static; the values are that record\'s.',
   'collections/record.html': 'Shown with one sample record (CA-010071). The field labels and page copy are static; the values are that record\'s.'
 };
 
@@ -68,7 +73,8 @@ function waitForServer(url, ms = 15000) {
 const cell = t => String(t).replace(/\|/g, '\\|').replace(/\n/g, ' ');
 function doc(title, { url, source, note }, { copy, ui }) {
   const body = /^# /m.test(copy) ? copy : `# ${title}\n\n${copy}`;
-  const info = `> **Page:** ${url} · **Source file:** \`${source}\`` + (note ? `\n>\n> ${note}` : '');
+  const full = url === 'every page' ? `${SITE_URL}/ (shown on every page)` : SITE_URL + url;
+  const info = `> **URL:** ${full} · **Source file:** \`${source}\`` + (note ? `\n>\n> ${note}` : '');
   const table = ui.length
     ? ['## Interface text', '', 'Buttons, form fields and image text on this page. Check each is on the page, spelled the same.', '', '| Type | Text |', '| --- | --- |', ...ui.map(u => `| ${u.type} | ${cell(u.text)} |`)].join('\n')
     : '';
@@ -114,7 +120,7 @@ const convert = (page, selector) => page.evaluate(domToMarkdown, { selector, sep
         wroteShared = true;
       }
       // The shared parts and the skip link are written once; take them out before reading the page's own copy
-      await page.evaluate(() => document.querySelectorAll('header, footer, #uom-search-popover, .skip-link, article').forEach(el => el.remove()));
+      await page.evaluate(() => document.querySelectorAll('header, footer, #uom-search-popover, .skip-link, article, .catalog-facet__list').forEach(el => el.remove()));
       const out = await convert(page, 'body');
       fs.writeFileSync(path.join(outDir, p.slug + '.md'), doc(NAMES[p.slug] || title.split(' — ')[0], p, out));
       index.push([p.slug, NAMES[p.slug] || title.split(' — ')[0], p.url]);
@@ -129,7 +135,7 @@ const convert = (page, selector) => page.evaluate(domToMarkdown, { selector, sep
       'The header, footer and search overlay are the same on every page, so they are written once: [site-header.md](site-header.md) and [site-footer.md](site-footer.md).', '',
       '## Pages', '',
       '| Page | File | URL |', '| --- | --- | --- |',
-      ...index.map(([slug, t, u]) => `| ${t} | [${slug}.md](${slug}.md) | \`${u}\` |`), ''
+      ...index.map(([slug, t, u]) => `| ${t} | [${slug}.md](${slug}.md) | ${SITE_URL}${u} |`), ''
     ].join('\n'));
     console.log(`Wrote ${index.length} pages, the header and footer, and README.md to ${path.relative(root, outDir)}`);
   } finally {

@@ -1,4 +1,4 @@
-> **Page:** every page · **Source file:** `src/partials/footer.html`
+> **URL:** https://enterprise-services-group.github.io/CCS-2026-MVP/ (shown on every page) · **Source file:** `src/partials/footer.html`
 >
 > The same on every page, so it is not repeated in the page files.
 

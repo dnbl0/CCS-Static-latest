@@ -19,7 +19,7 @@ const FIXTURE = `<!doctype html><html><body>
   <button type="button">Save</button>
   <label for="q">Search</label><input id="q" placeholder="Type here">
   <img src="a.jpg" alt="A violin">
-  <table><tr><th>Name</th><th>Count</th></tr><tr><td>Violin</td><td>3</td></tr></table>
+  <table><tr><th>Name</th><th>Count</th></tr><tr><td>Violin</td><td>3</td></tr><tr><td>Subject</td><td><p>Music</p><p>Strings</p></td></tr></table>
   <ul class="faq"><li><h3>How do I search?</h3><p>Use the search box.</p></li></ul>
   <p class="links"><a href="/a">One</a><a href="/b">Two</a></p>
   <h2>Contact</h2>
@@ -50,6 +50,7 @@ Find [answers](/help/faq) to **common** questions.
 | Name | Count |
 | --- | --- |
 | Violin | 3 |
+| Subject | Music; Strings |
 
 - **How do I search?**  
   Use the search box.

@@ -1,4 +1,4 @@
-> **Page:** /collections/record.html?item=CA-999999 · **Source file:** `public/collections/record.html`
+> **URL:** https://enterprise-services-group.github.io/CCS-2026-MVP/collections/record.html?item=CA-999999 · **Source file:** `public/collections/record.html`
 >
 > The page when a record link does not match any record.
 

@@ -1,4 +1,4 @@
-> **Page:** /search/search-results.html · **Source file:** `public/search/search-results.html`
+> **URL:** https://enterprise-services-group.github.io/CCS-2026-MVP/search/search-results.html · **Source file:** `public/search/search-results.html`
 >
 > The result cards are sample records, so they are left out here.
 

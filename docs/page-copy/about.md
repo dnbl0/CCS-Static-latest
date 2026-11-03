@@ -1,4 +1,4 @@
-> **Page:** /about.html · **Source file:** `public/about.html`
+> **URL:** https://enterprise-services-group.github.io/CCS-2026-MVP/about.html · **Source file:** `public/about.html`
 
 Home › About
 

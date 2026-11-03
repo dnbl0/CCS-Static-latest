@@ -97,7 +97,13 @@ function domToMarkdown(arg) {
   }
 
   function table(el) {
-    const rows = [...el.rows].filter(r => !hidden(r)).map(r => [...r.cells].map(c => squash(inline(c)).trim().replace(/\|/g, '\\|')));
+    // Paragraphs, list items and divs inside one cell are separate values: join them with "; " instead of running them together
+    const cellText = c => {
+      const parts = [...c.children].filter(k => /^(P|DIV|LI|UL|OL)$/.test(k.tagName.toUpperCase()) && !hidden(k));
+      const values = parts.length > 1 ? parts.map(k => squash(inline(k)).trim()).filter(Boolean) : [squash(inline(c)).trim()];
+      return values.join('; ').replace(/\|/g, '\\|');
+    };
+    const rows = [...el.rows].filter(r => !hidden(r)).map(r => [...r.cells].map(cellText));
     if (!rows.length || !rows[0].length) return '';
     const line = cells => '| ' + cells.join(' | ') + ' |';
     return [line(rows[0]), line(rows[0].map(() => '---')), ...rows.slice(1).map(line)].join('\n');

@@ -1,4 +1,4 @@
-> **Page:** /collections/record.html?item=CA-000001 · **Source file:** `public/collections/record.html`
+> **URL:** https://enterprise-services-group.github.io/CCS-2026-MVP/collections/record.html?item=CA-000001 · **Source file:** `public/collections/record.html`
 >
 > A record whose digital asset cannot be viewed online. The sample data has none, so for this file the page is shown with the access restriction switched on for the sample record CA-000001.
 
