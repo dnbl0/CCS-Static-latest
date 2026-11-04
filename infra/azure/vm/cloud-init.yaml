@@ -1,8 +1,11 @@
 #cloud-config
+# Installs Docker and a swap file. The app's source is copied to /opt/ccs afterwards by deploy-vm.sh (the repository is private,
+# so the VM cannot clone it), which then runs infra/azure/vm/bootstrap.sh with the domain.
 package_update: true
-packages: [docker.io, docker-compose-v2, git, python3, openssl]
+packages: [docker.io, docker-compose-v2, python3, openssl]
 runcmd:
   # Swap, so the Rails image build does not run out of memory on a small VM
   - fallocate -l 2G /swapfile && chmod 600 /swapfile && mkswap /swapfile && swapon /swapfile
-  - git clone --depth 1 -b __BRANCH__ https://github.com/dnbl0/CCS-Static-latest.git /opt/ccs
-  - DOMAIN=__DOMAIN__ /opt/ccs/infra/azure/vm/bootstrap.sh > /var/log/ccs-bootstrap.log 2>&1
+  - echo '/swapfile none swap sw 0 0' >> /etc/fstab
+  - mkdir -p /opt/ccs && chown azureuser:azureuser /opt/ccs
+  - touch /var/lib/cloud/ccs-ready

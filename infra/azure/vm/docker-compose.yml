@@ -27,6 +27,10 @@ services:
       POSTGRES_USER: ead_ccs
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       SOLR_URL: http://solr:${SOLR_PASSWORD}@solr:8983/solr/blacklight-core
+      # Fills the Solr core from the bundled CSV exports once Solr answers (it skips itself when the core already has records)
+      AUTO_INDEX: "true"
+      # The audio and video files of a few records are served from the static site
+      CCS_MEDIA_BASE_URL: https://enterprise-services-group.github.io/CCS-2026-MVP/assets/data
     depends_on: [postgres, solr]
 
   solr:

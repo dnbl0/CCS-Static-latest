@@ -24,11 +24,12 @@ The image's default command still runs `db:prepare` on boot, as for the existing
 on Azure, override the `ccs-web` command to `bundle exec rails server -b 0.0.0.0` and run `rails db:prepare` as a
 Container Apps job.
 
-## Simpler alternative: one VM (`infra/azure/vm/`)
-The Container Apps route above needs a standard environment, and student subscriptions allow only one per region.
-`infra/azure/vm/deploy-vm.sh` instead creates a single Ubuntu VM that runs Caddy (automatic HTTPS), Rails, Solr and
-Postgres with Docker Compose. Passwords are generated on the VM (`/opt/ccs/infra/azure/vm/.env`, root only).
-Run it in Cloud Shell: `SUBSCRIPTION=<id> RG=<group> BRANCH=<branch> infra/azure/vm/deploy-vm.sh`.
+## One VM (`infra/azure/vm/`): what runs the site now
+`infra/azure/vm/deploy-vm.sh` creates a single Ubuntu VM that runs Caddy (automatic HTTPS), Rails, Solr and Postgres with Docker
+Compose. Run it from a clone with the Azure CLI signed in: `SUBSCRIPTION=<id> infra/azure/vm/deploy-vm.sh`. It sends the tracked files
+to the VM (the repository is private, so the VM cannot clone it), generates the passwords on the VM, builds the images (about 10-15
+minutes) and the app fills its own Solr index on first start (`AUTO_INDEX`). Student subscriptions only allow some regions (the
+script defaults to New Zealand North); see the notes at the top of the script. Running it again updates the app.
 
 ## Container Apps without storage mounts (`containerapps.sh`)
 On Azure for Students "Express" environments there are no storage mounts, so Solr's index lives on the container disk and
