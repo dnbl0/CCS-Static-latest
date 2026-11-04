@@ -49,7 +49,9 @@ class AccessibilityTest < ApplicationSystemTestCase
   test "after following a link to another page, focus is on that page's heading" do
     visit search_catalog_path(any_assets: "1", q: "skull")
     first(".result-card .document-title-heading a").click
-    assert_selector "main h1"
+    # Wait for the focus itself, not just for an h1: the results page has a (visually hidden) main h1 too, so waiting for "main h1"
+    # passed before Turbo had changed the page and the check ran while the clicked link still had focus.
+    assert_selector "main h1:focus"
     assert_equal "H1", page.evaluate_script("document.activeElement.tagName")
   end
 
