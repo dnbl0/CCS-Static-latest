@@ -89,6 +89,23 @@ class PagesTest < ActionDispatch::IntegrationTest
     assert_select "#indigenous a[href='https://www.unimelb.edu.au/murmuk-djerring']"
   end
 
+  test "the Help Contact Us section gives each collection the address or form from CCS-438" do
+    get "/help"
+
+    contacts = css_select("#contact-us .help-section__contact").to_h do |li|
+      [ li.at_css(".help-section__contact-name").text.strip, li.at_css("a") ]
+    end
+    assert_equal "mailto:mhm.info@unimelb.edu.au", contacts["Medical History Museum"]["href"]
+    assert_equal "mailto:mhm.info@unimelb.edu.au", contacts["Henry Forman Atkinson Dental Museum"]["href"]
+    assert_equal "mailto:MDHS-museum@unimelb.edu.au", contacts["Harry Brookes Allen Museum of Anatomy and Pathology"]["href"]
+    [ "University Art Collection", "Grainger Museum Collection" ].each do |name|
+      link = contacts[name]
+      assert_equal "https://app.smartsheet.com/b/form/209fed78a83f400e80d0836d6fb517c4", link["href"]
+      assert_equal "_blank", link["target"]
+      assert_includes link["rel"], "noopener"
+    end
+  end
+
   test "the old help topic links go to the topic's section" do
     { "faq" => "/help#faq", "copyright" => "/help#copyright", "access" => "/help#contact-us", "contact-us" => "/help#contact-us", "indigenous" => "/help#indigenous" }.each do |topic, location|
       get "/help", params: { topic: topic }
