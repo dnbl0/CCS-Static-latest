@@ -43,8 +43,6 @@ module NexusCcs
 
     def with_images_path = helpers.search_action_path(f: { has_digital_asset: [ "with" ] }, search_field: "all_fields")
 
-    def with_images_count = browse_counts[BrowseMenu::WITH_IMAGES]
-
     def help_links
       HelpTopic.all.map { |topic| SiteNavigation::Link.new(topic.title, topic.path(helpers)) }
     end

@@ -70,7 +70,7 @@ class SiteChromeTest < ActiveSupport::TestCase
     assert_selector "#site-nav-records .site-nav__browse-more a[href='/catalog/advanced']", text: "Advanced search"
   end
 
-  test "the Search collections menu lists the collections without record counts" do
+  test "the Search collections menu shows no record counts, not even beside Only records with images" do
     counts = { [ BrowseMenu::COLLECTION_FIELD, "Grainger Museum Collection" ] => 13_408, BrowseMenu::WITH_IMAGES => 137 }
     original = BrowseMenu.method(:counts)
     BrowseMenu.define_singleton_method(:counts) { |_connection = nil| counts }
@@ -84,6 +84,9 @@ class SiteChromeTest < ActiveSupport::TestCase
     assert_no_selector "#site-nav-records .site-nav__count"
     assert_no_text "13,408"
     assert_no_text(/\bGrainger Museum Collection\s*[\d,]+\s*records\b/)
+    # nor does the "Only records with images" link carry a number
+    assert_selector "#site-nav-records .site-nav__browse-more a", text: /\AOnly records with images\z/
+    assert_no_text "(137)"
   end
 
   test "the bare search page has no breadcrumb" do
