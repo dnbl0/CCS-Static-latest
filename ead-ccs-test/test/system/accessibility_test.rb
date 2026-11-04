@@ -20,6 +20,24 @@ class AccessibilityTest < ApplicationSystemTestCase
     end
   end
 
+  # axe does not test a control's border at all (1.4.11), so it is measured here from computed styles
+  CONTRAST_JS = <<~JS.freeze
+    const lum = c => { const [r, g, b] = c.match(/[\\d.]+/g).slice(0, 3).map(Number).map(v => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4) }); return 0.2126 * r + 0.7152 * g + 0.0722 * b };
+    window.contrast = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((m, n) => n - m); return (x + 0.05) / (y + 0.05) };
+  JS
+
+  test "text inputs and selects have a border of at least 3:1 against white (1.4.11)" do
+    visit "/catalog/advanced"
+    page.execute_script(CONTRAST_JS)
+    low = page.evaluate_script(<<~JS)
+      [...document.querySelectorAll("form.advanced input[type=text], form.advanced input[type=number], form.advanced select")].filter(e => e.offsetWidth > 0).map(e => {
+        const s = getComputedStyle(e);
+        return { id: e.id || e.name, width: s.borderTopWidth, ratio: s.borderTopWidth === "0px" ? 0 : contrast(s.borderTopColor, "rgb(255, 255, 255)") };
+      }).filter(r => r.ratio < 3)
+    JS
+    assert_empty low, "controls without a 3:1 boundary: #{low.inspect}"
+  end
+
   test "the check fails on a page with a violation, so a pass means something" do
     visit "/contact"
     page.execute_script("document.body.insertAdjacentHTML('beforeend', '<img src=\"/icon.png\"><button></button>')")

@@ -135,6 +135,12 @@ h3, h4, h5, h6, .h3, .h4, .h5, .h6 {
 }
 
 /* Form fields ------------------------------------- */
+/* 1.4.11: a field's border is what shows where it is, so it needs 3:1 against white; Bootstrap's default (#cdcdcd) is 1.6:1 */
+.form-control,
+.form-select {
+  --bs-border-color: var(--ccs-neutral-600);
+}
+
 .form-control:focus,
 .form-select:focus {
   border-color: var(--uom-focus);
