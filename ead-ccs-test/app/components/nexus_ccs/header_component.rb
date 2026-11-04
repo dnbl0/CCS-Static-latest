@@ -35,9 +35,7 @@ module NexusCcs
     def audience_links = SiteNavigation::AUDIENCE
 
     # The Search collections menu: the collections, then the records with images under them (BrowseMenu)
-    def browse_counts = @browse_counts ||= BrowseMenu.counts
-
-    def browse_groups = BrowseMenu.groups(browse_counts)
+    def browse_groups = BrowseMenu.groups
 
     def browse_path(item) = helpers.search_action_path(BrowseMenu.query(item.field, item.value))
 
