@@ -70,6 +70,22 @@ class SiteChromeTest < ActiveSupport::TestCase
     assert_selector "#site-nav-records .site-nav__browse-more a[href='/catalog/advanced']", text: "Advanced search"
   end
 
+  test "the Search collections menu lists the collections without record counts" do
+    counts = { [ BrowseMenu::COLLECTION_FIELD, "Grainger Museum Collection" ] => 13_408, BrowseMenu::WITH_IMAGES => 137 }
+    original = BrowseMenu.method(:counts)
+    BrowseMenu.define_singleton_method(:counts) { |_connection = nil| counts }
+    begin
+      render_header(url: "/catalog")
+    ensure
+      BrowseMenu.define_singleton_method(:counts, original)
+    end
+
+    assert_selector "#site-nav-group-collections + ul a", text: "Grainger Museum Collection"
+    assert_no_selector "#site-nav-records .site-nav__count"
+    assert_no_text "13,408"
+    assert_no_text(/\bGrainger Museum Collection\s*[\d,]+\s*records\b/)
+  end
+
   test "the bare search page has no breadcrumb" do
     render_header(url: "/catalog")
     assert_no_selector "nav.breadcrumb-bar"

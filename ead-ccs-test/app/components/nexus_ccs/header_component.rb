@@ -45,13 +45,6 @@ module NexusCcs
 
     def with_images_count = browse_counts[BrowseMenu::WITH_IMAGES]
 
-    # "13,408" plus "records" for screen readers; nothing when the count is unknown
-    def record_count(count)
-      return if count.nil?
-
-      tag.span(class: "site-nav__count") { safe_join([ helpers.number_with_delimiter(count), tag.span(" records", class: "visually-hidden") ]) }
-    end
-
     def help_links
       HelpTopic.all.map { |topic| SiteNavigation::Link.new(topic.title, topic.path(helpers)) }
     end
