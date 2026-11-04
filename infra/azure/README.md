@@ -31,6 +31,25 @@ to the VM (the repository is private, so the VM cannot clone it), generates the 
 minutes) and the app fills its own Solr index on first start (`AUTO_INDEX`). Student subscriptions only allow some regions (the
 script defaults to New Zealand North); see the notes at the top of the script. Running it again updates the app.
 
+### An `azurecontainerapps.io` address in front of the VM
+Some networks (the University's, a VPN) refuse a new `*.cloudapp.azure.com` address with `ERR_SSL_PROTOCOL_ERROR`, while an
+`*.azurecontainerapps.io` address works. A small Container App (Caddy, 0.25 vCPU) in front of the VM gives that address; the proxy
+connects to the VM from inside Azure, so the visitor's network only ever sees the trusted domain. How it was set up (2026-11-04):
+
+1. `az containerapp env create -g ccs-web-rg -n ccs-env -l newzealandnorth --logs-destination none` (needs `Microsoft.App` and
+   `Microsoft.OperationalInsights` registered). This makes an **Express** environment. In Express: no revision suffix, and only a
+   changed **image string** starts a new replica (use a different tag, e.g. `caddy:2.10-alpine` instead of `caddy:2`).
+2. `az containerapp create -g ccs-web-rg -n ccs-web --environment ccs-env --image docker.io/library/caddy:2.10-alpine --command caddy
+   --target-port 8080 --ingress external --cpu 0.25 --memory 0.5Gi --min-replicas 1 --max-replicas 1`, then set the arguments with
+   `az containerapp update --yaml` (the CLI's `--args` turns a list into one comma-joined string and the container crash-loops):
+   `args: [reverse-proxy, --from, ":8080", --to, "https://<VM address>"]`. Do **not** add `--change-host-header`: the visitor's address must
+   reach the VM as the Host header, or the app writes links to the VM's own address.
+3. On the VM add `EXTRA_HOSTS=<app>.<env>.<region>.azurecontainerapps.io` to `/opt/ccs/infra/azure/vm/.env` (root only), then
+   `sudo docker compose up -d web caddy`. The app then allows that host (`RAILS_HOSTS`) and the VM's Caddy answers it
+   (the second block in the `Caddyfile`).
+
+Address now: https://ccs-web.nicebay-19f9959b.newzealandnorth.azurecontainerapps.io (about US$5-10 a month extra).
+
 ## Container Apps without storage mounts (`containerapps.sh`)
 On Azure for Students "Express" environments there are no storage mounts, so Solr's index lives on the container disk and
 the web app re-fills it on start (`AUTO_INDEX=true`). Solr runs `--user-managed` with a generated password; the web app

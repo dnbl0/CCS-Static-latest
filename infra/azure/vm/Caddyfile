@@ -1,3 +1,20 @@
+# HTTP/3 (QUIC) is off: it needs UDP 443, which Docker does not publish here, so a browser that was told "h3 is available" could
+# not use it. `Alt-Svc clear` makes browsers that already remembered it forget it.
+{
+	servers {
+		protocols h1 h2
+	}
+}
+
 {$DOMAIN} {
+	header Alt-Svc clear
+	reverse_proxy web:3000
+}
+
+# A proxy in front of this VM (e.g. a small Azure Container App, so people reach the site on an azurecontainerapps.io address) sends the
+# visitor's address as the Host header and connects here by the VM's own name. This block answers those requests. The certificate is a
+# private one (nobody connects to this name directly: the proxy checks the VM's real certificate above). Set EXTRA_HOSTS in .env.
+https://{$EXTRA_HOSTS:localhost} {
+	tls internal
 	reverse_proxy web:3000
 }

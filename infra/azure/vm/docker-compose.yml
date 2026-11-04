@@ -6,6 +6,7 @@ services:
     ports: ["80:80", "443:443"]
     environment:
       DOMAIN: ${DOMAIN}
+      EXTRA_HOSTS: ${EXTRA_HOSTS:-localhost}
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy-data:/data
@@ -20,7 +21,8 @@ services:
       RAILS_ENV: production
       RAILS_ASSUME_SSL: "true"
       RAILS_FORCE_SSL: "true"
-      RAILS_HOSTS: ${DOMAIN}
+      # The VM's address plus any others the app is reached by (EXTRA_HOSTS in .env, comma separated: e.g. a proxy in front of it)
+      RAILS_HOSTS: ${DOMAIN},${EXTRA_HOSTS:-}
       SECRET_KEY_BASE: ${SECRET_KEY_BASE}
       POSTGRES_HOST: postgres
       POSTGRES_DB: ead_ccs
