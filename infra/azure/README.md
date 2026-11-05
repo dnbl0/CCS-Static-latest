@@ -31,6 +31,21 @@ to the VM (the repository is private, so the VM cannot clone it), generates the 
 minutes) and the app fills its own Solr index on first start (`AUTO_INDEX`). Student subscriptions only allow some regions (the
 script defaults to New Zealand North); see the notes at the top of the script. Running it again updates the app.
 
+### Off hours: the VM is switched off from 00:00 to 06:00 (Melbourne time)
+To stretch the Azure credit the VM is stopped (deallocated: no compute charge, the disk and its IP are kept) every night and started again
+in the morning. `infra/azure/vm/off-hours.json` creates two small Logic Apps (`ccs-vm-stop`, `ccs-vm-start`, consumption plan, a few cents a
+month) that call Azure's start/deallocate on the VM with their own managed identity; each holds the *Virtual Machine Contributor* role on
+that one VM and nothing else. The times follow Melbourne's daylight saving (`AUS Eastern Standard Time`).
+
+- Deploy or change the hours: `az deployment group create -g ccs-web-rg --template-file infra/azure/vm/off-hours.json --parameters stopHour=0 startHour=6`
+  (needs the `Microsoft.Logic` service registered, and a region the subscription allows).
+- Switch the schedule off: disable both Logic Apps (portal, or `az resource update`), or delete them; start the VM by hand with `az vm start -g ccs-web-rg -n ccs-vm`.
+- What a visitor sees from 00:00 to 06:00: the VM is down, so the Container App proxy (see below) answers with an error. Docker restarts the
+  containers when the VM boots; the search index and certificate are on the VM's disk, so the site is back about 2 minutes after 06:00.
+- Check it ran: Azure portal, Logic Apps, `ccs-vm-start` / `ccs-vm-stop`, Runs history; or `az vm show -d -g ccs-web-rg -n ccs-vm --query powerState`.
+- Tested on 2026-11-05 by running `ccs-vm-start` on the running VM (succeeded, VM and site unaffected). The first real stop and start were the
+  night of 5-6 November.
+
 ### An `azurecontainerapps.io` address in front of the VM
 Some networks (the University's, a VPN) refuse a new `*.cloudapp.azure.com` address with `ERR_SSL_PROTOCOL_ERROR`, while an
 `*.azurecontainerapps.io` address works. A small Container App (Caddy, 0.25 vCPU) in front of the VM gives that address; the proxy
