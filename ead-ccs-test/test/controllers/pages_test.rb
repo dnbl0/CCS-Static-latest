@@ -106,6 +106,14 @@ class PagesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "the collection text in pages.yml uses the contact emails from CCS-438" do
+    text = File.read(Rails.root.join("config/pages.yml"))
+
+    assert_not_includes text, "mhm-info@"
+    assert_includes text, "mhm.info@unimelb.edu.au"
+    assert_includes text, "MDHS-museum@unimelb.edu.au"
+  end
+
   test "the old help topic links go to the topic's section" do
     { "faq" => "/help#faq", "copyright" => "/help#copyright", "access" => "/help#contact-us", "contact-us" => "/help#contact-us", "indigenous" => "/help#indigenous" }.each do |topic, location|
       get "/help", params: { topic: topic }
