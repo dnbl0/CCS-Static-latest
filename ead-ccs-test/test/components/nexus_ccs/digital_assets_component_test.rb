@@ -93,4 +93,28 @@ class DigitalAssetsComponentTest < ActiveSupport::TestCase
   test "the show page's embed component wraps it with the record summary" do
     assert_equal NexusCcs::RecordEmbedComponent, CatalogController.blacklight_config.view_config(:show).document_embed_component
   end
+
+  test "every player and the large image carry a hidden state area for loading and errors, with a retry" do
+    render_for(assets(1).merge("digital_media_ssim" => [ "video|video/mp4|/m/film.mp4|Film", "audio|audio/mpeg|/m/talk.mp3|Talk" ]))
+
+    assert_selector "figure.digital-assets__main .digital-assets__state[hidden][role=status][data-media-viewer-target=state] button[data-action='media-viewer#retry']", visible: :all
+    assert_selector "img.digital-assets__image[data-action~='error->media-viewer#imageFailed']"
+    assert_selector "figure.digital-assets__media .digital-assets__state[hidden][data-media-player-target=state] button[data-action='media-player#retry']", count: 2, visible: :all
+  end
+
+  test "the test records give every mix of audio, video and images" do
+    media = Collections::DigitalMedia.default
+    images = YAML.safe_load_file(Rails.root.join("config/digital_assets.yml"))
+    kinds = ->(accession) { Array(YAML.safe_load_file(Rails.root.join("config/digital_media.yml"))[accession]).map { |f| f["kind"] }.sort }
+
+    assert_equal %w[audio video], kinds.("MHM03589")
+    assert images["MHM03589"].size > 1
+    assert_equal %w[audio], kinds.("MHM00048")
+    assert images["MHM00048"].any?
+    assert_equal %w[video], kinds.("1973.0755.000.A.000.L")
+    assert images["1973.0755.000.A.000.L"].any?
+    assert_equal %w[audio video], kinds.("MHM00033")
+    assert_nil images["MHM00033"]
+    assert media
+  end
 end

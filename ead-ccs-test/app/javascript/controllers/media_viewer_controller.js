@@ -10,7 +10,7 @@ import { Controller } from "@hotwired/stimulus"
 // justify-content centring, jolting the large image. Opening and closing it only ever toggles the "is-open"
 // class (transform/visibility, both paint-only) and aria-hidden, which never touches that layout.
 export default class extends Controller {
-  static targets = [ "stage", "image", "panel", "infoButton", "fullscreenButton" ]
+  static targets = [ "stage", "image", "state", "panel", "infoButton", "fullscreenButton" ]
 
   connect() {
     this.onKey = (event) => { if (event.key === "Escape" && this.isOpen) this.closePanel() }
@@ -70,5 +70,30 @@ export default class extends Controller {
     const link = event.currentTarget
     this.imageTarget.src = link.dataset.mediaViewerLarge
     this.imageTarget.alt = link.dataset.mediaViewerAlt
+  }
+
+  // The large image could not be loaded: say so in its place, with a retry (a dropped connection is the usual cause)
+  imageFailed() {
+    const box = this.stateTarget
+    box.dataset.state = "error"
+    box.setAttribute("role", "alert")
+    box.querySelector("[data-state-part=title]").textContent = "This image could not be loaded"
+    box.querySelector("[data-state-part=message]").textContent = "Check your connection, then try again. The other images, if any, are below."
+    box.querySelector("button").hidden = false
+    box.hidden = false
+    this.imageTarget.hidden = true
+  }
+
+  imageLoaded() {
+    if (!this.hasStateTarget) return
+    this.stateTarget.hidden = true
+    this.imageTarget.hidden = false
+  }
+
+  retry() {
+    const src = this.imageTarget.currentSrc || this.imageTarget.src
+    this.imageTarget.hidden = false
+    this.imageTarget.src = ""
+    this.imageTarget.src = src
   }
 }

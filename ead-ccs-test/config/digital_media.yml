@@ -12,3 +12,16 @@
   - { kind: video, file: "CROOKS_Daniel_2016_STATICNO19_SHIBUYA_RORSCHACH_access_copy.mp4", type: "video/mp4", label: "Static No. 19 (shibuya rorschach), 6 min 3 sec" }
 "04.1149":
   - { kind: audio, file: "GraingerLowRes.mp3", type: "audio/mpeg", label: "Burnett Cross interview, 17 min 15 sec" }
+
+# Test records for the media stage (CCS-?): real records that already have (or lack) images, given the files above so every
+# mix of audio, video and images can be seen. Their labels start "Test". Remove these four entries to retire them.
+"MHM03589":   # Cary Pocket microscope: 7 images + audio + video
+  - { kind: video, file: "MHM2014.137.2_2.mp4", type: "video/mp4", label: "Test video (audio, video and images)" }
+  - { kind: audio, file: "GraingerLowRes.mp3", type: "audio/mpeg", label: "Test audio (audio, video and images)" }
+"MHM00048":   # Compound monocular microscope: images + audio
+  - { kind: audio, file: "GraingerLowRes.mp3", type: "audio/mpeg", label: "Test audio (audio and images)" }
+"1973.0755.000.A.000.L":   # specimen cabinet: images + video
+  - { kind: video, file: "MHM2014.137.2_2.mp4", type: "video/mp4", label: "Test video (video and images)" }
+"MHM00033":   # Compound monocular microscope: no images, audio + video
+  - { kind: video, file: "MHM2014.137.2_2.mp4", type: "video/mp4", label: "Test video (audio and video)" }
+  - { kind: audio, file: "GraingerLowRes.mp3", type: "audio/mpeg", label: "Test audio (audio and video)" }

@@ -8,7 +8,12 @@
     <div class="digital-assets__media-area">
       <% if main %>
         <figure class="digital-assets__main">
-          <%= image_tag main.first, alt: alt(1), class: "digital-assets__image", data: { media_viewer_target: "image" } %>
+          <%= image_tag main.first, alt: alt(1), class: "digital-assets__image", data: { media_viewer_target: "image", action: "error->media-viewer#imageFailed load->media-viewer#imageLoaded" } %>
+          <div class="digital-assets__state" data-media-viewer-target="state" role="status" hidden>
+            <p class="digital-assets__state-title" data-state-part="title"></p>
+            <p class="digital-assets__state-message" data-state-part="message"></p>
+            <button type="button" class="digital-assets__state-retry" data-action="media-viewer#retry" hidden>Try again</button>
+          </div>
         </figure>
       <% end %>
 
@@ -38,6 +43,11 @@
           <% else %>
             <%= link_to "Open #{media_title(item)} (PDF, opens in a new tab)", item[:url], target: "_blank", rel: "noopener", class: "digital-assets__pdf" %>
           <% end %>
+          <div class="digital-assets__state" data-media-player-target="state" role="status" hidden>
+            <p class="digital-assets__state-title" data-state-part="title"></p>
+            <p class="digital-assets__state-message" data-state-part="message"></p>
+            <button type="button" class="digital-assets__state-retry" data-action="media-player#retry" hidden>Try again</button>
+          </div>
           <figcaption><%= media_title(item) %></figcaption>
           <% unless item[:kind] == "pdf" %>
             <p class="digital-assets__download">
