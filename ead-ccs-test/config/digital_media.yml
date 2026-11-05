@@ -1,6 +1,11 @@
 # Audio, video and PDF files by accession number (CCS-65). The files are not copied into this app: they are
 # served from CCS_MEDIA_BASE_URL (default /digital-assets/media), e.g. the static site's /assets/data folder.
-# kind is audio, video or pdf.
+# kind is audio, video or pdf. Audio and video play in Video.js 10 (public/vendor/videojs; controllers/media_player_controller.js).
+#
+# Captions and transcripts are optional and are not made up: a file without them shows neither. WCAG 1.2.2 needs captions on
+# prerecorded video and 1.2.1 a text alternative (a transcript) for audio-only, so add them as each file's are produced:
+#   captions: { file: "x.vtt", lang: "en" }   # WebVTT, served from the same place as the file; shows in the player's captions menu
+#   transcript: "x.pdf"                       # a link beside the download, for audio and video
 "MHM2014.137":
   - { kind: video, file: "MHM2014.137.2_2.mp4", type: "video/mp4", label: "McCoy Society expedition film" }
 "2018.231.046":

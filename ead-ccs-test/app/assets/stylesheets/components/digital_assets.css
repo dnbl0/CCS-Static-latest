@@ -251,7 +251,19 @@
   }
 }
 
-.digital-assets__media { margin: 0; padding: 1rem; text-align: center; }
-.digital-assets__video { max-width: 100%; max-height: 70vh; }
+/* Audio and video: Video.js 10's Compat skin (controllers/media_player_controller.js). The figure is the player's width;
+   the video fills it and keeps its shape, never taller than 70vh. Until the player script upgrades the element, and if it
+   never does, the browser's own controls show (the markup carries `controls`; the controller removes it). */
+/* White on the band (#1a1a1a, 17:1): the caption, the download links and the PDF link sit directly on it */
+.digital-assets__media { margin: 0; padding: 1rem; text-align: center; width: 100%; max-width: 48rem; color: #fff; }
+.digital-assets__media video-player, .digital-assets__media audio-player { display: block; }
+.digital-assets__video { display: block; width: 100%; max-height: 70vh; }
 .digital-assets__audio { width: 100%; max-width: 40rem; }
 .digital-assets__media figcaption, .digital-assets__pdf { color: inherit; margin-top: 0.5rem; }
+.digital-assets__pdf { text-decoration: underline; text-underline-offset: 0.2em; }
+.digital-assets__pdf:focus-visible { outline: 3px solid var(--ccs-focus-ring); outline-offset: 2px; }
+
+/* The file and its transcript are always a link away from the player */
+.digital-assets__download { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.25rem 1.5rem; margin: 0.5rem 0 0; }
+.digital-assets__download a { color: inherit; text-decoration: underline; text-underline-offset: 0.2em; }
+.digital-assets__download a:focus-visible { outline: 3px solid var(--ccs-focus-ring); outline-offset: 2px; }

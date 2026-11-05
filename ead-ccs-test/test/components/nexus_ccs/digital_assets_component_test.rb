@@ -41,6 +41,50 @@ class DigitalAssetsComponentTest < ActiveSupport::TestCase
     assert_selector "a img[alt='Cary Pocket microscope, image 3 of 3 (opens full size in a new tab)']"
   end
 
+  def media(*entries)
+    { "title_tsim" => [ "Cary Pocket microscope" ], "digital_media_ssim" => entries }
+  end
+
+  test "a video plays in the accessible player, named for its label, with its file a link away" do
+    render_for(media("video|video/mp4|/m/film.mp4|McCoy Society expedition film"))
+
+    assert_selector "figure.digital-assets__media[data-controller~=media-player] video-compat-skin video[src='/m/film.mp4'][preload=metadata][aria-label='McCoy Society expedition film']"
+    assert_no_selector "video[autoplay]"
+    # native controls until the player script upgrades the element (and if it never loads); the script removes them
+    assert_selector "video[controls]"
+    assert_selector "a[href='/m/film.mp4'][download]", text: "Download McCoy Society expedition film"
+  end
+
+  test "audio plays in the audio player and gets the same download link" do
+    render_for(media("audio|audio/mpeg|/m/talk.mp3|Burnett Cross interview, 17 min 15 sec"))
+
+    assert_selector "figure.digital-assets__media[data-controller~=media-player] audio-compat-skin audio[src='/m/talk.mp3'][preload=metadata][aria-label='Burnett Cross interview, 17 min 15 sec']"
+    assert_selector "audio[controls]"
+    assert_selector "a[href='/m/talk.mp3'][download]", text: "Download Burnett Cross interview"
+  end
+
+  test "captions are a track of the video, on by default, and the transcript is a link beside the download" do
+    render_for(media("video|video/mp4|/m/film.mp4|Film|/m/film.vtt|en|/m/film.pdf"))
+
+    assert_selector "video track[kind=captions][src='/m/film.vtt'][srclang=en][label=English][default]"
+    assert_selector "a[href='/m/film.pdf']", text: "Transcript of Film"
+  end
+
+  test "audio has no tracks, but its transcript is the text alternative" do
+    render_for(media("audio|audio/mpeg|/m/talk.mp3|Interview|||/m/talk.pdf"))
+
+    assert_no_selector "track"
+    assert_selector "a[href='/m/talk.pdf']", text: "Transcript of Interview"
+  end
+
+  test "media without captions or a transcript shows neither, and claims nothing about them" do
+    render_for(media("video|video/mp4|/m/film.mp4|Film"))
+
+    assert_no_selector "track"
+    assert_no_text "Transcript"
+    assert_no_text "Captions"
+  end
+
   test "a record without assets renders nothing" do
     render_for("title_tsim" => [ "No images here" ])
     assert_no_selector ".digital-assets"

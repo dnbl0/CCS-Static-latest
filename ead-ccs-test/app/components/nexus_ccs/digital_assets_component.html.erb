@@ -13,22 +13,40 @@
       <% end %>
 
       <% media.each do |item| %>
-        <figure class="digital-assets__media">
+        <%# Audio and video play in Video.js 10's Compat skin (public/vendor/videojs), loaded by the media-player controller.
+            Native controls stay in the markup until it upgrades the element, so the media is playable if the script never
+            loads. No autoplay. The file is always a link away (WCAG 1.2: a player is not the only way in). %>
+        <figure class="digital-assets__media" data-controller="media-player" data-media-player-kind-value="<%= item[:kind] %>">
           <% case item[:kind] %>
           <% when "video" %>
-            <video controls preload="metadata" class="digital-assets__video" aria-label="<%= media_title(item) %>">
-              <source src="<%= item[:url] %>" type="<%= item[:type] %>">
-              <a href="<%= item[:url] %>">Download <%= media_title(item) %></a>
-            </video>
+            <video-player>
+              <video-compat-skin>
+                <video controls preload="metadata" playsinline src="<%= item[:url] %>" aria-label="<%= media_title(item) %>" class="digital-assets__video">
+                  <% if item[:captions] %>
+                    <track kind="captions" src="<%= item[:captions][:url] %>" srclang="<%= item[:captions][:lang] %>" label="<%= language_name(item[:captions][:lang]) %>" default>
+                  <% end %>
+                </video>
+              </video-compat-skin>
+            </video-player>
           <% when "audio" %>
-            <audio controls preload="metadata" class="digital-assets__audio" aria-label="<%= media_title(item) %>">
-              <source src="<%= item[:url] %>" type="<%= item[:type] %>">
-              <a href="<%= item[:url] %>">Download <%= media_title(item) %></a>
-            </audio>
+            <audio-player>
+              <audio-compat-skin>
+                <audio controls preload="metadata" src="<%= item[:url] %>" aria-label="<%= media_title(item) %>" class="digital-assets__audio">
+                </audio>
+              </audio-compat-skin>
+            </audio-player>
           <% else %>
             <%= link_to "Open #{media_title(item)} (PDF, opens in a new tab)", item[:url], target: "_blank", rel: "noopener", class: "digital-assets__pdf" %>
           <% end %>
           <figcaption><%= media_title(item) %></figcaption>
+          <% unless item[:kind] == "pdf" %>
+            <p class="digital-assets__download">
+              <a href="<%= item[:url] %>" download>Download <%= media_title(item) %></a>
+              <% if item[:transcript] %>
+                <a href="<%= item[:transcript] %>" target="_blank" rel="noopener">Transcript of <%= media_title(item) %><span class="visually-hidden"> (opens in a new tab)</span></a>
+              <% end %>
+            </p>
+          <% end %>
         </figure>
       <% end %>
     </div>

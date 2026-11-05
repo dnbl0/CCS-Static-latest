@@ -33,6 +33,9 @@ module NexusCcs
 
     def main = images.first
     def media_title(item) = item[:label].presence || title
+
+    # The language name shown for a captions track ("en" -> "English"); the code itself when it is not one we know
+    def language_name(code) = I18n.t(code, scope: "languages", default: code)
     def others = images.drop(1)
 
     def count = large_paths.size

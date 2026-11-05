@@ -27,6 +27,17 @@
 #       enabled: "ON"
 
 en:
+  # Language names for a media file's captions track (config/digital_media.yml `captions: { lang: }`)
+  languages:
+    en: English
+    fr: French
+    de: German
+    it: Italian
+    es: Spanish
+    nl: Dutch
+    sv: Swedish
+    zh: Chinese
+    ja: Japanese
   blacklight:
     tools:
       title: "Actions"      # Blacklight ships "Tools"

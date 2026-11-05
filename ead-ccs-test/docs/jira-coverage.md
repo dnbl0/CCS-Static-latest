@@ -51,7 +51,7 @@ violations on the results, record and advanced search pages.
 
 | Ticket | Jira | Prototype | Notes |
 |---|---|---|---|
-| CCS-65 Digital asset formats | New, MVP: images, audio, video, PDF (2027: eBook, Office, Open Office, 3D) | **Partial** | Only still images are indexed and shown (`Collections::DigitalAssets`, `FORMAT = "Image"`). Audio, video and PDF are not met in this app; the static site has viewers for all four. |
+| CCS-65 Digital asset formats | New, MVP: images, audio, video, PDF (2027: eBook, Office, Open Office, 3D) | **Partial** | Still images are indexed from the DAM export (`Collections::DigitalAssets`); audio, video and PDF files are attached by accession number from `config/digital_media.yml` (`Collections::DigitalMedia`). Audio and video play in Video.js 10's Compat skin, self-hosted in `public/vendor/videojs` and started by `controllers/media_player_controller.js` (native controls until it loads), with a download link always beside the player. Captions (WebVTT) and a transcript are supported per file in the YAML but none of the three current files has them yet, so WCAG 1.2.1/1.2.2 are not met for them. The player's seek-slider thumb is 12px (axe `target-size`, a vendored-skin limit). |
 | CCS-157 Hero image | New, flagged MVP | **Partial** | A thumbnail shows in results and the record. Not implemented: the hero chosen by DAM sequence `000` (CCS-302, CCS-316), the source ordering of the other images, and the 20-asset cap per record. |
 | CCS-206 History grouped by day | `CCS-2027`; not core for MVP | **Not in prototype** | Was built ahead of the board; removed so the history page is Blacklight's own. |
 | CCS-55 Indigenous data filter | New, not MVP, data not ready | **Gap: data** | Unchanged. |
