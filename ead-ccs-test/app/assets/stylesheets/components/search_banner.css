@@ -85,6 +85,18 @@
   padding: 0;
 }
 
+/* The suggestions are as wide as the search box and no wider: a long title wraps instead of running off the page.
+   The wrapper is the box's own width (position: relative) and the list is absolutely positioned inside it. */
+:is(.search-banner, .ccs-hero__search, .sticky-search) .search-autocomplete-wrapper > .dropdown-menu {
+  width: 100%;
+  max-width: 100%;
+}
+
+:is(.search-banner, .ccs-hero__search, .sticky-search) .search-autocomplete-wrapper .dropdown-item {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
 :is(.search-banner, .ccs-hero__search, .sticky-search) .search-q {
   height: 100%;
   padding: 0 0.875rem;

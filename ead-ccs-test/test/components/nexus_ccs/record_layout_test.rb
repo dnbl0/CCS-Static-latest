@@ -66,6 +66,20 @@ class RecordLayoutTest < ActiveSupport::TestCase
     assert_empty c.tags
   end
 
+  test "the details list's two columns add up to the row (percentages plus the gap pushed the value past the card's padding)" do
+    css = Rails.root.join("app/assets/stylesheets/components/record_page.css").read
+
+    assert_match(/\.record-details__row \{\s+grid-template-columns: minmax\(0, 3fr\) minmax\(0, 7fr\);/, css.gsub(%r{/\*.*?\*/\s*}m, ""))
+    assert_no_match(/grid-template-columns: 30% 70%/, css)
+  end
+
+  test "the search suggestions are no wider than the search box, and a long title wraps" do
+    css = Rails.root.join("app/assets/stylesheets/components/search_banner.css").read
+
+    assert_match(/\.search-autocomplete-wrapper > \.dropdown-menu \{\s+width: 100%;\s+max-width: 100%;/, css)
+    assert_match(/\.search-autocomplete-wrapper \.dropdown-item \{\s+white-space: normal;\s+overflow-wrap: anywhere;/, css)
+  end
+
   test "the Save button is at the top right of the summary, in a second column beside the title and byline, with the tags full width below" do
     css = Rails.root.join("app/assets/stylesheets/components/record_page.css").read
 
