@@ -75,6 +75,20 @@ class AccessibilityTest < ApplicationSystemTestCase
     page.driver.resize(1440, 900)
   end
 
+  # 2.4.7 / 1.4.11: a facet header's focus ring must be a real outline: Bootstrap's 20% box-shadow is about 1.5:1 and is removed in
+  # forced-colours mode (Windows High Contrast), which leaves no indicator at all. axe cannot see either, so the style is read here.
+  test "facet headers show keyboard focus with a solid outline, not only a shadow" do
+    visit search_catalog_path(any_assets: "1", q: "skull")
+    assert_selector ".accordion-button"
+    style = page.evaluate_script(<<~JS)
+      (() => { const b = document.querySelector("#sidebar .accordion-button, .accordion-button"); b.focus({ focusVisible: true });
+               const s = getComputedStyle(b); return { style: s.outlineStyle, width: parseFloat(s.outlineWidth), color: s.outlineColor } })()
+    JS
+    assert_equal "solid", style["style"]
+    assert_operator style["width"], :>=, 2
+    refute_equal "rgba(0, 0, 0, 0)", style["color"], "a transparent outline is invisible outside forced-colours mode"
+  end
+
   # 1.3.1: axe's heading-order rule is a best practice, outside AXE_TAGS, so the levels are checked here: no heading on the
   # results page goes more than one level below the heading before it (the result titles are h3 under the results' h2)
   test "the results page skips no heading level" do

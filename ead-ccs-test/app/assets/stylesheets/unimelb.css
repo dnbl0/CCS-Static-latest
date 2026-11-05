@@ -147,6 +147,14 @@ h3, h4, h5, h6, .h3, .h4, .h5, .h6 {
   box-shadow: 0 0 0 2px rgba(13, 108, 221, 0.35);
 }
 
+/* Accordion headers (the facet lists). Bootstrap shows focus on them only as a 3px shadow at 20% opacity: about 1.5:1, and a
+   box-shadow is removed in forced-colours mode (Windows High Contrast), leaving no focus indicator at all (WCAG 2.4.7, 1.4.11).
+   A real outline is drawn in both; inset, because the accordion clips its children. */
+.accordion-button:focus-visible {
+  outline: 2px solid var(--uom-focus);
+  outline-offset: -2px;
+}
+
 /* Modals ------------------------------------- */
 
 dialog.modal {
