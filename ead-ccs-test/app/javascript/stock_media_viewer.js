@@ -1,4 +1,5 @@
 import * as bootstrap from "bootstrap"
+import { inertOutside, releaseInert } from "modal_lock"
 
 // Bootstrap tooltips (hover and keyboard focus) for the elements with data-tooltip-title: the media toolbar's info and full screen
 // buttons and the permalink's copy button. A data attribute of its own, as data-bs-toggle is already taken on the info button (it opens
@@ -73,3 +74,12 @@ const start = () => { wireThumbnails(); labelFullScreenButton(); setUpTooltips()
 addEventListener("load", start)
 addEventListener("turbo:load", start)
 addEventListener("turbo:frame-load", start)
+
+// The media metadata modal is a Bootstrap modal: it sets aria-modal, which is only a hint to a screen reader, and leaves the page
+// behind it reachable. While it is open the rest of the page is made inert, as for the site's other overlays (modal_lock.js).
+document.addEventListener("shown.bs.modal", (event) => {
+  if (event.target.matches("[id$='-media-metadata']")) inertOutside(event.target, event.target)
+})
+document.addEventListener("hidden.bs.modal", (event) => {
+  if (event.target.matches("[id$='-media-metadata']")) releaseInert(event.target)
+})

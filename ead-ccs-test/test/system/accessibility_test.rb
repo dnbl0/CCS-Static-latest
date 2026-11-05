@@ -173,6 +173,14 @@ class AccessibilityTest < ApplicationSystemTestCase
       assert_selector ".modal.show"
       wait_until_opaque(".modal.show")
       assert_accessible
+      # Intopia Modal Dialog: content outside an open modal is programmatically inert (aria-modal alone is only a hint)
+      assert_equal true, page.evaluate_script("document.querySelector('.modal.show').closest('[inert]') === null"), "the modal itself is not inert"
+      assert_equal true, page.evaluate_script("document.querySelector('h1').closest('[inert]') !== null"), "the page behind the modal is inert"
+      find(".modal.show .btn-close").click
+      assert_no_selector ".modal.show"
+      # Bootstrap fires hidden.bs.modal after the fade-out, so the page is released a moment after .show goes
+      released = Timeout.timeout(5) { sleep 0.05 until page.evaluate_script("document.querySelectorAll('[inert]').length") == 0; true } rescue false
+      assert released, "closing the modal releases the page (still inert: #{page.evaluate_script("document.querySelectorAll('[inert]').length")})"
     end
   end
 

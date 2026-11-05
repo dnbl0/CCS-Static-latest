@@ -98,9 +98,30 @@ class KeyboardFocusTest < ApplicationSystemTestCase
     assert_nil page.evaluate_script("document.getElementById('sidebar').closest('[inert]')"), "the drawer itself is not inert"
     assert_nil page.evaluate_script("document.getElementById('blacklight-modal').closest('[inert]')"), "a dialog opened from inside the drawer (facet Show more) stays usable"
 
-    find("#sidebar .filter-drawer__close").click
+    page.driver.browser.keyboard.type(:Escape)
     assert_no_selector "#sidebar.is-open"
     assert_equal 0, page.evaluate_script("document.querySelectorAll('[inert]:not(.sticky-search)').length"), "closing the drawer releases the page"
+  end
+
+  # The scrim is a child of <body>, so making the page inert must not catch it: an inert element is not hit by a tap, and tapping outside
+  # the drawer closes it. A real mouse click is used (a scripted .click() ignores inert and would not notice).
+  test "on a phone, tapping the scrim beside the open Filters drawer closes it" do
+    page.driver.resize(390, 800)
+    visit search_catalog_path(q: "skull", any_assets: "1")
+
+    find("button", text: "Filters").click
+    assert_selector "#sidebar.is-open"
+    # The drawer slides in, so poll until some point beside it hits the scrim
+    scan = <<~JS
+      (() => { for (let x = innerWidth - 2; x > 0; x -= 4) { const hit = document.elementFromPoint(x, 400); if (hit && hit.classList.contains("filter-backdrop")) return { x, y: 400 } } return null })()
+    JS
+    point = nil
+    Timeout.timeout(5) { sleep 0.1 until (point = page.evaluate_script(scan)) } rescue nil
+    assert point, "the scrim can be hit beside the open drawer (it is not inert)"
+    page.driver.browser.mouse.click(x: point["x"], y: point["y"])
+    assert_no_selector "#sidebar.is-open"
+  ensure
+    page.driver.resize(1440, 900)
   end
 
   test "widening the window to desktop with the phone drawer open releases the page behind it" do
