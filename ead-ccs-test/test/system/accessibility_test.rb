@@ -53,6 +53,17 @@ class AccessibilityTest < ApplicationSystemTestCase
     assert_accessible
   end
 
+  # 4.1.2: the facet "Show more" dialog is Blacklight's, which gives it no name; modal_name.js names it after its heading
+  test "the facet modal is named after its heading and has no axe violations" do
+    visit search_catalog_path(any_assets: "1", q: "skull")
+    assert_selector ".result-card"
+    page.execute_script("document.querySelector('#sidebar a[data-blacklight-modal=trigger]').click()")
+    assert_selector "dialog#blacklight-modal[open] .modal-title"
+    title = find("#blacklight-modal .modal-title").text
+    assert_equal title, page.evaluate_script("document.getElementById(document.getElementById('blacklight-modal').getAttribute('aria-labelledby')).textContent.trim()")
+    assert_accessible
+  end
+
   # 1.3.1: axe's heading-order rule is a best practice, outside AXE_TAGS, so the levels are checked here: no heading on the
   # results page goes more than one level below the heading before it (the result titles are h3 under the results' h2)
   test "the results page skips no heading level" do
