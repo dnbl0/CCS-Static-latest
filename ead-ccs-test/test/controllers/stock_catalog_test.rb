@@ -236,7 +236,7 @@ class StockCatalogTest < ActionDispatch::IntegrationTest
     get "/branded-stock/vernon-MHM00394"
     assert_response :success
     assert_select ".site-header"
-    assert_select ".breadcrumb-bar [aria-current=page]", text: "Test record"
+    assert_select ".breadcrumb-bar [aria-current=page]", text: "vernon-MHM00394" # the record's identifier, not its title
     assert_select "footer, .site-footer"
     assert_select "#document.document h1"
     assert_select "table.document-metadata"

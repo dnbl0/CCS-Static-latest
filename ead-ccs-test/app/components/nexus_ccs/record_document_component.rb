@@ -3,8 +3,10 @@
 module NexusCcs
   # A record's page body, after the CCS UI "Record-detail" (Figma 258:25075): the digital assets, a summary
   # (title, creator and date, tags), then the details as a ruled list in a card with the persistent link below it,
-  # and a Copyright card beside them. Registered as the show page's document_component; the title band and the
-  # breadcrumb above it are HeaderComponent's. The fields, their labels and their order come from the workbook
+  # and a Copyright card beside them. Registered as the show page's document_component; the breadcrumb above it is
+  # HeaderComponent's. The summary's title is the page's one h1 and the page's only visible title besides the
+  # details list's Title row (CCS stakeholder feedback: the title was shown five times). The Copyright card has no
+  # caption until the site offers downloads. The fields, their labels and their order come from the workbook
   # (config.show_fields, see DataModel); the copyright card gathers the rights fields.
   class RecordDocumentComponent < Blacklight::DocumentComponent
     # Shown in the Copyright card, so not repeated in the details list
@@ -62,15 +64,7 @@ module NexusCcs
       end
     end
 
-    # The University has three EMu systems (emu-umc, emu-feit, emu-prints), so the UoM ID names which one. Every EMu
-    # record here comes from Museums & Collections' (emu-umc). The record's URL keeps its Solr id (emu-400329).
-    UOM_ID_PREFIXES = { "emu-" => "emu-umc-" }.freeze
-
-    def uom_id
-      id = document.id.to_s
-      prefix, uom_prefix = UOM_ID_PREFIXES.find { |solr_prefix, _| id.start_with?(solr_prefix) }
-      prefix ? id.sub(prefix, uom_prefix) : id
-    end
+    def uom_id = document.uom_id
 
     def link_to_value?(row) = row.field.in?(LINK_FIELDS)
 
@@ -85,13 +79,6 @@ module NexusCcs
     def responsible_collection = Array(document["collection_ssim"]).first
 
     def responsible_collection_query = filter_query(BrowseMenu::COLLECTION_FIELD, responsible_collection)
-
-    # "Title. Date. Creator. Material. © Rights. Collection."
-    def caption
-      parts = [ heading, Array(document["production_date_ssim"]).first, Array(document["creator_ssim"]).first(2).join("; "),
-                Array(document["material_ssim"]).first, copyright, responsible_collection ]
-      parts.compact_blank.map { |part| part.to_s.sub(/[.\s]+\z/, "") }.join(". ").then { |text| text.present? ? "#{text}." : nil }
-    end
 
     def copyright_card?
       [ credit_line, copyright, licence, responsible_collection ].any?(&:present?)

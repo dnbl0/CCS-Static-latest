@@ -12,4 +12,18 @@ class SolrDocument
   # and Blacklight::Document::SemanticFields#to_semantic_values
   # Recommendation: Use field names from Dublin Core
   use_extension(Blacklight::Document::DublinCore)
+
+  # The University has three EMu systems (emu-umc, emu-feit, emu-prints), so the UoM ID names which one. Every EMu
+  # record here comes from Museums & Collections' (emu-umc). The record's URL keeps its Solr id (emu-400329).
+  UOM_ID_PREFIXES = { "emu-" => "emu-umc-" }.freeze
+
+  def uom_id
+    prefix, uom_prefix = UOM_ID_PREFIXES.find { |solr_prefix, _| id.to_s.start_with?(solr_prefix) }
+    prefix ? id.to_s.sub(prefix, uom_prefix) : id.to_s
+  end
+
+  # The short name a visitor can quote: the accession number, or the UoM ID for a record with none
+  def identifier
+    first("accession_number_ssim").presence || uom_id
+  end
 end

@@ -55,7 +55,7 @@ class RecordLayoutTest < ActiveSupport::TestCase
     assert_not_includes fields, "rights_ssim"
     assert_not_includes fields, "credit_line_tsim"
     assert c.copyright_card?
-    assert_equal "Kangaroo-pouch tone-tool. 1952. Grainger, Percy Aldridge. Paper. © Grainger, Percy Aldridge. Grainger Museum Collection.", c.caption
+    assert_not_respond_to c, :caption # no caption until the site offers downloads
   end
 
   test "a record with no rights fields has no Copyright card" do

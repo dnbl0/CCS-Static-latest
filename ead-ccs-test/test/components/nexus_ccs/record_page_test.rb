@@ -46,14 +46,7 @@ class RecordPageTest < ActiveSupport::TestCase
     assert_selector ".digital-assets + .record-summary"
   end
 
-  test "the title band is hidden from assistive technology so the page keeps one real h1" do
-    render_inline(NexusCcs::RecordBannerComponent.new(title: "Dimalan Leaves"))
-
-    assert_selector "section.record-banner[aria-hidden=true] p.record-banner__title", text: "Dimalan Leaves"
-    assert_no_selector "h1"
-  end
-
-  test "a record page has the title band and no search banner" do
+  test "a record page has no title band and no search banner: its title is shown once, as the h1 of the summary" do
     with_controller_class(CatalogController) do
       with_request_url("/catalog/vernon-MHM2017.28") do
         vc_test_controller.action_name = "show"
@@ -61,7 +54,7 @@ class RecordPageTest < ActiveSupport::TestCase
       end
     end
 
-    assert_selector ".record-banner"
+    assert_no_selector ".record-banner"
     assert_no_selector ".search-banner"
   end
 

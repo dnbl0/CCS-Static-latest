@@ -27,9 +27,9 @@ module NexusCcs
       search_action_url(params || { f: { has_digital_asset: [ "with" ] }, search_field: "all_fields", view: "masonry" })
     end
 
-    def record_title
-      document = helpers.instance_variable_get(:@document)
-      document ? helpers.document_presenter(document).heading : "Record"
+    # What the record's breadcrumb ends in: its accession number, or its UoM ID (SolrDocument#identifier)
+    def record_identifier
+      helpers.instance_variable_get(:@document)&.identifier || "Record"
     end
 
     def audience_links = SiteNavigation::AUDIENCE

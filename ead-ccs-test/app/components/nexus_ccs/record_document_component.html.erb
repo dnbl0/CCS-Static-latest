@@ -4,14 +4,11 @@
   itemscope: true,
   itemtype: document.itemtype,
   class: "record" do %>
-  <%# The title band above the page repeats this for sighted visitors; this is the page's one real h1 %>
-  <h1 class="visually-hidden"><%= heading %></h1>
-
   <%= render NexusCcs::DigitalAssetsComponent.new(presenter: @presenter) %>
 
   <section class="record-summary" aria-label="Summary">
     <div class="record-summary__inner">
-      <p class="record-summary__title"><%= heading %></p>
+      <h1 class="record-summary__title"><%= heading %></h1>
       <% if byline %><p class="record-summary__byline"><%= byline %></p><% end %>
       <% if tags.any? %>
         <ul class="record-summary__tags" aria-label="Tags">
@@ -72,7 +69,7 @@
         <aside class="record-card record-copyright" aria-labelledby="record-copyright-title">
           <h2 class="record-copyright__title" id="record-copyright-title">Copyright</h2>
           <dl class="record-copyright__list">
-            <% { "Caption" => caption, "Credit line" => credit_line, "Copyright" => copyright, "Licence" => licence }.each do |label, value| %>
+            <% { "Credit line" => credit_line, "Copyright" => copyright, "Licence" => licence }.each do |label, value| %>
               <% next if value.blank? %>
               <div class="record-copyright__item"><dt><%= label %></dt><dd><%= value %></dd></div>
             <% end %>

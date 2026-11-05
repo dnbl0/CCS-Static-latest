@@ -1,9 +1,9 @@
 require "test_helper"
 
 class PageChromeTest < ActiveSupport::TestCase
-  # Stands in for the header: the record's title and the way back to the results, asked for on a record page only
-  Record = Struct.new(:record_title, :results_url)
-  RECORD = Record.new("Bust of Percy Grainger", "/catalog?q=grainger")
+  # Stands in for the header: the record's identifier and the way back to the results, asked for on a record page only
+  Record = Struct.new(:record_identifier, :results_url)
+  RECORD = Record.new("1996.3014.000.000", "/catalog?q=grainger")
 
   def chrome(controller, action, searching: false, page: RECORD)
     PageChrome.for(controller: controller, action: action, searching: searching, page: page)
@@ -45,11 +45,11 @@ class PageChromeTest < ActiveSupport::TestCase
     assert_not results.saved_link_in_phone_menu?
   end
 
-  test "a record: back to the visitor's results, then the record's title, under the record's title band" do
+  test "a record: back to the visitor's results, then the record's identifier, and no banner (the page's h1 is its title)" do
     record = chrome("catalog", "show")
 
-    assert_equal [ [ "Search results", "/catalog?q=grainger" ], [ "Bust of Percy Grainger", nil ] ], record.breadcrumbs
-    assert_equal :record, record.banner
+    assert_equal [ [ "Search results", "/catalog?q=grainger" ], [ "1996.3014.000.000", nil ] ], record.breadcrumbs
+    assert_nil record.banner
     assert_equal :breadcrumb, record.saved_bar
   end
 
@@ -73,7 +73,7 @@ class PageChromeTest < ActiveSupport::TestCase
     assert_equal :breadcrumb, saved.saved_bar
   end
 
-  test "the record's title and the results link are only asked for on a record page" do
+  test "the record's identifier and the results link are only asked for on a record page" do
     nobody = Object.new # raises NoMethodError if asked
 
     assert_equal [ [ "Search results", nil ] ], chrome("catalog", "index", searching: true, page: nobody).breadcrumbs
@@ -81,9 +81,9 @@ class PageChromeTest < ActiveSupport::TestCase
   end
 
   test "a stock record page (Blacklight's own page in the site header): a record trail and no banner" do
-    stock = PageChrome.stock_record(record_title: "Test record", results_url: "/catalog")
+    stock = PageChrome.stock_record(identifier: "emu-umc-1", results_url: "/catalog")
 
-    assert_equal [ [ "Search results", "/catalog" ], [ "Test record", nil ] ], stock.breadcrumbs
+    assert_equal [ [ "Search results", "/catalog" ], [ "emu-umc-1", nil ] ], stock.breadcrumbs
     assert_nil stock.banner
     assert_equal :breadcrumb, stock.saved_bar
   end
