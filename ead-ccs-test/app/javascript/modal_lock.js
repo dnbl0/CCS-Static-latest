@@ -31,7 +31,9 @@ export function inertOutside(owner, keep) {
   const made = []
   for (let node = keep; node && node !== document.body; node = node.parentElement) {
     for (const sibling of node.parentElement?.children || []) {
-      if (sibling === node || sibling.inert) continue
+      // A <dialog> is left alone: one opened from inside the surface (the facet "Show more" modal, from the phone Filters drawer)
+      // stands on top of it and has to stay usable, and a closed one is not reachable anyway.
+      if (sibling === node || sibling.inert || sibling.localName === "dialog") continue
       sibling.inert = true
       made.push(sibling)
     }

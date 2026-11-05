@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
-import { lockScroll, unlockScroll } from "modal_lock"
+import { lockScroll, unlockScroll, inertOutside, releaseInert } from "modal_lock"
 
 // The results sidebar as an off-canvas drawer below 992px (from 992px it is an ordinary column and this
 // does nothing). Opening locks page scroll (modal_lock.js), shows a scrim, moves focus into the drawer and keeps Tab
@@ -26,6 +26,7 @@ export default class extends Controller {
     this.query.removeEventListener("change", this.onWidthChange)
     this.backdrop.remove()
     unlockScroll(this)
+    releaseInert(this)
   }
 
   open(event) {
@@ -34,6 +35,7 @@ export default class extends Controller {
     this.sidebar.classList.add("is-open")
     this.backdrop.classList.add("is-open")
     lockScroll(this)
+    inertOutside(this, this.sidebar) // aria-modal is only a hint to a screen reader; inert takes the page behind out of its reach (as for the search overlay)
     this.sidebar.setAttribute("role", "dialog")
     this.sidebar.setAttribute("aria-modal", "true")
     this.sidebar.setAttribute("aria-labelledby", "filter-drawer-title")
@@ -46,6 +48,7 @@ export default class extends Controller {
     this.sidebar.classList.remove("is-open")
     this.backdrop.classList.remove("is-open")
     unlockScroll(this)
+    releaseInert(this)
     this.sidebar.removeAttribute("role")
     this.sidebar.removeAttribute("aria-modal")
     this.sidebar.removeAttribute("aria-labelledby")

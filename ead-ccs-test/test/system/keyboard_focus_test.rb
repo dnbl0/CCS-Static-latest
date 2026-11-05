@@ -86,6 +86,23 @@ class KeyboardFocusTest < ApplicationSystemTestCase
     assert_equal 0, page.evaluate_script("document.querySelectorAll('[inert]:not(.sticky-search)').length"), "closing the drawer releases the page"
   end
 
+  # 4.1.2 / 1.3.2: the Filters drawer is a modal dialog, so the page behind it is out of reach of Tab and of a screen reader's cursor
+  test "on a phone, the page behind the Filters drawer is inert while it is open and released when it closes" do
+    page.driver.resize(390, 800)
+    visit search_catalog_path(q: "skull", any_assets: "1")
+
+    find("button", text: "Filters").click
+    assert_selector "#sidebar.is-open"
+    assert_equal "dialog", page.evaluate_script("document.getElementById('sidebar').getAttribute('role')")
+    assert_operator page.evaluate_script("document.querySelectorAll('[inert]:not(.sticky-search)').length"), :>, 0, "the page behind the drawer is inert"
+    assert_nil page.evaluate_script("document.getElementById('sidebar').closest('[inert]')"), "the drawer itself is not inert"
+    assert_nil page.evaluate_script("document.getElementById('blacklight-modal').closest('[inert]')"), "a dialog opened from inside the drawer (facet Show more) stays usable"
+
+    find("#sidebar .filter-drawer__close").click
+    assert_no_selector "#sidebar.is-open"
+    assert_equal 0, page.evaluate_script("document.querySelectorAll('[inert]:not(.sticky-search)').length"), "closing the drawer releases the page"
+  end
+
   test "widening the window to desktop with the phone drawer open releases the page behind it" do
     page.driver.resize(390, 800)
     visit search_catalog_path(q: "skull", any_assets: "1")
