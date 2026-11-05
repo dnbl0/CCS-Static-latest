@@ -58,25 +58,28 @@ class SiteChromeTest < ActiveSupport::TestCase
     assert_no_selector "nav.topbar" # Blacklight's own top navbar is replaced
   end
 
-  test "Search all records opens the catalog on the All Fields search; the menu lists only the collections" do
+  test "Search all collections opens the catalog on the All Fields search; the menu lists the collections and Advanced search" do
     render_header(url: "/catalog")
-    assert_selector "#site-nav-records a.site-nav__panel-title[href='/catalog?search_field=all_fields']", text: "Search all records"
-    assert_selector "#site-nav-records .site-nav__group-title", count: 1, text: "Museums and collections"
-    assert_selector "#site-nav-group-collections + ul a", text: "Grainger Museum Collection"
+    assert_selector "#site-nav-records a.site-nav__panel-title[href='/catalog?search_field=all_fields']", text: "Search all collections"
+    assert_no_selector "#site-nav-records a.site-nav__panel-title", text: "Search all records"
+    # no visible heading over the collections; the list keeps its name for screen readers
+    assert_no_selector "#site-nav-records .site-nav__group-title"
+    assert_no_text "Museums and collections"
+    assert_selector "#site-nav-records ul.site-nav__panel-list[aria-label='Museums and collections'] a", text: "Grainger Museum Collection"
     assert_no_text "Browse by type"
     assert_no_text "Featured named collections"
-    assert_no_selector "#site-nav-records .site-nav__browse-more a", text: /\AAll( [\d,]+)? records\z/
-    assert_selector "#site-nav-records .site-nav__browse-more a", text: /\AOnly records with images/
+    # the links under the collections: Advanced search only
+    assert_selector "#site-nav-records .site-nav__browse-more li", count: 1
     assert_selector "#site-nav-records .site-nav__browse-more a[href='/catalog/advanced']", text: "Advanced search"
+    assert_no_text "Only records with images"
   end
 
-  test "the Search collections menu shows no record counts, not even beside Only records with images" do
+  test "the Search collections menu shows no record counts" do
     render_header(url: "/catalog")
 
-    assert_selector "#site-nav-group-collections + ul a", text: "Grainger Museum Collection"
+    assert_selector "#site-nav-records ul.site-nav__panel-list a", text: "Grainger Museum Collection"
     assert_no_selector "#site-nav-records .site-nav__count"
     assert_no_text(/\bGrainger Museum Collection\s*[\d,]+\s*records\b/)
-    assert_selector "#site-nav-records .site-nav__browse-more a", text: /\AOnly records with images\z/
   end
 
   test "the bare search page has no breadcrumb" do

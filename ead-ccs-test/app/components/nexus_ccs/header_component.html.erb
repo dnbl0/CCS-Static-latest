@@ -47,13 +47,12 @@
             <div id="site-nav-records" class="site-nav__panel site-nav__panel--browse">
               <button type="button" class="site-nav__back" data-action="site-header#back"><%= back_label %></button>
               <%= link_to all_records_link_path, class: "site-nav__panel-title" do %>
-                <%= image_tag "site/icon-arrow-footer.svg", alt: "" %>Search all records
+                <%= image_tag "site/icon-arrow-footer.svg", alt: "" %>Search all collections
               <% end %>
               <div class="site-nav__groups">
                 <% browse_groups.each do |group| %>
                   <div class="site-nav__group">
-                    <p class="site-nav__group-title" id="site-nav-group-<%= group.id %>"><%= group.heading %></p>
-                    <ul class="site-nav__panel-list" aria-labelledby="site-nav-group-<%= group.id %>">
+                    <ul class="site-nav__panel-list" aria-label="<%= group.heading %>">
                       <% group.items.each do |item| %>
                         <li><%= link_to browse_path(item) do %><span class="site-nav__item-label"><%= item.label %></span><% end %></li>
                       <% end %>
@@ -62,7 +61,6 @@
                 <% end %>
               </div>
               <ul class="site-nav__browse-more">
-                <li><%= link_to with_images_path do %>Only records with images<% end %></li>
                 <li><%= link_to "Advanced search", helpers.advanced_search_catalog_path %></li>
               </ul>
             </div>
