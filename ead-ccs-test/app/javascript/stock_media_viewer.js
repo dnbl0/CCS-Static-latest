@@ -80,6 +80,8 @@ addEventListener("turbo:frame-load", start)
 document.addEventListener("shown.bs.modal", (event) => {
   if (event.target.matches("[id$='-media-metadata']")) inertOutside(event.target, event.target)
 })
-document.addEventListener("hidden.bs.modal", (event) => {
+// Released on hide, not hidden: Bootstrap puts focus back on the button that opened the modal when the fade-out ends, and an inert
+// button cannot take focus, so releasing after that left focus on <body>.
+document.addEventListener("hide.bs.modal", (event) => {
   if (event.target.matches("[id$='-media-metadata']")) releaseInert(event.target)
 })

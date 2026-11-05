@@ -181,6 +181,9 @@ class AccessibilityTest < ApplicationSystemTestCase
       # Bootstrap fires hidden.bs.modal after the fade-out, so the page is released a moment after .show goes
       released = Timeout.timeout(5) { sleep 0.05 until page.evaluate_script("document.querySelectorAll('[inert]').length") == 0; true } rescue false
       assert released, "closing the modal releases the page (still inert: #{page.evaluate_script("document.querySelectorAll('[inert]').length")})"
+      # 2.4.3: focus goes back to the button that opened the modal (an inert button cannot take focus)
+      focused = Timeout.timeout(5) { sleep 0.05 until page.evaluate_script("document.activeElement.getAttribute('aria-label') === 'Media metadata'"); true } rescue false
+      assert focused, "focus returns to the Media metadata button; it is on #{page.evaluate_script("document.activeElement.tagName")}"
     end
   end
 
