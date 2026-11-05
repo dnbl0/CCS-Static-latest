@@ -46,6 +46,22 @@ that one VM and nothing else. The times follow Melbourne's daylight saving (`AUS
 - Tested on 2026-11-05 by running `ccs-vm-start` on the running VM (succeeded, VM and site unaffected). The first real stop and start were the
   night of 5-6 November.
 
+### Automatic deploys: the VM updates itself after a merge
+`infra/azure/vm/auto-deploy.sh` runs on the VM every 5 minutes (cron). If org main changed something the VM runs (the `ead-ccs-test` and
+`infra/azure/vm` folders; other merges, such as docs or the static site, change nothing here), it fetches that version, rebuilds the app,
+and checks that `/up` answers and the search still has its records (more than 10,000). If the check fails it puts the previous files and
+images back and does **not** try that same version again, so a bad merge costs a short blip, not a broken site. If the VM was switched off
+(00:00-06:00) when a merge happened, the first run after it starts catches up.
+
+- **Set up once** (needs the Azure CLI and `gh` with admin on the repo; adds a **read-only deploy key** to the repository, whose private half is
+  created on the VM and never leaves it): `SUBSCRIPTION=<id> SEED_SHA=<commit the VM runs now> infra/azure/vm/setup-auto-deploy.sh`.
+- **Look at it:** `ssh -i ~/.ssh/ccs-vm azureuser@<VM address> 'tail -20 /opt/ccs-deploy/auto-deploy.log; cat /opt/ccs-deploy/deployed-sha'`.
+- **Pause it:** `sudo mv /etc/cron.d/ccs-auto-deploy /etc/cron.d/ccs-auto-deploy.off` on the VM (move it back to resume).
+- **Try it:** `AUTO_DEPLOY_DRY_RUN=1 /opt/ccs-deploy/auto-deploy.sh` says what it would do; `AUTO_DEPLOY_FORCE_FAIL=1` makes the health check
+  fail so the rollback can be seen working.
+- Main is the source of truth: after a manual `deploy-vm.sh` of something that is not on main, the next check puts main back.
+- Tested on the live VM on 2026-11-05: nothing new (silent, no restart); dry run (says what it would do, changes nothing); a forced failure (rolled back and healthy again about 25 seconds later, and that version is not retried); a real update (deployed, state recorded). Logs: `/opt/ccs-deploy/auto-deploy.log`.
+
 ### An `azurecontainerapps.io` address in front of the VM
 Some networks (the University's, a VPN) refuse a new `*.cloudapp.azure.com` address with `ERR_SSL_PROTOCOL_ERROR`, while an
 `*.azurecontainerapps.io` address works. A small Container App (Caddy, 0.25 vCPU) in front of the VM gives that address; the proxy
