@@ -26,6 +26,13 @@ class ModalTest < ActiveSupport::TestCase
     assert_selector "dialog .modal-footer a.btn-primary[target=_blank][rel~=noopener]", text: "Continue to site"
   end
 
+  test "the icon link beside the host opens the same place as Continue to site: in a new tab, with a name that says so" do
+    render_inline(NexusCcs::ViewFullRecordComponent.new(document: SolrDocument.new("id" => "x1", "collection_ssim" => [ "Medical History Museum" ]), action: Action.new(:view_full_record)))
+
+    continue_href = page.find("dialog .modal-footer a.btn-primary")[:href]
+    assert_selector "dialog .uom-dialog-host a[href='#{continue_href}'][target=_blank][rel~=noopener][rel~=noreferrer][aria-label$='(opens in a new tab)']"
+  end
+
   test "the shared stylesheet locks the root for open dialogs and for html.has-open-modal, and keeps the scrollbar gutter" do
     css = stylesheet("components/modal.css")
 

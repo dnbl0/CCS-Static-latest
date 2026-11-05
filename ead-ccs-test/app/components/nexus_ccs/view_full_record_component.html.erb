@@ -24,7 +24,8 @@
           <p><%= t("nexus_ccs.view_full_record.body", source: source_name) %></p>
 
           <p class="uom-dialog-host">
-            <%= link_to url do %>
+            <%# Same as "Continue to site" below: a new tab, and a name for the icon-only link that says so %>
+            <%= link_to url, target: "_blank", rel: "noopener noreferrer", aria: { label: t("nexus_ccs.view_full_record.open_host", host: host) } do %>
               <%= render NexusCcs::Icons::OpenInNewComponent.new %>
             <% end %>
             <span><%= host %></span>
