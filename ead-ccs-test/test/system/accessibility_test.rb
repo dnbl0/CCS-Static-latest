@@ -64,6 +64,17 @@ class AccessibilityTest < ApplicationSystemTestCase
     assert_accessible
   end
 
+  # 1.4.12 with 1.4.10: a visitor's own text spacing (WCAG's test values) must not make a 320px screen scroll sideways
+  test "the home page does not scroll sideways at 320px with WCAG text spacing applied" do
+    page.driver.resize(320, 700)
+    visit root_path
+    page.execute_script("document.head.insertAdjacentHTML('beforeend', '<style>* { line-height: 1.5 !important; letter-spacing: .12em !important; word-spacing: .16em !important } p { margin-bottom: 2em !important }</style>')")
+    widths = page.evaluate_script("[document.documentElement.scrollWidth, document.documentElement.clientWidth]")
+    assert_operator widths[0], :<=, widths[1], "page is #{widths[0]}px wide in a #{widths[1]}px window"
+  ensure
+    page.driver.resize(1440, 900)
+  end
+
   # 1.3.1: axe's heading-order rule is a best practice, outside AXE_TAGS, so the levels are checked here: no heading on the
   # results page goes more than one level below the heading before it (the result titles are h3 under the results' h2)
   test "the results page skips no heading level" do
