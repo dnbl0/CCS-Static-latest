@@ -95,29 +95,29 @@ class SiteChromeTest < ActiveSupport::TestCase
     assert_no_selector "li[aria-current=page] a"
   end
 
-  # A record's title can run to hundreds of characters. The strip shows the first 60 (cut at a word, ending in an ellipsis) and the
+  # A record's title can run to hundreds of characters. The strip shows the first 50 (cut at a word, ending in an ellipsis) and the
   # span carries the whole title in its title attribute, so a visitor who hovers sees all of it. The page's h1 below has the full title.
-  test "a long final breadcrumb label is cut to 60 characters at a word, and the span's title attribute holds all of it" do
-    long = ("alpha " * 12).strip # 71 characters; the spaces fall at 5, 11, ... 59, 65
+  test "a long final breadcrumb label is cut to 50 characters at a word, and the span's title attribute holds all of it" do
+    long = ("alpha " * 12).strip # 71 characters; the spaces fall at 5, 11, ... 47, 53, 59, 65
     render_inline(NexusCcs::BreadcrumbComponent.new(items: [ [ "Search results", "/catalog" ], [ long, nil ] ]))
 
-    shown = "#{"alpha " * 9}alpha…" # nine "alpha ", a tenth "alpha", then the ellipsis: 60 characters
-    assert_equal 60, shown.length
+    shown = "#{"alpha " * 7}alpha…" # seven "alpha ", an eighth "alpha" (47 characters, the last space at or before 49), then the ellipsis
+    assert_equal 48, shown.length
     assert_selector "li[aria-current=page] span[title='#{long}']", text: shown, exact_text: true
   end
 
   test "a final breadcrumb label that fits is shown whole, with no title attribute" do
-    sixty = "a" * 30 + " " + "b" * 29 # exactly 60 characters
-    render_inline(NexusCcs::BreadcrumbComponent.new(items: [ [ "Search results", "/catalog" ], [ sixty, nil ] ]))
+    fifty = "a" * 25 + " " + "b" * 24 # exactly 50 characters
+    render_inline(NexusCcs::BreadcrumbComponent.new(items: [ [ "Search results", "/catalog" ], [ fifty, nil ] ]))
 
-    assert_selector "li[aria-current=page] span", text: sixty, exact_text: true
+    assert_selector "li[aria-current=page] span", text: fifty, exact_text: true
     assert_no_selector "li[aria-current=page] span[title]"
   end
 
-  test "a final label with no space to cut at is cut at 59 characters plus the ellipsis" do
+  test "a final label with no space to cut at is cut at 49 characters plus the ellipsis" do
     render_inline(NexusCcs::BreadcrumbComponent.new(items: [ [ "Search results", "/catalog" ], [ "x" * 100, nil ] ]))
 
-    assert_selector "li[aria-current=page] span[title='#{"x" * 100}']", text: "#{"x" * 59}…", exact_text: true
+    assert_selector "li[aria-current=page] span[title='#{"x" * 100}']", text: "#{"x" * 49}…", exact_text: true
   end
 
   test "only the final label is cut: the earlier items are links and keep their text" do

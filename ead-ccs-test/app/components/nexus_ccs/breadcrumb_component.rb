@@ -9,7 +9,7 @@ module NexusCcs
   # title attribute carries the whole label, so hovering shows all of it. The page's own h1 has the full title for
   # everyone else, and a label that fits gets no title attribute (it would only repeat the text).
   class BreadcrumbComponent < Blacklight::Component
-    MAX_LABEL_LENGTH = 60
+    MAX_LABEL_LENGTH = 50
 
     def initialize(items:)
       @items = items

@@ -10,6 +10,24 @@ class PagesTest < ActionDispatch::IntegrationTest
     assert_select "#browse-collections"
   end
 
+  # The two links in "Indigenous Cultural Data and Access" lead to other University sites, so each ends in the open-in-new icon
+  # (and says "external link" to screen readers). Links within this site have no icon.
+  test "the Help page's external Indigenous links end in the open-in-new icon" do
+    get "/help"
+
+    assert_response :success
+    %w[https://www.unimelb.edu.au/murmuk-djerring https://www.unimelb.edu.au/indigenous/acknowledgement-of-country].each do |href|
+      assert_select "#indigenous a[href='#{href}']" do |links|
+        link = links.first
+        assert_select link, "span.blacklight-icons.blacklight-icons-open_in_new svg[aria-hidden=true]", count: 1
+        assert_select link, ".visually-hidden", text: /external link/
+        # the icon comes after the label, inside the link
+        assert link.inner_html.index("blacklight-icons-open_in_new") > link.inner_html.index(link.text.strip.split(" (").first.split.first)
+      end
+    end
+    assert_select "#indigenous .blacklight-icons-open_in_new", count: 2
+  end
+
   test "the collection landing pages are gone: their addresses go to the results filtered to that collection" do
     YAML.load_file(Rails.root.join("config/pages.yml")).fetch("collections").each_key do |slug|
       facet_value = NexusCcs::SiteNavigation.facet_value(slug)

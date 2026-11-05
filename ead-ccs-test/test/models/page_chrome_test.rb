@@ -45,11 +45,11 @@ class PageChromeTest < ActiveSupport::TestCase
     assert_not results.saved_link_in_phone_menu?
   end
 
-  test "a record: back to the visitor's results, then the record's title, and no banner" do
+  test "a record: back to the visitor's results, then the record's title, and the title band" do
     record = chrome("catalog", "show")
 
     assert_equal [ [ "Search results", "/catalog?q=grainger" ], [ "Beaded piano stool belonging to the Wragg family", nil ] ], record.breadcrumbs
-    assert_nil record.banner
+    assert_equal :record, record.banner
     assert_equal :breadcrumb, record.saved_bar
   end
 

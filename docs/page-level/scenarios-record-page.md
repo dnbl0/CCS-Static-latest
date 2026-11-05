@@ -5,7 +5,7 @@ Source: research agent, 2026-10-12 (code read). Rails: `catalog#show` template (
 
 | ID | Page | Scenario | Type | How reached | What the UI shows | Source | R/S/B |
 |---|---|---|---|---|---|---|---|
-| R1 | Record | Full record, one image | Happy | `/catalog/:id` from results | Breadcrumb Home > "Search results" > the record's accession number (UoM ID if it has none). No title band; the summary's title is the page's h1. Large image (alt = title). Toolbar with licence chip and "Media metadata" and "Full screen" buttons. Summary: title, creator and date, tags (format, collection), Save. "Details" ruled list. "Persistent link" card. "Copyright" card (no Caption until downloads exist) | record_document_component.html.erb:1-81 | Both |
+| R1 | Record | Full record, one image | Happy | `/catalog/:id` from results | Breadcrumb Home > "Search results" > the title, cut to 50 characters at a word with an ellipsis (the span's `title` attribute holds the whole title; a title that fits is shown whole and has no `title` attribute). Dark title band (`record-banner`, aria-hidden, inner box with no max width) repeating the whole title; the summary's title is the page's one h1. Large image (alt = title). Toolbar with licence chip and "Media metadata" and "Full screen" buttons. Summary: title, creator and date, tags (format, collection), Save. "Details" ruled list. "Persistent link" card. "Copyright" card (no Caption until downloads exist) | record_document_component.html.erb:1-81 | Both |
 | R2 | Record | Several images | Happy | as R1 | Thumbnail row under main image; click swaps the large image (modified click opens new tab). Alt "Title, image 2 of 3"; thumb alt ends "(opens full size in a new tab)". No JS: thumbs are links. Static instead: Previous/Next/First/Last, "x of N", a "Go to" select when more than 3 slides, thumbs strip | digital_assets_component.html.erb:51-62; record.html:300-325 | Both (different UI) |
 | R3 | Record | No digital asset | Edge | records without `digital_asset_large_paths_ssim` | Rails: no media band, page starts at the summary. Static: viewer hidden, no "Web access" row | digital_assets_component.rb:20 | Both |
 | R4 | Record | Video, audio, PDF | Happy | `digital_media_ssim` | Rails: `<video controls>` or `<audio controls>` with fallback "Download {label}"; PDF link "Open {label} (PDF, opens in a new tab)"; figcaption = label. Indexer does not yet index audio, video or PDF. Static: video, audio (icon + label), PDF iframe + "Open the PDF in a new tab" | digital_assets_component.html.erb:11-29 | Both |
@@ -38,7 +38,7 @@ only), parent record, related object; "UoM ID" with Copy sits before the collect
 Copyright card. Not yet mapped: editions, dimensions, inscription, language, physical access, source URL, child records.
 
 ## Components (code names)
-Rails: `RecordDocumentComponent`, `DigitalAssetsComponent`, `PersistentLinkComponent`,
+Rails: `RecordDocumentComponent`, `DigitalAssetsComponent`, `RecordBannerComponent` (aria-hidden), `PersistentLinkComponent`,
 `ViewFullRecordComponent`, `SaveControlComponent`, `DocumentHeaderComponent`, `HeaderComponent#breadcrumbs`, `SavedBarComponent`.
 Stimulus: `clipboard`, `media-viewer`, `dialog`, `saved_bar`. Static: `ccs-save`, `ccs-licence`, `.item-media` (`im-*`), `.im-gate`.
 

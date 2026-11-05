@@ -46,7 +46,7 @@ class RecordPageTest < ActiveSupport::TestCase
     assert_selector ".digital-assets + .record-summary"
   end
 
-  test "a record page has no title band and no search banner: its title is shown once, as the h1 of the summary" do
+  test "a record page's header has the title band under the breadcrumb (full width inner box, hidden from assistive technology) and no search banner" do
     with_controller_class(CatalogController) do
       with_request_url("/catalog/vernon-MHM2017.28") do
         vc_test_controller.action_name = "show"
@@ -54,8 +54,16 @@ class RecordPageTest < ActiveSupport::TestCase
       end
     end
 
-    assert_no_selector ".record-banner"
+    assert_selector ".breadcrumb-strip + section.record-banner[aria-hidden=true] > .record-banner__inner > p.record-banner__title"
+    assert_no_selector ".record-banner h1" # the band is not a heading: the summary's h1 is the page's one
     assert_no_selector ".search-banner"
+  end
+
+  test "the title band shows the whole title, however long" do
+    long = "Coin - Daric, Ob: The Great King bearded, running right (a half-kneeling posture); he is crowned with the royal kidaris"
+    render_inline(NexusCcs::RecordBannerComponent.new(title: long))
+
+    assert_selector "section.record-banner[aria-hidden=true] .record-banner__inner .record-banner__title", text: long, exact_text: true
   end
 
   test "the persistent link has the link, a copy button and a status line for screen readers" do

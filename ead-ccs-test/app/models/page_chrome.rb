@@ -3,7 +3,8 @@
 # The parts of the site header that depend on which page is showing (see CONTEXT.md, "Page chrome"):
 #
 #   breadcrumbs  [label, href] pairs for the breadcrumb strip; the last item is the current page
-#   banner       what sits under the strip: :search (the search banner), :advanced_search (the page banner), or nil
+#   banner       what sits under the strip: :search (the search banner), :record (the record's title band),
+#                :advanced_search (the page banner), or nil
 #   saved_bar    where the saved-records bar goes: :breadcrumb (in the breadcrumb strip), :header (the header's top strip,
 #                for a page with no trail), :hero (over the home page's photo, pages/home.html.erb), or :page (a content
 #                page draws its own strip, PageBreadcrumbsComponent)
@@ -18,7 +19,7 @@ PageChrome = Data.define(:breadcrumbs, :banner, :saved_bar) do
     in [ "pages", _ ] then new(breadcrumbs: [], banner: nil, saved_bar: :page)
     in [ "catalog", "index" ]
       searching ? with_trail([ [ "Search results", nil ] ], banner: :search) : new(breadcrumbs: [], banner: :search, saved_bar: :header)
-    in [ "catalog", "show" ] then with_trail(record_trail(page.record_title, page.results_url), banner: nil)
+    in [ "catalog", "show" ] then with_trail(record_trail(page.record_title, page.results_url), banner: :record)
     in [ "catalog", "advanced_search" ] then with_trail([ [ "Advanced Search", nil ] ], banner: :advanced_search)
     in [ "catalog", _ ] then new(breadcrumbs: [], banner: :search, saved_bar: :header)
     in [ "bookmarks", _ ] then with_trail([ [ I18n.t("nexus_ccs.saved.list_title"), nil ] ], banner: nil)

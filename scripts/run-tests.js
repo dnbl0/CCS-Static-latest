@@ -12,6 +12,7 @@ const CHECKS = [
   'node tests/catalog-search.test.js',
   'node tests/catalog-export.test.js',
   'node tests/old-search-redirect.test.js',
+  'node tests/external-link-icons.test.js',
   'node tests/vm-notify-email.test.js',
   'node tests/vm-site-watch.test.js',
   'node tests/copy-markdown.test.js',
