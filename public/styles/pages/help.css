@@ -127,14 +127,14 @@ body.page-help .help-section__text {
   margin: 0 0 var(--space-12);
 }
 
-/* The open-in-new icon after a link that leads to another website (same markup as the Rails app's NexusCcs::Icons::OpenInNewComponent) */
-body.page-help .help-section__text .blacklight-icons {
+/* The open-in-new icon after a link in the Help content that leads to another website (same markup as the Rails app's NexusCcs::Icons::OpenInNewComponent) */
+body.page-help .help-layout__content .blacklight-icons {
   display: inline-block;
   margin-inline-start: 0.25rem;
   vertical-align: text-bottom;
 }
 
-body.page-help .help-section__text .blacklight-icons svg {
+body.page-help .help-layout__content .blacklight-icons svg {
   display: block;
   width: 1em;
   height: 1em;

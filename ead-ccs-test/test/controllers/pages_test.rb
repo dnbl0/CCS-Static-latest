@@ -10,22 +10,22 @@ class PagesTest < ActionDispatch::IntegrationTest
     assert_select "#browse-collections"
   end
 
-  # The two links in "Indigenous Cultural Data and Access" lead to other University sites, so each ends in the open-in-new icon
-  # (and says "external link" to screen readers). Links within this site have no icon.
-  test "the Help page's external Indigenous links end in the open-in-new icon" do
+  # A link in the Help content that leads to another website ends in the open-in-new icon (and says "external link" to screen readers).
+  # Links within this site, and email links, have none.
+  test "every link in the Help content that leads to another website ends in the open-in-new icon" do
     get "/help"
 
     assert_response :success
-    %w[https://www.unimelb.edu.au/murmuk-djerring https://www.unimelb.edu.au/indigenous/acknowledgement-of-country].each do |href|
-      assert_select "#indigenous a[href='#{href}']" do |links|
-        link = links.first
-        assert_select link, "span.blacklight-icons.blacklight-icons-open_in_new svg[aria-hidden=true]", count: 1
-        assert_select link, ".visually-hidden", text: /external link/
-        # the icon comes after the label, inside the link
-        assert link.inner_html.index("blacklight-icons-open_in_new") > link.inner_html.index(link.text.strip.split(" (").first.split.first)
-      end
+    links = css_select(".help-layout__content a[href^='http']")
+    assert_operator links.size, :>=, 3, "the two Indigenous links and the Copyright Office link"
+    links.each do |link|
+      label = link.xpath("text()").first.text.strip
+      assert_select link, "span.blacklight-icons.blacklight-icons-open_in_new svg[aria-hidden=true]", count: 1, message: "#{link['href']} needs the icon"
+      assert_select link, ".visually-hidden, .sr-only", text: /external/ # says so to screen readers
+      assert link.inner_html.index(label) < link.inner_html.index("blacklight-icons-open_in_new"), "#{link['href']}: the icon comes after the label"
     end
-    assert_select "#indigenous .blacklight-icons-open_in_new", count: 2
+    assert_select ".help-layout__content .blacklight-icons-open_in_new", count: links.size
+    assert_select ".help-layout__content a[href^='mailto:'] .blacklight-icons", count: 0
   end
 
   test "the collection landing pages are gone: their addresses go to the results filtered to that collection" do
