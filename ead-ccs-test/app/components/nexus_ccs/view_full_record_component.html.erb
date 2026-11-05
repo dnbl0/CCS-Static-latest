@@ -36,10 +36,9 @@
           <button type="button" class="btn btn-outline-primary" data-action="dialog#close">
             <%= t("nexus_ccs.view_full_record.stay") %>
           </button>
-          <%= link_to t("nexus_ccs.view_full_record.continue"), url,
-            class: "btn btn-primary",
-            target: "_blank",
-            rel: "noopener noreferrer" %>
+          <%= link_to url, class: "btn btn-primary", target: "_blank", rel: "noopener noreferrer" do %>
+            <%= t("nexus_ccs.view_full_record.continue") %><span class="visually-hidden"> <%= t("nexus_ccs.view_full_record.new_tab") %></span>
+          <% end %>
         </div>
       </div>
     </div>
