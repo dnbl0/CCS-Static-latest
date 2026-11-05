@@ -1,0 +1,43 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "description": "Email for the VM's alerts (a failed automatic update): an Azure Communication Services email resource with an Azure-managed sender address (DoNotReply@<random>.azurecomm.net). These services are 'global', so the subscription's allowed-regions policy does not apply. A few cents a month. Deploy with setup-alerts.sh."
+  },
+  "parameters": {
+    "dataLocation": { "type": "string", "defaultValue": "Australia" },
+    "emailServiceName": { "type": "string", "defaultValue": "ccs-email" },
+    "communicationServiceName": { "type": "string", "defaultValue": "ccs-comms" }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Communication/emailServices",
+      "apiVersion": "2025-09-01",
+      "name": "[parameters('emailServiceName')]",
+      "location": "global",
+      "properties": { "dataLocation": "[parameters('dataLocation')]" }
+    },
+    {
+      "type": "Microsoft.Communication/emailServices/domains",
+      "apiVersion": "2025-09-01",
+      "name": "[concat(parameters('emailServiceName'), '/AzureManagedDomain')]",
+      "location": "global",
+      "dependsOn": [ "[resourceId('Microsoft.Communication/emailServices', parameters('emailServiceName'))]" ],
+      "properties": { "domainManagement": "AzureManaged", "userEngagementTracking": "Disabled" }
+    },
+    {
+      "type": "Microsoft.Communication/communicationServices",
+      "apiVersion": "2025-09-01",
+      "name": "[parameters('communicationServiceName')]",
+      "location": "global",
+      "dependsOn": [ "[resourceId('Microsoft.Communication/emailServices/domains', parameters('emailServiceName'), 'AzureManagedDomain')]" ],
+      "properties": {
+        "dataLocation": "[parameters('dataLocation')]",
+        "linkedDomains": [ "[resourceId('Microsoft.Communication/emailServices/domains', parameters('emailServiceName'), 'AzureManagedDomain')]" ]
+      }
+    }
+  ],
+  "outputs": {
+    "senderDomain": { "type": "string", "value": "[reference(resourceId('Microsoft.Communication/emailServices/domains', parameters('emailServiceName'), 'AzureManagedDomain'), '2025-09-01').mailFromSenderDomain]" }
+  }
+}

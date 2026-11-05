@@ -62,6 +62,13 @@ images back and does **not** try that same version again, so a bad merge costs a
 - Main is the source of truth: after a manual `deploy-vm.sh` of something that is not on main, the next check puts main back.
 - Tested on the live VM on 2026-11-05: nothing new (silent, no restart); dry run (says what it would do, changes nothing); a forced failure (rolled back and healthy again about 25 seconds later, and that version is not retried); a real update (deployed, state recorded). Logs: `/opt/ccs-deploy/auto-deploy.log`.
 
+**Alert email when an update fails.** If an update fails its health check and is rolled back, the VM emails the people in `/opt/ccs-deploy/alert.env`
+(a second email, marked URGENT, if even the rollback did not bring the site back). It sends through Azure Communication Services Email (a "global"
+service, so the region policy does not apply; a few cents a month): `infra/azure/vm/alerts.json` creates it, `notify-email.py` sends (standard library
+only), and `SUBSCRIPTION=<id> ALERT_TO=you@example.org infra/azure/vm/setup-alerts.sh` sets it up and sends a test email. The access key is written only to
+`alert.env` on the VM (mode 600). The sender is a new Azure address (`DoNotReply@<random>.azurecomm.net`): if the test email does not arrive, look in
+the junk folder and mark it as not junk. Try it without touching the site: `AUTO_DEPLOY_TEST_ALERT=1 /opt/ccs-deploy/auto-deploy.sh` on the VM.
+
 ### An `azurecontainerapps.io` address in front of the VM
 Some networks (the University's, a VPN) refuse a new `*.cloudapp.azure.com` address with `ERR_SSL_PROTOCOL_ERROR`, while an
 `*.azurecontainerapps.io` address works. A small Container App (Caddy, 0.25 vCPU) in front of the VM gives that address; the proxy
