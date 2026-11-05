@@ -21,9 +21,4 @@ class SolrDocument
     prefix, uom_prefix = UOM_ID_PREFIXES.find { |solr_prefix, _| id.to_s.start_with?(solr_prefix) }
     prefix ? id.to_s.sub(prefix, uom_prefix) : id.to_s
   end
-
-  # The short name a visitor can quote: the accession number, or the UoM ID for a record with none
-  def identifier
-    first("accession_number_ssim").presence || uom_id
-  end
 end

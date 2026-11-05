@@ -95,6 +95,38 @@ class SiteChromeTest < ActiveSupport::TestCase
     assert_no_selector "li[aria-current=page] a"
   end
 
+  # A record's title can run to hundreds of characters. The strip shows the first 60 (cut at a word, ending in an ellipsis) and the
+  # span carries the whole title in its title attribute, so a visitor who hovers sees all of it. The page's h1 below has the full title.
+  test "a long final breadcrumb label is cut to 60 characters at a word, and the span's title attribute holds all of it" do
+    long = ("alpha " * 12).strip # 71 characters; the spaces fall at 5, 11, ... 59, 65
+    render_inline(NexusCcs::BreadcrumbComponent.new(items: [ [ "Search results", "/catalog" ], [ long, nil ] ]))
+
+    shown = "#{"alpha " * 9}alpha…" # nine "alpha ", a tenth "alpha", then the ellipsis: 60 characters
+    assert_equal 60, shown.length
+    assert_selector "li[aria-current=page] span[title='#{long}']", text: shown, exact_text: true
+  end
+
+  test "a final breadcrumb label that fits is shown whole, with no title attribute" do
+    sixty = "a" * 30 + " " + "b" * 29 # exactly 60 characters
+    render_inline(NexusCcs::BreadcrumbComponent.new(items: [ [ "Search results", "/catalog" ], [ sixty, nil ] ]))
+
+    assert_selector "li[aria-current=page] span", text: sixty, exact_text: true
+    assert_no_selector "li[aria-current=page] span[title]"
+  end
+
+  test "a final label with no space to cut at is cut at 59 characters plus the ellipsis" do
+    render_inline(NexusCcs::BreadcrumbComponent.new(items: [ [ "Search results", "/catalog" ], [ "x" * 100, nil ] ]))
+
+    assert_selector "li[aria-current=page] span[title='#{"x" * 100}']", text: "#{"x" * 59}…", exact_text: true
+  end
+
+  test "only the final label is cut: the earlier items are links and keep their text" do
+    render_inline(NexusCcs::BreadcrumbComponent.new(items: [ [ "Search results " * 10, "/catalog" ], [ "A skull", nil ] ]))
+
+    assert_selector "li a", text: ("Search results " * 10).strip
+    assert_no_selector "li a[title]"
+  end
+
   test "the saved-records bar is the last child of the breadcrumb strip, and nowhere else on a page with a breadcrumb" do
     render_header(url: "/catalog/abc", action: "show")
 
