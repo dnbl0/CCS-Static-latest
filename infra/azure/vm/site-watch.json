@@ -1,0 +1,134 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "description": "A watcher OUTSIDE the VM (the VM is what might be down): a Logic App (consumption plan, cents a month) that every 5 minutes asks the live site for its record count and emails you if the site is down. It says nothing during the planned 00:00-06:00 Melbourne shutdown and starts caring at 06:15, so a server that did not come back at 6am is caught. Before alerting it waits 3 minutes and checks again (an update restart is not an outage), and while the site stays down it emails at most twice an hour (at :15 and :45). It sends through the ACS Email resource from alerts.json, signing in with its own managed identity (no keys). Deploy with setup-site-watch.sh."
+  },
+  "parameters": {
+    "workflowName": { "type": "string", "defaultValue": "ccs-site-watch" },
+    "location": { "type": "string", "defaultValue": "newzealandnorth", "metadata": { "description": "Must be a region the subscription allows." } },
+    "siteUrl": { "type": "string", "defaultValue": "https://ccs-web.nicebay-19f9959b.newzealandnorth.azurecontainerapps.io" },
+    "checkPath": { "type": "string", "defaultValue": "/catalog.json?per_page=1&q=&search_field=all_fields&any_assets=1", "metadata": { "description": "Healthy = HTTP 200 and meta.pages.total_count above 10,000 (the app, Solr and the data are all working)." } },
+    "alertTo": { "type": "string" },
+    "senderAddress": { "type": "string", "metadata": { "description": "DoNotReply@<random>.azurecomm.net, from alerts.json." } },
+    "acsHost": { "type": "string", "metadata": { "description": "e.g. ccs-comms.australia.communication.azure.com" } },
+    "acsName": { "type": "string", "defaultValue": "ccs-comms" },
+    "skipGates": { "type": "bool", "defaultValue": false, "metadata": { "description": "TESTING ONLY: ignore the 06:15 start time and the twice-an-hour limit." } },
+    "subjectPrefix": { "type": "string", "defaultValue": "", "metadata": { "description": "TESTING ONLY: put at the start of the email subject so a test cannot be mistaken for an outage." } }
+  },
+  "variables": {
+    "acsId": "[resourceId('Microsoft.Communication/communicationServices', parameters('acsName'))]",
+    "emailOwnerRole": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '09976791-48a7-449e-bb21-39d1a415f350')]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Logic/workflows",
+      "apiVersion": "2019-05-01",
+      "name": "[parameters('workflowName')]",
+      "location": "[parameters('location')]",
+      "identity": { "type": "SystemAssigned" },
+      "properties": {
+        "state": "Enabled",
+        "parameters": { "skipGates": { "value": "[parameters('skipGates')]" } },
+        "definition": {
+          "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+          "contentVersion": "1.0.0.0",
+          "parameters": { "skipGates": { "type": "Bool", "defaultValue": false } },
+          "triggers": {
+            "Every_5_minutes": { "type": "Recurrence", "recurrence": { "frequency": "Minute", "interval": 5 } }
+          },
+          "actions": {
+            "Check_the_site": {
+              "type": "Http",
+              "inputs": {
+                "method": "GET",
+                "uri": "[concat(parameters('siteUrl'), parameters('checkPath'))]",
+                "retryPolicy": { "type": "fixed", "count": 2, "interval": "PT15S" }
+              },
+              "limit": { "timeout": "PT40S" },
+              "runAfter": {}
+            },
+            "Site_is_up": {
+              "type": "Compose",
+              "inputs": "@and(equals(actions('Check_the_site').status, 'Succeeded'), greater(int(coalesce(body('Check_the_site')?['meta']?['pages']?['total_count'], 0)), 10000))",
+              "runAfter": { "Check_the_site": [ "Succeeded", "Failed", "TimedOut" ] }
+            },
+            "Melbourne_time": {
+              "type": "Compose",
+              "inputs": "@convertTimeZone(utcNow(), 'UTC', 'AUS Eastern Standard Time', 'dddd HH:mm')",
+              "runAfter": { "Site_is_up": [ "Succeeded" ] }
+            },
+            "Time_to_tell_someone": {
+              "type": "Compose",
+              "inputs": "@or(parameters('skipGates'), and(greaterOrEquals(convertTimeZone(utcNow(), 'UTC', 'AUS Eastern Standard Time', 'HH:mm'), '06:15'), or(and(greaterOrEquals(int(convertTimeZone(utcNow(), 'UTC', 'AUS Eastern Standard Time', 'mm')), 15), less(int(convertTimeZone(utcNow(), 'UTC', 'AUS Eastern Standard Time', 'mm')), 20)), and(greaterOrEquals(int(convertTimeZone(utcNow(), 'UTC', 'AUS Eastern Standard Time', 'mm')), 45), less(int(convertTimeZone(utcNow(), 'UTC', 'AUS Eastern Standard Time', 'mm')), 50)))))",
+              "runAfter": { "Melbourne_time": [ "Succeeded" ] }
+            },
+            "If_down_and_it_is_time": {
+              "type": "If",
+              "expression": { "and": [ { "equals": [ "@outputs('Site_is_up')", false ] }, { "equals": [ "@outputs('Time_to_tell_someone')", true ] } ] },
+              "runAfter": { "Time_to_tell_someone": [ "Succeeded" ] },
+              "actions": {
+                "Wait_3_minutes": { "type": "Wait", "inputs": { "interval": { "count": 3, "unit": "Minute" } }, "runAfter": {} },
+                "Check_again": {
+                  "type": "Http",
+                  "inputs": {
+                    "method": "GET",
+                    "uri": "[concat(parameters('siteUrl'), parameters('checkPath'))]",
+                    "retryPolicy": { "type": "fixed", "count": 2, "interval": "PT15S" }
+                  },
+                  "limit": { "timeout": "PT40S" },
+                  "runAfter": { "Wait_3_minutes": [ "Succeeded" ] }
+                },
+                "Second_check_is_up": {
+                  "type": "Compose",
+                  "inputs": "@and(equals(actions('Check_again').status, 'Succeeded'), greater(int(coalesce(body('Check_again')?['meta']?['pages']?['total_count'], 0)), 10000))",
+                  "runAfter": { "Check_again": [ "Succeeded", "Failed", "TimedOut" ] }
+                },
+                "If_still_down": {
+                  "type": "If",
+                  "expression": { "equals": [ "@outputs('Second_check_is_up')", false ] },
+                  "runAfter": { "Second_check_is_up": [ "Succeeded" ] },
+                  "actions": {
+                    "Send_the_alert_email": {
+                      "type": "Http",
+                      "inputs": {
+                        "method": "POST",
+                        "uri": "[concat('https://', parameters('acsHost'), '/emails:send?api-version=2023-03-31')]",
+                        "headers": { "Content-Type": "application/json" },
+                        "body": {
+                          "senderAddress": "[parameters('senderAddress')]",
+                          "recipients": { "to": [ { "address": "[parameters('alertTo')]" } ] },
+                          "content": {
+                            "subject": "[concat(parameters('subjectPrefix'), '[CCS site] The site is DOWN')]",
+                            "plainText": "[concat('The CCS site did not answer, and still did not answer when checked again 3 minutes later.', '\n\n', 'Checked at (Melbourne time): @{outputs(''Melbourne_time'')}', '\n', 'Address: ', parameters('siteUrl'), '\n', 'What the check asks: ', parameters('checkPath'), ' (it must answer 200 and report more than 10,000 records)', '\n\n', 'What to try: the server is switched off from 00:00 to 06:00 every night and should be back by about 06:05, so if this is the morning, the start job may not have run (Azure portal > Logic Apps > ccs-vm-start > run history). Otherwise look at the server and its update log (/opt/ccs-deploy/auto-deploy.log). You will get this email at most twice an hour while the site stays down.')]"
+                          }
+                        },
+                        "authentication": { "type": "ManagedServiceIdentity", "audience": "https://communication.azure.com/" }
+                      },
+                      "runAfter": {}
+                    }
+                  },
+                  "else": { "actions": {} }
+                }
+              },
+              "else": { "actions": {} }
+            }
+          },
+          "outputs": {}
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2022-04-01",
+      "scope": "[concat('Microsoft.Communication/communicationServices/', parameters('acsName'))]",
+      "name": "[guid(variables('acsId'), parameters('workflowName'), variables('emailOwnerRole'))]",
+      "dependsOn": [ "[resourceId('Microsoft.Logic/workflows', parameters('workflowName'))]" ],
+      "properties": {
+        "roleDefinitionId": "[variables('emailOwnerRole')]",
+        "principalId": "[reference(resourceId('Microsoft.Logic/workflows', parameters('workflowName')), '2019-05-01', 'Full').identity.principalId]",
+        "principalType": "ServicePrincipal"
+      }
+    }
+  ]
+}

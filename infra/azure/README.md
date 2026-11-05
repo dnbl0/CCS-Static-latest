@@ -69,6 +69,21 @@ only), and `SUBSCRIPTION=<id> ALERT_TO=you@example.org infra/azure/vm/setup-aler
 `alert.env` on the VM (mode 600). The sender is a new Azure address (`DoNotReply@<random>.azurecomm.net`): if the test email does not arrive, look in
 the junk folder and mark it as not junk. Try it without touching the site: `AUTO_DEPLOY_TEST_ALERT=1 /opt/ccs-deploy/auto-deploy.sh` on the VM.
 
+### Site-down alert: an email if the site is down or did not come back at 6am
+A watcher that lives **outside the VM** (the VM is what might be down): `infra/azure/vm/site-watch.json` is a Logic App (`ccs-site-watch`, consumption
+plan, cents a month) that every 5 minutes asks the live site for its record count. Healthy = HTTP 200 **and** more than 10,000 records (so the app, Solr and
+the data all work). If it is not healthy it waits 3 minutes and checks again (an update restart is not an outage), then emails through the Azure email
+resource from `alerts.json`, signing in with its own managed identity (no keys; its only permission is *Communication and Email Service Owner* on that one
+email resource).
+
+- **Quiet 00:00-06:15 Melbourne time** (the planned shutdown), so a server that did not start at 06:00 is caught from 06:15. While the site stays down it emails
+  at most twice an hour (at :15 and :45).
+- **Set up once** (after `setup-alerts.sh`): `SUBSCRIPTION=<id> ALERT_TO=you@example.org infra/azure/vm/setup-site-watch.sh`.
+- **Look at it:** Azure portal, Logic Apps, `ccs-site-watch`, Runs history (a run per 5 minutes). **Pause it:** disable the Logic App.
+- **Tested** on 2026-11-05 with a temporary copy pointed at a page that does not exist and with the time and rate limits switched off (`skipGates`): it checked,
+  waited, checked again, and sent the email ("TEST - not a real outage: ..."); the copy and its permission were then deleted. The real one was seen to stay quiet
+  while the site was up. Not seen yet: a real outage.
+
 ### An `azurecontainerapps.io` address in front of the VM
 Some networks (the University's, a VPN) refuse a new `*.cloudapp.azure.com` address with `ERR_SSL_PROTOCOL_ERROR`, while an
 `*.azurecontainerapps.io` address works. A small Container App (Caddy, 0.25 vCPU) in front of the VM gives that address; the proxy
